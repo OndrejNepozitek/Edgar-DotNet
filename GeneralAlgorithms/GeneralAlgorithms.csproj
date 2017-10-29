@@ -46,7 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
+    <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
+    <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
+    <Compile Include="DataStructures\IntVector2.cs" />
+    <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
+    <Compile Include="DataStructures\Polygons\IPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
