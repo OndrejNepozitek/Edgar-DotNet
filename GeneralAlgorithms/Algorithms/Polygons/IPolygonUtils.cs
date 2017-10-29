@@ -6,6 +6,8 @@
 	{
 		bool CheckIntegrity(T polygon);
 
+		T NormalizePolygon(T polygon);
+
 		T Rotate(T polygon, int degrees);
 
 		IEnumerable<T> GetAllRotations(T polygon);

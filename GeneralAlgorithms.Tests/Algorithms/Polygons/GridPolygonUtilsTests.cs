@@ -1,5 +1,8 @@
 ﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
+	using System.Collections.Generic;
+	using System.Linq;
+	using DataStructures;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using NUnit.Framework;
 
@@ -77,6 +80,56 @@
 				.Build();
 
 			Assert.IsFalse(utils.CheckIntegrity(polygon1));
+		}
+
+		[Test]
+		public void NormalizePolygon_Square_ReturnsNormalizedPolygon()
+		{
+			var square = new GridPolygonBuilder()
+				.AddPoint(-2, -2)
+				.AddPoint(2, -2)
+				.AddPoint(2, 2)
+				.AddPoint(-2, 2)
+				.Build();
+
+			var normalizedSquare = utils.NormalizePolygon(square);
+			var squarePoints = normalizedSquare.GetPoints();
+			var expectedPoints = new List<IntVector2>()
+			{
+				new IntVector2(0, 0),
+				new IntVector2(0, 4),
+				new IntVector2(4, 4),
+				new IntVector2(4, 0),
+			};
+
+			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
+		}
+
+		[Test]
+		public void NormalizePolygon_Polygon_ReturnsNormalizedPolygon()
+		{
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(3, 0)
+				.AddPoint(-2, 0)
+				.AddPoint(-2, -2)
+				.AddPoint(0, -2)
+				.AddPoint(0, -5)
+				.AddPoint(3, -5)
+				.Build();
+
+			var normalized = utils.NormalizePolygon(polygon);
+			var squarePoints = normalized.GetPoints();
+			var expectedPoints = new List<IntVector2>()
+			{
+				new IntVector2(0, 3),
+				new IntVector2(0, 5),
+				new IntVector2(5, 5),
+				new IntVector2(5, 0),
+				new IntVector2(2, 0),
+				new IntVector2(2, 3),
+			};
+
+			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
 		}
 	}
 }
