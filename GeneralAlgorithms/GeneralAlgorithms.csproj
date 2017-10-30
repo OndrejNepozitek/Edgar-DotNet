@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />

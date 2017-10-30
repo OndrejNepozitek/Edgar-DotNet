@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using Algorithms.Math;
 
 	public struct IntVector2
 	{
@@ -118,6 +119,14 @@
 			}
 
 			return positions;
+		}
+
+		public IntVector2 RotateAroundCenter(int degrees)
+		{
+			var x = X * IntegerGoniometric.Cos(degrees) - Y * IntegerGoniometric.Sin(degrees);
+			var y = X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
+
+			return new IntVector2(x, y);
 		}
 
 		#region Operators

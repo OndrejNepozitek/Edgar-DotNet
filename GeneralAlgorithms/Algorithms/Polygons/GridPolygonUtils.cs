@@ -81,12 +81,13 @@
 
 		public GridPolygon Rotate(GridPolygon polygon, int degrees)
 		{
-			if (!possibleRotations.Contains(degrees))
+			if (degrees % 90 != 0)
 			{
-				throw new InvalidOperationException("Degrees must be divisible by 90 and range from 0 to 270");
+				throw new InvalidOperationException("Degrees must be divisible by 90");
 			}
 
-			throw new NotImplementedException();
+			var rotatedPoints = polygon.GetPoints().Select(x => x.RotateAroundCenter(degrees));
+			return new GridPolygon(rotatedPoints);
 		}
 
 		public IEnumerable<GridPolygon> GetAllRotations(GridPolygon polygon)
@@ -104,9 +105,9 @@
 			var polygon = new GridPolygon();
 
 			polygon.AddPoint(0, 0);
-			polygon.AddPoint(a, 0);
-			polygon.AddPoint(a, b);
 			polygon.AddPoint(0, b);
+			polygon.AddPoint(a, b);
+			polygon.AddPoint(a, 0);
 
 			return polygon;
 		}

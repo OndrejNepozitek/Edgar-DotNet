@@ -131,5 +131,37 @@
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
 		}
+
+		[Test]
+		public void Rotate_Square_ReturnsRotated()
+		{
+			var square = GridPolygonUtils.GetSquare(4);
+			var rotatedSquare = utils.Rotate(square, 180);
+			var expectedPoints = new List<IntVector2>()
+			{
+				new IntVector2(0, 0),
+				new IntVector2(0, -4),
+				new IntVector2(-4, -4),
+				new IntVector2(-4, 0),
+			};
+
+			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedSquare.GetPoints()));
+		}
+
+		[Test]
+		public void Rotate_Rectangle_ReturnsRotated()
+		{
+			var polygon = GridPolygonUtils.GetRectangle(2, 5);
+			var rotatedPolygon = utils.Rotate(polygon, -270);
+			var expectedPoints = new List<IntVector2>()
+			{
+				new IntVector2(0, 0),
+				new IntVector2(-5, 0),
+				new IntVector2(-5, 2),
+				new IntVector2(0, 2),
+			};
+
+			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedPolygon.GetPoints()));
+		}
 	}
 }
