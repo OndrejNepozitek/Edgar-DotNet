@@ -2,6 +2,7 @@
 {
 	using System.Collections.Generic;
 	using DataStructures;
+	using DataStructures.Common;
 	using DataStructures.Polygons;
 
 	public class GridPolygonBuilder

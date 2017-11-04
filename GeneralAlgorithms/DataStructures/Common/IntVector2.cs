@@ -1,4 +1,4 @@
-﻿namespace GeneralAlgorithms.DataStructures
+﻿namespace GeneralAlgorithms.DataStructures.Common
 {
 	using System;
 	using System.Collections.Generic;

@@ -2,10 +2,10 @@
 {
 	using System.Collections.ObjectModel;
 
-	public interface IPolygon<T>
+	public interface IPolygon<TPoint>
 	{
-		void AddPoint(T point);
+		void AddPoint(TPoint point);
 
-		ReadOnlyCollection<T> GetPoints();
+		ReadOnlyCollection<TPoint> GetPoints();
 	}
 }

@@ -3,7 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using DataStructures;
+	using DataStructures.Common;
 	using DataStructures.Polygons;
 
 	public class GridPolygonUtils : IPolygonUtils<GridPolygon>
@@ -46,7 +46,7 @@
 			var smallestXY = points.Where(x => x.X == smallestX).Min(x => x.Y);
 			var orderedPoints = new List<IntVector2>();
 			var index = int.MinValue;
-;			for (var i = 0; i < points.Count; i++)
+			for (var i = 0; i < points.Count; i++)
 			{
 				if (index == int.MinValue && points[i].X == smallestX && points[i].Y == smallestXY)
 				{

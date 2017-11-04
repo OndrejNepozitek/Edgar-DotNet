@@ -48,6 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationSpaces\ConfigurationSpace.cs" />
+    <Compile Include="ConfigurationSpaces\IConfigurationSpaces.cs" />
+    <Compile Include="Layouts\LayoutGenerator.cs" />
+    <Compile Include="Layouts\ILayout.cs" />
+    <Compile Include="Layouts\ILayoutGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,5 +65,6 @@
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

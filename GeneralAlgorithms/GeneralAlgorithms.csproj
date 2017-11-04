@@ -50,7 +50,8 @@
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
-    <Compile Include="DataStructures\IntVector2.cs" />
+    <Compile Include="DataStructures\Common\IntLine.cs" />
+    <Compile Include="DataStructures\Common\IntVector2.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
     <Compile Include="DataStructures\Polygons\IPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
