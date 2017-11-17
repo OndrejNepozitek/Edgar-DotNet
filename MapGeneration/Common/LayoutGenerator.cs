@@ -1,27 +1,22 @@
-﻿namespace MapGeneration.Layouts
+﻿namespace MapGeneration.LayoutGenerators
 {
 	using System;
 	using System.Collections.Generic;
-	using ConfigurationSpaces;
 	using DataStructures.Graphs;
+	using Layouts;
 
-	public class LayoutGenerator<TPolygon, TNode> : ILayoutGenerator<TPolygon, TNode> where TNode : IComparable<TNode>
+	public abstract class LayoutGenerator<TLayout, TPolygon, TNode> : ILayoutGenerator<TLayout, TPolygon, TNode>
+		where TNode : IComparable<TNode>
+		where TLayout : ILayout<TPolygon>
 	{
-		private IConfigurationSpaces<TPolygon, TNode> configurationSpaces;
+		protected Random random = new Random();
 
-		private Random random = new Random();
-		
-		public LayoutGenerator(IConfigurationSpaces<TPolygon, TNode> configurationSpaces)
-		{
-			this.configurationSpaces = configurationSpaces;
-		}
-
-		public IList<ILayout<TPolygon>> GetLayouts(IGraph<TNode> graph, int minimumLayouts = 10)
+		public IList<TLayout> GetLayouts(IGraph<TNode> graph, int minimumLayouts = 10)
 		{
 			var stack = new Stack<LayoutNode>();
-			var fullLayouts = new List<ILayout<TPolygon>>();
+			var fullLayouts = new List<TLayout>();
 			var graphChains = GetChains(graph);
-			var initialLayout = configurationSpaces.GetInitialLayout(graphChains[0]);
+			var initialLayout = GetInitialLayout(graphChains[0]);
 
 			stack.Push(new LayoutNode() { Layout = initialLayout, NumberOfChains = 1 });
 
@@ -51,7 +46,7 @@
 			return fullLayouts;
 		}
 
-		private List<ILayout<TPolygon>> GetExtendedLayouts(ILayout<TPolygon> layout, List<TNode> chain)
+		private List<TLayout> GetExtendedLayouts(TLayout layout, List<TNode> chain)
 		{
 			var t = 0d;
 			var ratio = 0d;
@@ -60,14 +55,14 @@
 			var k = 1d;
 			var minimumDifference = 0f;
 				
-			var layouts = new List<ILayout<TPolygon>>();
-			var currentLayout = configurationSpaces.AddChain(layout, chain);
+			var layouts = new List<TLayout>();
+			var currentLayout = AddChainToLayout(layout, chain);
 
 			for (var i = 0; i < cycles; i++)
 			{
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
-					var perturbedLayout = configurationSpaces.PerturbLayout(currentLayout); // TODO: locally perturb the layout
+					var perturbedLayout = PerturbLayout(currentLayout, chain); // TODO: locally perturb the layout
 
 					if (perturbedLayout.IsValid())
 					{
@@ -104,9 +99,15 @@
 
 		private struct LayoutNode
 		{
-			public ILayout<TPolygon> Layout;
+			public TLayout Layout;
 
 			public int NumberOfChains;
 		}
+
+		protected abstract TLayout PerturbLayout(TLayout layout, List<TNode> chain);
+
+		protected abstract TLayout AddChainToLayout(TLayout layout, List<TNode> chain);
+
+		protected abstract TLayout GetInitialLayout(List<TNode> chain);
 	}
 }

@@ -3,7 +3,7 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 
-	internal class ConfigurationSpace
+	public class ConfigurationSpace
 	{
 		public List<IntLine> Lines;
 	}

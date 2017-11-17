@@ -49,12 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationSpaces\ConfigurationSpace.cs" />
+    <Compile Include="ConfigurationSpaces\Generators\GridGenerator.cs" />
+    <Compile Include="ConfigurationSpaces\GridConfiguration.cs" />
+    <Compile Include="ConfigurationSpaces\GridConfigurationSpaces.cs" />
     <Compile Include="ConfigurationSpaces\IConfigurationSpaces.cs" />
-    <Compile Include="Layouts\LayoutGenerator.cs" />
+    <Compile Include="LayoutGenerators\GridLayoutGenerator.cs" />
+    <Compile Include="LayoutGenerators\LayoutGenerator.cs" />
+    <Compile Include="Layouts\GridLayout.cs" />
     <Compile Include="Layouts\ILayout.cs" />
-    <Compile Include="Layouts\ILayoutGenerator.cs" />
+    <Compile Include="LayoutGenerators\ILayoutGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ListExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

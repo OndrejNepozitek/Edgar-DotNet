@@ -2,8 +2,8 @@
 {
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.Linq;
 	using Common;
-	using DataStructures;
 
 	public class GridPolygon : IPolygon<IntVector2>
 	{
@@ -37,6 +37,23 @@
 		public ReadOnlyCollection<IntVector2> GetPoints()
 		{
 			return points.AsReadOnly();
+		}
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as GridPolygon;
+
+			return other != null && points.SequenceEqual(other.GetPoints());
+		}
+
+		protected bool Equals(GridPolygon other)
+		{
+			return Equals(points, other.points);
+		}
+
+		public override int GetHashCode()
+		{
+			return (points != null ? points.GetHashCode() : 0);
 		}
 	}
 }
