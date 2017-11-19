@@ -9,8 +9,8 @@
 
 	public class ConfigurationSpacesGenerator
 	{
-		private GridPolygonUtils polygonUtils = new GridPolygonUtils();
-		private GridPolygonOverlap polygonOverlap = new GridPolygonOverlap();
+		private readonly GridPolygonUtils polygonUtils = new GridPolygonUtils();
+		private readonly GridPolygonOverlap polygonOverlap = new GridPolygonOverlap();
 
 		public ConfigurationSpaces Generate(List<GridPolygon> polygons, bool rotate = true)
 		{
@@ -20,8 +20,22 @@
 			}
 
 			var allPolygons = ProcessPolygons(polygons, rotate);
+			var configurationSpaces = new Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>>();
 
-			throw new NotImplementedException();
+			foreach (var p1 in allPolygons)
+			{
+				var spaces = new Dictionary<GridPolygon, ConfigurationSpace>();
+
+				foreach (var p2 in allPolygons)
+				{
+					var configurationSpace = GetConfigurationSpace(p1, p2);
+					spaces.Add(p2, configurationSpace);
+				}
+
+				configurationSpaces.Add(p1, spaces);
+			}
+
+			return new ConfigurationSpaces(configurationSpaces);
 		}
 
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter)
@@ -81,8 +95,47 @@
 
 						break;
 					}
+
+					case IntLine.Direction.Top:
+					{
+						var correspondingLines = lines[(int)IntLine.Direction.Bottom];
+
+						foreach (var cline in correspondingLines)
+						{
+							var x = cline.From.X - line.From.X;
+							var from = new IntVector2(x, cline.From.Y - line.To.Y + (line.Length - 1));
+							var to = new IntVector2(x, cline.To.Y - line.From.Y - (line.Length - 1));
+
+							var resultLine = new IntLine(from, to);
+							points.AddRange(resultLine.GetPoints());
+						}
+
+						break;
+					}
+
+					case IntLine.Direction.Bottom:
+					{
+						var correspondingLines = lines[(int)IntLine.Direction.Top];
+
+						foreach (var cline in correspondingLines)
+						{
+							var x = cline.From.X - line.From.X;
+							var from = new IntVector2(x, cline.From.Y - line.To.Y - (line.Length - 1));
+							var to = new IntVector2(x, cline.To.Y - line.From.Y + (line.Length - 1));
+
+							var resultLine = new IntLine(from, to);
+							points.AddRange(resultLine.GetPoints());
+						}
+
+						break;
+					}
+
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 			}
+
+			points = points.Distinct().Where(x => !polygonOverlap.DoOverlap(polygon, x, fixedCenter, new IntVector2(0, 0))).ToList();
 
 			return new ConfigurationSpace() { Points = points };
 		}

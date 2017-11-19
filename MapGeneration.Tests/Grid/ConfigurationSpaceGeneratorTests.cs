@@ -41,6 +41,20 @@
 				Assert.AreEqual(points.Count, configurationSpace.Points.Intersect(points).Count());
 			}
 
+			{
+				// Right side of fixed
+				var points = new IntLine(new IntVector2(5, 4), new IntVector2(5, -2)).GetPoints();
+				expectedPoints.AddRange(points);
+				Assert.AreEqual(points.Count, configurationSpace.Points.Intersect(points).Count());
+			}
+
+			{
+				// Left side of fixed
+				var points = new IntLine(new IntVector2(-3, -2), new IntVector2(-3, 4)).GetPoints();
+				expectedPoints.AddRange(points);
+				Assert.AreEqual(points.Count, configurationSpace.Points.Intersect(points).Count());
+			}
+
 			Assert.AreEqual(expectedPoints.Distinct().Count(), configurationSpace.Points.Count);
 		}
 	}
