@@ -146,6 +146,11 @@
 			return new IntVector2(a * b.X, a * b.Y);
 		}
 
+		public static int operator *(IntVector2 a, IntVector2 b)
+		{
+			return a.X * b.X + a.Y * b.Y;
+		}
+
 		public static bool operator ==(IntVector2 a, IntVector2 b)
 		{
 			return Equals(a, b);
@@ -156,6 +161,28 @@
 
 			return !Equals(a, b);
 		}
+
+		public static bool operator <=(IntVector2 a, IntVector2 b)
+		{
+
+			return a.X <= b.X || (a.X == b.X && a.Y <= b.Y);
+		}
+
+		public static bool operator <(IntVector2 a, IntVector2 b)
+		{
+			return a.X < b.X || (a.X == b.X && a.Y < b.Y);
+		}
+
+		public static bool operator >(IntVector2 a, IntVector2 b)
+		{
+			return !(a <= b);
+		}
+
+		public static bool operator >=(IntVector2 a, IntVector2 b)
+		{
+			return !(a < b);
+		}
+
 		#endregion
 	}
 }

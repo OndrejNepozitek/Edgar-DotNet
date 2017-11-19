@@ -1,9 +1,10 @@
 ﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using DataStructures;
 	using DataStructures.Common;
+	using DataStructures.Polygons;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using NUnit.Framework;
 
@@ -163,6 +164,53 @@
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedPolygon.GetPoints()));
+		}
+
+		[Test]
+		public void DecomposeIntoRectangle_InvalidPolygon_Throws()
+		{
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(3, 0)
+				.AddPoint(-2, 0)
+				.AddPoint(-2, -2)
+				.Build();
+
+			Assert.Throws<InvalidOperationException>(() => utils.DecomposeIntoRectangles(polygon));
+		}
+
+		[Test]
+		public void DecomposeIntoRectangle_Rectangle_ReturnsDecomposition()
+		{
+			var polygon = GridPolygonUtils.GetRectangle(2, 4);
+
+			var rectangles = utils.DecomposeIntoRectangles(polygon);
+
+			Assert.AreEqual(1, rectangles.Count);
+			Assert.AreEqual(new GridRectangle(new IntVector2(0,0), new IntVector2(2, 4)), rectangles[0]);
+		}
+
+		[Test]
+		public void DecomposeIntoRectangle_Polygon_ReturnsDecomposition()
+		{
+			/*var polygon = new GridPolygonBuilder()
+				.AddPoint(0, 3)
+				.AddPoint(0, 5)
+				.AddPoint(5, 5)
+				.AddPoint(5, 0)
+				.AddPoint(2, 0)
+				.AddPoint(2, 3)
+				.Build();
+
+			var expectedRectangles = new List<GridRectangle>
+			{
+				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
+				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
+				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
+				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
+				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
+			};
+
+			var rectangles = utils.DecomposeIntoRectangles(polygon);*/
 		}
 	}
 }

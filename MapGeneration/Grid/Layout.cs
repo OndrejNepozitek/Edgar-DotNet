@@ -2,61 +2,55 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using ConfigurationSpaces;
 	using DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Layouts;
+	using Interfaces;
 
-	public class GridLayout<TNode> : ILayout<GridPolygon> where TNode : IComparable<TNode>
+	public class Layout<TNode> : ILayout<GridPolygon> where TNode : IComparable<TNode>
 	{
 		// TODO: would it be faster to use a list/array instead ?
-		private Dictionary<TNode, GridConfiguration> nodes;
+		private Dictionary<TNode, Configuration> nodes;
 		private IGraph<TNode> graph;
 
-		public GridLayout()
+		public Layout()
 		{
-			nodes = new Dictionary<TNode, GridConfiguration>();
+			nodes = new Dictionary<TNode, Configuration>();
 		}
 
-		private GridLayout(GridLayout<TNode> layout)
+		private Layout(Layout<TNode> layout)
 		{
-			this.nodes = new Dictionary<TNode, GridConfiguration>(layout.nodes);
+			this.nodes = new Dictionary<TNode, Configuration>(layout.nodes);
 			graph = layout.graph;
 		}
 
-		public GridLayout(IGraph<TNode> graph)
+		public Layout(IGraph<TNode> graph)
 		{
 			this.graph = graph;
 		}
 
-		public bool IsValid()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public float GetEnergy()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public float GetDifference(ILayout<GridPolygon> other)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public bool GetConfiguration(TNode node, out GridConfiguration configuration)
+		public bool GetConfiguration(TNode node, out Configuration configuration)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public void SetConfiguration(TNode node, GridConfiguration configuration)
+		public void SetConfiguration(TNode node, Configuration configuration)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public GridLayout<TNode> Clone()
+		public Layout<TNode> Clone()
 		{
-			return new GridLayout<TNode>(this);
+			return new Layout<TNode>(this);
 		}
 	}
 }

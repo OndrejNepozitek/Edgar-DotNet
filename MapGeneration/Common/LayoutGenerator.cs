@@ -3,7 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using DataStructures.Graphs;
-	using Layouts;
+	using Interfaces;
 
 	public abstract class LayoutGenerator<TLayout, TPolygon, TNode> : ILayoutGenerator<TLayout, TPolygon, TNode>
 		where TNode : IComparable<TNode>
@@ -64,7 +64,8 @@
 				{
 					var perturbedLayout = PerturbLayout(currentLayout, chain); // TODO: locally perturb the layout
 
-					if (perturbedLayout.IsValid())
+					// TODO: should probably check only the perturbed node - other nodes did not change
+					if (IsLayoutValid(perturbedLayout))
 					{
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout) > minimumDifference))
@@ -109,5 +110,7 @@
 		protected abstract TLayout AddChainToLayout(TLayout layout, List<TNode> chain);
 
 		protected abstract TLayout GetInitialLayout(List<TNode> chain);
+
+		protected abstract bool IsLayoutValid(TLayout layout);
 	}
 }

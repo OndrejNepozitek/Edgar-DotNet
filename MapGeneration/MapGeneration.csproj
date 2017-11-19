@@ -48,16 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationSpaces\ConfigurationSpace.cs" />
-    <Compile Include="ConfigurationSpaces\Generators\GridGenerator.cs" />
-    <Compile Include="ConfigurationSpaces\GridConfiguration.cs" />
-    <Compile Include="ConfigurationSpaces\GridConfigurationSpaces.cs" />
-    <Compile Include="ConfigurationSpaces\IConfigurationSpaces.cs" />
-    <Compile Include="LayoutGenerators\GridLayoutGenerator.cs" />
-    <Compile Include="LayoutGenerators\LayoutGenerator.cs" />
-    <Compile Include="Layouts\GridLayout.cs" />
-    <Compile Include="Layouts\ILayout.cs" />
-    <Compile Include="LayoutGenerators\ILayoutGenerator.cs" />
+    <Compile Include="Grid\ConfigurationSpace.cs" />
+    <Compile Include="Grid\ConfigurationSpacesGenerator.cs" />
+    <Compile Include="Grid\Configuration.cs" />
+    <Compile Include="Grid\ConfigurationSpaces.cs" />
+    <Compile Include="Interfaces\IConfigurationSpaces.cs" />
+    <Compile Include="Grid\LayoutGenerator.cs" />
+    <Compile Include="Common\LayoutGenerator.cs" />
+    <Compile Include="Grid\Layout.cs" />
+    <Compile Include="Interfaces\ILayout.cs" />
+    <Compile Include="Interfaces\ILayoutGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
@@ -71,6 +71,8 @@
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ConfigurationSpaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

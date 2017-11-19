@@ -7,7 +7,28 @@
 
 	public class GridPolygon : IPolygon<IntVector2>
 	{
-		private readonly List<IntVector2> points;
+		protected readonly List<IntVector2> points;
+
+		// TODO: maybe should be struct rather than a class
+		private GridRectangle boundingRectangle;
+
+		public GridRectangle BoundingRectangle
+		{
+			get
+			{
+				if (boundingRectangle.B != new IntVector2(0, 0))
+					return boundingRectangle;
+
+				var smallestX = points.Min(x => x.X);
+				var biggestX = points.Max(x => x.X);
+				var smallestY = points.Min(x => x.Y);
+				var biggestY = points.Max(x => x.Y);
+
+				boundingRectangle = new GridRectangle(new IntVector2(smallestX, smallestY), new IntVector2(biggestX, biggestY));
+
+				return boundingRectangle;
+			}
+		}
 
 		public GridPolygon()
 		{
@@ -39,11 +60,26 @@
 			return points.AsReadOnly();
 		}
 
+		public List<IntLine> GetLines()
+		{
+			var lines = new List<IntLine>();
+			var x1 = points[points.Count - 1];
+			var x2 = points[points.Count - 2];
+
+			foreach (var point in points)
+			{
+				x2 = x1;
+				x1 = point;
+
+				lines.Add(new IntLine(x2, x1));
+			}
+
+			return lines;
+		}
+
 		public override bool Equals(object obj)
 		{
-			var other = obj as GridPolygon;
-
-			return other != null && points.SequenceEqual(other.GetPoints());
+			return obj is GridPolygon other && points.SequenceEqual(other.GetPoints());
 		}
 
 		protected bool Equals(GridPolygon other)

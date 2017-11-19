@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGeneration", "MapGeneration\MapGeneration.csproj", "{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTesting", "UnitTesting", "{913B8829-7BC1-4627-995B-8ECF6AC15FBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralAlgorithms.Tests", "GeneralAlgorithms.Tests\GeneralAlgorithms.Tests.csproj", "{CD72AFE4-17C9-4F89-892A-1C86127B7466}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGeneration.Tests", "MapGeneration.Tests\MapGeneration.Tests.csproj", "{D21972B1-D75A-4ADC-802F-394BD5FFE654}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,11 +31,19 @@ Global
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D21972B1-D75A-4ADC-802F-394BD5FFE654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21972B1-D75A-4ADC-802F-394BD5FFE654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21972B1-D75A-4ADC-802F-394BD5FFE654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21972B1-D75A-4ADC-802F-394BD5FFE654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466} = {913B8829-7BC1-4627-995B-8ECF6AC15FBA}
+		{D21972B1-D75A-4ADC-802F-394BD5FFE654} = {913B8829-7BC1-4627-995B-8ECF6AC15FBA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F179471-9336-4BB8-BB31-4035B3D95A9A}
 	EndGlobalSection
 EndGlobal
