@@ -1,8 +1,8 @@
 ﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
-	using DataStructures.Common;
-	using DataStructures.Polygons;
 	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using NUnit.Framework;
 
 	[TestFixture]

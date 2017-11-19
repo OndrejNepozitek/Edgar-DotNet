@@ -3,9 +3,9 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using DataStructures.Common;
-	using DataStructures.Polygons;
 	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using NUnit.Framework;
 
 	[TestFixture]
