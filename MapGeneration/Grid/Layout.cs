@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
@@ -19,7 +20,7 @@
 
 		private Layout(Layout<TNode> layout)
 		{
-			this.nodes = new Dictionary<TNode, Configuration>(layout.nodes);
+			nodes = new Dictionary<TNode, Configuration>(layout.nodes);
 			graph = layout.graph;
 		}
 
@@ -45,7 +46,13 @@
 
 		public void SetConfiguration(TNode node, Configuration configuration)
 		{
-			throw new NotImplementedException();
+			// TODO: revise
+			nodes[node] = configuration;
+		}
+
+		public List<Configuration> GetAllConfigurations()
+		{
+			return nodes.Values.ToList();
 		}
 
 		public Layout<TNode> Clone()

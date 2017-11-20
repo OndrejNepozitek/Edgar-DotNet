@@ -91,5 +91,10 @@
 		{
 			return (points != null ? points.GetHashCode() : 0);
 		}
+
+		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)
+		{
+			return new GridPolygon(polygon.points.Select(x => x + position));
+		}
 	}
 }
