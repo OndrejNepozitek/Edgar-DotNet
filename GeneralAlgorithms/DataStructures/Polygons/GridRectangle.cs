@@ -1,6 +1,5 @@
 ﻿namespace GeneralAlgorithms.DataStructures.Polygons
 {
-	using System.CodeDom;
 	using Common;
 
 	public struct GridRectangle

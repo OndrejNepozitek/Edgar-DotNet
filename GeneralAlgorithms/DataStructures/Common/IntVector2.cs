@@ -43,12 +43,13 @@
 
 		public List<IntVector2> GetAdjacentTiles()
 		{
-			var positions = new List<IntVector2>();
-
-			positions.Add(new IntVector2(X + 1, Y));
-			positions.Add(new IntVector2(X - 1, Y));
-			positions.Add(new IntVector2(X, Y + 1));
-			positions.Add(new IntVector2(X, Y - 1));
+			var positions = new List<IntVector2>
+			{
+				new IntVector2(X + 1, Y),
+				new IntVector2(X - 1, Y),
+				new IntVector2(X, Y + 1),
+				new IntVector2(X, Y - 1)
+			};
 
 			return positions;
 		}

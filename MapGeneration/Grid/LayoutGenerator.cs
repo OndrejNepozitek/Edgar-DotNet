@@ -2,16 +2,16 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using Common;
 	using DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using LayoutGenerators;
 	using Utils;
 
 	public class LayoutGenerator<TNode> : LayoutGenerator<Layout<TNode>, GridPolygon, TNode> where TNode : IComparable<TNode>
 	{
 		protected readonly float ShapePerturbChance = 0.2f;
-		protected ConfigurationSpaces configurationSpaces;
-		protected IGraph<TNode> graph;
+		protected ConfigurationSpaces ConfigurationSpaces;
+		protected IGraph<TNode> Graph;
 
 		/// <summary>
 		/// Decide whether shape or position should be perturbed and call corresponding methods.
@@ -21,9 +21,9 @@
 		/// <returns></returns>
 		protected override Layout<TNode> PerturbLayout(Layout<TNode> layout, List<TNode> chain)
 		{
-			var node = chain.GetRandom(random);
+			var node = chain.GetRandom(Random);
 
-			if (random.NextDouble() <= ShapePerturbChance)
+			if (Random.NextDouble() <= ShapePerturbChance)
 			{
 				return PerturbShape(layout, node);
 			}
@@ -55,13 +55,13 @@
 		/// <returns></returns>
 		protected Layout<TNode> PerturbShape(Layout<TNode> layout, TNode node)
 		{
-			var polygons = configurationSpaces.GetPolygons();
+			var polygons = ConfigurationSpaces.GetPolygons();
 			layout.GetConfiguration(node, out var configuration);
 			GridPolygon polygon;
 
 			do
 			{
-				polygon = polygons.GetRandom(random);
+				polygon = polygons.GetRandom(Random);
 			}
 			while (ReferenceEquals(polygon, configuration.Polygon));
 
@@ -82,7 +82,7 @@
 		{
 			var configurations = new List<Configuration>();
 
-			foreach (var node1 in graph.Neighbours(node))
+			foreach (var node1 in Graph.Neighbours(node))
 			{
 				if (layout.GetConfiguration(node1, out var configuration))
 				{
@@ -91,9 +91,9 @@
 			}
 
 			layout.GetConfiguration(node, out var mainConfiguration);
-			var intersection = configurationSpaces.GetMaximumIntersection(configurations, mainConfiguration);
+			var intersection = ConfigurationSpaces.GetMaximumIntersection(configurations, mainConfiguration);
 
-			var position = intersection.GetRandom(random);
+			var position = intersection.GetRandom(Random);
 			var newConfiguration = new Configuration(mainConfiguration.Polygon, position);
 			var newLayout = layout.Clone();
 			newLayout.SetConfiguration(node, newConfiguration);

@@ -1,7 +1,6 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Polygons
 {
 	using System.Collections.Generic;
-	using DataStructures;
 	using DataStructures.Common;
 	using DataStructures.Polygons;
 

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.LayoutGenerators
+﻿namespace MapGeneration.Common
 {
 	using System;
 	using System.Collections.Generic;
@@ -9,7 +9,7 @@
 		where TNode : IComparable<TNode>
 		where TLayout : ILayout<TPolygon>
 	{
-		protected Random random = new Random();
+		protected Random Random = new Random();
 
 		public IList<TLayout> GetLayouts(IGraph<TNode> graph, int minimumLayouts = 10)
 		{
@@ -81,7 +81,7 @@
 					if (energyDelta < 0)
 					{
 						currentLayout = perturbedLayout;
-					} else if (random.NextDouble() < Math.Pow(Math.E, -energyDelta / (k * t)))
+					} else if (Random.NextDouble() < Math.Pow(Math.E, -energyDelta / (k * t)))
 					{
 						currentLayout = perturbedLayout;
 					}

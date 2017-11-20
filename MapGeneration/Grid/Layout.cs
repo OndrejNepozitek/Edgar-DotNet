@@ -10,8 +10,8 @@
 	public class Layout<TNode> : ILayout<GridPolygon> where TNode : IComparable<TNode>
 	{
 		// TODO: would it be faster to use a list/array instead ?
-		private Dictionary<TNode, Configuration> nodes;
-		private IGraph<TNode> graph;
+		private readonly Dictionary<TNode, Configuration> nodes;
+		private readonly IGraph<TNode> graph;
 
 		public Layout()
 		{
