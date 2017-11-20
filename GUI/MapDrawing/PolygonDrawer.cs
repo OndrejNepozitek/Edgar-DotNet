@@ -12,6 +12,7 @@
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(10 * point.X, 10 * point.Y)).ToList();
 			e.Graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
+			e.Graphics.DrawPolygon(Pens.DarkBlue, polyPoints.ToArray());
 		}
 	}
 }
