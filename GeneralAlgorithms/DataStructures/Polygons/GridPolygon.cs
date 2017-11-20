@@ -64,11 +64,10 @@
 		{
 			var lines = new List<IntLine>();
 			var x1 = points[points.Count - 1];
-			var x2 = points[points.Count - 2];
 
 			foreach (var point in points)
 			{
-				x2 = x1;
+				var x2 = x1;
 				x1 = point;
 
 				lines.Add(new IntLine(x2, x1));
