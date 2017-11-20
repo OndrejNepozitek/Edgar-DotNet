@@ -93,16 +93,9 @@
 			return layouts;
 		}
 
-		private List<List<TNode>> GetChains(IGraph<TNode> graph)
+		protected virtual List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			throw new NotImplementedException();
-		}
-
-		private struct LayoutNode
-		{
-			public TLayout Layout;
-
-			public int NumberOfChains;
 		}
 
 		protected abstract TLayout PerturbLayout(TLayout layout, List<TNode> chain);
@@ -112,5 +105,12 @@
 		protected abstract TLayout GetInitialLayout(List<TNode> chain);
 
 		protected abstract bool IsLayoutValid(TLayout layout);
+
+		private struct LayoutNode
+		{
+			public TLayout Layout;
+
+			public int NumberOfChains;
+		}
 	}
 }

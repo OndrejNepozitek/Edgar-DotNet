@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using Common;
 	using DataStructures.Graphs;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Utils;
 
@@ -12,6 +13,7 @@
 		protected readonly float ShapePerturbChance = 0.2f;
 		protected ConfigurationSpaces ConfigurationSpaces;
 		protected IGraph<TNode> Graph;
+		protected IGraphDecomposer<TNode> GraphDecomposer = new DummyGraphDecomposer<TNode>();
 
 		/// <summary>
 		/// Decide whether shape or position should be perturbed and call corresponding methods.
@@ -45,6 +47,11 @@
 		{
 			// Check for intersections
 			throw new NotImplementedException();
+		}
+
+		protected override List<List<TNode>> GetChains(IGraph<TNode> graph)
+		{
+			return GraphDecomposer.GetChains(graph);
 		}
 
 		/// <summary>
