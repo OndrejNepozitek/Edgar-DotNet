@@ -83,12 +83,13 @@
 
 		protected bool Equals(GridPolygon other)
 		{
-			return Equals(points, other.points);
+			return points.SequenceEqual(other.points);
 		}
 
 		public override int GetHashCode()
 		{
-			return (points != null ? points.GetHashCode() : 0);
+			// TODO: really bad
+			return points.Sum(x => x.X + x.Y);
 		}
 
 		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)

@@ -5,6 +5,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Utils;
 
 	public class ConfigurationSpaces
 	{
@@ -24,7 +25,33 @@
 
 		public List<IntVector2> GetMaximumIntersection(List<Configuration> configurations, Configuration mainConfiguration)
 		{
-			throw new NotImplementedException();
+			var spaces = configugurationSpaces[mainConfiguration.Polygon];
+
+			for (var i = configurations.Count; i > 0; i--)
+			{
+				foreach (var indices in configurations.GetCombinations(i))
+				{
+					List<IntVector2> points = null;
+
+					foreach (var index in indices)
+					{
+						var newPoints = spaces[configurations[index].Polygon].Points.Select(x => x + configurations[index].Position);
+						points = points?.Intersect(newPoints).ToList() ?? newPoints.ToList();
+
+						if (points.Count == 0)
+						{
+							break;
+						}
+					}
+
+					if (points != null && points.Count != 0)
+					{
+						return points;
+					}
+				}
+			}
+
+			throw new InvalidOperationException("There should always be at least one point in the intersection");
 		}
 
 		public List<GridPolygon> GetPolygons()

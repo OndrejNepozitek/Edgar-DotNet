@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Graphs\GraphDecomposition\DummyGraphDecomposer.cs" />
+    <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonOverlap.cs" />
