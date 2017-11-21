@@ -21,6 +21,21 @@
 		[Test]
 		public void GetMaximumIntersection_ThreeSquares()
 		{
+			#region MyRegion
+
+			//	     |
+			//	     |
+			//	     ===
+			//	     = =
+			//	  XXX===XXX
+			//	  X X   X X
+			//	__XXX___XXX__
+			//	     |
+			//	     |
+			//	     |			
+
+			#endregion
+
 			var square = GridPolygonUtils.GetSquare(3);
 			var configurationSpaces = generator.Generate(new List<GridPolygon>() {square});
 
@@ -83,7 +98,22 @@
 		[Test]
 		public void GetMaximumIntersection_ThreeRectangle()
 		{
-			// One square is far from the others
+			#region Sketch
+
+			//	| XXX
+			//	| X X
+			//	| X X
+			//	| X X
+			//	| XXX
+			//	| =====
+			//	| =   =
+			//	| =   =
+			//	| =====
+			//	XXXX
+			//	XXXX________
+
+			#endregion
+
 			var r1 = GridPolygonUtils.GetRectangle(4, 2);
 			var r2 = GridPolygonUtils.GetRectangle(3, 5);
 			var r3 = GridPolygonUtils.GetRectangle(5, 4);
