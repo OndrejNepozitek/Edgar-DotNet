@@ -19,6 +19,11 @@
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
 		private const float sigma = 20f; // TODO: Change
 
+		public LayoutGenerator(ConfigurationSpaces configurationSpaces)
+		{
+			ConfigurationSpaces = configurationSpaces;
+		}
+
 		/// <summary>
 		/// Decide whether shape or position should be perturbed and call corresponding methods.
 		/// </summary>
@@ -31,19 +36,30 @@
 			var node = chain.GetRandom(Random);
 			var energy = GetEnergy(layout, node);
 			var newLayout = Random.NextDouble() <= ShapePerturbChance ? PerturbShape(layout, node) : PerturbPosition(layout, node);
-			energyDelta = GetEnergy(newLayout, node) - energy;
+			var newEnergy = GetEnergy(newLayout, node);
+			energyDelta = newEnergy - energy;
 
 			return newLayout;
 		}
 
 		protected override Layout<TNode> AddChainToLayout(Layout<TNode> layout, List<TNode> chain)
 		{
-			throw new NotImplementedException();
+			var newLayout = layout.Clone();
+
+			foreach (var node in chain)
+			{
+				AddNode(newLayout, node);
+			}
+
+			return newLayout;
 		}
 
 		protected override Layout<TNode> GetInitialLayout(List<TNode> chain)
 		{
-			throw new NotImplementedException();
+			var layout = new Layout<TNode>();
+			return layout;
+
+			return AddChainToLayout(layout, chain);
 		}
 
 		protected override bool IsLayoutValid(Layout<TNode> layout)
@@ -63,7 +79,13 @@
 					if (!layout.GetConfiguration(node1, out var c1) || !layout.GetConfiguration(node2, out var c2)) continue;
 
 					// TODO: slow, should be one function
-					if (PolygonOverlap.DoOverlap(c1.Polygon, c1.Position, c2.Polygon, c2.Position) || !PolygonOverlap.DoTouch(c1.Polygon, c1.Position, c2.Polygon, c2.Position))
+					if (PolygonOverlap.DoOverlap(c1.Polygon, c1.Position, c2.Polygon, c2.Position)/* || !PolygonOverlap.DoTouch(c1.Polygon, c1.Position, c2.Polygon, c2.Position)*/)
+					{
+						return false;
+					}
+
+					// TODO: slow
+					if (Graph.HasEdge(node1, node2) && !PolygonOverlap.DoTouch(c1.Polygon, c1.Position, c2.Polygon, c2.Position))
 					{
 						return false;
 					}
@@ -130,6 +152,49 @@
 			newLayout.SetConfiguration(node, newConfiguration);
 
 			return newLayout;
+		}
+
+		protected void AddNode(Layout<TNode> layout, TNode node)
+		{
+			var configurations = new List<Configuration>();
+
+			foreach (var node1 in Graph.Neighbours(node))
+			{
+				if (layout.GetConfiguration(node1, out var configuration))
+				{
+					configurations.Add(configuration);
+				}
+			}
+
+			if (configurations.Count == 0)
+			{
+				layout.SetConfiguration(node, new Configuration(ConfigurationSpaces.GetPolygons().GetRandom(Random), new IntVector2()));
+				return;
+			}
+
+			var bestEnergy = float.MaxValue;
+			GridPolygon bestShape = null;
+			var bestPosition = new IntVector2();
+		
+			foreach (var shape in ConfigurationSpaces.GetPolygons())
+			{
+				var intersection = ConfigurationSpaces.GetMaximumIntersection(configurations, new Configuration(shape, new IntVector2()));
+
+				foreach (var position in intersection)
+				{
+					var energy = GetEnergy(layout, node, new Configuration(shape, position));
+
+					if (energy < bestEnergy)
+					{
+						bestEnergy = energy;
+						bestShape = shape;
+						bestPosition = position;
+					}
+				}
+			}
+
+			var newConfiguration = new Configuration(bestShape, bestPosition);
+			layout.SetConfiguration(node, newConfiguration);
 		}
 
 		protected float GetEnergy(Layout<TNode> layout, TNode node)

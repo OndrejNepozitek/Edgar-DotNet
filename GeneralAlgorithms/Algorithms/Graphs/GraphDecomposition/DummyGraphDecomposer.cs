@@ -13,9 +13,9 @@ namespace GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition
 
 		static DummyGraphDecomposer()
 		{
-			var graph = new UndirectedDenseGraph<int>();
+			var graph = new UndirectedDenseGraph<int>(20);
 
-			for (var i = 1; i < 10; i++)
+			for (var i = 1; i <= 20; i++)
 			{
 				graph.AddVertex(i);
 			}
@@ -31,19 +31,19 @@ namespace GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition
 			graph.AddEdge(7, 8);
 			graph.AddEdge(8, 9);
 
-			DummyGraph = graph;
-		}
+			graph.AddEdge(8, 10);
+			graph.AddEdge(10, 11);
+			graph.AddEdge(11, 12);
+			graph.AddEdge(12, 9);
 
-		public List<List<int>> GetChains(IGraph<int> graph)
-		{
-			var c1 = new List<int>() { 1, 2, 4, 3};
-			var c2 = new List<int>() { 5, 9, 6, 8, 7};
-
-			return new List<List<int>>()
+			for (var i = 12; i < 20; i++)
 			{
-				c1,
-				c2,
-			};
+				graph.AddEdge(i, i+1);
+			}
+
+			graph.AddEdge(20, 12);
+
+			DummyGraph = graph;
 		}
 
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
@@ -52,11 +52,15 @@ namespace GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition
 			{
 				var c1 = new List<int>() { 1, 2, 4, 3 };
 				var c2 = new List<int>() { 5, 9, 6, 8, 7 };
+				var c3 = new List<int>() { 10, 11, 12 };
+				var c4 = new List<int>() { 13, 14, 15, 16, 17, 18, 19, 20 };
 
 				return (List<List<TNode>>)(object) new List<List<int>>()
 				{
 					c1,
 					c2,
+					c3,
+					c4,
 				};
 			}
 

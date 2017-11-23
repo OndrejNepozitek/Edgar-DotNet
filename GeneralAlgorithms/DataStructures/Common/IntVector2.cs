@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using Algorithms.Math;
 
-	public struct IntVector2
+	public struct IntVector2 : IComparable<IntVector2>
 	{
 		public readonly int X;
 
@@ -14,6 +14,11 @@
 		{
 			X = x;
 			Y = y;
+		}
+
+		public int CompareTo(IntVector2 other)
+		{
+			return this < other ? 1 : -1;
 		}
 
 		public override string ToString()

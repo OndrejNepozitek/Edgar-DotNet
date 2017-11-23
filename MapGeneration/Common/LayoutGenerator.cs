@@ -11,17 +11,19 @@
 	{
 		protected Random Random = new Random();
 		protected IGraph<TNode> Graph;
+		protected Action<TLayout> action;
 
-		public IList<TLayout> GetLayouts(IGraph<TNode> graph, int minimumLayouts = 10)
+		public IList<TLayout> GetLayouts(IGraph<TNode> graph, Action<TLayout> action, int minimumLayouts = 10)
 		{
 			Graph = graph;
+			this.action = action;
 
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<TLayout>();
 			var graphChains = GetChains(graph);
 			var initialLayout = GetInitialLayout(graphChains[0]);
 
-			stack.Push(new LayoutNode() { Layout = initialLayout, NumberOfChains = 1 });
+			stack.Push(new LayoutNode() { Layout = initialLayout, NumberOfChains = 0 });
 
 			while (stack.Count > 0)
 			{
@@ -51,11 +53,12 @@
 
 		private List<TLayout> GetExtendedLayouts(TLayout layout, List<TNode> chain, bool lastChain)
 		{
-			var t = 0d;
-			var ratio = 0d;
-			var cycles = 100;
-			var trialsPerCycle = 100;
-			var k = 1d;
+			// TODO: change this whole section
+			var t = 0.6f;
+			var ratio = 0.9f;
+			var cycles = 50;
+			var trialsPerCycle = 500;
+			var k = 2f;
 			var minimumDifference = 0f;
 				
 			var layouts = new List<TLayout>();
@@ -68,12 +71,18 @@
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta); // TODO: locally perturb the layout
 
 					// TODO: should probably check only the perturbed node - other nodes did not change
-					if (lastChain && IsLayoutValid(perturbedLayout))
+					if (IsLayoutValid(perturbedLayout))
 					{
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout) > minimumDifference))
 						{
 							layouts.Add(perturbedLayout);
+							action(perturbedLayout);
+
+							if (layouts.Count > 20)
+							{
+								return layouts;
+							}
 						}
 					}
 
