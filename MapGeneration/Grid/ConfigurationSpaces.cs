@@ -18,11 +18,6 @@
 			polygons = configugurationSpaces.Keys.ToList();
 		}
 
-		public List<IntVector2> GetIntersection(List<Configuration> configurations)
-		{
-			throw new NotImplementedException();
-		}
-
 		public List<IntVector2> GetMaximumIntersection(List<Configuration> configurations, Configuration mainConfiguration)
 		{
 			var spaces = configugurationSpaces[mainConfiguration.Polygon];

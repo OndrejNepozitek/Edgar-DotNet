@@ -10,9 +10,12 @@
 		where TLayout : ILayout<TPolygon>
 	{
 		protected Random Random = new Random();
+		protected IGraph<TNode> Graph;
 
 		public IList<TLayout> GetLayouts(IGraph<TNode> graph, int minimumLayouts = 10)
 		{
+			Graph = graph;
+
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<TLayout>();
 			var graphChains = GetChains(graph);
@@ -23,7 +26,7 @@
 			while (stack.Count > 0)
 			{
 				var layoutNode = stack.Pop();
-				var extendedLayouts = GetExtendedLayouts(layoutNode.Layout, graphChains[layoutNode.NumberOfChains]);
+				var extendedLayouts = GetExtendedLayouts(layoutNode.Layout, graphChains[layoutNode.NumberOfChains], layoutNode.NumberOfChains == graphChains.Count);
 
 				if (layoutNode.NumberOfChains + 1 == graphChains.Count)
 				{
@@ -46,7 +49,7 @@
 			return fullLayouts;
 		}
 
-		private List<TLayout> GetExtendedLayouts(TLayout layout, List<TNode> chain)
+		private List<TLayout> GetExtendedLayouts(TLayout layout, List<TNode> chain, bool lastChain)
 		{
 			var t = 0d;
 			var ratio = 0d;
@@ -62,10 +65,10 @@
 			{
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
-					var perturbedLayout = PerturbLayout(currentLayout, chain); // TODO: locally perturb the layout
+					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta); // TODO: locally perturb the layout
 
 					// TODO: should probably check only the perturbed node - other nodes did not change
-					if (IsLayoutValid(perturbedLayout))
+					if (lastChain && IsLayoutValid(perturbedLayout))
 					{
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout) > minimumDifference))
@@ -74,9 +77,9 @@
 						}
 					}
 
-					var energyOriginal = currentLayout.GetEnergy();
-					var energyPerturbed = perturbedLayout.GetEnergy();
-					var energyDelta =  energyPerturbed - energyOriginal;
+					//var energyOriginal = currentLayout.GetEnergy();
+					//var energyPerturbed = perturbedLayout.GetEnergy();
+					//var energyDelta =  energyPerturbed - energyOriginal;
 
 					if (energyDelta < 0)
 					{
@@ -98,7 +101,7 @@
 			throw new NotImplementedException();
 		}
 
-		protected abstract TLayout PerturbLayout(TLayout layout, List<TNode> chain);
+		protected abstract TLayout PerturbLayout(TLayout layout, List<TNode> chain, out float energyDelta);
 
 		protected abstract TLayout AddChainToLayout(TLayout layout, List<TNode> chain);
 

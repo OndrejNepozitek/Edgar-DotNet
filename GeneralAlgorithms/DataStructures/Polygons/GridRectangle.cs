@@ -7,6 +7,8 @@
 		public readonly IntVector2 A;
 		public readonly IntVector2 B;
 
+		public IntVector2 Center => new IntVector2((A.X + B.X) / 2, (A.Y + B.Y) / 2);
+
 		public GridRectangle(IntVector2 a, IntVector2 b)
 		{
 			if (a <= b)

@@ -2,9 +2,12 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using Common;
 	using DataStructures.Graphs;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
+	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Utils;
 
@@ -12,25 +15,25 @@
 	{
 		protected readonly float ShapePerturbChance = 0.2f;
 		protected ConfigurationSpaces ConfigurationSpaces;
-		protected IGraph<TNode> Graph;
 		protected IGraphDecomposer<TNode> GraphDecomposer = new DummyGraphDecomposer<TNode>();
+		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
+		private const float sigma = 20f; // TODO: Change
 
 		/// <summary>
 		/// Decide whether shape or position should be perturbed and call corresponding methods.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
+		/// <param name="energyDelta"></param>
 		/// <returns></returns>
-		protected override Layout<TNode> PerturbLayout(Layout<TNode> layout, List<TNode> chain)
+		protected override Layout<TNode> PerturbLayout(Layout<TNode> layout, List<TNode> chain, out float energyDelta)
 		{
 			var node = chain.GetRandom(Random);
+			var energy = GetEnergy(layout, node);
+			var newLayout = Random.NextDouble() <= ShapePerturbChance ? PerturbShape(layout, node) : PerturbPosition(layout, node);
+			energyDelta = GetEnergy(newLayout, node) - energy;
 
-			if (Random.NextDouble() <= ShapePerturbChance)
-			{
-				return PerturbShape(layout, node);
-			}
-
-			return PerturbPosition(layout, node);
+			return newLayout;
 		}
 
 		protected override Layout<TNode> AddChainToLayout(Layout<TNode> layout, List<TNode> chain)
@@ -45,8 +48,29 @@
 
 		protected override bool IsLayoutValid(Layout<TNode> layout)
 		{
-			// Check for intersections
-			throw new NotImplementedException();
+			// return layout.IsValid();
+
+			// TODO: this currently does not work as it does not check if all neighbouring vertices touch
+			// TODO: not all nodes should be checked - it should be enough to check just the perturbed node with respect to all other nodes
+			var nodes = Graph.Vertices.ToList();
+
+			foreach (var node1 in nodes)
+			{
+				foreach (var node2 in nodes)
+				{
+					if (node1.Equals(node2)) continue;
+
+					if (!layout.GetConfiguration(node1, out var c1) || !layout.GetConfiguration(node2, out var c2)) continue;
+
+					// TODO: slow, should be one function
+					if (PolygonOverlap.DoOverlap(c1.Polygon, c1.Position, c2.Polygon, c2.Position) || !PolygonOverlap.DoTouch(c1.Polygon, c1.Position, c2.Polygon, c2.Position))
+					{
+						return false;
+					}
+				}
+			}
+
+			return true;
 		}
 
 		protected override List<List<TNode>> GetChains(IGraph<TNode> graph)
@@ -106,6 +130,41 @@
 			newLayout.SetConfiguration(node, newConfiguration);
 
 			return newLayout;
+		}
+
+		protected float GetEnergy(Layout<TNode> layout, TNode node)
+		{
+			layout.GetConfiguration(node, out var configuration);
+			return GetEnergy(layout, node, configuration);
+		}
+
+		protected float GetEnergy(Layout<TNode> layout, TNode node, Configuration configuration)
+		{
+			var intersection = 0;
+			var distance = 0;
+
+			foreach (var n in Graph.Neighbours(node))
+			{
+				if (!layout.GetConfiguration(n, out var c))
+					continue;
+
+				var area = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, c.Polygon, c.Position);
+
+				if (area != 0)
+				{
+					intersection += area;
+				}
+				else
+				{
+					if (!PolygonOverlap.DoTouch(configuration.Polygon, configuration.Position, c.Polygon, c.Position))
+					{
+						distance += IntVector2.ManhattanDistance(configuration.Polygon.BoundingRectangle.Center + configuration.Position,
+							c.Polygon.BoundingRectangle.Center + c.Position);
+					}
+				}
+			}
+
+			return (float)(Math.Pow(Math.E, intersection / sigma) * Math.Pow(Math.E, distance / sigma) - 1);
 		}
 	}
 }

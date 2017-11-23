@@ -92,5 +92,43 @@
 				Assert.AreEqual(false, polygonOverlap.DoOverlap(r1, r2));
 			}
 		}
+
+		[Test]
+		public void OverlapArea_NonTouching_ReturnsZero()
+		{
+			var r1 = GridPolygonUtils.GetSquare(6);
+			var r2 = GridPolygonUtils.GetRectangle(2, 8);
+
+			Assert.AreEqual(0, polygonOverlap.OverlapArea(r1, new IntVector2(0,0), r2, new IntVector2(7, 2)));
+		}
+
+		[Test]
+		public void OverlapArea_TwoSquares()
+		{
+			var r1 = GridPolygonUtils.GetSquare(6);
+			var r2 = GridPolygonUtils.GetSquare(3);
+
+			Assert.AreEqual(6, polygonOverlap.OverlapArea(r1, new IntVector2(0, 0), r2, new IntVector2(2, -1)));
+		}
+
+		[Test]
+		public void OverlapArea_TwoRectangles()
+		{
+			var r1 = GridPolygonUtils.GetRectangle(4, 6);
+			var r2 = GridPolygonUtils.GetRectangle(5, 3);
+
+			Assert.AreEqual(9, polygonOverlap.OverlapArea(r1, new IntVector2(0, 0), r2, new IntVector2(1, 2)));
+		}
+
+		[Test]
+		public void DoTouch_TwoSquares()
+		{
+			var r1 = GridPolygonUtils.GetSquare(6);
+			var r2 = GridPolygonUtils.GetSquare(3);
+
+			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, 0)));
+			Assert.AreEqual(false, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -3)));
+			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -2)));
+		}
 	}
 }

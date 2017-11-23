@@ -36,12 +36,12 @@
 
 		public float GetDifference(ILayout<GridPolygon> other)
 		{
-			throw new NotImplementedException();
+			return float.MaxValue; // TODO: change
 		}
 
 		public bool GetConfiguration(TNode node, out Configuration configuration)
 		{
-			throw new NotImplementedException();
+			return nodes.TryGetValue(node, out configuration);
 		}
 
 		public void SetConfiguration(TNode node, Configuration configuration)
@@ -53,6 +53,11 @@
 		public List<Configuration> GetAllConfigurations()
 		{
 			return nodes.Values.ToList();
+		}
+
+		public bool IsValid()
+		{
+			return nodes.Sum(x => x.Value.WrongNeighbours) == 0;
 		}
 
 		public Layout<TNode> Clone()

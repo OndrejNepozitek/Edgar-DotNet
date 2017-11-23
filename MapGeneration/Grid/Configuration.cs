@@ -7,11 +7,13 @@
 	{
 		public readonly GridPolygon Polygon;
 		public readonly IntVector2 Position;
+		public readonly int WrongNeighbours;
 
-		public Configuration(GridPolygon polygon, IntVector2 position)
+		public Configuration(GridPolygon polygon, IntVector2 position, int wrongNeighbours = 0)
 		{
 			Polygon = polygon;
 			Position = position;
+			WrongNeighbours = wrongNeighbours;
 		}
 	}
 }
