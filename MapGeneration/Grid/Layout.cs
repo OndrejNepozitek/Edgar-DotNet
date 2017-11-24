@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using DataStructures.Graphs;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
@@ -36,7 +37,21 @@
 
 		public float GetDifference(ILayout<GridPolygon> other)
 		{
-			return float.MaxValue; // TODO: change
+			var otherLayout = other as Layout<TNode>;
+			if (otherLayout == null) throw new InvalidOperationException();
+			var diff = 0f;
+
+			foreach (var node in nodes.Keys)
+			{
+				if (GetConfiguration(node, out var c1) && otherLayout.GetConfiguration(node, out var c2))
+				{
+					diff += (float) Math.Pow(
+						IntVector2.ManhattanDistance(c1.Polygon.BoundingRectangle.Center + c1.Position,
+							c2.Polygon.BoundingRectangle.Center + c2.Position), 2);
+				}
+			}
+
+			return diff;
 		}
 
 		public bool GetConfiguration(TNode node, out Configuration configuration)

@@ -96,7 +96,7 @@
 			{
 				this.layout = layout;
 				canvas.Refresh();
-				Thread.Sleep(5);
+				Thread.Sleep(50);
 			}, 30);
 
 			foreach (var layout in layouts)

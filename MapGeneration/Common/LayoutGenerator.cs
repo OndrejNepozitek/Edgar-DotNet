@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics;
 	using DataStructures.Graphs;
 	using Interfaces;
 
@@ -12,11 +13,15 @@
 		protected Random Random = new Random();
 		protected IGraph<TNode> Graph;
 		protected Action<TLayout> action;
+		private int iterationsCount;
 
 		public IList<TLayout> GetLayouts(IGraph<TNode> graph, Action<TLayout> action, int minimumLayouts = 10)
 		{
 			Graph = graph;
 			this.action = action;
+			iterationsCount = 0;
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
 
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<TLayout>();
@@ -48,6 +53,13 @@
 				}
 			}
 
+			stopwatch.Stop();
+
+			Console.WriteLine($"{fullLayouts.Count} layouts generated");
+			Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
+			Console.WriteLine($"Total iterations: {iterationsCount}");
+			Console.WriteLine($"Iterations per second: {iterationsCount / (stopwatch.ElapsedMilliseconds / 1000)}");
+
 			return fullLayouts;
 		}
 
@@ -59,7 +71,7 @@
 			var cycles = 50;
 			var trialsPerCycle = 500;
 			var k = 2f;
-			var minimumDifference = 0f;
+			var minimumDifference = 50;
 				
 			var layouts = new List<TLayout>();
 			var currentLayout = AddChainToLayout(layout, chain);
@@ -68,6 +80,7 @@
 			{
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
+					iterationsCount++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta); // TODO: locally perturb the layout
 
 					// TODO: should probably check only the perturbed node - other nodes did not change
