@@ -14,6 +14,7 @@
 		protected IGraph<TNode> Graph;
 		protected Action<TLayout> action;
 		private int iterationsCount;
+		protected int minimumDifference = 200;
 
 		public IList<TLayout> GetLayouts(IGraph<TNode> graph, Action<TLayout> action, int minimumLayouts = 10)
 		{
@@ -37,7 +38,15 @@
 
 				if (layoutNode.NumberOfChains + 1 == graphChains.Count)
 				{
-					fullLayouts.AddRange(extendedLayouts);
+					foreach (var layout in extendedLayouts)
+					{
+						if (fullLayouts.TrueForAll(x =>
+							x.GetDifference(layout) > 3 * minimumDifference)
+						)
+						{
+							fullLayouts.Add(layout);
+						}
+					}
 				}
 				else
 				{
@@ -66,12 +75,11 @@
 		private List<TLayout> GetExtendedLayouts(TLayout layout, List<TNode> chain, bool lastChain)
 		{
 			// TODO: change this whole section
-			var t = 0.6f;
+			var t = 1f;
 			var ratio = 0.9f;
 			var cycles = 50;
 			var trialsPerCycle = 500;
 			var k = 2f;
-			var minimumDifference = 50;
 				
 			var layouts = new List<TLayout>();
 			var currentLayout = AddChainToLayout(layout, chain);
@@ -92,16 +100,12 @@
 							layouts.Add(perturbedLayout);
 							action(perturbedLayout);
 
-							if (layouts.Count > 20)
+							if (layouts.Count >= 15)
 							{
 								return layouts;
 							}
 						}
 					}
-
-					//var energyOriginal = currentLayout.GetEnergy();
-					//var energyPerturbed = perturbedLayout.GetEnergy();
-					//var energyDelta =  energyPerturbed - energyOriginal;
 
 					if (energyDelta < 0)
 					{

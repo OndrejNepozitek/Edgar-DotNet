@@ -88,6 +88,35 @@
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygonUtils.GetSquare(3),
+				GridPolygonUtils.GetRectangle(3, 5),
+				new GridPolygonBuilder()
+					.AddPoint(0, 0)
+					.AddPoint(0, 4)
+					.AddPoint(2, 4)
+					.AddPoint(2, 2)
+					.AddPoint(6, 2)
+					.AddPoint(6, 0)
+					.Build(),
+				new GridPolygonBuilder()
+					.AddPoint(0, 0)
+					.AddPoint(0, 4)
+					.AddPoint(2, 4)
+					.AddPoint(2, 2)
+					.AddPoint(4, 2)
+					.AddPoint(4, 0)
+					.Build(),
+				new GridPolygonBuilder()
+					.AddPoint(0, 0)
+					.AddPoint(0, 2)
+					.AddPoint(2, 2)
+					.AddPoint(2, 4)
+					.AddPoint(4, 4)
+					.AddPoint(4, 2)
+					.AddPoint(6, 2)
+					.AddPoint(6, 0)
+					.Build()
+
+				/*GridPolygonUtils.GetSquare(3),
 				//GridPolygonUtils.GetSquare(6),
 				GridPolygonUtils.GetRectangle(2, 4),
 				GridPolygonUtils.GetRectangle(3, 4),
@@ -98,25 +127,28 @@
 					.AddPoint(3, 3)
 					.AddPoint(6, 3)
 					.AddPoint(6, 0)
-					.Build(),
+					.Build(),*/
 			};
 
 			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
 
 			Task.Run(() =>
 			{
-				var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph, (layout) =>
+				for (int i = 0; i < 10; i++)
 				{
-					/*this.layout = layout;
-					canvas.Invoke((Action)(() => canvas.Refresh()));
-					Thread.Sleep(50);*/
-				}, 30);
+					var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2, (layout) =>
+					{
+						/*this.layout = layout;
+						canvas.Invoke((Action)(() => canvas.Refresh()));
+						Thread.Sleep(50);*/
+					}, 10);
 
-				foreach (var layout in layouts)
-				{
-					this.layout = layout;
-					canvas.Invoke((Action) (() => canvas.Refresh()));
-					Thread.Sleep(1000);
+					foreach (var layout in layouts)
+					{
+						this.layout = layout;
+						canvas.Invoke((Action)(() => canvas.Refresh()));
+						Thread.Sleep(1000);
+					}
 				}
 			});
 

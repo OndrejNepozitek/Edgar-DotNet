@@ -227,7 +227,7 @@
 					{
 						var x = s.From.Point.X;
 
-						if (x > v.Point.Y && x < closestDistance)
+						if (x > v.Point.X && x < closestDistance)
 						{
 							closestDistance = x;
 							closestSegment = s;
@@ -240,7 +240,7 @@
 					{
 						var x = s.From.Point.X;
 
-						if (x < v.Point.Y && x > closestDistance)
+						if (x < v.Point.X && x > closestDistance)
 						{
 							closestDistance = x;
 							closestSegment = s;

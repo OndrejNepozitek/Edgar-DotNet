@@ -150,6 +150,7 @@
 				{
 					foreach (var rotation in polygonUtils.GetAllRotations(polygon).Select(x => polygonUtils.NormalizePolygon(x)))
 					{
+						// TODO: do we want duplicates?
 						if (!newPolygons.Contains(rotation))
 						{
 							newPolygons.Add(rotation);

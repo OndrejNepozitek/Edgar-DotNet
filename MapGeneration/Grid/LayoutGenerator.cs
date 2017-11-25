@@ -13,11 +13,11 @@
 
 	public class LayoutGenerator<TNode> : LayoutGenerator<Layout<TNode>, GridPolygon, TNode> where TNode : IComparable<TNode>
 	{
-		protected readonly float ShapePerturbChance = 0.2f;
+		protected readonly float ShapePerturbChance = 0.4f;
 		protected ConfigurationSpaces ConfigurationSpaces;
 		protected IGraphDecomposer<TNode> GraphDecomposer = new DummyGraphDecomposer<TNode>();
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
-		private const float sigma = 20f; // TODO: Change
+		private const float sigma = 300f; // TODO: Change
 
 		public LayoutGenerator(ConfigurationSpaces configurationSpaces)
 		{
