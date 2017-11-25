@@ -18,7 +18,12 @@
 
 		public int CompareTo(IntVector2 other)
 		{
-			return this < other ? 1 : -1;
+			if (other == this)
+			{
+				return 0;
+			}
+
+			return this < other ? -1 : 1;
 		}
 
 		public override string ToString()

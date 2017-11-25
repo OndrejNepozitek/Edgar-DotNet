@@ -60,7 +60,7 @@ namespace GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition
 					c1,
 					c2,
 					c3,
-					c4,
+					// c4,
 				};
 			}
 

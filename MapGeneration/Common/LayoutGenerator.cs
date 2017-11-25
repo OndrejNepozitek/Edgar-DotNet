@@ -10,7 +10,7 @@
 		where TNode : IComparable<TNode>
 		where TLayout : ILayout<TPolygon>
 	{
-		protected Random Random = new Random();
+		protected Random Random = new Random(0);
 		protected IGraph<TNode> Graph;
 		protected Action<TLayout> action;
 		private int iterationsCount;

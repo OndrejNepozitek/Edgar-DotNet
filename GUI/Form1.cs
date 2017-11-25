@@ -1,9 +1,11 @@
 ﻿namespace GUI
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Drawing;
 	using System.Drawing.Drawing2D;
 	using System.Threading;
+	using System.Threading.Tasks;
 	using System.Windows.Forms;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -88,23 +90,37 @@
 				GridPolygonUtils.GetSquare(3),
 				//GridPolygonUtils.GetSquare(6),
 				GridPolygonUtils.GetRectangle(2, 4),
-				//GridPolygonUtils.GetRectangle(3, 5),
+				GridPolygonUtils.GetRectangle(3, 4),
+				new GridPolygonBuilder()
+					.AddPoint(0, 0)
+					.AddPoint(0, 6)
+					.AddPoint(3, 6)
+					.AddPoint(3, 3)
+					.AddPoint(6, 3)
+					.AddPoint(6, 0)
+					.Build(),
 			};
 
 			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
-			var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph, (layout) =>
-			{
-				this.layout = layout;
-				canvas.Refresh();
-				Thread.Sleep(50);
-			}, 30);
 
-			foreach (var layout in layouts)
+			Task.Run(() =>
 			{
-				this.layout = layout;
-				canvas.Refresh();
-				Thread.Sleep(250);
-			}
+				var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph, (layout) =>
+				{
+					/*this.layout = layout;
+					canvas.Invoke((Action)(() => canvas.Refresh()));
+					Thread.Sleep(50);*/
+				}, 30);
+
+				foreach (var layout in layouts)
+				{
+					this.layout = layout;
+					canvas.Invoke((Action) (() => canvas.Refresh()));
+					Thread.Sleep(1000);
+				}
+			});
+
+
 		}
 	}
 }

@@ -5,13 +5,13 @@
 
 	public static class ListExtensions
 	{
-		public static TElement GetRandom<TElement>(this List<TElement> list, Random random)
+		public static TElement GetRandom<TElement>(this IList<TElement> list, Random random)
 		{
 			return list[random.Next(list.Count)];
 		}
 
 		// TODO: Beware that the same instance of an array is always returned
-		public static IEnumerable<int[]> GetCombinations<TElement>(this List<TElement> elements, int size)
+		public static IEnumerable<int[]> GetCombinations<TElement>(this ICollection<TElement> elements, int size)
 		{
 			// https://stackoverflow.com/questions/29910312/algorithm-to-get-all-the-combinations-of-size-n-from-an-array-java
 			var indices = new int[size];

@@ -4,8 +4,6 @@
 
 	public interface IPolygon<TPoint>
 	{
-		void AddPoint(TPoint point);
-
 		ReadOnlyCollection<TPoint> GetPoints();
 	}
 }

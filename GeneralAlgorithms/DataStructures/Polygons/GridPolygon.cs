@@ -9,35 +9,44 @@
 	{
 		protected readonly List<IntVector2> points;
 
+		private readonly int hash;
+
 		// TODO: maybe should be struct rather than a class
-		private GridRectangle boundingRectangle;
+		public GridRectangle BoundingRectangle { get; }
 
-		public GridRectangle BoundingRectangle
-		{
-			get
-			{
-				if (boundingRectangle.B != new IntVector2(0, 0))
-					return boundingRectangle;
-
-				var smallestX = points.Min(x => x.X);
-				var biggestX = points.Max(x => x.X);
-				var smallestY = points.Min(x => x.Y);
-				var biggestY = points.Max(x => x.Y);
-
-				boundingRectangle = new GridRectangle(new IntVector2(smallestX, smallestY), new IntVector2(biggestX, biggestY));
-
-				return boundingRectangle;
-			}
-		}
-
+		/* TODO: should be immutable because of the hash and the boundingRectangle
 		public GridPolygon()
 		{
 			points = new List<IntVector2>();
-		}
+			hash = ComputeHash();
+			BoundingRectangle = GetBoundingRectabgle();
+		}*/
 
 		public GridPolygon(IEnumerable<IntVector2> points)
 		{
 			this.points = new List<IntVector2>(points);
+			hash = ComputeHash();
+			BoundingRectangle = GetBoundingRectabgle();
+		}
+
+		private GridRectangle GetBoundingRectabgle()
+		{
+			var smallestX = points.Min(x => x.X);
+			var biggestX = points.Max(x => x.X);
+			var smallestY = points.Min(x => x.Y);
+			var biggestY = points.Max(x => x.Y);
+
+			return new GridRectangle(new IntVector2(smallestX, smallestY), new IntVector2(biggestX, biggestY));
+		}
+
+		private int ComputeHash()
+		{
+			unchecked
+			{
+				var hash = 17;
+				points.ForEach(x => hash = hash * 23 + x.X + x.Y);
+				return hash;
+			}
 		}
 
 		public void AddPoint(IntVector2 point)
@@ -50,10 +59,11 @@
 			points.Add(point);
 		}
 
+		/* TODO: rectangle should be immutable
 		public void AddPoint(int x, int y)
 		{
 			AddPoint(new IntVector2(x, y));
-		}
+		}*/
 
 		public ReadOnlyCollection<IntVector2> GetPoints()
 		{
@@ -88,8 +98,7 @@
 
 		public override int GetHashCode()
 		{
-			// TODO: really bad
-			return points.Sum(x => x.X + x.Y);
+			return hash;
 		}
 
 		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)

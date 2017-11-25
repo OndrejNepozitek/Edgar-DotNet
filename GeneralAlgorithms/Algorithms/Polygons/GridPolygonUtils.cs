@@ -102,14 +102,13 @@
 
 		public static GridPolygon GetRectangle(int a, int b)
 		{
-			var polygon = new GridPolygon();
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, b)
+				.AddPoint(a, b)
+				.AddPoint(a, 0);
 
-			polygon.AddPoint(0, 0);
-			polygon.AddPoint(0, b);
-			polygon.AddPoint(a, b);
-			polygon.AddPoint(a, 0);
-
-			return polygon;
+			return polygon.Build();
 		}
 
 		public List<GridRectangle> DecomposeIntoRectangles(GridPolygon polygon)
