@@ -140,6 +140,16 @@
 			return new IntVector2(x, y);
 		}
 
+		public int DotProduct(IntVector2 other)
+		{
+			return X * other.X + Y * other.Y;
+		}
+
+		public IntVector2 ElemWiseProduct(IntVector2 other)
+		{
+			return new IntVector2(X * other.X, Y * other.Y);
+		}
+
 		#region Operators
 
 		public static IntVector2 operator +(IntVector2 a, IntVector2 b)
@@ -155,11 +165,6 @@
 		public static IntVector2 operator *(int a, IntVector2 b)
 		{
 			return new IntVector2(a * b.X, a * b.Y);
-		}
-
-		public static int operator *(IntVector2 a, IntVector2 b)
-		{
-			return a.X * b.X + a.Y * b.Y;
 		}
 
 		public static bool operator ==(IntVector2 a, IntVector2 b)

@@ -91,11 +91,6 @@
 			return obj is GridPolygon other && points.SequenceEqual(other.GetPoints());
 		}
 
-		protected bool Equals(GridPolygon other)
-		{
-			return points.SequenceEqual(other.points);
-		}
-
 		public override int GetHashCode()
 		{
 			return hash;
@@ -104,6 +99,11 @@
 		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)
 		{
 			return new GridPolygon(polygon.points.Select(x => x + position));
+		}
+
+		public GridPolygon Scale(IntVector2 factor)
+		{
+			return new GridPolygon(points.Select(x => x.ElemWiseProduct(factor)));
 		}
 	}
 }
