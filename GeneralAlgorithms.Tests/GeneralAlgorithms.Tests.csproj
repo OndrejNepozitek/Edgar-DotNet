@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Polygons\GridPolygonOverlapTests.cs" />
+    <Compile Include="Algorithms\Polygons\GridPolygonPartitioningTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtilsTests.cs" />
     <Compile Include="DataStructures\Common\IntLineTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

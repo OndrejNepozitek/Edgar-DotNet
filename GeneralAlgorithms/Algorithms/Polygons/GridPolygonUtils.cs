@@ -8,7 +8,7 @@
 
 	public class GridPolygonUtils : IPolygonUtils<GridPolygon>
 	{
-		private readonly int[] possibleRotations = {0, 90, 180, 270};
+		public static readonly int[] PossibleRotations = {0, 90, 180, 270};
 
 		public bool CheckIntegrity(GridPolygon polygon)
 		{
@@ -92,7 +92,7 @@
 
 		public IEnumerable<GridPolygon> GetAllRotations(GridPolygon polygon)
 		{
-			return possibleRotations.Select(degrees => Rotate(polygon, degrees));
+			return PossibleRotations.Select(degrees => Rotate(polygon, degrees));
 		}
 
 		public static GridPolygon GetSquare(int a)
