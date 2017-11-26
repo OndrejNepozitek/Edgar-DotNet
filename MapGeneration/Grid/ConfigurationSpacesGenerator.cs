@@ -38,7 +38,7 @@
 			return new ConfigurationSpaces(configurationSpaces);
 		}
 
-		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter)
+		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter, int minimumCommonLength = 1)
 		{
 			var points = new List<IntVector2>();
 
@@ -69,8 +69,10 @@
 						foreach (var cline in correspondingLines)
 						{
 							var y = cline.From.Y - line.From.Y;
-							var from = new IntVector2(cline.From.X - line.To.X - (line.Length - 1), y);
-							var to = new IntVector2(cline.To.X - line.From.X + (line.Length - 1), y);
+							var from = new IntVector2(cline.From.X - line.To.X - (line.Length - minimumCommonLength), y);
+							var to = new IntVector2(cline.To.X - line.From.X + (line.Length - minimumCommonLength), y);
+
+							if (from.X > to.X) continue;
 
 							var resultLine = new IntLine(from, to);
 							points.AddRange(resultLine.GetPoints());
@@ -86,8 +88,10 @@
 						foreach (var cline in correspondingLines)
 						{
 							var y = cline.From.Y - line.From.Y;
-							var from = new IntVector2(cline.From.X - line.To.X + (line.Length - 1), y);
-							var to = new IntVector2(cline.To.X - line.From.X - (line.Length - 1), y);
+							var from = new IntVector2(cline.From.X - line.To.X + (line.Length - minimumCommonLength), y);
+							var to = new IntVector2(cline.To.X - line.From.X - (line.Length - minimumCommonLength), y);
+
+							if (from.X < to.X) continue;
 
 							var resultLine = new IntLine(from, to);
 							points.AddRange(resultLine.GetPoints());
@@ -103,8 +107,10 @@
 						foreach (var cline in correspondingLines)
 						{
 							var x = cline.From.X - line.From.X;
-							var from = new IntVector2(x, cline.From.Y - line.To.Y + (line.Length - 1));
-							var to = new IntVector2(x, cline.To.Y - line.From.Y - (line.Length - 1));
+							var from = new IntVector2(x, cline.From.Y - line.To.Y + (line.Length - minimumCommonLength));
+							var to = new IntVector2(x, cline.To.Y - line.From.Y - (line.Length - minimumCommonLength));
+
+							if (from.Y < to.Y) continue;
 
 							var resultLine = new IntLine(from, to);
 							points.AddRange(resultLine.GetPoints());
@@ -120,8 +126,10 @@
 						foreach (var cline in correspondingLines)
 						{
 							var x = cline.From.X - line.From.X;
-							var from = new IntVector2(x, cline.From.Y - line.To.Y - (line.Length - 1));
-							var to = new IntVector2(x, cline.To.Y - line.From.Y + (line.Length - 1));
+							var from = new IntVector2(x, cline.From.Y - line.To.Y - (line.Length - minimumCommonLength));
+							var to = new IntVector2(x, cline.To.Y - line.From.Y + (line.Length - minimumCommonLength));
+
+							if (from.Y > to.Y) continue;
 
 							var resultLine = new IntLine(from, to);
 							points.AddRange(resultLine.GetPoints());
@@ -148,7 +156,7 @@
 			{
 				if (rotate)
 				{
-					foreach (var rotation in polygonUtils.GetAllRotations(polygon).Select(x => polygonUtils.NormalizePolygon(x)))
+					foreach (var rotation in polygon.GetAllRotations().Select(x => polygonUtils.NormalizePolygon(x)))
 					{
 						// TODO: do we want duplicates?
 						if (!newPolygons.Contains(rotation))
