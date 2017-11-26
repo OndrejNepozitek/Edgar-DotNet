@@ -36,7 +36,7 @@
 
 			#endregion
 
-			var square = GridPolygonUtils.GetSquare(3);
+			var square = GridPolygon.GetSquare(3);
 			var configurationSpaces = generator.Generate(new List<GridPolygon>() {square});
 
 			Assert.AreEqual(1, configurationSpaces.GetPolygons().Count);
@@ -67,7 +67,7 @@
 		public void GetMaximumIntersection_FourSquares()
 		{
 			// One square is far from the others
-			var square = GridPolygonUtils.GetSquare(3);
+			var square = GridPolygon.GetSquare(3);
 			var configurationSpaces = generator.Generate(new List<GridPolygon>() { square });
 
 			Assert.AreEqual(1, configurationSpaces.GetPolygons().Count);
@@ -114,9 +114,9 @@
 
 			#endregion
 
-			var r1 = GridPolygonUtils.GetRectangle(4, 2);
-			var r2 = GridPolygonUtils.GetRectangle(3, 5);
-			var r3 = GridPolygonUtils.GetRectangle(5, 4);
+			var r1 = GridPolygon.GetRectangle(4, 2);
+			var r2 = GridPolygon.GetRectangle(3, 5);
+			var r3 = GridPolygon.GetRectangle(5, 4);
 
 			var configurationSpaces = generator.Generate(new List<GridPolygon>() { r1, r2, r3 });
 

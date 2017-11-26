@@ -4,6 +4,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Grid;
 	using NUnit.Framework;
 
@@ -21,8 +22,8 @@
 		[Test]
 		public void GetConfigurationSpace_Squares()
 		{
-			var p1 = GridPolygonUtils.GetSquare(3);
-			var p2 = GridPolygonUtils.GetSquare(5);
+			var p1 = GridPolygon.GetSquare(3);
+			var p2 = GridPolygon.GetSquare(5);
 
 			var configurationSpace = generator.GetConfigurationSpace(p1, p2);
 			var expectedPoints = new List<IntVector2>();

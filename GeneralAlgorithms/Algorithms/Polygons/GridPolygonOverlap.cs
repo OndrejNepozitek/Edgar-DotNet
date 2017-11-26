@@ -8,9 +8,7 @@
 
 	public class GridPolygonOverlap
 	{
-		private readonly GridPolygonUtils polygonUtils = new GridPolygonUtils();
 		private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();
-
 		private readonly Dictionary<GridPolygon, List<GridRectangle>> partitions = new Dictionary<GridPolygon, List<GridRectangle>>();
 
 		// TODO: must be normalized?

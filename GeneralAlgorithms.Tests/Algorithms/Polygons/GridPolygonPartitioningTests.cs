@@ -74,7 +74,7 @@
 			Assert.AreEqual(expected[0].Count, partitions.Count);
 			Assert.AreEqual(true, matched);
 
-			foreach (var p in utils.GetAllRotations(polygon).Select(x => utils.NormalizePolygon(x)))
+			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
 			{
 				var rotated = partitioner.GetRectangles(p);
 				Assert.AreEqual(expected[0].Count, rotated.Count);
@@ -126,7 +126,7 @@
 			Assert.AreEqual(expected[0].Count, partitions.Count);
 			Assert.AreEqual(true, matched);
 
-			foreach (var p in utils.GetAllRotations(polygon).Select(x => utils.NormalizePolygon(x)))
+			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
 			{
 				var rotated = partitioner.GetRectangles(p);
 				Assert.AreEqual(expected[0].Count, rotated.Count);

@@ -14,8 +14,8 @@
 			var configuartionSpacesGenerator = new ConfigurationSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
-				GridPolygonUtils.GetSquare(3),
-				GridPolygonUtils.GetRectangle(3, 5),
+				GridPolygon.GetSquare(3),
+				GridPolygon.GetRectangle(3, 5),
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 4)

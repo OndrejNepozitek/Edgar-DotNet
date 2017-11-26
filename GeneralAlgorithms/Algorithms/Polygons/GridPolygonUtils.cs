@@ -8,8 +8,6 @@
 
 	public class GridPolygonUtils : IPolygonUtils<GridPolygon>
 	{
-		public static readonly int[] PossibleRotations = {0, 90, 180, 270};
-
 		public bool CheckIntegrity(GridPolygon polygon)
 		{
 			var points = polygon.GetPoints();
@@ -77,38 +75,6 @@
 			var movedPoints = orderedPoints.Select(x => x + moveVector);
 
 			return new GridPolygon(movedPoints);
-		}
-
-		public GridPolygon Rotate(GridPolygon polygon, int degrees)
-		{
-			if (degrees % 90 != 0)
-			{
-				throw new InvalidOperationException("Degrees must be divisible by 90");
-			}
-
-			var rotatedPoints = polygon.GetPoints().Select(x => x.RotateAroundCenter(degrees));
-			return new GridPolygon(rotatedPoints);
-		}
-
-		public IEnumerable<GridPolygon> GetAllRotations(GridPolygon polygon)
-		{
-			return PossibleRotations.Select(degrees => Rotate(polygon, degrees));
-		}
-
-		public static GridPolygon GetSquare(int a)
-		{
-			return GetRectangle(a, a);
-		}
-
-		public static GridPolygon GetRectangle(int a, int b)
-		{
-			var polygon = new GridPolygonBuilder()
-				.AddPoint(0, 0)
-				.AddPoint(0, b)
-				.AddPoint(a, b)
-				.AddPoint(a, 0);
-
-			return polygon.Build();
 		}
 
 		public List<GridRectangle> DecomposeIntoRectangles(GridPolygon polygon)

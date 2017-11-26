@@ -22,8 +22,8 @@
 		[Test]
 		public void CheckIntegrity_ValidPolygons_ReturnsTrue()
 		{
-			var square = GridPolygonUtils.GetSquare(3);
-			var rectangle = GridPolygonUtils.GetRectangle(2, 4);
+			var square = GridPolygon.GetSquare(3);
+			var rectangle = GridPolygon.GetRectangle(2, 4);
 
 			var lPolygon = new GridPolygonBuilder()
 				.AddPoint(0, 0)
@@ -135,38 +135,6 @@
 		}
 
 		[Test]
-		public void Rotate_Square_ReturnsRotated()
-		{
-			var square = GridPolygonUtils.GetSquare(4);
-			var rotatedSquare = utils.Rotate(square, 180);
-			var expectedPoints = new List<IntVector2>()
-			{
-				new IntVector2(0, 0),
-				new IntVector2(0, -4),
-				new IntVector2(-4, -4),
-				new IntVector2(-4, 0),
-			};
-
-			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedSquare.GetPoints()));
-		}
-
-		[Test]
-		public void Rotate_Rectangle_ReturnsRotated()
-		{
-			var polygon = GridPolygonUtils.GetRectangle(2, 5);
-			var rotatedPolygon = utils.Rotate(polygon, -270);
-			var expectedPoints = new List<IntVector2>()
-			{
-				new IntVector2(0, 0),
-				new IntVector2(-5, 0),
-				new IntVector2(-5, 2),
-				new IntVector2(0, 2),
-			};
-
-			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedPolygon.GetPoints()));
-		}
-
-		[Test]
 		public void DecomposeIntoRectangle_InvalidPolygon_Throws()
 		{
 			var polygon = new GridPolygonBuilder()
@@ -181,7 +149,7 @@
 		[Test]
 		public void DecomposeIntoRectangle_Rectangle_ReturnsDecomposition()
 		{
-			var polygon = GridPolygonUtils.GetRectangle(2, 4);
+			var polygon = GridPolygon.GetRectangle(2, 4);
 
 			var rectangles = utils.DecomposeIntoRectangles(polygon);
 

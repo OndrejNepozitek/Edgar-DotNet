@@ -3,12 +3,9 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Security.Cryptography.X509Certificates;
 	using Advanced.Algorithms.DataStructures.Graph.AdjacencyList;
-	using Advanced.Algorithms.GraphAlgorithms.Matching;
 	using DataStructures.Common;
 	using DataStructures.Polygons;
-	using Graphs;
 	using RangeTree;
 
 	public class GridPolygonPartitioning
@@ -17,14 +14,14 @@
 
 		public List<GridRectangle> GetRectangles(GridPolygon polygon)
 		{
-			var normalized = utils.NormalizePolygon(polygon);
+			IList<IntVector2> points = polygon.GetPoints();
 
-			if (!normalized.Equals(polygon))
+			if (!polygon.IsClockwiseOriented())
 			{
-				throw new InvalidOperationException("Polygon must be normalized");
+				points = points.Reverse().ToList();
+				throw new InvalidOperationException(); // TODO: should be tested
 			}
 
-			var points = normalized.GetPoints();
 			var vertices = new List<Vertex>();
 
 			var prev = points[points.Count - 3];
@@ -43,7 +40,7 @@
 				{
 					if (curr.X == next.X)
 					{
-						throw new InvalidOperationException("Should not happen as polygons must be normalized");
+						throw new InvalidOperationException("Should not happen as polygons must be valid");
 					}
 
 					var dir0 = prev.Y < curr.Y;

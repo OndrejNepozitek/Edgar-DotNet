@@ -1,12 +1,16 @@
 ﻿namespace GeneralAlgorithms.DataStructures.Polygons
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
 	using System.Linq;
+	using Algorithms.Polygons;
 	using Common;
 
 	public class GridPolygon : IPolygon<IntVector2>
 	{
+		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
+
 		protected readonly List<IntVector2> points;
 
 		private readonly int hash;
@@ -49,7 +53,7 @@
 			}
 		}
 
-		public void AddPoint(IntVector2 point)
+		/*public void AddPoint(IntVector2 point)
 		{
 			if (points.Count != 0)
 			{
@@ -57,7 +61,7 @@
 			}
 
 			points.Add(point);
-		}
+		}*/
 
 		/* TODO: rectangle should be immutable
 		public void AddPoint(int x, int y)
@@ -86,6 +90,20 @@
 			return lines;
 		}
 
+		public bool IsClockwiseOriented()
+		{
+			var previous = points[points.Count - 1];
+			var sum = 0;
+
+			foreach (var point in points)
+			{
+				sum += (point.X - previous.X) * (point.Y + previous.Y);
+				previous = point;
+			}
+
+			return sum > 0;
+		}
+
 		public override bool Equals(object obj)
 		{
 			return obj is GridPolygon other && points.SequenceEqual(other.GetPoints());
@@ -104,6 +122,38 @@
 		public GridPolygon Scale(IntVector2 factor)
 		{
 			return new GridPolygon(points.Select(x => x.ElemWiseProduct(factor)));
+		}
+
+		public GridPolygon Rotate(int degrees)
+		{
+			if (degrees % 90 != 0)
+			{
+				throw new InvalidOperationException("Degrees must be divisible by 90");
+			}
+
+			var rotatedPoints = GetPoints().Select(x => x.RotateAroundCenter(degrees));
+			return new GridPolygon(rotatedPoints);
+		}
+
+		public IEnumerable<GridPolygon> GetAllRotations()
+		{
+			return PossibleRotations.Select(Rotate);
+		}
+
+		public static GridPolygon GetSquare(int a)
+		{
+			return GetRectangle(a, a);
+		}
+
+		public static GridPolygon GetRectangle(int a, int b)
+		{
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, b)
+				.AddPoint(a, b)
+				.AddPoint(a, 0);
+
+			return polygon.Build();
 		}
 	}
 }

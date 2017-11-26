@@ -33,9 +33,9 @@
 				return;
 			}
 
-			var p1 = GridPolygonUtils.GetSquare(3);
-			var p2 = GridPolygonUtils.GetSquare(5);
-			var p3 = GridPolygonUtils.GetRectangle(5, 2);
+			var p1 = GridPolygon.GetSquare(3);
+			var p2 = GridPolygon.GetSquare(5);
+			var p3 = GridPolygon.GetRectangle(5, 2);
 
 			/*var layout = new Layout<int>();
 			layout.SetConfiguration(1, new Configuration(p1, new IntVector2(1, 1)));
@@ -88,8 +88,8 @@
 			var configuartionSpacesGenerator = new ConfigurationSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
-				GridPolygonUtils.GetSquare(3),
-				GridPolygonUtils.GetRectangle(3, 5),
+				GridPolygon.GetSquare(3),
+				GridPolygon.GetRectangle(3, 5),
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 4)
@@ -131,7 +131,7 @@
 					.Build(),*/
 			};
 
-			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
+			polygons = polygons.Select(x => x.Scale(new IntVector2(2, 2))).ToList();
 
 			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
 
