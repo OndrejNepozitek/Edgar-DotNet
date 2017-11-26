@@ -131,6 +131,8 @@
 					.Build(),*/
 			};
 
+			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
+
 			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
 
 			Task.Run(() =>
