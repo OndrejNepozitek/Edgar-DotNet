@@ -40,7 +40,7 @@
 				{
 					if (curr.X == next.X)
 					{
-						throw new InvalidOperationException("Should not happen as polygons must be valid");
+						throw new InvalidOperationException("Should not happen as polygons must be normalized");
 					}
 
 					var dir0 = prev.Y < curr.Y;

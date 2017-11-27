@@ -179,6 +179,26 @@
 			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -2)));
 		}
 
+		[Test]
+		public void DoTouch_TwoPolygons()
+		{
+			var p1 = GetLShape();
+			var p2 = GridPolygon.GetSquare(3);
+
+			foreach (var degrees in GridPolygon.PossibleRotations)
+			{
+				var pr1 = p1.Rotate(degrees);
+				var pr2 = p2.Rotate(degrees);
+
+				var pos1 = new IntVector2(0, 0).RotateAroundCenter(degrees);
+				var pos2 = new IntVector2(4, 3).RotateAroundCenter(degrees);
+
+				Assert.AreEqual(true, polygonOverlap.DoTouch(pr1, pos1, pr2, pos2));
+				Assert.AreEqual(true, polygonOverlap.DoTouch(pr1, pos1, pr2, pos2, 2));
+				Assert.AreEqual(false, polygonOverlap.DoTouch(pr1, pos1, pr2, pos2, 3));
+			}
+		}
+
 		private static GridPolygon GetPlusShape()
 		{
 			return new GridPolygonBuilder()
