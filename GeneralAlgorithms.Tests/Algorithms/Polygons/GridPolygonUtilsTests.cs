@@ -1,6 +1,5 @@
 ﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -132,29 +131,6 @@
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
-		}
-
-		[Test]
-		public void DecomposeIntoRectangle_InvalidPolygon_Throws()
-		{
-			var polygon = new GridPolygonBuilder()
-				.AddPoint(3, 0)
-				.AddPoint(-2, 0)
-				.AddPoint(-2, -2)
-				.Build();
-
-			Assert.Throws<InvalidOperationException>(() => utils.DecomposeIntoRectangles(polygon));
-		}
-
-		[Test]
-		public void DecomposeIntoRectangle_Rectangle_ReturnsDecomposition()
-		{
-			var polygon = GridPolygon.GetRectangle(2, 4);
-
-			var rectangles = utils.DecomposeIntoRectangles(polygon);
-
-			Assert.AreEqual(1, rectangles.Count);
-			Assert.AreEqual(new GridRectangle(new IntVector2(0,0), new IntVector2(2, 4)), rectangles[0]);
 		}
 
 		[Test]

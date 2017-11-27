@@ -1,6 +1,5 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Polygons
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using DataStructures.Common;
@@ -75,64 +74,6 @@
 			var movedPoints = orderedPoints.Select(x => x + moveVector);
 
 			return new GridPolygon(movedPoints);
-		}
-
-		public List<GridRectangle> DecomposeIntoRectangles(GridPolygon polygon)
-		{
-			var points = polygon.GetPoints();
-
-			if (!CheckIntegrity(polygon))
-			{
-				throw new InvalidOperationException("Polygon is not valid");
-			}
-
-			if (points.Count == 4)
-			{
-				return new List<GridRectangle>() { new GridRectangle(points[0], points[2])};
-			}
-
-			// TODO: only rectangles are currently supported
-			throw new NotImplementedException();
-
-			var rectangles = new List<GridRectangle>();
-
-			var x1 = points[0];
-			var x2 = points[points.Count - 2];
-			var x3 = points[points.Count - 3];
-
-			foreach (var point in points)
-			{
-				x3 = x2;
-				x2 = x1;
-				x1 = point;
-
-				if (IsInside(x3, x2, x1))
-				{
-					rectangles.Add(new GridRectangle(x1, x3));
-				}
-			}
-
-			return rectangles;
-
-			// TODO: is it ugly?
-			bool IsInside(IntVector2 p1, IntVector2 p2, IntVector2 p3)
-			{
-				if (p1.X > p2.X) // Left
-				{
-					return p3.Y > p2.Y;
-				}
-				if (p1.X < p2.X) // Right
-				{
-					return p3.Y < p2.Y;
-				}
-				if (p1.Y > p2.Y) // Down
-				{
-					return p3.X < p2.X;
-				}
-
-				// Top
-				return p3.X > p2.X;
-			}
 		}
 	}
 }
