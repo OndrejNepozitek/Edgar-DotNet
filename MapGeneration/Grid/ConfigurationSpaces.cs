@@ -5,12 +5,14 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces;
 	using Utils;
 
-	public class ConfigurationSpaces
+	public class ConfigurationSpaces : IConfigurationSpaces<GridPolygon, Configuration, IntVector2>
 	{
 		private readonly List<GridPolygon> polygons;
 		private readonly Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces;
+		private Random random = new Random();
 
 		public ConfigurationSpaces(Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces)
 		{
@@ -23,6 +25,13 @@
 			}
 		}
 
+		public IntVector2 GetRandomIntersection(List<Configuration> configurations, Configuration mainConfiguration)
+		{
+			var maximumIntersection = GetMaximumIntersection(configurations, mainConfiguration);
+
+			return maximumIntersection.GetRandom(random);
+		}
+
 		public List<IntVector2> GetMaximumIntersection(List<Configuration> configurations, Configuration mainConfiguration)
 		{
 			var spaces = configugurationSpaces[mainConfiguration.Polygon];
@@ -32,12 +41,11 @@
 				foreach (var indices in configurations.GetCombinations(i))
 				{
 					IEnumerable<IntVector2> points = null;
-					IEnumerable<IntVector2> points2 = null;
 
 					foreach (var index in indices)
 					{
 						var newPoints = spaces[configurations[index].Polygon].Points.Select(x => x + configurations[index].Position);
-						points = points != null ? IntersectSorted(points, newPoints) : newPoints;
+						points = points != null ? points.IntersectSorted(newPoints) : newPoints;
 
 						if (!points.Any())
 						{
@@ -55,50 +63,19 @@
 			throw new InvalidOperationException("There should always be at least one point in the intersection");
 		}
 
-		private static IEnumerable<T> IntersectSorted<T>(IEnumerable<T> sequence1,
-			IEnumerable<T> sequence2) where T : IComparable<T>
+		public GridPolygon GetRandomShape()
 		{
-			using (var cursor1 = sequence1.GetEnumerator())
-			using (var cursor2 = sequence2.GetEnumerator())
-			{
-				if (!cursor1.MoveNext() || !cursor2.MoveNext())
-				{
-					yield break;
-				}
-				var value1 = cursor1.Current;
-				var value2 = cursor2.Current;
+			return polygons.GetRandom(random);
+		}
 
-				while (true)
-				{
-					int comparison = value1.CompareTo(value2);
-					if (comparison < 0)
-					{
-						if (!cursor1.MoveNext())
-						{
-							yield break;
-						}
-						value1 = cursor1.Current;
-					}
-					else if (comparison > 0)
-					{
-						if (!cursor2.MoveNext())
-						{
-							yield break;
-						}
-						value2 = cursor2.Current;
-					}
-					else
-					{
-						yield return value1;
-						if (!cursor1.MoveNext() || !cursor2.MoveNext())
-						{
-							yield break;
-						}
-						value1 = cursor1.Current;
-						value2 = cursor2.Current;
-					}
-				}
-			}
+		public ICollection<GridPolygon> GetAllShapes()
+		{
+			return polygons;
+		}
+
+		void IConfigurationSpaces<GridPolygon, Configuration, IntVector2>.InjectRandomGenerator(Random random)
+		{
+			this.random = random;
 		}
 
 		public List<GridPolygon> GetPolygons()

@@ -100,7 +100,7 @@
     <Compile Include="Interfaces\ILayoutGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\ListExtensions.cs" />
+    <Compile Include="Utils\CollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

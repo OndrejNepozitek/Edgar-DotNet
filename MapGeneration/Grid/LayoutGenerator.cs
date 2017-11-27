@@ -9,19 +9,21 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces;
 	using Utils;
 
 	public class LayoutGenerator<TNode> : LayoutGenerator<Layout<TNode>, GridPolygon, TNode> where TNode : IComparable<TNode>
 	{
 		protected readonly float ShapePerturbChance = 0.4f;
-		protected ConfigurationSpaces ConfigurationSpaces;
+		protected IConfigurationSpaces<GridPolygon, Configuration, IntVector2> ConfigurationSpaces;
 		protected IGraphDecomposer<TNode> GraphDecomposer = new DummyGraphDecomposer<TNode>();
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
 		private const float sigma = 300f; // TODO: Change
 
-		public LayoutGenerator(ConfigurationSpaces configurationSpaces)
+		public LayoutGenerator(IConfigurationSpaces<GridPolygon, Configuration, IntVector2> configurationSpaces)
 		{
 			ConfigurationSpaces = configurationSpaces;
+			ConfigurationSpaces.InjectRandomGenerator(Random);
 		}
 
 		/// <summary>
@@ -108,13 +110,12 @@
 		/// <returns></returns>
 		protected Layout<TNode> PerturbShape(Layout<TNode> layout, TNode node)
 		{
-			var polygons = ConfigurationSpaces.GetPolygons();
 			layout.GetConfiguration(node, out var configuration);
 			GridPolygon polygon;
 
 			do
 			{
-				polygon = polygons.GetRandom(Random);
+				polygon = ConfigurationSpaces.GetRandomShape();
 			}
 			while (ReferenceEquals(polygon, configuration.Polygon));
 
@@ -144,10 +145,9 @@
 			}
 
 			layout.GetConfiguration(node, out var mainConfiguration);
-			var intersection = ConfigurationSpaces.GetMaximumIntersection(configurations, mainConfiguration);
 
-			var position = intersection.GetRandom(Random);
-			var newConfiguration = new Configuration(mainConfiguration.Polygon, position);
+			var newPosition = ConfigurationSpaces.GetRandomIntersection(configurations, mainConfiguration);
+			var newConfiguration = new Configuration(mainConfiguration.Polygon, newPosition);
 			var newLayout = layout.Clone();
 			newLayout.SetConfiguration(node, newConfiguration);
 
@@ -168,7 +168,7 @@
 
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, new Configuration(ConfigurationSpaces.GetPolygons().GetRandom(Random), new IntVector2()));
+				layout.SetConfiguration(node, new Configuration(ConfigurationSpaces.GetRandomShape(), new IntVector2()));
 				return;
 			}
 
@@ -176,7 +176,7 @@
 			GridPolygon bestShape = null;
 			var bestPosition = new IntVector2();
 		
-			foreach (var shape in ConfigurationSpaces.GetPolygons())
+			foreach (var shape in ConfigurationSpaces.GetAllShapes())
 			{
 				var intersection = ConfigurationSpaces.GetMaximumIntersection(configurations, new Configuration(shape, new IntVector2()));
 
