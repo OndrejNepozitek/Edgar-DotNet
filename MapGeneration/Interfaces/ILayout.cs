@@ -7,5 +7,7 @@
 		IConfiguration<TPolygon, TPosition> GetConfiguration(TNode node);
 
 		IEnumerable<IConfiguration<TPolygon, TPosition>> GetConfigurations();
+
+		IEnumerable<IRoom<TNode, TPolygon, TPosition>> GetRooms();
 	}
 }

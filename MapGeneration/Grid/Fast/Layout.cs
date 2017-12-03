@@ -45,6 +45,12 @@
 			return vertices.Where(x => x.HasValue).Select(x => (IConfiguration<GridPolygon, IntVector2>) x.Value);
 		}
 
+		public IEnumerable<IRoom<int, GridPolygon, IntVector2>> GetRooms()
+		{
+			return Enumerable.Range(0, vertices.Length).Where(x => vertices[x].HasValue)
+				.Select(x => new GridRoom<int>(x, vertices[x].Value));
+		}
+
 		public Configuration?[] GetConfigurations()
 		{
 			return vertices;

@@ -9,9 +9,12 @@
 
 	public class LayoutDrawer
 	{
-		public static void DrawLayout<TNode>(ILayout<TNode, GridPolygon, IntVector2> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
+		private readonly PolygonDrawer polygonDrawer = new PolygonDrawer();
+
+		public void DrawLayout<TNode>(ILayout<TNode, GridPolygon, IntVector2> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
 		{
 			var polygons = layout.GetConfigurations().Select(x => x.Shape + x.Position).ToList();
+			var rooms = layout.GetRooms().ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -22,13 +25,14 @@
 
 			var offset = GetOffset(minx, miny, maxx, maxy, canvas, scale);
 
-			foreach (var polygon in polygons)
+			for (var i = 0; i < rooms.Count; i++)
 			{
-				PolygonDrawer.DrawPolygon<TNode>(polygon, canvas, e, offset, scale);
+				polygonDrawer.DrawPolygon<TNode>(polygons[i], canvas, e, offset, scale, rooms[i].Node.ToString());
 			}
+
 		}
 
-		private static IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, PictureBox canvas, float scale = 1)
+		private IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, PictureBox canvas, float scale = 1)
 		{
 			var width = canvas.Width;
 			var height = canvas.Height;
@@ -39,7 +43,7 @@
 			return new IntVector2((int) (width / 2f - centerx), (int) (height / 2f - centery));
 		}
 
-		private static float GetScale(int minx, int miny, int maxx, int maxy, PictureBox canvas)
+		private float GetScale(int minx, int miny, int maxx, int maxy, PictureBox canvas)
 		{
 			var actualX = canvas.Width;
 			var actualY = canvas.Height;

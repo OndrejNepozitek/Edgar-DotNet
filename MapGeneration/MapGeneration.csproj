@@ -95,12 +95,14 @@
     <Compile Include="Grid\ConfigurationSpaces.cs" />
     <Compile Include="Grid\Fast\Layout.cs" />
     <Compile Include="Grid\Fast\LayoutGenerator.cs" />
+    <Compile Include="Grid\GridRoom.cs" />
     <Compile Include="Grid\MapDescription.cs" />
     <Compile Include="Interfaces\IConfiguration.cs" />
     <Compile Include="Interfaces\IConfigurationSpaces.cs" />
     <Compile Include="Common\AbstractLayoutGenerator.cs" />
     <Compile Include="Interfaces\ILayout.cs" />
     <Compile Include="Interfaces\ILayoutGenerator.cs" />
+    <Compile Include="Interfaces\IRoom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />

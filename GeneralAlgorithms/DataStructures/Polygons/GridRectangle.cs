@@ -1,5 +1,6 @@
 ﻿namespace GeneralAlgorithms.DataStructures.Polygons
 {
+	using System;
 	using Common;
 
 	public struct GridRectangle
@@ -8,6 +9,12 @@
 		public readonly IntVector2 B;
 
 		public IntVector2 Center => new IntVector2((A.X + B.X) / 2, (A.Y + B.Y) / 2);
+
+		public int Area => Width * Height;
+
+		public int Width => Math.Abs(A.X - B.X);
+
+		public int Height => Math.Abs(A.Y - B.Y);
 
 		public GridRectangle(IntVector2 a, IntVector2 b)
 		{
