@@ -1,11 +1,10 @@
 ﻿namespace MapGeneration.Interfaces
 {
-	using System;
 	using System.Collections.Generic;
-	using DataStructures.Graphs;
+	using GeneralAlgorithms.DataStructures.Graphs;
 
-	public interface ILayoutGenerator<TLayout, TPolygon, TNode> where TNode : IComparable<TNode> where TLayout : ILayout<TPolygon>
+	public interface ILayoutGenerator<TNode, TPolygon, TPosition>
 	{
-		IList<TLayout> GetLayouts(IGraph<TNode> graph, Action<TLayout> action, int minimumLayouts = 10);
+		IList<ILayout<TNode, TPolygon, TPosition>> GetLayouts(Graph<int> mapDescription, int minimumLayouts = 10);
 	}
 }

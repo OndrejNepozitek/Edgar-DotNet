@@ -8,7 +8,7 @@
 	using Interfaces;
 	using Utils;
 
-	public class ConfigurationSpaces : IConfigurationSpaces<GridPolygon, Configuration, IntVector2>
+	public class ConfigurationSpaces : IConfigurationSpaces<GridPolygon, Fast.Configuration, IntVector2>
 	{
 		private readonly List<GridPolygon> polygons;
 		private readonly Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces;
@@ -25,14 +25,14 @@
 			}
 		}
 
-		public IntVector2 GetRandomIntersection(List<Configuration> configurations, Configuration mainConfiguration)
+		public IntVector2 GetRandomIntersection(List<Fast.Configuration> configurations, Fast.Configuration mainConfiguration)
 		{
 			var maximumIntersection = GetMaximumIntersection(configurations, mainConfiguration);
 
 			return maximumIntersection.GetRandom(random);
 		}
 
-		public List<IntVector2> GetMaximumIntersection(List<Configuration> configurations, Configuration mainConfiguration)
+		public List<IntVector2> GetMaximumIntersection(List<Fast.Configuration> configurations, Fast.Configuration mainConfiguration)
 		{
 			var spaces = configugurationSpaces[mainConfiguration.Polygon];
 
@@ -73,9 +73,26 @@
 			return polygons;
 		}
 
-		void IConfigurationSpaces<GridPolygon, Configuration, IntVector2>.InjectRandomGenerator(Random random)
+		void IConfigurationSpaces<GridPolygon, Fast.Configuration, IntVector2>.InjectRandomGenerator(Random random)
 		{
 			this.random = random;
+		}
+
+		public bool HaveValidPosition(Fast.Configuration configuration1, Fast.Configuration configuration2)
+		{
+			// TODO: check
+			var spaces = configugurationSpaces[configuration1.Polygon];
+			var space = spaces[configuration2.Polygon];
+
+			foreach (var p in space.Points)
+			{
+				if (configuration1.Position == configuration2.Position + p)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public List<GridPolygon> GetPolygons()

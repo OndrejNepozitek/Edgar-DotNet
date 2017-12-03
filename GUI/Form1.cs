@@ -8,17 +8,18 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapDrawing;
 	using MapGeneration.Grid;
+	using MapGeneration.Grid.Fast;
 	using MapGeneration.Interfaces;
 
 	public partial class Form1 : Form
 	{
-		private Layout<int> layout;
+		private ILayout<int, GridPolygon, IntVector2> layout;
 
 		public Form1()
 		{
@@ -131,20 +132,30 @@
 					.Build(),*/
 			};
 
-			polygons = polygons.Select(x => x.Scale(new IntVector2(2, 2))).ToList();
+			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
 
-			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+			var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+
+			/*generator.OnPerturbed += (l) =>
+			{
+				layout = l;
+				canvas.Invoke((Action)(() => canvas.Refresh()));
+				Thread.Sleep(50);
+			};*/
+
+			/*generator.OnValid += (l) =>
+			{
+				layout = l;
+				canvas.Invoke((Action)(() => canvas.Refresh()));
+				Thread.Sleep(100);
+			};*/
 
 			Task.Run(() =>
 			{
 				for (int i = 0; i < 10; i++)
 				{
-					var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2, (layout) =>
-					{
-						/*this.layout = layout;
-						canvas.Invoke((Action)(() => canvas.Refresh()));
-						Thread.Sleep(50);*/
-					}, 10);
+
+					var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2);
 
 					foreach (var layout in layouts)
 					{

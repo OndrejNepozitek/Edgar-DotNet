@@ -38,7 +38,7 @@
 			return new ConfigurationSpaces(configurationSpaces);
 		}
 
-		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter, int minimumCommonLength = 1)
+		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter, int minimumCommonLength = 4)
 		{
 			var points = new List<IntVector2>();
 

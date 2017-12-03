@@ -12,7 +12,7 @@
 	using Interfaces;
 	using Utils;
 
-	public class LayoutGenerator<TNode> : LayoutGenerator<Layout<TNode>, GridPolygon, TNode> where TNode : IComparable<TNode>
+	public class LayoutGenerator<TNode> : AbstractLayoutGenerator<Layout<TNode>, GridPolygon, TNode> where TNode : IComparable<TNode>
 	{
 		protected readonly float ShapePerturbChance = 0.4f;
 		protected IConfigurationSpaces<GridPolygon, Configuration, IntVector2> ConfigurationSpaces;

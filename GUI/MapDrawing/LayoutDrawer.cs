@@ -4,12 +4,14 @@
 	using System.Linq;
 	using System.Windows.Forms;
 	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
+	using MapGeneration.Interfaces;
 
 	public class LayoutDrawer
 	{
-		public static void DrawLayout<TNode>(MapGeneration.Grid.Layout<TNode> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
+		public static void DrawLayout<TNode>(ILayout<TNode, GridPolygon, IntVector2> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
 		{
-			var polygons = layout.GetAllConfigurations().Select(x => x.Polygon + x.Position).ToList();
+			var polygons = layout.GetConfigurations().Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);

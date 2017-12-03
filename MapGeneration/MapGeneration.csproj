@@ -88,14 +88,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Grid\Fast\Configuration.cs" />
     <Compile Include="Grid\ConfigurationSpace.cs" />
     <Compile Include="Grid\ConfigurationSpacesGenerator.cs" />
     <Compile Include="Grid\Configuration.cs" />
     <Compile Include="Grid\ConfigurationSpaces.cs" />
+    <Compile Include="Grid\Fast\Layout.cs" />
+    <Compile Include="Grid\Fast\LayoutGenerator.cs" />
+    <Compile Include="Grid\MapDescription.cs" />
+    <Compile Include="Interfaces\IConfiguration.cs" />
     <Compile Include="Interfaces\IConfigurationSpaces.cs" />
-    <Compile Include="Grid\LayoutGenerator.cs" />
-    <Compile Include="Common\LayoutGenerator.cs" />
-    <Compile Include="Grid\Layout.cs" />
+    <Compile Include="Common\AbstractLayoutGenerator.cs" />
     <Compile Include="Interfaces\ILayout.cs" />
     <Compile Include="Interfaces\ILayoutGenerator.cs" />
     <Compile Include="Program.cs" />

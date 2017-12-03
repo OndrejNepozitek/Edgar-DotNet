@@ -14,5 +14,7 @@
 		ICollection<TPolygon> GetAllShapes();
 
 		void InjectRandomGenerator(Random random);
+
+		bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2);
 	}
 }

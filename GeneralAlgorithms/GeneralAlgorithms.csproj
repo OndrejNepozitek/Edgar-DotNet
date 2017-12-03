@@ -88,6 +88,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Graphs\GraphDecompositionNew\DummyGraphDecomposer.cs" />
+    <Compile Include="Algorithms\Graphs\GraphDecompositionNew\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\DummyGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
     <Compile Include="DataStructures\Common\IntLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
+    <Compile Include="DataStructures\Graphs\Graph.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
     <Compile Include="DataStructures\Polygons\GridRectangle.cs" />
     <Compile Include="DataStructures\Polygons\IPolygon.cs" />

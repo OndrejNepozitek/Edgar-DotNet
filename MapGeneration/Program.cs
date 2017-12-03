@@ -3,10 +3,12 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
 	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Grid;
+	using Grid.Fast;
 	using Interfaces;
 
 	internal class Program
@@ -58,14 +60,9 @@
 					.AddPoint(6, 0)
 					.Build(),*/
 			};
-
-			ILayoutGenerator<Layout<int>, GridPolygon, int> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
-			var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2, (layout) =>
-			{
-				/*this.layout = layout;
-				canvas.Refresh();
-				Thread.Sleep(5);*/
-			}, 10);
+			polygons = polygons.Select(x => x.Scale(new IntVector2(10, 10))).ToList();
+			ILayoutGenerator<int, GridPolygon, IntVector2> generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+			var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2);
 		}
 	}
 }
