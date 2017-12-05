@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Collections.Specialized;
+	using System.Linq;
 	using Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -19,15 +20,50 @@
 		protected IGraphDecomposer<int> GraphDecomposer = new DummyGraphDecomposer<int>();
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
 		private const float sigma = 300f; // TODO: Change
+		private bool translate = false;
+
+		private readonly int avgSize;
+		private readonly int avgArea;
 
 		public LayoutGenerator(IConfigurationSpaces<GridPolygon, Configuration, IntVector2> configurationSpaces)
 		{
 			ConfigurationSpaces = configurationSpaces;
 			ConfigurationSpaces.InjectRandomGenerator(Random);
+
+			avgSize = GetAverageSize(configurationSpaces.GetAllShapes());
+			avgArea = GetAverageArea(configurationSpaces.GetAllShapes());
+		}
+
+		private int GetAverageSize(IEnumerable<GridPolygon> polygons)
+		{
+			return (int) polygons.Select(x => x.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
+		}
+
+		private int GetAverageArea(IEnumerable<GridPolygon> polygons)
+		{
+			return (int) polygons.Select(x => x.BoundingRectangle).Average(x => x.Area);
+		}
+
+		public void EnableTranslation()
+		{
+			translate = true;
 		}
 
 		protected override Layout PerturbLayout(Layout layout, List<int> chain, out float energyDelta)
 		{
+			if (translate && TooFar(layout, chain, out var shrinkedLayout))
+			{
+				var sEnergy = layout.GetEnergy();
+
+				RecomputeValidityVectors(shrinkedLayout);
+				RecomputeEnergies(shrinkedLayout);
+
+				var sEnergyNew = shrinkedLayout.GetEnergy();
+				energyDelta = sEnergyNew - sEnergy;
+
+				return shrinkedLayout;
+			}
+
 			var node = chain.GetRandom(Random);
 			var energy = layout.GetEnergy();
 			var newLayout = Random.NextDouble() <= ShapePerturbChance ? PerturbShape(layout, node) : PerturbPosition(layout, node);
@@ -36,6 +72,72 @@
 			energyDelta = newEnergy - energy;
 
 			return newLayout;
+		}
+
+		protected bool TooFar(Layout layout, List<int> chain, out Layout newLayout)
+		{
+			var maxY1 = int.MinValue;
+			var maxY2 = int.MinValue;
+
+			var minY1 = int.MaxValue;
+			var minY2 = int.MaxValue;
+
+			var maxX1 = int.MinValue;
+			var maxX2 = int.MinValue;
+
+			var minX1 = int.MaxValue;
+			var minX2 = int.MaxValue;
+
+			var firstChain = true;
+
+			for (var i = 0; i < Graph.VerticesCount; i++)
+			{
+				if (!layout.GetConfiguration(i, out var configuration))
+					continue;
+
+				if (chain.Contains(i))
+				{
+					var rectangle = configuration.Polygon.BoundingRectangle;
+					maxY1 = Math.Max(Math.Max(rectangle.B.Y + configuration.Position.Y, rectangle.A.Y + configuration.Position.Y), maxY1);
+					minY1 = Math.Min(Math.Min(rectangle.B.Y + configuration.Position.Y, rectangle.A.Y + configuration.Position.Y), minY1);
+					maxX1 = Math.Max(Math.Max(rectangle.B.X + configuration.Position.X, rectangle.A.X + configuration.Position.X), maxX1);
+					minX1 = Math.Min(Math.Min(rectangle.B.X + configuration.Position.X, rectangle.A.X + configuration.Position.X), minX1);
+				}
+				else
+				{
+					firstChain = false;
+
+					var rectangle = configuration.Polygon.BoundingRectangle;
+					maxY2 = Math.Max(Math.Max(rectangle.B.Y + configuration.Position.Y, rectangle.A.Y + configuration.Position.Y), maxY2);
+					minY2 = Math.Min(Math.Min(rectangle.B.Y + configuration.Position.Y, rectangle.A.Y + configuration.Position.Y), minY2);
+					maxX2 = Math.Max(Math.Max(rectangle.B.X + configuration.Position.X, rectangle.A.X + configuration.Position.X), maxX2);
+					minX2 = Math.Min(Math.Min(rectangle.B.X + configuration.Position.X, rectangle.A.X + configuration.Position.X), minX2);
+				}
+			}
+
+			const double scale = 0.9;
+			var minDiff = 4 * avgSize;
+
+			var diffY = minY1 - maxY2 > 0 || minY2 - maxY1 > 0 ? ((minY1 - maxY2 > minY2 - maxY1) ? maxY2 - minY1 : minY2 - maxY1) : 0;
+			var diffX = minX1 - maxX2 > 0 || minX2 - maxX1 > 0 ? ((minX1 - maxX2 > minX2 - maxX1) ? maxX2 - minX1 : minX2 - maxX1) : 0;
+			var moveVector = Math.Abs(diffX) > Math.Abs(diffY) ? new IntVector2((int) (scale * diffX), 0) : new IntVector2(0, (int)(scale * diffY));
+			var maxDiff = Math.Max(Math.Abs(diffX), Math.Abs(diffY));
+
+			if (!firstChain && (maxDiff > minDiff || (maxDiff > 2 * avgSize && Random.NextDouble() < 0.5)))
+			{
+				newLayout = layout.Clone();
+
+				foreach (var point in chain)
+				{
+					layout.GetConfiguration(point, out var conf);
+					newLayout.SetConfiguration(point, new Configuration(conf.Polygon, conf.Position + moveVector));
+				}
+
+				return true;
+			}
+
+			newLayout = null;
+			return false;
 		}
 
 		protected override Layout AddChainToLayout(Layout layout, List<int> chain)

@@ -48,12 +48,19 @@
 			};
 
 			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
-
-			var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
-			// var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2);
-
 			var benchmark = new Benchmark();
-			benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Basic generator");
+
+			{
+				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+				generator.EnableTranslation();
+				benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Generator with translation");
+			}
+
+			{
+				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+				benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Basic generator");
+			}
+
 		}
 	}
 }

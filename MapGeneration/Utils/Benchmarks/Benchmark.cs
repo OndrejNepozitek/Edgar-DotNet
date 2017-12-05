@@ -82,9 +82,9 @@
 			var builder = new StringBuilder();
 
 			builder.AppendLine($" << {name} >>");
-			builder.AppendLine(new string('-', nameLength + 4 * collumnLength));
-			builder.AppendLine($" {"Name".PadRight(nameLength - 3)}| {"# layouts".PadRight(collumnLength - 2)}| {"Time first".PadRight(collumnLength - 2)}| {"Time ten".PadRight(collumnLength - 2)}| {"Iterations".PadRight(collumnLength - 2)}");
-			builder.Append(new string('-', nameLength + 4 * collumnLength));
+			builder.AppendLine(new string('-', nameLength + 5 * collumnLength));
+			builder.AppendLine($" {"Name".PadRight(nameLength - 3)}| {"# layouts".PadRight(collumnLength - 2)}| {"Time first".PadRight(collumnLength - 2)}| {"Time ten".PadRight(collumnLength - 2)}| {"Iterations".PadRight(collumnLength - 2)}| {"Iterations/sec".PadRight(collumnLength - 2)}");
+			builder.Append(new string('-', nameLength + 5 * collumnLength));
 
 			return builder.ToString();
 		}
@@ -93,7 +93,7 @@
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine(new string('=', nameLength + 4 * collumnLength));
+			builder.AppendLine(new string('=', nameLength + 5 * collumnLength));
 
 			return builder.ToString();
 		}
@@ -107,6 +107,7 @@
 			builder.Append($"{(result.TimeFirstAvg / 1000):##.##}s/{(result.TimeFirstMedian / 1000):##.##}s".PadRight(collumnLength));
 			builder.Append($"{(result.TimeTenAvg / 1000):##.##}s/{(result.TimeTenMedian / 1000):##.##}s".PadRight(collumnLength));
 			builder.Append($"{(int)result.IterationsAvg / 1000}k/{(int)result.IterationsMedian / 1000}k".PadRight(collumnLength));
+			builder.Append($"{(int)(result.IterationsAvg / result.TimeTenAvg)}k/{(int)(result.IterationsMedian / result.TimeTenMedian)}k".PadRight(collumnLength));
 
 			return builder.ToString();
 		}
