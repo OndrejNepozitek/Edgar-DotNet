@@ -20,13 +20,14 @@
 			}
 
 			var allPolygons = ProcessPolygons(polygons, rotate);
+			var uniquePolygons = allPolygons.Distinct().ToList();
 			var configurationSpaces = new Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>>();
 
-			foreach (var p1 in allPolygons)
+			foreach (var p1 in uniquePolygons)
 			{
 				var spaces = new Dictionary<GridPolygon, ConfigurationSpace>();
 
-				foreach (var p2 in allPolygons)
+				foreach (var p2 in uniquePolygons)
 				{
 					var configurationSpace = GetConfigurationSpace(p1, p2);
 					spaces.Add(p2, configurationSpace);
@@ -35,7 +36,7 @@
 				configurationSpaces.Add(p1, spaces);
 			}
 
-			return new ConfigurationSpaces(configurationSpaces);
+			return new ConfigurationSpaces(configurationSpaces, allPolygons);
 		}
 
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, GridPolygon fixedCenter, int minimumCommonLength = 4)
@@ -156,13 +157,22 @@
 			{
 				if (rotate)
 				{
-					foreach (var rotation in polygon.GetAllRotations().Select(x => polygonUtils.NormalizePolygon(x)))
+					var rotations = polygon.GetAllRotations().Select(x => polygonUtils.NormalizePolygon(x)).ToList();
+					var toAdd = 4;
+
+					foreach (var rotation in rotations)
 					{
 						// TODO: do we want duplicates?
 						if (!newPolygons.Contains(rotation))
 						{
 							newPolygons.Add(rotation);
+							toAdd--;
 						}
+					}
+
+					for (var i = 0; i < toAdd; i++)
+					{
+						newPolygons.Add(rotations[0]);
 					}
 				}
 				else

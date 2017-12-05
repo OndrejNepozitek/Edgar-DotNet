@@ -8,8 +8,9 @@
 	using Interfaces;
 	using Grid;
 	using Grid.Fast;
+	using Utils.Benchmarks;
 
-	public abstract class AbstractLayoutGenerator<TNode, TPolygon, TPosition> : ILayoutGenerator<TNode, TPolygon, TPosition>
+	public abstract class AbstractLayoutGenerator<TNode, TPolygon, TPosition> : ILayoutGenerator<TNode, TPolygon, TPosition>, IBenchmarkable
 	{
 		protected Random Random = new Random(0);
 		protected int MinimumDifference = 200;
@@ -19,6 +20,11 @@
 		public event Action<ILayout<TNode, TPolygon, TPosition>> OnValid;
 
 		private int iterationsCount;
+		private long timeFirst;
+		private long timeTen;
+		private int layoutsCount;
+		protected bool BenchmarkEnabled;
+		protected bool WithDebug;
 
 		public IList<ILayout<TNode, TPolygon, TPosition>> GetLayouts(Graph<int> graph, int minimumLayouts = 10)
 		{
@@ -49,6 +55,11 @@
 							x.GetDifference(layout) > 3 * MinimumDifference)
 						)
 						{
+							if (fullLayouts.Count == 0)
+							{
+								timeFirst = stopwatch.ElapsedMilliseconds;
+							}
+
 							fullLayouts.Add(layout);
 						}
 					}
@@ -68,11 +79,16 @@
 			}
 
 			stopwatch.Stop();
+			timeTen = stopwatch.ElapsedMilliseconds;
+			layoutsCount = fullLayouts.Count;
 
-			Console.WriteLine($"{fullLayouts.Count} layouts generated");
-			Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
-			Console.WriteLine($"Total iterations: {iterationsCount}");
-			Console.WriteLine($"Iterations per second: {(int) (iterationsCount / (stopwatch.ElapsedMilliseconds / 1000f))}");
+			if (WithDebug)
+			{
+				Console.WriteLine($"{fullLayouts.Count} layouts generated");
+				Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
+				Console.WriteLine($"Total iterations: {iterationsCount}");
+				Console.WriteLine($"Iterations per second: {(int)(iterationsCount / (stopwatch.ElapsedMilliseconds / 1000f))}");
+			}
 
 			return fullLayouts.Select(x => (ILayout<TNode, TPolygon, TPosition>) x).ToList();
 		}
@@ -148,6 +164,24 @@
 			public Layout Layout;
 
 			public int NumberOfChains;
+		}
+
+		long IBenchmarkable.TimeFirst => timeFirst;
+
+		long IBenchmarkable.TimeTen => timeTen;
+
+		int IBenchmarkable.IterationsCount => iterationsCount;
+
+		int IBenchmarkable.LayoutsCount => layoutsCount;
+
+		void IBenchmarkable.EnableBenchmark(bool enable)
+		{
+			BenchmarkEnabled = enable;
+		}
+
+		public void EnableDebug(bool enable)
+		{
+			WithDebug = enable;
 		}
 	}
 }

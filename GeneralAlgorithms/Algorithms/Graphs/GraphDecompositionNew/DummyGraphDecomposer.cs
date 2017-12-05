@@ -14,35 +14,24 @@
 		static DummyGraphDecomposer()
 		{
 			{
-				var graph = new Graph<int>(20);
+				var graph = new Graph<int>(10);
 
-				for (var i = 1; i <= 20; i++)
+				for (var i = 0; i < 9; i++)
 				{
 					graph.AddVertex(i);
 				}
 
+				graph.AddEdge(0, 1);
+				graph.AddEdge(0, 3);
 				graph.AddEdge(1, 2);
 				graph.AddEdge(1, 4);
+				graph.AddEdge(1, 5);
 				graph.AddEdge(2, 3);
-				graph.AddEdge(2, 9);
-				graph.AddEdge(3, 4);
+				graph.AddEdge(3, 6);
 				graph.AddEdge(4, 5);
-				graph.AddEdge(5, 6);
 				graph.AddEdge(6, 7);
+				graph.AddEdge(6, 8);
 				graph.AddEdge(7, 8);
-				graph.AddEdge(8, 9);
-
-				graph.AddEdge(8, 10);
-				graph.AddEdge(10, 11);
-				graph.AddEdge(11, 12);
-				graph.AddEdge(12, 9);
-
-				for (var i = 12; i < 20; i++)
-				{
-					graph.AddEdge(i, i + 1);
-				}
-
-				graph.AddEdge(20, 12);
 
 				DummyGraph1 = graph;
 			}
@@ -142,24 +131,22 @@
 			{
 				if (ReferenceEquals(DummyGraph1, graph))
 				{
-					var c1 = new List<int>() { 1, 2, 4, 3 };
-					var c2 = new List<int>() { 5, 9, 6, 8, 7 };
-					var c3 = new List<int>() { 10, 11, 12 };
-					var c4 = new List<int>() { 13, 14, 15, 16, 17, 18, 19, 20 };
+					var c1 = new List<int>() { 6, 7, 8 };
+					var c2 = new List<int>() { 3, 0, 2, 1 };
+					var c3 = new List<int>() { 4, 5 };
 
 					return (List<List<TNode>>)(object)new List<List<int>>()
 					{
 						c1,
 						c2,
 						c3,
-						c4,
 					};
 				}
 
 				if (ReferenceEquals(DummyGraph2, graph))
 				{
 					var c1 = new List<int>() { 11, 12, 14, 15 };
-					var c2 = new List<int>() { 6, 3, 5, 0 };
+					var c2 = new List<int>() { 6, 3, 5, 0, 2 };
 					var c3 = new List<int>() { 16, 7, 13, 4, 8 };
 					var c4 = new List<int>() { 1, 10, 9 };
 

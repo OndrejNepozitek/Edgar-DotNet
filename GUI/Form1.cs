@@ -90,6 +90,7 @@
 			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
 
 			var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+			generator.EnableDebug(true);
 
 			/*generator.OnPerturbed += (l) =>
 			{
@@ -120,8 +121,6 @@
 					}
 				}
 			});
-
-
 		}
 	}
 }

@@ -38,18 +38,20 @@ namespace GUI
 			// canvas
 			// 
 			this.canvas.BackColor = System.Drawing.Color.White;
-			this.canvas.Location = new System.Drawing.Point(13, 13);
+			this.canvas.Location = new System.Drawing.Point(10, 11);
+			this.canvas.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.canvas.Name = "canvas";
-			this.canvas.Size = new System.Drawing.Size(567, 491);
+			this.canvas.Size = new System.Drawing.Size(557, 513);
 			this.canvas.TabIndex = 0;
 			this.canvas.TabStop = false;
 			this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.canvas_Paint);
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(600, 13);
+			this.button1.Location = new System.Drawing.Point(588, 11);
+			this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.Size = new System.Drawing.Size(56, 19);
 			this.button1.TabIndex = 1;
 			this.button1.Text = "button1";
 			this.button1.UseVisualStyleBackColor = true;
@@ -57,11 +59,12 @@ namespace GUI
 			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 521);
+			this.ClientSize = new System.Drawing.Size(654, 539);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.canvas);
+			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			((System.ComponentModel.ISupportInitialize)(this.canvas)).EndInit();

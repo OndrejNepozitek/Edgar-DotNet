@@ -14,11 +14,19 @@
 		private readonly Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces;
 		private Random random = new Random();
 
-		public ConfigurationSpaces(Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces)
+		public ConfigurationSpaces(Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>> configugurationSpaces, List<GridPolygon> polygons = null)
 		{
 			this.configugurationSpaces = configugurationSpaces;
-			polygons = configugurationSpaces.Keys.ToList();
 
+			if (polygons == null)
+			{
+				this.polygons = configugurationSpaces.Keys.ToList();
+			}
+			else
+			{
+				this.polygons = polygons;
+			}
+			
 			foreach (var list in configugurationSpaces.Values.SelectMany(x => x.Values).Select(x => x.Points))
 			{
 				list.Sort();

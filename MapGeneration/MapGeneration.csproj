@@ -105,6 +105,9 @@
     <Compile Include="Interfaces\IRoom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Benchmarks\Benchmark.cs" />
+    <Compile Include="Utils\Benchmarks\BenchmarkResult.cs" />
+    <Compile Include="Utils\Benchmarks\IBenchmarkable.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
