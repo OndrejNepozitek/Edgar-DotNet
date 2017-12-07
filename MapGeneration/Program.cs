@@ -50,11 +50,11 @@
 			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
 			var benchmark = new Benchmark();
 
-			{
+			/*{
 				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
 				generator.EnableTranslation();
 				benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Generator with translation");
-			}
+			}*/
 
 			{
 				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));

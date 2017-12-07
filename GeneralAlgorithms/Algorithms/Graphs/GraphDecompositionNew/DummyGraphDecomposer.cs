@@ -165,9 +165,15 @@
 					var c2 = new List<int>() { 7, 20, 4, 8, 13 };
 					var c3 = new List<int>() { 6, 5, 2, 0, 3 };
 					var c4 = new List<int>() { 1, 9, 10 };
-					var c5 = new List<int>() { 23, 24, 21, 30, 22, 16, 17, 27, 28, 29 };
-					var c6 = new List<int>() { 14, 15, 26, 25, 31, 32, 33 };
-					var c7 = new List<int>() { 35, 36, 34, 38, 37, 39, 40 };
+					var c5 = new List<int>() { 23, 24, 30 };
+					var c5s = new List<int>() { 21 };
+					var c5ss = new List<int>() { 22, 17, 29 };
+					var c5sss = new List<int>() { 16, 27, 28 };
+					var c6 = new List<int>() { 14, 15, 26, 25 };
+					var c7 = new List<int>() { 31, 32, 33 };
+					var c8 = new List<int>() { 35, 34, 36 };
+					var c9 = new List<int>() { 38, 39, 37 };
+					var c10 = new List<int>() { 40 };
 
 					return (List<List<TNode>>)(object)new List<List<int>>()
 					{
@@ -175,9 +181,15 @@
 						c2,
 						c3,
 						c4,
-						//c5,
+						c5,
+						c5s,
+						c5ss,
+						c5sss,
 						c6,
-						c7
+						c7,
+						c8,
+						c9,
+						c10,
 					};
 				}
 			}

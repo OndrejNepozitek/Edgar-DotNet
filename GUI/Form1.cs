@@ -93,26 +93,26 @@
 			generator.EnableDebug(true);
 			generator.EnableTranslation();
 
-			generator.OnPerturbed += (l) =>
+			/*generator.OnPerturbed += (l) =>
 			{
 				layout = l;
 				canvas.Invoke((Action)(() => canvas.Refresh()));
 				Thread.Sleep(50);
-			};
+			};*/
 
-			generator.OnValid += (l) =>
+			/*generator.OnValid += (l) =>
 			{
 				layout = l;
 				canvas.Invoke((Action)(() => canvas.Refresh()));
 				Thread.Sleep(100);
-			};
+			};*/
 
 			Task.Run(() =>
 			{
 				for (int i = 0; i < 10; i++)
 				{
 
-					var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph2);
+					var layouts = generator.GetLayouts(DummyGraphDecomposer<int>.DummyGraph3);
 
 					foreach (var layout in layouts)
 					{

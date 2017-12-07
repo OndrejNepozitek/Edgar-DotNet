@@ -19,11 +19,11 @@
 		protected IConfigurationSpaces<GridPolygon, Configuration, IntVector2> ConfigurationSpaces;
 		protected IGraphDecomposer<int> GraphDecomposer = new DummyGraphDecomposer<int>();
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
-		private const float sigma = 300f; // TODO: Change
 		private bool translate = false;
 
 		private readonly int avgSize;
 		private readonly int avgArea;
+		private readonly float sigma;
 
 		public LayoutGenerator(IConfigurationSpaces<GridPolygon, Configuration, IntVector2> configurationSpaces)
 		{
@@ -32,16 +32,17 @@
 
 			avgSize = GetAverageSize(configurationSpaces.GetAllShapes());
 			avgArea = GetAverageArea(configurationSpaces.GetAllShapes());
+			sigma = 100 * avgArea;
 		}
 
 		private int GetAverageSize(IEnumerable<GridPolygon> polygons)
 		{
-			return (int) polygons.Select(x => x.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
+			return (int)polygons.Select(x => x.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
 		}
 
 		private int GetAverageArea(IEnumerable<GridPolygon> polygons)
 		{
-			return (int) polygons.Select(x => x.BoundingRectangle).Average(x => x.Area);
+			return (int)polygons.Select(x => x.BoundingRectangle).Average(x => x.Area);
 		}
 
 		public void EnableTranslation()
@@ -120,7 +121,7 @@
 
 			var diffY = minY1 - maxY2 > 0 || minY2 - maxY1 > 0 ? ((minY1 - maxY2 > minY2 - maxY1) ? maxY2 - minY1 : minY2 - maxY1) : 0;
 			var diffX = minX1 - maxX2 > 0 || minX2 - maxX1 > 0 ? ((minX1 - maxX2 > minX2 - maxX1) ? maxX2 - minX1 : minX2 - maxX1) : 0;
-			var moveVector = Math.Abs(diffX) > Math.Abs(diffY) ? new IntVector2((int) (scale * diffX), 0) : new IntVector2(0, (int)(scale * diffY));
+			var moveVector = Math.Abs(diffX) > Math.Abs(diffY) ? new IntVector2((int)(scale * diffX), 0) : new IntVector2(0, (int)(scale * diffY));
 			var maxDiff = Math.Max(Math.Abs(diffX), Math.Abs(diffY));
 
 			if (!firstChain && (maxDiff > minDiff || (maxDiff > 2 * avgSize && Random.NextDouble() < 0.5)))
@@ -278,6 +279,22 @@
 				}
 			}
 
+			for (var i = 0; i < Graph.VerticesCount; i++)
+			{
+				if (i == node)
+					continue;
+
+				if (neigbours.Contains(i))
+					continue;
+
+				if (!layout.GetConfiguration(i, out var nc))
+					continue;
+
+				var nNewEnergy = GetEnergy(newLayout, i, nc);
+				var nNewConfiguration = new Configuration(nc, nNewEnergy);
+				newLayout.SetConfiguration(i, nNewConfiguration);
+			}
+
 			var newEnergy = GetEnergy(newLayout, node, configuration);
 			var newConfiguration = new Configuration(configuration.Polygon, configuration.Position, newEnergy, validityVector);
 			newLayout.SetConfiguration(node, newConfiguration);
@@ -292,7 +309,7 @@
 				return false;
 			}
 
-			var vertices = Graph.VerticesCount;
+			/*var vertices = Graph.VerticesCount;
 
 			// TODO: this is still slow
 			for (var i = 0; i < vertices; i++)
@@ -306,9 +323,9 @@
 						return false;
 					}
 				}
-			}
+			}*/
 
-			return true;
+			return layout.GetEnergy() < double.Epsilon;
 		}
 
 		/// <summary>
@@ -389,10 +406,26 @@
 		protected float GetEnergy(Layout layout, int vertex, Configuration configuration, bool checkValid = true)
 		{
 			var intersection = 0;
-			var distance = 0;
+			var distance = 0d;
 
 			var validityVector = configuration.InvalidNeigbours;
 			var neighbours = Graph.GetNeighbours(vertex);
+
+			for (var i = 0; i < Graph.VerticesCount; i++)
+			{
+				if (i == vertex)
+					continue;
+
+				if (!layout.GetConfiguration(i, out var c))
+					continue;
+
+				var area = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, c.Polygon, c.Position);
+
+				if (area != 0)
+				{
+					intersection += area;
+				}
+			}
 
 			for (var i = 0; i < neighbours.Count; i++)
 			{
@@ -402,22 +435,13 @@
 					continue;
 
 				// Valid neighbours do not add anything to the energy
-				if (!checkValid && validityVector[1 << i] == false) 
+				if (!checkValid && validityVector[1 << i] == false)
 					continue;
 
-				var area = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, c.Polygon, c.Position);
-
-				if (area != 0)
+				if (!PolygonOverlap.DoTouch(configuration.Polygon, configuration.Position, c.Polygon, c.Position))
 				{
-					intersection += area;
-				}
-				else
-				{
-					if (!PolygonOverlap.DoTouch(configuration.Polygon, configuration.Position, c.Polygon, c.Position))
-					{
-						distance += IntVector2.ManhattanDistance(configuration.Polygon.BoundingRectangle.Center + configuration.Position,
-							c.Polygon.BoundingRectangle.Center + c.Position);
-					}
+					distance += Math.Pow(IntVector2.ManhattanDistance(configuration.Polygon.BoundingRectangle.Center + configuration.Position,
+						c.Polygon.BoundingRectangle.Center + c.Position), 2);
 				}
 			}
 

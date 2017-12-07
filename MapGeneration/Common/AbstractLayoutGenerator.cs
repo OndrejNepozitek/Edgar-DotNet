@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Data;
 	using System.Diagnostics;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
@@ -40,7 +41,12 @@
 			var graphChains = GetChains(graph);
 			var initialLayout = GetInitialLayout(graphChains[0]);
 
-			stack.Push(new LayoutNode() { Layout = initialLayout, NumberOfChains = 0 });
+			stack.Push(new LayoutNode() { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });
+
+			if (WithDebug)
+			{
+				Console.WriteLine("--- Simulation has started ---");
+			}
 
 			while (stack.Count > 0)
 			{
@@ -52,7 +58,7 @@
 					foreach (var layout in extendedLayouts)
 					{
 						if (fullLayouts.TrueForAll(x =>
-							x.GetDifference(layout) > 3 * MinimumDifference)
+							x.GetDifference(layout) > 2 * MinimumDifference)
 						)
 						{
 							if (fullLayouts.Count == 0)
@@ -66,7 +72,11 @@
 				}
 				else
 				{
-					foreach (var extendedLayout in extendedLayouts)
+					var sorted = extendedLayouts.Select(x => AddChainToLayout(x, graphChains[layoutNode.NumberOfChains + 1]))
+						.OrderByDescending(x => x.GetEnergy());
+
+
+					foreach (var extendedLayout in sorted)
 					{
 						stack.Push(new LayoutNode() { Layout = extendedLayout, NumberOfChains = layoutNode.NumberOfChains + 1 });
 					}
@@ -95,18 +105,70 @@
 
 		private List<Layout> GetExtendedLayouts(Layout layout, List<int> chain, bool lastChain)
 		{
-			// TODO: change this whole section
-			var t = 1f;
-			var ratio = 0.9f;
 			var cycles = 50;
 			var trialsPerCycle = 500;
-			var k = 2f;
-				
+
+			var p0 = 0.2d;
+			var p1 = 0.01d;
+			var t0 = -1d / Math.Log(p0);
+			var t1 = -1d / Math.Log(p1);
+			var ratio = Math.Pow(t1 / t0, 1d / (cycles - 1));
+			var deltaEAvg = 0d;
+			var acceptedSolutions = 1;
+
+			var t = t0;
+
 			var layouts = new List<Layout>();
-			var currentLayout = AddChainToLayout(layout, chain);
+			var originalLayout = layout; //AddChainToLayout(layout, chain);
+			var currentLayout = originalLayout;
+
+			if (WithDebug)
+			{
+				Console.WriteLine($"Initial energy: {currentLayout.GetEnergy()}");
+			}
+
+			var numFailures = 0;
 
 			for (var i = 0; i < cycles; i++)
 			{
+				var wasAccepted = false;
+
+				if (numFailures > 8 && Random.Next(0, 2) == 0)
+				{
+					if (WithDebug)
+					{
+						Console.WriteLine($"Break, we got {numFailures} failures");
+					}
+					break;
+				}
+
+				if (numFailures > 6 && Random.Next(0, 3) == 0)
+				{
+					if (WithDebug)
+					{
+						Console.WriteLine($"Break, we got {numFailures} failures");
+					}
+					break;
+				}
+
+				if (numFailures > 4 && Random.Next(0, 5) == 0)
+				{
+					if (WithDebug)
+					{
+						Console.WriteLine($"Break, we got {numFailures} failures");
+					}
+					break;
+				}
+
+				if (numFailures > 2 && Random.Next(0, 7) == 0)
+				{
+					if (WithDebug)
+					{
+						Console.WriteLine($"Break, we got {numFailures} failures");
+					}
+					break;
+				}
+
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
 					iterationsCount++;
@@ -120,27 +182,68 @@
 						OnValid?.Invoke((ILayout<TNode, TPolygon, TPosition>)perturbedLayout);
 
 						// TODO: wouldn't it be too slow to compare againts all?
-						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout) > MinimumDifference))
+						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout, chain) > 2 * MinimumDifference))
 						{
+							wasAccepted = true;
 							layouts.Add(perturbedLayout);
 
+							if (WithDebug)
+							{
+								Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {perturbedLayout.GetEnergy()}");
+							}
+							
 							if (layouts.Count >= 15)
 							{
+								if (WithDebug)
+								{
+									Console.WriteLine($"Returning {layouts.Count} partial layouts");	
+								}
+
 								return layouts;
 							}
 						}
+
 					}
 
-					if (energyDelta < 0)
+					var deltaAbs = Math.Abs(energyDelta);
+					var accept = false;
+
+					if (energyDelta > 0)
 					{
-						currentLayout = perturbedLayout;
-					} else if (Random.NextDouble() < Math.Pow(Math.E, -energyDelta / (k * t)))
-					{
-						currentLayout = perturbedLayout;
+						if (i == 0 && j == 0)
+						{
+							deltaEAvg = deltaAbs * 15;
+						}
+
+						var p = Math.Pow(Math.E, -deltaAbs / (deltaEAvg * t));
+						if (Random.NextDouble() < p)
+							accept = true;
 					}
+					else
+					{
+						accept = true;
+					}
+
+					if (accept)
+					{
+						acceptedSolutions++;
+						currentLayout = perturbedLayout;
+						deltaEAvg = (deltaEAvg * (acceptedSolutions - 1) + deltaAbs) / acceptedSolutions;
+					}
+
+				}
+
+				if (!wasAccepted)
+				{
+					numFailures++;
 				}
 
 				t = t * ratio;
+			}
+
+			if (WithDebug)
+			{
+				Console.WriteLine($"Returning {layouts.Count} partial layouts");
 			}
 
 			return layouts;

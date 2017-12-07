@@ -89,6 +89,23 @@
 			return diff;
 		}
 
+		public float GetDifference(Layout other, List<int> chain)
+		{
+			var diff = 0f;
+
+			foreach (var i in chain)
+			{
+				if (GetConfiguration(i, out var c1) && other.GetConfiguration(i, out var c2))
+				{
+					diff += (float)Math.Pow(
+						IntVector2.ManhattanDistance(c1.Polygon.BoundingRectangle.Center + c1.Position,
+							c2.Polygon.BoundingRectangle.Center + c2.Position), 2);
+				}
+			}
+
+			return diff;
+		}
+
 		public Layout Clone()
 		{
 			return new Layout(vertices);
