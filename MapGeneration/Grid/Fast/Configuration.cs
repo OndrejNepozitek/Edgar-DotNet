@@ -12,6 +12,7 @@
 		public readonly BitVector32 InvalidNeigbours; // 0 = valid, 1 = invalid
 		public readonly float Energy;
 		public readonly int Area;
+		public readonly float MoveDistance;
 
 		public Configuration(GridPolygon polygon, IntVector2 position, int neighboursCount)
 		{
@@ -20,6 +21,7 @@
 			InvalidNeigbours = new BitVector32(0);
 			Energy = 0;
 			Area = 0;
+			MoveDistance = 0;
 
 			// TODO: too slow?
 			for (var i = 0; i < neighboursCount; i++)
@@ -28,13 +30,14 @@
 			}
 		}
 
-		public Configuration(GridPolygon polygon, IntVector2 position, float energy, BitVector32 invalidNeigbours, int area)
+		public Configuration(GridPolygon polygon, IntVector2 position, float energy, BitVector32 invalidNeigbours, int area, float moveDistance)
 		{
 			Polygon = polygon;
 			Position = position;
 			Energy = energy;
 			InvalidNeigbours = invalidNeigbours;
 			Area = area;
+			MoveDistance = moveDistance;
 		}
 
 		public Configuration(GridPolygon polygon, IntVector2 position)
@@ -44,6 +47,7 @@
 			Energy = 0;
 			InvalidNeigbours = new BitVector32(-1);
 			Area = 0;
+			MoveDistance = 0;
 		}
 
 		public Configuration(Configuration old, BitVector32 invalidNeigbours)
@@ -53,6 +57,7 @@
 			Energy = old.Energy;
 			InvalidNeigbours = invalidNeigbours;
 			Area = old.Area;
+			MoveDistance = old.MoveDistance;
 		}
 
 		public Configuration(Configuration old, GridPolygon polygon)
@@ -62,6 +67,7 @@
 			Energy = old.Energy;
 			InvalidNeigbours = old.InvalidNeigbours;
 			Area = old.Area;
+			MoveDistance = old.MoveDistance;
 		}
 
 		public Configuration(Configuration old, IntVector2 position)
@@ -71,15 +77,17 @@
 			Energy = old.Energy;
 			InvalidNeigbours = old.InvalidNeigbours;
 			Area = old.Area;
+			MoveDistance = old.MoveDistance;
 		}
 
-		public Configuration(Configuration old, float energy, int area)
+		public Configuration(Configuration old, float energy, int area, float moveDistance)
 		{
 			Polygon = old.Polygon;
 			Position = old.Position;
 			Energy = energy;
 			InvalidNeigbours = old.InvalidNeigbours;
 			Area = area;
+			MoveDistance = moveDistance;
 		}
 
 		public bool IsValid()

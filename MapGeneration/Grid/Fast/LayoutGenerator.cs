@@ -19,7 +19,6 @@
 		protected IConfigurationSpaces<GridPolygon, Configuration, IntVector2> ConfigurationSpaces;
 		protected IGraphDecomposer<int> GraphDecomposer = new DummyGraphDecomposer<int>();
 		protected GridPolygonOverlap PolygonOverlap = new GridPolygonOverlap();
-		private bool translate = false;
 
 		private readonly int avgSize;
 		private readonly int avgArea;
@@ -45,26 +44,8 @@
 			return (int)polygons.Select(x => x.BoundingRectangle).Average(x => x.Area);
 		}
 
-		public void EnableTranslation()
-		{
-			translate = true;
-		}
-
 		protected override Layout PerturbLayout(Layout layout, List<int> chain, out float energyDelta)
 		{
-			if (translate && TooFar(layout, chain, out var shrinkedLayout))
-			{
-				var sEnergy = layout.GetEnergy();
-
-				RecomputeValidityVectors(shrinkedLayout);
-				RecomputeEnergies(shrinkedLayout);
-
-				var sEnergyNew = shrinkedLayout.GetEnergy();
-				energyDelta = sEnergyNew - sEnergy;
-
-				return shrinkedLayout;
-			}
-
 			var node = chain.GetRandom(Random);
 			var energy = layout.GetEnergy();
 			var newLayout = Random.NextDouble() <= ShapePerturbChance ? PerturbShape(layout, node) : PerturbPosition(layout, node);
@@ -194,7 +175,7 @@
 
 				foreach (var position in intersection)
 				{
-					var energy = GetEnergy(layout, vertex, new Configuration(shape, position), out var nIntersection);
+					var energy = GetEnergy(layout, vertex, new Configuration(shape, position), out var nIntersection, out var distance);
 
 					if (energy < bestEnergy)
 					{
@@ -274,8 +255,8 @@
 					nValidityVector[1 << neighbourIndex] = !isValid;
 					validityVector[1 << i] = !isValid;
 
-					var nNewEnergy = GetEnergy(newLayout, neighbour, nc, out var nIntersection);
-					var nNewConfiguration = new Configuration(nc.Polygon, nc.Position, nNewEnergy, nValidityVector, nIntersection);
+					var nNewEnergy = GetEnergy(newLayout, neighbour, nc, out var nIntersection, out var nDistance);
+					var nNewConfiguration = new Configuration(nc.Polygon, nc.Position, nNewEnergy, nValidityVector, nIntersection, nDistance);
 					newLayout.SetConfiguration(neighbour, nNewConfiguration);
 				}
 			}
@@ -295,9 +276,9 @@
 				newLayout.SetConfiguration(i, nNewConfiguration);
 			}
 
-			var newEnergy = GetEnergy(newLayout, node, configuration, out var intersection);
+			var newEnergy = GetEnergy(newLayout, node, configuration, out var intersection, out var distance);
 			var newConfiguration = new Configuration(configuration.Polygon, configuration.Position, newEnergy, validityVector,
-				intersection);
+				intersection, distance);
 			newLayout.SetConfiguration(node, newConfiguration);
 
 			return newLayout;
@@ -309,9 +290,9 @@
 			var areaOld = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, oldConfiguration.Polygon, oldConfiguration.Position);
 			var areaNew = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, newConfiguration.Polygon, newConfiguration.Position);
 			var areaTotal = configuration.Area + (areaNew - areaOld);
-			var newEnergy = areaTotal != 0 ? (float) Math.Pow(Math.E, (areaTotal) / sigma) : 0;
+			var newEnergy = (float)(Math.Pow(Math.E, areaTotal / sigma) * Math.Pow(Math.E, configuration.MoveDistance / sigma) - 1);
 
-			return new Configuration(configuration, newEnergy, areaTotal);
+			return new Configuration(configuration, newEnergy, areaTotal, configuration.MoveDistance);
 		}
 
 		protected override bool IsLayoutValid(Layout layout)
@@ -397,8 +378,8 @@
 				if (!layout.GetConfiguration(vertex, out var configuration))
 					continue;
 
-				var energy = GetEnergy(layout, vertex, configuration, out var intersection, false);
-				var newConfiguration = new Configuration(configuration, energy, intersection);
+				var energy = GetEnergy(layout, vertex, configuration, out var intersection, out var distance, false);
+				var newConfiguration = new Configuration(configuration, energy, intersection, distance);
 
 				layout.SetConfiguration(vertex, newConfiguration);
 			}
@@ -415,10 +396,10 @@
 		/// <param name="configuration"></param>
 		/// <param name="checkValid"></param>
 		/// <returns></returns>
-		protected float GetEnergy(Layout layout, int vertex, Configuration configuration, out int intersection, bool checkValid = true)
+		protected float GetEnergy(Layout layout, int vertex, Configuration configuration, out int intersection, out float distance, bool checkValid = true)
 		{
 			intersection = 0;
-			var distance = 0d;
+			distance = 0f;
 
 			var validityVector = configuration.InvalidNeigbours;
 			var neighbours = Graph.GetNeighbours(vertex);
@@ -452,7 +433,7 @@
 
 				if (!PolygonOverlap.DoTouch(configuration.Polygon, configuration.Position, c.Polygon, c.Position))
 				{
-					distance += Math.Pow(IntVector2.ManhattanDistance(configuration.Polygon.BoundingRectangle.Center + configuration.Position,
+					distance += (float) Math.Pow(IntVector2.ManhattanDistance(configuration.Polygon.BoundingRectangle.Center + configuration.Position,
 						c.Polygon.BoundingRectangle.Center + c.Position), 2);
 				}
 			}
