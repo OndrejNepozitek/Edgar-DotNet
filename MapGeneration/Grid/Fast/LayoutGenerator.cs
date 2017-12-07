@@ -194,7 +194,7 @@
 
 				foreach (var position in intersection)
 				{
-					var energy = GetEnergy(layout, vertex, new Configuration(shape, position));
+					var energy = GetEnergy(layout, vertex, new Configuration(shape, position), out var nIntersection);
 
 					if (energy < bestEnergy)
 					{
@@ -224,7 +224,7 @@
 			layout.GetConfiguration(node, out var mainConfiguration);
 
 			var newPosition = ConfigurationSpaces.GetRandomIntersection(configurations, mainConfiguration);
-			var newConfiguration = new Configuration(mainConfiguration.Polygon, newPosition, mainConfiguration.Energy, mainConfiguration.InvalidNeigbours);
+			var newConfiguration = new Configuration(mainConfiguration, newPosition);
 
 			return UpdateLayoutAfterPerturabtion(layout, node, newConfiguration);
 		}
@@ -240,7 +240,7 @@
 			}
 			while (ReferenceEquals(polygon, configuration.Polygon));
 
-			var newConfiguration = new Configuration(polygon, configuration.Position, configuration.Energy, configuration.InvalidNeigbours);
+			var newConfiguration = new Configuration(configuration, polygon);
 
 			return UpdateLayoutAfterPerturabtion(layout, node, newConfiguration);
 		}
@@ -248,6 +248,7 @@
 		protected Layout UpdateLayoutAfterPerturabtion(Layout layout, int node, Configuration configuration)
 		{
 			// Prepare new layout with temporary configuration to compute energies
+			layout.GetConfiguration(node, out var oldConfiguration);
 			var newLayout = layout.Clone();
 			newLayout.SetConfiguration(node, configuration);
 
@@ -273,8 +274,8 @@
 					nValidityVector[1 << neighbourIndex] = !isValid;
 					validityVector[1 << i] = !isValid;
 
-					var nNewEnergy = GetEnergy(newLayout, neighbour, nc);
-					var nNewConfiguration = new Configuration(nc.Polygon, nc.Position, nNewEnergy, nValidityVector);
+					var nNewEnergy = GetEnergy(newLayout, neighbour, nc, out var nIntersection);
+					var nNewConfiguration = new Configuration(nc.Polygon, nc.Position, nNewEnergy, nValidityVector, nIntersection);
 					newLayout.SetConfiguration(neighbour, nNewConfiguration);
 				}
 			}
@@ -290,16 +291,27 @@
 				if (!layout.GetConfiguration(i, out var nc))
 					continue;
 
-				var nNewEnergy = GetEnergy(newLayout, i, nc);
-				var nNewConfiguration = new Configuration(nc, nNewEnergy);
+				var nNewConfiguration = RecomputeEnergy(oldConfiguration, configuration, nc);
 				newLayout.SetConfiguration(i, nNewConfiguration);
 			}
 
-			var newEnergy = GetEnergy(newLayout, node, configuration);
-			var newConfiguration = new Configuration(configuration.Polygon, configuration.Position, newEnergy, validityVector);
+			var newEnergy = GetEnergy(newLayout, node, configuration, out var intersection);
+			var newConfiguration = new Configuration(configuration.Polygon, configuration.Position, newEnergy, validityVector,
+				intersection);
 			newLayout.SetConfiguration(node, newConfiguration);
 
 			return newLayout;
+		}
+
+		protected Configuration RecomputeEnergy(Configuration oldConfiguration, Configuration newConfiguration,
+			Configuration configuration)
+		{
+			var areaOld = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, oldConfiguration.Polygon, oldConfiguration.Position);
+			var areaNew = PolygonOverlap.OverlapArea(configuration.Polygon, configuration.Position, newConfiguration.Polygon, newConfiguration.Position);
+			var areaTotal = configuration.Area + (areaNew - areaOld);
+			var newEnergy = areaTotal != 0 ? (float) Math.Pow(Math.E, (areaTotal) / sigma) : 0;
+
+			return new Configuration(configuration, newEnergy, areaTotal);
 		}
 
 		protected override bool IsLayoutValid(Layout layout)
@@ -325,7 +337,7 @@
 				}
 			}*/
 
-			return layout.GetEnergy() < double.Epsilon;
+			return layout.GetEnergy() == 0f;
 		}
 
 		/// <summary>
@@ -385,8 +397,8 @@
 				if (!layout.GetConfiguration(vertex, out var configuration))
 					continue;
 
-				var energy = GetEnergy(layout, vertex, configuration, false);
-				var newConfiguration = new Configuration(configuration, energy);
+				var energy = GetEnergy(layout, vertex, configuration, out var intersection, false);
+				var newConfiguration = new Configuration(configuration, energy, intersection);
 
 				layout.SetConfiguration(vertex, newConfiguration);
 			}
@@ -403,9 +415,9 @@
 		/// <param name="configuration"></param>
 		/// <param name="checkValid"></param>
 		/// <returns></returns>
-		protected float GetEnergy(Layout layout, int vertex, Configuration configuration, bool checkValid = true)
+		protected float GetEnergy(Layout layout, int vertex, Configuration configuration, out int intersection, bool checkValid = true)
 		{
-			var intersection = 0;
+			intersection = 0;
 			var distance = 0d;
 
 			var validityVector = configuration.InvalidNeigbours;

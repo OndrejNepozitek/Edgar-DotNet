@@ -14,6 +14,7 @@
 		{
 			{ "Graph 1", DummyGraphDecomposer<int>.DummyGraph1 },
 			{ "Graph 2", DummyGraphDecomposer<int>.DummyGraph2 },
+			{ "Graph 3", DummyGraphDecomposer<int>.DummyGraph3 },
 		};
 
 		private readonly int nameLength = 20;
