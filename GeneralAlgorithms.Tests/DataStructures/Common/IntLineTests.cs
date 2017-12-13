@@ -1,5 +1,6 @@
 ﻿namespace GeneralAlgorithms.Tests.DataStructures.Common
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
@@ -79,6 +80,40 @@
 			Assert.AreEqual(IntLine.Direction.Bottom, bottom.GetDirection());
 			Assert.AreEqual(IntLine.Direction.Right, right.GetDirection());
 			Assert.AreEqual(IntLine.Direction.Left, left.GetDirection());
+		}
+
+		[Test]
+		public void Shrink_Valid_ReturnsShrinked()
+		{
+			{
+				var line = new IntLine(new IntVector2(0, 0), new IntVector2(5, 0));
+				var expected = new IntLine(new IntVector2(1, 0), new IntVector2(3, 0));
+				var shrinked = line.Shrink(1, 2);
+
+				Assert.AreEqual(expected, shrinked);
+			}
+
+			{
+				var line = new IntLine(new IntVector2(0, 0), new IntVector2(0, 6));
+				var expected = new IntLine(new IntVector2(0, 2), new IntVector2(0, 5));
+				var shrinked = line.Shrink(2, 1);
+
+				Assert.AreEqual(expected, shrinked);
+			}
+		}
+
+		[Test]
+		public void Shrink_Invalid_Throws()
+		{
+			{
+				var line = new IntLine(new IntVector2(0, 0), new IntVector2(5, 0));
+				Assert.Throws<InvalidOperationException>(() => line.Shrink(3));
+			}
+
+			{
+				var line = new IntLine(new IntVector2(0, 0), new IntVector2(-6, 0));
+				Assert.Throws<InvalidOperationException>(() => line.Shrink(4, 2));
+			}
 		}
 	}
 }

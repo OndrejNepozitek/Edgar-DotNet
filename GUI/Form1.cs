@@ -19,7 +19,7 @@
 
 	public partial class Form1 : Form
 	{
-		private ILayout<int, GridPolygon, IntVector2> layout;
+		private ILayout<int, GridPolygon, IntVector2, IntLine> layout;
 		private readonly LayoutDrawer layoutDrawer = new LayoutDrawer();
 
 		public Form1()
@@ -87,9 +87,9 @@
 					.Build(),*/
 			};
 
-			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
+			polygons = polygons.Select(x => x.Scale(new IntVector2(3, 3))).ToList();
 
-			var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
+			var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons, true, true));
 			generator.EnableDebug(true);
 
 			/*generator.OnPerturbed += (l) =>
@@ -106,6 +106,13 @@
 				Thread.Sleep(100);
 			};*/
 
+			/*generator.OnValidAndDifferent += (l) =>
+			{
+				layout = l;
+				canvas.Invoke((Action)(() => canvas.Refresh()));
+				Thread.Sleep(1500);
+			};*/
+
 			Task.Run(() =>
 			{
 				for (int i = 0; i < 10; i++)
@@ -117,7 +124,7 @@
 					{
 						this.layout = layout;
 						canvas.Invoke((Action)(() => canvas.Refresh()));
-						Thread.Sleep(1000);
+						Thread.Sleep(2000);
 					}
 				}
 			});

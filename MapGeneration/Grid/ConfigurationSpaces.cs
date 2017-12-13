@@ -7,6 +7,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 	using Utils;
+	using Configuration = Fast.Configuration;
 
 	public class ConfigurationSpaces : IConfigurationSpaces<GridPolygon, Fast.Configuration, IntVector2>
 	{

@@ -321,6 +321,75 @@
 			return layout.GetEnergy() == 0f;
 		}
 
+		protected override void AddDoors(List<Layout> layouts)
+		{
+			var doors = ConfigurationSpaces.GetAllShapes().Distinct().ToDictionary(x => x, x => GetDoors(x, 1));
+			layouts.ForEach(x => AddDoors(x, doors));
+		}
+
+		private void AddDoors(Layout layout, Dictionary<GridPolygon, List<IntLine>> doorsDict)
+		{
+			var doors = new List<IntLine>();
+
+			for (var v1 = 0; v1 < Graph.VerticesCount; v1++)
+			{
+				foreach (var v2 in Graph.GetNeighbours(v1))
+				{
+					if (v2 <= v1) continue;
+
+					if (!layout.GetConfiguration(v1, out var c1) || !layout.GetConfiguration(v2, out var c2))
+					{
+						continue;
+					}
+
+					var doors1 = doorsDict[c1.Polygon].Select(x => new IntLine(x.From + c1.Position, x.To + c1.Position)).ToList();
+					var doors2 = doorsDict[c2.Polygon].Select(x => new IntLine(x.From + c2.Position, x.To + c2.Position)).ToList();
+					var found = new List<IntLine>();
+
+					foreach (var door in doors1)
+					{
+						if (doors2.Contains(door.SwitchOrientation()) || doors2.Contains(door))
+						{
+							found.Add(door);
+							break;
+						}
+					}
+
+					if (found.Count == 0)
+					{
+						throw new InvalidOperationException();
+					}
+
+					doors.Add(found.GetRandom(Random));
+				}
+			}
+
+			layout.SetDoors(doors);
+		}
+
+		private List<IntLine> GetDoors(GridPolygon polygon, int doorsMargin = 1, int doorsLength = 1)
+		{
+			return polygon
+				.GetLines()
+				.Where(x => x.Length > 2 * doorsMargin)
+				.Select(x => x.Shrink(doorsMargin))
+				.Select(x => GetDoors(x, doorsLength))
+				.SelectMany(x => x)
+				.ToList();
+		}
+
+		private List<IntLine> GetDoors(IntLine line, int doorsLength = 1)
+		{
+			var doors = new List<IntLine>();
+
+			for (var i = 0; i <= line.Length - doorsLength; i++)
+			{
+				doors.Add(line.Shrink(i, line.Length - doorsLength - i));
+			}
+
+			return doors;
+		}
+
 		/// <summary>
 		/// Recompute all validity vectors.
 		/// </summary>

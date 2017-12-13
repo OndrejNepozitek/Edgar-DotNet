@@ -5,6 +5,7 @@
 	using System.Data;
 	using System.Diagnostics;
 	using System.Linq;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 	using Grid;
@@ -17,8 +18,9 @@
 		protected int MinimumDifference = 200;
 		protected MapDescription<TNode, TPolygon> MapDescription;
 		protected Graph<int> Graph;
-		public event Action<ILayout<TNode, TPolygon, TPosition>> OnPerturbed;
-		public event Action<ILayout<TNode, TPolygon, TPosition>> OnValid;
+		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnPerturbed;
+		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnValid;
+		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnValidAndDifferent;
 
 		private int iterationsCount;
 		private long timeFirst;
@@ -27,7 +29,7 @@
 		protected bool BenchmarkEnabled;
 		protected bool WithDebug;
 
-		public IList<ILayout<TNode, TPolygon, TPosition>> GetLayouts(Graph<int> graph, int minimumLayouts = 10)
+		public IList<ILayout<TNode, TPolygon, TPosition, IntLine>> GetLayouts(Graph<int> graph, int minimumLayouts = 10)
 		{
 			// MapDescription = mapDescription;
 			Graph = graph;
@@ -100,7 +102,9 @@
 				Console.WriteLine($"Iterations per second: {(int)(iterationsCount / (stopwatch.ElapsedMilliseconds / 1000f))}");
 			}
 
-			return fullLayouts.Select(x => (ILayout<TNode, TPolygon, TPosition>) x).ToList();
+			AddDoors(fullLayouts);
+
+			return fullLayouts.Select(x => (ILayout<TNode, TPolygon, TPosition, IntLine>) x).ToList();
 		}
 
 		private List<Layout> GetExtendedLayouts(Layout layout, List<int> chain, bool lastChain)
@@ -174,18 +178,20 @@
 					iterationsCount++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta); // TODO: locally perturb the layout
 
-					OnPerturbed?.Invoke((ILayout < TNode, TPolygon, TPosition >) perturbedLayout);
+					OnPerturbed?.Invoke((ILayout < TNode, TPolygon, TPosition, IntLine >) perturbedLayout);
 
 					// TODO: should probably check only the perturbed node - other nodes did not change
 					if (IsLayoutValid(perturbedLayout))
 					{
-						OnValid?.Invoke((ILayout<TNode, TPolygon, TPosition>)perturbedLayout);
+						OnValid?.Invoke((ILayout<TNode, TPolygon, TPosition, IntLine>)perturbedLayout);
 
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (layouts.TrueForAll(x => x.GetDifference(perturbedLayout, chain) > 2 * MinimumDifference))
 						{
 							wasAccepted = true;
+							AddDoors(new List<Layout>() {perturbedLayout});
 							layouts.Add(perturbedLayout);
+							OnValidAndDifferent?.Invoke((ILayout<TNode, TPolygon, TPosition, IntLine>)perturbedLayout);
 
 							if (WithDebug)
 							{
@@ -261,6 +267,8 @@
 		protected abstract Layout GetInitialLayout(List<int> chain);
 
 		protected abstract bool IsLayoutValid(Layout layout);
+
+		protected abstract void AddDoors(List<Layout> layouts);
 
 		private struct LayoutNode
 		{

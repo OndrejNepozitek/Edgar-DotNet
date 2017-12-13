@@ -8,9 +8,10 @@
 	using Interfaces;
 
 	// TODO: should it be struct or not?
-	public class Layout : ILayout<int, GridPolygon, IntVector2>
+	public class Layout : ILayout<int, GridPolygon, IntVector2, IntLine>
 	{
 		private readonly Configuration?[] vertices;
+		private List<IntLine> doors;
 
 		public Layout(int verticesCount)
 		{
@@ -40,15 +41,25 @@
 			throw new NotImplementedException();
 		}
 
-		IEnumerable<IConfiguration<GridPolygon, IntVector2>> ILayout<int, GridPolygon, IntVector2>.GetConfigurations()
+		IEnumerable<IConfiguration<GridPolygon, IntVector2>> ILayout<int, GridPolygon, IntVector2, IntLine>.GetConfigurations()
 		{
-			return vertices.Where(x => x.HasValue).Select(x => (IConfiguration<GridPolygon, IntVector2>) x.Value);
+			return vertices.Where(x => x.HasValue).Select(x => (IConfiguration<GridPolygon, IntVector2>)x.Value);
 		}
 
 		public IEnumerable<IRoom<int, GridPolygon, IntVector2>> GetRooms()
 		{
 			return Enumerable.Range(0, vertices.Length).Where(x => vertices[x].HasValue)
 				.Select(x => new GridRoom<int>(x, vertices[x].Value));
+		}
+
+		public IEnumerable<IntLine> GetDoors()
+		{
+			return doors;
+		}
+
+		public void SetDoors(List<IntLine> doors)
+		{
+			this.doors = doors;
 		}
 
 		public Configuration?[] GetConfigurations()

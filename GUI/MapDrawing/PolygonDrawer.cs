@@ -16,7 +16,7 @@
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point((int) (scale * point.X + offset.X), (int) (scale * point.Y + offset.Y))).ToList();
 			e.Graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
-			e.Graphics.DrawPolygon(Pens.DarkBlue, polyPoints.ToArray());
+			e.Graphics.DrawPolygon(new Pen(Color.Black, 3), polyPoints.ToArray());
 
 			if (label != null)
 			{

@@ -6,6 +6,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Grid;
 	using NUnit.Framework;
+	using Configuration = MapGeneration.Grid.Fast.Configuration;
 
 	[TestFixture]
 	public class ConfigurationSpacesTests
