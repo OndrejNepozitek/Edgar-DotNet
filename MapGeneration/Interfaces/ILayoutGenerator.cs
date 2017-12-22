@@ -6,6 +6,6 @@
 
 	public interface ILayoutGenerator<TNode, TPolygon, TPosition>
 	{
-		IList<ILayout<TNode, TPolygon, TPosition, IntLine>> GetLayouts(Graph<int> mapDescription, int minimumLayouts = 10);
+		IList<ILayout<TNode, TPolygon, TPosition, IntLine>> GetLayouts(FastGraph<int> mapDescription, int minimumLayouts = 10);
 	}
 }

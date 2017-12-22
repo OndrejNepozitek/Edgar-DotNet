@@ -10,7 +10,7 @@
 
 	public class Benchmark
 	{
-		private readonly Dictionary<string, Graph<int>> inputs = new Dictionary<string, Graph<int>>()
+		private readonly Dictionary<string, FastGraph<int>> inputs = new Dictionary<string, FastGraph<int>>()
 		{
 			{ "Graph 1", DummyGraphDecomposer<int>.DummyGraph1 },
 			{ "Graph 2", DummyGraphDecomposer<int>.DummyGraph2 },
@@ -35,7 +35,7 @@
 			Console.WriteLine(GetOutputFooter());
 		}
 
-		public BenchmarkResult Execute<TPolygon, TPosition, TGenerator>(TGenerator generator, Graph<int> input, string label, int repeats = 10)
+		public BenchmarkResult Execute<TPolygon, TPosition, TGenerator>(TGenerator generator, FastGraph<int> input, string label, int repeats = 10)
 			where TGenerator : ILayoutGenerator<int, TPolygon, TPosition>, IBenchmarkable
 		{
 			generator.EnableBenchmark(true);

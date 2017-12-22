@@ -18,7 +18,7 @@
 		protected Random Random = new Random(0);
 		protected int MinimumDifference = 200;
 		protected MapDescription<TNode, TPolygon> MapDescription;
-		protected Graph<int> Graph;
+		protected FastGraph<int> Graph;
 		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnPerturbed;
 		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnValid;
 		public event Action<ILayout<TNode, TPolygon, TPosition, IntLine>> OnValidAndDifferent;
@@ -30,7 +30,7 @@
 		protected bool BenchmarkEnabled;
 		protected bool WithDebug;
 
-		public IList<ILayout<TNode, TPolygon, TPosition, IntLine>> GetLayouts(Graph<int> graph, int minimumLayouts = 10)
+		public IList<ILayout<TNode, TPolygon, TPosition, IntLine>> GetLayouts(FastGraph<int> graph, int minimumLayouts = 10)
 		{
 			// MapDescription = mapDescription;
 			Graph = graph;
@@ -256,7 +256,7 @@
 			return layouts;
 		}
 
-		protected virtual List<List<int>> GetChains(Graph<int> graph)
+		protected virtual List<List<int>> GetChains(FastGraph<int> graph)
 		{
 			throw new NotImplementedException();
 		}
