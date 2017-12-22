@@ -2,11 +2,14 @@
 {
 	using System.Collections.Generic;
 
-	public interface ILayout<TNode, TPolygon, TPosition, TDoor>
+	public interface ILayout<TNode, out TPolygon, out TPosition, out TDoor, TConfiguration>
+		where TConfiguration : IConfiguration<TPolygon, TPosition>
 	{
-		IConfiguration<TPolygon, TPosition> GetConfiguration(TNode node);
+		bool GetConfiguration(TNode node, out TConfiguration configuration);
 
-		IEnumerable<IConfiguration<TPolygon, TPosition>> GetConfigurations();
+		void SetConfiguration(TNode node, TConfiguration configuration);
+
+		IEnumerable<TConfiguration> GetConfigurations();
 
 		IEnumerable<IRoom<TNode, TPolygon, TPosition>> GetRooms();
 

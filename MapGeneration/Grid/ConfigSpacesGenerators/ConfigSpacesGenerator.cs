@@ -1,13 +1,13 @@
-﻿namespace MapGeneration.Grid
+﻿namespace MapGeneration.Grid.ConfigSpacesGenerators
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 
-	public class ConfigurationSpacesGenerator
+	public class ConfigSpacesGenerator
 	{
 		private readonly GridPolygonUtils polygonUtils = new GridPolygonUtils();
 		private readonly GridPolygonOverlap polygonOverlap = new GridPolygonOverlap();

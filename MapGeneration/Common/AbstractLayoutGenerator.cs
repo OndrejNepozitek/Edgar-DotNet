@@ -9,6 +9,7 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 	using Grid;
+	using Grid.Descriptions;
 	using Grid.Fast;
 	using Utils.Benchmarks;
 

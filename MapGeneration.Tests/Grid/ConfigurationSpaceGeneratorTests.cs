@@ -5,17 +5,18 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Grid;
+	using MapGeneration.Grid.ConfigSpacesGenerators;
 	using NUnit.Framework;
 
 	[TestFixture]
 	public class ConfigurationSpaceGeneratorTests
 	{
-		private ConfigurationSpacesGenerator generator;
+		private ConfigSpacesGenerator generator;
 
 		[SetUp]
 		public void SetUp()
 		{
-			generator = new ConfigurationSpacesGenerator();
+			generator = new ConfigSpacesGenerator();
 		}
 
 		[Test]

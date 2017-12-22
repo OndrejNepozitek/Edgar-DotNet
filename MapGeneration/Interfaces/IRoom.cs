@@ -1,9 +1,11 @@
 ﻿namespace MapGeneration.Interfaces
 {
-	public interface IRoom<TNode, TPolygon, TPosition>
+	public interface IRoom<out TNode, out TPolygon, out TPosition>
 	{
 		TNode Node { get; }
 
-		IConfiguration<TPolygon, TPosition> Configuration { get; }
+		TPolygon Shape { get; }
+
+		TPosition Position { get; }
 	}
 }

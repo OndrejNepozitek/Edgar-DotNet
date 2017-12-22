@@ -7,6 +7,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Grid;
+	using Grid.ConfigSpacesGenerators;
 	using Grid.Fast;
 	using Utils.Benchmarks;
 
@@ -14,7 +15,7 @@
 	{
 		private static void Main(string[] args)
 		{
-			var configuartionSpacesGenerator = new ConfigurationSpacesGenerator();
+			var configuartionSpacesGenerator = new ConfigSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygon.GetSquare(3),

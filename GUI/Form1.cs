@@ -14,6 +14,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapDrawing;
 	using MapGeneration.Grid;
+	using MapGeneration.Grid.ConfigSpacesGenerators;
 	using MapGeneration.Grid.Fast;
 	using MapGeneration.Interfaces;
 
@@ -41,7 +42,7 @@
 		private void button1_Click(object sender, System.EventArgs e)
 		{
 
-			var configuartionSpacesGenerator = new ConfigurationSpacesGenerator();
+			var configuartionSpacesGenerator = new ConfigSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygon.GetSquare(3),
