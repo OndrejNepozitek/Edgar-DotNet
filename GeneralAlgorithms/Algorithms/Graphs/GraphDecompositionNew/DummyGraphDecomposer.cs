@@ -7,14 +7,14 @@
 	// TODO: remove when possible
 	public class DummyGraphDecomposer : IGraphDecomposer<int>
 	{
-		public static Graph<int> DummyGraph1 { get; }
-		public static Graph<int> DummyGraph2 { get; }
-		public static Graph<int> DummyGraph3 { get; }
+		public static FastGraph<int> DummyGraph1 { get; }
+		public static FastGraph<int> DummyGraph2 { get; }
+		public static FastGraph<int> DummyGraph3 { get; }
 
 		static DummyGraphDecomposer()
 		{
 			{
-				var graph = new Graph<int>(10);
+				var graph = new FastGraph<int>(10);
 
 				for (var i = 0; i < 9; i++)
 				{
@@ -37,7 +37,7 @@
 			}
 
 			{
-				var graph = new Graph<int>(17);
+				var graph = new FastGraph<int>(17);
 
 				for (var i = 0; i <= 16; i++)
 				{
@@ -69,7 +69,7 @@
 			}
 
 			{
-				var graph = new Graph<int>(41);
+				var graph = new FastGraph<int>(41);
 
 				for (var i = 0; i <= 40; i++)
 				{
@@ -125,7 +125,7 @@
 			}
 		}
 
-		public List<List<int>> GetChains(Graph<int> graph)
+		public List<List<int>> GetChains(FastGraph<int> graph)
 		{
 			if (ReferenceEquals(DummyGraph1, graph))
 			{

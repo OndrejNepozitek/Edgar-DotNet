@@ -103,7 +103,10 @@
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
     <Compile Include="DataStructures\Common\IntLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
-    <Compile Include="DataStructures\Graphs\Graph.cs" />
+    <Compile Include="DataStructures\Graphs\Edge.cs" />
+    <Compile Include="DataStructures\Graphs\FastGraph.cs" />
+    <Compile Include="DataStructures\Graphs\IEdge.cs" />
+    <Compile Include="DataStructures\Graphs\IGraph.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
     <Compile Include="DataStructures\Polygons\GridRectangle.cs" />
     <Compile Include="DataStructures\Polygons\IPolygon.cs" />

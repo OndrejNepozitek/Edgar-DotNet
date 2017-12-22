@@ -510,7 +510,7 @@
 			return (float)(Math.Pow(Math.E, intersection / sigma) * Math.Pow(Math.E, distance / sigma) - 1);
 		}
 
-		protected override List<List<int>> GetChains(Graph<int> graph)
+		protected override List<List<int>> GetChains(FastGraph<int> graph)
 		{
 			return GraphDecomposer.GetChains(graph);
 		}

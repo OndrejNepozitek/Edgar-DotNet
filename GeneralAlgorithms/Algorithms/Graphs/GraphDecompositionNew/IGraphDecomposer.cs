@@ -5,6 +5,6 @@
 
 	public interface IGraphDecomposer<TNode>
 	{
-		List<List<TNode>> GetChains(Graph<TNode> graph);
+		List<List<TNode>> GetChains(FastGraph<TNode> graph);
 	}
 }

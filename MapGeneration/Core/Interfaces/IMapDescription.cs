@@ -7,6 +7,6 @@
 	{
 		IReadOnlyCollection<IRoomDescription> GetRooms();
 
-		Graph<TNode> GetGraph();
+		FastGraph<TNode> GetGraph();
 	}
 }

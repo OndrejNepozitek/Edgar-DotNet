@@ -15,7 +15,7 @@
 		private readonly IGraphDecomposer<TNode> graphDecomposer = new DummyGraphDecomposer<TNode>();
 
 		private IMapDescription<TNode> mapDescription;
-		private Graph<TNode> graph;
+		private FastGraph<TNode> graph;
 
 		private int iterationsCount;
 
