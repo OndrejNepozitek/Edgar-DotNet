@@ -8,7 +8,6 @@
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;

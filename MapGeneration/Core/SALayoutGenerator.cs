@@ -5,7 +5,7 @@
 	using System.Diagnostics;
 	using System.Linq;
 	using Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Grid.Fast;
 	using Interfaces;

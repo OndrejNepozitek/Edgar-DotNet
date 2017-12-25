@@ -1,11 +1,12 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition
 {
-	using System;
 	using System.Collections.Generic;
-	using global::DataStructures.Graphs;
+	using DataStructures.Graphs;
 
-	public interface IGraphDecomposer<TNode> where TNode : IComparable<TNode>
+	public interface IGraphDecomposer<TNode>
 	{
 		List<List<TNode>> GetChains(IGraph<TNode> graph);
+
+		List<List<TNode>> GetFaces(IGraph<TNode> graph);
 	}
 }

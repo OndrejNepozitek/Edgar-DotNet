@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GeneralAlgorithms</RootNamespace>
     <AssemblyName>GeneralAlgorithms</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,9 +89,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Graphs\GraphDecompositionNew\DummyGraphDecomposer.cs" />
-    <Compile Include="Algorithms\Graphs\GraphDecompositionNew\IGraphDecomposer.cs" />
-    <Compile Include="Algorithms\Graphs\GraphDecomposition\DummyGraphDecomposer.cs" />
+    <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
+    <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp2.cs" />
@@ -114,6 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CppCliWrapper\CppCliWrapper.vcxproj">
+      <Project>{838f1f40-49bf-4647-8ff3-385836a91cd7}</Project>
+      <Name>CppCliWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

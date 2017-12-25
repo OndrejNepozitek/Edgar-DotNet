@@ -5,7 +5,7 @@
 	using System.Collections.Specialized;
 	using System.Linq;
 	using Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;

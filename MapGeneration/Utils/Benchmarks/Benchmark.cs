@@ -4,7 +4,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecompositionNew;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
