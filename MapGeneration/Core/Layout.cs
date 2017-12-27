@@ -1,9 +1,11 @@
 ﻿namespace MapGeneration.Core
 {
+	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using Interfaces;
 
-	public class Layout : ILayout<int>
+	public class Layout : ILayout<int>, ICloneable
 	{
 		private readonly Configuration?[] vertices;
 
@@ -34,6 +36,11 @@
 			vertices[node] = configuration;
 		}
 
+		public float GetEnergy()
+		{
+			return vertices.Where(x => x.HasValue).Sum(x => x.Value.Energy);
+		}
+
 		public IEnumerable<Configuration> GetConfigurations()
 		{
 			// TODO: what is this for?
@@ -45,9 +52,19 @@
 			throw new System.NotImplementedException();
 		}
 
-		ILayout<int> ILayout<int>.Clone()
+		public Layout Clone()
 		{
 			return new Layout(vertices);
+		}
+
+		ILayout<int> ILayout<int>.Clone()
+		{
+			return Clone();
+		}
+
+		object ICloneable.Clone()
+		{
+			return Clone();
 		}
 	}
 }

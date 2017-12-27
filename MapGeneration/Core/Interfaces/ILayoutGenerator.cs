@@ -4,6 +4,6 @@
 
 	public interface ILayoutGenerator<TNode>
 	{
-		IList<ILayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10);
+		IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10);
 	}
 }

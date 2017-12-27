@@ -7,7 +7,8 @@
 	using Interfaces;
 	using Utils;
 
-	public class LayoutOperations<TNode> : IRandomInjectable
+	public class LayoutOperations<TNode, TLayout> : IRandomInjectable
+		where TLayout : ILayout<TNode>
 	{
 		private readonly IConfigurationSpaces<TNode> configurationSpaces;
 		private Random random = new Random();
@@ -17,7 +18,7 @@
 			this.configurationSpaces = configurationSpaces;
 		}
 
-		public ILayout<TNode> PerturbShape(ILayout<TNode> layout, TNode node)
+		public TLayout PerturbShape(TLayout layout, TNode node)
 		{
 			layout.GetConfiguration(node, out var configuration);
 
@@ -37,7 +38,7 @@
 			return UpdateLayoutAfterPerturabtion(layout, node, newConfiguration);
 		}
 
-		public ILayout<TNode> PerturbShape(ILayout<TNode> layout, IList<TNode> nodeOptions)
+		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions)
 		{
 			var canBePerturbed = nodeOptions.Where(x => configurationSpaces.CanPerturbShape(x)).ToList();
 
@@ -47,22 +48,22 @@
 			return PerturbShape(layout, canBePerturbed.GetRandom(random));
 		}
 
-		public ILayout<TNode> PerturbPosition(ILayout<TNode> layout)
+		public TLayout PerturbPosition(TLayout layout)
 		{
 			throw new NotImplementedException();
 		}
 
-		public float GetEnergy(ILayout<TNode> layout)
+		public float GetEnergy(TLayout layout)
 		{
 			throw new NotImplementedException();
 		}
 
-		public float GetEnergy(ILayout<TNode> layout, TNode node)
+		public float GetEnergy(TLayout layout, TNode node)
 		{
 			throw new NotImplementedException();
 		}
 
-		public float GetEnergy(ILayout<TNode> layout, TNode node, Configuration configuration)
+		public float GetEnergy(TLayout layout, TNode node, Configuration configuration)
 		{
 			throw new NotImplementedException();
 		}
