@@ -101,6 +101,7 @@
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioning.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
+    <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
     <Compile Include="DataStructures\Common\IntLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />

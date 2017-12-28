@@ -4,8 +4,8 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Grid;
-	using MapGeneration.Grid.ConfigSpacesGenerators;
+	using MapGeneration.Core;
+	using MapGeneration.Core.ConfigSpaces;
 	using NUnit.Framework;
 	using Configuration = MapGeneration.Grid.Fast.Configuration;
 

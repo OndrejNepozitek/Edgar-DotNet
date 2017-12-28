@@ -12,8 +12,8 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapDrawing;
-	using MapGeneration.Grid;
-	using MapGeneration.Grid.ConfigSpacesGenerators;
+	using MapGeneration.Core;
+	using MapGeneration.Core.ConfigSpaces;
 	using MapGeneration.Grid.Fast;
 	using MapGeneration.Interfaces;
 

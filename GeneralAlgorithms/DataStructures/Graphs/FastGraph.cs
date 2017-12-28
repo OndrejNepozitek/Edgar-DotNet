@@ -33,7 +33,12 @@
 		}
 
 		// TODO: unsafe method as the caller can alter the collection, but fast
-		public List<int> GetNeighbours(int vertex)
+		public IEnumerable<int> GetNeighbours(int vertex)
+		{
+			return GetNeighboursInternal(vertex);
+		}
+
+		public List<int> GetNeighboursInternal(int vertex)
 		{
 			return adjacencyLists[vertex];
 		}
@@ -96,8 +101,8 @@
 			var fromNum = GetVertexNumber(from);
 			var toNum = GetVertexNumber(to);
 
-			var fromNeighbours = GetNeighbours(fromNum);
-			var toNeighbours = GetNeighbours(toNum);
+			var fromNeighbours = GetNeighboursInternal(fromNum);
+			var toNeighbours = GetNeighboursInternal(toNum);
 
 			if (fromNeighbours.Contains(toNum) || toNeighbours.Contains(fromNum))
 			{

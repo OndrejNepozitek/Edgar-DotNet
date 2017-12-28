@@ -1,22 +1,27 @@
 ﻿namespace MapGeneration.Core
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Linq;
+	using ConfigSpaces;
+	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
 	public class Layout : ILayout<int>, ICloneable
 	{
 		private readonly Configuration?[] vertices;
 
-		public Layout(int verticesCount)
+		public IGraph<int> Graph { get; }
+
+		public Layout(IGraph<int> graph)
 		{
-			vertices = new Configuration?[verticesCount];
+			Graph = graph;
+			vertices = new Configuration?[Graph.VerticesCount];
 		}
 
-		private Layout(Configuration?[] vertices)
+		private Layout(IGraph<int> graph, Configuration?[] vertices)
 		{
-			this.vertices = (Configuration?[])vertices.Clone();
+			Graph = graph;
+			this.vertices = (Configuration?[]) vertices.Clone();
 		}
 
 		public bool GetConfiguration(int node, out Configuration configuration)
@@ -41,20 +46,9 @@
 			return vertices.Where(x => x.HasValue).Sum(x => x.Value.Energy);
 		}
 
-		public IEnumerable<Configuration> GetConfigurations()
-		{
-			// TODO: what is this for?
-			throw new System.NotImplementedException();
-		}
-
-		IEnumerable<IRoom<int>> ILayout<int>.GetRooms()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public Layout Clone()
 		{
-			return new Layout(vertices);
+			return new Layout(Graph, vertices);
 		}
 
 		ILayout<int> ILayout<int>.Clone()

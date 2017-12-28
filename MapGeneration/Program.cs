@@ -1,21 +1,10 @@
 ﻿namespace MapGeneration
 {
-	using System.Collections.Generic;
-	using System.Linq;
-	using Common;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using Grid;
-	using Grid.ConfigSpacesGenerators;
-	using Grid.Fast;
-	using Utils.Benchmarks;
-
 	internal class Program
 	{
 		private static void Main(string[] args)
 		{
-			var configuartionSpacesGenerator = new ConfigSpacesGenerator();
+			/*var configuartionSpacesGenerator = new ConfigSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygon.GetSquare(3),
@@ -51,16 +40,10 @@
 			polygons = polygons.Select(x => x.Scale(new IntVector2(4, 4))).ToList();
 			var benchmark = new Benchmark();
 
-			/*{
-				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
-				generator.EnableTranslation();
-				benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Generator with translation");
-			}*/
-
 			{
 				var generator = new LayoutGenerator<int>(configuartionSpacesGenerator.Generate(polygons));
 				benchmark.Execute<GridPolygon, IntVector2, AbstractLayoutGenerator<int, GridPolygon, IntVector2>>(generator, "Basic generator");
-			}
+			}*/
 
 		}
 	}

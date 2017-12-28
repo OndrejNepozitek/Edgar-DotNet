@@ -4,8 +4,6 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Grid;
-	using MapGeneration.Grid.ConfigSpacesGenerators;
 	using NUnit.Framework;
 
 	[TestFixture]

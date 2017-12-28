@@ -13,5 +13,7 @@
 		void AddVertex(T vertex);
 
 		void AddEdge(T from, T to);
+
+		IEnumerable<T> GetNeighbours(T vertex);
 	}
 }

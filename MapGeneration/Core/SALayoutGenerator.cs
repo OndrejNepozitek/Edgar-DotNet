@@ -42,7 +42,7 @@
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<Layout>();
 			var graphChains = graphDecomposer.GetChains(graph);
-			var initialLayout = new Layout(graph.VerticesCount);
+			var initialLayout = new Layout(graph);
 
 			stack.Push(new LayoutNode { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });
 

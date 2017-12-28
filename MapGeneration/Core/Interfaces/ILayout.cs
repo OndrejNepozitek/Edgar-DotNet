@@ -1,7 +1,12 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
-	public interface ILayout<in TNode>
+	using ConfigSpaces;
+	using GeneralAlgorithms.DataStructures.Graphs;
+
+	public interface ILayout<TNode>
 	{
+		IGraph<TNode> Graph { get; }
+
 		bool GetConfiguration(TNode node, out Configuration configuration);
 
 		void SetConfiguration(TNode node, Configuration configuration);

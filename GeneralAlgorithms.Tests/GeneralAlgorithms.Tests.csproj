@@ -94,6 +94,7 @@
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioningTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtilsTests.cs" />
     <Compile Include="DataStructures\Common\IntLineTests.cs" />
+    <Compile Include="DataStructures\Common\SimpleBitVector32Tests.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

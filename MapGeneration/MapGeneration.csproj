@@ -94,40 +94,18 @@
     <Compile Include="Core\Interfaces\IConfigurationSpaces.cs" />
     <Compile Include="Core\Interfaces\ILayout.cs" />
     <Compile Include="Core\Interfaces\ILayoutGenerator.cs" />
+    <Compile Include="Core\Interfaces\IMapLayout.cs" />
     <Compile Include="Core\Interfaces\IMapDescription.cs" />
     <Compile Include="Core\Interfaces\IRandomInjectable.cs" />
     <Compile Include="Core\Interfaces\IRoom.cs" />
     <Compile Include="Core\Interfaces\IRoomDescription.cs" />
+    <Compile Include="Core\MapDescription.cs" />
+    <Compile Include="Core\RoomDescription.cs" />
     <Compile Include="Core\Layout.cs" />
     <Compile Include="Core\LayoutOperations.cs" />
     <Compile Include="Core\SALayoutGenerator.cs" />
-    <Compile Include="Grid\ConfigSpacesGenerators\ExtendedConfigSpacesGenerator.cs" />
-    <Compile Include="Grid\Descriptions\MapDescription.cs" />
-    <Compile Include="Grid\Descriptions\RoomDescription.cs" />
-    <Compile Include="Grid\Fast\Configuration.cs" />
-    <Compile Include="Grid\ConfigurationSpace.cs" />
-    <Compile Include="Grid\ConfigSpacesGenerators\ConfigSpacesGenerator.cs" />
-    <Compile Include="Grid\Configuration.cs" />
-    <Compile Include="Grid\ConfigurationSpaces.cs" />
-    <Compile Include="Grid\Fast\Layout.cs" />
-    <Compile Include="Grid\Fast\LayoutGenerator.cs" />
-    <Compile Include="Grid\GridRoom.cs" />
-    <Compile Include="Grid\Layout.cs" />
-    <Compile Include="Grid\LayoutGenerator.cs" />
-    <Compile Include="Grid\LayoutOperations.cs" />
-    <Compile Include="Grid\MapLayout.cs" />
-    <Compile Include="Interfaces\IConfiguration.cs" />
-    <Compile Include="Interfaces\IConfigurationSpaces.cs" />
-    <Compile Include="Common\AbstractLayoutGenerator.cs" />
-    <Compile Include="Interfaces\ILayout.cs" />
-    <Compile Include="Interfaces\ILayoutGenerator.cs" />
-    <Compile Include="Interfaces\IMapLayout.cs" />
-    <Compile Include="Interfaces\IRoom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Benchmarks\Benchmark.cs" />
-    <Compile Include="Utils\Benchmarks\BenchmarkResult.cs" />
-    <Compile Include="Utils\Benchmarks\IBenchmarkable.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +117,8 @@
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\ConfigSpaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
