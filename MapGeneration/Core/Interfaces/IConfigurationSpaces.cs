@@ -1,25 +1,22 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
-	using System;
 	using System.Collections.Generic;
-	using ConfigSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
 
-	public interface IConfigurationSpaces<in TNode> : IRandomInjectable
+	public interface IConfigurationSpaces<in TNode, out TShape, TConfiguration> : IRandomInjectable
 	{
-		IntVector2 GetRandomIntersection(IList<Configuration> configurations, Configuration mainConfiguration);
+		IntVector2 GetRandomIntersection(IList<TConfiguration> configurations, TConfiguration mainConfiguration);
 
-		IList<IntVector2> GetMaximumIntersection(List<Configuration> configurations, Configuration mainConfiguration);
+		IList<IntVector2> GetMaximumIntersection(IList<TConfiguration> configurations, TConfiguration mainConfiguration);
 
-		GridPolygon GetRandomShape();
+		TShape GetRandomShape();
 
-		GridPolygon GetRandomShape(TNode node);
+		TShape GetRandomShape(TNode node);
 
 		bool CanPerturbShape(TNode node);
 
-		IReadOnlyCollection<GridPolygon> GetAllShapes();
+		IReadOnlyCollection<TShape> GetAllShapes(TNode node);
 
-		bool HaveValidPosition(Configuration configuration1, Configuration configuration2);
+		bool HaveValidPosition(TNode node1, TConfiguration configuration1, TNode node2, TConfiguration configuration2);
 	}
 }

@@ -151,7 +151,7 @@
 		public void Rotate_Rectangle_ReturnsRotated()
 		{
 			var polygon = GridPolygon.GetRectangle(2, 5);
-			var rotatedPolygon = polygon.Rotate(-270);
+			var rotatedPolygon = polygon.Rotate(270);
 			var expectedPoints = new List<IntVector2>()
 			{
 				new IntVector2(0, 0),

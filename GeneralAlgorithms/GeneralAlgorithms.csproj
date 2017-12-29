@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
+    <Compile Include="Algorithms\Common\Extensions.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
     <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
-    <Compile Include="DataStructures\Common\IntLine.cs" />
+    <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />
     <Compile Include="DataStructures\Graphs\FastGraph.cs" />

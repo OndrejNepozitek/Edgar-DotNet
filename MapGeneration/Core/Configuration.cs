@@ -4,16 +4,17 @@
 	using System.Diagnostics.Contracts;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces;
 
-	public struct Configuration
+	public struct Configuration<TShape> : IConfiguration<Configuration<TShape>, TShape>
 	{
-		public readonly GridPolygon Shape;
+		public TShape Shape { get; }
 
-		public readonly IntVector2 Position;
+		public IntVector2 Position { get; }
 
 		public readonly SimpleBitVector32 ValidityVector;
 
-		public Configuration(GridPolygon shape, IntVector2 position, SimpleBitVector32 validityVector)
+		public Configuration(TShape shape, IntVector2 position, SimpleBitVector32 validityVector)
 		{
 			Shape = shape;
 			Position = position;
@@ -21,19 +22,19 @@
 		}
 
 		[Pure]
-		public Configuration SetShape(GridPolygon shape)
+		public Configuration<TShape> SetShape(TShape shape)
 		{
 			throw new InvalidOperationException();
 		}
 
 		[Pure]
-		public Configuration SetPosition(IntVector2 position)
+		public Configuration<TShape> SetPosition(IntVector2 position)
 		{
 			throw new InvalidOperationException();
 		}
 
 		[Pure]
-		public Configuration SetValidityVector(SimpleBitVector32 validityVector)
+		public Configuration<TShape> SetValidityVector(SimpleBitVector32 validityVector)
 		{
 			throw new InvalidOperationException();
 		}

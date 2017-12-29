@@ -12,7 +12,7 @@
 	{
 		private readonly PolygonDrawer polygonDrawer = new PolygonDrawer();
 
-		public void DrawLayout<TNode>(ILayout<TNode, GridPolygon, IntVector2, IntLine> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
+		public void DrawLayout<TNode>(ILayout<TNode, GridPolygon, IntVector2, OrthogonalLine> layout, PictureBox canvas, PaintEventArgs e) where TNode : IComparable<TNode>
 		{
 			var polygons = layout.GetConfigurations().Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.GetRooms().ToList();

@@ -2,9 +2,10 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics.Contracts;
 	using Algorithms.Math;
 
-	public struct IntVector2 : IComparable<IntVector2>
+	public struct IntVector2 : IComparable<IntVector2>, IEquatable<IntVector2>
 	{
 		public readonly int X;
 
@@ -31,23 +32,24 @@
 			return $"IntVector2 ({X}, {Y})";
 		}
 
+		[Pure]
+		public string ToStringShort()
+		{
+			return $"[{X}, {Y}]";
+		}
+
 		public override bool Equals(object obj)
 		{
-			if (!(obj is IntVector2))
-				return false;
+			if (obj is null) return false;
 
-			var vector = (IntVector2)obj;
-			return vector.X == X && vector.Y == Y;
+			return obj is IntVector2 vector2 && Equals(vector2);
 		}
 
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				var hash = 17;
-				hash = hash * 23 + X.GetHashCode();
-				hash = hash * 23 + Y.GetHashCode();
-				return hash;
+				return (X * 397) ^ Y;
 			}
 		}
 
@@ -132,10 +134,18 @@
 			return positions;
 		}
 
+		/// <summary>
+		/// Rotate the point are the center.
+		/// </summary>
+		/// <remarks>
+		/// Positive degrees mean clockwise rotation.
+		/// </remarks>
+		/// <param name="degrees"></param>
+		/// <returns></returns>
 		public IntVector2 RotateAroundCenter(int degrees)
 		{
-			var x = X * IntegerGoniometric.Cos(degrees) - Y * IntegerGoniometric.Sin(degrees);
-			var y = X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
+			var x = X * IntegerGoniometric.Cos(degrees) + Y * IntegerGoniometric.Sin(degrees);
+			var y = - X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
 
 			return new IntVector2(x, y);
 		}
@@ -200,5 +210,10 @@
 		}
 
 		#endregion
+
+		public bool Equals(IntVector2 other)
+		{
+			return X == other.X && Y == other.Y;
+		}
 	}
 }

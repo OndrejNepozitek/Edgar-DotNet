@@ -1,6 +1,5 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
-	using ConfigSpaces;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	public interface ILayout<TNode>

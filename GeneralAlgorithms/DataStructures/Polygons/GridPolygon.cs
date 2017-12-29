@@ -74,9 +74,9 @@
 			return points.AsReadOnly();
 		}
 
-		public List<IntLine> GetLines()
+		public List<OrthogonalLine> GetLines()
 		{
-			var lines = new List<IntLine>();
+			var lines = new List<OrthogonalLine>();
 			var x1 = points[points.Count - 1];
 
 			foreach (var point in points)
@@ -84,7 +84,7 @@
 				var x2 = x1;
 				x1 = point;
 
-				lines.Add(new IntLine(x2, x1));
+				lines.Add(new OrthogonalLine(x2, x1));
 			}
 
 			return lines;

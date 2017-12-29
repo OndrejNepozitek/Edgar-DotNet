@@ -14,6 +14,6 @@
 
 		IReadOnlyCollection<IntVector2> GetDoorsPoints();
 
-		IReadOnlyCollection<IntLine> GetDoorsLines();
+		IReadOnlyCollection<OrthogonalLine> GetDoorsLines();
 	}
 }

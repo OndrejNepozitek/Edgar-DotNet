@@ -89,9 +89,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
+    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
+    <Compile Include="Core\ConfigurationSpaces\CSGenerator.cs" />
     <Compile Include="Core\Configuration.cs" />
+    <Compile Include="Core\Doors\DoorHandler.cs" />
+    <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
+    <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
     <Compile Include="Core\DoorsMode.cs" />
     <Compile Include="Core\Interfaces\IConfigurationSpaces.cs" />
+    <Compile Include="Core\Interfaces\IDoorHandler.cs" />
+    <Compile Include="Core\Interfaces\IDoorMode.cs" />
     <Compile Include="Core\Interfaces\ILayout.cs" />
     <Compile Include="Core\Interfaces\ILayoutGenerator.cs" />
     <Compile Include="Core\Interfaces\IMapLayout.cs" />
@@ -117,8 +125,6 @@
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\ConfigSpaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

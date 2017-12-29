@@ -87,6 +87,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Doors\OverlapModeHandlerTests.cs" />
     <Compile Include="Core\LayoutOperationsTests.cs" />
     <Compile Include="Grid\ConfigurationSpaceGeneratorTests.cs" />
     <Compile Include="Grid\ConfigurationSpacesTests.cs" />

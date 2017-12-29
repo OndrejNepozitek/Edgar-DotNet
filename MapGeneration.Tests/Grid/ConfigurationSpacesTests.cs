@@ -1,18 +1,14 @@
 ﻿namespace MapGeneration.Tests.Grid
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Core;
-	using MapGeneration.Core.ConfigSpaces;
 	using NUnit.Framework;
-	using Configuration = MapGeneration.Grid.Fast.Configuration;
 
 	[TestFixture]
 	public class ConfigurationSpacesTests
 	{
-		private ConfigSpacesGenerator generator;
+		/*private ConfigSpacesGenerator generator;
 
 		[SetUp]
 		public void SetUp()
@@ -137,6 +133,6 @@
 			{
 				Assert.IsTrue(intersection.Contains(point));
 			}
-		}
+		}*/
 	}
 }

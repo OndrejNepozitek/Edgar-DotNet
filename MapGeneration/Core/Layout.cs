@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Linq;
-	using ConfigSpaces;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
@@ -43,7 +42,9 @@
 
 		public float GetEnergy()
 		{
-			return vertices.Where(x => x.HasValue).Sum(x => x.Value.Energy);
+			// return vertices.Where(x => x.HasValue).Sum(x => x.Value.Energy);
+
+			throw new NotImplementedException();
 		}
 
 		public Layout Clone()

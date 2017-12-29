@@ -13,13 +13,13 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapDrawing;
 	using MapGeneration.Core;
-	using MapGeneration.Core.ConfigSpaces;
+	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Grid.Fast;
 	using MapGeneration.Interfaces;
 
 	public partial class Form1 : Form
 	{
-		private ILayout<int, GridPolygon, IntVector2, IntLine> layout;
+		private ILayout<int, GridPolygon, IntVector2, OrthogonalLine> layout;
 		private readonly LayoutDrawer layoutDrawer = new LayoutDrawer();
 
 		public Form1()
@@ -41,7 +41,7 @@
 		private void button1_Click(object sender, System.EventArgs e)
 		{
 
-			var configuartionSpacesGenerator = new ConfigSpacesGenerator();
+			var configuartionSpacesGenerator = new CSGenerator();
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygon.GetSquare(3),

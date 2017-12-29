@@ -3,7 +3,6 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using ConfigSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -84,7 +83,7 @@
 						continue;
 					}
 
-					var isValid = configurationSpaces.HaveValidPosition(configuration, nc);
+					var isValid = configurationSpaces.HaveValidPosition(vertex, configuration, neighbour, nc);
 					validityVector[i] = !isValid;
 				}
 

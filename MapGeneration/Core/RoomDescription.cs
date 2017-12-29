@@ -15,7 +15,7 @@
 			throw new System.NotImplementedException();
 		}
 
-		public IReadOnlyCollection<IntLine> GetDoorsLines()
+		public IReadOnlyCollection<OrthogonalLine> GetDoorsLines()
 		{
 			throw new System.NotImplementedException();
 		}

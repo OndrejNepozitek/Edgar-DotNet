@@ -9,7 +9,7 @@
 	[TestFixture]
 	public class ConfigurationSpaceGeneratorTests
 	{
-		private ConfigSpacesGenerator generator;
+		/*private ConfigSpacesGenerator generator;
 
 		[SetUp]
 		public void SetUp()
@@ -95,6 +95,6 @@
 			}
 
 			Assert.AreEqual(expectedPoints.Distinct().Count(), configurationSpace.Points.Count);
-		}
+		}*/
 	}
 }

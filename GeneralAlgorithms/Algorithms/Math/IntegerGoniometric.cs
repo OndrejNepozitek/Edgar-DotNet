@@ -1,12 +1,13 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Math
 {
 	using System;
+	using Common;
 
 	public static class IntegerGoniometric
 	{
 		public static int Sin(int degrees)
 		{
-			degrees = Mod(degrees, 360);
+			degrees = degrees.Mod(360);
 
 			switch (degrees)
 			{
@@ -29,7 +30,7 @@
 
 		public static int Cos(int degrees)
 		{
-			degrees = Mod(degrees, 360);
+			degrees = degrees.Mod(360);
 
 			switch (degrees)
 			{
@@ -48,11 +49,6 @@
 				default:
 					throw new InvalidOperationException();
 			}
-		}
-
-		private static int Mod(int x, int m)
-		{
-			return (x % m + m) % m;
 		}
 	}
 }
