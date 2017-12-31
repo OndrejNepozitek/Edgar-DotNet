@@ -1,15 +1,22 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
 	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 
-	public interface IConfiguration<out TConfiguration, TShape>
+	public interface IConfiguration<out TConfiguration, TShapeContainer>
 	{
-		TShape Shape { get; }
+		GridPolygon Shape { get; }
+
+		TShapeContainer ShapeContainer { get; }
 
 		IntVector2 Position { get; }
 
-		TConfiguration SetShape(TShape shape);
+		SimpleBitVector32 ValidityVector { get; }
+
+		TConfiguration SetShape(TShapeContainer shapeContainer);
 
 		TConfiguration SetPosition(IntVector2 position);
+
+		TConfiguration SetValidityVector(SimpleBitVector32 validityVector);
 	}
 }

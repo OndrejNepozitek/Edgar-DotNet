@@ -5,20 +5,20 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 	using Utils;
 
-	public class LayoutOperations<TNode, TLayout> : IRandomInjectable
-		where TLayout : ILayout<TNode>
+	public class LayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer> : IRandomInjectable
+		where TLayout : ILayout<TNode, TConfiguration>
+		where TConfiguration : IConfiguration<TConfiguration, TShapeContainer>
 	{
-		private readonly IConfigurationSpaces<TNode> configurationSpaces;
+		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces;
 		private readonly GridPolygonOverlap gridPolygonOverlap = new GridPolygonOverlap();
 		private Random random = new Random();
 
 		private const float EnergySigma = 300f; // TODO: change
 
-		public LayoutOperations(IConfigurationSpaces<TNode> configurationSpaces)
+		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces)
 		{
 			this.configurationSpaces = configurationSpaces;
 		}

@@ -6,35 +6,37 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public struct Configuration<TShape> : IConfiguration<Configuration<TShape>, TShape>
+	public struct Configuration : IConfiguration<Configuration, IntAlias<GridPolygon>>
 	{
-		public TShape Shape { get; }
+		public IntAlias<GridPolygon> ShapeContainer { get; }
+
+		public GridPolygon Shape => ShapeContainer.Value;
 
 		public IntVector2 Position { get; }
 
-		public readonly SimpleBitVector32 ValidityVector;
+		public SimpleBitVector32 ValidityVector { get; }
 
-		public Configuration(TShape shape, IntVector2 position, SimpleBitVector32 validityVector)
+		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, SimpleBitVector32 validityVector)
 		{
-			Shape = shape;
+			ShapeContainer = shape;
 			Position = position;
 			ValidityVector = validityVector;
 		}
 
 		[Pure]
-		public Configuration<TShape> SetShape(TShape shape)
+		public Configuration SetShape(IntAlias<GridPolygon> shape)
 		{
 			throw new InvalidOperationException();
 		}
 
 		[Pure]
-		public Configuration<TShape> SetPosition(IntVector2 position)
+		public Configuration SetPosition(IntVector2 position)
 		{
 			throw new InvalidOperationException();
 		}
 
 		[Pure]
-		public Configuration<TShape> SetValidityVector(SimpleBitVector32 validityVector)
+		public Configuration SetValidityVector(SimpleBitVector32 validityVector)
 		{
 			throw new InvalidOperationException();
 		}

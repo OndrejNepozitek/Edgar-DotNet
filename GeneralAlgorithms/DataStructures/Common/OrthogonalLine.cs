@@ -97,7 +97,7 @@
 		/// <returns></returns>
 		public OrthogonalLine SwitchOrientation()
 		{
-			return new OrthogonalLine(To, From, GetOppositeDirection(degeneratedDirection));
+			return new OrthogonalLine(To, From, GetOppositeDirection(GetDirection()));
 		}
 
 		/// <summary>
@@ -272,6 +272,15 @@
 			var newIndex = (index + shift).Mod(4);
 
 			return orderedDirections[newIndex];
+		}
+
+		/// <summary>
+		/// Returns a line that has the same endpoints and From is smaller than TO.
+		/// </summary>
+		/// <returns></returns>
+		public OrthogonalLine GetNormalized()
+		{
+			return From < To ? new OrthogonalLine(From, To) : new OrthogonalLine(To, From);
 		}
 	}
 }

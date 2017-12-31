@@ -2,53 +2,92 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces;
-	using Utils;
+	using System.Linq;
+	using GeneralAlgorithms.DataStructures.Polygons;
 
-	public class ConfigurationSpaces<TNode, TShape, TConfiguration> : IConfigurationSpaces<TNode, TShape, TConfiguration>
-		where TConfiguration : IConfiguration<TConfiguration, TShape>
+	public class ConfigurationSpaces : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration>
 	{
-		private Random random = new Random();
+		protected List<WeightedShape> Shapes;
+		protected List<WeightedShape>[] ShapesForNodes;
+		protected ConfigurationSpace[][] ConfigurationSpaces_;
 
-		public void InjectRandomGenerator(Random random)
+		public ConfigurationSpaces(List<WeightedShape> shapes, List<WeightedShape>[] shapesForNodes, ConfigurationSpace[][] configurationSpaces)
 		{
-			this.random = random;
+			Shapes = shapes;
+			ShapesForNodes = shapesForNodes;
+			ConfigurationSpaces_ = configurationSpaces;
 		}
 
-		public IntVector2 GetRandomIntersection(IList<TConfiguration> configurations, TConfiguration mainConfiguration)
+		protected override IList<Tuple<Configuration, ConfigurationSpace>> GetConfigurationSpaces(Configuration mainConfiguration, IList<Configuration> configurations)
 		{
-			return GetMaximumIntersection(configurations, mainConfiguration).GetRandom(random);
+			var spaces = new List<Tuple<Configuration, ConfigurationSpace>>();
+			var chosenSpaces = ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias];
+
+			foreach (var configuration in configurations)
+			{
+				spaces.Add(Tuple.Create(configuration, chosenSpaces[configuration.ShapeContainer.Alias]));
+			}
+
+			return spaces;
 		}
 
-		public IList<IntVector2> GetMaximumIntersection(IList<TConfiguration> configurations, TConfiguration mainConfiguration)
+		protected override ConfigurationSpace GetConfigurationSpace(Configuration mainConfiguration, Configuration configurations)
 		{
-			throw new NotImplementedException();
+			return ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias][configurations.ShapeContainer.Alias];
 		}
 
-		public TShape GetRandomShape()
+		public override IntAlias<GridPolygon> GetRandomShape(int node)
 		{
-			throw new NotImplementedException();
+			return GetWeightedRandom(ShapesForNodes[node] ?? Shapes, x => x.Weight).Shape;
 		}
 
-		public TShape GetRandomShape(TNode node)
+		public override bool CanPerturbShape(int node)
 		{
-			throw new NotImplementedException();
+			// We need at least 2 shapes to choose from for it to be perturbed
+			return GetShapesForNode(node).Count >= 2;
 		}
 
-		public bool CanPerturbShape(TNode node)
+		public override IReadOnlyCollection<IntAlias<GridPolygon>> GetAllShapes(int node)
 		{
-			throw new NotImplementedException();
+			return GetShapesForNode(node).Select(x => x.Shape).ToList().AsReadOnly();
 		}
 
-		public IReadOnlyCollection<TShape> GetAllShapes(TNode node)
+		protected IList<WeightedShape> GetShapesForNode(int node)
 		{
-			throw new NotImplementedException();
+			return ShapesForNodes[node] ?? Shapes;
 		}
 
-		public bool HaveValidPosition(TNode node1, TConfiguration configuration1, TNode node2, TConfiguration configuration2)
+		protected T GetWeightedRandom<T>(IList<T> elements, Func<T, double> weightSelector)
 		{
-			throw new NotImplementedException();
+			var totalWeight = elements.Sum(weightSelector);
+			var randomNumber = Random.NextDouble() * totalWeight;
+
+			foreach (var element in elements)
+			{
+				if (weightSelector(element) < randomNumber)
+				{
+					return element;
+				}
+			}
+
+			// TODO: can it get here due to the rounding of doubles?
+			throw new InvalidOperationException("Should never get here");
+		}
+
+		public class WeightedShape
+		{
+			public IntAlias<GridPolygon> Shape { get; }
+
+			public double Weight { get; }
+
+			public WeightedShape(IntAlias<GridPolygon> shape, double weight)
+			{
+				if (weight <= 0)
+					throw new ArgumentException("Weight must be greater than zero", nameof(weight));
+
+				Shape = shape;
+				Weight = weight;
+			}
 		}
 	}
 }

@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
     <Compile Include="Algorithms\Common\Extensions.cs" />
+    <Compile Include="Algorithms\Common\LineSegmentIntersection.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />

@@ -1,11 +1,10 @@
 ﻿namespace MapGeneration.Core
 {
 	using System;
-	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
-	public class Layout : ILayout<int>, ICloneable
+	public class Layout : ILayout<int, Configuration>
 	{
 		private readonly Configuration?[] vertices;
 
@@ -52,12 +51,7 @@
 			return new Layout(Graph, vertices);
 		}
 
-		ILayout<int> ILayout<int>.Clone()
-		{
-			return Clone();
-		}
-
-		object ICloneable.Clone()
+		ILayout<int, Configuration> ILayout<int, Configuration>.Clone()
 		{
 			return Clone();
 		}

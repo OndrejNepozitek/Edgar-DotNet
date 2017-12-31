@@ -2,14 +2,14 @@
 {
 	using GeneralAlgorithms.DataStructures.Graphs;
 
-	public interface ILayout<TNode>
+	public interface ILayout<TNode, TConfiguration>
 	{
 		IGraph<TNode> Graph { get; }
 
-		bool GetConfiguration(TNode node, out Configuration configuration);
+		bool GetConfiguration(TNode node, out TConfiguration configuration);
 
-		void SetConfiguration(TNode node, Configuration configuration);
+		void SetConfiguration(TNode node, TConfiguration configuration);
 
-		ILayout<TNode> Clone();
+		ILayout<TNode, TConfiguration> Clone();
 	}
 }

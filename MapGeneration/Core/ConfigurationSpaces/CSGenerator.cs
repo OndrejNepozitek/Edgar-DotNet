@@ -6,13 +6,14 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces;
 
 	public class CSGenerator
 	{
 		private readonly GridPolygonUtils polygonUtils = new GridPolygonUtils();
 		private readonly GridPolygonOverlap polygonOverlap = new GridPolygonOverlap();
 
-		public IConfigurationSpaces<TNode> Generate<TNode>(IMapDescription<TNode> mapDescription)
+		public IConfigurationSpaces<TNode, IntAlias<GridPolygon>, Configuration> Generate<TNode>(MapDescription<TNode> mapDescription)
 		{
 			if (polygons.Any(x => !polygonUtils.CheckIntegrity(x)))
 			{

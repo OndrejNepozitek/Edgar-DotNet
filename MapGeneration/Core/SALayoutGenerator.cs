@@ -24,9 +24,9 @@
 		private int layoutsCount;
 
 		// Events
-		public event Action<ILayout<TNode>> OnPerturbed;
-		public event Action<ILayout<TNode>> OnValid;
-		public event Action<ILayout<TNode>> OnValidAndDifferent;
+		public event Action<ILayout<TNode, Configuration>> OnPerturbed;
+		public event Action<ILayout<TNode, Configuration>> OnValid;
+		public event Action<ILayout<TNode, Configuration>> OnValidAndDifferent;
 
 		private double minimumDifference = 300; // TODO: change
 

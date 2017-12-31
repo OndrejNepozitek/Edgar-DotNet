@@ -89,6 +89,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Common\LineSegmentIntersectionTests.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposerTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonOverlapTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioningTests.cs" />
