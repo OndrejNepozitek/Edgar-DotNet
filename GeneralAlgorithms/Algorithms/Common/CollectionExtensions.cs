@@ -75,5 +75,22 @@
 
 			return maxIndex;
 		}
+
+		public static T GetWeightedRandom<T>(this IList<T> elements, Func<T, double> weightSelector, Random random)
+		{
+			var totalWeight = elements.Sum(weightSelector);
+			var randomNumber = random.NextDouble() * totalWeight;
+
+			foreach (var element in elements)
+			{
+				if (weightSelector(element) < randomNumber)
+				{
+					return element;
+				}
+			}
+
+			// TODO: can it get here due to the rounding of doubles?
+			throw new InvalidOperationException("Should never get here");
+		}
 	}
 }

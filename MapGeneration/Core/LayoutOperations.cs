@@ -13,7 +13,7 @@
 		where TConfiguration : IConfiguration<TConfiguration, TShapeContainer>
 	{
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces;
-		private readonly GridPolygonOverlap gridPolygonOverlap = new GridPolygonOverlap();
+		private readonly PolygonOverlap polygonOverlap = new PolygonOverlap();
 		private Random random = new Random();
 
 		private const float EnergySigma = 300f; // TODO: change
@@ -83,7 +83,7 @@
 						continue;
 					}
 
-					var isValid = configurationSpaces.HaveValidPosition(vertex, configuration, neighbour, nc);
+					var isValid = configurationSpaces.HaveValidPosition(configuration, nc);
 					validityVector[i] = !isValid;
 				}
 
@@ -106,7 +106,7 @@
 				if (!layout.GetConfiguration(n, out var c))
 					continue;
 
-				var area = gridPolygonOverlap.OverlapArea(configuration.Shape, configuration.Position, c.Shape, c.Position);
+				var area = polygonOverlap.OverlapArea(configuration.Shape, configuration.Position, c.Shape, c.Position);
 
 				if (area != 0)
 				{
@@ -114,7 +114,7 @@
 				}
 				else
 				{
-					if (!gridPolygonOverlap.DoTouch(configuration.Shape, configuration.Position, c.Shape, c.Position))
+					if (!polygonOverlap.DoTouch(configuration.Shape, configuration.Position, c.Shape, c.Position))
 					{
 						distance += IntVector2.ManhattanDistance(configuration.Shape.BoundingRectangle.Center + configuration.Position,
 							c.Shape.BoundingRectangle.Center + c.Position);

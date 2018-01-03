@@ -30,6 +30,20 @@
 				previousPoint = point;
 			}
 
+			// Check if no two adjacent lines are both horizontal or vertical
+			for (var i = 0; i < points.Count; i++)
+			{
+				var p1 = points[i];
+				var p2 = points[(i + 1) % points.Count];
+				var p3 = points[(i + 2) % points.Count];
+
+				if (p1.X == p2.X && p2.X == p3.X)
+					return false;
+
+				if (p1.Y == p2.Y && p2.Y == p3.Y)
+					return false;
+			}
+
 			return true;
 		}
 

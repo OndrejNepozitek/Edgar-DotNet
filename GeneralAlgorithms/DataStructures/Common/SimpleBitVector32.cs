@@ -16,6 +16,8 @@
 
 		public int Data => vector32.Data;
 
+		public int Length => 32;
+
 		public SimpleBitVector32(int data)
 		{
 			vector32 = new BitVector32(data);

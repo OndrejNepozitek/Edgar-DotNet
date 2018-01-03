@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Security.Cryptography;
 	using Algorithms.Common;
 
 	public struct OrthogonalLine : IEquatable<OrthogonalLine>
@@ -183,6 +184,7 @@
 
 		/// <summary>
 		/// Get all points of the line. Both "From" and "To" are inclusive.
+		/// The direction is from "From" to "To";
 		/// </summary>
 		/// <returns></returns>
 		public List<IntVector2> GetPoints()
@@ -220,7 +222,7 @@
 
 		public enum Direction
 		{
-			Undefined, Top, Right, Bottom, Left
+			Top, Right, Bottom, Left, Undefined
 		}
 
 		public bool Equals(OrthogonalLine other)
@@ -281,6 +283,16 @@
 		public OrthogonalLine GetNormalized()
 		{
 			return From < To ? new OrthogonalLine(From, To) : new OrthogonalLine(To, From);
+		}
+
+		public static OrthogonalLine operator +(OrthogonalLine line, IntVector2 point) 
+		{
+			return new OrthogonalLine(line.From + point, line.To + point);
+		}
+
+		public static OrthogonalLine operator +(IntVector2 point, OrthogonalLine line)
+		{
+			return line + point;
 		}
 	}
 }

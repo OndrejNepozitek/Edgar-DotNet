@@ -5,9 +5,9 @@
 
 	public interface IConfigurationSpaces<in TNode, out TShape, TConfiguration> : IRandomInjectable
 	{
-		IntVector2 GetRandomIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
-		IList<IntVector2> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+		IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
 		TShape GetRandomShape(TNode node);
 

@@ -8,12 +8,12 @@
 	[TestFixture]
 	internal class GridPolygonOverlapTests
 	{
-		private GridPolygonOverlap polygonOverlap;
+		private PolygonOverlap polygonOverlap;
 
 		[SetUp]
 		public void SetUp()
 		{
-			polygonOverlap = new GridPolygonOverlap();
+			polygonOverlap = new PolygonOverlap();
 		}
 
 		[Test]

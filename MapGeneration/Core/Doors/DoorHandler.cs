@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using DoorHandlers;
+	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
@@ -21,7 +22,7 @@
 					return _defaultHandler;
 
 				_defaultHandler = new DoorHandler();
-				_defaultHandler.RegisterHandler(typeof(OverlapModeHandler), new OverlapModeHandler());
+				_defaultHandler.RegisterHandler(typeof(OverlapMode), new OverlapModeHandler());
 
 				return _defaultHandler;
 			}

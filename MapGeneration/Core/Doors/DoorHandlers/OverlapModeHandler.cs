@@ -11,9 +11,7 @@
 	{
 		public List<OrthogonalLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
-			var doorMode = doorModeRaw as OverlapMode;
-
-			if (doorMode == null) 
+			if (!(doorModeRaw is OverlapMode doorMode)) 
 				throw new InvalidOperationException("Invalid door mode supplied");
 
 			var lines = new List<OrthogonalLine>();

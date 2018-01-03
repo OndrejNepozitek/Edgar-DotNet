@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using GeneralAlgorithms.Algorithms.Common;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 
 	public class ConfigurationSpaces : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration>
@@ -11,7 +13,11 @@
 		protected List<WeightedShape>[] ShapesForNodes;
 		protected ConfigurationSpace[][] ConfigurationSpaces_;
 
-		public ConfigurationSpaces(List<WeightedShape> shapes, List<WeightedShape>[] shapesForNodes, ConfigurationSpace[][] configurationSpaces)
+		public ConfigurationSpaces(
+			List<WeightedShape> shapes,
+			List<WeightedShape>[] shapesForNodes,
+			ConfigurationSpace[][] configurationSpaces,
+			ILineIntersection<OrthogonalLine> lineIntersection) : base(lineIntersection)
 		{
 			Shapes = shapes;
 			ShapesForNodes = shapesForNodes;
@@ -38,7 +44,7 @@
 
 		public override IntAlias<GridPolygon> GetRandomShape(int node)
 		{
-			return GetWeightedRandom(ShapesForNodes[node] ?? Shapes, x => x.Weight).Shape;
+			return (ShapesForNodes[node] ?? Shapes).GetWeightedRandom(x => x.Weight, Random).Shape;
 		}
 
 		public override bool CanPerturbShape(int node)
@@ -55,23 +61,6 @@
 		protected IList<WeightedShape> GetShapesForNode(int node)
 		{
 			return ShapesForNodes[node] ?? Shapes;
-		}
-
-		protected T GetWeightedRandom<T>(IList<T> elements, Func<T, double> weightSelector)
-		{
-			var totalWeight = elements.Sum(weightSelector);
-			var randomNumber = Random.NextDouble() * totalWeight;
-
-			foreach (var element in elements)
-			{
-				if (weightSelector(element) < randomNumber)
-				{
-					return element;
-				}
-			}
-
-			// TODO: can it get here due to the rounding of doubles?
-			throw new InvalidOperationException("Should never get here");
 		}
 
 		public class WeightedShape

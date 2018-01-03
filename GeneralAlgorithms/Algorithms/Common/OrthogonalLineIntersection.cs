@@ -2,9 +2,10 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using DataStructures.Common;
 
-	public class LineSegmentIntersection
+	public class OrthogonalLineIntersection : ILineIntersection<OrthogonalLine>
 	{
 		/// <summary>
 		/// Get all intersections where one line is from the first set and the other one from the second one.
@@ -17,20 +18,32 @@
 		/// <returns></returns>
 		public List<OrthogonalLine> GetIntersections(List<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
 		{
-			var intersections = new List<OrthogonalLine>();
+			return GetIntersectionsLazy(lines1, lines2).ToList();
+		}
 
+		private IEnumerable<OrthogonalLine> GetIntersectionsLazy(IEnumerable<OrthogonalLine> lines1, IReadOnlyCollection<OrthogonalLine> lines2)
+		{
 			foreach (var line1 in lines1)
 			{
 				foreach (var line2 in lines2)
 				{
 					if (TryGetIntersection(line1, line2, out var intersection))
 					{
-						intersections.Add(intersection);
+						yield return intersection;
 					}
 				}
 			}
+		}
 
-			return intersections;
+		/// <summary>
+		/// Like GetIntersections() but only reports if there is an intersection.
+		/// </summary>
+		/// <param name="lines1"></param>
+		/// <param name="lines2"></param>
+		/// <returns></returns>
+		public bool DoIntersect(List<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
+		{
+			return GetIntersectionsLazy(lines1, lines2).Any();
 		}
 
 		/// <summary>

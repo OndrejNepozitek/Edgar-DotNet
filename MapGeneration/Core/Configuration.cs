@@ -38,7 +38,11 @@
 		[Pure]
 		public Configuration SetValidityVector(SimpleBitVector32 validityVector)
 		{
-			throw new InvalidOperationException();
+			return new Configuration(
+				ShapeContainer,
+				Position,
+				validityVector
+			);
 		}
 	}
 }

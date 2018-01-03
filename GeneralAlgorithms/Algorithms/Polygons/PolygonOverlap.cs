@@ -6,7 +6,7 @@
 	using DataStructures.Common;
 	using DataStructures.Polygons;
 
-	public class GridPolygonOverlap
+	public class PolygonOverlap : IPolygonOverlap
 	{
 		private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();
 		private readonly Dictionary<GridPolygon, List<GridRectangle>> partitions = new Dictionary<GridPolygon, List<GridRectangle>>();
