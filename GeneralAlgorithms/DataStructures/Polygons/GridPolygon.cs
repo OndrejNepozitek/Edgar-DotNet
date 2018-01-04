@@ -7,30 +7,93 @@
 	using Algorithms.Polygons;
 	using Common;
 
+	/// <summary>
+	/// A class representing an immutable polygon where each of its vertices has integer coordinates.
+	/// </summary>
+	/// <remarks>
+	/// Serveral invariants hold:
+	/// - a polygon has at least 4 points
+	/// - all lines must be parallel one of the axis
+	/// - no two adjacent line can be both horizontal or both vertical
+	/// - points are in a clockwise order
+	/// </remarks>
 	public class GridPolygon : IPolygon<IntVector2>
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 
-		protected readonly List<IntVector2> points;
+		private readonly List<IntVector2> points;
 
 		private readonly int hash;
 
 		// TODO: maybe should be struct rather than a class
 		public GridRectangle BoundingRectangle { get; }
 
-		/* TODO: should be immutable because of the hash and the boundingRectangle
-		public GridPolygon()
-		{
-			points = new List<IntVector2>();
-			hash = ComputeHash();
-			BoundingRectangle = GetBoundingRectabgle();
-		}*/
-
+		/// <summary>
+		/// Create a polygon with given points.
+		/// </summary>
+		/// <param name="points"></param>
+		/// <exception cref="ArgumentException">Thrown when invariants do not hold</exception>
 		public GridPolygon(IEnumerable<IntVector2> points)
 		{
 			this.points = new List<IntVector2>(points);
+
+			CheckIntegrity();
+
 			hash = ComputeHash();
 			BoundingRectangle = GetBoundingRectabgle();
+		}
+
+		private void CheckIntegrity()
+		{
+			// Each polygon must have at least 4 vertices
+			if (points.Count < 4)
+			{
+				throw new ArgumentException("Each polygon must have at least 4 points.");
+			}
+
+			// Check if all lines are parallel to axis X or Y
+			var previousPoint = points[points.Count - 1];
+			foreach (var point in points)
+			{
+				if (point == previousPoint)
+					throw new ArgumentException("All lines must be parallel to one of the axes.");
+
+				if (point.X != previousPoint.X && point.Y != previousPoint.Y)
+					throw new ArgumentException("All lines must be parallel to one of the axes.");
+
+				previousPoint = point;
+			}
+
+			// Check if no two adjacent lines are both horizontal or vertical
+			for (var i = 0; i < points.Count; i++)
+			{
+				var p1 = points[i];
+				var p2 = points[(i + 1) % points.Count];
+				var p3 = points[(i + 2) % points.Count];
+
+				if (p1.X == p2.X && p2.X == p3.X)
+					throw new ArgumentException("No two adjacent lines can be both horizontal or vertical.");
+
+				if (p1.Y == p2.Y && p2.Y == p3.Y)
+					throw new ArgumentException("No two adjacent lines can be both horizontal or vertical.");
+			}
+
+			if (!IsClockwiseOriented(points))
+				throw new ArgumentException("Points must be in a clockwise order.");
+		}
+
+		private bool IsClockwiseOriented(IList<IntVector2> points)
+		{
+			var previous = points[points.Count - 1];
+			var sum = 0;
+
+			foreach (var point in points)
+			{
+				sum += (point.X - previous.X) * (point.Y + previous.Y);
+				previous = point;
+			}
+
+			return sum > 0;
 		}
 
 		private GridRectangle GetBoundingRectabgle()
@@ -53,22 +116,6 @@
 			}
 		}
 
-		/*public void AddPoint(IntVector2 point)
-		{
-			if (points.Count != 0)
-			{
-				
-			}
-
-			points.Add(point);
-		}*/
-
-		/* TODO: rectangle should be immutable
-		public void AddPoint(int x, int y)
-		{
-			AddPoint(new IntVector2(x, y));
-		}*/
-
 		public ReadOnlyCollection<IntVector2> GetPoints()
 		{
 			return points.AsReadOnly();
@@ -90,20 +137,6 @@
 			return lines;
 		}
 
-		public bool IsClockwiseOriented()
-		{
-			var previous = points[points.Count - 1];
-			var sum = 0;
-
-			foreach (var point in points)
-			{
-				sum += (point.X - previous.X) * (point.Y + previous.Y);
-				previous = point;
-			}
-
-			return sum > 0;
-		}
-
 		public override bool Equals(object obj)
 		{
 			return obj is GridPolygon other && points.SequenceEqual(other.GetPoints());
@@ -121,6 +154,9 @@
 
 		public GridPolygon Scale(IntVector2 factor)
 		{
+			if (factor.X <= 0 || factor.Y <= 0) 
+				throw new ArgumentOutOfRangeException(nameof(factor), "Both components of factor must be positive");
+
 			return new GridPolygon(points.Select(x => x.ElemWiseProduct(factor)));
 		}
 
@@ -147,6 +183,12 @@
 
 		public static GridPolygon GetRectangle(int a, int b)
 		{
+			if (a <= 0) 
+				throw new ArgumentOutOfRangeException(nameof(a), "Both a and b must be greater than 0");
+
+			if (b <= 0)
+				throw new ArgumentOutOfRangeException(nameof(b), "Both a and b must be greater than 0");
+
 			var polygon = new GridPolygonBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, b)

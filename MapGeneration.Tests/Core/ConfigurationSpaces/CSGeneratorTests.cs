@@ -6,6 +6,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using MapGeneration.Core;
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorModes;
@@ -64,6 +65,13 @@
 		}
 
 		[Test]
+		public void GetConfigurationSpace_MovedSquares()
+		{
+			// Check if the generator works even when the polygons are not normalized
+			Assert.IsTrue(false);
+		}
+
+		[Test]
 		public void GetConfigurationSpace_OverlapOne()
 		{
 			var p1 = GridPolygon.GetSquare(3);
@@ -102,6 +110,29 @@
 			}
 
 			Assert.AreEqual(expectedPoints.Distinct().Count(), actualPoints.Count);
+		}
+
+		[Test]
+		public void Generate_BasicTest()
+		{
+			// This test cannot check if the generated configuration spaces are valid
+			var mapDescription = new MapDescription<int>();
+			var squareRoom = new RoomDescription(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
+			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
+
+			mapDescription.AddRoomShapes(squareRoom, true);
+			mapDescription.AddRoomShapes(rectangleRoom, true, 0.5);
+
+			mapDescription.AddRoom(0);
+			mapDescription.AddRoom(1);
+			mapDescription.AddPassage(0, 1);
+
+			mapDescription.AddRoomShapes(1, rectangleRoom, false);
+
+			var configurationSpaces = generator.Generate(mapDescription);
+
+			Assert.AreEqual(3, configurationSpaces.GetAllShapes(0));
+			Assert.AreEqual(1, configurationSpaces.GetAllShapes(1));
 		}
 	}
 }

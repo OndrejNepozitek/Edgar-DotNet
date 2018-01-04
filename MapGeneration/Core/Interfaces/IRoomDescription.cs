@@ -6,6 +6,6 @@
 	{
 		GridPolygon Shape { get; }
 
-		DoorsMode DoorsMode { get; }
+		IDoorMode DoorsMode { get; }
 	}
 }

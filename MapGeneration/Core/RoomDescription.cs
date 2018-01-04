@@ -7,6 +7,12 @@
 	{
 		public GridPolygon Shape { get; }
 
-		public DoorsMode DoorsMode { get; }
+		public IDoorMode DoorsMode { get; }
+
+		public RoomDescription(GridPolygon shape, IDoorMode doorsMode)
+		{
+			Shape = new GridPolygon(shape.GetPoints());
+			DoorsMode = doorsMode;
+		}
 	}
 }

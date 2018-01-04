@@ -97,7 +97,6 @@
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
     <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
-    <Compile Include="Core\DoorsMode.cs" />
     <Compile Include="Core\IntAlias.cs" />
     <Compile Include="Core\Interfaces\IConfiguration.cs" />
     <Compile Include="Core\Interfaces\IConfigurationSpaces.cs" />

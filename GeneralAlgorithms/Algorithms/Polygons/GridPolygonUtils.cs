@@ -7,46 +7,6 @@
 
 	public class GridPolygonUtils : IPolygonUtils<GridPolygon>
 	{
-		public bool CheckIntegrity(GridPolygon polygon)
-		{
-			var points = polygon.GetPoints();
-
-			// Each polygon must have at least 4 vertices
-			if (points.Count < 4)
-			{
-				return false;
-			}
-
-			// Check if all lines are parallel to axis X or Y
-			var previousPoint = points[points.Count - 1];
-			foreach (var point in points)
-			{
-				if (point == previousPoint)
-					return false;
-
-				if (point.X != previousPoint.X && point.Y != previousPoint.Y)
-					return false;
-
-				previousPoint = point;
-			}
-
-			// Check if no two adjacent lines are both horizontal or vertical
-			for (var i = 0; i < points.Count; i++)
-			{
-				var p1 = points[i];
-				var p2 = points[(i + 1) % points.Count];
-				var p3 = points[(i + 2) % points.Count];
-
-				if (p1.X == p2.X && p2.X == p3.X)
-					return false;
-
-				if (p1.Y == p2.Y && p2.Y == p3.Y)
-					return false;
-			}
-
-			return true;
-		}
-
 		public GridPolygon NormalizePolygon(GridPolygon polygon)
 		{
 			var points = polygon.GetPoints();
@@ -76,18 +36,9 @@
 				orderedPoints.Add(points[i]);
 			}
 
-			// We want the points to be in the clockwise order
-			if (orderedPoints[0].Y <= smallestXY)
-			{
-				orderedPoints.Reverse();
-			}
-
 			orderedPoints.Insert(0, points[index]);
 
-			var moveVector = new IntVector2(-1 * smallestX, -1 * smallestY);
-			var movedPoints = orderedPoints.Select(x => x + moveVector);
-
-			return new GridPolygon(movedPoints);
+			return new GridPolygon(orderedPoints);
 		}
 	}
 }

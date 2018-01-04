@@ -16,11 +16,11 @@
 		{
 			IList<IntVector2> points = polygon.GetPoints();
 
-			if (!polygon.IsClockwiseOriented())
+			/*if (!polygon.IsClockwiseOriented())
 			{
 				points = points.Reverse().ToList();
 				throw new InvalidOperationException(); // TODO: should be tested
-			}
+			}*/
 
 			var vertices = new List<Vertex>();
 

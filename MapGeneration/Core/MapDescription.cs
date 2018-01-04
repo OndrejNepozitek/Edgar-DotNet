@@ -16,7 +16,7 @@
 
 		public ReadOnlyDictionary<TNode, ReadOnlyCollection<RoomContainer>> RoomShapesForNodes =>
 			new ReadOnlyDictionary<TNode, ReadOnlyCollection<RoomContainer>>(
-				roomShapesForNodes.ToDictionary(x => x.Key, x => x.Value.AsReadOnly())
+				roomShapesForNodes.ToDictionary(x => x.Key, x => x.Value?.AsReadOnly())
 			);
 
 		public ReadOnlyCollection<Tuple<TNode, TNode>> Passages => passages.AsReadOnly();
@@ -29,7 +29,7 @@
 		/// <param name="probability"></param>
 		public void AddRoomShapes(List<RoomDescription> shapes, bool rotate = true, double probability = 1)
 		{
-			shapes.ForEach(x => AddRoomShape(x, rotate, probability));
+			shapes.ForEach(x => AddRoomShapes(x, rotate, probability));
 		}
 
 		/// <summary>
@@ -38,7 +38,7 @@
 		/// <param name="shape"></param>
 		/// <param name="rotate"></param>
 		/// <param name="probability"></param>
-		public void AddRoomShape(RoomDescription shape, bool rotate = true, double probability = 1)
+		public void AddRoomShapes(RoomDescription shape, bool rotate = true, double probability = 1)
 		{
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
@@ -49,28 +49,37 @@
 			roomShapes.Add(new RoomContainer(shape, rotate, probability));
 		}
 
-		/// <summary>
-		/// Add room to the map.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="shapes">Null when general shapes used be used.</param>
-		/// <param name="rotate"></param>
-		public void AddRoom(TNode node, List<RoomDescription> shapes = null, bool rotate = true)
+		public void AddRoomShapes(TNode node, List<RoomDescription> shapes, bool rotate = true, double probability = 1)
+		{
+			shapes.ForEach(x => AddRoomShapes(node, x, rotate, probability));
+		}
+
+		public void AddRoomShapes(TNode node, RoomDescription shape, bool rotate = true, double probability = 1)
+		{
+			if (probability <= 0)
+				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
+
+			if (!roomShapesForNodes.TryGetValue(node, out var roomShapesForNode))
+				throw new InvalidOperationException("Room must be first added to add shapes");
+
+			if (roomShapesForNode == null)
+			{
+				roomShapesForNode = new List<RoomContainer>();
+				roomShapesForNodes[node] = roomShapesForNode;
+			}
+
+			if (roomShapesForNode.Any(x => shape.Equals(x.RoomDescription)))
+				throw new InvalidOperationException("Every RoomDescription can be added at most once");
+
+			roomShapesForNode.Add(new RoomContainer(shape, rotate, probability));
+		}
+
+		public void AddRoom(TNode node)
 		{
 			if (roomShapesForNodes.ContainsKey(node))
 				throw new InvalidOperationException("Given node was already added");
 
-			if (shapes == null)
-			{
-				roomShapesForNodes.Add(node, null);
-				return;
-			}
-
-			if (shapes.Count != shapes.Distinct().Count())
-				throw new InvalidOperationException("RoomDescriptions must be unique");
-
-			var roomContainers = shapes.Select(x => new RoomContainer(x, rotate, 1)).ToList();
-			roomShapesForNodes.Add(node, roomContainers);
+			roomShapesForNodes.Add(node, null);
 		}
 
 		public void AddPassage(TNode node1, TNode node2)

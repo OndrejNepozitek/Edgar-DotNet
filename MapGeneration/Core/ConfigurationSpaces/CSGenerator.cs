@@ -11,10 +11,10 @@
 
 	public class CSGenerator
 	{
-		private readonly IPolygonUtils<GridPolygon> polygonUtils;
 		private readonly IPolygonOverlap polygonOverlap;
 		private readonly IDoorHandler doorHandler;
 		private readonly ILineIntersection<OrthogonalLine> lineIntersection;
+		private readonly IPolygonUtils<GridPolygon> polygonUtils;
 
 		public CSGenerator(
 			IPolygonOverlap polygonOverlap,
@@ -28,39 +28,106 @@
 			this.polygonUtils = polygonUtils;
 		}
 
-		/*public IConfigurationSpaces<TNode, IntAlias<GridPolygon>, Configuration> Generate<TNode>(MapDescription<TNode> mapDescription)
+		public IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> Generate<TNode>(MapDescription<TNode> mapDescription)
 		{
-			if (polygons.Any(x => !polygonUtils.CheckIntegrity(x)))
+			var graph = mapDescription.GetGraph();
+			var aliasCounter = 0;
+			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>>();
+			var shapes = new List<ConfigurationSpaces.WeightedShape>();
+			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces.WeightedShape>>();
+
+			// Handle universal shapes
+			foreach (var shape in mapDescription.RoomShapes)
 			{
-				throw new InvalidOperationException("One or more polygons are not valid.");
+				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
+
+				rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
+				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, shape.Probability)));
 			}
 
-			var allPolygons = ProcessPolygons(polygons, rotate, normalizeChances);
-			var uniquePolygons = allPolygons.Distinct().ToList();
-			var configurationSpaces = new Dictionary<GridPolygon, Dictionary<GridPolygon, ConfigurationSpace>>();
-
-			foreach (var p1 in uniquePolygons)
+			// Handle shapes for nodes
+			foreach (var vertex in graph.Vertices)
 			{
-				var spaces = new Dictionary<GridPolygon, ConfigurationSpace>();
+				var node = graph.GetVertex(vertex);
+				var shapesForNode = mapDescription.RoomShapesForNodes[node];
 
-				foreach (var p2 in uniquePolygons)
+				if (shapesForNode == null)
 				{
-					var configurationSpace = GetConfigurationSpace(p1, p2);
-					spaces.Add(p2, configurationSpace);
+					shapesForNodes.Add(vertex, null);
+					continue;
 				}
 
-				configurationSpaces.Add(p1, spaces);
+				var shapesContainer = new List<ConfigurationSpaces.WeightedShape>();
+				foreach (var shape in shapesForNode)
+				{
+					var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
+
+					rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
+					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, shape.Probability)));
+				}
+
+				shapesForNodes.Add(vertex, shapesContainer);
 			}
 
-			return new ConfigurationSpaces<>(configurationSpaces, allPolygons);
-		}*/
+			// Prepare data structures
+			var shapesForNodesArray = new List<ConfigurationSpaces.WeightedShape>[shapesForNodes.Count];
 
-		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter, IDoorMode fixedDoorsMode)
+			foreach (var pair in shapesForNodes)
+			{
+				shapesForNodesArray[pair.Key] = pair.Value;
+			}
+
+			var configurationSpaces = new ConfigurationSpace[aliasCounter][];
+
+			for (var i = 0; i < aliasCounter; i++)
+			{
+				var shape1 = allShapes[i];
+				configurationSpaces[i] = new ConfigurationSpace[aliasCounter];
+
+				for (var j = 0; j < aliasCounter; j++)
+				{
+					var shape2 = allShapes[j];
+
+					configurationSpaces[i][j] =
+						GetConfigurationSpace(shape2.Item1.Value, shape2.Item2, shape1.Item1.Value, shape1.Item2);
+				}
+			}
+
+			return new ConfigurationSpaces(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
+		}
+
+		private List<Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>> PreparePolygons(
+			RoomDescription roomDescription, bool shouldRotate, ref int aliasCounter)
+		{
+			var result = new List<Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>>();
+			var doorLines = doorHandler.GetDoorPositions(roomDescription.Shape, roomDescription.DoorsMode);
+			var shape = roomDescription.Shape;
+			var rotations = shouldRotate ? GridPolygon.PossibleRotations : new[] {0};
+
+			foreach (var rotation in rotations)
+			{
+				var rotatedShape = shape.Rotate(rotation);
+				var smallesPoint = rotatedShape.BoundingRectangle.A;
+
+				// Both the shape and doors are moved so the polygon is in the first quadrant and touches axes
+				rotatedShape = rotatedShape + (-1 * smallesPoint);
+				rotatedShape = polygonUtils.NormalizePolygon(rotatedShape);
+				var rotatedDoorLines = doorLines.Select(x => x.Rotate(rotation) + (-1 * smallesPoint)).ToList();
+
+				if (result.Any(x => x.Item1.Value.Equals(rotatedShape)))
+					continue;
+
+				result.Add(Tuple.Create(new IntAlias<GridPolygon>(aliasCounter++, rotatedShape), rotatedDoorLines));
+			}
+
+			return result;
+		}
+
+		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<OrthogonalLine> doorLines, GridPolygon fixedCenter, List<OrthogonalLine> doorLinesFixed)
 		{
 			var configurationSpaceLines = new List<OrthogonalLine>();
 
 			// One list for every direction
-			// TODO: polygons must be clockwise oriented
 			var lines = new List<OrthogonalLine>[4];
 
 			// Init array
@@ -68,9 +135,6 @@
 			{
 				lines[i] = new List<OrthogonalLine>();
 			}
-
-			var doorLinesFixed = doorHandler.GetDoorPositions(fixedCenter, fixedDoorsMode);
-			var doorLines = doorHandler.GetDoorPositions(polygon, doorsMode);
 
 			// Populate lists with lines
 			foreach (var line in doorLinesFixed)
@@ -99,10 +163,22 @@
 
 			}
 
+			// Remove all positions when the two polygons overlap
 			configurationSpaceLines = RemoveOverlapping(polygon, fixedCenter, configurationSpaceLines);
+
+			// Remove all non-unique positions
 			configurationSpaceLines = RemoveIntersections(configurationSpaceLines);
 
 			return new ConfigurationSpace() { Lines = configurationSpaceLines };
+		}
+
+		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter,
+			IDoorMode fixedDoorsMode)
+		{
+			var doorLinesFixed = doorHandler.GetDoorPositions(fixedCenter, fixedDoorsMode);
+			var doorLines = doorHandler.GetDoorPositions(polygon, doorsMode);
+
+			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed);
 		}
 
 		private List<OrthogonalLine> RemoveOverlapping(GridPolygon polygon, GridPolygon fixedCenter, List<OrthogonalLine> lines)
