@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Core
 {
 	using System;
+	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
@@ -49,6 +50,17 @@
 		public Layout Clone()
 		{
 			return new Layout(Graph, vertices);
+		}
+
+		public IEnumerable<Configuration> GetAllConfigurations()
+		{
+			foreach (var configuration in vertices)
+			{
+				if (configuration.HasValue)
+				{
+					yield return configuration.Value;
+				}
+			}
 		}
 
 		ILayout<int, Configuration> ILayout<int, Configuration>.Clone()

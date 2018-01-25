@@ -6,7 +6,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public struct Configuration : IConfiguration<Configuration, IntAlias<GridPolygon>>
+	public struct Configuration : IEnergyConfiguration<Configuration, IntAlias<GridPolygon>>
 	{
 		public IntAlias<GridPolygon> ShapeContainer { get; }
 
@@ -16,11 +16,16 @@
 
 		public SimpleBitVector32 ValidityVector { get; }
 
-		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, SimpleBitVector32 validityVector)
+		public EnergyData EnergyData { get; }
+
+		public bool IsValid => ValidityVector.Data == 0;
+
+		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, SimpleBitVector32 validityVector, EnergyData energyData)
 		{
 			ShapeContainer = shape;
 			Position = position;
 			ValidityVector = validityVector;
+			EnergyData = energyData;
 		}
 
 		[Pure]
@@ -41,8 +46,14 @@
 			return new Configuration(
 				ShapeContainer,
 				Position,
-				validityVector
+				validityVector,
+				EnergyData
 			);
+		}
+
+		public Configuration SetEnergyData(EnergyData energyData)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

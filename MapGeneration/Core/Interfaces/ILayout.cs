@@ -1,5 +1,6 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
+	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	public interface ILayout<TNode, TConfiguration>
@@ -11,5 +12,7 @@
 		void SetConfiguration(TNode node, TConfiguration configuration);
 
 		ILayout<TNode, TConfiguration> Clone();
+
+		IEnumerable<TConfiguration> GetAllConfigurations();
 	}
 }

@@ -190,7 +190,7 @@
 
 					// OnPerturbed?.Invoke((ILayout<TNode>) perturbedLayout);
 
-					// TODO: should probably check only the perturbed node - other nodes did not change
+					// TODO: can we check the energy instead?
 					if (IsLayoutValid(perturbedLayout))
 					{
 						// OnValid?.Invoke((ILayout<TNode, TPolygon, TPosition, IntLine>)perturbedLayout);

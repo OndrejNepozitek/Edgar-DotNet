@@ -8,9 +8,9 @@
 	using Interfaces;
 	using Utils;
 
-	public class LayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer> : IRandomInjectable
+	public class SlowLayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer> : IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TConfiguration, TShapeContainer>
+		where TConfiguration : IConfiguration<TConfiguration, TShapeContainer>
 	{
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces;
 		private readonly PolygonOverlap polygonOverlap = new PolygonOverlap();
@@ -18,7 +18,7 @@
 
 		private const float EnergySigma = 300f; // TODO: change
 
-		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces)
+		public SlowLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces)
 		{
 			this.configurationSpaces = configurationSpaces;
 		}
@@ -102,15 +102,53 @@
 		/// Check if the layout is valid.
 		/// </summary>
 		/// <remarks>
-		/// Validity vectors and energy data must be up-to-date for this to work.
+		/// These two conditions must hold:
+		/// 1. no two rooms can overlap
+		/// 2. all pairs of neigbours must be in a valid position with respect to each other
+		/// 
+		/// !! Validity vectors must be up-to-date !!
 		/// </remarks>
 		/// <param name="layout"></param>
 		/// <returns></returns>
 		public bool IsLayoutValid(TLayout layout)
 		{
-			if (layout.GetAllConfigurations().Any(x => !x.IsValid || x.EnergyData.Energy > 0))
+			var graph = layout.Graph;
+
+			// First check if all neighbouring vertices have pair-wise valid position
+			foreach (var vertex in graph.Vertices)
 			{
-				return false;
+				if (layout.GetConfiguration(vertex, out var configuration))
+				{
+					if (configuration.ValidityVector.Data != 0)
+						return false;
+				}
+			}
+
+			// Then check if any non-neighbouring vertices overlap
+			// TODO: is it okay to call all these ToList() ?
+			var vertices = graph.Vertices.ToList();
+			for (var i = 0; i < vertices.Count; i++)
+			{
+				var v1 = vertices[i];
+
+				if (!layout.GetConfiguration(v1, out var c1))
+					continue;
+
+				var neighbours = graph.GetNeighbours(v1).ToList();
+
+				for (var j = i + 1; j < vertices.Count; j++)
+				{
+					var v2 = vertices[j];
+
+					if (!layout.GetConfiguration(v2, out var c2))
+						continue;
+
+					if (neighbours.Contains(v2))
+						continue;
+
+					if (polygonOverlap.DoOverlap(c1.Shape, c1.Position, c2.Shape, c2.Position))
+						return false;
+				}
 			}
 
 			return true;
@@ -118,7 +156,7 @@
 
 		public void RecomputeEnergy(TLayout layout)
 		{
-
+			
 		}
 
 		/// <summary>
@@ -144,8 +182,7 @@
 				if (area != 0)
 				{
 					intersection += area;
-				}
-				else if (neighbours.Contains(vertex))
+				} else if (neighbours.Contains(vertex))
 				{
 					if (!configurationSpaces.HaveValidPosition(configuration, c))
 					{
@@ -166,3 +203,4 @@
 		}
 	}
 }
+ 

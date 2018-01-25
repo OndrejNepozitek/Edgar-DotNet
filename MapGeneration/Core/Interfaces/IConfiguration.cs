@@ -13,6 +13,8 @@
 
 		SimpleBitVector32 ValidityVector { get; }
 
+		bool IsValid { get; }
+
 		TConfiguration SetShape(TShapeContainer shapeContainer);
 
 		TConfiguration SetPosition(IntVector2 position);
