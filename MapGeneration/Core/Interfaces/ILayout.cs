@@ -3,7 +3,7 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
-	public interface ILayout<TNode, TConfiguration>
+	public interface ILayout<TNode, TConfiguration> 
 	{
 		IGraph<TNode> Graph { get; }
 

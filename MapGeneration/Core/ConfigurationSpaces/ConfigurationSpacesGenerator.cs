@@ -9,14 +9,14 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
-	public class CSGenerator
+	public class ConfigurationSpacesGenerator
 	{
 		private readonly IPolygonOverlap polygonOverlap;
 		private readonly IDoorHandler doorHandler;
 		private readonly ILineIntersection<OrthogonalLine> lineIntersection;
 		private readonly IPolygonUtils<GridPolygon> polygonUtils;
 
-		public CSGenerator(
+		public ConfigurationSpacesGenerator(
 			IPolygonOverlap polygonOverlap,
 			IDoorHandler doorHandler,
 			ILineIntersection<OrthogonalLine> lineIntersection,
@@ -262,50 +262,5 @@
 
 			return result;
 		}
-
-		/*private List<GridPolygon> ProcessPolygons(IEnumerable<GridPolygon> polygons, bool rotate, bool normalizeChances = false)
-		{
-			var newPolygons = new List<GridPolygon>();
-
-			foreach (var polygon in polygons)
-			{
-				if (rotate)
-				{
-					var rotations = polygon.GetAllRotations().Select(x => polygonUtils.NormalizePolygon(x)).ToList();
-					var toAdd = 4;
-
-					foreach (var rotation in rotations)
-					{
-						// TODO: do we want duplicates?
-						if (!newPolygons.Contains(rotation))
-						{
-							newPolygons.Add(rotation);
-							toAdd--;
-						}
-					}
-
-					if (normalizeChances)
-					{
-						for (var i = 0; i < toAdd; i++)
-						{
-							newPolygons.Add(rotations[0]);
-						}
-					}
-				}
-				else
-				{
-					var normalized = polygonUtils.NormalizePolygon(polygon);
-
-					if (!newPolygons.Contains(normalized))
-					{
-						newPolygons.Add(normalized);
-					}
-				}
-			}
-
-			return newPolygons;
-		}*/
-
-
 	}
 }

@@ -4,9 +4,11 @@
 	{
 		public readonly float Energy;
 		public readonly int Area;
-		public readonly float MoveDistance;
 
-		public EnergyData(float energy, int area, float moveDistance)
+		// We need an int here because there must be no rounding of the value
+		public readonly int MoveDistance;
+
+		public EnergyData(float energy, int area, int moveDistance)
 		{
 			Energy = energy;
 			Area = area;

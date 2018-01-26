@@ -92,7 +92,7 @@
     <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
-    <Compile Include="Core\ConfigurationSpaces\CSGenerator.cs" />
+    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpacesGenerator.cs" />
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />

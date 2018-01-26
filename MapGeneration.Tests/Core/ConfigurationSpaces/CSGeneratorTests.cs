@@ -15,12 +15,12 @@
 	[TestFixture]
 	public class CSGeneratorTests
 	{
-		private CSGenerator generator;
+		private ConfigurationSpacesGenerator generator;
 
 		[SetUp]
 		public void SetUp()
 		{
-			generator = new CSGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
+			generator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 		}
 
 		[Test]
@@ -120,8 +120,8 @@
 			var squareRoom = new RoomDescription(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
 			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
 
-			mapDescription.AddRoomShapes(squareRoom, true);
-			mapDescription.AddRoomShapes(rectangleRoom, true, 0.5);
+			mapDescription.AddRoomShapes(squareRoom, rotate: true);
+			mapDescription.AddRoomShapes(rectangleRoom, rotate: true, probability: 0.5d);
 
 			mapDescription.AddRoom(0);
 			mapDescription.AddRoom(1);
@@ -131,8 +131,8 @@
 
 			var configurationSpaces = generator.Generate(mapDescription);
 
-			Assert.AreEqual(3, configurationSpaces.GetAllShapes(0));
-			Assert.AreEqual(1, configurationSpaces.GetAllShapes(1));
+			Assert.AreEqual(3, configurationSpaces.GetAllShapes(0).Count);
+			Assert.AreEqual(1, configurationSpaces.GetAllShapes(1).Count);
 		}
 	}
 }

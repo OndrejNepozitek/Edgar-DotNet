@@ -41,7 +41,7 @@
 		private void button1_Click(object sender, System.EventArgs e)
 		{
 
-			var configuartionSpacesGenerator = new CSGenerator();
+			var configuartionSpacesGenerator = new ConfigurationSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{
 				GridPolygon.GetSquare(3),

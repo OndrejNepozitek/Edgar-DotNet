@@ -64,13 +64,13 @@
 		}
 
 		// TODO: should be replace with a lookup table
-		public int NeigbourIndex(int original, int neigbour)
+		public int GetNeighbourIndex(int original, int neighbour)
 		{
 			var index = 0;
 
-			foreach (var n in GetNeighbours(neigbour))
+			foreach (var n in GetNeighbours(original))
 			{
-				if (n == original)
+				if (n == neighbour)
 				{
 					return index;
 				}

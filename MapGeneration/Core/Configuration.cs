@@ -53,7 +53,12 @@
 
 		public Configuration SetEnergyData(EnergyData energyData)
 		{
-			throw new NotImplementedException();
+			return new Configuration(
+				ShapeContainer,
+				Position,
+				ValidityVector,
+				energyData
+			);
 		}
 	}
 }
