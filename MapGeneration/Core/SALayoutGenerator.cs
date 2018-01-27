@@ -4,13 +4,19 @@
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Linq;
+	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
+	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
 	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>
 	{
 		private readonly IGraphDecomposer<int> graphDecomposer = new GraphDecomposer<int>();
+		private readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
+		private readonly LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
 		private Random random;
 
 		private IMapDescription<TNode> mapDescription;
@@ -29,6 +35,13 @@
 		public event Action<ILayout<TNode, Configuration>> OnValidAndDifferent;
 
 		private double minimumDifference = 300; // TODO: change
+		private double shapePerturbChance = 0.4f;
+
+		public SALayoutGenerator(IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces)
+		{
+			this.configurationSpaces = configurationSpaces;
+			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+		}
 
 		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
@@ -279,22 +292,52 @@
 
 		private Layout AddChainToLayout(Layout layout, List<int> chain)
 		{
-			throw new NotImplementedException();
+			layout = layout.Clone();
+
+			foreach (var node in chain)
+			{
+				layoutOperations.AddNodeGreedily(layout, node);
+			}
+
+			layoutOperations.RecomputeValidityVectors(layout);
+			layoutOperations.RecomputeEnergy(layout);
+
+			return layout;
 		}
 
 		private Layout PerturbLayout(Layout layout, List<int> chain, out double energyDelta)
 		{
-			throw new NotImplementedException();
+			// TODO: sometimes perturb a node that is not in the current chain?
+
+			var energy = layout.GetEnergy();
+			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain) : layoutOperations.PerturbPosition(layout, chain);
+
+			var newEnergy = newLayout.GetEnergy();
+			energyDelta = newEnergy - energy;
+
+			return newLayout;
 		}
 
 		private bool IsLayoutValid(Layout layout)
 		{
-			throw new NotImplementedException();
+			return layout.GetEnergy() == 0; // TODO: may it cause problems?
 		}
 
 		private double GetDifference(Layout first, Layout second, List<int> chain = null)
 		{
-			throw new NotImplementedException();
+			var diff = 0f;
+
+			for (var i = 0; i < first.Graph.VerticesCount; i++)
+			{
+				if (first.GetConfiguration(i, out var c1) && second.GetConfiguration(i, out var c2))
+				{
+					diff += (float)Math.Pow(
+						IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+							c2.Shape.BoundingRectangle.Center + c2.Position), 2);
+				}
+			}
+
+			return diff;
 		}
 
 		private IMapLayout<TNode> ConvertLayout(Layout layout)

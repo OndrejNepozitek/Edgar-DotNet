@@ -8,12 +8,7 @@
 
 	public class GraphDecomposer<TNode> : IGraphDecomposer<TNode>
 		where TNode : IEquatable<TNode>
-	{
-		public List<List<TNode>> GetChains(IGraph<TNode> graph)
-		{
-			throw new System.NotImplementedException();
-		}
-
+	{ 
 		public List<List<TNode>> GetFaces(IGraph<TNode> graph)
 		{
 			var usedVerticesCount = 0;
