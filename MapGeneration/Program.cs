@@ -1,9 +1,43 @@
 ﻿namespace MapGeneration
 {
+	using Core;
+	using Core.ConfigurationSpaces;
+	using Core.Doors;
+	using Core.Doors.DoorModes;
+	using GeneralAlgorithms.Algorithms.Common;
+	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Polygons;
+
 	internal class Program
 	{
 		private static void Main(string[] args)
 		{
+			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler,
+				new OrthogonalLineIntersection(), new GridPolygonUtils());
+
+			var squareRoom = new RoomDescription(GridPolygon.GetSquare(4), new OverlapMode(1, 1));
+			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(3, 5), new OverlapMode(1, 1));
+
+			var mapDescription = new MapDescription<int>();
+
+			mapDescription.AddRoom(0);
+			mapDescription.AddRoom(1);
+			mapDescription.AddRoom(2);
+			mapDescription.AddRoom(3);
+
+			mapDescription.AddPassage(0, 1);
+			mapDescription.AddPassage(1, 2);
+			mapDescription.AddPassage(0, 2);
+			mapDescription.AddPassage(2, 3);
+
+			mapDescription.AddRoomShapes(squareRoom);
+			mapDescription.AddRoomShapes(rectangleRoom);
+
+			var configurationSpaces = configurationSpacesGenerator.Generate(mapDescription);
+			var layoutGenerator = new SALayoutGenerator<int>(configurationSpaces);
+
+			var layouts = layoutGenerator.GetLayouts(mapDescription, 10);
+
 			/*var configuartionSpacesGenerator = new ConfigSpacesGenerator();
 			var polygons = new List<GridPolygon>()
 			{

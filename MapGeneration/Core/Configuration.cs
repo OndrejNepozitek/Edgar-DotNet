@@ -31,13 +31,24 @@
 		[Pure]
 		public Configuration SetShape(IntAlias<GridPolygon> shape)
 		{
-			throw new InvalidOperationException();
+			// TODO: unify names - shape vs shapeContainer
+			return new Configuration(
+				shape,
+				Position,
+				ValidityVector,
+				EnergyData
+			);
 		}
 
 		[Pure]
 		public Configuration SetPosition(IntVector2 position)
 		{
-			throw new InvalidOperationException();
+			return new Configuration(
+				ShapeContainer,
+				position,
+				ValidityVector,
+				EnergyData
+			);
 		}
 
 		[Pure]

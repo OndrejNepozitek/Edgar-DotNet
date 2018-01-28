@@ -96,6 +96,7 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
+    <Compile Include="Core\Doors\DoorLine.cs" />
     <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
     <Compile Include="Core\Energy.cs" />
     <Compile Include="Core\IntAlias.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Core\Interfaces\IRoomDescription.cs" />
     <Compile Include="Core\LayoutOperations.cs" />
     <Compile Include="Core\MapDescription.cs" />
+    <Compile Include="Core\Room.cs" />
     <Compile Include="Core\RoomDescription.cs" />
     <Compile Include="Core\Layout.cs" />
     <Compile Include="Core\SlowLayoutOperations.cs" />

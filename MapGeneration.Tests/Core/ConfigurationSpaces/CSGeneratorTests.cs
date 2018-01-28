@@ -113,6 +113,88 @@
 		}
 
 		[Test]
+		public void GetConfigurationSpace_DifferentLengths()
+		{
+			{
+				var p1 = GridPolygon.GetSquare(3);
+				var p2 = GridPolygon.GetSquare(5);
+
+				var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(2, 0));
+				var expectedPoints = new List<IntVector2>();
+				var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
+
+				{
+					// Top side of fixed
+					var points = new OrthogonalLine(new IntVector2(-1, 5), new IntVector2(3, 5)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Bottom side of fixed
+					var points = new OrthogonalLine(new IntVector2(-1, -3), new IntVector2(3, -3)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Right side of fixed
+					var points = new OrthogonalLine(new IntVector2(5, 3), new IntVector2(5, -1)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Left side of fixed
+					var points = new OrthogonalLine(new IntVector2(-3, -1), new IntVector2(-3, 3)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				Assert.AreEqual(expectedPoints.Distinct().Count(), actualPoints.Count);
+			}
+
+			{
+				var p1 = GridPolygon.GetSquare(3);
+				var p2 = GridPolygon.GetSquare(5);
+
+				var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(2, 0), p2, new OverlapMode(1, 0));
+				var expectedPoints = new List<IntVector2>();
+				var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
+
+				{
+					// Top side of fixed
+					var points = new OrthogonalLine(new IntVector2(-1, 5), new IntVector2(3, 5)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Bottom side of fixed
+					var points = new OrthogonalLine(new IntVector2(-1, -3), new IntVector2(3, -3)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Right side of fixed
+					var points = new OrthogonalLine(new IntVector2(5, 3), new IntVector2(5, -1)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				{
+					// Left side of fixed
+					var points = new OrthogonalLine(new IntVector2(-3, -1), new IntVector2(-3, 3)).GetPoints();
+					expectedPoints.AddRange(points);
+					Assert.AreEqual(points.Count, actualPoints.Intersect(points).Count());
+				}
+
+				Assert.AreEqual(expectedPoints.Distinct().Count(), actualPoints.Count);
+			}
+		}
+
+		[Test]
 		public void Generate_BasicTest()
 		{
 			// This test cannot check if the generated configuration spaces are valid

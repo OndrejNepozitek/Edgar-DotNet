@@ -8,6 +8,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Doors;
 
 	public class ConfigurationSpacesGenerator
 	{
@@ -32,7 +33,7 @@
 		{
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;
-			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>>();
+			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<DoorLine>>>();
 			var shapes = new List<ConfigurationSpaces.WeightedShape>();
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces.WeightedShape>>();
 
@@ -96,10 +97,10 @@
 			return new ConfigurationSpaces(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
 		}
 
-		private List<Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>> PreparePolygons(
+		private List<Tuple<IntAlias<GridPolygon>, List<DoorLine>>> PreparePolygons(
 			RoomDescription roomDescription, bool shouldRotate, ref int aliasCounter)
 		{
-			var result = new List<Tuple<IntAlias<GridPolygon>, List<OrthogonalLine>>>();
+			var result = new List<Tuple<IntAlias<GridPolygon>, List<DoorLine>>>();
 			var doorLines = doorHandler.GetDoorPositions(roomDescription.Shape, roomDescription.DoorsMode);
 			var shape = roomDescription.Shape;
 			var rotations = shouldRotate ? GridPolygon.PossibleRotations : new[] {0};
@@ -112,7 +113,7 @@
 				// Both the shape and doors are moved so the polygon is in the first quadrant and touches axes
 				rotatedShape = rotatedShape + (-1 * smallesPoint);
 				rotatedShape = polygonUtils.NormalizePolygon(rotatedShape);
-				var rotatedDoorLines = doorLines.Select(x => x.Rotate(rotation) + (-1 * smallesPoint)).ToList();
+				var rotatedDoorLines = doorLines.Select(x => new DoorLine(x.Line.Rotate(rotation) + (-1 * smallesPoint), x.Length)).ToList();
 
 				if (result.Any(x => x.Item1.Value.Equals(rotatedShape)))
 					continue;
@@ -123,41 +124,43 @@
 			return result;
 		}
 
-		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<OrthogonalLine> doorLines, GridPolygon fixedCenter, List<OrthogonalLine> doorLinesFixed)
+		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<DoorLine> doorLines, GridPolygon fixedCenter, List<DoorLine> doorLinesFixed)
 		{
 			var configurationSpaceLines = new List<OrthogonalLine>();
 
 			// One list for every direction
-			var lines = new List<OrthogonalLine>[4];
+			var lines = new List<DoorLine>[4];
 
 			// Init array
 			for (var i = 0; i < lines.Length; i++)
 			{
-				lines[i] = new List<OrthogonalLine>();
+				lines[i] = new List<DoorLine>();
 			}
 
 			// Populate lists with lines
 			foreach (var line in doorLinesFixed)
 			{
-				lines[(int) line.GetDirection()].Add(line);
+				lines[(int) line.Line.GetDirection()].Add(line);
 			}
 
-			foreach (var line in doorLines)
+			foreach (var doorLine in doorLines)
 			{
+				var line = doorLine.Line;
 				var oppositeDirection = OrthogonalLine.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection].Select(x => x.Rotate(rotation));
+				var correspondingLines = lines[(int)oppositeDirection].Select(x => new DoorLine(x.Line.Rotate(rotation), x.Length));
 
-				foreach (var cline in correspondingLines)
+				foreach (var cDoorLine in correspondingLines)
 				{
+					var cline = cDoorLine.Line;
 					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - 1), y);
+					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - Math.Max(cDoorLine.Length, doorLine.Length)), y);
 					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + 1), y);
 
 					if (from.X < to.X) continue;
 
-					var resultLine = new OrthogonalLine(from, to).Rotate(-rotation);
+					var resultLine = new OrthogonalLine(from, to, OrthogonalLine.Direction.Left).Rotate(-rotation);
 					configurationSpaceLines.Add(resultLine);
 				}
 

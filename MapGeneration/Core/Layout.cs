@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces;
 
@@ -42,9 +43,7 @@
 
 		public float GetEnergy()
 		{
-			// return vertices.Where(x => x.HasValue).Sum(x => x.Value.Energy);
-
-			throw new NotImplementedException();
+			return vertices.Where(x => x.HasValue).Sum(x => x.Value.EnergyData.Energy);
 		}
 
 		public Layout Clone()

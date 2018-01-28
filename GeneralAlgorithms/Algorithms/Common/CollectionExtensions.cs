@@ -84,10 +84,14 @@
 
 			foreach (var element in elements)
 			{
-				if (weightSelector(element) < randomNumber)
+				var weight = weightSelector(element);
+
+				if (weight > randomNumber)
 				{
 					return element;
 				}
+
+				randomNumber -= weight;
 			}
 
 			// TODO: can it get here due to the rounding of doubles?

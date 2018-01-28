@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
+	using Doors;
 	using GeneralAlgorithms.DataStructures.Polygons;
 
 	public interface IDoorHandler
@@ -12,6 +12,6 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorMode"></param>
 		/// <returns></returns>
-		List<OrthogonalLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode);
+		List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode);
 	}
 }

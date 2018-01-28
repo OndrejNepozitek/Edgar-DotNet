@@ -13,12 +13,12 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>
+	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable
 	{
 		private readonly IGraphDecomposer<int> graphDecomposer = new GraphDecomposer<int>();
 		private readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
 		private readonly LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
-		private Random random;
+		private Random random = new Random();
 
 		private IMapDescription<TNode> mapDescription;
 		private FastGraph<TNode> graph;
@@ -351,6 +351,12 @@
 			public Layout Layout;
 
 			public int NumberOfChains;
+		}
+
+		public void InjectRandomGenerator(Random random)
+		{
+			this.random = random;
+			layoutOperations.InjectRandomGenerator(random);
 		}
 	}
 }

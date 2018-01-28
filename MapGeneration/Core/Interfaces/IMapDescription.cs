@@ -5,8 +5,7 @@
 
 	public interface IMapDescription<TNode>
 	{
-		IReadOnlyCollection<IRoomDescription> GetRooms();
-
-		FastGraph<TNode> GetGraph();
+		// TODO: how should this look like?
+		FastGraph<TNode> GetGraph(); 
 	}
 }

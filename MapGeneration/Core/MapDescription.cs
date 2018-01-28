@@ -5,8 +5,9 @@
 	using System.Collections.ObjectModel;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
+	using Interfaces;
 
-	public class MapDescription<TNode>
+	public class MapDescription<TNode> : IMapDescription<TNode>
 	{
 		private readonly List<RoomContainer> roomShapes = new List<RoomContainer>();
 		private readonly Dictionary<TNode, List<RoomContainer>> roomShapesForNodes = new Dictionary<TNode, List<RoomContainer>>();
@@ -92,7 +93,6 @@
 			passages.Add(passage);
 		}
 
-		// TODO: should it be compute every time or precompute once? What should happen if it were then modified?
 		public FastGraph<TNode> GetGraph()
 		{
 			var vertices = roomShapesForNodes.Keys;

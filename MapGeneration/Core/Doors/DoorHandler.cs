@@ -28,7 +28,7 @@
 			}
 		}
 
-		public List<OrthogonalLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
+		public List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
 		{
 			if (handlers.TryGetValue(doorMode.GetType(), out var handler))
 			{

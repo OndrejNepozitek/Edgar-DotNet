@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics.Contracts;
 	using System.Security.Cryptography;
 	using Algorithms.Common;
 
@@ -47,6 +48,7 @@
 			degeneratedDirection = direction;
 		}
 
+		[Pure]
 		public Direction GetDirection()
 		{
 			if (From == To)
@@ -80,6 +82,7 @@
 		/// </remarks>
 		/// <param name="degrees"></param>
 		/// <returns></returns>
+		[Pure]
 		public OrthogonalLine Rotate(int degrees)
 		{
 			if (degrees % 90 != 0)
@@ -287,7 +290,7 @@
 
 		public static OrthogonalLine operator +(OrthogonalLine line, IntVector2 point) 
 		{
-			return new OrthogonalLine(line.From + point, line.To + point);
+			return new OrthogonalLine(line.From + point, line.To + point, line.GetDirection());
 		}
 
 		public static OrthogonalLine operator +(IntVector2 point, OrthogonalLine line)
