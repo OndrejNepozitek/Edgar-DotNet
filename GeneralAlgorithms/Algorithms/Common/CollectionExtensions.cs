@@ -63,6 +63,7 @@
 
 				if (i == 0)
 				{
+					maxIndex = i;
 					max = result;
 				} else if (result.CompareTo(max) > 0)
 				{

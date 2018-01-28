@@ -113,6 +113,49 @@
 			}
 		}
 
+		[Test]
+		public void GetChains_BasicCounts()
+		{
+			{
+				// Two C_3s connected by a common vertex
+				var graph = new FastGraph<int>(5);
+
+				graph.AddVertex(0);
+				graph.AddVertex(1);
+				graph.AddVertex(2);
+				graph.AddVertex(3);
+				graph.AddVertex(4);
+
+				graph.AddEdge(0, 1);
+				graph.AddEdge(1, 2);
+				graph.AddEdge(2, 0);
+				graph.AddEdge(1, 3);
+				graph.AddEdge(3, 4);
+				graph.AddEdge(4, 1);
+
+				var chains = graphDecomposer.GetChains(graph);
+
+				Assert.AreEqual(5, chains.SelectMany(x => x).Distinct().Count());
+			}
+
+			{
+				// Two intersecting paths
+				var graph = new FastGraph<int>(7);
+				Enumerable.Range(0, 7).ToList().ForEach(x => graph.AddVertex(x));
+
+				graph.AddEdge(0, 1);
+				graph.AddEdge(1, 2);
+				graph.AddEdge(2, 3);
+				graph.AddEdge(4, 1);
+				graph.AddEdge(1, 5);
+				graph.AddEdge(5, 6);
+
+				var chains = graphDecomposer.GetChains(graph);
+
+				Assert.AreEqual(7, chains.SelectMany(x => x).Distinct().Count());
+			}
+		}
+
 		private void CheckFacesEqual(List<List<int>> actual, List<List<int>> expected)
 		{
 			Assert.AreEqual(expected.Count, actual.Count);
