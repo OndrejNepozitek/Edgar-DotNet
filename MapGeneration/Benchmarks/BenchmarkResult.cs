@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.Benchmarks
+﻿namespace MapGeneration.Benchmarks
 {
 	public class BenchmarkResult
 	{

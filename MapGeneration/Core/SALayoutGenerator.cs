@@ -4,7 +4,9 @@
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Linq;
+	using Benchmarks;
 	using ConfigurationSpaces;
+	using Doors;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -13,11 +15,12 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable
+	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
 	{
 		private readonly IGraphDecomposer<int> graphDecomposer = new GraphDecomposer<int>();
-		private readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
-		private readonly LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
+		private IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
+		private readonly ConfigurationSpacesGenerator configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
+		private LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
 		private Random random = new Random(0);
 
 		private IMapDescription<TNode> mapDescription;
@@ -25,27 +28,33 @@
 
 		// Debug and benchmark variables
 		private int iterationsCount;
-		private bool withDebugOutput = true;
+		private bool withDebugOutput;
 		private long timeFirst;
 		private long timeTen;
 		private int layoutsCount;
+		protected bool BenchmarkEnabled;
 
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
 		public event Action<IMapLayout<TNode>> OnValid;
 		public event Action<IMapLayout<TNode>> OnValidAndDifferent;
 
-		private double minimumDifference = 200; // TODO: change
+		private double minimumDifference = 150; // TODO: change
 		private double shapePerturbChance = 0.4f;
 
-		public SALayoutGenerator(IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces)
+		public SALayoutGenerator()
 		{
-			this.configurationSpaces = configurationSpaces;
-			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+			
 		}
 
 		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
+			// TODO: should not be done like this
+			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>) mapDescription); 
+			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+			configurationSpaces.InjectRandomGenerator(random);
+			layoutOperations.InjectRandomGenerator(random);
+
 			this.mapDescription = mapDescription;
 			graph = mapDescription.GetGraph();
 
@@ -56,14 +65,38 @@
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<Layout>();
 
-			/*var c1 = new List<int>() { 11, 12, 14, 15 };
-			var c2 = new List<int>() { 6, 3, 5, 0, 2 };
-			var c3 = new List<int>() { 16, 7, 13, 4, 8 };
-			var c4 = new List<int>() { 1, 10, 9 };
-			var graphChains = new List<List<int>>() {c1, c2, c3, c4};*/
+			var c1 = new List<int>() { 11, 12, 18, 19 };
+			var c2 = new List<int>() { 7, 20, 4, 8, 13 };
+			var c3 = new List<int>() { 6, 5, 2, 0, 3 };
+			var c4 = new List<int>() { 1, 9, 10 };
+			var c5 = new List<int>() { 23, 24, 30 };
+			var c5s = new List<int>() { 21 };
+			var c5ss = new List<int>() { 22, 17, 29 };
+			var c5sss = new List<int>() { 16, 27, 28 };
+			var c6 = new List<int>() { 14, 15, 26, 25 };
+			var c7 = new List<int>() { 31, 32, 33 };
+			var c8 = new List<int>() { 35, 34, 36 };
+			var c9 = new List<int>() { 38, 39, 37 };
+			var c10 = new List<int>() { 40 };
 
+			var graphChains = new List<List<int>>()
+			{
+				c1,
+				c2,
+				c3,
+				c4,
+				c5,
+				c5s,
+				c5ss,
+				c5sss,
+				c6,
+				c7,
+				c8,
+				c9,
+				c10,
+			};
 
-			var graphChains = graphDecomposer.GetChains(graph);
+			// var graphChains = graphDecomposer.GetChains(graph);
 			var initialLayout = new Layout(graph);
 
 			stack.Push(new LayoutNode { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });
@@ -76,7 +109,7 @@
 			while (stack.Count > 0)
 			{
 				var layoutNode = stack.Pop();
-				var extendedLayouts = GetExtendedLayouts(layoutNode.Layout, graphChains[layoutNode.NumberOfChains]);
+				var extendedLayouts = GetExtendedLayouts(layoutNode.Layout, graphChains[layoutNode.NumberOfChains], layoutNode.NumberOfChains);
 
 				if (layoutNode.NumberOfChains + 1 == graphChains.Count)
 				{
@@ -131,7 +164,7 @@
 			return fullLayouts.Select(ConvertLayout).ToList();
 		}
 
-		private List<Layout> GetExtendedLayouts(Layout layout, List<int> chain)
+		private List<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
 		{
 			var cycles = 50;
 			var trialsPerCycle = 500;
@@ -167,40 +200,43 @@
 				
 				#region Random restarts
 
-				if (numFailures > 8 && random.Next(0, 2) == 0)
+				if (chainNumber != 0)
 				{
-					if (withDebugOutput)
+					if (numFailures > 8 && random.Next(0, 2) == 0)
 					{
-						Console.WriteLine($"Break, we got {numFailures} failures");
+						if (withDebugOutput)
+						{
+							Console.WriteLine($"Break, we got {numFailures} failures");
+						}
+						break;
 					}
-					break;
-				}
 
-				if (numFailures > 6 && random.Next(0, 3) == 0)
-				{
-					if (withDebugOutput)
+					if (numFailures > 6 && random.Next(0, 3) == 0)
 					{
-						Console.WriteLine($"Break, we got {numFailures} failures");
+						if (withDebugOutput)
+						{
+							Console.WriteLine($"Break, we got {numFailures} failures");
+						}
+						break;
 					}
-					break;
-				}
 
-				if (numFailures > 4 && random.Next(0, 5) == 0)
-				{
-					if (withDebugOutput)
+					if (numFailures > 4 && random.Next(0, 5) == 0)
 					{
-						Console.WriteLine($"Break, we got {numFailures} failures");
+						if (withDebugOutput)
+						{
+							Console.WriteLine($"Break, we got {numFailures} failures");
+						}
+						break;
 					}
-					break;
-				}
 
-				if (numFailures > 2 && random.Next(0, 7) == 0)
-				{
-					if (withDebugOutput)
+					if (numFailures > 2 && random.Next(0, 7) == 0)
 					{
-						Console.WriteLine($"Break, we got {numFailures} failures");
+						if (withDebugOutput)
+						{
+							Console.WriteLine($"Break, we got {numFailures} failures");
+						}
+						break;
 					}
-					break;
 				}
 
 				#endregion
@@ -389,6 +425,11 @@
 			return new MapLayout<TNode>(rooms);
 		}
 
+		public void EnableDebugOutput(bool enable)
+		{
+			withDebugOutput = enable;
+		}
+
 		private struct LayoutNode
 		{
 			public Layout Layout;
@@ -399,7 +440,20 @@
 		public void InjectRandomGenerator(Random random)
 		{
 			this.random = random;
-			layoutOperations.InjectRandomGenerator(random);
+			layoutOperations?.InjectRandomGenerator(random);
+		}
+
+		long IBenchmarkable.TimeFirst => timeFirst;
+
+		long IBenchmarkable.TimeTen => timeTen;
+
+		int IBenchmarkable.IterationsCount => iterationsCount;
+
+		int IBenchmarkable.LayoutsCount => layoutsCount;
+
+		void IBenchmarkable.EnableBenchmark(bool enable)
+		{
+			BenchmarkEnabled = enable;
 		}
 	}
 }

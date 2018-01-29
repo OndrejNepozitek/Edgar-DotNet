@@ -1,28 +1,40 @@
-﻿namespace MapGeneration.Utils.Benchmarks
+﻿namespace MapGeneration.Benchmarks
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
-	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces;
+	using Core.Interfaces;
+	using Utils;
 
 	public class Benchmark
 	{
-		private readonly Dictionary<string, FastGraph<int>> inputs = new Dictionary<string, FastGraph<int>>()
-		{
-			{ "Graph 1", DummyGraphDecomposer<int>.DummyGraph1 },
-			{ "Graph 2", DummyGraphDecomposer<int>.DummyGraph2 },
-			{ "Graph 3", DummyGraphDecomposer<int>.DummyGraph3 },
-		};
+		private readonly Dictionary<string, IMapDescription<int>> inputs;
 
-		private readonly int nameLength = 20;
+		private readonly int nameLength = 30;
 		private readonly int collumnLength = 15;
 
-		public void Execute<TPolygon, TPosition, TGenerator>(TGenerator generator, string label) 
-			where TGenerator : ILayoutGenerator<int, TPolygon, TPosition>, IBenchmarkable
+		public Benchmark()
 		{
-			var results = inputs.Select(x => Execute<TPolygon, TPosition, TGenerator>(generator, x.Value, x.Key));
+			var reference9Vertices = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
+			MapDescriptionsDatabase.AddClassicRoomShapes(reference9Vertices);
+
+			var reference17Vertices = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
+			MapDescriptionsDatabase.AddClassicRoomShapes(reference17Vertices);
+
+			var reference41Vertices = MapDescriptionsDatabase.Reference_41Vertices_WithoutRoomShapes;
+			MapDescriptionsDatabase.AddClassicRoomShapes(reference41Vertices);
+
+			inputs = new Dictionary<string, IMapDescription<int>>();
+			inputs.Add("Reference 9 vertices", reference9Vertices);
+			inputs.Add("Reference 17 vertices", reference17Vertices);
+			inputs.Add("Reference 41 vertices", reference41Vertices);
+		}
+
+		public void Execute<TGenerator>(TGenerator generator, string label) 
+			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
+		{
+			var results = inputs.Select(x => Execute(generator, x.Value, x.Key));
 
 			Console.WriteLine(GetOutputHeader(label));
 
@@ -34,8 +46,8 @@
 			Console.WriteLine(GetOutputFooter());
 		}
 
-		public BenchmarkResult Execute<TPolygon, TPosition, TGenerator>(TGenerator generator, FastGraph<int> input, string label, int repeats = 10)
-			where TGenerator : ILayoutGenerator<int, TPolygon, TPosition>, IBenchmarkable
+		public BenchmarkResult Execute<TGenerator, TNode>(TGenerator generator, IMapDescription<TNode> input, string label, int repeats = 10)
+			where TGenerator : ILayoutGenerator<TNode>, IBenchmarkable
 		{
 			generator.EnableBenchmark(true);
 
