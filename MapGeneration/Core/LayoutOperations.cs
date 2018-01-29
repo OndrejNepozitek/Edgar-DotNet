@@ -17,7 +17,7 @@
 		private readonly IPolygonOverlap polygonOverlap;
 		private Random random = new Random();
 
-		private const float EnergySigma = 300f; // TODO: change
+		private const float EnergySigma = 15800f; // TODO: change
 
 		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap)
 		{
@@ -37,7 +37,7 @@
 		/// <param name="node">The node that should be perturbed.</param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout = true)
+		public TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout)
 		{
 			layout.GetConfiguration(node, out var configuration);
 
@@ -77,7 +77,7 @@
 		/// <param name="nodeOptions"></param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout = true)
+		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
 			var canBePerturbed = nodeOptions.Where(x => configurationSpaces.CanPerturbShape(x)).ToList();
 
@@ -94,7 +94,7 @@
 		/// <param name="node">The node that should be perturbed.</param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbPosition(TLayout layout, TNode node, bool updateLayout = true)
+		public TLayout PerturbPosition(TLayout layout, TNode node, bool updateLayout)
 		{
 			var configurations = new List<TConfiguration>();
 
@@ -134,7 +134,7 @@
 		/// <param name="nodeOptions"></param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout = true)
+		public TLayout PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
 			var canBePerturbed = nodeOptions.ToList();
@@ -210,8 +210,9 @@
 					}
 				}
 
-				if (!updateEnergies)
-					continue;
+				// TODO: uncomment
+				/*if (!updateEnergies)
+					continue;*/
 
 				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour);
 				newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
@@ -250,9 +251,14 @@
 			var distanceTotal = configuration.EnergyData.MoveDistance;
 			if (areNeighbours)
 			{
+				// TODO: either compute it twice here or use info from validity vectors
+				// TODO: slow now because position is checked 3 times
+				var validOld = configurationSpaces.HaveValidPosition(oldConfiguration, configuration);
+				var validNew = configurationSpaces.HaveValidPosition(newConfiguration, configuration);
+
 				// Distance is taken into account only when there is no overlap
-				var distanceOld = overlapOld == 0 ? ComputeDistance(configuration, oldConfiguration) : 0;
-				var distanceNew = overlapNew == 0 ? ComputeDistance(configuration, newConfiguration) : 0;
+				var distanceOld = overlapOld == 0 && !validOld ? ComputeDistance(configuration, oldConfiguration) : 0;
+				var distanceNew = overlapNew == 0 && !validNew ? ComputeDistance(configuration, newConfiguration) : 0;
 				distanceTotal = configuration.EnergyData.MoveDistance + (distanceNew - distanceOld);
 			}
 
@@ -484,8 +490,15 @@
 
 		protected int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return IntVector2.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
+			var distance = IntVector2.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
 				configuration2.Shape.BoundingRectangle.Center + configuration2.Position);
+
+			if (distance < 0)
+			{
+				throw new InvalidOperationException();
+			}
+
+			return distance;
 		}
 
 		protected float ComputeEnergy(int overlap, float distance)

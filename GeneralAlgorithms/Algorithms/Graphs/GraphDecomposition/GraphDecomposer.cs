@@ -108,7 +108,7 @@
 				var face = faces[i];
 
 				// Check whether the face neighbours with already used vertices
-				if (face.Any(x => usedVertices[x]))
+				if (face.Any(x => usedVertices[x]) || face.Any(x => graph.GetNeighbours(x).Any(y => usedVertices[y])))
 				{
 					var size = face.Count(x => !usedVertices[x]);
 
@@ -120,7 +120,7 @@
 				}
 			}
 
-			if (smallestFaceSize == -1)
+			if (smallestFaceIndex == -1)
 				throw new InvalidOperationException();
 
 			var smallestFace = faces[smallestFaceIndex].Where(x => !usedVertices[x]).ToList();

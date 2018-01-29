@@ -23,7 +23,7 @@
 				var partitions = polygonPartitioner.GetPartitions(polygon);
 				var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
 
-				using (var font1 = new Font("Arial", (int)(scale * 4), FontStyle.Regular, GraphicsUnit.Point))
+				using (var font1 = new Font("Arial", (int)(3 * scale), FontStyle.Regular, GraphicsUnit.Point))
 				{
 					var rectF1 = new RectangleF(
 						(int)(scale * biggestRectangle.A.X + offset.X),

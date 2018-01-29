@@ -18,24 +18,24 @@
 		private readonly IGraphDecomposer<int> graphDecomposer = new GraphDecomposer<int>();
 		private readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
 		private readonly LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
-		private Random random = new Random();
+		private Random random = new Random(0);
 
 		private IMapDescription<TNode> mapDescription;
 		private FastGraph<TNode> graph;
 
 		// Debug and benchmark variables
 		private int iterationsCount;
-		private bool withDebugOutput;
+		private bool withDebugOutput = true;
 		private long timeFirst;
 		private long timeTen;
 		private int layoutsCount;
 
 		// Events
-		public event Action<ILayout<TNode, Configuration>> OnPerturbed;
-		public event Action<ILayout<TNode, Configuration>> OnValid;
-		public event Action<ILayout<TNode, Configuration>> OnValidAndDifferent;
+		public event Action<IMapLayout<TNode>> OnPerturbed;
+		public event Action<IMapLayout<TNode>> OnValid;
+		public event Action<IMapLayout<TNode>> OnValidAndDifferent;
 
-		private double minimumDifference = 300; // TODO: change
+		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
 
 		public SALayoutGenerator(IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces)
@@ -55,6 +55,14 @@
 
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<Layout>();
+
+			/*var c1 = new List<int>() { 11, 12, 14, 15 };
+			var c2 = new List<int>() { 6, 3, 5, 0, 2 };
+			var c3 = new List<int>() { 16, 7, 13, 4, 8 };
+			var c4 = new List<int>() { 1, 10, 9 };
+			var graphChains = new List<List<int>>() {c1, c2, c3, c4};*/
+
+
 			var graphChains = graphDecomposer.GetChains(graph);
 			var initialLayout = new Layout(graph);
 
@@ -156,7 +164,7 @@
 			for (var i = 0; i < cycles; i++)
 			{
 				var wasAccepted = false;
-
+				
 				#region Random restarts
 
 				if (numFailures > 8 && random.Next(0, 2) == 0)
@@ -196,26 +204,26 @@
 				}
 
 				#endregion
-
+				
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
 					iterationsCount++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta);
 
-					// OnPerturbed?.Invoke((ILayout<TNode>) perturbedLayout);
+					OnPerturbed?.Invoke(ConvertLayout(perturbedLayout));
 
 					// TODO: can we check the energy instead?
 					if (IsLayoutValid(perturbedLayout))
 					{
-						// OnValid?.Invoke((ILayout<TNode, TPolygon, TPosition, IntLine>)perturbedLayout);
+						OnValid?.Invoke(ConvertLayout(perturbedLayout));
 
 						// TODO: wouldn't it be too slow to compare againts all?
-						if (layouts.TrueForAll(x => GetDifference(layout, x, chain) > 2 * minimumDifference))
+						if (layouts.TrueForAll(x => GetDifference(perturbedLayout, x, chain) > 2 * minimumDifference))
 						{
 							wasAccepted = true;
 							// AddDoors(new List<Layout>() { perturbedLayout });
 							layouts.Add(perturbedLayout);
-							// OnValidAndDifferent?.Invoke((ILayout<TNode, TPolygon, TPosition, IntLine>)perturbedLayout);
+							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
 
 							#region Debug output
 
@@ -240,7 +248,6 @@
 								return layouts;
 							}
 						}
-
 					}
 
 					var deltaAbs = Math.Abs(energyDelta);
@@ -311,7 +318,23 @@
 			// TODO: sometimes perturb a node that is not in the current chain?
 
 			var energy = layout.GetEnergy();
-			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain) : layoutOperations.PerturbPosition(layout, chain);
+			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true) : layoutOperations.PerturbPosition(layout, chain, true);
+
+			// TODO: remove
+			/*var expected = newLayout.Clone();
+			layoutOperations.RecomputeEnergy(expected);
+			layoutOperations.RecomputeValidityVectors(expected);
+
+			foreach (var node in layout.Graph.Vertices)
+			{
+				if (!expected.GetConfiguration(node, out var c1) || !newLayout.GetConfiguration(node, out var c2))
+					continue;
+
+				if (!c1.Equals(c2))
+				{
+					var x = 1;
+				}
+			}*/
 
 			var newEnergy = newLayout.GetEnergy();
 			energyDelta = newEnergy - energy;
@@ -328,7 +351,17 @@
 		{
 			var diff = 0f;
 
-			for (var i = 0; i < first.Graph.VerticesCount; i++)
+			foreach (var node in chain ?? first.Graph.Vertices)
+			{
+				if (first.GetConfiguration(node, out var c1) && second.GetConfiguration(node, out var c2))
+				{
+					diff += (float)(Math.Pow(
+						IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+							c2.Shape.BoundingRectangle.Center + c2.Position), 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
+				}
+			}
+
+			/*for (var i = 0; i < first.Graph.VerticesCount; i++)
 			{
 				if (first.GetConfiguration(i, out var c1) && second.GetConfiguration(i, out var c2))
 				{
@@ -336,14 +369,24 @@
 						IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
 							c2.Shape.BoundingRectangle.Center + c2.Position), 2);
 				}
-			}
+			}*/
 
 			return diff;
 		}
 
 		private IMapLayout<TNode> ConvertLayout(Layout layout)
 		{
-			throw new NotImplementedException();
+			var rooms = new List<IRoom<TNode>>();
+
+			foreach (var vertex in layout.Graph.Vertices)
+			{
+				if (layout.GetConfiguration(vertex, out var configuration))
+				{
+					rooms.Add(new Room<TNode>(graph.GetVertex(vertex), configuration.Shape, configuration.Position));
+				}
+			}
+
+			return new MapLayout<TNode>(rooms);
 		}
 
 		private struct LayoutNode

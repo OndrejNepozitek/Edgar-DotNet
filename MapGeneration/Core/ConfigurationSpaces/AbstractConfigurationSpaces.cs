@@ -78,7 +78,7 @@
 
 		public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			var space = GetConfigurationSpace(configuration1, configuration2);
+			var space = GetConfigurationSpace(configuration2, configuration1);
 			var lines1 = new List<OrthogonalLine>() {new OrthogonalLine(configuration1.Position, configuration1.Position)};
 
 			return LineIntersection.DoIntersect(lines1, space.Lines.Select(x => x + configuration2.Position).ToList());

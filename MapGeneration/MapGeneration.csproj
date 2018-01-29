@@ -114,6 +114,7 @@
     <Compile Include="Core\Interfaces\IRoomDescription.cs" />
     <Compile Include="Core\LayoutOperations.cs" />
     <Compile Include="Core\MapDescription.cs" />
+    <Compile Include="Core\MapLayout.cs" />
     <Compile Include="Core\Room.cs" />
     <Compile Include="Core\RoomDescription.cs" />
     <Compile Include="Core\Layout.cs" />
