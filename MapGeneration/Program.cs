@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration
 {
 	using System;
+	using System.Collections.Generic;
 	using Benchmarks;
 	using Core;
 	using Core.ConfigurationSpaces;
@@ -16,7 +17,7 @@
 		{
 			var benchmark = new Benchmark();
 
-			{
+			/*{
 				var mapDescription = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
 				MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
 
@@ -28,6 +29,21 @@
 				layoutGenerator.InjectRandomGenerator(new Random(0));
 
 				benchmark.Execute(layoutGenerator, "Basic generator");
+			}*/
+
+			{
+				var layoutGenerator = new SALayoutGenerator<int>();
+				layoutGenerator.InjectRandomGenerator(new Random(0));
+
+				var scenarios = new BenchmarkScenarios<SALayoutGenerator<int>, int>();
+
+				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
+				{
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Test 1", (generator) => {}),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Test 2", (generator) => {}),
+				});
+
+				benchmark.Execute(layoutGenerator, scenarios, 10);
 			}
 		}
 	}

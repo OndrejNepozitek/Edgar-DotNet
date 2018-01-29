@@ -28,15 +28,15 @@
 			inputs = new Dictionary<string, IMapDescription<int>>();
 			inputs.Add("Reference 9 vertices", reference9Vertices);
 			inputs.Add("Reference 17 vertices", reference17Vertices);
-			inputs.Add("Reference 41 vertices", reference41Vertices);
+			// inputs.Add("Reference 41 vertices", reference41Vertices);
 		}
 
-		public void Execute<TGenerator>(TGenerator generator, string label) 
+		public void Execute<TGenerator>(TGenerator generator, string label, int repeats = 10) 
 			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
 		{
-			var results = inputs.Select(x => Execute(generator, x.Value, x.Key));
+			var results = inputs.Select(x => Execute(generator, x.Value, x.Key, repeats));
 
-			Console.WriteLine(GetOutputHeader(label));
+			Console.WriteLine(GetOutputHeader(label, repeats));
 
 			foreach (var result in results)
 			{
@@ -89,11 +89,24 @@
 			};
 		}
 
-		private string GetOutputHeader(string name)
+		public void Execute<TGenerator>(TGenerator generator, BenchmarkScenarios<TGenerator, int> scenarios,
+			int repeats = 10)
+			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
+		{
+			foreach (var product in scenarios.GetSetups().CartesianProduct())
+			{
+				var name = string.Join(", ", product.Select(x => x.Item1));
+				product.Select(x => x.Item2).ToList().ForEach(x => x(generator));
+
+				Execute(generator, name, repeats);
+			}
+		}
+
+		private string GetOutputHeader(string name, int repeats)
 		{
 			var builder = new StringBuilder();
 
-			builder.AppendLine($" << {name} >>");
+			builder.AppendLine($" << {name} >> ({repeats} repeats)");
 			builder.AppendLine(new string('-', nameLength + 5 * collumnLength));
 			builder.AppendLine($" {"Name".PadRight(nameLength - 3)}| {"# layouts".PadRight(collumnLength - 2)}| {"Time first".PadRight(collumnLength - 2)}| {"Time ten".PadRight(collumnLength - 2)}| {"Iterations".PadRight(collumnLength - 2)}| {"Iterations/sec".PadRight(collumnLength - 2)}");
 			builder.Append(new string('-', nameLength + 5 * collumnLength));

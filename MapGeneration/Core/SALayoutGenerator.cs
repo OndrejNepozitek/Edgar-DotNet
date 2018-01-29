@@ -65,7 +65,7 @@
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<Layout>();
 
-			var c1 = new List<int>() { 11, 12, 18, 19 };
+			/*var c1 = new List<int>() { 11, 12, 18, 19 };
 			var c2 = new List<int>() { 7, 20, 4, 8, 13 };
 			var c3 = new List<int>() { 6, 5, 2, 0, 3 };
 			var c4 = new List<int>() { 1, 9, 10 };
@@ -94,9 +94,9 @@
 				c8,
 				c9,
 				c10,
-			};
+			};*/
 
-			// var graphChains = graphDecomposer.GetChains(graph);
+			var graphChains = graphDecomposer.GetChains(graph);
 			var initialLayout = new Layout(graph);
 
 			stack.Push(new LayoutNode { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });

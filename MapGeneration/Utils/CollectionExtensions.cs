@@ -140,5 +140,18 @@
 			// count is odd, return the middle element
 			return temp[count / 2];
 		}
+
+		// TODO: https://blogs.msdn.microsoft.com/ericlippert/2010/06/28/computing-a-cartesian-product-with-linq/
+		// Executes lazily
+		public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<IEnumerable<T>> sequences)
+		{
+			IEnumerable<IEnumerable<T>> emptyProduct = new[] { Enumerable.Empty<T>() };
+			return sequences.Aggregate(
+				emptyProduct,
+				(accumulator, sequence) =>
+					from accseq in accumulator
+					from item in sequence
+					select accseq.Concat(new[] { item }));
+		}
 	}
 }
