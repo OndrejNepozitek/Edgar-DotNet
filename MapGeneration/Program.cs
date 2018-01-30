@@ -42,24 +42,30 @@
 				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
 				{
 					new Tuple<string, Action<SALayoutGenerator<int>>>("Handmade decomposition", (generator) => { generator.SetChainDecomposition(new DummyChainsDecomposition()); }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Basic", (generator) => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Longer chains", (generator) => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));}),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Breadth first", (generator) => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); }),
+					/*new Tuple<string, Action<SALayoutGenerator<int>>>("Basic", (generator) => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); }),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Longer chains", (generator) => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));}),*/
+					// new Tuple<string, Action<SALayoutGenerator<int>>>("Breadth first", (generator) => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); }),
 				});
 
 				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
 				{
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Lazy", (generator) => { generator.EnableLazyProcessing(true); }),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Not lazy", (generator) => { generator.EnableLazyProcessing(false); }),
+				});
+
+				/*scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
+				{
 					// new Tuple<string, Action<SALayoutGenerator<int>>>("Perturb pos", (generator) => { generator.EnablePerturbPositionAfterShape(true); }),
 					new Tuple<string, Action<SALayoutGenerator<int>>>("No perturb", (generator) => { generator.EnablePerturbPositionAfterShape(false); }),
-				});
+				});*/
 
 				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
 				{
 					new Tuple<string, Action<SALayoutGenerator<int>>>("Run 1", (generator) => {  }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Run 2", (generator) => {  }),
+					// new Tuple<string, Action<SALayoutGenerator<int>>>("Run 2", (generator) => {  }),
 				});
 
-				benchmark.Execute(layoutGenerator, scenarios, 30);
+				benchmark.Execute(layoutGenerator, scenarios, 15);
 			}
 		}
 	}

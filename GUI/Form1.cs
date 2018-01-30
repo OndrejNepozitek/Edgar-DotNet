@@ -78,12 +78,12 @@
 			layoutGenerator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));
 			layoutGenerator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>());
 
-			layoutGenerator.OnPerturbed += (l) =>
+			/*layoutGenerator.OnPerturbed += (l) =>
 			{
 				layout = l;
 				canvas.Invoke((Action)(() => canvas.Refresh()));
 				Thread.Sleep(25);
-			};
+			};*/
 
 			/*layoutGenerator.OnValid += (l) =>
 			{

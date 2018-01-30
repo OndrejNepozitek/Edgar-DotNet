@@ -35,6 +35,7 @@
 		private int layoutsCount;
 		protected bool BenchmarkEnabled;
 		private bool perturbPositionAfterShape;
+		private bool lazyProcessing;
 
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
@@ -46,6 +47,8 @@
 
 		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
+			return GetLayouts2(mapDescription, numberOfLayouts);
+
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>) mapDescription); 
 			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
@@ -61,37 +64,6 @@
 
 			var stack = new Stack<LayoutNode>();
 			var fullLayouts = new List<Layout>();
-
-			/*var c1 = new List<int>() { 11, 12, 18, 19 };
-			var c2 = new List<int>() { 7, 20, 4, 8, 13 };
-			var c3 = new List<int>() { 6, 5, 2, 0, 3 };
-			var c4 = new List<int>() { 1, 9, 10 };
-			var c5 = new List<int>() { 23, 24, 30 };
-			var c5s = new List<int>() { 21 };
-			var c5ss = new List<int>() { 22, 17, 29 };
-			var c5sss = new List<int>() { 16, 27, 28 };
-			var c6 = new List<int>() { 14, 15, 26, 25 };
-			var c7 = new List<int>() { 31, 32, 33 };
-			var c8 = new List<int>() { 35, 34, 36 };
-			var c9 = new List<int>() { 38, 39, 37 };
-			var c10 = new List<int>() { 40 };
-
-			var graphChains = new List<List<int>>()
-			{
-				c1,
-				c2,
-				c3,
-				c4,
-				c5,
-				c5s,
-				c5ss,
-				c5sss,
-				c6,
-				c7,
-				c8,
-				c9,
-				c10,
-			};*/
 
 			var graphChains = chainDecomposition.GetChains(graph);
 			var initialLayout = new Layout(graph);
@@ -161,13 +133,138 @@
 			return fullLayouts.Select(ConvertLayout).ToList();
 		}
 
-		private List<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
+		private IList<IMapLayout<TNode>> GetLayouts2(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
-			var cycles = 50;
-			var trialsPerCycle = 500;
+			// TODO: should not be done like this
+			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>)mapDescription);
+			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+			configurationSpaces.InjectRandomGenerator(random);
+			layoutOperations.InjectRandomGenerator(random);
 
-			var p0 = 0.2d;
-			var p1 = 0.01d;
+			this.mapDescription = mapDescription;
+			graph = mapDescription.GetGraph();
+
+			iterationsCount = 0;
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
+			var stack = new Stack<SAInstance>();
+			var fullLayouts = new List<Layout>();
+
+			var graphChains = chainDecomposition.GetChains(graph);
+			var initialLayout = new Layout(graph);
+
+			stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
+
+			if (withDebugOutput)
+			{
+				Console.WriteLine("--- Simulation has started ---");
+			}
+
+			while (stack.Count > 0)
+			{
+				if (iterationsCount > 600000)
+				{
+					break;
+				}
+
+				List<Layout> extendedLayouts;
+				var saInstance = stack.Peek();
+
+				if (lazyProcessing)
+				{
+					var hasMoreLayouts = saInstance.Layouts.MoveNext();
+					var layout = saInstance.Layouts.Current;
+
+					if (!hasMoreLayouts)
+					{
+						stack.Pop();
+					}
+
+					if (layout == null)
+						continue;
+
+					extendedLayouts = new List<Layout>() { layout };
+				}
+				else
+				{
+					extendedLayouts = new List<Layout>();
+					var hasMoreLayouts = saInstance.Layouts.MoveNext();
+
+					do
+					{
+						var layout = saInstance.Layouts.Current;
+						if (layout == null)
+							break;
+
+						extendedLayouts.Add(layout);
+						hasMoreLayouts = saInstance.Layouts.MoveNext();
+
+					} while (hasMoreLayouts);
+
+					stack.Pop();
+				}
+				
+				if (saInstance.NumberOfChains + 1 == graphChains.Count)
+				{
+					foreach (var layout in extendedLayouts)
+					{
+						if (fullLayouts.TrueForAll(x =>
+							GetDifference(x, layout) > 2 * minimumDifference)
+						)
+						{
+							if (fullLayouts.Count == 0)
+							{
+								timeFirst = stopwatch.ElapsedMilliseconds;
+							}
+
+							fullLayouts.Add(layout);
+						}
+					}
+				}
+				else
+				{
+					var sorted = extendedLayouts
+						.Select(x => AddChainToLayout(x, graphChains[saInstance.NumberOfChains + 1]))
+						.OrderByDescending(x => x.GetEnergy());
+
+
+					foreach (var extendedLayout in sorted)
+					{
+						stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(extendedLayout, graphChains[saInstance.NumberOfChains + 1], saInstance.NumberOfChains + 1).GetEnumerator(), NumberOfChains = saInstance.NumberOfChains + 1 });
+					}
+				}
+
+				if (fullLayouts.Count >= numberOfLayouts)
+				{
+					break;
+				}
+			}
+
+			stopwatch.Stop();
+			timeTen = stopwatch.ElapsedMilliseconds;
+			layoutsCount = fullLayouts.Count;
+
+			if (withDebugOutput)
+			{
+				Console.WriteLine($"{fullLayouts.Count} layouts generated");
+				Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
+				Console.WriteLine($"Total iterations: {iterationsCount}");
+				Console.WriteLine($"Iterations per second: {(int)(iterationsCount / (stopwatch.ElapsedMilliseconds / 1000f))}");
+			}
+
+			// AddDoors(fullLayouts); TODO: how?
+
+			return fullLayouts.Select(ConvertLayout).ToList();
+		}
+
+		private IEnumerable<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
+		{
+			const int cycles = 50;
+			const int trialsPerCycle = 500;
+
+			const double p0 = 0.2d;
+			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
 			var t1 = -1d / Math.Log(p1);
 			var ratio = Math.Pow(t1 / t0, 1d / (cycles - 1));
@@ -258,6 +355,8 @@
 							layouts.Add(perturbedLayout);
 							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
 
+							yield return perturbedLayout;
+
 							#region Debug output
 
 							if (withDebugOutput)
@@ -278,7 +377,7 @@
 
 								#endregion
 
-								return layouts;
+								yield break;
 							}
 						}
 					}
@@ -327,8 +426,6 @@
 			}
 
 			#endregion
-
-			return layouts;
 		}
 
 		private Layout AddChainToLayout(Layout layout, List<int> chain)
@@ -418,6 +515,13 @@
 			public int NumberOfChains;
 		}
 
+		private class SAInstance
+		{
+			public IEnumerator<Layout> Layouts;
+
+			public int NumberOfChains;
+		}
+
 		public void InjectRandomGenerator(Random random)
 		{
 			this.random = random;
@@ -445,6 +549,11 @@
 		public void EnablePerturbPositionAfterShape(bool enable)
 		{
 			perturbPositionAfterShape = enable;
+		}
+
+		public void EnableLazyProcessing(bool enable)
+		{
+			lazyProcessing = enable;
 		}
 	}
 }
