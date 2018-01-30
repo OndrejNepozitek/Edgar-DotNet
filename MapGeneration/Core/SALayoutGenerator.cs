@@ -34,6 +34,7 @@
 		private long timeTen;
 		private int layoutsCount;
 		protected bool BenchmarkEnabled;
+		private bool perturbPositionAfterShape;
 
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
@@ -350,23 +351,7 @@
 			// TODO: sometimes perturb a node that is not in the current chain?
 
 			var energy = layout.GetEnergy();
-			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true) : layoutOperations.PerturbPosition(layout, chain, true);
-
-			// TODO: remove
-			/*var expected = newLayout.Clone();
-			layoutOperations.RecomputeEnergy(expected);
-			layoutOperations.RecomputeValidityVectors(expected);
-
-			foreach (var node in layout.Graph.Vertices)
-			{
-				if (!expected.GetConfiguration(node, out var c1) || !newLayout.GetConfiguration(node, out var c2))
-					continue;
-
-				if (!c1.Equals(c2))
-				{
-					var x = 1;
-				}
-			}*/
+			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
 
 			var newEnergy = newLayout.GetEnergy();
 			energyDelta = newEnergy - energy;
@@ -455,6 +440,11 @@
 		public void SetChainDecomposition(IChainDecomposition<int> chainDecomposition)
 		{
 			this.chainDecomposition = chainDecomposition;
+		}
+
+		public void EnablePerturbPositionAfterShape(bool enable)
+		{
+			perturbPositionAfterShape = enable;
 		}
 	}
 }

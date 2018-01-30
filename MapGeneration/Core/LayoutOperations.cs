@@ -37,8 +37,11 @@
 		/// <param name="node">The node that should be perturbed.</param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout)
+		public TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout, bool perturbPosition)
 		{
+			if (!updateLayout && perturbPosition)
+				throw new InvalidOperationException();
+
 			layout.GetConfiguration(node, out var configuration);
 
 			// Return the current layout if a given node cannot be shape-perturbed
@@ -56,7 +59,14 @@
 
 			if (updateLayout)
 			{
-				return UpdateLayout(layout, node, newConfiguration);
+				var updated = UpdateLayout(layout, node, newConfiguration);
+
+				if (perturbPosition)
+				{
+					updated = PerturbPosition(updated, node, updateLayout);
+				}
+
+				return updated;
 			}
 
 			var newLayout = (TLayout) layout.Clone(); // TODO: should it be without the cast?
@@ -77,14 +87,14 @@
 		/// <param name="nodeOptions"></param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout, bool perturbPosition)
 		{
 			var canBePerturbed = nodeOptions.Where(x => configurationSpaces.CanPerturbShape(x)).ToList();
 
 			if (canBePerturbed.Count == 0)
 				return (TLayout) layout.Clone(); // TODO: should it be without the cast?
 
-			return PerturbShape(layout, canBePerturbed.GetRandom(random), updateLayout);
+			return PerturbShape(layout, canBePerturbed.GetRandom(random), updateLayout, perturbPosition);
 		}
 
 		/// <summary>
