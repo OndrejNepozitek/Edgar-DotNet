@@ -6,8 +6,10 @@
 	using Core;
 	using Core.ConfigurationSpaces;
 	using Core.Doors;
+	using Core.GraphDecomposition;
 	using Core.Interfaces;
 	using GeneralAlgorithms.Algorithms.Common;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using Utils;
 
@@ -39,11 +41,13 @@
 
 				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
 				{
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Test 1", (generator) => {}),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Test 2", (generator) => {}),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Handmade", (generator) => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); }),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Basic", (generator) => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); }),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Longer chains", (generator) => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));}),
+					new Tuple<string, Action<SALayoutGenerator<int>>>("Breadth first", (generator) => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); }),
 				});
 
-				benchmark.Execute(layoutGenerator, scenarios, 10);
+				benchmark.Execute(layoutGenerator, scenarios, 40);
 			}
 		}
 	}

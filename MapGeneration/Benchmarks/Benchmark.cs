@@ -28,7 +28,7 @@
 			inputs = new Dictionary<string, IMapDescription<int>>();
 			inputs.Add("Reference 9 vertices", reference9Vertices);
 			inputs.Add("Reference 17 vertices", reference17Vertices);
-			// inputs.Add("Reference 41 vertices", reference41Vertices);
+			inputs.Add("Reference 41 vertices", reference41Vertices);
 		}
 
 		public void Execute<TGenerator>(TGenerator generator, string label, int repeats = 10) 

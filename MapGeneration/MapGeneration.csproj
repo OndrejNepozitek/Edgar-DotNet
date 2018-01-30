@@ -103,7 +103,12 @@
     <Compile Include="Core\Doors\DoorLine.cs" />
     <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
     <Compile Include="Core\Energy.cs" />
+    <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
+    <Compile Include="Core\GraphDecomposition\BreadthFirstLongerChainsDecomposition.cs" />
+    <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
+    <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
     <Compile Include="Core\IntAlias.cs" />
+    <Compile Include="Core\Interfaces\IChainDecomposition.cs" />
     <Compile Include="Core\Interfaces\IConfiguration.cs" />
     <Compile Include="Core\Interfaces\IConfigurationSpaces.cs" />
     <Compile Include="Core\Interfaces\IDoorHandler.cs" />

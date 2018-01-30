@@ -13,11 +13,12 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using GraphDecomposition;
 	using Interfaces;
 
 	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
 	{
-		private readonly IGraphDecomposer<int> graphDecomposer = new GraphDecomposer<int>();
+		private IChainDecomposition<int> chainDecomposition = new BasicChainsDecomposition<int>(new GraphDecomposer<int>());
 		private IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
 		private readonly ConfigurationSpacesGenerator configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 		private LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
@@ -39,13 +40,8 @@
 		public event Action<IMapLayout<TNode>> OnValid;
 		public event Action<IMapLayout<TNode>> OnValidAndDifferent;
 
-		private double minimumDifference = 150; // TODO: change
+		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
-
-		public SALayoutGenerator()
-		{
-			
-		}
 
 		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
@@ -96,7 +92,7 @@
 				c10,
 			};*/
 
-			var graphChains = graphDecomposer.GetChains(graph);
+			var graphChains = chainDecomposition.GetChains(graph);
 			var initialLayout = new Layout(graph);
 
 			stack.Push(new LayoutNode { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });
@@ -454,6 +450,11 @@
 		void IBenchmarkable.EnableBenchmark(bool enable)
 		{
 			BenchmarkEnabled = enable;
+		}
+
+		public void SetChainDecomposition(IChainDecomposition<int> chainDecomposition)
+		{
+			this.chainDecomposition = chainDecomposition;
 		}
 	}
 }

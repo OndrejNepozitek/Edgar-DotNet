@@ -9,6 +9,7 @@
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
 	using GeneralAlgorithms.Algorithms.Common;
+	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -17,6 +18,7 @@
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorModes;
+	using MapGeneration.Core.GraphDecomposition;
 	using MapGeneration.Core.Interfaces;
 	using MapGeneration.Utils;
 
@@ -73,13 +75,15 @@
 			var layoutGenerator = new SALayoutGenerator<int>();
 			layoutGenerator.InjectRandomGenerator(new Random(0));
 			layoutGenerator.EnableDebugOutput(true);
+			layoutGenerator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));
+			layoutGenerator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>());
 
-			/*layoutGenerator.OnPerturbed += (l) =>
+			layoutGenerator.OnPerturbed += (l) =>
 			{
 				layout = l;
 				canvas.Invoke((Action)(() => canvas.Refresh()));
-				Thread.Sleep(150);
-			};*/
+				Thread.Sleep(25);
+			};
 
 			/*layoutGenerator.OnValid += (l) =>
 			{
@@ -97,7 +101,7 @@
 
 			Task.Run(() =>
 			{
-				for (int i = 0; i < 10; i++)
+				for (int i = 0; i < 1; i++)
 				{
 					var mapDescription = MapDescriptionsDatabase.Reference_41Vertices_WithoutRoomShapes;
 					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
