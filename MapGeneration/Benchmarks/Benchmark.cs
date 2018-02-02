@@ -9,14 +9,14 @@
 
 	public class Benchmark
 	{
-		private readonly Dictionary<string, IMapDescription<int>> inputs;
+		// private readonly Dictionary<string, IMapDescription<int>> inputs;
 
 		private readonly int nameLength = 30;
 		private readonly int collumnLength = 15;
 
 		public Benchmark()
 		{
-			var reference9Vertices = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
+			/*var reference9Vertices = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
 			MapDescriptionsDatabase.AddClassicRoomShapes(reference9Vertices);
 
 			var reference17Vertices = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
@@ -28,13 +28,13 @@
 			inputs = new Dictionary<string, IMapDescription<int>>();
 			inputs.Add("Reference 9 vertices", reference9Vertices);
 			inputs.Add("Reference 17 vertices", reference17Vertices);
-			inputs.Add("Reference 41 vertices", reference41Vertices);
+			inputs.Add("Reference 41 vertices", reference41Vertices);*/
 		}
 
-		public void Execute<TGenerator>(TGenerator generator, string label, int repeats = 10) 
+		public void Execute<TGenerator>(TGenerator generator, string label, List<Tuple<string, IMapDescription<int>>> maps, int repeats = 10) 
 			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
 		{
-			var results = inputs.Select(x => Execute(generator, x.Value, x.Key, repeats));
+			var results = maps.Select(x => Execute(generator, x.Item2, x.Item1, repeats));
 
 			Console.WriteLine(GetOutputHeader(label, repeats));
 
@@ -89,16 +89,16 @@
 			};
 		}
 
-		public void Execute<TGenerator>(TGenerator generator, BenchmarkScenarios<TGenerator, int> scenarios,
+		public void Execute<TGenerator>(TGenerator generator, BenchmarkScenario<TGenerator, int> scenario, List<Tuple<string, IMapDescription<int>>> maps,
 			int repeats = 10)
 			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
 		{
-			foreach (var product in scenarios.GetSetups().CartesianProduct())
+			foreach (var product in scenario.GetSetupsGroups().Select(x => x.GetSetups()).CartesianProduct())
 			{
 				var name = string.Join(", ", product.Select(x => x.Item1));
 				product.Select(x => x.Item2).ToList().ForEach(x => x(generator));
 
-				Execute(generator, name, repeats);
+				Execute(generator, name, maps, repeats);
 			}
 		}
 

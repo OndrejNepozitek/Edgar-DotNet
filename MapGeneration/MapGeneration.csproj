@@ -91,7 +91,7 @@
   <ItemGroup>
     <Compile Include="Benchmarks\Benchmark.cs" />
     <Compile Include="Benchmarks\BenchmarkResult.cs" />
-    <Compile Include="Benchmarks\BenchmarkScenarios.cs" />
+    <Compile Include="Benchmarks\BenchmarkScenario.cs" />
     <Compile Include="Benchmarks\IBenchmarkable.cs" />
     <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />

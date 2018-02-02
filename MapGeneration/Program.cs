@@ -37,35 +37,24 @@
 				var layoutGenerator = new SALayoutGenerator<int>();
 				layoutGenerator.InjectRandomGenerator(new Random(0));
 
-				var scenarios = new BenchmarkScenarios<SALayoutGenerator<int>, int>();
+				var scenario = new BenchmarkScenario<SALayoutGenerator<int>, int>();
+				scenario.SetRunsCount(1);
 
-				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
-				{
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Handmade decomposition", (generator) => { generator.SetChainDecomposition(new DummyChainsDecomposition()); }),
-					/*new Tuple<string, Action<SALayoutGenerator<int>>>("Basic", (generator) => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Longer chains", (generator) => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));}),*/
-					// new Tuple<string, Action<SALayoutGenerator<int>>>("Breadth first", (generator) => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); }),
-				});
+				var setups1 = scenario.MakeSetupsGroup();
+				setups1.AddSetup("Handmade decomposition", generator => { generator.SetChainDecomposition(new DummyChainsDecomposition()); });
+				//setups1.AddSetup("Basic decomposition", generator => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); });
+				//setups1.AddSetup("Longer chains", generator => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
+				//setups1.AddSetup("Breadth first", generator => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); });
 
-				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
-				{
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Lazy", (generator) => { generator.EnableLazyProcessing(true); }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Not lazy", (generator) => { generator.EnableLazyProcessing(false); }),
-				});
+				var setups2 = scenario.MakeSetupsGroup();
+				setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true);});
+				setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false);});
 
-				/*scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
-				{
-					// new Tuple<string, Action<SALayoutGenerator<int>>>("Perturb pos", (generator) => { generator.EnablePerturbPositionAfterShape(true); }),
-					new Tuple<string, Action<SALayoutGenerator<int>>>("No perturb", (generator) => { generator.EnablePerturbPositionAfterShape(false); }),
-				});*/
+				//var setups3 = scenario.MakeSetupsGroup();
+				//setups3.AddSetup("Perturb pos", generator => { generator.EnablePerturbPositionAfterShape(true);});
+				//setups3.AddSetup("No perturb", generator => { generator.EnablePerturbPositionAfterShape(false);});
 
-				scenarios.AddScenario(new List<Tuple<string, Action<SALayoutGenerator<int>>>>()
-				{
-					new Tuple<string, Action<SALayoutGenerator<int>>>("Run 1", (generator) => {  }),
-					// new Tuple<string, Action<SALayoutGenerator<int>>>("Run 2", (generator) => {  }),
-				});
-
-				benchmark.Execute(layoutGenerator, scenarios, 15);
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.BasicSet, 15);
 			}
 		}
 	}
