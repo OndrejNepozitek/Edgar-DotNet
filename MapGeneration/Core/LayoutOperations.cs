@@ -17,12 +17,13 @@
 		private readonly IPolygonOverlap polygonOverlap;
 		private Random random = new Random();
 
-		private const float EnergySigma = 15800f; // TODO: change
+		private readonly float energySigma = 15800f; // TODO: change
 
-		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap)
+		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma = 0)
 		{
 			this.configurationSpaces = configurationSpaces;
 			this.polygonOverlap = polygonOverlap;
+			this.energySigma = energySigma;
 		}
 
 		/// <summary>
@@ -441,7 +442,7 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			foreach (var shape in configurationSpaces.GetAllShapes(node))
+			foreach (var shape in configurationSpaces.GetShapesForNode(node))
 			{
 				var intersection = configurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
@@ -513,7 +514,7 @@
 
 		protected float ComputeEnergy(int overlap, float distance)
 		{
-			return (float)(Math.Pow(Math.E, overlap / EnergySigma) * Math.Pow(Math.E, distance / EnergySigma) - 1);
+			return (float)(Math.Pow(Math.E, overlap / energySigma) * Math.Pow(Math.E, distance / energySigma) - 1);
 		}
 
 		public void InjectRandomGenerator(Random random)

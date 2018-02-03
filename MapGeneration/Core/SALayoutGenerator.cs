@@ -37,6 +37,9 @@
 		private bool perturbPositionAfterShape;
 		private bool lazyProcessing;
 
+		private bool sigmaFromAvg;
+		private int sigmaScale;
+
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
 		public event Action<IMapLayout<TNode>> OnValid;
@@ -51,7 +54,7 @@
 
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>) mapDescription); 
-			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), 15800f);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
 
@@ -137,7 +140,9 @@
 		{
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>)mapDescription);
-			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap());
+			var avgArea = GetAverageArea(configurationSpaces.GetAllShapes());
+			var sigma = sigmaFromAvg ? sigmaScale * avgArea : 15800f;
+			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), sigma);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
 
@@ -554,6 +559,25 @@
 		public void EnableLazyProcessing(bool enable)
 		{
 			lazyProcessing = enable;
+		}
+
+		public void EnableSigmaFromAvg(bool enable, int scale = 0)
+		{
+			if (enable && scale == 0)
+				throw new InvalidOperationException();
+
+			sigmaFromAvg = enable;
+			sigmaScale = scale;
+		}
+
+		protected int GetAverageSize(IEnumerable<IntAlias<GridPolygon>> polygons)
+		{
+			return (int) polygons.Select(x => x.Value.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
+		}
+
+		protected int GetAverageArea(IEnumerable<IntAlias<GridPolygon>> polygons)
+		{
+			return (int) polygons.Select(x => x.Value.BoundingRectangle).Average(x => x.Area);
 		}
 	}
 }

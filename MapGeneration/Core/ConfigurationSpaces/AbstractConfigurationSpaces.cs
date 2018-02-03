@@ -74,7 +74,9 @@
 
 		public abstract bool CanPerturbShape(TNode node);
 
-		public abstract IReadOnlyCollection<TShapeContainer> GetAllShapes(TNode node);
+		public abstract IReadOnlyCollection<TShapeContainer> GetShapesForNode(TNode node);
+
+		public abstract IEnumerable<TShapeContainer> GetAllShapes();
 
 		public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
 		{

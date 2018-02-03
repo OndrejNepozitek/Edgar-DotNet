@@ -19,20 +19,6 @@
 		{
 			var benchmark = new Benchmark();
 
-			/*{
-				var mapDescription = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
-				MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
-
-				var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler,
-					new OrthogonalLineIntersection(), new GridPolygonUtils());
-
-				var configurationSpaces = configurationSpacesGenerator.Generate(mapDescription);
-				var layoutGenerator = new SALayoutGenerator<int>();
-				layoutGenerator.InjectRandomGenerator(new Random(0));
-
-				benchmark.Execute(layoutGenerator, "Basic generator");
-			}*/
-
 			{
 				var layoutGenerator = new SALayoutGenerator<int>();
 				layoutGenerator.InjectRandomGenerator(new Random(0));
@@ -48,13 +34,21 @@
 
 				var setups2 = scenario.MakeSetupsGroup();
 				setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true);});
-				setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false);});
+				//setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false); });
 
 				//var setups3 = scenario.MakeSetupsGroup();
 				//setups3.AddSetup("Perturb pos", generator => { generator.EnablePerturbPositionAfterShape(true);});
 				//setups3.AddSetup("No perturb", generator => { generator.EnablePerturbPositionAfterShape(false);});
 
-				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.BasicSet, 15);
+				var setups4 = scenario.MakeSetupsGroup();
+				for (var i = 0; i < 10; i++)
+				{
+					var sigma = (i + 1);
+					setups4.AddSetup($"Sigma avg {sigma}", generator => { generator.EnableSigmaFromAvg(true, sigma); });
+				}
+				setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
+
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.Reference_17Vertices_ScaledSet, 30);
 			}
 		}
 	}

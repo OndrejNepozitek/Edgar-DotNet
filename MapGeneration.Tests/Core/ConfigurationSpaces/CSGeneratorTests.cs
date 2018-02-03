@@ -213,8 +213,8 @@
 
 			var configurationSpaces = generator.Generate(mapDescription);
 
-			Assert.AreEqual(3, configurationSpaces.GetAllShapes(0).Count);
-			Assert.AreEqual(1, configurationSpaces.GetAllShapes(1).Count);
+			Assert.AreEqual(3, configurationSpaces.GetShapesForNode(0).Count);
+			Assert.AreEqual(1, configurationSpaces.GetShapesForNode(1).Count);
 		}
 	}
 }

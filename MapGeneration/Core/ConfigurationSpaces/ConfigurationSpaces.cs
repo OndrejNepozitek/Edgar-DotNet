@@ -50,15 +50,34 @@
 		public override bool CanPerturbShape(int node)
 		{
 			// We need at least 2 shapes to choose from for it to be perturbed
-			return GetShapesForNode(node).Count >= 2;
+			return GetShapesForNodeInternal(node).Count >= 2;
 		}
 
-		public override IReadOnlyCollection<IntAlias<GridPolygon>> GetAllShapes(int node)
+		public override IReadOnlyCollection<IntAlias<GridPolygon>> GetShapesForNode(int node)
 		{
-			return GetShapesForNode(node).Select(x => x.Shape).ToList().AsReadOnly();
+			return GetShapesForNodeInternal(node).Select(x => x.Shape).ToList().AsReadOnly();
 		}
 
-		protected IList<WeightedShape> GetShapesForNode(int node)
+		public override IEnumerable<IntAlias<GridPolygon>> GetAllShapes()
+		{
+			foreach (var shape in Shapes)
+			{
+				yield return shape.Shape;
+			}
+
+			foreach (var shapes in ShapesForNodes)
+			{
+				if (shapes == null)
+					continue;
+
+				foreach (var shape in Shapes)
+				{
+					yield return shape.Shape;
+				}
+			}
+		}
+
+		protected IList<WeightedShape> GetShapesForNodeInternal(int node)
 		{
 			return ShapesForNodes[node] ?? Shapes;
 		}
