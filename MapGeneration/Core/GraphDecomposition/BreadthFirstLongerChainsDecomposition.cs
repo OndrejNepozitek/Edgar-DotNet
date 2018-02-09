@@ -12,7 +12,8 @@
 		where TNode : IEquatable<TNode>
 	{
 		private readonly IGraphDecomposer<TNode> graphDecomposer = new GraphDecomposer<TNode>();
-		private int chainsCounter = 0;
+		private int vertexCounter = 0;
+		private int chainCounter = 0;
 
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
@@ -30,11 +31,12 @@
 			if (faces.Count != 0)
 			{
 				var smallestFaceIndex = faces.MaxBy(x => -x.Count);
-				faces[smallestFaceIndex].ForEach(x => usedVertices[x] = chainsCounter);
+				faces[smallestFaceIndex].ForEach(x => usedVertices[x] = chainCounter);
 				chains.Add(faces[smallestFaceIndex]);
 				faces.RemoveAt(smallestFaceIndex);
 
-				chainsCounter++;
+				chainCounter++;
+				vertexCounter = chainCounter;
 			}
 
 			// Process all the cycles
@@ -92,7 +94,7 @@
 				throw new InvalidOperationException();
 
 			chain.Add(firstVertex);
-			usedVertices[firstVertex] = chainsCounter;
+			usedVertices[firstVertex] = vertexCounter;
 
 			while (true)
 			{
@@ -105,7 +107,7 @@
 					if (usedVertices[neighbour] == -1 && UncoveredNeighbours(graph, neighbour, usedVertices) == 0)
 					{
 						chain.Add(neighbour);
-						usedVertices[neighbour] = chainsCounter;
+						usedVertices[neighbour] = vertexCounter;
 						addedNeighbour = true;
 					}
 				}
@@ -140,10 +142,10 @@
 
 				var nextVertex = neighbours[nextVertexIndex];
 				chain.Add(nextVertex);
-				usedVertices[nextVertex] = chainsCounter;
+				usedVertices[nextVertex] = vertexCounter;
 			}
 
-			chainsCounter++;
+			vertexCounter++;
 			return chain;
 		}
 
@@ -203,30 +205,57 @@
 			if (firstVertexIndex == -1)
 				throw new InvalidOperationException();
 
-			for (var i = firstVertexIndex; i < smallestFace.Count; i++)
+			UseVertex(smallestFace[firstVertexIndex], usedVertices);
+			chain.Add(smallestFace[firstVertexIndex]);
+			smallestFace.Remove(smallestFace[firstVertexIndex]);
+
+			while (smallestFace.Count != 0)
 			{
-				var vertex = smallestFace[i];
+				var nextVertexIndex = smallestFace.MaxBy(x => -SmallestUsedNeighbourValue(graph, x, usedVertices));
+				var nextVertex = smallestFace[nextVertexIndex];
 
-				if (usedVertices[vertex] != -1)
-					throw new InvalidOperationException();
-
-				usedVertices[vertex] = chainsCounter;
-				chain.Add(vertex);
+				UseVertex(nextVertex, usedVertices);
+				chain.Add(nextVertex);
+				smallestFace.Remove(nextVertex);
 			}
 
-			for (var i = 0; i < firstVertexIndex; i++)
+			foreach (var pair in usedVertices.ToList())
 			{
-				var vertex = smallestFace[i];
-
-				if (usedVertices[vertex] != -1)
-					throw new InvalidOperationException();
-
-				usedVertices[vertex] = chainsCounter;
-				chain.Add(vertex);
+				if (pair.Value >= chainCounter)
+				{
+					usedVertices[pair.Key] = chainCounter;
+				}
 			}
 
-			chainsCounter++;
+			chainCounter++;
+
 			return chain;
+		}
+
+		private int SmallestUsedNeighbourValue(IGraph<TNode> graph, TNode vertex, Dictionary<TNode, int> usedVertices)
+		{
+			var neighbours = graph.GetNeighbours(vertex);
+			var smallestValue = int.MaxValue;
+
+			foreach (var neighbour in neighbours)
+			{
+				var value = usedVertices[neighbour];
+
+				if (value != -1 && value < smallestValue)
+				{
+					smallestValue = value;
+				}
+			}
+
+			return smallestValue;
+		}
+
+		private void UseVertex(TNode vertex, Dictionary<TNode, int> usedVertices)
+		{
+			if (usedVertices[vertex] != -1)
+				throw new InvalidOperationException();
+
+			usedVertices[vertex] = vertexCounter++;
 		}
 	}
 }
