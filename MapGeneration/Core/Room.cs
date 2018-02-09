@@ -8,6 +8,7 @@
 	public class Room<TNode> : IRoom<TNode>
 	{
 		public TNode Node { get; }
+
 		public GridPolygon Shape { get; }
 
 		public IntVector2 Position { get; }

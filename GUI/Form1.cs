@@ -25,7 +25,7 @@
 	public partial class Form1 : Form
 	{
 		private IMapLayout<int> layout;
-		private readonly LayoutDrawer layoutDrawer = new LayoutDrawer();
+		private readonly WFLayoutDrawer<int> layoutDrawer = new WFLayoutDrawer<int>();
 
 		public Form1()
 		{
@@ -103,7 +103,7 @@
 			{
 				for (int i = 0; i < 1; i++)
 				{
-					var mapDescription = MapDescriptionsDatabase.Reference_41Vertices_WithoutRoomShapes;
+					var mapDescription = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
 					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
 
 					var layouts = layoutGenerator.GetLayouts(mapDescription);

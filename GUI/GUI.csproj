@@ -95,8 +95,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapDrawing\AbstractLayoutDrawer.cs" />
     <Compile Include="MapDrawing\LayoutDrawer.cs" />
     <Compile Include="MapDrawing\PolygonDrawer.cs" />
+    <Compile Include="MapDrawing\WFLayoutDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
