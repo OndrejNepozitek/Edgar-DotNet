@@ -40,6 +40,10 @@
 		private bool sigmaFromAvg;
 		private int sigmaScale;
 
+		private int avgSize;
+		private bool differenceFromAvg;
+		private float differenceScale;
+
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
 		public event Action<IMapLayout<TNode>> OnValid;
@@ -141,7 +145,8 @@
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>)mapDescription);
 			var avgArea = GetAverageArea(configurationSpaces.GetAllShapes());
-			var sigma = sigmaFromAvg ? sigmaScale * avgArea : 15800f;
+			avgSize = GetAverageSize(configurationSpaces.GetAllShapes());
+			var sigma = sigmaFromAvg ? sigmaScale * avgSize : 15800f;
 			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), sigma);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
@@ -214,9 +219,7 @@
 				{
 					foreach (var layout in extendedLayouts)
 					{
-						if (fullLayouts.TrueForAll(x =>
-							GetDifference(x, layout) > 2 * minimumDifference)
-						)
+						if (IsDifferentEnough(layout, fullLayouts))
 						{
 							if (fullLayouts.Count == 0)
 							{
@@ -351,14 +354,15 @@
 					if (IsLayoutValid(perturbedLayout))
 					{
 						OnValid?.Invoke(ConvertLayout(perturbedLayout));
+						
 
 						// TODO: wouldn't it be too slow to compare againts all?
-						if (layouts.TrueForAll(x => GetDifference(perturbedLayout, x, chain) > 2 * minimumDifference))
+						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							wasAccepted = true;
 							// AddDoors(new List<Layout>() { perturbedLayout });
 							layouts.Add(perturbedLayout);
 							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
+							wasAccepted = true;
 
 							yield return perturbedLayout;
 
@@ -371,7 +375,7 @@
 
 							#endregion
 
-							if (layouts.Count >= 15)
+							if (layouts.Count >= 15 && chainNumber != 0)
 							{
 								#region Debug output
 
@@ -464,6 +468,36 @@
 		private bool IsLayoutValid(Layout layout)
 		{
 			return layout.GetEnergy() == 0; // TODO: may it cause problems?
+		}
+
+		private bool IsDifferentEnough(Layout layout, List<Layout> layouts, List<int> chain = null)
+		{
+			if (!differenceFromAvg)
+			{
+				return layouts.All(x => GetDifference(layout, x) >= 2 * minimumDifference);
+			}
+
+			return layouts.All(x => IsDifferentEnough(layout, x, chain));
+		}
+
+		private bool IsDifferentEnough(Layout first, Layout second, List<int> chain = null)
+		{
+			var diff = 0d;
+
+			var nodes = chain ?? first.Graph.Vertices;
+			foreach (var node in nodes)
+			{
+				if (first.GetConfiguration(node, out var c1) && second.GetConfiguration(node, out var c2))
+				{
+					diff += (float)(Math.Pow(
+						                IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+							                c2.Shape.BoundingRectangle.Center + c2.Position), 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
+				}
+			}
+
+			diff = diff / (nodes.Count() * avgSize);
+
+			return differenceScale * diff >= 1;
 		}
 
 		private double GetDifference(Layout first, Layout second, List<int> chain = null)
@@ -568,6 +602,15 @@
 
 			sigmaFromAvg = enable;
 			sigmaScale = scale;
+		}
+
+		public void EnableDifferenceFromAvg(bool enable, float scale = 0)
+		{
+			if (enable && scale == 0)
+				throw new InvalidOperationException();
+
+			differenceFromAvg = enable;
+			differenceScale = scale;
 		}
 
 		protected int GetAverageSize(IEnumerable<IntAlias<GridPolygon>> polygons)

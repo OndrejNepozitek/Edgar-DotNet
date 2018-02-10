@@ -77,20 +77,22 @@
 			layoutGenerator.EnableDebugOutput(true);
 			layoutGenerator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>()));
 			layoutGenerator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>());
+			layoutGenerator.EnableDifferenceFromAvg(true, 0.3f);
+			layoutGenerator.EnableLazyProcessing(true);
 
-			/*layoutGenerator.OnPerturbed += (l) =>
-			{
-				layout = l;
-				canvas.Invoke((Action)(() => canvas.Refresh()));
-				Thread.Sleep(25);
-			};*/
+			//layoutGenerator.OnPerturbed += (l) =>
+			//{
+			//	layout = l;
+			//	canvas.Invoke((Action)(() => canvas.Refresh()));
+			//	Thread.Sleep(50);
+			//};
 
-			/*layoutGenerator.OnValid += (l) =>
-			{
-				layout = l;
-				canvas.Invoke((Action)(() => canvas.Refresh()));
-				Thread.Sleep(100);
-			};*/
+			//layoutGenerator.OnValid += (l) =>
+			//{
+			//	layout = l;
+			//	canvas.Invoke((Action)(() => canvas.Refresh()));
+			//	Thread.Sleep(500);
+			//};
 
 			/*layoutGenerator.OnValidAndDifferent += (l) =>
 			{
@@ -103,8 +105,8 @@
 			{
 				for (int i = 0; i < 1; i++)
 				{
-					var mapDescription = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
-					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
+					var mapDescription = MapDescriptionsDatabase.Reference_Fig7Bottom_WithoutRoomShapes;
+					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription, new IntVector2(1, 1));
 
 					var layouts = layoutGenerator.GetLayouts(mapDescription);
 

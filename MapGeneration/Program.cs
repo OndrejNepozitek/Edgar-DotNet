@@ -27,11 +27,11 @@
 				scenario.SetRunsCount(1);
 
 				var setups1 = scenario.MakeSetupsGroup();
-				setups1.AddSetup("Handmade decomposition", generator => { generator.SetChainDecomposition(new DummyChainsDecomposition()); });
+				setups1.AddSetup("Breadth first", generator => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); });
+				// setups1.AddSetup("Handmade decomposition", generator => { generator.SetChainDecomposition(new DummyChainsDecomposition()); });
 				//setups1.AddSetup("Basic decomposition", generator => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); });
 				//setups1.AddSetup("Longer chains", generator => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
-				//setups1.AddSetup("Breadth first", generator => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>()); });
-
+				
 				var setups2 = scenario.MakeSetupsGroup();
 				setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true);});
 				//setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false); });
@@ -41,14 +41,24 @@
 				//setups3.AddSetup("No perturb", generator => { generator.EnablePerturbPositionAfterShape(false);});
 
 				var setups4 = scenario.MakeSetupsGroup();
-				/*for (var i = 0; i < 10; i++)
-				{
-					var sigma = (i + 1);
-					setups4.AddSetup($"Sigma avg {sigma}", generator => { generator.EnableSigmaFromAvg(true, sigma); });
-				}*/
-				setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
+				//for (var i = 0; i < 10; i++)
+				//{
+				//	var sigma = (int)Math.Pow(10, i);
+				//	setups4.AddSetup($"Sigma avg {sigma}", generator => { generator.EnableSigmaFromAvg(true, sigma); });
+				//}
+				//setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
+				setups4.AddSetup($"Sigma avg {100}", generator => { generator.EnableSigmaFromAvg(true, 10); });
 
-				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.Reference_17Vertices_ScaledSet, 30);
+				var setups5 = scenario.MakeSetupsGroup();
+				//for (var i = 1; i < 10; i++)
+				//{
+				//	var scale = (float) (i * 0.2);
+				//	setups5.AddSetup($"Difference scale {scale}", generator => { generator.EnableDifferenceFromAvg(true, scale); });
+				//}
+				//setups5.AddSetup("Difference old", generator => { generator.EnableDifferenceFromAvg(false); });
+				setups5.AddSetup("Difference from avg", generator => { generator.EnableDifferenceFromAvg(true, 0.4f); });
+
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 60);
 			}
 		}
 	}

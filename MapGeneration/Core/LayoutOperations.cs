@@ -514,7 +514,7 @@
 
 		protected float ComputeEnergy(int overlap, float distance)
 		{
-			return (float)(Math.Pow(Math.E, overlap / energySigma) * Math.Pow(Math.E, distance / energySigma) - 1);
+			return (float)(Math.Pow(Math.E, overlap / (energySigma * 625)) * Math.Pow(Math.E, distance / (energySigma * 50)) - 1);
 		}
 
 		public void InjectRandomGenerator(Random random)

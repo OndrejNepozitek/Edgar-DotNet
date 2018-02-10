@@ -61,7 +61,7 @@
 				Console.SetCursorPosition(0, Console.CursorTop);
 				Console.Write($" -- Iteration {i + 1}/{repeats}".PadRight(100));
 
-				generator.GetLayouts(input);
+				generator.GetLayouts(input, 1);
 
 				layoutCounts.Add(generator.LayoutsCount);
 				iterationCounts.Add(generator.IterationsCount);
@@ -131,7 +131,7 @@
 			builder.Append($"{(result.LayoutsAvg):##.##}/{(result.LayoutsMedian):##.##}".PadRight(collumnLength));
 			builder.Append($"{(result.TimeFirstAvg / 1000):##.##}s/{(result.TimeFirstMedian / 1000):##.##}s".PadRight(collumnLength));
 			builder.Append($"{(result.TimeTenAvg / 1000):##.##}s/{(result.TimeTenMedian / 1000):##.##}s".PadRight(collumnLength));
-			builder.Append($"{(int)result.IterationsAvg / 1000}k/{(int)result.IterationsMedian / 1000}k".PadRight(collumnLength));
+			builder.Append($"{((int)result.IterationsAvg / 1000f):##.##}k/{((int)result.IterationsMedian / 1000f):##.##}k".PadRight(collumnLength));
 			builder.Append($"{(int)(result.IterationsAvg / result.TimeTenAvg)}k/{(int)(result.IterationsMedian / result.TimeTenMedian)}k".PadRight(collumnLength));
 
 			return builder.ToString();
