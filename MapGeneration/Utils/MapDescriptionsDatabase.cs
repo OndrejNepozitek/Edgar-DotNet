@@ -19,9 +19,15 @@
 
 		public static MapDescription<int> Reference_41Vertices_WithoutRoomShapes => Make_Reference_41Vertices_WithoutRoomShapes();
 
+		public static MapDescription<int> Reference_Fig7Bottom_WithoutRoomShapes => Make_Reference_Fig7Bottom_WithoutRoomShapes();
+
+		public static MapDescription<int> Reference_Fig9_WithoutRoomShapes => Make_Reference_Fig9_WithoutRoomShapes();
+
 		public static List<Tuple<string, IMapDescription<int>>> BasicSet;
 
 		public static List<Tuple<string, IMapDescription<int>>> Reference_17Vertices_ScaledSet;
+
+		public static List<Tuple<string, IMapDescription<int>>> ReferenceSet;
 
 		static MapDescriptionsDatabase()
 		{
@@ -42,18 +48,53 @@
 			}
 
 			{
-				var m1 = Reference_17Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m1, new IntVector2(2, 2));
+				var m1 = Reference_9Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m1);
 				var m2 = Reference_17Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m2, new IntVector2(3, 3));
+				AddClassicRoomShapes(m2);
+				var m3 = Reference_41Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m3);
+				var m4 = Reference_Fig7Bottom_WithoutRoomShapes;
+				AddClassicRoomShapes(m4);
+				var m5 = Reference_Fig9_WithoutRoomShapes;
+				AddClassicRoomShapes(m5);
+
+				ReferenceSet = new List<Tuple<string, IMapDescription<int>>>()
+				{
+					Tuple.Create("Fig 1 (17 vertices)", (IMapDescription<int>) m2),
+					Tuple.Create("Fig 7 top (9 vertices)", (IMapDescription<int>) m1),
+					Tuple.Create("Fig 7 bottom (17 vertices)", (IMapDescription<int>) m4),
+					Tuple.Create("Fig 8 (41 vertices)", (IMapDescription<int>) m3),
+					Tuple.Create("Fig 9 (15 vertices)", (IMapDescription<int>) m5),
+				};
+			}
+
+			{
+				var m0 = Reference_17Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m0, new IntVector2(1, 1));
+				var m1 = Reference_17Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m1, new IntVector2(5, 5));
+				var m2 = Reference_17Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m2, new IntVector2(10, 10));
 				var m3 = Reference_17Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m3, new IntVector2(5, 5));
+				AddClassicRoomShapes(m3, new IntVector2(25, 25));
+
+				var m4 = Reference_41Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m4, new IntVector2(5, 5));
+				var m5 = Reference_41Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m5, new IntVector2(10, 10));
+				var m6 = Reference_41Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m6, new IntVector2(25, 25));
 
 				Reference_17Vertices_ScaledSet = new List<Tuple<string, IMapDescription<int>>>()
 				{
-					Tuple.Create("17 vertices - scale 2", (IMapDescription<int>) m1),
-					Tuple.Create("17 vertices - scale 3", (IMapDescription<int>) m2),
-					Tuple.Create("17 vertices - scale 5", (IMapDescription<int>) m3),
+					Tuple.Create("17 vertices - scale 1", (IMapDescription<int>) m0),
+					Tuple.Create("17 vertices - scale 5", (IMapDescription<int>) m1),
+					Tuple.Create("17 vertices - scale 10", (IMapDescription<int>) m2),
+					Tuple.Create("17 vertices - scale 25", (IMapDescription<int>) m3),
+					/*Tuple.Create("41 vertices - scale 5", (IMapDescription<int>) m4),
+					Tuple.Create("41 vertices - scale 10", (IMapDescription<int>) m5),
+					Tuple.Create("41 vertices - scale 25", (IMapDescription<int>) m6),*/
 				};
 			}
 		}
@@ -74,6 +115,58 @@
 			mapDescription.AddPassage(6, 7);
 			mapDescription.AddPassage(6, 8);
 			mapDescription.AddPassage(7, 8);
+
+			return mapDescription;
+		}
+
+		private static MapDescription<int> Make_Reference_Fig7Bottom_WithoutRoomShapes()
+		{
+			var mapDescription = new MapDescription<int>();
+			Enumerable.Range(0, 17).ToList().ForEach(x => mapDescription.AddRoom(x));
+
+			mapDescription.AddPassage(0, 1);
+			mapDescription.AddPassage(1, 2);
+			mapDescription.AddPassage(1, 7);
+			mapDescription.AddPassage(1, 10);
+			mapDescription.AddPassage(2, 3);
+			mapDescription.AddPassage(2, 5);
+			mapDescription.AddPassage(3, 4);
+			mapDescription.AddPassage(4, 5);
+			mapDescription.AddPassage(4, 6);
+			mapDescription.AddPassage(6, 11);
+			mapDescription.AddPassage(7, 8);
+			mapDescription.AddPassage(8, 9);
+			mapDescription.AddPassage(9, 16);
+			mapDescription.AddPassage(10, 11);
+			mapDescription.AddPassage(10, 13);
+			mapDescription.AddPassage(11, 12);
+			mapDescription.AddPassage(12, 13);
+			mapDescription.AddPassage(12, 14);
+			mapDescription.AddPassage(14, 15);
+			mapDescription.AddPassage(15, 16);
+
+			return mapDescription;
+		}
+
+		private static MapDescription<int> Make_Reference_Fig9_WithoutRoomShapes()
+		{
+			var mapDescription = new MapDescription<int>();
+			Enumerable.Range(0, 15).ToList().ForEach(x => mapDescription.AddRoom(x));
+
+			mapDescription.AddPassage(0, 1);
+			mapDescription.AddPassage(0, 2);
+			mapDescription.AddPassage(0, 8);
+			mapDescription.AddPassage(0, 9);
+			mapDescription.AddPassage(1, 3);
+			mapDescription.AddPassage(1, 4);
+			mapDescription.AddPassage(1, 5);
+			mapDescription.AddPassage(2, 6);
+			mapDescription.AddPassage(2, 7);
+			mapDescription.AddPassage(8, 10);
+			mapDescription.AddPassage(8, 11);
+			mapDescription.AddPassage(8, 12);
+			mapDescription.AddPassage(9, 13);
+			mapDescription.AddPassage(9, 14);
 
 			return mapDescription;
 		}
@@ -162,40 +255,41 @@
 
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription, IntVector2 scale)
 		{
-			var squareRoom = new RoomDescription(GridPolygon.GetSquare(3).Scale(scale), new OverlapMode(1, 0));
-			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(3, 5).Scale(scale), new OverlapMode(1, 0));
+			var overlapScale = Math.Min(scale.X, scale.Y);
+			var squareRoom = new RoomDescription(GridPolygon.GetSquare(6).Scale(scale), new OverlapMode(1 * overlapScale, 0));
+			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(6, 9).Scale(scale), new OverlapMode(1 * overlapScale, 0));
 			var room1 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
-					.AddPoint(0, 4)
-					.AddPoint(2, 4)
-					.AddPoint(2, 2)
-					.AddPoint(6, 2)
+					.AddPoint(0, 6)
+					.AddPoint(3, 6)
+					.AddPoint(3, 3)
+					.AddPoint(6, 3)
 					.AddPoint(6, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1, 0));
+				, new OverlapMode(1 * overlapScale, 0));
 			var room2 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
-					.AddPoint(0, 4)
-					.AddPoint(2, 4)
-					.AddPoint(2, 2)
-					.AddPoint(4, 2)
-					.AddPoint(4, 0)
+					.AddPoint(0, 9)
+					.AddPoint(3, 9)
+					.AddPoint(3, 3)
+					.AddPoint(6, 3)
+					.AddPoint(6, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1, 0));
+				, new OverlapMode(1 * overlapScale, 0));
 			var room3 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
-					.AddPoint(0, 2)
-					.AddPoint(2, 2)
-					.AddPoint(2, 4)
-					.AddPoint(4, 4)
-					.AddPoint(4, 2)
-					.AddPoint(6, 2)
-					.AddPoint(6, 0)
+					.AddPoint(0, 3)
+					.AddPoint(3, 3)
+					.AddPoint(3, 6)
+					.AddPoint(6, 6)
+					.AddPoint(6, 3)
+					.AddPoint(9, 3)
+					.AddPoint(9, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1, 0));
+				, new OverlapMode(1 * overlapScale, 0));
 
 			mapDescription.AddRoomShapes(squareRoom, true, 4);
 			mapDescription.AddRoomShapes(rectangleRoom, true, 2);
@@ -206,7 +300,7 @@
 
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription)
 		{
-			AddClassicRoomShapes(mapDescription, new IntVector2(3, 3));
+			AddClassicRoomShapes(mapDescription, new IntVector2(1, 1));
 		}
 	}
 }
