@@ -43,6 +43,10 @@
 			while (faces.Count != 0)
 			{
 				var chain = GetSmallestNeighbouringCycle(graph, faces, usedVertices);
+
+				if (chain == null)
+					continue;
+
 				chains.Add(chain);
 			}
 
@@ -188,6 +192,10 @@
 
 			var smallestFace = faces[smallestFaceIndex].Where(x => usedVertices[x] == -1).ToList();
 			faces.RemoveAt(smallestFaceIndex);
+
+			if (smallestFace.Count == 0)
+				return null;
+
 			var firstVertexIndex = -1;
 			var chain = new List<TNode>();
 
