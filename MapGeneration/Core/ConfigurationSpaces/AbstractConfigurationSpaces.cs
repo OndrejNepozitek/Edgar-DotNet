@@ -29,7 +29,31 @@
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations);
 
 			// TODO: maybe make it in a way that not all points are generated
-			return intersection.GetWeightedRandom(x => x.Length + 1, Random).GetPoints().GetRandom(Random);
+			var line = intersection.GetWeightedRandom(x => x.Length + 1, Random);
+			return line.GetNthPoint(Random.Next(line.Length + 1));
+			//return GetRandomPoint(intersection.GetWeightedRandom(x => x.Length > 0 ? x.Length / 25 + 1 : 1, Random));
+		}
+
+		private IntVector2 GetRandomPoint(OrthogonalLine line)
+		{
+			var length = line.Length + 1;
+			var wantedChoices = length;
+
+			if (length <= wantedChoices)
+			{
+				return line.GetNthPoint(Random.Next(length));
+			}
+
+			var partsSize = length / wantedChoices;
+			var partsCount = length / partsSize;
+			var randomPart = Random.Next(partsCount + 1);
+
+			if (randomPart != partsCount)
+			{
+				return line.GetNthPoint(randomPart * partsSize);
+			}
+
+			return line.GetNthPoint(length - 1);
 		}
 
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)

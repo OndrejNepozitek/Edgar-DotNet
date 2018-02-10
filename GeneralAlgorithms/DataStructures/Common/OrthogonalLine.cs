@@ -288,6 +288,35 @@
 			return From < To ? new OrthogonalLine(From, To) : new OrthogonalLine(To, From);
 		}
 
+		public IntVector2 GetNthPoint(int n)
+		{
+			if (n > Length)
+				throw new InvalidOperationException();
+
+			var direction = GetDirection();
+
+			switch (direction)
+			{
+				case Direction.Top:
+					return From + new IntVector2(0, n);
+				case Direction.Right:
+					return From + new IntVector2(n, 0);
+				case Direction.Bottom:
+					return From - new IntVector2(0, n);
+				case Direction.Left:
+					return From - new IntVector2(n, 0);
+				case Direction.Undefined:
+				{
+					if (n > 0)
+						throw new InvalidOperationException();
+
+					return From;
+				}
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
 		public static OrthogonalLine operator +(OrthogonalLine line, IntVector2 point) 
 		{
 			return new OrthogonalLine(line.From + point, line.To + point, line.GetDirection());
