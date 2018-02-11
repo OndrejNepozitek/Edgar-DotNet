@@ -103,10 +103,24 @@
 
 			Task.Run(() =>
 			{
-				for (int i = 0; i < 1; i++)
+				for (int i = 0; i < 10; i++)
 				{
-					var mapDescription = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
+					var mapDescription = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
 					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription, new IntVector2(1, 1));
+
+					/*mapDescription.AddRoomShapes(7, new List<RoomDescription>()
+					{
+						new RoomDescription(
+							GridPolygon.GetSquare(5),
+							new SpecificPositionsMode(new List<OrthogonalLine>()
+							{
+								new OrthogonalLine(new IntVector2(2, 0), new IntVector2(3, 0)),
+								new OrthogonalLine(new IntVector2(0, 2), new IntVector2(0, 3)),
+								new OrthogonalLine(new IntVector2(2, 5), new IntVector2(3, 5)),
+								new OrthogonalLine(new IntVector2(5, 2), new IntVector2(5, 3)),
+							})
+						)
+					});*/
 
 					var layouts = layoutGenerator.GetLayouts(mapDescription);
 

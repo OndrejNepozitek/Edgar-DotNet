@@ -100,8 +100,10 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
+    <Compile Include="Core\Doors\DoorHandlers\SpecificPositionsModeHandler.cs" />
     <Compile Include="Core\Doors\DoorLine.cs" />
     <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
+    <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
     <Compile Include="Core\Energy.cs" />
     <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\BreadthFirstLongerChainsDecomposition.cs" />

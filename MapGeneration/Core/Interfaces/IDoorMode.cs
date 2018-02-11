@@ -2,6 +2,5 @@
 {
 	public interface IDoorMode
 	{
-		int DoorLength { get; }
 	}
 }
