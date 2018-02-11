@@ -93,6 +93,7 @@
     <Compile Include="Algorithms\Common\Extensions.cs" />
     <Compile Include="Algorithms\Common\ILineIntersection.cs" />
     <Compile Include="Algorithms\Common\OrthogonalLineIntersection.cs" />
+    <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
+    <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraph.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />
     <Compile Include="DataStructures\Graphs\FastGraph.cs" />
     <Compile Include="DataStructures\Graphs\IEdge.cs" />
