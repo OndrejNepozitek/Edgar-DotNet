@@ -256,8 +256,10 @@
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription, IntVector2 scale)
 		{
 			var overlapScale = Math.Min(scale.X, scale.Y);
-			var squareRoom = new RoomDescription(GridPolygon.GetSquare(6).Scale(scale), new OverlapMode(1 * overlapScale, 0));
-			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(6, 9).Scale(scale), new OverlapMode(1 * overlapScale, 0));
+			var doorMode = new OverlapMode(1 * overlapScale, 0);
+
+			var squareRoom = new RoomDescription(GridPolygon.GetSquare(6).Scale(scale), doorMode);
+			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode);
 			var room1 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
@@ -267,7 +269,7 @@
 					.AddPoint(6, 3)
 					.AddPoint(6, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1 * overlapScale, 0));
+				, doorMode);
 			var room2 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
@@ -277,7 +279,7 @@
 					.AddPoint(6, 3)
 					.AddPoint(6, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1 * overlapScale, 0));
+				, doorMode);
 			var room3 = new RoomDescription(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
@@ -289,7 +291,7 @@
 					.AddPoint(9, 3)
 					.AddPoint(9, 0)
 					.Build().Scale(scale)
-				, new OverlapMode(1 * overlapScale, 0));
+				, doorMode);
 
 			mapDescription.AddRoomShapes(squareRoom, true, 4);
 			mapDescription.AddRoomShapes(rectangleRoom, true, 2);

@@ -127,6 +127,7 @@
 		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<DoorLine> doorLines, GridPolygon fixedCenter, List<DoorLine> doorLinesFixed)
 		{
 			var configurationSpaceLines = new List<OrthogonalLine>();
+			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLine>>();
 
 			// One list for every direction
 			var lines = new List<DoorLine>[4];
@@ -161,9 +162,9 @@
 					if (from.X < to.X) continue;
 
 					var resultLine = new OrthogonalLine(from, to, OrthogonalLine.Direction.Left).Rotate(-rotation);
+					reverseDoor.Add(Tuple.Create(resultLine, new DoorLine(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length)));
 					configurationSpaceLines.Add(resultLine);
 				}
-
 			}
 
 			// Remove all positions when the two polygons overlap
@@ -172,7 +173,7 @@
 			// Remove all non-unique positions
 			configurationSpaceLines = RemoveIntersections(configurationSpaceLines);
 
-			return new ConfigurationSpace() { Lines = configurationSpaceLines };
+			return new ConfigurationSpace() { Lines = configurationSpaceLines, ReverseDoors = reverseDoor };
 		}
 
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter,

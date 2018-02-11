@@ -15,6 +15,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using GraphDecomposition;
 	using Interfaces;
+	using Utils;
 
 	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
 	{
@@ -354,7 +355,6 @@
 					if (IsLayoutValid(perturbedLayout))
 					{
 						OnValid?.Invoke(ConvertLayout(perturbedLayout));
-						
 
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
@@ -375,7 +375,7 @@
 
 							#endregion
 
-							if (layouts.Count >= 15 && chainNumber != 0)
+							if (layouts.Count >= 15)
 							{
 								#region Debug output
 
@@ -530,16 +530,84 @@
 		private IMapLayout<TNode> ConvertLayout(Layout layout)
 		{
 			var rooms = new List<IRoom<TNode>>();
+			var roomsDict = new Dictionary<int, Room<TNode>>();
 
-			foreach (var vertex in layout.Graph.Vertices)
+			foreach (var vertex in graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertex, out var configuration))
 				{
-					rooms.Add(new Room<TNode>(graph.GetVertex(vertex), configuration.Shape, configuration.Position));
+					var room = new Room<TNode>(graph.GetVertex(vertex), configuration.Shape, configuration.Position);
+					var doors = new List<Tuple<TNode, OrthogonalLine>>();
+					room.Doors = doors;
+					rooms.Add(room);
+
+					roomsDict[vertex] = room;
+				}
+			}
+
+			foreach (var vertex in graph.Vertices)
+			{
+				if (layout.GetConfiguration(vertex, out var configuration))
+				{
+					var neighbours = graph.GetNeighbours(vertex);
+
+					foreach (var neighbour in neighbours)
+					{
+						if (layout.GetConfiguration(neighbour, out var neighbourConfiguration) && neighbour > vertex)
+						{
+							var doorChoices = GetDoors(configuration, neighbourConfiguration);
+							var randomChoice = doorChoices.GetRandom(random);
+
+							roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetVertex(neighbour), randomChoice));
+							roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetVertex(vertex), randomChoice));
+						}
+					}
 				}
 			}
 
 			return new MapLayout<TNode>(rooms);
+		}
+
+		private List<OrthogonalLine> GetDoors(Configuration configuration1, Configuration configuration2)
+		{
+			return GetDoors(configuration2.Position - configuration1.Position,
+				configurationSpaces.GetConfigurationSpace(configuration1.ShapeContainer, configuration2.ShapeContainer))
+				.Select(x => x + configuration1.Position).ToList();
+		}
+
+		private List<OrthogonalLine> GetDoors(IntVector2 position, ConfigurationSpace configurationSpace)
+		{
+			var doors = new List<OrthogonalLine>();
+
+			foreach (var doorInfo in configurationSpace.ReverseDoors)
+			{
+				var line = doorInfo.Item1;
+				var doorLine = doorInfo.Item2;
+
+				var index = line.Contains(position);
+
+				if (index == -1)
+					continue;
+
+				var offset = line.Length - doorLine.Line.Length;
+				var numberOfPositions = Math.Min(Math.Min(offset, Math.Min(index, line.Length - index)), doorLine.Line.Length) + 1;
+
+				if (numberOfPositions == 0)
+					throw new InvalidOperationException();
+
+				for (var i = 0; i < numberOfPositions; i++)
+				{
+					var doorStart = doorLine.Line.GetNthPoint(Math.Max(0, index - offset) + i);
+					var doorEnd = doorStart + doorLine.Length * doorLine.Line.GetDirectionVector();
+
+					doors.Add(new OrthogonalLine(doorStart, doorEnd));
+				}
+			}
+
+			if (doors.Count == 0)
+				throw new InvalidOperationException();
+
+			return doors;
 		}
 
 		public void EnableDebugOutput(bool enable)

@@ -4,10 +4,11 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class IntLineTests
+	public class OrthogonalLineTests
 	{
 		[Test]
 		public void GetPoints_Top_ReturnsPoints()
@@ -148,6 +149,94 @@
 		{
 			Assert.AreEqual(OrthogonalLine.Direction.Bottom, OrthogonalLine.RotateDirection(OrthogonalLine.Direction.Right, 90));
 			Assert.AreEqual(OrthogonalLine.Direction.Top, OrthogonalLine.RotateDirection(OrthogonalLine.Direction.Bottom, -180));
+		}
+
+		[Test]
+		public void Contains_Inside_ReturnsIndex()
+		{
+			{
+				var line = new OrthogonalLine(new IntVector2(4, 2), new IntVector2(10, 2));
+				var point = new IntVector2(7, 2);
+
+				// TODO: why is it on the polygon?
+				foreach (var rotation in GridPolygon.PossibleRotations)
+				{
+					var rotatedLine = line.Rotate(rotation);
+					var rotatedPoint = point.RotateAroundCenter(rotation);
+
+					var actualIndex = rotatedLine.Contains(rotatedPoint);
+
+					Assert.AreEqual(3, actualIndex);
+				}
+			}
+
+			{
+				var line = new OrthogonalLine(new IntVector2(4, 2), new IntVector2(10, 2));
+				var point = new IntVector2(4, 2);
+
+				// TODO: why is it on the polygon?
+				foreach (var rotation in GridPolygon.PossibleRotations)
+				{
+					var rotatedLine = line.Rotate(rotation);
+					var rotatedPoint = point.RotateAroundCenter(rotation);
+
+					var actualIndex = rotatedLine.Contains(rotatedPoint);
+
+					Assert.AreEqual(0, actualIndex);
+				}
+			}
+
+			{
+				var line = new OrthogonalLine(new IntVector2(4, 2), new IntVector2(10, 2));
+				var point = new IntVector2(10, 2);
+
+				// TODO: why is it on the polygon?
+				foreach (var rotation in GridPolygon.PossibleRotations)
+				{
+					var rotatedLine = line.Rotate(rotation);
+					var rotatedPoint = point.RotateAroundCenter(rotation);
+
+					var actualIndex = rotatedLine.Contains(rotatedPoint);
+
+					Assert.AreEqual(6, actualIndex);
+				}
+			}
+		}
+
+		[Test]
+		public void Contains_Outside_ReturnsMinusOne()
+		{
+			{
+				var line = new OrthogonalLine(new IntVector2(4, 2), new IntVector2(10, 2));
+				var point = new IntVector2(3, 2);
+
+				// TODO: why is it on the polygon?
+				foreach (var rotation in GridPolygon.PossibleRotations)
+				{
+					var rotatedLine = line.Rotate(rotation);
+					var rotatedPoint = point.RotateAroundCenter(rotation);
+
+					var actualIndex = rotatedLine.Contains(rotatedPoint);
+
+					Assert.AreEqual(-1, actualIndex);
+				}
+			}
+
+			{
+				var line = new OrthogonalLine(new IntVector2(4, 2), new IntVector2(10, 2));
+				var point = new IntVector2(12, 2);
+
+				// TODO: why is it on the polygon?
+				foreach (var rotation in GridPolygon.PossibleRotations)
+				{
+					var rotatedLine = line.Rotate(rotation);
+					var rotatedPoint = point.RotateAroundCenter(rotation);
+
+					var actualIndex = rotatedLine.Contains(rotatedPoint);
+
+					Assert.AreEqual(-1, actualIndex);
+				}
+			}
 		}
 	}
 }

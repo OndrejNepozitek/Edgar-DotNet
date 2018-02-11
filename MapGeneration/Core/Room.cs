@@ -1,5 +1,6 @@
 ﻿namespace MapGeneration.Core
 {
+	using System;
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -13,7 +14,7 @@
 
 		public IntVector2 Position { get; }
 
-		public IList<OrthogonalLine> Doors { get; }
+		public IList<Tuple<TNode, OrthogonalLine>> Doors { get; set; }
 
 		public Room(TNode node, GridPolygon shape, IntVector2 position)
 		{

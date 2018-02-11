@@ -3,7 +3,6 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics.Contracts;
-	using System.Security.Cryptography;
 	using Algorithms.Common;
 
 	public struct OrthogonalLine : IEquatable<OrthogonalLine>
@@ -288,6 +287,7 @@
 			return From < To ? new OrthogonalLine(From, To) : new OrthogonalLine(To, From);
 		}
 
+		[Pure]
 		public IntVector2 GetNthPoint(int n)
 		{
 			if (n > Length)
@@ -312,6 +312,81 @@
 
 					return From;
 				}
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		[Pure]
+		public int Contains(IntVector2 point)
+		{
+			var direction = GetDirection();
+
+			switch (direction)
+			{
+				case Direction.Top:
+				{
+					if (point.X == From.X && point.Y <= To.Y && point.Y >= From.Y)
+					{
+						return point.Y - From.Y;
+					}
+					break;
+				}
+				case Direction.Right:
+				{
+					if (point.Y == From.Y && point.X <= To.X && point.X >= From.X)
+					{
+						return point.X - From.X;
+					}
+					break;
+				}
+				case Direction.Bottom:
+				{
+					if (point.X == From.X && point.Y >= To.Y && point.Y <= From.Y)
+					{
+						return From.Y - point.Y;
+					}
+					break;
+				}
+				case Direction.Left:
+				{
+					if (point.Y == From.Y && point.X >= To.X && point.X <= From.X)
+					{
+						return From.X - point.X;
+					}
+					break;
+				}
+				case Direction.Undefined:
+				{
+					if (point == From)
+					{
+						return 0;
+					}
+
+					break;
+				}
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			return -1;
+		}
+
+		[Pure]
+		public IntVector2 GetDirectionVector()
+		{
+			switch (GetDirection())
+			{
+				case Direction.Top:
+					return new IntVector2(0, 1);
+				case Direction.Right:
+					return new IntVector2(1, 0);
+				case Direction.Bottom:
+					return new IntVector2(0, -1);
+				case Direction.Left:
+					return new IntVector2(-1, 0);
+				case Direction.Undefined:
+					throw new InvalidOperationException();
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

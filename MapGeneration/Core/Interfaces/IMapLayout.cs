@@ -2,7 +2,7 @@
 {
 	using System.Collections.Generic;
 
-	public interface IMapLayout<out TNode>
+	public interface IMapLayout<TNode>
 	{
 		IEnumerable<IRoom<TNode>> GetRooms();
 	}

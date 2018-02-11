@@ -37,9 +37,14 @@
 			return spaces;
 		}
 
-		protected override ConfigurationSpace GetConfigurationSpace(Configuration mainConfiguration, Configuration configurations)
+		protected override ConfigurationSpace GetConfigurationSpace(Configuration mainConfiguration, Configuration configuration)
 		{
-			return ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias][configurations.ShapeContainer.Alias];
+			return GetConfigurationSpace(mainConfiguration.ShapeContainer, configuration.ShapeContainer);
+		}
+
+		public override ConfigurationSpace GetConfigurationSpace(IntAlias<GridPolygon> shape1, IntAlias<GridPolygon> shape2)
+		{
+			return ConfigurationSpaces_[shape1.Alias][shape2.Alias];
 		}
 
 		public override IntAlias<GridPolygon> GetRandomShape(int node)

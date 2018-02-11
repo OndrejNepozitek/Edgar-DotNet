@@ -25,14 +25,24 @@
 
 			for (var i = 0; i < rooms.Count; i++)
 			{
-				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => new IntVector2((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y))));
-				DrawRoom(polygon, 1);
+				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
+				DrawRoom(polygon, 3);
+
+				foreach (var door in rooms[i].Doors)
+				{
+					DrawDoorLine(new OrthogonalLine(TransformPoint(door.Item2.From, scale, offset), TransformPoint(door.Item2.To, scale, offset)), 3);
+				}
 
 				if (withNames)
 				{
 					DrawTextOntoPolygon(polygon, rooms[i].Node.ToString(), 2.5f * minWidth);
 				}
 			}
+		}
+
+		protected IntVector2 TransformPoint(IntVector2 point, float scale, IntVector2 offset)
+		{
+			return new IntVector2((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
 		}
 
 		private IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)

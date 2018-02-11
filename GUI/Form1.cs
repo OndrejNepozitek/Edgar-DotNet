@@ -105,7 +105,7 @@
 			{
 				for (int i = 0; i < 1; i++)
 				{
-					var mapDescription = MapDescriptionsDatabase.Reference_Fig7Bottom_WithoutRoomShapes;
+					var mapDescription = MapDescriptionsDatabase.Reference_17Vertices_WithoutRoomShapes;
 					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription, new IntVector2(1, 1));
 
 					var layouts = layoutGenerator.GetLayouts(mapDescription);
@@ -114,7 +114,7 @@
 					{
 						this.layout = layout;
 						canvas.Invoke((Action)(() => canvas.Refresh()));
-						Thread.Sleep(2000);
+						Thread.Sleep(3000);
 					}
 				}
 			});

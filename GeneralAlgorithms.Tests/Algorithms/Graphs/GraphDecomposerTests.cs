@@ -116,7 +116,11 @@
 		[Test]
 		public void GetChains_BasicCounts()
 		{
-			{
+			// TODO: repair;
+			Assert.IsTrue(false);
+			
+
+			/*{
 				// Two C_3s connected by a common vertex
 				var graph = new FastGraph<int>(5);
 
@@ -153,7 +157,7 @@
 				var chains = graphDecomposer.GetChains(graph);
 
 				Assert.AreEqual(7, chains.SelectMany(x => x).Distinct().Count());
-			}
+			}*/
 		}
 
 		private void CheckFacesEqual(List<List<int>> actual, List<List<int>> expected)

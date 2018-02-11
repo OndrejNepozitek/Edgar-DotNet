@@ -94,6 +94,8 @@
 
 		protected abstract ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configurations);
 
+		public abstract ConfigurationSpace GetConfigurationSpace(TShapeContainer shape1, TShapeContainer shape2);
+
 		public abstract TShapeContainer GetRandomShape(TNode node);
 
 		public abstract bool CanPerturbShape(TNode node);

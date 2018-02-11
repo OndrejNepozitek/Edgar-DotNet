@@ -29,7 +29,7 @@
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			eventArgs.Graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
-			eventArgs.Graphics.DrawPolygon(new Pen(Color.Black, 3), polyPoints.ToArray());
+			eventArgs.Graphics.DrawPolygon(new Pen(Color.Black, penWidth), polyPoints.ToArray());
 		}
 
 		protected override void DrawRoom(GridPolygon polygon, float penWidth)
@@ -61,9 +61,14 @@
 			}
 		}
 
+		private void DrawLine(OrthogonalLine line, float penWidth)
+		{
+			eventArgs.Graphics.DrawLine(new Pen(Color.LightGray, penWidth), new Point(line.From.X, line.From.Y), new Point(line.To.X, line.To.Y));
+		}
+
 		protected override void DrawDoorLine(OrthogonalLine line, float penWidth)
 		{
-			throw new System.NotImplementedException();
+			DrawLine(line, penWidth);
 		}
 	}
 }
