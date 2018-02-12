@@ -92,6 +92,7 @@
     <Compile Include="Algorithms\Common\LineSegmentIntersectionTests.cs" />
     <Compile Include="Algorithms\Graphs\BipartiteCheckTests.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposerTests.cs" />
+    <Compile Include="Algorithms\Graphs\HopcroftKarpTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonOverlapTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioningTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtilsTests.cs" />

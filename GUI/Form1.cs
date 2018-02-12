@@ -105,7 +105,7 @@
 			{
 				for (int i = 0; i < 10; i++)
 				{
-					var mapDescription = MapDescriptionsDatabase.Reference_9Vertices_WithoutRoomShapes;
+					var mapDescription = MapDescriptionsDatabase.Reference_41Vertices_WithoutRoomShapes;
 					MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription, new IntVector2(1, 1));
 
 					/*mapDescription.AddRoomShapes(7, new List<RoomDescription>()
@@ -122,7 +122,37 @@
 						)
 					});*/
 
-					var layouts = layoutGenerator.GetLayouts(mapDescription);
+					mapDescription.AddRoomShapes(40, new List<RoomDescription>()
+					{
+						new RoomDescription(
+							new GridPolygonBuilder()
+								.AddPoint(2, 0)
+								.AddPoint(2, 1)
+								.AddPoint(1, 1)
+								.AddPoint(1, 2)
+								.AddPoint(0, 2)
+								.AddPoint(0, 7)
+								.AddPoint(1, 7)
+								.AddPoint(1, 8)
+								.AddPoint(2, 8)
+								.AddPoint(2, 9)
+								.AddPoint(7, 9)
+								.AddPoint(7, 8)
+								.AddPoint(8, 8)
+								.AddPoint(8, 7)
+								.AddPoint(9, 7)
+								.AddPoint(9, 2)
+								.AddPoint(8, 2)
+								.AddPoint(8, 1)
+								.AddPoint(7, 1)
+								.AddPoint(7, 0)
+								.Build()
+							,
+							new OverlapMode(1, 2)
+						)
+					});
+
+					var layouts = layoutGenerator.GetLayouts(mapDescription, 1);
 
 					foreach (var layout in layouts)
 					{

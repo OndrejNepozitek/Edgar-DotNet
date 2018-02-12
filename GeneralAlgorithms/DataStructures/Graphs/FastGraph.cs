@@ -81,6 +81,11 @@
 			throw new InvalidOperationException();
 		}
 
+		public bool HasEdge(int @from, int to)
+		{
+			throw new NotImplementedException();
+		}
+
 		public void AddVertex(TNode vertex)
 		{
 			if (insertedVerticesCount == VerticesCount)
@@ -109,10 +114,11 @@
 				throw new InvalidOperationException("Edge already exists");
 			}
 
-			if (fromNeighbours.Count == 32 || toNeighbours.Count == 32)
-			{
-				throw new InvalidOperationException("Only vertices with up to 32 neighbours are allowed");
-			}
+			// TODO: is it needed here?
+			//if (fromNeighbours.Count == 32 || toNeighbours.Count == 32)
+			//{
+			//	throw new InvalidOperationException("Only vertices with up to 32 neighbours are allowed");
+			//}
 
 			fromNeighbours.Add(toNum);
 			toNeighbours.Add(fromNum);

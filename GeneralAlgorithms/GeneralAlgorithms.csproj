@@ -96,8 +96,9 @@
     <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
-    <Compile Include="Algorithms\Graphs\HopcroftCarp.cs" />
+    <Compile Include="Algorithms\Graphs\HopcroftCarpOld.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftCarp2.cs" />
+    <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
     <Compile Include="Algorithms\Polygons\CachedPolygonPartitioner.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
+    <Compile Include="DataStructures\Graphs\IntGraph.cs" />
     <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraph.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />
     <Compile Include="DataStructures\Graphs\FastGraph.cs" />

@@ -46,9 +46,38 @@
 			throw new System.NotImplementedException();
 		}
 
+		public bool HasEdge(T from, T to)
+		{
+			foreach (var neighbour in GetNeighbours(from))
+			{
+				if (neighbour.Equals(to))
+					return true;
+			}
+
+			return false;
+		}
+
 		public IEnumerable<IEdge<T>> GetEdges()
 		{
-			throw new System.NotImplementedException();
+			var usedEdges = new HashSet<Tuple<T, T>>();
+			var edges = new List<IEdge<T>>();
+
+			foreach (var pair in adjacencyLists)
+			{
+				var vertex = pair.Key;
+				var neighbours = pair.Value;
+
+				foreach (var neighbour in neighbours)
+				{
+					if (usedEdges.Contains(Tuple.Create(vertex, neighbour)) || usedEdges.Contains(Tuple.Create(neighbour, vertex)))
+						continue;
+
+					edges.Add(new Edge<T>(vertex, neighbour));
+					usedEdges.Add(Tuple.Create(vertex, neighbour));
+				}
+			}
+
+			return edges;
 		}
 	}
 }

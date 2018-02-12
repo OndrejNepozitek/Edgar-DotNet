@@ -5,7 +5,6 @@
 	using DataStructures.Graphs;
 
 	public class BipartiteCheck<T>
-		where T : IComparable<T>
 	{
 		/// <summary>
 		/// Checks if the graph is bipartite. If so, returns its two parts.

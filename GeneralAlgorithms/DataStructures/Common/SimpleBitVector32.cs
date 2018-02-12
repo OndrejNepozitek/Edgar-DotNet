@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Collections.Specialized;
-	using System.Threading;
 
 	public struct SimpleBitVector32
 	{

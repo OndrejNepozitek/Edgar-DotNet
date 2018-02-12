@@ -24,5 +24,7 @@
 		/// <param name="neighbour"></param>
 		/// <returns></returns>
 		int GetNeighbourIndex(T vertex, T neighbour);
+
+		bool HasEdge(T from, T to);
 	}
 }

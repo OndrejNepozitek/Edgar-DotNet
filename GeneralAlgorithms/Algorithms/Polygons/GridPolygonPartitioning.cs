@@ -3,14 +3,16 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Advanced.Algorithms.DataStructures.Graph.AdjacencyList;
 	using DataStructures.Common;
+	using DataStructures.Graphs;
 	using DataStructures.Polygons;
+	using Graphs;
 	using RangeTree;
 
 	public class GridPolygonPartitioning
 	{
 		private readonly GridPolygonUtils utils = new GridPolygonUtils();
+		private readonly HopcroftKarp<int> hopcroftKarp = new HopcroftKarp<int>();
 
 		public List<GridRectangle> GetRectangles(GridPolygon polygon)
 		{
@@ -494,7 +496,7 @@
 
 		public Tuple<List<int>, List<int>> BipartiteVertexCover(int left, int right, List<Tuple<int, int>> edges)
 		{
-			var graph = new Graph<int>();
+			var graph = new UndirectedAdjacencyListGraph<int>();
 			for (var i = 0; i < left + right; i++)
 			{
 				graph.AddVertex(i);
@@ -504,16 +506,15 @@
 				graph.AddEdge(e.Item1, e.Item2);
 			}
 
-			var matching = new Graphs.HopcroftKarpMatching<int>(null);
-			var result = matching.GetMaxBiPartiteMatching(graph);
+			var matching = hopcroftKarp.GetMaximumMatching(graph);
 
 			var matchV = new int?[left + right];
 			var matchU = new int?[left + right];
 
-			foreach (var e in result)
+			foreach (var e in matching)
 			{
-				matchV[e.Source] = e.Target;
-				matchU[e.Target] = e.Source;
+				matchV[e.From] = e.To;
+				matchU[e.To] = e.From;
 			}
 
 			var visitU = new bool[left + right];
@@ -548,18 +549,18 @@
 			return new Tuple<List<int>, List<int>>(leftNodes, rightNodes);
 		}
 
-		private void Alternate(int u, Graph<int> graph, bool[] visitU, bool[] visitV, int?[] matchV)
+		private void Alternate(int u, IGraph<int> graph, bool[] visitU, bool[] visitV, int?[] matchV)
 		{
 			visitU[u] = true;
-			foreach (var v in graph.FindVertex(u).Edges)
+			foreach (var v in graph.GetNeighbours(u))
 			{
-				if (!visitV[v.Value])
+				if (!visitV[v])
 				{
-					visitV[v.Value] = true;
+					visitV[v] = true;
 
-					if (!matchV[v.Value].HasValue) throw new InvalidOperationException();
+					if (!matchV[v].HasValue) throw new InvalidOperationException();
 
-					Alternate(matchV[v.Value].Value, graph, visitU, visitV, matchV);
+					Alternate(matchV[v].Value, graph, visitU, visitV, matchV);
 				}
 			}
 		}
