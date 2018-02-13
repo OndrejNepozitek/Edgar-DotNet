@@ -96,8 +96,6 @@
     <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
-    <Compile Include="Algorithms\Graphs\HopcroftCarpOld.cs" />
-    <Compile Include="Algorithms\Graphs\HopcroftCarp2.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
     <Compile Include="Algorithms\Polygons\CachedPolygonPartitioner.cs" />
