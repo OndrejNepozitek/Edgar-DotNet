@@ -135,4 +135,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+      <ItemGroup>
+          <GeneratorResources Include="..\Resources\**\*.*" />
+      </ItemGroup>
+      <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

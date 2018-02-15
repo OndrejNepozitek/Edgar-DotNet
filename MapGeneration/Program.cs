@@ -2,16 +2,25 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.IO;
 	using Benchmarks;
 	using Core;
 	using Core.ConfigurationSpaces;
 	using Core.Doors;
+	using Core.Doors.DoorModes;
 	using Core.GraphDecomposition;
 	using Core.Interfaces;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using Utils;
+	using Utils.ConfigParsing;
+	using Utils.ConfigParsing.Deserializers;
+	using Utils.ConfigParsing.Models;
+	using YamlDotNet.RepresentationModel;
+	using YamlDotNet.Serialization;
+	using YamlDotNet.Serialization.NamingConventions;
+	using YamlDotNet.Serialization.NodeDeserializers;
 
 	internal class Program
 	{
@@ -58,8 +67,15 @@
 				//setups5.AddSetup("Difference old", generator => { generator.EnableDifferenceFromAvg(false); });
 				setups5.AddSetup("Difference from avg", generator => { generator.EnableDifferenceFromAvg(true, 0.4f); });
 
-				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 60);
+				//benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 60);
 			}
+
+			using (var sr = new StreamReader("Resources/Maps/9Vertices.yml"))
+			{
+				var parser = new ConfigLoader();
+				var mapDescription = parser.LoadMapDescription(sr);
+				// var roomsConfig = parser.GetRoomDescriptions(sr);
+			}		
 		}
 	}
 }

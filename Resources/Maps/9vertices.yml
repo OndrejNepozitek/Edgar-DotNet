@@ -1,0 +1,46 @@
+rooms:
+  - name: 0
+  - name: 1
+  - name: 2
+  - name: 3
+  - name: 4
+  - name: 5
+  - name: 6
+  - name: 7
+  - name: 8
+
+passages:
+  - [0,1]
+  - [0,3]
+  - [1,2]
+  - [1,4]
+  - [1,5]
+  - [2,3]
+  - [3,6]
+  - [4,5]
+  - [6,7]
+  - [6,8]
+  - [7,8]
+
+defaultRoomShapes:
+  -
+    setName: basic
+    roomDescriptionName: 6-9-rectangle
+    probability: 2
+    rotate: true
+  -
+    roomDescriptionName: 6-square
+    probability: 4
+  -
+    setName: basic
+    roomDescriptionName: 6-square-with-two-doors
+    rotate: false
+
+customRoomDescriptionsSet:
+  default:
+    doorMode: !OverlapMode
+      doorLength: 1
+      minimumOverlap: 0
+  roomDescriptions:
+    6-square:
+      shape: [[0,0], [0,6], [6,6], [6,0]]
