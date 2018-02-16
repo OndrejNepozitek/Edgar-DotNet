@@ -29,77 +29,90 @@
 		private void InitializeComponent()
 		{
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.generalSettingsGroupBox = new System.Windows.Forms.GroupBox();
+			this.useRandomSeedCheckbox = new System.Windows.Forms.CheckBox();
+			this.generatorSeedInput = new System.Windows.Forms.NumericUpDown();
 			this.label4 = new System.Windows.Forms.Label();
-			this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.button1 = new System.Windows.Forms.Button();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.panel4 = new System.Windows.Forms.Panel();
+			this.numberOfLayoutsInput = new System.Windows.Forms.NumericUpDown();
+			this.label3 = new System.Windows.Forms.Label();
+			this.mapDescriptionGroupBox = new System.Windows.Forms.GroupBox();
+			this.uploadButton = new System.Windows.Forms.Button();
+			this.uploadOrLabel = new System.Windows.Forms.Label();
+			this.loadedMapDescriptionsComboBox = new System.Windows.Forms.ComboBox();
+			this.chooseMapDescriptionLabel = new System.Windows.Forms.Label();
+			this.infoGroupBox = new System.Windows.Forms.GroupBox();
 			this.label5 = new System.Windows.Forms.Label();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.button2 = new System.Windows.Forms.Button();
-			this.groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-			this.groupBox3.SuspendLayout();
-			this.groupBox4.SuspendLayout();
-			this.panel1.SuspendLayout();
-			this.panel3.SuspendLayout();
-			this.panel2.SuspendLayout();
-			this.panel4.SuspendLayout();
-			this.panel5.SuspendLayout();
+			this.generalSettingsPanel = new System.Windows.Forms.Panel();
+			this.mainPanel = new System.Windows.Forms.Panel();
+			this.generateButtonPanel = new System.Windows.Forms.Panel();
+			this.generateButton = new System.Windows.Forms.Button();
+			this.infoPanel = new System.Windows.Forms.Panel();
+			this.mapDescriptionPanel = new System.Windows.Forms.Panel();
+			this.progressPanel = new System.Windows.Forms.Panel();
+			this.progressGroupBox = new System.Windows.Forms.GroupBox();
+			this.showFinalLayouts = new System.Windows.Forms.CheckBox();
+			this.showFinalLayoutsTime = new System.Windows.Forms.NumericUpDown();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.showAcceptedLayoutsTime = new System.Windows.Forms.NumericUpDown();
+			this.showAcceptedLayouts = new System.Windows.Forms.CheckBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.showPerturbedLayoutsTime = new System.Windows.Forms.NumericUpDown();
+			this.showPerturbedLayouts = new System.Windows.Forms.CheckBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.generalSettingsGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.generatorSeedInput)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numberOfLayoutsInput)).BeginInit();
+			this.mapDescriptionGroupBox.SuspendLayout();
+			this.infoGroupBox.SuspendLayout();
+			this.generalSettingsPanel.SuspendLayout();
+			this.mainPanel.SuspendLayout();
+			this.generateButtonPanel.SuspendLayout();
+			this.infoPanel.SuspendLayout();
+			this.mapDescriptionPanel.SuspendLayout();
+			this.progressPanel.SuspendLayout();
+			this.progressGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.showFinalLayoutsTime)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.showAcceptedLayoutsTime)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// groupBox1
+			// generalSettingsGroupBox
 			// 
-			this.groupBox1.Controls.Add(this.checkBox1);
-			this.groupBox1.Controls.Add(this.numericUpDown2);
-			this.groupBox1.Controls.Add(this.label4);
-			this.groupBox1.Controls.Add(this.numericUpDown1);
-			this.groupBox1.Controls.Add(this.label3);
-			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox1.Location = new System.Drawing.Point(0, 0);
-			this.groupBox1.Margin = new System.Windows.Forms.Padding(5);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(562, 92);
-			this.groupBox1.TabIndex = 0;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "General settings";
+			this.generalSettingsGroupBox.Controls.Add(this.useRandomSeedCheckbox);
+			this.generalSettingsGroupBox.Controls.Add(this.generatorSeedInput);
+			this.generalSettingsGroupBox.Controls.Add(this.label4);
+			this.generalSettingsGroupBox.Controls.Add(this.numberOfLayoutsInput);
+			this.generalSettingsGroupBox.Controls.Add(this.label3);
+			this.generalSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.generalSettingsGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.generalSettingsGroupBox.Margin = new System.Windows.Forms.Padding(5);
+			this.generalSettingsGroupBox.Name = "generalSettingsGroupBox";
+			this.generalSettingsGroupBox.Size = new System.Drawing.Size(562, 92);
+			this.generalSettingsGroupBox.TabIndex = 0;
+			this.generalSettingsGroupBox.TabStop = false;
+			this.generalSettingsGroupBox.Text = "General settings";
 			// 
-			// label3
+			// useRandomSeedCheckbox
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(8, 32);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(127, 17);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "Number of layouts:";
+			this.useRandomSeedCheckbox.AutoSize = true;
+			this.useRandomSeedCheckbox.Location = new System.Drawing.Point(417, 59);
+			this.useRandomSeedCheckbox.Name = "useRandomSeedCheckbox";
+			this.useRandomSeedCheckbox.Size = new System.Drawing.Size(105, 21);
+			this.useRandomSeedCheckbox.TabIndex = 4;
+			this.useRandomSeedCheckbox.Text = "use random";
+			this.useRandomSeedCheckbox.UseVisualStyleBackColor = true;
 			// 
-			// numericUpDown1
+			// generatorSeedInput
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(239, 27);
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
-			this.numericUpDown1.TabIndex = 1;
-			this.numericUpDown1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			this.generatorSeedInput.Location = new System.Drawing.Point(239, 55);
+			this.generatorSeedInput.Name = "generatorSeedInput";
+			this.generatorSeedInput.Size = new System.Drawing.Size(120, 22);
+			this.generatorSeedInput.TabIndex = 3;
 			// 
 			// label4
 			// 
@@ -110,206 +123,393 @@
 			this.label4.TabIndex = 2;
 			this.label4.Text = "Random generator seed:";
 			// 
-			// numericUpDown2
+			// numberOfLayoutsInput
 			// 
-			this.numericUpDown2.Location = new System.Drawing.Point(239, 55);
-			this.numericUpDown2.Name = "numericUpDown2";
-			this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
-			this.numericUpDown2.TabIndex = 3;
+			this.numberOfLayoutsInput.Location = new System.Drawing.Point(239, 27);
+			this.numberOfLayoutsInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.numberOfLayoutsInput.Name = "numberOfLayoutsInput";
+			this.numberOfLayoutsInput.Size = new System.Drawing.Size(120, 22);
+			this.numberOfLayoutsInput.TabIndex = 1;
+			this.numberOfLayoutsInput.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			// 
-			// checkBox1
+			// label3
 			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(417, 59);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(105, 21);
-			this.checkBox1.TabIndex = 4;
-			this.checkBox1.Text = "use random";
-			this.checkBox1.UseVisualStyleBackColor = true;
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(8, 32);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(127, 17);
+			this.label3.TabIndex = 0;
+			this.label3.Text = "Number of layouts:";
 			// 
-			// groupBox3
+			// mapDescriptionGroupBox
 			// 
-			this.groupBox3.Controls.Add(this.button1);
-			this.groupBox3.Controls.Add(this.label2);
-			this.groupBox3.Controls.Add(this.comboBox1);
-			this.groupBox3.Controls.Add(this.label1);
-			this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox3.Location = new System.Drawing.Point(0, 0);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(562, 126);
-			this.groupBox3.TabIndex = 0;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Map description file";
+			this.mapDescriptionGroupBox.Controls.Add(this.uploadButton);
+			this.mapDescriptionGroupBox.Controls.Add(this.uploadOrLabel);
+			this.mapDescriptionGroupBox.Controls.Add(this.loadedMapDescriptionsComboBox);
+			this.mapDescriptionGroupBox.Controls.Add(this.chooseMapDescriptionLabel);
+			this.mapDescriptionGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.mapDescriptionGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.mapDescriptionGroupBox.Name = "mapDescriptionGroupBox";
+			this.mapDescriptionGroupBox.Size = new System.Drawing.Size(562, 126);
+			this.mapDescriptionGroupBox.TabIndex = 0;
+			this.mapDescriptionGroupBox.TabStop = false;
+			this.mapDescriptionGroupBox.Text = "Map description file";
 			// 
-			// label1
+			// uploadButton
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(100, 28);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(143, 17);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Choose from existing:";
+			this.uploadButton.Location = new System.Drawing.Point(189, 81);
+			this.uploadButton.Name = "uploadButton";
+			this.uploadButton.Size = new System.Drawing.Size(144, 29);
+			this.uploadButton.TabIndex = 3;
+			this.uploadButton.Text = "Upload your own";
+			this.uploadButton.UseVisualStyleBackColor = true;
 			// 
-			// comboBox1
+			// uploadOrLabel
 			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Items.AddRange(new object[] {
-            "Test 1",
-            "Test 2"});
-			this.comboBox1.Location = new System.Drawing.Point(294, 25);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(212, 24);
-			this.comboBox1.TabIndex = 1;
+			this.uploadOrLabel.AutoSize = true;
+			this.uploadOrLabel.Location = new System.Drawing.Point(233, 55);
+			this.uploadOrLabel.Name = "uploadOrLabel";
+			this.uploadOrLabel.Size = new System.Drawing.Size(57, 17);
+			this.uploadOrLabel.TabIndex = 2;
+			this.uploadOrLabel.Text = "-- OR --";
 			// 
-			// label2
+			// loadedMapDescriptionsComboBox
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(233, 55);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(57, 17);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "-- OR --";
+			this.loadedMapDescriptionsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.loadedMapDescriptionsComboBox.FormattingEnabled = true;
+			this.loadedMapDescriptionsComboBox.Location = new System.Drawing.Point(294, 25);
+			this.loadedMapDescriptionsComboBox.Name = "loadedMapDescriptionsComboBox";
+			this.loadedMapDescriptionsComboBox.Size = new System.Drawing.Size(212, 24);
+			this.loadedMapDescriptionsComboBox.TabIndex = 1;
 			// 
-			// button1
+			// chooseMapDescriptionLabel
 			// 
-			this.button1.Location = new System.Drawing.Point(189, 81);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(144, 29);
-			this.button1.TabIndex = 3;
-			this.button1.Text = "Upload your own";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.chooseMapDescriptionLabel.AutoSize = true;
+			this.chooseMapDescriptionLabel.Location = new System.Drawing.Point(100, 28);
+			this.chooseMapDescriptionLabel.Name = "chooseMapDescriptionLabel";
+			this.chooseMapDescriptionLabel.Size = new System.Drawing.Size(143, 17);
+			this.chooseMapDescriptionLabel.TabIndex = 0;
+			this.chooseMapDescriptionLabel.Text = "Choose from existing:";
 			// 
-			// groupBox4
+			// infoGroupBox
 			// 
-			this.groupBox4.Controls.Add(this.label5);
-			this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox4.Location = new System.Drawing.Point(0, 0);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(562, 117);
-			this.groupBox4.TabIndex = 1;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Info";
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.groupBox1);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(5, 5);
-			this.panel1.Name = "panel1";
-			this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.panel1.Size = new System.Drawing.Size(562, 102);
-			this.panel1.TabIndex = 2;
-			// 
-			// panel3
-			// 
-			this.panel3.Controls.Add(this.panel5);
-			this.panel3.Controls.Add(this.panel4);
-			this.panel3.Controls.Add(this.panel2);
-			this.panel3.Controls.Add(this.panel1);
-			this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel3.Location = new System.Drawing.Point(0, 0);
-			this.panel3.Name = "panel3";
-			this.panel3.Padding = new System.Windows.Forms.Padding(5);
-			this.panel3.Size = new System.Drawing.Size(572, 597);
-			this.panel3.TabIndex = 4;
-			// 
-			// panel2
-			// 
-			this.panel2.Controls.Add(this.groupBox3);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(5, 107);
-			this.panel2.Name = "panel2";
-			this.panel2.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.panel2.Size = new System.Drawing.Size(562, 136);
-			this.panel2.TabIndex = 3;
-			// 
-			// panel4
-			// 
-			this.panel4.Controls.Add(this.groupBox4);
-			this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel4.Location = new System.Drawing.Point(5, 243);
-			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(562, 117);
-			this.panel4.TabIndex = 4;
+			this.infoGroupBox.Controls.Add(this.label5);
+			this.infoGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.infoGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.infoGroupBox.Name = "infoGroupBox";
+			this.infoGroupBox.Size = new System.Drawing.Size(562, 117);
+			this.infoGroupBox.TabIndex = 1;
+			this.infoGroupBox.TabStop = false;
+			this.infoGroupBox.Text = "Info";
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(180, 52);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(179, 17);
+			this.label5.Size = new System.Drawing.Size(182, 17);
 			this.label5.TabIndex = 0;
-			this.label5.Text = "Map descrpiton not chosen";
+			this.label5.Text = "Map description not chosen";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// panel5
+			// generalSettingsPanel
 			// 
-			this.panel5.Controls.Add(this.button2);
-			this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel5.Location = new System.Drawing.Point(5, 526);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(562, 66);
-			this.panel5.TabIndex = 5;
+			this.generalSettingsPanel.Controls.Add(this.generalSettingsGroupBox);
+			this.generalSettingsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.generalSettingsPanel.Location = new System.Drawing.Point(5, 5);
+			this.generalSettingsPanel.Name = "generalSettingsPanel";
+			this.generalSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.generalSettingsPanel.Size = new System.Drawing.Size(562, 102);
+			this.generalSettingsPanel.TabIndex = 2;
 			// 
-			// button2
+			// mainPanel
 			// 
-			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.button2.Location = new System.Drawing.Point(169, 9);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(204, 49);
-			this.button2.TabIndex = 0;
-			this.button2.Text = "Generate";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.mainPanel.AutoScroll = true;
+			this.mainPanel.Controls.Add(this.progressPanel);
+			this.mainPanel.Controls.Add(this.infoPanel);
+			this.mainPanel.Controls.Add(this.mapDescriptionPanel);
+			this.mainPanel.Controls.Add(this.generalSettingsPanel);
+			this.mainPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.mainPanel.Location = new System.Drawing.Point(0, 0);
+			this.mainPanel.Name = "mainPanel";
+			this.mainPanel.Padding = new System.Windows.Forms.Padding(5);
+			this.mainPanel.Size = new System.Drawing.Size(572, 597);
+			this.mainPanel.TabIndex = 4;
+			// 
+			// generateButtonPanel
+			// 
+			this.generateButtonPanel.Controls.Add(this.generateButton);
+			this.generateButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.generateButtonPanel.Location = new System.Drawing.Point(0, 534);
+			this.generateButtonPanel.Name = "generateButtonPanel";
+			this.generateButtonPanel.Size = new System.Drawing.Size(572, 66);
+			this.generateButtonPanel.TabIndex = 5;
+			// 
+			// generateButton
+			// 
+			this.generateButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.generateButton.Location = new System.Drawing.Point(169, 9);
+			this.generateButton.Name = "generateButton";
+			this.generateButton.Size = new System.Drawing.Size(204, 49);
+			this.generateButton.TabIndex = 0;
+			this.generateButton.Text = "Generate";
+			this.generateButton.UseVisualStyleBackColor = true;
+			this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
+			// 
+			// infoPanel
+			// 
+			this.infoPanel.Controls.Add(this.infoGroupBox);
+			this.infoPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.infoPanel.Location = new System.Drawing.Point(5, 243);
+			this.infoPanel.Name = "infoPanel";
+			this.infoPanel.Size = new System.Drawing.Size(562, 117);
+			this.infoPanel.TabIndex = 4;
+			// 
+			// mapDescriptionPanel
+			// 
+			this.mapDescriptionPanel.Controls.Add(this.mapDescriptionGroupBox);
+			this.mapDescriptionPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.mapDescriptionPanel.Location = new System.Drawing.Point(5, 107);
+			this.mapDescriptionPanel.Name = "mapDescriptionPanel";
+			this.mapDescriptionPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.mapDescriptionPanel.Size = new System.Drawing.Size(562, 136);
+			this.mapDescriptionPanel.TabIndex = 3;
+			// 
+			// progressPanel
+			// 
+			this.progressPanel.Controls.Add(this.progressGroupBox);
+			this.progressPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.progressPanel.Location = new System.Drawing.Point(5, 360);
+			this.progressPanel.Name = "progressPanel";
+			this.progressPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.progressPanel.Size = new System.Drawing.Size(562, 168);
+			this.progressPanel.TabIndex = 6;
+			// 
+			// progressGroupBox
+			// 
+			this.progressGroupBox.Controls.Add(this.label7);
+			this.progressGroupBox.Controls.Add(this.label6);
+			this.progressGroupBox.Controls.Add(this.showPerturbedLayoutsTime);
+			this.progressGroupBox.Controls.Add(this.showPerturbedLayouts);
+			this.progressGroupBox.Controls.Add(this.label2);
+			this.progressGroupBox.Controls.Add(this.showAcceptedLayoutsTime);
+			this.progressGroupBox.Controls.Add(this.showAcceptedLayouts);
+			this.progressGroupBox.Controls.Add(this.label1);
+			this.progressGroupBox.Controls.Add(this.showFinalLayoutsTime);
+			this.progressGroupBox.Controls.Add(this.showFinalLayouts);
+			this.progressGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.progressGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.progressGroupBox.Name = "progressGroupBox";
+			this.progressGroupBox.Size = new System.Drawing.Size(562, 158);
+			this.progressGroupBox.TabIndex = 0;
+			this.progressGroupBox.TabStop = false;
+			this.progressGroupBox.Text = "Progress showing settings";
+			// 
+			// showFinalLayouts
+			// 
+			this.showFinalLayouts.AutoSize = true;
+			this.showFinalLayouts.Location = new System.Drawing.Point(11, 72);
+			this.showFinalLayouts.Name = "showFinalLayouts";
+			this.showFinalLayouts.Size = new System.Drawing.Size(143, 21);
+			this.showFinalLayouts.TabIndex = 0;
+			this.showFinalLayouts.Text = "Show final layouts";
+			this.showFinalLayouts.UseVisualStyleBackColor = true;
+			// 
+			// showFinalLayoutsTime
+			// 
+			this.showFinalLayoutsTime.Location = new System.Drawing.Point(240, 72);
+			this.showFinalLayoutsTime.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+			this.showFinalLayoutsTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.showFinalLayoutsTime.Name = "showFinalLayoutsTime";
+			this.showFinalLayoutsTime.Size = new System.Drawing.Size(120, 22);
+			this.showFinalLayoutsTime.TabIndex = 1;
+			this.showFinalLayoutsTime.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(368, 74);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(26, 17);
+			this.label1.TabIndex = 2;
+			this.label1.Text = "ms";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(368, 101);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(26, 17);
+			this.label2.TabIndex = 5;
+			this.label2.Text = "ms";
+			// 
+			// showAcceptedLayoutsTime
+			// 
+			this.showAcceptedLayoutsTime.Location = new System.Drawing.Point(240, 99);
+			this.showAcceptedLayoutsTime.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.showAcceptedLayoutsTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.showAcceptedLayoutsTime.Name = "showAcceptedLayoutsTime";
+			this.showAcceptedLayoutsTime.Size = new System.Drawing.Size(120, 22);
+			this.showAcceptedLayoutsTime.TabIndex = 4;
+			this.showAcceptedLayoutsTime.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+			// 
+			// showAcceptedLayouts
+			// 
+			this.showAcceptedLayouts.AutoSize = true;
+			this.showAcceptedLayouts.Location = new System.Drawing.Point(11, 99);
+			this.showAcceptedLayouts.Name = "showAcceptedLayouts";
+			this.showAcceptedLayouts.Size = new System.Drawing.Size(175, 21);
+			this.showAcceptedLayouts.TabIndex = 3;
+			this.showAcceptedLayouts.Text = "Show accepted layouts";
+			this.showAcceptedLayouts.UseVisualStyleBackColor = true;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(368, 128);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(26, 17);
+			this.label6.TabIndex = 8;
+			this.label6.Text = "ms";
+			// 
+			// showPerturbedLayoutsTime
+			// 
+			this.showPerturbedLayoutsTime.Location = new System.Drawing.Point(240, 126);
+			this.showPerturbedLayoutsTime.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.showPerturbedLayoutsTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.showPerturbedLayoutsTime.Name = "showPerturbedLayoutsTime";
+			this.showPerturbedLayoutsTime.Size = new System.Drawing.Size(120, 22);
+			this.showPerturbedLayoutsTime.TabIndex = 7;
+			this.showPerturbedLayoutsTime.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+			// 
+			// showPerturbedLayouts
+			// 
+			this.showPerturbedLayouts.AutoSize = true;
+			this.showPerturbedLayouts.Location = new System.Drawing.Point(11, 126);
+			this.showPerturbedLayouts.Name = "showPerturbedLayouts";
+			this.showPerturbedLayouts.Size = new System.Drawing.Size(197, 21);
+			this.showPerturbedLayouts.TabIndex = 6;
+			this.showPerturbedLayouts.Text = "Show all perturbed layouts";
+			this.showPerturbedLayouts.UseVisualStyleBackColor = true;
+			// 
+			// label7
+			// 
+			this.label7.Location = new System.Drawing.Point(11, 22);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(544, 35);
+			this.label7.TabIndex = 9;
+			this.label7.Text = "Layout generator provides events that are fired when for example layout is accept" +
+    "ed. These events can be used to show the progress of the generator.";
 			// 
 			// MainSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(572, 600);
-			this.Controls.Add(this.panel3);
+			this.Controls.Add(this.generateButtonPanel);
+			this.Controls.Add(this.mainPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Name = "MainSettings";
 			this.Text = "MainSettings";
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox4.PerformLayout();
-			this.panel1.ResumeLayout(false);
-			this.panel3.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel4.ResumeLayout(false);
-			this.panel5.ResumeLayout(false);
+			this.generalSettingsGroupBox.ResumeLayout(false);
+			this.generalSettingsGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.generatorSeedInput)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numberOfLayoutsInput)).EndInit();
+			this.mapDescriptionGroupBox.ResumeLayout(false);
+			this.mapDescriptionGroupBox.PerformLayout();
+			this.infoGroupBox.ResumeLayout(false);
+			this.infoGroupBox.PerformLayout();
+			this.generalSettingsPanel.ResumeLayout(false);
+			this.mainPanel.ResumeLayout(false);
+			this.generateButtonPanel.ResumeLayout(false);
+			this.infoPanel.ResumeLayout(false);
+			this.mapDescriptionPanel.ResumeLayout(false);
+			this.progressPanel.ResumeLayout(false);
+			this.progressGroupBox.ResumeLayout(false);
+			this.progressGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.showFinalLayoutsTime)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.showAcceptedLayoutsTime)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.NumericUpDown numericUpDown2;
+		private System.Windows.Forms.GroupBox generalSettingsGroupBox;
+		private System.Windows.Forms.CheckBox useRandomSeedCheckbox;
+		private System.Windows.Forms.NumericUpDown generatorSeedInput;
 		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
+		private System.Windows.Forms.NumericUpDown numberOfLayoutsInput;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.GroupBox groupBox4;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.GroupBox infoGroupBox;
+		private System.Windows.Forms.GroupBox mapDescriptionGroupBox;
+		private System.Windows.Forms.Button uploadButton;
+		private System.Windows.Forms.Label uploadOrLabel;
+		private System.Windows.Forms.ComboBox loadedMapDescriptionsComboBox;
+		private System.Windows.Forms.Label chooseMapDescriptionLabel;
+		private System.Windows.Forms.Panel generalSettingsPanel;
+		private System.Windows.Forms.Panel mainPanel;
 		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Panel infoPanel;
+		private System.Windows.Forms.Panel mapDescriptionPanel;
+		private System.Windows.Forms.Panel generateButtonPanel;
+		private System.Windows.Forms.Button generateButton;
+		private System.Windows.Forms.Panel progressPanel;
+		private System.Windows.Forms.GroupBox progressGroupBox;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.NumericUpDown showPerturbedLayoutsTime;
+		private System.Windows.Forms.CheckBox showPerturbedLayouts;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.NumericUpDown showAcceptedLayoutsTime;
+		private System.Windows.Forms.CheckBox showAcceptedLayouts;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.NumericUpDown showFinalLayoutsTime;
+		private System.Windows.Forms.CheckBox showFinalLayouts;
 	}
 }

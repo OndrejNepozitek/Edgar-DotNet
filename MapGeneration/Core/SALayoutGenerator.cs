@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Linq;
+	using System.Threading;
 	using Benchmarks;
 	using ConfigurationSpaces;
 	using Doors;
@@ -45,10 +46,13 @@
 		private bool differenceFromAvg;
 		private float differenceScale;
 
+		private CancellationToken? cancellationToken;
+
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
 		public event Action<IMapLayout<TNode>> OnValid;
 		public event Action<IMapLayout<TNode>> OnValidAndDifferent;
+		public event Action<IMapLayout<TNode>> OnFinal;
 
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
@@ -138,7 +142,7 @@
 
 			// AddDoors(fullLayouts); TODO: how?
 
-			return fullLayouts.Select(ConvertLayout).ToList();
+			return fullLayouts.Select(x => ConvertLayout(x)).ToList();
 		}
 
 		private IList<IMapLayout<TNode>> GetLayouts2(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
@@ -174,6 +178,9 @@
 
 			while (stack.Count > 0)
 			{
+				if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
+					break;
+
 				if (iterationsCount > 600000)
 				{
 					break;
@@ -228,6 +235,7 @@
 							}
 
 							fullLayouts.Add(layout);
+							OnFinal?.Invoke(ConvertLayout(layout));
 						}
 					}
 				}
@@ -264,7 +272,7 @@
 
 			// AddDoors(fullLayouts); TODO: how?
 
-			return fullLayouts.Select(ConvertLayout).ToList();
+			return fullLayouts.Select(x => ConvertLayout(x)).ToList();
 		}
 
 		private IEnumerable<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
@@ -346,10 +354,13 @@
 				
 				for (var j = 0; j < trialsPerCycle; j++)
 				{
+					if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
+						yield break;
+
 					iterationsCount++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta);
 
-					OnPerturbed?.Invoke(ConvertLayout(perturbedLayout));
+					OnPerturbed?.Invoke(ConvertLayout(perturbedLayout, false));
 
 					// TODO: can we check the energy instead?
 					if (IsLayoutValid(perturbedLayout))
@@ -527,7 +538,7 @@
 			return diff;
 		}
 
-		private IMapLayout<TNode> ConvertLayout(Layout layout)
+		private IMapLayout<TNode> ConvertLayout(Layout layout, bool addRooms = true)
 		{
 			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<int, Room<TNode>>();
@@ -537,29 +548,36 @@
 				if (layout.GetConfiguration(vertex, out var configuration))
 				{
 					var room = new Room<TNode>(graph.GetVertex(vertex), configuration.Shape, configuration.Position);
-					var doors = new List<Tuple<TNode, OrthogonalLine>>();
-					room.Doors = doors;
 					rooms.Add(room);
 
+					if (!addRooms)
+						continue;
+
+					var doors = new List<Tuple<TNode, OrthogonalLine>>();
+					room.Doors = doors;
+					
 					roomsDict[vertex] = room;
 				}
 			}
 
-			foreach (var vertex in graph.Vertices)
+			if (addRooms)
 			{
-				if (layout.GetConfiguration(vertex, out var configuration))
+				foreach (var vertex in graph.Vertices)
 				{
-					var neighbours = graph.GetNeighbours(vertex);
-
-					foreach (var neighbour in neighbours)
+					if (layout.GetConfiguration(vertex, out var configuration))
 					{
-						if (layout.GetConfiguration(neighbour, out var neighbourConfiguration) && neighbour > vertex)
-						{
-							var doorChoices = GetDoors(configuration, neighbourConfiguration);
-							var randomChoice = doorChoices.GetRandom(random);
+						var neighbours = graph.GetNeighbours(vertex);
 
-							roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetVertex(neighbour), randomChoice));
-							roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetVertex(vertex), randomChoice));
+						foreach (var neighbour in neighbours)
+						{
+							if (layout.GetConfiguration(neighbour, out var neighbourConfiguration) && neighbour > vertex)
+							{
+								var doorChoices = GetDoors(configuration, neighbourConfiguration);
+								var randomChoice = doorChoices.GetRandom(random);
+
+								roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetVertex(neighbour), randomChoice));
+								roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetVertex(vertex), randomChoice));
+							}
 						}
 					}
 				}
@@ -690,5 +708,10 @@
 		{
 			return (int) polygons.Select(x => x.Value.BoundingRectangle).Average(x => x.Area);
 		}
+
+		public void SetCancellationToken(CancellationToken cancellationToken)
+		{
+			this.cancellationToken = cancellationToken;
+		} 
 	}
 }

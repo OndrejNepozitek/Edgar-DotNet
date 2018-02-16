@@ -28,6 +28,9 @@
 				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
 				DrawRoom(polygon, 3);
 
+				if (rooms[i].Doors == null)
+					continue;
+
 				foreach (var door in rooms[i].Doors)
 				{
 					DrawDoorLine(new OrthogonalLine(TransformPoint(door.Item2.From, scale, offset), TransformPoint(door.Item2.To, scale, offset)), 3);

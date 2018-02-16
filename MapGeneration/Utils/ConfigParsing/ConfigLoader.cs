@@ -6,6 +6,7 @@
 	using System.Linq;
 	using Core;
 	using Core.Doors.DoorModes;
+	using Core.Interfaces;
 	using Deserializers;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -44,6 +45,14 @@
 			return deserializer.Deserialize<MapDescriptionModel>(reader);
 		}
 
+		public MapDescription<string> LoadMapDescriptionFromResources(string name)
+		{
+			using (var sr = new StreamReader($"{MapsPath}/{name}"))
+			{
+				return LoadMapDescription(sr);
+			}
+		}
+
 		public MapDescription<string> LoadMapDescription(TextReader reader)
 		{
 			var mapDescriptionModel = LoadMapDescriptionModel(reader);
@@ -51,8 +60,14 @@
 			var roomDescriptionsSets = LoadRoomDescriptionsSetsFromResources();
 
 			LoadRooms(mapDescription, mapDescriptionModel, roomDescriptionsSets);
+			LoadPassagess(mapDescription, mapDescriptionModel);
 
 			return mapDescription;
+		}
+
+		public List<string> GetSavedMapDescriptionsNames()
+		{
+			return Directory.GetFiles(MapsPath, "*.yml").Select(Path.GetFileName).ToList();
 		}
 
 		private Dictionary<string, RoomDescriptionsSetModel> LoadRoomDescriptionsSetsFromResources()
@@ -76,6 +91,17 @@
 			}
 
 			return models;
+		}
+
+		private void LoadPassagess(MapDescription<string> mapDescription, MapDescriptionModel mapDescriptionModel)
+		{
+			if (mapDescriptionModel.Passages == null)
+				return;
+
+			foreach (var passage in mapDescriptionModel.Passages)
+			{
+				mapDescription.AddPassage(passage.Item1, passage.Item2);
+			}
 		}
 
 		private void LoadRooms(MapDescription<string> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)

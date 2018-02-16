@@ -89,6 +89,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneratorSettings.cs" />
+    <Compile Include="GeneratorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneratorWindow.Designer.cs">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +106,9 @@
     <Compile Include="MapDrawing\WFLayoutDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GeneratorWindow.resx">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainSettings.resx">
       <DependentUpon>MainSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -136,9 +146,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-      <ItemGroup>
-          <GeneratorResources Include="..\Resources\**\*.*" />
-      </ItemGroup>
-      <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <GeneratorResources Include="..\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
