@@ -1,6 +1,8 @@
 ﻿namespace GUI
 {
 	using System;
+	using System.IO;
+	using System.Linq;
 	using System.Windows.Forms;
 	using MapGeneration.Core.Interfaces;
 	using MapGeneration.Utils.ConfigParsing;
@@ -10,6 +12,9 @@
 		private readonly ConfigLoader configLoader = new ConfigLoader();
 		private GeneratorWindow generatorWindow;
 		private readonly Random random = new Random();
+
+		private IMapDescription<int> mapDescription;
+		private bool usingUploaded = false;
 
 		public MainSettings()
 		{
@@ -28,19 +33,6 @@
 			if (loadedMapDescriptionsComboBox == null)
 			{
 				ShowSettingsError("Map description not chosen");
-			}
-
-			var mapDescriptionFile = (string) loadedMapDescriptionsComboBox.SelectedItem;
-			IMapDescription<int> mapDescription;
-
-			try
-			{
-				mapDescription = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
-			}
-			catch (Exception exception)
-			{
-				ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
-				return;
 			}
 
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
@@ -63,6 +55,60 @@
 		private void ShowSettingsError(string message)
 		{
 			MessageBox.Show(message, "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		private void uploadButton_Click(object sender, EventArgs e)
+		{
+			if (mapDescriptionFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				var filename = mapDescriptionFileDialog.FileName;
+
+				using (var sr = new StreamReader(filename))
+				{
+					try
+					{
+						mapDescription = configLoader.LoadMapDescription(sr);
+					}
+					catch (Exception exception)
+					{
+						ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
+						return;
+					}
+
+					usingUploaded = true;
+					UpdateInfo();
+				}
+			}
+		}
+
+		private void loadedMapDescriptionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var mapDescriptionFile = (string) loadedMapDescriptionsComboBox.SelectedItem;
+
+			try
+			{
+				mapDescription = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
+			}
+			catch (Exception exception)
+			{
+				ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
+				return;
+			}
+
+			usingUploaded = false;
+			UpdateInfo();
+		}
+
+		private void UpdateInfo()
+		{
+			descriptionNotChosen.Hide();
+			var graph = mapDescription.GetGraph();
+
+			usedDescription.Text = usingUploaded ? $"Using uploaded map description file." : $"Using map description file from Resources.";
+			usedDescriptionRoomsCount.Text = $"Number of rooms: {graph.VerticesCount}";
+			usedDescriptionPassagesCount.Text = $"Number of passages: {graph.Edges.Count()}";
+
+			usedDescriptionInfoPanel.Show();
 		}
 	}
 }
