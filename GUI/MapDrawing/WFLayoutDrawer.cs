@@ -36,8 +36,8 @@
 			var lastPoint = outline[outline.Count - 1].Item1;
 			var pen = new Pen(Color.Black, penWidth)
 			{
-				EndCap = LineCap.Square,
-				StartCap = LineCap.Square
+				EndCap = LineCap.Flat,
+				StartCap = LineCap.Flat
 			};
 
 

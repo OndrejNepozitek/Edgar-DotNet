@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Common;
 	using DataStructures.Common;
 	using DataStructures.Graphs;
 	using DataStructures.Polygons;
@@ -129,6 +130,7 @@
 				var v = vertex;
 
 				var backups = new List<Vertex>();
+				var path = new List<Vertex>();
 
 				var minx = int.MaxValue;
 				var miny = int.MaxValue;
@@ -137,8 +139,10 @@
 
 				while (!v.Visited)
 				{
-					backups.Add(v.BackupNext);
-					backups.Add(v.BackupPrev);
+					//backups.Add(v.BackupNext);
+					//backups.Add(v.BackupPrev);
+
+					path.Add(v);
 
 					minx = Math.Min(v.Point.X, minx);
 					miny = Math.Min(v.Point.Y, miny);
@@ -149,8 +153,34 @@
 					v = v.Next;
 				}
 
+				// Handle degenerate cases
 				if (minx == maxx || miny == maxy)
 				{
+					Vertex v1;
+					Vertex v2;
+
+					if (minx == maxx)
+					{
+						var v1Index = path.MaxBy(x => -x.Point.Y);
+						var v2Index = path.MaxBy(x => x.Point.Y);
+
+						v1 = path[v1Index];
+						v2 = path[v2Index];
+					}
+					else
+					{
+						var v1Index = path.MaxBy(x => -x.Point.X);
+						var v2Index = path.MaxBy(x => x.Point.X);
+
+						v1 = path[v1Index];
+						v2 = path[v2Index];
+					}
+
+					backups.Add(v1.BackupPrev);
+					backups.Add(v1.BackupNext);
+					backups.Add(v2.BackupPrev);
+					backups.Add(v2.BackupNext);
+
 					foreach (var b in backups)
 					{
 						v = b;
@@ -163,6 +193,9 @@
 						maxy = Math.Max(v.Point.Y, maxy);
 					}
 				}
+
+				if (minx == maxx || miny == maxy)
+					throw new InvalidOperationException("Degenerated rectangle. Must not happen.");
 
 				rectangles.Add(new GridRectangle(new IntVector2(minx, miny), new IntVector2(maxx, maxy)));
 			}
@@ -651,10 +684,37 @@
 			public IntVector2 Point;
 			public int Index;
 			public bool Concave;
-			public Vertex Next;
-			public Vertex Prev;
+
 			public bool Visited;
 			public int Number;
+
+			private Vertex next;
+			private Vertex prev;
+
+			public Vertex Next
+			{
+				get => next;
+				set
+				{
+					if (Next != value)
+						BackupNext = next;
+
+					next = value;
+				}
+			}
+
+			public Vertex Prev
+			{
+				get => prev;
+				set
+				{
+					if (Prev != value)
+						BackupPrev = prev;
+
+					prev = value;
+				}
+			}
+
 			public Vertex BackupNext;
 			public Vertex BackupPrev;
 
@@ -667,8 +727,8 @@
 
 			public void SaveBackup()
 			{
-				BackupNext = Next;
-				BackupPrev = Prev;
+				/*BackupNext = Next;
+				BackupPrev = Prev;*/
 			}
 
 			public int GetCoord(bool isX = true)

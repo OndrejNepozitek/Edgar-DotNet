@@ -134,6 +134,78 @@
 		}
 
 		[Test]
+		public void GetPolygons_ComplexShape()
+		{
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(2, 0)
+				.AddPoint(2, 1)
+				.AddPoint(1, 1)
+				.AddPoint(1, 2)
+				.AddPoint(0, 2)
+				.AddPoint(0, 7)
+				.AddPoint(1, 7)
+				.AddPoint(1, 8)
+				.AddPoint(2, 8)
+				.AddPoint(2, 9)
+				.AddPoint(7, 9)
+				.AddPoint(7, 8)
+				.AddPoint(8, 8)
+				.AddPoint(8, 7)
+				.AddPoint(9, 7)
+				.AddPoint(9, 2)
+				.AddPoint(8, 2)
+				.AddPoint(8, 1)
+				.AddPoint(7, 1)
+				.AddPoint(7, 0)
+				.Build();
+
+			var partitions = partitioner.GetRectangles(polygon);
+			var expected = new List<List<GridRectangle>>()
+			{
+				new List<GridRectangle>()
+				{
+					new GridRectangle(new IntVector2(2, 0), new IntVector2(7, 1)),
+					new GridRectangle(new IntVector2(1, 1), new IntVector2(8, 2)),
+					new GridRectangle(new IntVector2(0, 2), new IntVector2(9, 7)),
+					new GridRectangle(new IntVector2(1, 7), new IntVector2(8, 8)),
+					new GridRectangle(new IntVector2(2, 8), new IntVector2(7, 9)),
+				},
+				new List<GridRectangle>()
+				{
+					new GridRectangle(new IntVector2(0, 2), new IntVector2(1, 7)),
+					new GridRectangle(new IntVector2(1, 1), new IntVector2(2, 8)),
+					new GridRectangle(new IntVector2(2, 0), new IntVector2(7, 9)),
+					new GridRectangle(new IntVector2(7, 1), new IntVector2(8, 8)),
+					new GridRectangle(new IntVector2(8, 2), new IntVector2(9, 7)),
+				}
+			};
+
+			var matched = false;
+
+			foreach (var rectangles in expected)
+			{
+				foreach (var r in rectangles)
+				{
+					if (!partitions.Contains(r))
+					{
+						break;
+					}
+				}
+
+				matched = true;
+			}
+
+			Assert.AreEqual(expected[0].Count, partitions.Count);
+			Assert.AreEqual(true, matched);
+
+			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
+			{
+				var rotated = partitioner.GetRectangles(p);
+				Assert.AreEqual(expected[0].Count, rotated.Count);
+			}
+		}
+
+		[Test]
 		public void VertexCover_Basic()
 		{
 			{
