@@ -41,9 +41,10 @@
 			foreach (var shape in mapDescription.RoomShapes)
 			{
 				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
+				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
-				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, shape.Probability)));
+				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, probability)));
 			}
 
 			// Handle shapes for nodes
@@ -62,9 +63,10 @@
 				foreach (var shape in shapesForNode)
 				{
 					var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
+					var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 					rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
-					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, shape.Probability)));
+					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, probability)));
 				}
 
 				shapesForNodes.Add(vertex, shapesContainer);

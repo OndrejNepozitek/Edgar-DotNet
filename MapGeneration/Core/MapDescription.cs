@@ -28,9 +28,10 @@
 		/// <param name="shapes"></param>
 		/// <param name="rotate"></param>
 		/// <param name="probability"></param>
-		public void AddRoomShapes(List<RoomDescription> shapes, bool rotate = true, double probability = 1)
+		/// <param name="normalizeProbabilities"></param>
+		public void AddRoomShapes(List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
-			shapes.ForEach(x => AddRoomShapes(x, rotate, probability));
+			shapes.ForEach(x => AddRoomShapes(x, rotate, probability, normalizeProbabilities));
 		}
 
 		/// <summary>
@@ -39,7 +40,8 @@
 		/// <param name="shape"></param>
 		/// <param name="rotate"></param>
 		/// <param name="probability"></param>
-		public void AddRoomShapes(RoomDescription shape, bool rotate = true, double probability = 1)
+		/// <param name="normalizeProbabilities"></param>
+		public void AddRoomShapes(RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
@@ -47,15 +49,15 @@
 			if (roomShapes.Any(x => shape.Equals(x.RoomDescription)))
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
-			roomShapes.Add(new RoomContainer(shape, rotate, probability));
+			roomShapes.Add(new RoomContainer(shape, rotate, probability, normalizeProbabilities));
 		}
 
-		public void AddRoomShapes(TNode node, List<RoomDescription> shapes, bool rotate = true, double probability = 1)
+		public void AddRoomShapes(TNode node, List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
-			shapes.ForEach(x => AddRoomShapes(node, x, rotate, probability));
+			shapes.ForEach(x => AddRoomShapes(node, x, rotate, probability, normalizeProbabilities));
 		}
 
-		public void AddRoomShapes(TNode node, RoomDescription shape, bool rotate = true, double probability = 1)
+		public void AddRoomShapes(TNode node, RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
@@ -72,7 +74,7 @@
 			if (roomShapesForNode.Any(x => shape.Equals(x.RoomDescription)))
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
-			roomShapesForNode.Add(new RoomContainer(shape, rotate, probability));
+			roomShapesForNode.Add(new RoomContainer(shape, rotate, probability, normalizeProbabilities));
 		}
 
 		public void AddRoom(TNode node)
@@ -119,11 +121,14 @@
 
 			public double Probability { get; }
 
-			public RoomContainer(RoomDescription roomDescription, bool shouldRotate, double probability)
+			public bool NormalizeProbabilities { get; }
+
+			public RoomContainer(RoomDescription roomDescription, bool shouldRotate, double probability, bool normalizeProbabilities)
 			{
 				RoomDescription = roomDescription;
 				ShouldRotate = shouldRotate;
 				Probability = probability;
+				NormalizeProbabilities = normalizeProbabilities;
 			}
 		}
 	}

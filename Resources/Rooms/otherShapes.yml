@@ -2,7 +2,7 @@ name: otherShapes
 default:
   doorMode: !OverlapMode
     doorLength: 1
-    minimumOverlap: 1
+    minimumOverlap: 0
 roomDescriptions:
   small-l-shape:
     shape: [[0,0], [0,6], [3,6], [3,3], [6,3], [6,0]]

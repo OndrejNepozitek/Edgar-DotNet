@@ -12,6 +12,8 @@
 
 		public double? Probability { get; set; }
 
+		public bool? NormalizeProbabilities { get; set; }
+
 		public IntVector2? Scale { get; set; }
 	}
 }

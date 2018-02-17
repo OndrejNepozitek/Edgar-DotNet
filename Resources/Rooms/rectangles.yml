@@ -2,7 +2,7 @@ name: rectangles
 default:
   doorMode: !OverlapMode
     doorLength: 1
-    minimumOverlap: 1
+    minimumOverlap: 0
 roomDescriptions:
   6-square:
     shape: [[0,0], [0,6], [6,6], [6,0]]

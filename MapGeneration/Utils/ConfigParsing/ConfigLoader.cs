@@ -129,7 +129,7 @@
 						foreach (var rooms in room.RoomShapes)
 						{
 							var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-							mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1);
+							mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 						}
 					}
 				}
@@ -140,7 +140,7 @@
 				foreach (var rooms in mapDescriptionModel.DefaultRoomShapes)
 				{
 					var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-					mapDescription.AddRoomShapes(roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1);
+					mapDescription.AddRoomShapes(roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 				}
 			}
 		}
