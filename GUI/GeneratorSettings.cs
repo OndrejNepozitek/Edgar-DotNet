@@ -4,7 +4,7 @@
 
 	public class GeneratorSettings
 	{
-		public IMapDescription<string> MapDescription { get; set; }
+		public IMapDescription<int> MapDescription { get; set; }
 
 		public int NumberOfLayouts { get; set; }
 

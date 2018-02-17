@@ -139,11 +139,11 @@
     <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\ConfigParsing\ConfigLoader.cs" />
     <Compile Include="Utils\ConfigParsing\Deserializers\OrthogonalLineDeserializer.cs" />
-    <Compile Include="Utils\ConfigParsing\Deserializers\RoomDescriptionDictionaryDeserializer.cs" />
     <Compile Include="Utils\ConfigParsing\Deserializers\StringTupleDeserializer.cs" />
     <Compile Include="Utils\ConfigParsing\Models\MapDescriptionModel.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomModel.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomShapesModel.cs" />
+    <Compile Include="Utils\ConfigParsing\Models\RoomsRangeModel.cs" />
     <Compile Include="Utils\MapDescriptionsDatabase.cs" />
     <Compile Include="Utils\ConfigParsing\DefaultObjectFactory.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionModel.cs" />

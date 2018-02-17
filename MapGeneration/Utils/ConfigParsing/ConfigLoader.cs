@@ -45,7 +45,7 @@
 			return deserializer.Deserialize<MapDescriptionModel>(reader);
 		}
 
-		public MapDescription<string> LoadMapDescriptionFromResources(string name)
+		public MapDescription<int> LoadMapDescriptionFromResources(string name)
 		{
 			using (var sr = new StreamReader($"{MapsPath}/{name}"))
 			{
@@ -53,10 +53,10 @@
 			}
 		}
 
-		public MapDescription<string> LoadMapDescription(TextReader reader)
+		public MapDescription<int> LoadMapDescription(TextReader reader)
 		{
 			var mapDescriptionModel = LoadMapDescriptionModel(reader);
-			var mapDescription = new MapDescription<string>();
+			var mapDescription = new MapDescription<int>();
 			var roomDescriptionsSets = LoadRoomDescriptionsSetsFromResources();
 
 			LoadRooms(mapDescription, mapDescriptionModel, roomDescriptionsSets);
@@ -93,35 +93,44 @@
 			return models;
 		}
 
-		private void LoadPassagess(MapDescription<string> mapDescription, MapDescriptionModel mapDescriptionModel)
+		private void LoadPassagess(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel)
 		{
 			if (mapDescriptionModel.Passages == null)
 				return;
 
 			foreach (var passage in mapDescriptionModel.Passages)
 			{
-				mapDescription.AddPassage(passage.Item1, passage.Item2);
+				mapDescription.AddPassage(passage.X, passage.Y);
 			}
 		}
 
-		private void LoadRooms(MapDescription<string> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
+		private void LoadRooms(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
 		{
-			if (mapDescriptionModel.Rooms == null || mapDescriptionModel.Rooms.Count == 0)
-				throw new InvalidOperationException("There must be at least one room");
+			if (mapDescriptionModel.RoomsRange == null)
+				throw new InvalidOperationException("Rooms range must be defined");
 
-			foreach (var room in mapDescriptionModel.Rooms)
+			if (mapDescriptionModel.RoomsRange.To - mapDescriptionModel.RoomsRange.From <= 0)
+				throw new InvalidOperationException("There must be at least one roon in the room range. 'To' must be greater than 'From'.");
+
+			for (var i = mapDescriptionModel.RoomsRange.From; i <= mapDescriptionModel.RoomsRange.To; i++)
 			{
-				if (string.IsNullOrEmpty(room.Name))
-					throw new InvalidOperationException("Name of rooms must not be empty");
+				mapDescription.AddRoom(i);
+			}
 
-				mapDescription.AddRoom(room.Name);
-
-				if (room.RoomShapes != null)
+			if (mapDescriptionModel.Rooms != null)
+			{
+				foreach (var pair in mapDescriptionModel.Rooms)
 				{
-					foreach (var rooms in room.RoomShapes)
+					var name = pair.Key;
+					var room = pair.Value;
+
+					if (room.RoomShapes != null)
 					{
-						var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-						mapDescription.AddRoomShapes(room.Name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1);
+						foreach (var rooms in room.RoomShapes)
+						{
+							var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
+							mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1);
+						}
 					}
 				}
 			}

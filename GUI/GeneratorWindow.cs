@@ -12,7 +12,7 @@
 	public partial class GeneratorWindow : Form
 	{
 		private readonly GeneratorSettings settings;
-		private readonly WFLayoutDrawer<string> layoutDrawer = new WFLayoutDrawer<string>();
+		private readonly WFLayoutDrawer<int> layoutDrawer = new WFLayoutDrawer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -22,7 +22,7 @@
 		private int iterationsCount;
 		private readonly Stopwatch infoStopwatch = new Stopwatch();
 
-		private IMapLayout<string> layoutToDraw; 
+		private IMapLayout<int> layoutToDraw; 
 
 		public GeneratorWindow(GeneratorSettings settings)
 		{
@@ -46,9 +46,11 @@
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
-				var layoutGenerator = new SALayoutGenerator<string>();
+				var layoutGenerator = new SALayoutGenerator<int>();
+				layoutGenerator.EnableLazyProcessing(true);
 				layoutGenerator.SetCancellationToken(ct);
 				layoutGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+				infoStopwatch.Start();
 
 				layoutGenerator.OnFinal += layout =>
 				{
@@ -157,7 +159,7 @@
 
 				// infoGeneratingLayoutLabel.Hide();
 				infoGeneratingLayoutLabel.Text =
-					$"Layouts generated: {layoutsCount + 1}. Layouts requsted: {settings.NumberOfLayouts}.";
+					$"Layouts generated: {layoutsCount}. Layouts requested: {settings.NumberOfLayouts}.";
 			}
 		}
 
@@ -168,6 +170,11 @@
 				cancellationTokenSource.Cancel();
 				task.Wait();
 			}
+		}
+
+		private void GeneratorWindow_Resize(object sender, EventArgs e)
+		{
+			mainPictureBox.Refresh();
 		}
 	}
 }

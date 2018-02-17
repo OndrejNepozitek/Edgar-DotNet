@@ -66,9 +66,16 @@
 			eventArgs.Graphics.DrawLine(new Pen(Color.LightGray, penWidth), new Point(line.From.X, line.From.Y), new Point(line.To.X, line.To.Y));
 		}
 
+		private void DrawPoint(IntVector2 point, Color color)
+		{
+			eventArgs.Graphics.FillRectangle(new SolidBrush(color), point.X, point.Y, 1, 1);
+		}
+
 		protected override void DrawDoorLine(OrthogonalLine line, float penWidth)
 		{
 			DrawLine(line, penWidth);
+			DrawPoint(line.From, Color.Black);
+			DrawPoint(line.To, Color.Black);
 		}
 	}
 }

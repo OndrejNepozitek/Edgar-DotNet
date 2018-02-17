@@ -77,17 +77,17 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(1097, 767);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(1082, 753);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.groupBox1);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(750, 3);
+			this.panel1.Location = new System.Drawing.Point(735, 3);
 			this.panel1.Name = "panel1";
 			this.tableLayoutPanel1.SetRowSpan(this.panel1, 2);
-			this.panel1.Size = new System.Drawing.Size(344, 761);
+			this.panel1.Size = new System.Drawing.Size(344, 747);
 			this.panel1.TabIndex = 0;
 			// 
 			// groupBox1
@@ -97,7 +97,7 @@
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.groupBox1.Location = new System.Drawing.Point(0, 0);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(344, 761);
+			this.groupBox1.Size = new System.Drawing.Size(344, 747);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Controls";
@@ -338,7 +338,7 @@
 			this.mainPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mainPictureBox.Location = new System.Drawing.Point(3, 53);
 			this.mainPictureBox.Name = "mainPictureBox";
-			this.mainPictureBox.Size = new System.Drawing.Size(741, 711);
+			this.mainPictureBox.Size = new System.Drawing.Size(726, 697);
 			this.mainPictureBox.TabIndex = 1;
 			this.mainPictureBox.TabStop = false;
 			this.mainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPictureBox_Paint);
@@ -347,11 +347,13 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1097, 767);
+			this.ClientSize = new System.Drawing.Size(1082, 753);
 			this.Controls.Add(this.tableLayoutPanel1);
+			this.MinimumSize = new System.Drawing.Size(1100, 800);
 			this.Name = "GeneratorWindow";
 			this.Text = "GeneratorWindow";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GeneratorWindow_FormClosing);
+			this.Resize += new System.EventHandler(this.GeneratorWindow_Resize);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);

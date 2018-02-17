@@ -17,7 +17,7 @@
 
 			foreach (var line in polygon.GetLines())
 			{
-				if (line.Length + 1 < 2 * doorMode.MinimumOverlap + doorMode.DoorLength)
+				if (line.Length < 2 * doorMode.MinimumOverlap + doorMode.DoorLength)
 					continue;
 				
 				lines.Add(new DoorLine(line.Shrink(doorMode.MinimumOverlap, doorMode.MinimumOverlap + doorMode.DoorLength), doorMode.DoorLength));

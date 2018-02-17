@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace GUI
+﻿namespace GUI
 {
+	using System;
+	using System.Windows.Forms;
 	using MapGeneration.Core.Interfaces;
 	using MapGeneration.Utils.ConfigParsing;
 
@@ -39,7 +31,7 @@ namespace GUI
 			}
 
 			var mapDescriptionFile = (string) loadedMapDescriptionsComboBox.SelectedItem;
-			IMapDescription<string> mapDescription;
+			IMapDescription<int> mapDescription;
 
 			try
 			{

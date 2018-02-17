@@ -4,8 +4,6 @@
 
 	public class RoomModel
 	{
-		public string Name { get; set; }
-
 		public List<RoomShapesModel> RoomShapes { get; set; }
 	}
 }

@@ -10,7 +10,7 @@
 	{
 		public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
 		{
-			if (expectedType != typeof(IntVector2))
+			if (expectedType != typeof(IntVector2) && expectedType != typeof(IntVector2?))
 			{
 				value = null;
 				return false;

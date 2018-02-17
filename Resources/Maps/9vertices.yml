@@ -1,13 +1,14 @@
+roomsRange:
+  from: 0
+  to: 8
+
 rooms:
-  - name: 0
-  - name: 1
-  - name: 2
-  - name: 3
-  - name: 4
-  - name: 5
-  - name: 6
-  - name: 7
-  - name: 8
+  8:
+    roomShapes:
+      -
+        setName: bossRooms
+        roomDescriptionName: bossRoom1
+        scale: [2,2]
 
 passages:
   - [0,1]
@@ -24,23 +25,6 @@ passages:
 
 defaultRoomShapes:
   -
-    setName: basic
-    roomDescriptionName: 6-9-rectangle
-    probability: 2
-    rotate: true
+    setName: rectangles
   -
-    roomDescriptionName: 6-square
-    probability: 4
-  -
-    setName: basic
-    roomDescriptionName: 6-square-with-two-doors
-    rotate: false
-
-customRoomDescriptionsSet:
-  default:
-    doorMode: !OverlapMode
-      doorLength: 1
-      minimumOverlap: 0
-  roomDescriptions:
-    6-square:
-      shape: [[0,0], [0,6], [6,6], [6,0]]
+    setName: otherShapes
