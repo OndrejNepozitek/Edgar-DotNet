@@ -1,6 +1,9 @@
 ﻿namespace GUI.MapDrawing
 {
+	using System;
+	using System.Collections.Generic;
 	using System.Drawing;
+	using System.Drawing.Drawing2D;
 	using System.Linq;
 	using System.Windows.Forms;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -25,16 +28,31 @@
 			DrawLayout(layout, width, height, withNames);
 		}
 
-		protected void DrawPolygon(GridPolygon polygon, float penWidth)
+		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			eventArgs.Graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
-			eventArgs.Graphics.DrawPolygon(new Pen(Color.Black, penWidth), polyPoints.ToArray());
-		}
 
-		protected override void DrawRoom(GridPolygon polygon, float penWidth)
-		{
-			DrawPolygon(polygon, penWidth);
+			var lastPoint = outline[outline.Count - 1].Item1;
+			var pen = new Pen(Color.Black, penWidth)
+			{
+				EndCap = LineCap.Square,
+				StartCap = LineCap.Square
+			};
+
+
+			foreach (var pair in outline)
+			{
+				var point = pair.Item1;
+
+				if (pair.Item2)
+				{
+					
+					eventArgs.Graphics.DrawLine(pen, lastPoint.X, lastPoint.Y, point.X, point.Y);
+				}
+
+				lastPoint = point;
+			}
 		}
 
 		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
@@ -69,13 +87,6 @@
 		private void DrawPoint(IntVector2 point, Color color)
 		{
 			eventArgs.Graphics.FillRectangle(new SolidBrush(color), point.X, point.Y, 1, 1);
-		}
-
-		protected override void DrawDoorLine(OrthogonalLine line, float penWidth)
-		{
-			DrawLine(line, penWidth);
-			DrawPoint(line.From, Color.Black);
-			DrawPoint(line.To, Color.Black);
 		}
 	}
 }

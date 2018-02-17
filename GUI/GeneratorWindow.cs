@@ -179,6 +179,8 @@
 				cancellationTokenSource.Cancel();
 				task.Wait();
 			}
+
+			slideshowTaskId++;
 		}
 
 		private void GeneratorWindow_Resize(object sender, EventArgs e)
@@ -223,7 +225,7 @@
 				{
 					for (var i = slideshowIndex; i < generatedLayouts.Count; i++)
 					{
-						if (!automaticSlideshowCheckbox.Checked || slideshowTaskId != id)
+						if (slideshowTaskId != id || !automaticSlideshowCheckbox.Checked)
 							return;
 
 						var idToShow = i;

@@ -1,6 +1,7 @@
 ﻿namespace GUI.MapDrawing
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -26,16 +27,11 @@
 
 			for (var i = 0; i < rooms.Count; i++)
 			{
+				var outline = GetOutline(polygons[i], rooms[i].Doors?.Select(x => x.Item2).ToList())
+					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
+
 				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
-				DrawRoom(polygon, 3);
-
-				if (rooms[i].Doors == null)
-					continue;
-
-				foreach (var door in rooms[i].Doors)
-				{
-					DrawDoorLine(new OrthogonalLine(TransformPoint(door.Item2.From, scale, offset), TransformPoint(door.Item2.To, scale, offset)), 3);
-				}
+				DrawRoom(polygon, outline, 2);
 
 				if (withNames)
 				{
@@ -72,10 +68,44 @@
 			return scale;
 		}
 
-		protected abstract void DrawRoom(GridPolygon polygon, float penWidth);
+		protected abstract void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth);
 
 		protected abstract void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth);
 
-		protected abstract void DrawDoorLine(OrthogonalLine line, float penWidth);
+		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<OrthogonalLine> doorLines)
+		{
+			var outline = new List<Tuple<IntVector2, bool>>();
+
+			foreach (var line in polygon.GetLines())
+			{
+				outline.Add(Tuple.Create(line.From, true));
+
+				if (doorLines == null)
+					continue;
+
+				var doorDistances = doorLines.Select(x =>
+					new Tuple<OrthogonalLine, int>(x, Math.Min(line.Contains(x.From), line.Contains(x.To)))).ToList();
+				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
+
+				foreach (var pair in doorDistances)
+				{
+					if (pair.Item2 == -1)
+						continue;
+
+					var doorLine = pair.Item1;
+
+					if (line.Contains(doorLine.From) != pair.Item2)
+					{
+						doorLine = doorLine.SwitchOrientation();
+					}
+
+					doorLines.Remove(doorLine);
+					outline.Add(Tuple.Create(doorLine.From, true));
+					outline.Add(Tuple.Create(doorLine.To, false));
+				}
+			}
+
+			return outline;
+		}
 	}
 }
