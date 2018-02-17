@@ -31,6 +31,10 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.actionsPanel = new System.Windows.Forms.Panel();
+			this.actionsGroupBox = new System.Windows.Forms.GroupBox();
+			this.exportAllSvgButton = new System.Windows.Forms.Button();
+			this.exportAllTxtButton = new System.Windows.Forms.Button();
 			this.progressPanel = new System.Windows.Forms.Panel();
 			this.progressGroupBox = new System.Windows.Forms.GroupBox();
 			this.label7 = new System.Windows.Forms.Label();
@@ -51,9 +55,20 @@
 			this.infoIterationsLabel = new System.Windows.Forms.Label();
 			this.infoGeneratingLayoutLabel = new System.Windows.Forms.Label();
 			this.mainPictureBox = new System.Windows.Forms.PictureBox();
+			this.topPanel = new System.Windows.Forms.Panel();
+			this.slideshowPanel = new System.Windows.Forms.Panel();
+			this.slideshowLeftButton = new System.Windows.Forms.Button();
+			this.slideshowRightButton = new System.Windows.Forms.Button();
+			this.currentlyShowLayoutLabel = new System.Windows.Forms.Label();
+			this.automaticSlideshowCheckbox = new System.Windows.Forms.CheckBox();
+			this.exportPanel = new System.Windows.Forms.Panel();
+			this.exportTxtButton = new System.Windows.Forms.Button();
+			this.exportSvgButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.actionsPanel.SuspendLayout();
+			this.actionsGroupBox.SuspendLayout();
 			this.progressPanel.SuspendLayout();
 			this.progressGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).BeginInit();
@@ -62,6 +77,9 @@
 			this.infoPanel.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
+			this.topPanel.SuspendLayout();
+			this.slideshowPanel.SuspendLayout();
+			this.exportPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -71,6 +89,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
 			this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.mainPictureBox, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.topPanel, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -92,6 +111,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.actionsPanel);
 			this.groupBox1.Controls.Add(this.progressPanel);
 			this.groupBox1.Controls.Add(this.infoPanel);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -101,6 +121,46 @@
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Controls";
+			// 
+			// actionsPanel
+			// 
+			this.actionsPanel.Controls.Add(this.actionsGroupBox);
+			this.actionsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.actionsPanel.Location = new System.Drawing.Point(3, 351);
+			this.actionsPanel.Name = "actionsPanel";
+			this.actionsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.actionsPanel.Size = new System.Drawing.Size(338, 70);
+			this.actionsPanel.TabIndex = 9;
+			// 
+			// actionsGroupBox
+			// 
+			this.actionsGroupBox.Controls.Add(this.exportAllSvgButton);
+			this.actionsGroupBox.Controls.Add(this.exportAllTxtButton);
+			this.actionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.actionsGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.actionsGroupBox.Name = "actionsGroupBox";
+			this.actionsGroupBox.Size = new System.Drawing.Size(338, 60);
+			this.actionsGroupBox.TabIndex = 0;
+			this.actionsGroupBox.TabStop = false;
+			this.actionsGroupBox.Text = "Actions";
+			// 
+			// exportAllSvgButton
+			// 
+			this.exportAllSvgButton.Location = new System.Drawing.Point(9, 20);
+			this.exportAllSvgButton.Name = "exportAllSvgButton";
+			this.exportAllSvgButton.Size = new System.Drawing.Size(125, 34);
+			this.exportAllSvgButton.TabIndex = 0;
+			this.exportAllSvgButton.Text = "Export all SVG";
+			this.exportAllSvgButton.UseVisualStyleBackColor = true;
+			// 
+			// exportAllTxtButton
+			// 
+			this.exportAllTxtButton.Location = new System.Drawing.Point(139, 20);
+			this.exportAllTxtButton.Name = "exportAllTxtButton";
+			this.exportAllTxtButton.Size = new System.Drawing.Size(125, 34);
+			this.exportAllTxtButton.TabIndex = 1;
+			this.exportAllTxtButton.Text = "Export all TXT";
+			this.exportAllTxtButton.UseVisualStyleBackColor = true;
 			// 
 			// progressPanel
 			// 
@@ -343,6 +403,101 @@
 			this.mainPictureBox.TabStop = false;
 			this.mainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mainPictureBox_Paint);
 			// 
+			// topPanel
+			// 
+			this.topPanel.Controls.Add(this.slideshowPanel);
+			this.topPanel.Controls.Add(this.exportPanel);
+			this.topPanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.topPanel.Location = new System.Drawing.Point(3, 3);
+			this.topPanel.Name = "topPanel";
+			this.topPanel.Padding = new System.Windows.Forms.Padding(10, 5, 5, 5);
+			this.topPanel.Size = new System.Drawing.Size(726, 44);
+			this.topPanel.TabIndex = 2;
+			// 
+			// slideshowPanel
+			// 
+			this.slideshowPanel.Controls.Add(this.slideshowLeftButton);
+			this.slideshowPanel.Controls.Add(this.slideshowRightButton);
+			this.slideshowPanel.Controls.Add(this.currentlyShowLayoutLabel);
+			this.slideshowPanel.Controls.Add(this.automaticSlideshowCheckbox);
+			this.slideshowPanel.Dock = System.Windows.Forms.DockStyle.Right;
+			this.slideshowPanel.Location = new System.Drawing.Point(293, 5);
+			this.slideshowPanel.Name = "slideshowPanel";
+			this.slideshowPanel.Size = new System.Drawing.Size(428, 34);
+			this.slideshowPanel.TabIndex = 3;
+			// 
+			// slideshowLeftButton
+			// 
+			this.slideshowLeftButton.AutoSize = true;
+			this.slideshowLeftButton.Location = new System.Drawing.Point(185, 4);
+			this.slideshowLeftButton.Name = "slideshowLeftButton";
+			this.slideshowLeftButton.Size = new System.Drawing.Size(32, 27);
+			this.slideshowLeftButton.TabIndex = 3;
+			this.slideshowLeftButton.Text = "←";
+			this.slideshowLeftButton.UseVisualStyleBackColor = true;
+			this.slideshowLeftButton.Click += new System.EventHandler(this.slideshowLeftButton_Click);
+			// 
+			// slideshowRightButton
+			// 
+			this.slideshowRightButton.AutoSize = true;
+			this.slideshowRightButton.Location = new System.Drawing.Point(222, 4);
+			this.slideshowRightButton.Name = "slideshowRightButton";
+			this.slideshowRightButton.Size = new System.Drawing.Size(32, 27);
+			this.slideshowRightButton.TabIndex = 2;
+			this.slideshowRightButton.Text = "→";
+			this.slideshowRightButton.UseVisualStyleBackColor = true;
+			this.slideshowRightButton.Click += new System.EventHandler(this.slideshowRightButton_Click);
+			// 
+			// currentlyShowLayoutLabel
+			// 
+			this.currentlyShowLayoutLabel.AutoSize = true;
+			this.currentlyShowLayoutLabel.Location = new System.Drawing.Point(3, 9);
+			this.currentlyShowLayoutLabel.Name = "currentlyShowLayoutLabel";
+			this.currentlyShowLayoutLabel.Size = new System.Drawing.Size(167, 17);
+			this.currentlyShowLayoutLabel.TabIndex = 1;
+			this.currentlyShowLayoutLabel.Text = "Currently shown layout: 5";
+			// 
+			// automaticSlideshowCheckbox
+			// 
+			this.automaticSlideshowCheckbox.AutoSize = true;
+			this.automaticSlideshowCheckbox.Location = new System.Drawing.Point(268, 8);
+			this.automaticSlideshowCheckbox.Name = "automaticSlideshowCheckbox";
+			this.automaticSlideshowCheckbox.Size = new System.Drawing.Size(157, 21);
+			this.automaticSlideshowCheckbox.TabIndex = 0;
+			this.automaticSlideshowCheckbox.Text = "Automatic slideshow";
+			this.automaticSlideshowCheckbox.UseVisualStyleBackColor = true;
+			this.automaticSlideshowCheckbox.CheckedChanged += new System.EventHandler(this.automaticSlideshowCheckbox_CheckedChanged);
+			// 
+			// exportPanel
+			// 
+			this.exportPanel.Controls.Add(this.exportTxtButton);
+			this.exportPanel.Controls.Add(this.exportSvgButton);
+			this.exportPanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.exportPanel.Location = new System.Drawing.Point(10, 5);
+			this.exportPanel.Name = "exportPanel";
+			this.exportPanel.Size = new System.Drawing.Size(215, 34);
+			this.exportPanel.TabIndex = 2;
+			// 
+			// exportTxtButton
+			// 
+			this.exportTxtButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.exportTxtButton.Location = new System.Drawing.Point(110, 0);
+			this.exportTxtButton.Name = "exportTxtButton";
+			this.exportTxtButton.Size = new System.Drawing.Size(105, 34);
+			this.exportTxtButton.TabIndex = 1;
+			this.exportTxtButton.Text = "Export TXT";
+			this.exportTxtButton.UseVisualStyleBackColor = true;
+			// 
+			// exportSvgButton
+			// 
+			this.exportSvgButton.Dock = System.Windows.Forms.DockStyle.Left;
+			this.exportSvgButton.Location = new System.Drawing.Point(0, 0);
+			this.exportSvgButton.Name = "exportSvgButton";
+			this.exportSvgButton.Size = new System.Drawing.Size(105, 34);
+			this.exportSvgButton.TabIndex = 0;
+			this.exportSvgButton.Text = "Export SVG";
+			this.exportSvgButton.UseVisualStyleBackColor = true;
+			// 
 			// GeneratorWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -357,6 +512,8 @@
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
+			this.actionsPanel.ResumeLayout(false);
+			this.actionsGroupBox.ResumeLayout(false);
 			this.progressPanel.ResumeLayout(false);
 			this.progressGroupBox.ResumeLayout(false);
 			this.progressGroupBox.PerformLayout();
@@ -367,6 +524,10 @@
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
+			this.topPanel.ResumeLayout(false);
+			this.slideshowPanel.ResumeLayout(false);
+			this.slideshowPanel.PerformLayout();
+			this.exportPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -396,5 +557,18 @@
 		private System.Windows.Forms.Label infoIterations;
 		private System.Windows.Forms.Label infoGeneratingLayout;
 		private System.Windows.Forms.Label infoStatus;
+		private System.Windows.Forms.Panel topPanel;
+		private System.Windows.Forms.Button exportTxtButton;
+		private System.Windows.Forms.Button exportSvgButton;
+		private System.Windows.Forms.Panel slideshowPanel;
+		private System.Windows.Forms.CheckBox automaticSlideshowCheckbox;
+		private System.Windows.Forms.Panel exportPanel;
+		private System.Windows.Forms.Button slideshowLeftButton;
+		private System.Windows.Forms.Button slideshowRightButton;
+		private System.Windows.Forms.Label currentlyShowLayoutLabel;
+		private System.Windows.Forms.Panel actionsPanel;
+		private System.Windows.Forms.GroupBox actionsGroupBox;
+		private System.Windows.Forms.Button exportAllSvgButton;
+		private System.Windows.Forms.Button exportAllTxtButton;
 	}
 }

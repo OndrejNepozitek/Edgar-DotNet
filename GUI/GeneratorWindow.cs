@@ -1,6 +1,7 @@
 ﻿namespace GUI
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Threading;
 	using System.Threading.Tasks;
@@ -22,7 +23,10 @@
 		private int iterationsCount;
 		private readonly Stopwatch infoStopwatch = new Stopwatch();
 
-		private IMapLayout<int> layoutToDraw; 
+		private IMapLayout<int> layoutToDraw;
+		private List<IMapLayout<int>> generatedLayouts;
+		private int slideshowIndex;
+		private int slideshowTaskId;
 
 		public GeneratorWindow(GeneratorSettings settings)
 		{
@@ -36,6 +40,10 @@
 			showAcceptedLayoutsTime.Value = settings.ShowAcceptedLayoutsTime;
 			showPerturbedLayouts.Checked = settings.ShowPerturbedLayouts;
 			showPerturbedLayoutsTime.Value = settings.ShowPerturbedLayoutsTime;
+
+			slideshowPanel.Hide();
+			exportPanel.Hide();
+			actionsPanel.Hide();
 
 			Run();
 		}
@@ -87,7 +95,7 @@
 					iterationsCount++;
 					if (infoStopwatch.ElapsedMilliseconds >= 200)
 					{
-						BeginInvoke((Action)(updateInfoPanel));
+						BeginInvoke((Action)(UpdateInfoPanel));
 						infoStopwatch.Restart();
 					}
 				};
@@ -96,24 +104,16 @@
 				{
 					iterationsCount = 0;
 					layoutsCount++;
-					BeginInvoke((Action)(updateInfoPanel));
+					BeginInvoke((Action)(UpdateInfoPanel));
 					infoStopwatch.Restart();
 				};
 
-				var layouts = layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
+				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
 
 				isRunning = false;
-				BeginInvoke((Action)(updateInfoPanel));
+				Invoke((Action)(UpdateInfoPanel));
+				Invoke((Action)(OnFinished));
 
-				foreach (var layout in layouts)
-				{
-					if (ct.IsCancellationRequested)
-						break;
-
-					layoutToDraw = layout;
-					mainPictureBox.Invoke((Action) (() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation(3000, ct);
-				}
 			}, ct);
 		}
 
@@ -145,7 +145,7 @@
 			layoutDrawer.DrawLayout(layoutToDraw, mainPictureBox, e);
 		}
 
-		private void updateInfoPanel()
+		private void UpdateInfoPanel()
 		{
 			infoStatus.Text = $"Status: {(isRunning ? "running" : "completed")}";
 			infoGeneratingLayout.Text = $"{layoutsCount + 1}/{settings.NumberOfLayouts}";
@@ -163,6 +163,15 @@
 			}
 		}
 
+		private void OnFinished()
+		{
+			automaticSlideshowCheckbox.Checked = true;
+
+			slideshowPanel.Show();
+			exportPanel.Show();
+			actionsPanel.Show();
+		}
+
 		private void GeneratorWindow_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (task != null)
@@ -175,6 +184,62 @@
 		private void GeneratorWindow_Resize(object sender, EventArgs e)
 		{
 			mainPictureBox.Refresh();
+		}
+
+		private void slideshowLeftButton_Click(object sender, EventArgs e)
+		{
+			if (slideshowIndex == 0)
+				return;
+
+			layoutToDraw = generatedLayouts[--slideshowIndex];
+			mainPictureBox.Refresh();
+			UpdateSlideshowInfo();
+			automaticSlideshowCheckbox.Checked = false;
+		}
+
+		private void slideshowRightButton_Click(object sender, EventArgs e)
+		{
+			if (slideshowIndex == generatedLayouts.Count - 1)
+				return;
+
+			layoutToDraw = generatedLayouts[++slideshowIndex];
+			mainPictureBox.Refresh();
+			UpdateSlideshowInfo();
+			automaticSlideshowCheckbox.Checked = false;
+		}
+
+		private void UpdateSlideshowInfo()
+		{
+			currentlyShowLayoutLabel.Text = $"Currently shown layout: {slideshowIndex + 1}";
+		}
+
+		private void automaticSlideshowCheckbox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (automaticSlideshowCheckbox.Checked)
+			{
+				var id = ++slideshowTaskId;
+
+				Task.Run(() =>
+				{
+					for (var i = slideshowIndex; i < generatedLayouts.Count; i++)
+					{
+						if (!automaticSlideshowCheckbox.Checked || slideshowTaskId != id)
+							return;
+
+						var idToShow = i;
+
+						Invoke((Action) (() =>
+						{
+							slideshowIndex = idToShow;
+							UpdateSlideshowInfo();
+							layoutToDraw = generatedLayouts[idToShow];
+							mainPictureBox.Refresh();
+						}));
+
+						Thread.Sleep(3000);
+					}
+				});
+			}
 		}
 	}
 }
