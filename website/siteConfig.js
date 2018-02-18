@@ -5,19 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/* List of projects/orgs using your project for the users page */
-const users = [
-  {
-    caption: 'User1',
-    image: '/test-site/img/docusaurus.svg',
-    infoLink: 'https://www.facebook.com',
-    pinned: true,
-  },
-];
-
 const siteConfig = {
-  title: 'Test Site' /* title for your website */,
-  tagline: 'A website for testing',
+  title: 'Map generation' /* title for your website */,
+  tagline: 'An application for generating map layouts for games',
   url: 'https://ondrejnepozitek.github.io/' /* your website url */,
   baseUrl: '/MapGeneration/' /* base url for your project */,
   projectName: 'MapGeneration',
@@ -27,15 +17,14 @@ const siteConfig = {
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
   ],
-  users,
   /* path to images for header/footer */
-  headerIcon: 'img/docusaurus.svg',
-  footerIcon: 'img/docusaurus.svg',
-  favicon: 'img/favicon.png',
+  /*headerIcon: 'img/docusaurus.svg',*/
+  /*footerIcon: 'img/docusaurus.svg',
+  favicon: 'img/favicon.png',*/
   /* colors for website */
   colors: {
-    primaryColor: '#2E8555',
-    secondaryColor: '#205C3B',
+    primaryColor: '#1a2b34',
+    secondaryColor: '#e0e0e0',
   },
   /* custom fonts for website */
   /*fonts: {
