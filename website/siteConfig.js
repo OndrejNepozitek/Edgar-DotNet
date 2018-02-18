@@ -38,7 +38,7 @@ const siteConfig = {
     ]
   },*/
   // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
-  users: {},
+  users: [],
   copyright:
     'Copyright © ' +
     new Date().getFullYear() +
