@@ -5,13 +5,20 @@
 	using DataStructures.Common;
 	using DataStructures.Polygons;
 
+	/// <summary>
+	/// Class implementing utility functions for grid polygons.
+	/// </summary>
 	public class GridPolygonUtils : IPolygonUtils<GridPolygon>
 	{
+		/// <summary>
+		/// Returns the same polygon but with vertices ordered in a way that the point with the smallest X (and smallest Y if there are multiple) is the first one.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <returns></returns>
 		public GridPolygon NormalizePolygon(GridPolygon polygon)
 		{
 			var points = polygon.GetPoints();
 			var smallestX = points.Select(x => x.X).Min();
-			var smallestY = points.Select(x => x.Y).Min();
 
 			// Order it such that the point with the smallest X (and smallest Y if there are multiple) is the first one
 			var smallestXY = points.Where(x => x.X == smallestX).Min(x => x.Y);

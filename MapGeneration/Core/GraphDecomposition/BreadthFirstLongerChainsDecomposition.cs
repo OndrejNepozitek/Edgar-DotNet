@@ -11,9 +11,14 @@
 	public class BreadthFirstLongerChainsDecomposition<TNode> : IChainDecomposition<TNode>
 		where TNode : IEquatable<TNode>
 	{
-		private readonly IGraphDecomposer<TNode> graphDecomposer = new GraphDecomposer<TNode>();
+		private readonly IGraphDecomposer<TNode> graphDecomposer;
 		private int vertexCounter = 0;
 		private int chainCounter = 0;
+
+		public BreadthFirstLongerChainsDecomposition(IGraphDecomposer<TNode> graphDecomposer)
+		{
+			this.graphDecomposer = graphDecomposer;
+		}
 
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{

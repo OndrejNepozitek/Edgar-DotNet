@@ -4,7 +4,6 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using NUnit.Framework;
 
 	[TestFixture]
@@ -19,38 +18,15 @@
 		}
 
 		[Test]
-		public void NormalizePolygon_Square_ReturnsNormalizedPolygon()
-		{
-			var square = new GridPolygonBuilder()
-				.AddPoint(-2, -2)
-				.AddPoint(2, -2)
-				.AddPoint(2, 2)
-				.AddPoint(-2, 2)
-				.Build();
-
-			var normalizedSquare = utils.NormalizePolygon(square);
-			var squarePoints = normalizedSquare.GetPoints();
-			var expectedPoints = new List<IntVector2>()
-			{
-				new IntVector2(0, 0),
-				new IntVector2(0, 4),
-				new IntVector2(4, 4),
-				new IntVector2(4, 0),
-			};
-
-			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
-		}
-
-		[Test]
 		public void NormalizePolygon_Polygon_ReturnsNormalizedPolygon()
 		{
 			var polygon = new GridPolygonBuilder()
-				.AddPoint(3, 0)
-				.AddPoint(-2, 0)
-				.AddPoint(-2, -2)
-				.AddPoint(0, -2)
-				.AddPoint(0, -5)
-				.AddPoint(3, -5)
+				.AddPoint(0, 5)
+				.AddPoint(5, 5)
+				.AddPoint(5, 0)
+				.AddPoint(2, 0)
+				.AddPoint(2, 3)
+				.AddPoint(0, 3)
 				.Build();
 
 			var normalized = utils.NormalizePolygon(polygon);
@@ -66,30 +42,6 @@
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));
-		}
-
-		[Test]
-		public void DecomposeIntoRectangle_Polygon_ReturnsDecomposition()
-		{
-			/*var polygon = new GridPolygonBuilder()
-				.AddPoint(0, 3)
-				.AddPoint(0, 5)
-				.AddPoint(5, 5)
-				.AddPoint(5, 0)
-				.AddPoint(2, 0)
-				.AddPoint(2, 3)
-				.Build();
-
-			var expectedRectangles = new List<GridRectangle>
-			{
-				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
-				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
-				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
-				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
-				new GridRectangle(new IntVector2(0, 3), new IntVector2(5, 5)),
-			};
-
-			var rectangles = utils.DecomposeIntoRectangles(polygon);*/
 		}
 	}
 }

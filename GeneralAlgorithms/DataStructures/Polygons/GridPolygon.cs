@@ -13,7 +13,7 @@
 	/// <remarks>
 	/// Serveral invariants hold:
 	/// - a polygon has at least 4 points
-	/// - all lines must be parallel one of the axis
+	/// - all lines must be parallel to one of the axis
 	/// - no two adjacent line can be both horizontal or both vertical
 	/// - points are in a clockwise order
 	/// </remarks>
