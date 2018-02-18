@@ -1,5 +1,5 @@
 ---
-id: differentShapesGuide
+id: differentShapesMapDescription
 title: Different shapes for some rooms
 sidebar_label: Different shapes for some rooms
 ---

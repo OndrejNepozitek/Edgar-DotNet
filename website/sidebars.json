@@ -1,6 +1,7 @@
 {
   "docs": {
-    "Guides": ["basicGuide", "differentShapesGuide"]
+    "Introduction": ["introduction", "installation"],
+    "Map description": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
