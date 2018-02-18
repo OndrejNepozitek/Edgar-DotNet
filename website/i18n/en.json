@@ -4,6 +4,10 @@
     "next": "Next",
     "previous": "Previous",
     "tagline": "An application for generating map layouts for games",
+    "basicGuide": "Basics",
+    "Basics": "Basics",
+    "differentShapesGuide": "Different shapes for some rooms",
+    "Different shapes for some rooms": "Different shapes for some rooms",
     "doc1": "Latin-ish",
     "Example Page": "Example Page",
     "doc2": "document number 2",
@@ -14,9 +18,8 @@
     "API": "API",
     "Help": "Help",
     "Blog": "Blog",
-    "Docusaurus": "Docusaurus",
-    "First Category": "First Category",
-    "Second Category": "Second Category"
+    "Guides": "Guides",
+    "First Category": "First Category"
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",

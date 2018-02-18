@@ -12,7 +12,7 @@ const siteConfig = {
   baseUrl: '/MapGeneration/' /* base url for your project */,
   projectName: 'MapGeneration',
   headerLinks: [
-    {doc: 'doc1', label: 'Docs'},
+    {doc: 'basicGuide', label: 'Docs'},
     {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
