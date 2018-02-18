@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
+	using System.IO;
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
@@ -13,7 +14,8 @@
 	public partial class GeneratorWindow : Form
 	{
 		private readonly GeneratorSettings settings;
-		private readonly WFLayoutDrawer<int> layoutDrawer = new WFLayoutDrawer<int>();
+		private readonly WFLayoutDrawer<int> wfLayoutDraver = new WFLayoutDrawer<int>();
+		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -142,7 +144,7 @@
 			if (layoutToDraw == null)
 				return;
 
-			layoutDrawer.DrawLayout(layoutToDraw, mainPictureBox, e);
+			wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox, e);
 		}
 
 		private void UpdateInfoPanel()
@@ -190,24 +192,28 @@
 
 		private void slideshowLeftButton_Click(object sender, EventArgs e)
 		{
-			if (slideshowIndex == 0)
-				return;
-
-			layoutToDraw = generatedLayouts[--slideshowIndex];
-			mainPictureBox.Refresh();
-			UpdateSlideshowInfo();
 			automaticSlideshowCheckbox.Checked = false;
+
+			if (slideshowIndex != 0)
+			{
+				layoutToDraw = generatedLayouts[--slideshowIndex];
+				mainPictureBox.Refresh();
+			}
+
+			UpdateSlideshowInfo();
 		}
 
 		private void slideshowRightButton_Click(object sender, EventArgs e)
 		{
-			if (slideshowIndex == generatedLayouts.Count - 1)
-				return;
-
-			layoutToDraw = generatedLayouts[++slideshowIndex];
-			mainPictureBox.Refresh();
-			UpdateSlideshowInfo();
 			automaticSlideshowCheckbox.Checked = false;
+
+			if (slideshowIndex != generatedLayouts.Count - 1)
+			{
+				layoutToDraw = generatedLayouts[++slideshowIndex];
+				mainPictureBox.Refresh();
+			}
+
+			UpdateSlideshowInfo();
 		}
 
 		private void UpdateSlideshowInfo()
@@ -241,6 +247,27 @@
 						Thread.Sleep(3000);
 					}
 				});
+			}
+		}
+
+		private void exportSvgButton_Click(object sender, EventArgs e)
+		{
+			automaticSlideshowCheckbox.Checked = false;
+			UpdateSlideshowInfo();
+			saveExportDialog.DefaultExt = "svg";
+
+			if (saveExportDialog.ShowDialog() == DialogResult.OK)
+			{
+				var filename = saveExportDialog.FileName;
+
+				using (var fs = File.Open(filename, FileMode.Create))
+				{
+					using (var sw = new StreamWriter(fs))
+					{
+						var data = svgLayoutDrawer.DrawLayout(layoutToDraw);
+						sw.Write(data);
+					}
+				}
 			}
 		}
 	}

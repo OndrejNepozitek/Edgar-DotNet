@@ -40,7 +40,6 @@
 				StartCap = LineCap.Flat
 			};
 
-
 			foreach (var pair in outline)
 			{
 				var point = pair.Item1;

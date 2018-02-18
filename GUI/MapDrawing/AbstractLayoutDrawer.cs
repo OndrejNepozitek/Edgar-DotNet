@@ -12,7 +12,6 @@
 		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames)
 		{
 			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
-			var rooms = layout.GetRooms().ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -23,6 +22,13 @@
 			var scale = GetScale(minx, miny, maxx, maxy, width, height);
 			var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
 
+			DrawLayout(layout, scale, offset, withNames);
+		}
+
+		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames)
+		{
+			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
+			var rooms = layout.GetRooms().ToList();
 			var minWidth = polygons.Min(x => x.BoundingRectangle.Width);
 
 			for (var i = 0; i < rooms.Count; i++)
@@ -45,7 +51,7 @@
 			return new IntVector2((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
 		}
 
-		private IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
+		protected IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
 			var centery = scale * (maxy + miny) / 2;
@@ -53,7 +59,7 @@
 			return new IntVector2((int)(width / 2f - centerx), (int)(height / 2f - centery));
 		}
 
-		private float GetScale(int minx, int miny, int maxx, int maxy, int actualWidth, int actualHeight)
+		protected float GetScale(int minx, int miny, int maxx, int maxy, int actualWidth, int actualHeight)
 		{
 			var neededWidth = 1.2f * (maxx - minx);
 			var neededHeight = 1.2f * (maxy - miny);
@@ -78,7 +84,7 @@
 
 			foreach (var line in polygon.GetLines())
 			{
-				outline.Add(Tuple.Create(line.From, true));
+				AddToOutline(Tuple.Create(line.From, true));
 
 				if (doorLines == null)
 					continue;
@@ -100,12 +106,29 @@
 					}
 
 					doorLines.Remove(doorLine);
-					outline.Add(Tuple.Create(doorLine.From, true));
-					outline.Add(Tuple.Create(doorLine.To, false));
+
+					AddToOutline(Tuple.Create(doorLine.From, true));
+					AddToOutline(Tuple.Create(doorLine.To, false));
 				}
 			}
 
 			return outline;
+
+			void AddToOutline(Tuple<IntVector2, bool> point)
+			{
+				if (outline.Count == 0)
+				{
+					outline.Add(point);
+					return;
+				}
+					
+				var lastPoint = outline[outline.Count - 1];
+
+				if (!lastPoint.Item2 && point.Item2 && lastPoint.Item1 == point.Item1)
+					return;
+
+				outline.Add(point);
+			}
 		}
 	}
 }

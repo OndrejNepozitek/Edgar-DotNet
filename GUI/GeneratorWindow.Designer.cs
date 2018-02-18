@@ -33,7 +33,6 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.actionsPanel = new System.Windows.Forms.Panel();
 			this.actionsGroupBox = new System.Windows.Forms.GroupBox();
-			this.exportAllSvgButton = new System.Windows.Forms.Button();
 			this.exportAllTxtButton = new System.Windows.Forms.Button();
 			this.progressPanel = new System.Windows.Forms.Panel();
 			this.progressGroupBox = new System.Windows.Forms.GroupBox();
@@ -64,6 +63,7 @@
 			this.exportPanel = new System.Windows.Forms.Panel();
 			this.exportTxtButton = new System.Windows.Forms.Button();
 			this.exportSvgButton = new System.Windows.Forms.Button();
+			this.saveExportDialog = new System.Windows.Forms.SaveFileDialog();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -134,7 +134,6 @@
 			// 
 			// actionsGroupBox
 			// 
-			this.actionsGroupBox.Controls.Add(this.exportAllSvgButton);
 			this.actionsGroupBox.Controls.Add(this.exportAllTxtButton);
 			this.actionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.actionsGroupBox.Location = new System.Drawing.Point(0, 0);
@@ -144,18 +143,9 @@
 			this.actionsGroupBox.TabStop = false;
 			this.actionsGroupBox.Text = "Actions";
 			// 
-			// exportAllSvgButton
-			// 
-			this.exportAllSvgButton.Location = new System.Drawing.Point(9, 20);
-			this.exportAllSvgButton.Name = "exportAllSvgButton";
-			this.exportAllSvgButton.Size = new System.Drawing.Size(125, 34);
-			this.exportAllSvgButton.TabIndex = 0;
-			this.exportAllSvgButton.Text = "Export all SVG";
-			this.exportAllSvgButton.UseVisualStyleBackColor = true;
-			// 
 			// exportAllTxtButton
 			// 
-			this.exportAllTxtButton.Location = new System.Drawing.Point(139, 20);
+			this.exportAllTxtButton.Location = new System.Drawing.Point(8, 21);
 			this.exportAllTxtButton.Name = "exportAllTxtButton";
 			this.exportAllTxtButton.Size = new System.Drawing.Size(125, 34);
 			this.exportAllTxtButton.TabIndex = 1;
@@ -497,6 +487,7 @@
 			this.exportSvgButton.TabIndex = 0;
 			this.exportSvgButton.Text = "Export SVG";
 			this.exportSvgButton.UseVisualStyleBackColor = true;
+			this.exportSvgButton.Click += new System.EventHandler(this.exportSvgButton_Click);
 			// 
 			// GeneratorWindow
 			// 
@@ -568,7 +559,7 @@
 		private System.Windows.Forms.Label currentlyShowLayoutLabel;
 		private System.Windows.Forms.Panel actionsPanel;
 		private System.Windows.Forms.GroupBox actionsGroupBox;
-		private System.Windows.Forms.Button exportAllSvgButton;
 		private System.Windows.Forms.Button exportAllTxtButton;
+		private System.Windows.Forms.SaveFileDialog saveExportDialog;
 	}
 }
