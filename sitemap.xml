@@ -8,6 +8,8 @@
 <url> <loc>https://ondrejnepozitek.github.io/blog/2017/09/25/testing-rss.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://ondrejnepozitek.github.io/blog/2017/04/10/blog-post-two.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://ondrejnepozitek.github.io/blog/2016/03/11/blog-post.html</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://ondrejnepozitek.github.io/docs/basicGuide.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://ondrejnepozitek.github.io/docs/basicGuide.html" /> </url>
+<url> <loc>https://ondrejnepozitek.github.io/docs/differentShapesGuide.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://ondrejnepozitek.github.io/docs/differentShapesGuide.html" /> </url>
 <url> <loc>https://ondrejnepozitek.github.io/docs/doc1.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://ondrejnepozitek.github.io/docs/doc1.html" /> </url>
 <url> <loc>https://ondrejnepozitek.github.io/docs/doc2.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://ondrejnepozitek.github.io/docs/doc2.html" /> </url>
 <url> <loc>https://ondrejnepozitek.github.io/docs/doc3.html</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://ondrejnepozitek.github.io/docs/doc3.html" /> </url>
