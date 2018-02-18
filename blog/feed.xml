@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Test Site Blog</title>
+        <title>Map generation Blog</title>
         <link>https://ondrejnepozitek.github.io//MapGeneration/blog</link>
-        <description>The best place to stay up-to-date with the latest Test Site news and events.</description>
+        <description>The best place to stay up-to-date with the latest Map generation news and events.</description>
         <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>Test Site Blog</title>
-            <url>https://ondrejnepozitek.github.io//MapGeneration/img/docusaurus.svg</url>
+            <title>Map generation Blog</title>
+            <url>https://ondrejnepozitek.github.io//MapGeneration/undefined</url>
             <link>https://ondrejnepozitek.github.io//MapGeneration/blog</link>
         </image>
         <copyright>Copyright © 2018 Your Name or Your Company Name</copyright>
