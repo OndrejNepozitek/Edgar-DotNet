@@ -18,9 +18,9 @@ const users = [
 const siteConfig = {
   title: 'Test Site' /* title for your website */,
   tagline: 'A website for testing',
-  url: 'https://facebook.github.io' /* your website url */,
-  baseUrl: '/test-site/' /* base url for your project */,
-  projectName: 'test-site',
+  url: 'https://ondrejnepozitek.github.io/' /* your website url */,
+  baseUrl: '/MapGeneration/' /* base url for your project */,
+  projectName: 'MapGeneration',
   headerLinks: [
     {doc: 'doc1', label: 'Docs'},
     {doc: 'doc4', label: 'API'},
