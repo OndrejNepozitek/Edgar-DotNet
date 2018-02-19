@@ -28,6 +28,7 @@
 		{
 			var benchmark = new Benchmark();
 
+			using (var sw = new StreamWriter(new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + ".txt"))
 			{
 				var layoutGenerator = new SALayoutGenerator<int>();
 				layoutGenerator.InjectRandomGenerator(new Random(0));
@@ -75,7 +76,7 @@
 				//}
 				setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
 
-				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 30);
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 10, sw);
 			}
 		}
 	}
