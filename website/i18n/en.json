@@ -8,6 +8,8 @@
     "Basics": "Basics",
     "complexMapDescription": "Complex setup",
     "Complex setup": "Complex setup",
+    "configFormat": "Config format",
+    "Config format": "Config format",
     "differentShapesMapDescription": "Different shapes for some rooms",
     "Different shapes for some rooms": "Different shapes for some rooms",
     "installation": "Installation",
@@ -18,6 +20,7 @@
     "Help": "Help",
     "Blog": "Blog",
     "Map description": "Map description",
+    "Misc": "Misc",
     "First Category": "First Category"
   },
   "pages-strings": {

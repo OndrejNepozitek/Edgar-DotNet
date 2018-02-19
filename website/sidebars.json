@@ -1,7 +1,8 @@
 {
   "docs": {
     "Introduction": ["introduction", "installation"],
-    "Map description": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"]
+    "Map description": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"],
+    "Misc": ["configFormat"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
