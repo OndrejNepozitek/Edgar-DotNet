@@ -67,15 +67,16 @@
 				//setups5.AddSetup("Difference old", generator => { generator.EnableDifferenceFromAvg(false); });
 				setups5.AddSetup("Difference from avg", generator => { generator.EnableDifferenceFromAvg(true, 0.4f); });
 
-				//benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 60);
-			}
+				var setups6 = scenario.MakeSetupsGroup();
+				//for (var i = 1; i < 10; i++)
+				//{
+				//	var chance = i * 0.03f;
+				//	setups6.AddSetup($"Perturb outside with chance {chance}", generator => { generator.EnablePerturbOutsideChain(true, chance); });
+				//}
+				setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
 
-			using (var sr = new StreamReader("Resources/Maps/9Vertices.yml"))
-			{
-				var parser = new ConfigLoader();
-				var mapDescription = parser.LoadMapDescription(sr);
-				// var roomsConfig = parser.GetRoomDescriptions(sr);
-			}		
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 30);
+			}
 		}
 	}
 }

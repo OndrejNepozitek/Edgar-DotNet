@@ -38,6 +38,8 @@
 		protected bool BenchmarkEnabled;
 		private bool perturbPositionAfterShape;
 		private bool lazyProcessing;
+		private bool perturbOutsideChain;
+		private float perturbOutsideChainProb;
 
 		private bool sigmaFromAvg;
 		private int sigmaScale;
@@ -373,6 +375,7 @@
 							// AddDoors(new List<Layout>() { perturbedLayout });
 							layouts.Add(perturbedLayout);
 							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
+
 							wasAccepted = true;
 
 							yield return perturbedLayout;
@@ -468,7 +471,17 @@
 			// TODO: sometimes perturb a node that is not in the current chain?
 
 			var energy = layout.GetEnergy();
-			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
+			Layout newLayout;
+
+			if (perturbOutsideChain && random.NextDouble() < perturbOutsideChainProb)
+			{
+				var chooseFrom = graph.Vertices.Where(x => layout.GetConfiguration(x, out var _)).Where(x => !chain.Contains(x)).ToList();
+				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chooseFrom, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chooseFrom, true);
+			}
+			else
+			{
+				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
+			}
 
 			var newEnergy = newLayout.GetEnergy();
 			energyDelta = newEnergy - energy;
@@ -697,6 +710,15 @@
 
 			differenceFromAvg = enable;
 			differenceScale = scale;
+		}
+
+		public void EnablePerturbOutsideChain(bool enable, float chance = 0)
+		{
+			if (enable && chance == 0)
+				throw new InvalidOperationException();
+
+			perturbOutsideChain = enable;
+			perturbOutsideChainProb = chance;
 		}
 
 		protected int GetAverageSize(IEnumerable<IntAlias<GridPolygon>> polygons)
