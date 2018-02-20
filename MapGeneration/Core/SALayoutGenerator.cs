@@ -483,6 +483,11 @@
 				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
 			}
 
+			if (layoutValidityCheck)
+			{
+				CheckLayoutValidity(newLayout);
+			}
+
 			var newEnergy = newLayout.GetEnergy();
 			energyDelta = newEnergy - energy;
 
@@ -734,6 +739,53 @@
 		public void SetCancellationToken(CancellationToken cancellationToken)
 		{
 			this.cancellationToken = cancellationToken;
-		} 
+		}
+
+		#region Debug options
+
+		#region Check perturbed layout validity
+
+		private bool layoutValidityCheck = false;
+
+		public void SetLayoutValidityCheck(bool enable)
+		{
+			layoutValidityCheck = enable;
+		}
+
+		/// <summary>
+		/// Checks whether energies and validity vectors are the same as if they are all recomputed.
+		/// </summary>
+		/// <remarks>
+		/// This check significantly slows down the generator.
+		/// </remarks>
+		/// <param name="layout"></param>
+		private void CheckLayoutValidity(Layout layout)
+		{
+			var copy = layout.Clone();
+
+			layoutOperations.RecomputeEnergy(copy);
+			layoutOperations.RecomputeValidityVectors(copy);
+
+			foreach (var vertex in graph.Vertices)
+			{
+				var isInLayout = layout.GetConfiguration(vertex, out var configurationLayout);
+				var isInCopy = layout.GetConfiguration(vertex, out var configurationCopy);
+
+				if (isInLayout != isInCopy)
+					throw new InvalidOperationException("Vertices must be either set in both or absent in both");
+
+				// Skip the check if the configuration is not set
+				if (!isInLayout)
+					continue;
+
+				if (!configurationCopy.Equals(configurationLayout))
+					throw new InvalidOperationException("Configurations must be equal");
+			}
+		}
+
+		#endregion
+
+		#endregion
+
 	}
 }

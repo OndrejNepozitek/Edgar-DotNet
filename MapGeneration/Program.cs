@@ -32,6 +32,7 @@
 			{
 				var layoutGenerator = new SALayoutGenerator<int>();
 				layoutGenerator.InjectRandomGenerator(new Random(0));
+				layoutGenerator.SetLayoutValidityCheck(true);
 
 				var scenario = new BenchmarkScenario<SALayoutGenerator<int>, int>();
 				scenario.SetRunsCount(1);

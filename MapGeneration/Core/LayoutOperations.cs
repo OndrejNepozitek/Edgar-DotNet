@@ -221,9 +221,8 @@
 					}
 				}
 
-				// TODO: uncomment
-				/*if (!updateEnergies)
-					continue;*/
+				if (!updateEnergies)
+					continue;
 
 				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour);
 				newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
