@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using Benchmarks;
 	using Core;
 	using Core.ConfigurationSpaces;
@@ -76,6 +77,30 @@
 				//	setups6.AddSetup($"Perturb outside with chance {chance}", generator => { generator.EnablePerturbOutsideChain(true, chance); });
 				//}
 				setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
+
+				{
+					// Random restarts
+					//var setups = scenario.MakeSetupsGroup();
+					//setups.AddSetup("Without random restart", generator => { generator.SetRandomRestarts(false); });
+
+					//foreach (var place in Enum.GetValues(typeof(SALayoutGenerator<int>.RestartSuccessPlace)).Cast<SALayoutGenerator<int>.RestartSuccessPlace>())
+					//{
+					//	for (var j = 0; j < 2; j++)
+					//	{
+					//		var reset = j == 0;
+
+					//		for (var i = 0; i < 5; i++)
+					//		{
+					//			var scale = (i + 1) * 0.5f + 0.5f;
+
+					//			setups.AddSetup($"With random restarts - {place}, reset: {reset}, scale: {scale}", generator => { generator.SetRandomRestarts(true, place, reset, scale); });
+					//		}
+					//	}
+					//}
+
+					// setups.AddSetup("Test", generator => { generator.SetRandomRestarts(true, SALayoutGenerator<int>.RestartSuccessPlace.OnValidAndDifferent, true, 1.5f);});
+					// setups.AddSetup("As original", generator => { generator.SetRandomRestarts(true, SALayoutGenerator<int>.RestartSuccessPlace.OnValidAndDifferent, false, 1f); });
+				}
 
 				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw);
 			}

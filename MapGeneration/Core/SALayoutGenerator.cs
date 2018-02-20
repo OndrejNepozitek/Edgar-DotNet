@@ -258,6 +258,11 @@
 				{
 					break;
 				}
+
+				if (stack.Count == 0)
+				{
+					stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
+				}
 			}
 
 			stopwatch.Stop();
@@ -305,49 +310,18 @@
 
 			#endregion
 
-			var numFailures = 0;
+			var numberOfFailures = 0;
 
 			for (var i = 0; i < cycles; i++)
 			{
 				var wasAccepted = false;
-				
+
 				#region Random restarts
 
-				if (chainNumber != 0)
+				if (enableRandomRestarts)
 				{
-					if (numFailures > 8 && random.Next(0, 2) == 0)
+					if (chainNumber != 0 && ShouldRestart(numberOfFailures))
 					{
-						if (withDebugOutput)
-						{
-							Console.WriteLine($"Break, we got {numFailures} failures");
-						}
-						break;
-					}
-
-					if (numFailures > 6 && random.Next(0, 3) == 0)
-					{
-						if (withDebugOutput)
-						{
-							Console.WriteLine($"Break, we got {numFailures} failures");
-						}
-						break;
-					}
-
-					if (numFailures > 4 && random.Next(0, 5) == 0)
-					{
-						if (withDebugOutput)
-						{
-							Console.WriteLine($"Break, we got {numFailures} failures");
-						}
-						break;
-					}
-
-					if (numFailures > 2 && random.Next(0, 7) == 0)
-					{
-						if (withDebugOutput)
-						{
-							Console.WriteLine($"Break, we got {numFailures} failures");
-						}
 						break;
 					}
 				}
@@ -367,16 +341,37 @@
 					// TODO: can we check the energy instead?
 					if (IsLayoutValid(perturbedLayout))
 					{
+						#region Random restarts
+						if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValid)
+						{
+							wasAccepted = true;
+
+							if (randomRestartsResetCounter)
+							{
+								numberOfFailures = 0;
+							}
+						}
+						#endregion
+
 						OnValid?.Invoke(ConvertLayout(perturbedLayout));
 
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							// AddDoors(new List<Layout>() { perturbedLayout });
 							layouts.Add(perturbedLayout);
 							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
 
-							wasAccepted = true;
+							#region Random restarts
+							if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
+							{
+								wasAccepted = true;
+
+								if (randomRestartsResetCounter)
+								{
+									numberOfFailures = 0;
+								}
+							}
+							#endregion
 
 							yield return perturbedLayout;
 
@@ -429,13 +424,25 @@
 						acceptedSolutions++;
 						currentLayout = perturbedLayout;
 						deltaEAvg = (deltaEAvg * (acceptedSolutions - 1) + deltaAbs) / acceptedSolutions;
+
+						#region Random restarts
+						if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnAccepted)
+						{
+							wasAccepted = true;
+
+							if (randomRestartsResetCounter)
+							{
+								numberOfFailures = 0;
+							}
+						}
+						#endregion
 					}
 
 				}
 
 				if (!wasAccepted)
 				{
-					numFailures++;
+					numberOfFailures++;
 				}
 
 				t = t * ratio;
@@ -483,7 +490,7 @@
 				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
 			}
 
-			if (layoutValidityCheck)
+			if (enableLayoutValidityCheck)
 			{
 				CheckLayoutValidity(newLayout);
 			}
@@ -741,15 +748,74 @@
 			this.cancellationToken = cancellationToken;
 		}
 
+		#region Generator settings
+
+		#region Random restarts
+
+		private bool enableRandomRestarts = true;
+		private RestartSuccessPlace randomRestartsSuccessPlace = RestartSuccessPlace.OnValidAndDifferent;
+		private bool randomRestartsResetCounter = false;
+		private float randomRestartsScale = 1;
+		private List<int> randomRestartProbabilities = new List<int>() {2, 3, 5, 7};
+
+		public void SetRandomRestarts(bool enable, RestartSuccessPlace successPlace = RestartSuccessPlace.OnValidAndDifferent, bool resetCounter = false, float scale = 1f)
+		{
+			enableRandomRestarts = enable;
+			randomRestartsSuccessPlace = successPlace;
+			randomRestartsResetCounter = resetCounter;
+
+			if (scale < 1)
+				throw new ArgumentException();
+
+			randomRestartsScale = scale;
+			randomRestartProbabilities = (new List<int>() { 2, 3, 5, 7 }).Select(x => (int)(x * randomRestartsScale)).ToList();
+		}
+
+		private bool ShouldRestart(int numberOfFailures)
+		{
+			// ReSharper disable once ReplaceWithSingleAssignment.False
+			var shouldRestart = false;
+
+			if (numberOfFailures > 8 && random.Next(0, randomRestartProbabilities[0]) == 0)
+			{
+				shouldRestart = true;
+			} else if (numberOfFailures > 6 && random.Next(0, randomRestartProbabilities[1]) == 0)
+			{
+				shouldRestart = true;
+			} else if (numberOfFailures > 4 && random.Next(0, randomRestartProbabilities[2]) == 0)
+			{
+				shouldRestart = true;
+			} else if (numberOfFailures > 2 && random.Next(0, randomRestartProbabilities[3]) == 0)
+			{
+				shouldRestart = true;
+			}
+
+			if (shouldRestart && withDebugOutput)
+			{
+				Console.WriteLine($"Break, we got {numberOfFailures} failures");
+			}
+
+			return shouldRestart;
+		}
+
+		public enum RestartSuccessPlace
+		{
+			OnValid, OnValidAndDifferent, OnAccepted
+		}
+
+		#endregion
+
+		#endregion
+
 		#region Debug options
 
 		#region Check perturbed layout validity
 
-		private bool layoutValidityCheck;
+		private bool enableLayoutValidityCheck;
 
 		public void SetLayoutValidityCheck(bool enable)
 		{
-			layoutValidityCheck = enable;
+			enableLayoutValidityCheck = enable;
 		}
 
 		/// <summary>
