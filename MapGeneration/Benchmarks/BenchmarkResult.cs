@@ -1,5 +1,8 @@
 ﻿namespace MapGeneration.Benchmarks
 {
+	/// <summary>
+	/// Class holding the result of a benchmark run.
+	/// </summary>
 	public class BenchmarkResult
 	{
 		public string Name;
