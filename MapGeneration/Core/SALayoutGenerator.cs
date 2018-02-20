@@ -745,7 +745,7 @@
 
 		#region Check perturbed layout validity
 
-		private bool layoutValidityCheck = false;
+		private bool layoutValidityCheck;
 
 		public void SetLayoutValidityCheck(bool enable)
 		{
@@ -769,7 +769,7 @@
 			foreach (var vertex in graph.Vertices)
 			{
 				var isInLayout = layout.GetConfiguration(vertex, out var configurationLayout);
-				var isInCopy = layout.GetConfiguration(vertex, out var configurationCopy);
+				var isInCopy = copy.GetConfiguration(vertex, out var configurationCopy);
 
 				if (isInLayout != isInCopy)
 					throw new InvalidOperationException("Vertices must be either set in both or absent in both");

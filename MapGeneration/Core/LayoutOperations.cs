@@ -196,20 +196,21 @@
 				var isNeighbour = neighbourIndex != -1;
 				var updateEnergies = true;
 				var newVertexConfiguration = nodeConfiguration;
+				var isNeighbourValid = false; // This variable has a meaningful value only if the current vertex is a neighbour
 
 				// If the vertex is a neighbour of the perturbed node, we must check if its validity vector changed
 				if (isNeighbour)
 				{
 					var neighbourValidityVector = nodeConfiguration.ValidityVector;
-					var isValid = configurationSpaces.HaveValidPosition(configuration, nodeConfiguration);
+					isNeighbourValid = configurationSpaces.HaveValidPosition(configuration, nodeConfiguration);
 					var reverseNeighbourIndex = graph.GetNeighbourIndex(vertex, node);
 
 					// We must check changes
 					// Invalid neighbours must be checked even without changes because their energy could change
-					if (neighbourValidityVector[reverseNeighbourIndex] != !isValid || neighbourValidityVector[reverseNeighbourIndex])
+					if (neighbourValidityVector[reverseNeighbourIndex] != !isNeighbourValid || neighbourValidityVector[reverseNeighbourIndex])
 					{
-						neighbourValidityVector[reverseNeighbourIndex] = !isValid;
-						validityVector[neighbourIndex] = !isValid;
+						neighbourValidityVector[reverseNeighbourIndex] = !isNeighbourValid;
+						validityVector[neighbourIndex] = !isNeighbourValid;
 
 						newVertexConfiguration = newVertexConfiguration.SetValidityVector(neighbourValidityVector);
 					}
@@ -224,7 +225,7 @@
 				if (!updateEnergies)
 					continue;
 
-				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour);
+				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour, isNeighbourValid);
 				newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
 				newLayout.SetConfiguration(vertex, newVertexConfiguration);
 
@@ -249,9 +250,10 @@
 		/// <param name="newConfiguration">New configuration of the node that changed its position/shape.</param>
 		/// <param name="configuration">The configuration for which we want to get a new EnergyData.</param>
 		/// <param name="areNeighbours">Whether the two nodes are neighbours.</param>
+		/// <param name="validNew">Whether neighbouring nodes have a valid position in the new layout.</param>
 		/// <returns></returns>
 		protected EnergyData RecomputeEnergyData(TConfiguration oldConfiguration, TConfiguration newConfiguration,
-			TConfiguration configuration, bool areNeighbours)
+			TConfiguration configuration, bool areNeighbours, bool validNew)
 		{
 			var overlapOld = ComputeOverlap(configuration, oldConfiguration);
 			var overlapNew = ComputeOverlap(configuration, newConfiguration);
@@ -261,10 +263,8 @@
 			var distanceTotal = configuration.EnergyData.MoveDistance;
 			if (areNeighbours)
 			{
-				// TODO: either compute it twice here or use info from validity vectors
-				// TODO: slow now because position is checked 3 times
+				// TODO: either compute it twice here or use info from validity vectors - what is better? throw away validity vectors?
 				var validOld = configurationSpaces.HaveValidPosition(oldConfiguration, configuration);
-				var validNew = configurationSpaces.HaveValidPosition(newConfiguration, configuration);
 
 				// Distance is taken into account only when there is no overlap
 				var distanceOld = overlapOld == 0 && !validOld ? ComputeDistance(configuration, oldConfiguration) : 0;

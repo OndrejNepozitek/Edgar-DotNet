@@ -32,7 +32,7 @@
 			{
 				var layoutGenerator = new SALayoutGenerator<int>();
 				layoutGenerator.InjectRandomGenerator(new Random(0));
-				layoutGenerator.SetLayoutValidityCheck(true);
+				layoutGenerator.SetLayoutValidityCheck(false);
 
 				var scenario = new BenchmarkScenario<SALayoutGenerator<int>, int>();
 				scenario.SetRunsCount(1);
@@ -77,7 +77,7 @@
 				//}
 				setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
 
-				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 10, sw);
+				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw);
 			}
 		}
 	}
