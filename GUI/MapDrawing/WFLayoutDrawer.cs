@@ -11,18 +11,30 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Core.Interfaces;
 
+	/// <inheritdoc />
+	/// <summary>
+	/// Class to draw a layout to a given PictureBox.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
 	public class WFLayoutDrawer<TNode> : AbstractLayoutDrawer<TNode>
 	{
 		private readonly CachedPolygonPartitioner polygonPartitioner = new CachedPolygonPartitioner();
-		private PictureBox canvas;
+		private PictureBox pictureBox;
 		private PaintEventArgs eventArgs;
 
-		public void DrawLayout(IMapLayout<TNode> layout, PictureBox canvas, PaintEventArgs eventArgs, bool withNames = true)
+		/// <summary>
+		/// Draws the layout to a given PictureBox.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="pictureBox"></param>
+		/// <param name="eventArgs"></param>
+		/// <param name="withNames"></param>
+		public void DrawLayout(IMapLayout<TNode> layout, PictureBox pictureBox, PaintEventArgs eventArgs, bool withNames = true)
 		{
-			var width = canvas.Width;
-			var height = canvas.Height;
+			var width = pictureBox.Width;
+			var height = pictureBox.Height;
 
-			this.canvas = canvas;
+			this.pictureBox = pictureBox;
 			this.eventArgs = eventArgs;
 
 			DrawLayout(layout, width, height, withNames);
@@ -76,16 +88,6 @@
 
 				eventArgs.Graphics.DrawString(text, font, Brushes.Black, rect, sf);
 			}
-		}
-
-		private void DrawLine(OrthogonalLine line, float penWidth)
-		{
-			eventArgs.Graphics.DrawLine(new Pen(Color.LightGray, penWidth), new Point(line.From.X, line.From.Y), new Point(line.To.X, line.To.Y));
-		}
-
-		private void DrawPoint(IntVector2 point, Color color)
-		{
-			eventArgs.Graphics.FillRectangle(new SolidBrush(color), point.X, point.Y, 1, 1);
 		}
 	}
 }

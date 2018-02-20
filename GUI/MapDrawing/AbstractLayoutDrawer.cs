@@ -7,8 +7,19 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Core.Interfaces;
 
+	/// <summary>
+	/// Class that should help with drawing layouts to different outputs.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
 	public abstract class AbstractLayoutDrawer<TNode>
 	{
+		/// <summary>
+		/// Entry point of the class. Draws a given layout to an output with given dimensions.
+		/// </summary>
+		/// <param name="layout">Layout do be drawn</param>
+		/// <param name="width">Width of the output</param>
+		/// <param name="height">Height of the output</param>
+		/// <param name="withNames">Whether names should be displayed</param>
 		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames)
 		{
 			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
@@ -25,6 +36,16 @@
 			DrawLayout(layout, scale, offset, withNames);
 		}
 
+		/// <summary>
+		/// Draws a given layout to an output using a given scale and offset. 
+		/// </summary>
+		/// <remarks>
+		/// All points are tranfosmer using the TransformPoint method.
+		/// </remarks>
+		/// <param name="layout">Layout do be drawn</param>
+		/// <param name="scale">Scale factor</param>
+		/// <param name="offset"></param>
+		/// <param name="withNames">Whether names should be displayed</param>
 		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames)
 		{
 			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
@@ -46,11 +67,32 @@
 			}
 		}
 
+		/// <summary>
+		/// Both coordinates are first multiplied by the scale factor and then the offset is added.
+		/// </summary>
+		/// <remarks>
+		/// Resulting coordinates must be cast back to int.
+		/// </remarks>
+		/// <param name="point"></param>
+		/// <param name="scale"></param>
+		/// <param name="offset"></param>
+		/// <returns></returns>
 		protected IntVector2 TransformPoint(IntVector2 point, float scale, IntVector2 offset)
 		{
 			return new IntVector2((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
 		}
 
+		/// <summary>
+		/// Computes an offset that will move points to the first quadrant as close to axis as possible.
+		/// </summary>
+		/// <param name="minx"></param>
+		/// <param name="miny"></param>
+		/// <param name="maxx"></param>
+		/// <param name="maxy"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="scale"></param>
+		/// <returns></returns>
 		protected IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
@@ -59,25 +101,55 @@
 			return new IntVector2((int)(width / 2f - centerx), (int)(height / 2f - centery));
 		}
 
-		protected float GetScale(int minx, int miny, int maxx, int maxy, int actualWidth, int actualHeight)
+		/// <summary>
+		/// Computes a scale factor that will transform points to match given width and height. 
+		/// Some space can be also left for borders.
+		/// </summary>
+		/// <param name="minx"></param>
+		/// <param name="miny"></param>
+		/// <param name="maxx"></param>
+		/// <param name="maxy"></param>
+		/// <param name="expectedWidth"></param>
+		/// <param name="expectedHeight"></param>
+		/// <param name="borderSize">How much of the original image should be used for each border. </param>
+		/// <returns></returns>
+		protected float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
 		{
-			var neededWidth = 1.2f * (maxx - minx);
-			var neededHeight = 1.2f * (maxy - miny);
+			var neededWidth = (1 + borderSize) * (maxx - minx);
+			var neededHeight = (1 + borderSize) * (maxy - miny);
 
-			var scale = actualWidth / neededWidth;
+			var scale = expectedWidth / neededWidth;
 
-			if (scale * neededHeight > actualHeight)
+			if (scale * neededHeight > expectedHeight)
 			{
-				scale = actualHeight / neededHeight;
+				scale = expectedHeight / neededHeight;
 			}
 
 			return scale;
 		}
 
+		/// <summary>
+		/// Draws a given room.
+		/// </summary>
+		/// <param name="polygon">Polygon to be drawn.</param>
+		/// <param name="outline">Outline of the room. The bool signals whether a line should be drawn (polygon side) or not (doors).</param>
+		/// <param name="penWidth"></param>
 		protected abstract void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth);
 
+		/// <summary>
+		/// Draws text onto given polygon.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="text"></param>
+		/// <param name="penWidth"></param>
 		protected abstract void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth);
 
+		/// <summary>
+		/// Computes the outline of a given polygon and its door lines.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="doorLines"></param>
+		/// <returns></returns>
 		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<OrthogonalLine> doorLines)
 		{
 			var outline = new List<Tuple<IntVector2, bool>>();
