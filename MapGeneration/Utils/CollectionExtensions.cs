@@ -25,7 +25,7 @@
 		/// <remarks>
 		/// The combinations are returned in a form of array of indices to elements in the original collection.
 		/// The same instance of the array is always returned so something like ToList() on the IEnumerable will never work.
-		/// TODO: is it faster to always use the same instance of the array
+		/// TODO: is it faster to always use the same instance of the array?
 		/// </remarks>
 		/// <typeparam name="TElement"></typeparam>
 		/// <param name="elements"></param>
@@ -118,6 +118,11 @@
 			}
 		}
 
+		/// <summary>
+		/// Gets the median of the source.
+		/// </summary>
+		/// <param name="source"></param>
+		/// <returns></returns>
 		public static double GetMedian(this IEnumerable<int> source)
 		{
 			// Create a copy of the input, and sort the copy
@@ -129,15 +134,16 @@
 			{
 				throw new InvalidOperationException("Empty collection");
 			}
+
 			if (count % 2 == 0)
 			{
-				// count is even, average two middle elements
+				// Count is even, average two middle elements
 				var a = temp[count / 2 - 1];
 				var b = temp[count / 2];
 				return (a + b) / 2d;
 			}
 
-			// count is odd, return the middle element
+			// Count is odd, return the middle element
 			return temp[count / 2];
 		}
 

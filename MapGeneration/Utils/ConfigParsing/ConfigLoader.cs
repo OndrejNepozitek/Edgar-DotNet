@@ -6,7 +6,6 @@
 	using System.Linq;
 	using Core;
 	using Core.Doors.DoorModes;
-	using Core.Interfaces;
 	using Deserializers;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -14,12 +13,21 @@
 	using YamlDotNet.Serialization;
 	using YamlDotNet.Serialization.NamingConventions;
 
+	/// <summary>
+	/// Class that loads MapDescription from a file.
+	/// </summary>
 	public class ConfigLoader
 	{
 		private readonly Deserializer deserializer;
 
+		/// <summary>
+		/// Path to the folder with room configs.
+		/// </summary>
 		private const string RoomsPath = "Resources/Rooms";
 
+		/// <summary>
+		/// Path to the folder with map configs.
+		/// </summary>
 		private const string MapsPath = "Resources/Maps";
 
 		public ConfigLoader()
@@ -35,16 +43,31 @@
 				.Build();
 		}
 
-		public RoomDescriptionsSetModel LoadRoomDescriptionsModel(TextReader reader)
+		/// <summary>
+		/// Loads RoomDescriptionsSetModel from a given TextReader.
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public RoomDescriptionsSetModel LoadRoomDescriptionsSetModel(TextReader reader)
 		{
 			return deserializer.Deserialize<RoomDescriptionsSetModel>(reader);
 		}
 
+		/// <summary>
+		/// Loads MapDescriptionModel from a given TextReader.
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		public MapDescriptionModel LoadMapDescriptionModel(TextReader reader)
 		{
 			return deserializer.Deserialize<MapDescriptionModel>(reader);
 		}
 
+		/// <summary>
+		/// Tries to load MapDescription from a file from the maps folder.
+		/// </summary>
+		/// <param name="name">Name of the file in the maps folder</param>
+		/// <returns></returns>
 		public MapDescription<int> LoadMapDescriptionFromResources(string name)
 		{
 			using (var sr = new StreamReader($"{MapsPath}/{name}"))
@@ -53,6 +76,11 @@
 			}
 		}
 
+		/// <summary>
+		/// Loads MapDescription from a given TextReader.
+		/// </summary>
+		/// <param name="reader"></param>
+		/// <returns></returns>
 		public MapDescription<int> LoadMapDescription(TextReader reader)
 		{
 			var mapDescriptionModel = LoadMapDescriptionModel(reader);
@@ -65,11 +93,19 @@
 			return mapDescription;
 		}
 
+		/// <summary>
+		/// Gets a list of yaml files inside the maps resources folder.
+		/// </summary>
+		/// <returns></returns>
 		public List<string> GetSavedMapDescriptionsNames()
 		{
 			return Directory.GetFiles(MapsPath, "*.yml").Select(Path.GetFileName).ToList();
 		}
 
+		/// <summary>
+		/// Loads all RoomDescriptionsSetModels from the rooms resources folder.
+		/// </summary>
+		/// <returns></returns>
 		private Dictionary<string, RoomDescriptionsSetModel> LoadRoomDescriptionsSetsFromResources()
 		{
 			var filenames = Directory.GetFiles(RoomsPath, "*.yml");
@@ -79,7 +115,7 @@
 			{
 				using (var sr = new StreamReader(filename))
 				{
-					var model = LoadRoomDescriptionsModel(sr);
+					var model = LoadRoomDescriptionsSetModel(sr);
 
 					if (string.IsNullOrEmpty(model.Name))
 					{
@@ -151,7 +187,7 @@
 			var setName = string.IsNullOrEmpty(roomShapesModel.SetName) ? "custom" : roomShapesModel.SetName;
 
 			if (!string.IsNullOrEmpty(roomShapesModel.RoomDescriptionName) && !setModel.RoomDescriptions.ContainsKey(roomShapesModel.RoomDescriptionName))
-				throw new InvalidOperationException($"Room description with name \"{roomShapesModel.RoomDescriptionName}\" was not found in the set \"{setName}\"");
+				throw new ParsingException($"Room description with name \"{roomShapesModel.RoomDescriptionName}\" was not found in the set \"{setName}\"");
 
 			var roomModels = GetFilledRoomModels(setModel, roomShapesModel.RoomDescriptionName, setName);
 			var roomDescriptions = roomModels.Select(x => ConvertRoomModelToDescription(x, scale)).ToList();
@@ -180,7 +216,7 @@
 				if (roomModel.Shape == null)
 				{
 					if (defaultModel.Shape == null)
-						throw new InvalidOperationException($"Neither shape nor default shape are set. Room {name}, set {setName}");
+						throw new ParsingException($"Neither shape nor default shape are set. Room {name}, set {setName}");
 
 					roomModel.Shape = defaultModel.Shape;
 				}
@@ -188,7 +224,7 @@
 				if (roomModel.DoorMode == null)
 				{
 					if (defaultModel.DoorMode == null)
-						throw new InvalidOperationException($"Neither door mode nor default door mode are set. Room {name}, set {setName}");
+						throw new ParsingException($"Neither door mode nor default door mode are set. Room {name}, set {setName}");
 
 					roomModel.DoorMode = defaultModel.DoorMode;
 				}
@@ -207,7 +243,7 @@
 			}
 
 			if (!roomDescriptionsSets.TryGetValue(name, out var set))
-				throw new InvalidOperationException($"Room descriptions set with name \"{name}\" was not found");
+				throw new ParsingException($"Room descriptions set with name \"{name}\" was not found");
 
 			return set;
 		}
