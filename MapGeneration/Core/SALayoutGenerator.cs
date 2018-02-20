@@ -183,7 +183,7 @@
 				if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
 					break;
 
-				if (iterationsCount > 600000)
+				if (iterationsCount > 1000000)
 				{
 					break;
 				}
@@ -202,7 +202,12 @@
 					}
 
 					if (layout == null)
+					{
+						if (stack.Count == 0)
+							stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
+
 						continue;
+					}
 
 					extendedLayouts = new List<Layout>() { layout };
 				}
@@ -269,6 +274,11 @@
 			timeTen = stopwatch.ElapsedMilliseconds;
 			layoutsCount = fullLayouts.Count;
 
+			if (layoutsCount != numberOfLayouts)
+			{
+				var i = 1;
+			}
+
 			if (withDebugOutput)
 			{
 				Console.WriteLine($"{fullLayouts.Count} layouts generated");
@@ -320,7 +330,7 @@
 
 				if (enableRandomRestarts)
 				{
-					if (chainNumber != 0 && ShouldRestart(numberOfFailures))
+					if (ShouldRestart(numberOfFailures))
 					{
 						break;
 					}
