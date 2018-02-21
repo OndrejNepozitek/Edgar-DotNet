@@ -20,7 +20,7 @@
 
 	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
 	{
-		private IChainDecomposition<int> chainDecomposition = new BasicChainsDecomposition<int>(new GraphDecomposer<int>());
+		private IChainDecomposition<int> chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>());
 		private IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
 		private readonly ConfigurationSpacesGenerator configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 		private LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
@@ -45,8 +45,6 @@
 		private int sigmaScale;
 
 		private int avgSize;
-		private bool differenceFromAvg;
-		private float differenceScale;
 
 		private CancellationToken? cancellationToken;
 
@@ -183,7 +181,7 @@
 				if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
 					break;
 
-				if (iterationsCount > 1000000)
+				if (iterationsCount > 600000)
 				{
 					break;
 				}
@@ -518,7 +516,7 @@
 
 		private bool IsDifferentEnough(Layout layout, List<Layout> layouts, List<int> chain = null)
 		{
-			if (!differenceFromAvg)
+			if (!enableDifferenceFromAverageSize)
 			{
 				return layouts.All(x => GetDifference(layout, x) >= 2 * minimumDifference);
 			}
@@ -543,7 +541,7 @@
 
 			diff = diff / (nodes.Count() * avgSize);
 
-			return differenceScale * diff >= 1;
+			return differenceFromAverageScale * diff >= 1;
 		}
 
 		private double GetDifference(Layout first, Layout second, List<int> chain = null)
@@ -701,11 +699,6 @@
 			BenchmarkEnabled = enable;
 		}
 
-		public void SetChainDecomposition(IChainDecomposition<int> chainDecomposition)
-		{
-			this.chainDecomposition = chainDecomposition;
-		}
-
 		public void EnablePerturbPositionAfterShape(bool enable)
 		{
 			perturbPositionAfterShape = enable;
@@ -723,15 +716,6 @@
 
 			sigmaFromAvg = enable;
 			sigmaScale = scale;
-		}
-
-		public void EnableDifferenceFromAvg(bool enable, float scale = 0)
-		{
-			if (enable && scale == 0)
-				throw new InvalidOperationException();
-
-			differenceFromAvg = enable;
-			differenceScale = scale;
 		}
 
 		public void EnablePerturbOutsideChain(bool enable, float chance = 0)
@@ -811,6 +795,31 @@
 		public enum RestartSuccessPlace
 		{
 			OnValid, OnValidAndDifferent, OnAccepted
+		}
+
+		#endregion
+
+		#region Difference from average size
+
+		private bool enableDifferenceFromAverageSize = true;
+		private float differenceFromAverageScale = 0.4f;
+
+		public void SetDifferenceFromAverageSize(bool enable, float scale = 1)
+		{
+			if (enable && scale <= 0)
+				throw new ArgumentException("Scale must be greater than zero", nameof(scale));
+
+			enableDifferenceFromAverageSize = enable;
+			differenceFromAverageScale = scale;
+		}
+
+		#endregion
+
+		#region Chain decomposition
+
+		public void SetChainDecomposition(IChainDecomposition<int> chainDecomposition)
+		{
+			this.chainDecomposition = chainDecomposition;
 		}
 
 		#endregion

@@ -37,12 +37,6 @@
 
 				var scenario = new BenchmarkScenario<SALayoutGenerator<int>, int>();
 				scenario.SetRunsCount(1);
-
-				var setups1 = scenario.MakeSetupsGroup();
-				setups1.AddSetup("Breadth first", generator => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
-				// setups1.AddSetup("Handmade decomposition", generator => { generator.SetChainDecomposition(new DummyChainsDecomposition()); });
-				//setups1.AddSetup("Basic decomposition", generator => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); });
-				//setups1.AddSetup("Longer chains", generator => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
 				
 				var setups2 = scenario.MakeSetupsGroup();
 				setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true);});
@@ -61,15 +55,6 @@
 				//setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
 				setups4.AddSetup($"Sigma avg {100}", generator => { generator.EnableSigmaFromAvg(true, 10); });
 
-				var setups5 = scenario.MakeSetupsGroup();
-				//for (var i = 1; i < 10; i++)
-				//{
-				//	var scale = (float) (i * 0.2);
-				//	setups5.AddSetup($"Difference scale {scale}", generator => { generator.EnableDifferenceFromAvg(true, scale); });
-				//}
-				//setups5.AddSetup("Difference old", generator => { generator.EnableDifferenceFromAvg(false); });
-				setups5.AddSetup("Difference from avg", generator => { generator.EnableDifferenceFromAvg(true, 0.4f); });
-
 				var setups6 = scenario.MakeSetupsGroup();
 				//for (var i = 1; i < 10; i++)
 				//{
@@ -77,6 +62,15 @@
 				//	setups6.AddSetup($"Perturb outside with chance {chance}", generator => { generator.EnablePerturbOutsideChain(true, chance); });
 				//}
 				setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
+
+				{
+					// Chain decomposition
+					//var setups = scenario.MakeSetupsGroup();
+					//setups.AddSetup("Breadth first", generator => { generator.SetChainDecomposition(new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
+					//// setups.AddSetup("Handmade decomposition", generator => { generator.SetChainDecomposition(new DummyChainsDecomposition()); });
+					//setups.AddSetup("Basic decomposition", generator => { generator.SetChainDecomposition(new BasicChainsDecomposition<int>(new GraphDecomposer<int>())); });
+					//setups.AddSetup("Longer chains", generator => { generator.SetChainDecomposition(new LongerChainsDecomposition<int>(new GraphDecomposer<int>())); });
+				}
 
 				{
 					// Random restarts
@@ -100,6 +94,30 @@
 
 					// setups.AddSetup("Test", generator => { generator.SetRandomRestarts(true, SALayoutGenerator<int>.RestartSuccessPlace.OnValidAndDifferent, true, 1.5f);});
 					// setups.AddSetup("As original", generator => { generator.SetRandomRestarts(true, SALayoutGenerator<int>.RestartSuccessPlace.OnValidAndDifferent, false, 1f); });
+				}
+
+				{
+					// Difference from average size
+					//var setups = scenario.MakeSetupsGroup();
+					//setups.AddSetup("Difference old", generator => { generator.SetDifferenceFromAverageSize(false); });
+
+					//for (var i = 1; i < 10; i++)
+					//{
+					//	var scale = (float) (i * 0.2);
+					//	setups.AddSetup($"Difference scale {scale}", generator => { generator.SetDifferenceFromAverageSize(true, scale); });
+					//}
+
+					//for (var i = 1; i < 6; i++)
+					//{
+					//	var scale = (float) Math.Pow(0.1, i);
+					//	setups.AddSetup($"Difference scale {scale}", generator => { generator.SetDifferenceFromAverageSize(true, scale); });
+					//}
+
+					//for (var i = 1; i < 6; i++)
+					//{
+					//	var scale = (float)Math.Pow(10, i);
+					//	setups.AddSetup($"Difference scale {scale}", generator => { generator.SetDifferenceFromAverageSize(true, scale); });
+					//}
 				}
 
 				benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw);

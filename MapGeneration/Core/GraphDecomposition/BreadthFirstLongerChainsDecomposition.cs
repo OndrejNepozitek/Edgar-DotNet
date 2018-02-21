@@ -129,24 +129,7 @@
 
 				if (nextVertexIndex == -1)
 				{
-					// TODO: this is quite ugly
-					/*if (chain.Count == 1)
-					{
-						foreach (var vertex in chain)
-						{
-							neighbours = graph.GetNeighbours(vertex).ToList();
-							nextVertexIndex = neighbours.FindIndex(x => usedVertices[x] == false);
-							if (nextVertexIndex != -1)
-							{
-								break;
-							}
-						}
-					}*/
-
-					if (nextVertexIndex == -1)
-					{
-						break;
-					}
+					break;
 				}
 
 				var nextVertex = neighbours[nextVertexIndex];
