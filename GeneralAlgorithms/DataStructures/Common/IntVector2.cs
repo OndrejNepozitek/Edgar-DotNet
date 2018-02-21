@@ -5,6 +5,9 @@
 	using System.Diagnostics.Contracts;
 	using Algorithms.Math;
 
+	/// <summary>
+	/// Integer vector with 2 elements. Represent a point in a 2D discrete space.
+	/// </summary>
 	public struct IntVector2 : IComparable<IntVector2>, IEquatable<IntVector2>
 	{
 		public readonly int X;
@@ -17,6 +20,74 @@
 			Y = y;
 		}
 
+		#region Distance computations
+
+		/// <summary>
+		/// Computes a manhattan distance of two vectors.
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public static int ManhattanDistance(IntVector2 a, IntVector2 b)
+		{
+			return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
+		}
+
+		/// <summary>
+		/// Compute an euclidean distance of two vectors.
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public static double EuclideanDistance(IntVector2 a, IntVector2 b)
+		{
+			return Math.Sqrt((int)(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)));
+		}
+
+		/// <summary>
+		/// Computes a maximum distance between corresponding components of two vectors.
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public static int MaxDistance(IntVector2 a, IntVector2 b)
+		{
+			return Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y));
+		}
+
+		#endregion
+
+		#region Equality, comparing and hash computation
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Check if two vectors are equal.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		public bool Equals(IntVector2 other)
+		{
+			return X == other.X && Y == other.Y;
+		}
+
+		/// <summary>
+		/// Check if two vectors are equal.
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		public override bool Equals(object obj)
+		{
+			if (obj is null) return false;
+
+			return obj is IntVector2 vector2 && Equals(vector2);
+		}
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Uses comparing operator to compare two vectors.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
 		public int CompareTo(IntVector2 other)
 		{
 			if (other == this)
@@ -27,24 +98,10 @@
 			return this < other ? -1 : 1;
 		}
 
-		public override string ToString()
-		{
-			return $"IntVector2 ({X}, {Y})";
-		}
-
-		[Pure]
-		public string ToStringShort()
-		{
-			return $"[{X}, {Y}]";
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (obj is null) return false;
-
-			return obj is IntVector2 vector2 && Equals(vector2);
-		}
-
+		/// <summary>
+		/// Computes hash code
+		/// </summary>
+		/// <returns></returns>
 		public override int GetHashCode()
 		{
 			unchecked
@@ -53,7 +110,53 @@
 			}
 		}
 
-		public List<IntVector2> GetAdjacentTiles()
+		#endregion
+
+		#region Utility functions
+
+		/// <summary>
+		/// Rotate the point around the center.
+		/// </summary>
+		/// <remarks>
+		/// Positive degrees mean clockwise rotation.
+		/// </remarks>
+		/// <param name="degrees">Multiples of 90 are expected.</param>
+		/// <returns></returns>
+		[Pure]
+		public IntVector2 RotateAroundCenter(int degrees)
+		{
+			var x = X * IntegerGoniometric.Cos(degrees) + Y * IntegerGoniometric.Sin(degrees);
+			var y = -X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
+
+			return new IntVector2(x, y);
+		}
+
+		/// <summary>
+		/// Computes a dot product of two vectors.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		public int DotProduct(IntVector2 other)
+		{
+			return X * other.X + Y * other.Y;
+		}
+
+		/// <summary>
+		/// Computes element-wise product of two vectors.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		public IntVector2 ElementWiseProduct(IntVector2 other)
+		{
+			return new IntVector2(X * other.X, Y * other.Y);
+		}
+
+		/// <summary>
+		/// Gets all vectors that are adjacent to this one.
+		/// That means vector that are different by 1 in exactly one of its components.
+		/// </summary>
+		/// <returns></returns>
+		public List<IntVector2> GetAdjacentVectors()
 		{
 			var positions = new List<IntVector2>
 			{
@@ -66,9 +169,14 @@
 			return positions;
 		}
 
-		public List<IntVector2> GetAdjacentTilesAndDiagonal()
+		/// <summary>
+		/// Gets all vectors that are adjacent and diagonal to this one.
+		/// That means vector that are different by 1 both of its components.
+		/// </summary>
+		/// <returns></returns>
+		public List<IntVector2> GetAdjacentAndDiagonalVectors()
 		{
-			var positions = GetAdjacentTiles();
+			var positions = GetAdjacentVectors();
 
 			positions.Add(new IntVector2(X + 1, Y + 1));
 			positions.Add(new IntVector2(X - 1, Y - 1));
@@ -78,87 +186,7 @@
 			return positions;
 		}
 
-		public static IntVector2 GetGridDirection(int x, int y)
-		{
-			if (x != 0)
-				y = 0;
-
-			if (y != 0)
-				x = 0;
-
-			return new IntVector2(x, y);
-		}
-
-		public static int ManhattanDistance(IntVector2 a, IntVector2 b)
-		{
-			return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
-		}
-
-		public static double EuclideanDistance(IntVector2 a, IntVector2 b)
-		{
-			return Math.Sqrt((int)(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)));
-		}
-
-		public static int MaxDistance(IntVector2 a, IntVector2 b)
-		{
-			return Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y));
-		}
-
-		public List<IntVector2> GetRadius(int radius, Func<IntVector2, IntVector2, int> metric, bool includeInside)
-		{
-			var positions = new List<IntVector2>();
-
-			for (var i = X - radius; i <= X + radius; i++)
-			{
-				for (var j = Y - radius; j <= Y + radius; j++)
-				{
-					var pos = new IntVector2(i, j);
-
-					if (includeInside)
-					{
-						if (metric(this, pos) <= radius)
-						{
-							positions.Add(pos);
-						}
-					}
-					else
-					{
-						if (metric(this, pos) == radius)
-						{
-							positions.Add(pos);
-						}
-					}
-				}
-			}
-
-			return positions;
-		}
-
-		/// <summary>
-		/// Rotate the point are the center.
-		/// </summary>
-		/// <remarks>
-		/// Positive degrees mean clockwise rotation.
-		/// </remarks>
-		/// <param name="degrees"></param>
-		/// <returns></returns>
-		public IntVector2 RotateAroundCenter(int degrees)
-		{
-			var x = X * IntegerGoniometric.Cos(degrees) + Y * IntegerGoniometric.Sin(degrees);
-			var y = - X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
-
-			return new IntVector2(x, y);
-		}
-
-		public int DotProduct(IntVector2 other)
-		{
-			return X * other.X + Y * other.Y;
-		}
-
-		public IntVector2 ElemWiseProduct(IntVector2 other)
-		{
-			return new IntVector2(X * other.X, Y * other.Y);
-		}
+		#endregion
 
 		#region Operators
 
@@ -211,9 +239,20 @@
 
 		#endregion
 
-		public bool Equals(IntVector2 other)
+		#region String representation
+
+		public override string ToString()
 		{
-			return X == other.X && Y == other.Y;
+			return $"IntVector2 ({X}, {Y})";
 		}
+
+		[Pure]
+		public string ToStringShort()
+		{
+			return $"[{X}, {Y}]";
+		}
+
+		#endregion
+
 	}
 }

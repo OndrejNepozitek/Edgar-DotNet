@@ -157,7 +157,7 @@
 			if (factor.X <= 0 || factor.Y <= 0) 
 				throw new ArgumentOutOfRangeException(nameof(factor), "Both components of factor must be positive");
 
-			return new GridPolygon(points.Select(x => x.ElemWiseProduct(factor)));
+			return new GridPolygon(points.Select(x => x.ElementWiseProduct(factor)));
 		}
 
 		public GridPolygon Rotate(int degrees)
