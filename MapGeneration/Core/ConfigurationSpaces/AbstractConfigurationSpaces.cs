@@ -28,7 +28,6 @@
 		{
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations);
 
-			// TODO: maybe make it in a way that not all points are generated
 			var line = intersection.GetWeightedRandom(x => x.Length + 1, Random);
 			return line.GetNthPoint(Random.Next(line.Length + 1));
 			//return GetRandomPoint(intersection.GetWeightedRandom(x => x.Length > 0 ? x.Length / 25 + 1 : 1, Random));

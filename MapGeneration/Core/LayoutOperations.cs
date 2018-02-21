@@ -447,8 +447,23 @@
 
 				foreach (var intersectionLine in intersection)
 				{
+					var tryAll = true;
+					var mod = 1;
+					const int maxPoints = 20;
+
+					if (intersectionLine.Length > maxPoints)
+					{
+						tryAll = false;
+						mod = intersectionLine.Length / maxPoints;
+					}
+
+					var i = 0;
+
 					foreach (var position in intersectionLine.GetPoints())
 					{
+						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
+							continue;
+
 						var energy = GetEnergy(layout, node, CreateConfiguration(shape, position));
 
 						if (energy < bestEnergy)
@@ -462,6 +477,8 @@
 						{
 							break;
 						}
+
+						i++;
 					}
 
 					// There is no point of looking for more solutions when you already reached a valid state

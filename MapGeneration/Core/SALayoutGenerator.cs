@@ -534,12 +534,12 @@
 				if (first.GetConfiguration(node, out var c1) && second.GetConfiguration(node, out var c2))
 				{
 					diff += (float)(Math.Pow(
-						                IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
-							                c2.Shape.BoundingRectangle.Center + c2.Position), 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
+						                5 * IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+							                c2.Shape.BoundingRectangle.Center + c2.Position) / (float) avgSize, 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
 				}
 			}
 
-			diff = diff / (nodes.Count() * avgSize);
+			diff = diff / (nodes.Count());
 
 			return differenceFromAverageScale * diff >= 1;
 		}

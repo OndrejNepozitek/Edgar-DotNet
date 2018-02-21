@@ -48,16 +48,18 @@
 			}
 
 			{
+				var scale = new IntVector2(1, 1);
+
 				var m1 = Reference_9Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m1);
+				AddClassicRoomShapes(m1, scale);
 				var m2 = Reference_17Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m2);
+				AddClassicRoomShapes(m2, scale);
 				var m3 = Reference_41Vertices_WithoutRoomShapes;
-				AddClassicRoomShapes(m3);
+				AddClassicRoomShapes(m3, scale);
 				var m4 = Reference_Fig7Bottom_WithoutRoomShapes;
-				AddClassicRoomShapes(m4);
+				AddClassicRoomShapes(m4, scale);
 				var m5 = Reference_Fig9_WithoutRoomShapes;
-				AddClassicRoomShapes(m5);
+				AddClassicRoomShapes(m5, scale);
 
 				ReferenceSet = new List<Tuple<string, IMapDescription<int>>>()
 				{
@@ -79,6 +81,9 @@
 				var m3 = Reference_17Vertices_WithoutRoomShapes;
 				AddClassicRoomShapes(m3, new IntVector2(25, 25));
 
+				var m7 = Reference_17Vertices_WithoutRoomShapes;
+				AddClassicRoomShapes(m7, new IntVector2(50, 50));
+
 				var m4 = Reference_41Vertices_WithoutRoomShapes;
 				AddClassicRoomShapes(m4, new IntVector2(5, 5));
 				var m5 = Reference_41Vertices_WithoutRoomShapes;
@@ -92,6 +97,7 @@
 					Tuple.Create("17 vertices - scale 5", (IMapDescription<int>) m1),
 					Tuple.Create("17 vertices - scale 10", (IMapDescription<int>) m2),
 					Tuple.Create("17 vertices - scale 25", (IMapDescription<int>) m3),
+					Tuple.Create("17 vertices - scale 50", (IMapDescription<int>) m7),
 					/*Tuple.Create("41 vertices - scale 5", (IMapDescription<int>) m4),
 					Tuple.Create("41 vertices - scale 10", (IMapDescription<int>) m5),
 					Tuple.Create("41 vertices - scale 25", (IMapDescription<int>) m6),*/
