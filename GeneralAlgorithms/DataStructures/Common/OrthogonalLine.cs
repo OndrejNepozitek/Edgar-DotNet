@@ -237,7 +237,7 @@
 
 			switch (GetDirection())
 			{
-				case var d when(From == To):
+				case var _ when(From == To):
 					points.Add(From);
 					break;
 

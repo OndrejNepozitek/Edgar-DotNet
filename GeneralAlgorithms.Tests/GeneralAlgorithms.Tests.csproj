@@ -98,6 +98,9 @@
     <Compile Include="Algorithms\Polygons\GridPolygonUtilsTests.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLineTests.cs" />
     <Compile Include="DataStructures\Common\SimpleBitVector32Tests.cs" />
+    <Compile Include="DataStructures\Graphs\GraphTests.cs" />
+    <Compile Include="DataStructures\Graphs\IntGraphTests.cs" />
+    <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraphTests.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

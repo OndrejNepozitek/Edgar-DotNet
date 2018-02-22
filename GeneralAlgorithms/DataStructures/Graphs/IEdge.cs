@@ -1,6 +1,10 @@
 ﻿namespace GeneralAlgorithms.DataStructures.Graphs
 {
-	public interface IEdge<out T>
+	/// <summary>
+	/// Interface describing an edge of a graph.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public interface IEdge<T>
 	{
 		T From { get; }
 

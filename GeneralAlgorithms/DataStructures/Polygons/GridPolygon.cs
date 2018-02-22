@@ -116,11 +116,19 @@
 			}
 		}
 
+		/// <summary>
+		/// Gets point of the polygon.
+		/// </summary>
+		/// <returns></returns>
 		public ReadOnlyCollection<IntVector2> GetPoints()
 		{
 			return points.AsReadOnly();
 		}
 
+		/// <summary>
+		/// Gets all lines of the polygon ordered as they appear on the polygon.
+		/// </summary>
+		/// <returns></returns>
 		public List<OrthogonalLine> GetLines()
 		{
 			var lines = new List<OrthogonalLine>();
@@ -176,11 +184,22 @@
 			return PossibleRotations.Select(Rotate);
 		}
 
+		/// <summary>
+		/// Helper method for creating a polygon with side a.
+		/// </summary>
+		/// <param name="a">Length of the side.</param>
+		/// <returns></returns>
 		public static GridPolygon GetSquare(int a)
 		{
 			return GetRectangle(a, a);
 		}
 
+		/// <summary>
+		/// Helper method to create a rectangle with given sides.
+		/// </summary>
+		/// <param name="a">Width of the polygon.</param>
+		/// <param name="b">Height of the polygon.</param>
+		/// <returns></returns>
 		public static GridPolygon GetRectangle(int a, int b)
 		{
 			if (a <= 0) 

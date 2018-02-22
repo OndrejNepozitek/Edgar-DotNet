@@ -4,8 +4,11 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
+	// TODO: is it worth having this class? 
 	public class FastGraph<TNode> : IGraph<int>
 	{
+		public bool IsDirected { get; } = false;
+
 		public IEnumerable<int> Vertices { get; }
 
 		public IEnumerable<IEdge<int>> Edges => edges;

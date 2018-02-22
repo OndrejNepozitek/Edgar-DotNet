@@ -108,12 +108,12 @@
 		{
 			{
 				var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(5, 0));
-				Assert.Throws<InvalidOperationException>(() => line.Shrink(3));
+				Assert.Throws<ArgumentException>(() => line.Shrink(3));
 			}
 
 			{
 				var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(-6, 0));
-				Assert.Throws<InvalidOperationException>(() => line.Shrink(4, 3));
+				Assert.Throws<ArgumentException>(() => line.Shrink(4, 3));
 			}
 		}
 
@@ -139,9 +139,9 @@
 		public void Rotate_InvalidDegrees_Throws()
 		{
 			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(5, 0));
-			Assert.Throws<InvalidOperationException>(() => line.Rotate(1));
-			Assert.Throws<InvalidOperationException>(() => line.Rotate(15));
-			Assert.Throws<InvalidOperationException>(() => line.Rotate(-181));
+			Assert.Throws<ArgumentException>(() => line.Rotate(1));
+			Assert.Throws<ArgumentException>(() => line.Rotate(15));
+			Assert.Throws<ArgumentException>(() => line.Rotate(-181));
 		}
 
 		[Test]
