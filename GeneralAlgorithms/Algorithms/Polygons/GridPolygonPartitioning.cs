@@ -10,12 +10,11 @@
 	using Graphs;
 	using RangeTree;
 
-	public class GridPolygonPartitioning
+	public class GridPolygonPartitioning : IPolygonPartitioning
 	{
-		private readonly GridPolygonUtils utils = new GridPolygonUtils();
 		private readonly HopcroftKarp<int> hopcroftKarp = new HopcroftKarp<int>();
 
-		public List<GridRectangle> GetRectangles(GridPolygon polygon)
+		public List<GridRectangle> GetPartitions(GridPolygon polygon)
 		{
 			IList<IntVector2> points = polygon.GetPoints();
 

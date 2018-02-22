@@ -3,10 +3,15 @@
 	using System.Collections.Generic;
 	using DataStructures.Polygons;
 
-	public class CachedPolygonPartitioner
+	public class CachedPolygonPartitioning : IPolygonPartitioning
 	{
-		private readonly GridPolygonPartitioning gridPolygonPartitioning = new GridPolygonPartitioning();
+		private readonly IPolygonPartitioning polygonPartitioning;
 		private readonly Dictionary<GridPolygon, List<GridRectangle>> partitions = new Dictionary<GridPolygon, List<GridRectangle>>();
+
+		public CachedPolygonPartitioning(IPolygonPartitioning polygonPartitioning)
+		{
+			this.polygonPartitioning = polygonPartitioning;
+		}
 
 		public List<GridRectangle> GetPartitions(GridPolygon polygon)
 		{
@@ -15,7 +20,7 @@
 				return partitions;
 			}
 
-			partitions = gridPolygonPartitioning.GetRectangles(polygon);
+			partitions = polygonPartitioning.GetPartitions(polygon);
 			this.partitions.Add(polygon, partitions);
 
 			return partitions;

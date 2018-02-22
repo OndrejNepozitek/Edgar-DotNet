@@ -18,7 +18,7 @@
 	/// <typeparam name="TNode"></typeparam>
 	public class WFLayoutDrawer<TNode> : AbstractLayoutDrawer<TNode>
 	{
-		private readonly CachedPolygonPartitioner polygonPartitioner = new CachedPolygonPartitioner();
+		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 		private PictureBox pictureBox;
 		private PaintEventArgs eventArgs;
 
@@ -68,7 +68,7 @@
 
 		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
 		{
-			var partitions = polygonPartitioner.GetPartitions(polygon);
+			var partitions = polygonPartitioning.GetPartitions(polygon);
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
 
 			using (var font = new Font("Arial", penWidth, FontStyle.Regular, GraphicsUnit.Pixel))

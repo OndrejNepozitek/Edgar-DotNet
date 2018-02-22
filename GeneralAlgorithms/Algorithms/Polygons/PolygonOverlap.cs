@@ -43,7 +43,7 @@
 				return p;
 			}
 
-			var ps = polygonPartitioning.GetRectangles(polygon);
+			var ps = polygonPartitioning.GetPartitions(polygon);
 			partitions.Add(polygon, ps);
 
 			return ps;

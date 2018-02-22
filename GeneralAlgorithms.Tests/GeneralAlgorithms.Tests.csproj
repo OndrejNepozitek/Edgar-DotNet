@@ -89,7 +89,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Common\LineSegmentIntersectionTests.cs" />
+    <Compile Include="Algorithms\Common\OrthogonalLineIntersectionTests.cs" />
     <Compile Include="Algorithms\Graphs\BipartiteCheckTests.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposerTests.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftKarpTests.cs" />

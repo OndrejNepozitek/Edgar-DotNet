@@ -98,9 +98,10 @@
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
-    <Compile Include="Algorithms\Polygons\CachedPolygonPartitioner.cs" />
+    <Compile Include="Algorithms\Polygons\CachedPolygonPartitioning.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonOverlap.cs" />
+    <Compile Include="Algorithms\Polygons\IPolygonPartitioning.cs" />
     <Compile Include="Algorithms\Polygons\PolygonOverlap.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioning.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />

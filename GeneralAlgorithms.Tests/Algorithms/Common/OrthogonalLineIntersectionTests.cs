@@ -7,7 +7,7 @@
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class LineSegmentIntersectionTests
+	public class OrthogonalLineIntersectionTests
 	{
 		private OrthogonalLineIntersection orthogonalLineIntersection;
 

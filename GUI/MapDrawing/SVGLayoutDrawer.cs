@@ -16,7 +16,7 @@
 	/// <typeparam name="TNode"></typeparam>
 	public class SVGLayoutDrawer<TNode> : AbstractLayoutDrawer<TNode>
 	{
-		private readonly CachedPolygonPartitioner polygonPartitioner = new CachedPolygonPartitioner();
+		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 		private readonly StringBuilder data = new StringBuilder();
 
 		/// <summary>
@@ -105,7 +105,7 @@
 		/// <param name="penWidth"></param>
 		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
 		{
-			var partitions = polygonPartitioner.GetPartitions(polygon);
+			var partitions = polygonPartitioning.GetPartitions(polygon);
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
 
 			data.AppendLine(

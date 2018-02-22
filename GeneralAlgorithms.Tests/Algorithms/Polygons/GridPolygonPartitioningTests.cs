@@ -39,7 +39,7 @@
 				.AddPoint(2, 2)
 				.Build();
 
-			var partitions = partitioner.GetRectangles(polygon);
+			var partitions = partitioner.GetPartitions(polygon);
 			var expected = new List<List<GridRectangle>>()
 			{
 				new List<GridRectangle>()
@@ -76,7 +76,7 @@
 
 			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
 			{
-				var rotated = partitioner.GetRectangles(p);
+				var rotated = partitioner.GetPartitions(p);
 				Assert.AreEqual(expected[0].Count, rotated.Count);
 			}
 		}
@@ -93,7 +93,7 @@
 				.AddPoint(7, 0)
 				.Build();
 
-			var partitions = partitioner.GetRectangles(polygon);
+			var partitions = partitioner.GetPartitions(polygon);
 			var expected = new List<List<GridRectangle>>()
 			{
 				new List<GridRectangle>()
@@ -128,7 +128,7 @@
 
 			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
 			{
-				var rotated = partitioner.GetRectangles(p);
+				var rotated = partitioner.GetPartitions(p);
 				Assert.AreEqual(expected[0].Count, rotated.Count);
 			}
 		}
@@ -159,7 +159,7 @@
 				.AddPoint(7, 0)
 				.Build();
 
-			var partitions = partitioner.GetRectangles(polygon);
+			var partitions = partitioner.GetPartitions(polygon);
 			var expected = new List<List<GridRectangle>>()
 			{
 				new List<GridRectangle>()
@@ -200,7 +200,7 @@
 
 			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
 			{
-				var rotated = partitioner.GetRectangles(p);
+				var rotated = partitioner.GetPartitions(p);
 				Assert.AreEqual(expected[0].Count, rotated.Count);
 			}
 		}
