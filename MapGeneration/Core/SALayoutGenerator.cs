@@ -16,6 +16,8 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using GraphDecomposition;
 	using Interfaces;
+	using SimulatedAnnealing;
+	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
 	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
@@ -28,6 +30,10 @@
 
 		private IMapDescription<TNode> mapDescription;
 		private FastGraph<TNode> graph;
+		private IGeneratorPlanner generatorPlanner = new LazyGeneratorPlanner();
+
+		private readonly Stopwatch stopwatch = new Stopwatch();
+		private readonly Action<Layout> firstLayoutTimer;
 
 		// Debug and benchmark variables
 		private int iterationsCount;
@@ -48,6 +54,8 @@
 
 		private CancellationToken? cancellationToken;
 
+		private SAContext context;
+
 		// Events
 		public event Action<IMapLayout<TNode>> OnPerturbed;
 		public event Action<IMapLayout<TNode>> OnValid;
@@ -57,95 +65,18 @@
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
 
-		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
+		public SALayoutGenerator()
 		{
-			return GetLayouts2(mapDescription, numberOfLayouts);
-
-			// TODO: should not be done like this
-			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>) mapDescription); 
-			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), 15800f);
-			configurationSpaces.InjectRandomGenerator(random);
-			layoutOperations.InjectRandomGenerator(random);
-
-			this.mapDescription = mapDescription;
-			graph = mapDescription.GetGraph();
-
-			iterationsCount = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-
-			var stack = new Stack<LayoutNode>();
-			var fullLayouts = new List<Layout>();
-
-			var graphChains = chainDecomposition.GetChains(graph);
-			var initialLayout = new Layout(graph);
-
-			stack.Push(new LayoutNode { Layout = AddChainToLayout(initialLayout, graphChains[0]), NumberOfChains = 0 });
-
-			if (withDebugOutput)
+			firstLayoutTimer = layout =>
 			{
-				Console.WriteLine("--- Simulation has started ---");
-			}
-
-			while (stack.Count > 0)
-			{
-				var layoutNode = stack.Pop();
-				var extendedLayouts = GetExtendedLayouts(layoutNode.Layout, graphChains[layoutNode.NumberOfChains], layoutNode.NumberOfChains);
-
-				if (layoutNode.NumberOfChains + 1 == graphChains.Count)
+				if (timeFirst == -1)
 				{
-					foreach (var layout in extendedLayouts)
-					{
-						if (fullLayouts.TrueForAll(x =>
-							GetDifference(x, layout) > 2 * minimumDifference)
-						)
-						{
-							if (fullLayouts.Count == 0)
-							{
-								timeFirst = stopwatch.ElapsedMilliseconds;
-							}
-
-							fullLayouts.Add(layout);
-						}
-					}
+					timeFirst = stopwatch.ElapsedMilliseconds;
 				}
-				else
-				{
-					var sorted = extendedLayouts
-						.Select(x => AddChainToLayout(x, graphChains[layoutNode.NumberOfChains + 1]))
-						.OrderByDescending(x => x.GetEnergy());
-
-
-					foreach (var extendedLayout in sorted)
-					{
-						stack.Push(new LayoutNode() { Layout = extendedLayout, NumberOfChains = layoutNode.NumberOfChains + 1 });
-					}
-				}
-
-				if (fullLayouts.Count >= numberOfLayouts)
-				{
-					break;
-				}
-			}
-
-			stopwatch.Stop();
-			timeTen = stopwatch.ElapsedMilliseconds;
-			layoutsCount = fullLayouts.Count;
-
-			if (withDebugOutput)
-			{
-				Console.WriteLine($"{fullLayouts.Count} layouts generated");
-				Console.WriteLine($"Total time: {stopwatch.ElapsedMilliseconds} ms");
-				Console.WriteLine($"Total iterations: {iterationsCount}");
-				Console.WriteLine($"Iterations per second: {(int)(iterationsCount / (stopwatch.ElapsedMilliseconds / 1000f))}");
-			}
-
-			// AddDoors(fullLayouts); TODO: how?
-
-			return fullLayouts.Select(x => ConvertLayout(x)).ToList();
+			};
 		}
 
-		private IList<IMapLayout<TNode>> GetLayouts2(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
+		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>)mapDescription);
@@ -155,127 +86,35 @@
 			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), sigma);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
+			context = new SAContext();
 
 			this.mapDescription = mapDescription;
 			graph = mapDescription.GetGraph();
 
 			iterationsCount = 0;
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
+			timeFirst = -1;
+			stopwatch.Restart();
 
-			var stack = new Stack<SAInstance>();
 			var fullLayouts = new List<Layout>();
 
 			var graphChains = chainDecomposition.GetChains(graph);
 			var initialLayout = new Layout(graph);
-
-			stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
 
 			if (withDebugOutput)
 			{
 				Console.WriteLine("--- Simulation has started ---");
 			}
 
-			while (stack.Count > 0)
-			{
-				if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
-					break;
+			generatorPlanner.OnLayoutGenerated -= firstLayoutTimer;
+			generatorPlanner.OnLayoutGenerated += firstLayoutTimer;
 
-				if (iterationsCount > 600000)
-				{
-					break;
-				}
-
-				List<Layout> extendedLayouts;
-				var saInstance = stack.Peek();
-
-				if (lazyProcessing)
-				{
-					var hasMoreLayouts = saInstance.Layouts.MoveNext();
-					var layout = saInstance.Layouts.Current;
-
-					if (!hasMoreLayouts)
-					{
-						stack.Pop();
-					}
-
-					if (layout == null)
-					{
-						if (stack.Count == 0)
-							stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
-
-						continue;
-					}
-
-					extendedLayouts = new List<Layout>() { layout };
-				}
-				else
-				{
-					extendedLayouts = new List<Layout>();
-					var hasMoreLayouts = saInstance.Layouts.MoveNext();
-
-					do
-					{
-						var layout = saInstance.Layouts.Current;
-						if (layout == null)
-							break;
-
-						extendedLayouts.Add(layout);
-						hasMoreLayouts = saInstance.Layouts.MoveNext();
-
-					} while (hasMoreLayouts);
-
-					stack.Pop();
-				}
-				
-				if (saInstance.NumberOfChains + 1 == graphChains.Count)
-				{
-					foreach (var layout in extendedLayouts)
-					{
-						if (IsDifferentEnough(layout, fullLayouts))
-						{
-							if (fullLayouts.Count == 0)
-							{
-								timeFirst = stopwatch.ElapsedMilliseconds;
-							}
-
-							fullLayouts.Add(layout);
-							OnFinal?.Invoke(ConvertLayout(layout));
-						}
-					}
-				}
-				else
-				{
-					var sorted = extendedLayouts
-						.Select(x => AddChainToLayout(x, graphChains[saInstance.NumberOfChains + 1]))
-						.OrderByDescending(x => x.GetEnergy());
-
-
-					foreach (var extendedLayout in sorted)
-					{
-						stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(extendedLayout, graphChains[saInstance.NumberOfChains + 1], saInstance.NumberOfChains + 1).GetEnumerator(), NumberOfChains = saInstance.NumberOfChains + 1 });
-					}
-				}
-
-				if (fullLayouts.Count >= numberOfLayouts)
-				{
-					break;
-				}
-
-				if (stack.Count == 0)
-				{
-					stack.Push(new SAInstance() { Layouts = GetExtendedLayouts(AddChainToLayout(initialLayout, graphChains[0]), graphChains[0], 0).GetEnumerator(), NumberOfChains = 0 });
-				}
-			}
+			// TODO: fix chain number
+			fullLayouts = generatorPlanner.Generate(initialLayout, graphChains,
+				(layout, chain) => GetExtendedLayouts(AddChainToLayout(layout, chain), chain, -1), context, numberOfLayouts);
 
 			stopwatch.Stop();
 			timeTen = stopwatch.ElapsedMilliseconds;
 			layoutsCount = fullLayouts.Count;
-
-			if (layoutsCount != numberOfLayouts)
-			{
-				var i = 1;
-			}
 
 			if (withDebugOutput)
 			{
@@ -341,7 +180,10 @@
 					if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
 						yield break;
 
+					// TODO: should not be done like this
 					iterationsCount++;
+					context.IterationsCount++;
+
 					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta);
 
 					OnPerturbed?.Invoke(ConvertLayout(perturbedLayout, false));
@@ -699,6 +541,11 @@
 			BenchmarkEnabled = enable;
 		}
 
+		string IBenchmarkable.GetPlannerLog()
+		{
+			return generatorPlanner.GetLog();
+		}
+
 		public void EnablePerturbPositionAfterShape(bool enable)
 		{
 			perturbPositionAfterShape = enable;
@@ -743,6 +590,16 @@
 		}
 
 		#region Generator settings
+
+		#region Generator planners
+
+		public void SetGeneratorPlanner(IGeneratorPlanner planner)
+		{
+			generatorPlanner = planner;
+			generatorPlanner.OnLayoutGenerated += firstLayoutTimer;
+		}
+
+		#endregion
 
 		#region Random restarts
 

@@ -132,6 +132,13 @@
     <Compile Include="Core\Room.cs" />
     <Compile Include="Core\RoomDescription.cs" />
     <Compile Include="Core\Layout.cs" />
+    <Compile Include="Core\SimulatedAnnealing\GeneratorPlanner\BasicGeneratorPlanner.cs" />
+    <Compile Include="Core\SimulatedAnnealing\GeneratorPlanner\IGeneratorPlanner.cs" />
+    <Compile Include="Core\SimulatedAnnealing\GeneratorPlanner\GeneratorPlannerBase.cs" />
+    <Compile Include="Core\SimulatedAnnealing\GeneratorPlanner\LazyGeneratorPlanner.cs" />
+    <Compile Include="Core\SimulatedAnnealing\ISAContext.cs" />
+    <Compile Include="Core\SimulatedAnnealing\SAContext.cs" />
+    <Compile Include="Core\SimulatedAnnealing\SAInstance.cs" />
     <Compile Include="Core\SlowLayoutOperations.cs" />
     <Compile Include="Core\SALayoutGenerator.cs" />
     <Compile Include="Program.cs" />

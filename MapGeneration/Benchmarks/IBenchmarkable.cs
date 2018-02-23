@@ -30,5 +30,11 @@
 		/// </summary>
 		/// <param name="enable"></param>
 		void EnableBenchmark(bool enable);
+
+		/// <summary>
+		/// Gets a log of the generator planner.
+		/// </summary>
+		/// <returns></returns>
+		string GetPlannerLog();
 	}
 }

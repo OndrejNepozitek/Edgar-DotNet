@@ -26,10 +26,10 @@
 		/// <param name="mapDescriptions">Map descriptions to be given to the generator. First item of the tuple represents a name of the map description.</param>
 		/// <param name="repeats">How many times should te generator run for every given map description</param>
 		/// <param name="writer">Will be used in conjuction with Console.Out if not null.</param>
-		public void Execute<TGenerator>(TGenerator generator, string label, List<Tuple<string, IMapDescription<int>>> mapDescriptions, int repeats = 10, TextWriter writer = null) 
+		public void Execute<TGenerator>(TGenerator generator, string label, List<Tuple<string, IMapDescription<int>>> mapDescriptions, int repeats = 10, TextWriter writer = null, TextWriter debugWriter = null) 
 			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
 		{
-			var results = mapDescriptions.Select(x => Execute(generator, x.Item1, x.Item2, repeats));
+			var results = mapDescriptions.Select(x => Execute(generator, x.Item1, x.Item2, repeats, debugWriter: debugWriter));
 
 			WriteLine(GetOutputHeader(label, repeats), writer);
 
@@ -53,7 +53,7 @@
 		/// <param name="repeats">How many times should te generator run for every given map description</param>
 		/// <param name="showCurrentProgress">Whether a current progress should be shown to the console.</param>
 		/// <returns></returns>
-		public BenchmarkResult Execute<TGenerator, TNode>(TGenerator generator, string label, IMapDescription<TNode> input, int repeats = 10, bool showCurrentProgress = true)
+		public BenchmarkResult Execute<TGenerator, TNode>(TGenerator generator, string label, IMapDescription<TNode> input, int repeats = 10, bool showCurrentProgress = true, TextWriter debugWriter = null)
 			where TGenerator : ILayoutGenerator<TNode>, IBenchmarkable
 		{
 			generator.EnableBenchmark(true);
@@ -72,6 +72,8 @@
 				}
 
 				generator.GetLayouts(input, 1);
+				debugWriter?.WriteLine(GetDebugInfo(generator));
+				debugWriter?.Flush();
 
 				layoutCounts.Add(generator.LayoutsCount);
 				iterationCounts.Add(generator.IterationsCount);
@@ -99,6 +101,17 @@
 			};
 		}
 
+		private string GetDebugInfo<TGenerator>(TGenerator generator) where TGenerator : IBenchmarkable
+		{
+			var builder = new StringBuilder();
+
+			builder.AppendLine($"Layouts: {generator.LayoutsCount}, Iteration: {generator.IterationsCount}");
+			builder.AppendLine();
+			builder.AppendLine(generator.GetPlannerLog());
+
+			return builder.ToString();
+		}
+
 		/// <summary>
 		/// Runs a given scenario. It makes a cartesian product of all the scenario possibilities.
 		/// </summary>
@@ -109,7 +122,7 @@
 		/// <param name="repeats"></param>
 		/// <param name="writer"></param>
 		public void Execute<TGenerator>(TGenerator generator, BenchmarkScenario<TGenerator, int> scenario, List<Tuple<string, IMapDescription<int>>> mapDescriptions,
-			int repeats = 10, TextWriter writer = null)
+			int repeats = 10, TextWriter writer = null, TextWriter debugWriter = null)
 			where TGenerator : ILayoutGenerator<int>, IBenchmarkable
 		{
 			foreach (var product in scenario.GetSetupsGroups().Select(x => x.GetSetups()).CartesianProduct())
@@ -117,7 +130,7 @@
 				var name = string.Join(", ", product.Select(x => x.Item1));
 				product.Select(x => x.Item2).ToList().ForEach(x => x(generator));
 
-				Execute(generator, name, mapDescriptions, repeats, writer);
+				Execute(generator, name, mapDescriptions, repeats, writer, debugWriter);
 			}
 		}
 

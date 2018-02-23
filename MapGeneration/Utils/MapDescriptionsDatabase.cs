@@ -97,7 +97,7 @@
 					Tuple.Create("17 vertices - scale 5", (IMapDescription<int>) m1),
 					Tuple.Create("17 vertices - scale 10", (IMapDescription<int>) m2),
 					Tuple.Create("17 vertices - scale 25", (IMapDescription<int>) m3),
-					Tuple.Create("17 vertices - scale 50", (IMapDescription<int>) m7),
+					// Tuple.Create("17 vertices - scale 50", (IMapDescription<int>) m7),
 					/*Tuple.Create("41 vertices - scale 5", (IMapDescription<int>) m4),
 					Tuple.Create("41 vertices - scale 10", (IMapDescription<int>) m5),
 					Tuple.Create("41 vertices - scale 25", (IMapDescription<int>) m6),*/

@@ -264,7 +264,7 @@
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						var data = svgLayoutDrawer.DrawLayout(layoutToDraw);
+						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, 800);
 						sw.Write(data);
 					}
 				}
