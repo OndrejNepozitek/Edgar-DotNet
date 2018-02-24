@@ -132,6 +132,13 @@
 						//setups.AddSetup("Basic planner", generator => { generator.SetGeneratorPlanner(new BasicGeneratorPlanner()); });
 					}
 
+					{
+						// Simulated annealing parameters
+						//var setups = scenario.MakeSetupsGroup();
+						//setups.AddSetup("SA old", generator => { generator.SetSimulatedAnnealing(50, 500, 15); });
+						//setups.AddSetup("SA new", generator => { generator.SetSimulatedAnnealing(50, 100, 5); });
+					}
+
 					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
 				}
 			}

@@ -131,14 +131,11 @@
 
 		private IEnumerable<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
 		{
-			const int cycles = 50;
-			const int trialsPerCycle = 500;
-
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
 			var t1 = -1d / Math.Log(p1);
-			var ratio = Math.Pow(t1 / t0, 1d / (cycles - 1));
+			var ratio = Math.Pow(t1 / t0, 1d / (saCycles - 1));
 			var deltaEAvg = 0d;
 			var acceptedSolutions = 1;
 
@@ -159,7 +156,7 @@
 
 			var numberOfFailures = 0;
 
-			for (var i = 0; i < cycles; i++)
+			for (var i = 0; i < saCycles; i++)
 			{
 				var wasAccepted = false;
 
@@ -175,7 +172,7 @@
 
 				#endregion
 				
-				for (var j = 0; j < trialsPerCycle; j++)
+				for (var j = 0; j < saTrialsPerCycle; j++)
 				{
 					if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
 						yield break;
@@ -234,7 +231,7 @@
 
 							#endregion
 
-							if (layouts.Count >= 15)
+							if (layouts.Count >= saLayoutsToGenerate)
 							{
 								#region Debug output
 
@@ -590,6 +587,21 @@
 		}
 
 		#region Generator settings
+
+		#region Simulated annealing parameters
+
+		private int saCycles = 50;
+		private int saTrialsPerCycle = 100;
+		private int saLayoutsToGenerate = 5;
+
+		public void SetSimulatedAnnealing(int cycles, int trialsPerCycle, int layoutsToGenerate)
+		{
+			saCycles = cycles;
+			saTrialsPerCycle = trialsPerCycle;
+			saLayoutsToGenerate = layoutsToGenerate;
+		}
+
+		#endregion
 
 		#region Generator planners
 

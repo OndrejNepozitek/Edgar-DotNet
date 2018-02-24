@@ -176,8 +176,9 @@
 						throw new ArgumentOutOfRangeException();
 				}
 
-				var info = $"[{id}, Iterations: {logEntry.IterationsCount}, {childIndex + 1}/{instance.Parent.Children.Count}, Parent finished: {childIndex == instance.Parent.Children.Count - 1 && instance.Parent.IsFinished}]";
-
+				var detailedInfo = logEntry.Type == LogType.Fail ? string.Empty :
+					$", {childIndex + 1}/{instance.Parent.Children.Count}, Parent finished: {childIndex == instance.Parent.Children.Count - 1 && instance.Parent.IsFinished}";
+				var info = $"[{id}, Iterations: {logEntry.IterationsCount}{detailedInfo}]";
 				var prefix = GetLogChain(logEntry.Type == LogType.Fail ? instance : instance.Parent, previousInstance);
 
 				builder.AppendLine(prefix + info);
