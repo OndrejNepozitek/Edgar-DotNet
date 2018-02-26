@@ -4,7 +4,6 @@
 
 	public interface IMapDescription<TNode>
 	{
-		// TODO: how should this look like?
-		FastGraph<TNode> GetGraph(); 
+		IntGraph<TNode> GetGraph(); 
 	}
 }

@@ -54,7 +54,7 @@
 			// Handle shapes for nodes
 			foreach (var vertex in graph.Vertices)
 			{
-				var node = graph.GetVertex(vertex);
+				var node = graph.GetOriginalVertex(vertex);
 				var shapesForNode = mapDescription.RoomShapesForNodes[node];
 
 				if (shapesForNode == null)

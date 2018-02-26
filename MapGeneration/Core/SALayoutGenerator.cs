@@ -34,7 +34,7 @@
 		private Random random = new Random(0);
 
 		private IMapDescription<TNode> mapDescription;
-		private FastGraph<TNode> graph;
+		private IntGraph<TNode> graph;
 		private IGeneratorPlanner<TLayout> generatorPlanner = new LazyGeneratorPlanner<TLayout>();
 
 		private readonly Stopwatch stopwatch = new Stopwatch();
@@ -70,10 +70,10 @@
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
 
-		private Func<FastGraph<TNode>, TLayout> layoutCreator;
+		private Func<IGraph<int>, TLayout> layoutCreator;
 		private Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator;
 
-		public SALayoutGenerator(Func<FastGraph<TNode>, TLayout> layoutCreator, Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator)
+		public SALayoutGenerator(Func<IGraph<int>, TLayout> layoutCreator, Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator)
 		{
 			this.layoutCreator = layoutCreator;
 			this.layoutOperationsCreator = layoutOperationsCreator;
@@ -433,7 +433,7 @@
 			{
 				if (layout.GetConfiguration(vertex, out var configuration))
 				{
-					var room = new Room<TNode>(graph.GetVertex(vertex), configuration.Shape, configuration.Position);
+					var room = new Room<TNode>(graph.GetOriginalVertex(vertex), configuration.Shape, configuration.Position);
 					rooms.Add(room);
 
 					if (!addRooms)
@@ -461,8 +461,8 @@
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(random);
 
-								roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetVertex(neighbour), randomChoice));
-								roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetVertex(vertex), randomChoice));
+								roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetOriginalVertex(neighbour), randomChoice));
+								roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetOriginalVertex(vertex), randomChoice));
 							}
 						}
 					}

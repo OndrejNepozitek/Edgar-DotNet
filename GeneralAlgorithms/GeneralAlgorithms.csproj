@@ -112,7 +112,6 @@
     <Compile Include="DataStructures\Graphs\IntGraph.cs" />
     <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraph.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />
-    <Compile Include="DataStructures\Graphs\FastGraph.cs" />
     <Compile Include="DataStructures\Graphs\IEdge.cs" />
     <Compile Include="DataStructures\Graphs\IGraph.cs" />
     <Compile Include="DataStructures\Polygons\GridPolygon.cs" />

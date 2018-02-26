@@ -95,10 +95,10 @@
 			passages.Add(passage);
 		}
 
-		public FastGraph<TNode> GetGraph()
+		public IntGraph<TNode> GetGraph()
 		{
 			var vertices = roomShapesForNodes.Keys;
-			var graph = new FastGraph<TNode>(vertices.Count);
+			var graph = new IntGraph<TNode>(() => new UndirectedAdjacencyListGraph<int>());
 
 			foreach (var vertex in vertices)
 			{
