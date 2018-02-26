@@ -108,7 +108,12 @@
 			var space = GetConfigurationSpace(configuration2, configuration1);
 			var lines1 = new List<OrthogonalLine>() {new OrthogonalLine(configuration1.Position, configuration1.Position)};
 
-			return LineIntersection.DoIntersect(lines1, space.Lines.Select(x => x + configuration2.Position).ToList());
+			return LineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)), lines1);
+		}
+
+		private OrthogonalLine FastAddition(OrthogonalLine line, IntVector2 position) 
+		{
+			return new OrthogonalLine(line.From + position, line.To + position);
 		}
 	}
 }

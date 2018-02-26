@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core
+﻿namespace MapGeneration.Core.Experimental
 {
 	using System.Diagnostics.Contracts;
 	using GeneralAlgorithms.DataStructures.Common;
@@ -6,6 +6,7 @@
 	using Interfaces;
 
 	public struct Configuration<TEnergyData> : IEnergyConfiguration<Configuration<TEnergyData>, IntAlias<GridPolygon>, TEnergyData>
+		where TEnergyData : IEnergyData<TEnergyData>
 	{
 		public IntAlias<GridPolygon> ShapeContainer { get; }
 
@@ -17,7 +18,7 @@
 
 		public TEnergyData EnergyData { get; }
 
-		public bool IsValid => ValidityVector.Data == 0;
+		public bool IsValid => EnergyData.IsValid;
 
 		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, SimpleBitVector32 validityVector, TEnergyData energyData)
 		{

@@ -7,7 +7,7 @@
 	/// This planner should not be used. It is here just to demonstrate that 
 	/// it would be slower to not use lazy evaluation.
 	/// </summary>
-	public class BasicGeneratorPlanner : GeneratorPlannerBase
+	public class BasicGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
 	{
 		private int currentRow;
 		private Instance lastInstance;

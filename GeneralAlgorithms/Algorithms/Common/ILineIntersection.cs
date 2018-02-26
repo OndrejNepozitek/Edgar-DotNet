@@ -21,7 +21,7 @@
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		bool DoIntersect(List<T> lines1, List<T> lines2);
+		bool DoIntersect(IEnumerable<T> lines1, List<T> lines2);
 
 		/// <summary>
 		/// Gets intersection between two given lines.

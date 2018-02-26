@@ -6,8 +6,10 @@
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces;
 
-	public class ConfigurationSpaces : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration>
+	public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
+		where TConfiguration : IConfiguration<TConfiguration, IntAlias<GridPolygon>>
 	{
 		protected List<WeightedShape> Shapes;
 		protected List<WeightedShape>[] ShapesForNodes;
@@ -24,9 +26,9 @@
 			ConfigurationSpaces_ = configurationSpaces;
 		}
 
-		protected override IList<Tuple<Configuration, ConfigurationSpace>> GetConfigurationSpaces(Configuration mainConfiguration, IList<Configuration> configurations)
+		protected override IList<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
-			var spaces = new List<Tuple<Configuration, ConfigurationSpace>>();
+			var spaces = new List<Tuple<TConfiguration, ConfigurationSpace>>();
 			var chosenSpaces = ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias];
 
 			foreach (var configuration in configurations)
@@ -37,7 +39,7 @@
 			return spaces;
 		}
 
-		protected override ConfigurationSpace GetConfigurationSpace(Configuration mainConfiguration, Configuration configuration)
+		protected override ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration)
 		{
 			return GetConfigurationSpace(mainConfiguration.ShapeContainer, configuration.ShapeContainer);
 		}

@@ -3,27 +3,36 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Constraints;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces;
 	using Utils;
 
-	public class LayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer> : IRandomInjectable
+	public class LayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer, TEnergyData> : ILayoutOperations<TLayout, TNode>, IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TConfiguration, TShapeContainer>, new()
+		where TConfiguration : IEnergyConfiguration<TConfiguration, TShapeContainer, TEnergyData>, new()
+		where TEnergyData : IEnergyData<TEnergyData>, new()
 		where TNode : IEquatable<TNode>
 	{
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces;
-		private readonly IPolygonOverlap polygonOverlap;
-		private Random random = new Random();
+		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> ConfigurationSpaces;
+		protected readonly IPolygonOverlap PolygonOverlap;
+		protected Random Random = new Random();
 
 		private readonly float energySigma = 15800f; // TODO: change
+		private bool newEnergy;
 
-		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma = 0)
+		public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma)
 		{
-			this.configurationSpaces = configurationSpaces;
-			this.polygonOverlap = polygonOverlap;
+			this.ConfigurationSpaces = configurationSpaces;
+			this.PolygonOverlap = polygonOverlap;
 			this.energySigma = energySigma;
+			// constraints = new BasicContraints<TLayout, TNode, TConfiguration<EnergyData>, EnergyData, TShapeContainer>(polygonOverlap, energySigma, configurationSpaces);
+		}
+
+		public void EnableNewEnergy(bool enable)
+		{
+			newEnergy = enable;
 		}
 
 		/// <summary>
@@ -38,21 +47,18 @@
 		/// <param name="node">The node that should be perturbed.</param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout, bool perturbPosition)
+		public virtual TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout)
 		{
-			if (!updateLayout && perturbPosition)
-				throw new InvalidOperationException();
-
 			layout.GetConfiguration(node, out var configuration);
 
 			// Return the current layout if a given node cannot be shape-perturbed
-			if (!configurationSpaces.CanPerturbShape(node))
+			if (!ConfigurationSpaces.CanPerturbShape(node))
 				return (TLayout) layout.Clone(); // TODO: should it be without the cast?
 
 			TShapeContainer shape;
 			do
 			{
-				shape = configurationSpaces.GetRandomShape(node);
+				shape = ConfigurationSpaces.GetRandomShape(node);
 			}
 			while (ReferenceEquals(shape, configuration.Shape));
 
@@ -61,12 +67,6 @@
 			if (updateLayout)
 			{
 				var updated = UpdateLayout(layout, node, newConfiguration);
-
-				if (perturbPosition)
-				{
-					updated = PerturbPosition(updated, node, updateLayout);
-				}
-
 				return updated;
 			}
 
@@ -88,14 +88,14 @@
 		/// <param name="nodeOptions"></param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout, bool perturbPosition)
+		public virtual TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
-			var canBePerturbed = nodeOptions.Where(x => configurationSpaces.CanPerturbShape(x)).ToList();
+			var canBePerturbed = nodeOptions.Where(x => ConfigurationSpaces.CanPerturbShape(x)).ToList();
 
 			if (canBePerturbed.Count == 0)
 				return (TLayout) layout.Clone(); // TODO: should it be without the cast?
 
-			return PerturbShape(layout, canBePerturbed.GetRandom(random), updateLayout, perturbPosition);
+			return PerturbShape(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
 		/// <summary>
@@ -105,7 +105,7 @@
 		/// <param name="node">The node that should be perturbed.</param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbPosition(TLayout layout, TNode node, bool updateLayout)
+		public virtual TLayout PerturbPosition(TLayout layout, TNode node, bool updateLayout)
 		{
 			var configurations = new List<TConfiguration>();
 
@@ -120,7 +120,7 @@
 			if (!layout.GetConfiguration(node, out var mainConfiguration))
 				throw new InvalidOperationException();
 
-			var newPosition = configurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations);
+			var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations);
 			var newConfiguration = mainConfiguration.SetPosition(newPosition);
 
 			if (updateLayout)
@@ -145,7 +145,7 @@
 		/// <param name="nodeOptions"></param>
 		/// <param name="updateLayout">Whether energies and validity vectors should be updated after the change.</param>
 		/// <returns></returns>
-		public TLayout PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		public virtual TLayout PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
 			var canBePerturbed = nodeOptions.ToList();
@@ -153,7 +153,7 @@
 			if (canBePerturbed.Count == 0)
 				return (TLayout) layout.Clone(); // TODO: should it be without the cast?
 
-			return PerturbPosition(layout, canBePerturbed.GetRandom(random), updateLayout);
+			return PerturbPosition(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
 		/// <summary>
@@ -168,15 +168,20 @@
 		/// <param name="node">The node to be changed.</param>
 		/// <param name="configuration">The new configuration of the node that is changed.</param>
 		/// <returns></returns>
-		public TLayout UpdateLayout(TLayout layout, TNode node, TConfiguration configuration)
+		public virtual TLayout UpdateLayout(TLayout layout, TNode node, TConfiguration configuration)
 		{
+			//if (this.newEnergy)
+			//{
+			//	return UpdateLayoutNew(layout, node, configuration);
+			//}
+
 			// Prepare new layout with temporary configuration to compute energies
 			layout.GetConfiguration(node, out var oldConfiguration);
 			var graph = layout.Graph;
 			var newLayout = (TLayout) layout.Clone(); // TODO: should it be without the cast?
 
 			// Having these variables saves us one call to GetEnergy()
-			var newOverlap = oldConfiguration.EnergyData.Area;
+			var newOverlap = oldConfiguration.EnergyData.Overlap;
 			var newDistance = oldConfiguration.EnergyData.MoveDistance;
 
 			// Recalculate validities
@@ -198,11 +203,11 @@
 				var newVertexConfiguration = nodeConfiguration;
 				var isNeighbourValid = false; // This variable has a meaningful value only if the current vertex is a neighbour
 
-				// If the vertex is a neighbour of the perturbed node, we must check if its validity vector changed
+				//// If the vertex is a neighbour of the perturbed node, we must check if its validity vector changed
 				if (isNeighbour)
 				{
 					var neighbourValidityVector = nodeConfiguration.ValidityVector;
-					isNeighbourValid = configurationSpaces.HaveValidPosition(configuration, nodeConfiguration);
+					isNeighbourValid = ConfigurationSpaces.HaveValidPosition(configuration, nodeConfiguration);
 					var reverseNeighbourIndex = graph.GetNeighbourIndex(vertex, node);
 
 					// We must check changes
@@ -226,21 +231,82 @@
 					continue;
 
 				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour, isNeighbourValid);
+
 				newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
 				newLayout.SetConfiguration(vertex, newVertexConfiguration);
 
-				newOverlap += vertexEnergyData.Area - nodeConfiguration.EnergyData.Area;
+				newOverlap += vertexEnergyData.Overlap - nodeConfiguration.EnergyData.Overlap;
 				newDistance += vertexEnergyData.MoveDistance - nodeConfiguration.EnergyData.MoveDistance;
 			}
 
 			// Update energy and validity vector of the perturbed node
 			var newEnergy = ComputeEnergy(newOverlap, newDistance);
-			configuration = configuration.SetEnergyData(new EnergyData(newEnergy, newOverlap, newDistance));
+
+			configuration = configuration.SetEnergyData(CreateEnergyData(newEnergy, newOverlap, newDistance));
 			configuration = configuration.SetValidityVector(validityVector);
 
 			newLayout.SetConfiguration(node, configuration);
 
 			return newLayout;
+		}
+
+		//public TLayout UpdateLayoutNew(TLayout layout, TNode node, TConfiguration configuration)
+		//{
+		//	// Prepare new layout with temporary configuration to compute energies
+		//	layout.GetConfiguration(node, out var oldConfiguration);
+		//	var graph = layout.Graph;
+		//	var newLayout = (TLayout)layout.Clone(); // TODO: should it be without the cast?
+
+		//	// Having these variables saves us one call to GetEnergy()
+		//	var newOverlap = oldConfiguration.EnergyData.Overlap;
+		//	var newDistance = oldConfiguration.EnergyData.MoveDistance;
+
+		//	// Recalculate validities
+		//	var validityVector = configuration.ValidityVector;
+		//	var neighbours = graph.GetNeighbours(node).ToList(); // TODO: can we avoid ToList() ?
+
+		//	// Update validity vectors and energies of vertices
+		//	foreach (var vertex in graph.Vertices)
+		//	{
+		//		if (vertex.Equals(node))
+		//			continue;
+
+		//		if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
+		//			continue;
+
+		//		var neighbourIndex = neighbours.IndexOf(vertex);
+		//		var isNeighbour = neighbourIndex != -1;
+		//		var updateEnergies = true;
+		//		var newVertexConfiguration = nodeConfiguration;
+		//		var isNeighbourValid = false; // This variable has a meaningful value only if the current vertex is a neighbour
+
+		//		var vertexEnergyData = constraints.UpdateEnergyData(layout, oldConfiguration, configuration, nodeConfiguration, isNeighbour, new EnergyData());
+
+		//		newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
+		//		newLayout.SetConfiguration(vertex, newVertexConfiguration);
+
+		//		newOverlap += vertexEnergyData.Overlap - nodeConfiguration.EnergyData.Overlap;
+		//		newDistance += vertexEnergyData.MoveDistance - nodeConfiguration.EnergyData.MoveDistance;
+		//	}
+
+		//	// Update energy and validity vector of the perturbed node
+		//	var newEnergy = ComputeEnergy(newOverlap, newDistance);
+		//	configuration = configuration.SetEnergyData(new EnergyData(newEnergy, newOverlap, newDistance));
+		//	configuration = configuration.SetValidityVector(validityVector);
+
+		//	newLayout.SetConfiguration(node, configuration);
+
+		//	return newLayout;
+		//}
+
+		private TEnergyData CreateEnergyData(float energy, int overlap, int distance)
+		{
+			var energyData = new TEnergyData();
+			energyData = energyData.SetEnergy(energy);
+			energyData = energyData.SetMoveDistance(distance);
+			energyData = energyData.SetOverlap(overlap);
+
+			return energyData;
 		}
 
 		/// <summary>
@@ -252,19 +318,19 @@
 		/// <param name="areNeighbours">Whether the two nodes are neighbours.</param>
 		/// <param name="validNew">Whether neighbouring nodes have a valid position in the new layout.</param>
 		/// <returns></returns>
-		protected EnergyData RecomputeEnergyData(TConfiguration oldConfiguration, TConfiguration newConfiguration,
+		protected TEnergyData RecomputeEnergyData(TConfiguration oldConfiguration, TConfiguration newConfiguration,
 			TConfiguration configuration, bool areNeighbours, bool validNew)
 		{
 			var overlapOld = ComputeOverlap(configuration, oldConfiguration);
 			var overlapNew = ComputeOverlap(configuration, newConfiguration);
-			var overlapTotal = configuration.EnergyData.Area + (overlapNew - overlapOld);
+			var overlapTotal = configuration.EnergyData.Overlap + (overlapNew - overlapOld);
 
 			// MoveDistance should not be recomputed as it is used only when two nodes are neighbours which is not the case here
 			var distanceTotal = configuration.EnergyData.MoveDistance;
 			if (areNeighbours)
 			{
 				// TODO: either compute it twice here or use info from validity vectors - what is better? throw away validity vectors?
-				var validOld = configurationSpaces.HaveValidPosition(oldConfiguration, configuration);
+				var validOld = ConfigurationSpaces.HaveValidPosition(oldConfiguration, configuration);
 
 				// Distance is taken into account only when there is no overlap
 				var distanceOld = overlapOld == 0 && !validOld ? ComputeDistance(configuration, oldConfiguration) : 0;
@@ -274,7 +340,7 @@
 
 			var newEnergy = ComputeEnergy(overlapTotal, distanceTotal);
 
-			return new EnergyData(newEnergy, overlapTotal, distanceTotal);
+			return CreateEnergyData(newEnergy, overlapTotal, distanceTotal);
 		}
 
 		/// <summary>
@@ -308,7 +374,7 @@
 						continue;
 					}
 
-					var isValid = configurationSpaces.HaveValidPosition(configuration, nc);
+					var isValid = ConfigurationSpaces.HaveValidPosition(configuration, nc);
 					validityVector[i] = !isValid;
 				}
 
@@ -324,14 +390,25 @@
 		/// </remarks>
 		/// <param name="layout"></param>
 		/// <returns></returns>
-		public bool IsLayoutValid(TLayout layout)
-		{
+		public virtual bool IsLayoutValid(TLayout layout)
+		{	
 			if (layout.GetAllConfigurations().Any(x => !x.IsValid || x.EnergyData.Energy > 0))
 			{
 				return false;
 			}
 
 			return true;
+		}
+
+		public virtual float GetEnergy(TLayout layout)
+		{
+			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy);
+		}
+
+		public virtual void UpdateLayout(TLayout layout)
+		{
+			RecomputeValidityVectors(layout);
+			RecomputeEnergies(layout);
 		}
 
 		/// <summary>
@@ -342,7 +419,7 @@
 		/// that need to be changed than to recompute them all.
 		/// </remarks>
 		/// <param name="layout"></param>
-		public void RecomputeEnergy(TLayout layout)
+		public void RecomputeEnergies(TLayout layout)
 		{
 			foreach (var vertex in layout.Graph.Vertices)
 			{
@@ -373,7 +450,7 @@
 		/// <param name="node"></param>
 		/// <param name="configuration"></param>
 		/// <returns>Zero if the configuration is valid and a positive number otherwise.</returns>
-		public EnergyData GetEnergyData(TLayout layout, TNode node, TConfiguration configuration)
+		public TEnergyData GetEnergyData(TLayout layout, TNode node, TConfiguration configuration)
 		{
 			var overlap = 0;
 			var distance = 0;
@@ -395,7 +472,7 @@
 				}
 				else if (neighbours.Contains(vertex))
 				{
-					if (!configurationSpaces.HaveValidPosition(configuration, c))
+					if (!ConfigurationSpaces.HaveValidPosition(configuration, c))
 					{
 						// TODO: this is not really accurate when there are more sophisticated door positions (as smaller distance is not always better)
 						distance += ComputeDistance(configuration, c);
@@ -405,7 +482,7 @@
 
 			var energy = ComputeEnergy(overlap, distance);
 
-			return new EnergyData(energy, overlap, distance);
+			return CreateEnergyData(energy, overlap, distance);
 		}
 
 		/// <summary>
@@ -433,7 +510,7 @@
 
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(configurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2()));
 				return;
 			}
 
@@ -441,9 +518,9 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			foreach (var shape in configurationSpaces.GetShapesForNode(node))
+			foreach (var shape in ConfigurationSpaces.GetShapesForNode(node))
 			{
-				var intersection = configurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
+				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
 				foreach (var intersectionLine in intersection)
 				{
@@ -512,7 +589,7 @@
 
 		protected int ComputeOverlap(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.OverlapArea(configuration1.Shape, configuration1.Position, configuration2.Shape, configuration2.Position);
+			return PolygonOverlap.OverlapArea(configuration1.Shape, configuration1.Position, configuration2.Shape, configuration2.Position);
 		}
 
 		protected int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)
@@ -535,8 +612,8 @@
 
 		public void InjectRandomGenerator(Random random)
 		{
-			this.random = random;
-			configurationSpaces.InjectRandomGenerator(random);
+			this.Random = random;
+			ConfigurationSpaces.InjectRandomGenerator(random);
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	using System.Linq;
 
 	/// <inheritdoc />
-	public class LazyGeneratorPlanner : GeneratorPlannerBase
+	public class LazyGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout> 
 	{
 		/// <summary>
 		/// Alaways chooses a not finished layout on the highest level.

@@ -9,16 +9,16 @@
 	/// Inheriting classes must implement just GetNextInstance() that is called
 	/// when a new layout should be chosen to be extended.
 	/// </summary>
-	public abstract class GeneratorPlannerBase : IGeneratorPlanner
+	public abstract class GeneratorPlannerBase<TLayout> : IGeneratorPlanner<TLayout>
 	{
-		private Layout initialLayout;
+		private TLayout initialLayout;
 		private List<List<int>> chains;
-		private Func<Layout, List<int>, IEnumerable<Layout>> simulatedAnnealing;
+		private Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing;
 		private List<InstanceRow> rows;
 		private List<LogEntry> log;
 		private int nextId;
 
-		public event Action<Layout> OnLayoutGenerated;
+		public event Action<TLayout> OnLayoutGenerated;
 
 		/// <summary>
 		/// Calls GetNextInstance() and builds the tree data structure until a given number of layouts is generated.
@@ -29,7 +29,7 @@
 		/// <param name="context"></param>
 		/// <param name="count"></param>
 		/// <returns></returns>
-		public List<Layout> Generate(Layout initialLayout, List<List<int>> chains, Func<Layout, List<int>, IEnumerable<Layout>> simulatedAnnealing, ISAContext context, int count)
+		public List<TLayout> Generate(TLayout initialLayout, List<List<int>> chains, Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing, ISAContext context, int count)
 		{
 			// Initialization
 			this.initialLayout = initialLayout;
@@ -38,7 +38,7 @@
 			rows = new List<InstanceRow>();
 			log = new List<LogEntry>();
 			nextId = 0;
-			var layouts = new List<Layout>();
+			var layouts = new List<TLayout>();
 
 			BeforeGeneration();
 			AddZeroLevelInstance();
@@ -58,12 +58,12 @@
 
 				// Tries to generate a new layout from the instance
 				var iterationsBefore = context.IterationsCount;
-				var layout = instance.TryGetLayout();
+				var hasLayout = instance.TryGetLayout(out var layout);
 				var iterationsToGenerate = context.IterationsCount - iterationsBefore;
 				instance.AddIterations(iterationsToGenerate);
 
 				// Layout being null means failure and the current iteration is skipped
-				if (layout == null)
+				if (!hasLayout)
 				{
 					log.Add(new LogEntry(LogType.Fail, instance, iterationsToGenerate));
 					continue;
@@ -127,11 +127,11 @@
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private SAInstance GetSAInstance(Layout layout, List<int> chain)
+		private SAInstance<TLayout> GetSAInstance(TLayout layout, List<int> chain)
 		{
 			var layouts = simulatedAnnealing(layout, chain);
 
-			return new SAInstance(layouts);
+			return new SAInstance<TLayout>(layouts);
 		}
 
 		/// <inheritdoc />
@@ -272,7 +272,7 @@
 			/// </summary>
 			public List<Instance> Children { get; } = new List<Instance>();
 
-			private SAInstance SAInstance { get; }
+			private SAInstance<TLayout> SAInstance { get; }
 
 			/// <summary>
 			/// The depth of the layout. It means that Depth + 1 chains were already added.
@@ -299,7 +299,7 @@
 			/// </summary>
 			public int Id { get; }
 
-			public Instance(Instance parent, SAInstance saInstance, int depth, int iterationsToGenerate, int id)
+			public Instance(Instance parent, SAInstance<TLayout> saInstance, int depth, int iterationsToGenerate, int id)
 			{
 				Parent = parent;
 				SAInstance = saInstance;
@@ -321,15 +321,17 @@
 			/// Tries to get next layout.
 			/// </summary>
 			/// <returns>Null if not successful.</returns>
-			public Layout TryGetLayout()
+			public bool TryGetLayout(out TLayout layout)
 			{
-				if (SAInstance.TryGetLayout(out var layout))
+				if (SAInstance.TryGetLayout(out var layoutInner))
 				{
-					return layout;
+					layout = layoutInner;
+					return true;
 				}
 
 				IsFinished = true;
-				return null;
+				layout = default(TLayout);
+				return false;
 			}
 
 			/// <summary>

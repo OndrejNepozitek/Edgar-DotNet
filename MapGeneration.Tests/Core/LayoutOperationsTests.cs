@@ -123,7 +123,7 @@
 			layout.SetConfiguration(1, new Configuration(new IntAlias<GridPolygon>(1, GridPolygon.GetSquare(3)), new IntVector2(2, -1), new SimpleBitVector32(), new EnergyData()));
 			layout.SetConfiguration(2, new Configuration(new IntAlias<GridPolygon>(2, GridPolygon.GetRectangle(6, 3)), new IntVector2(2, 1), new SimpleBitVector32(), new EnergyData()));
 			layoutOperations.RecomputeValidityVectors(layout);
-			layoutOperations.RecomputeEnergy(layout);
+			layoutOperations.RecomputeEnergies(layout);
 
 			// Make a new configuration for vertex 2
 			var newConfiguration = new Configuration(new IntAlias<GridPolygon>(3, GridPolygon.GetRectangle(6, 3)),
@@ -135,7 +135,7 @@
 			var expectedLayout = layout.Clone();
 			expectedLayout.SetConfiguration(2, newConfiguration);
 			layoutOperations.RecomputeValidityVectors(expectedLayout);
-			layoutOperations.RecomputeEnergy(expectedLayout);
+			layoutOperations.RecomputeEnergies(expectedLayout);
 
 			foreach (var vertex in graph.Vertices)
 			{

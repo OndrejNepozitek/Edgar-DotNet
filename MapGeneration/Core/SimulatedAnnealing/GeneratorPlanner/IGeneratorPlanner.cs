@@ -9,12 +9,12 @@
 	/// layouts should be further extended when adding chains to 
 	/// partial layouts.
 	/// </summary>
-	public interface IGeneratorPlanner
+	public interface IGeneratorPlanner<TLayout>
 	{
 		/// <summary>
 		/// Event that should be fired with every generated layout.
 		/// </summary>
-		event Action<Layout> OnLayoutGenerated;
+		event Action<TLayout> OnLayoutGenerated;
 
 		/// <summary>
 		/// Main entry point of the class. Tries to generated layouts.
@@ -25,7 +25,7 @@
 		/// <param name="context">Context of the generation.</param>
 		/// <param name="count">How many layouts should be generated.</param>
 		/// <returns></returns>
-		List<Layout> Generate(Layout initialLayout, List<List<int>> chains, Func<Layout, List<int>, IEnumerable<Layout>> simulatedAnnealing, ISAContext context, int count);
+		List<TLayout> Generate(TLayout initialLayout, List<List<int>> chains, Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing, ISAContext context, int count);
 
 		/// <summary>
 		/// Returns a human readable log of the planning.

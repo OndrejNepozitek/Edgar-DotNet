@@ -5,15 +5,15 @@
 	/// <summary>
 	/// Class that holds an instance of a simulated annealing algorithm.
 	/// </summary>
-	public class SAInstance
+	public class SAInstance<TLayout>
 	{
-		private readonly IEnumerator<Layout> enumerator;
+		private readonly IEnumerator<TLayout> enumerator;
 
 		/// <summary>
 		/// Construct the class using lazily evaluated IEnumerable.
 		/// </summary>
 		/// <param name="layouts"></param>
-		public SAInstance(IEnumerable<Layout> layouts)
+		public SAInstance(IEnumerable<TLayout> layouts)
 		{
 			enumerator = layouts.GetEnumerator();
 		}
@@ -23,10 +23,10 @@
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <returns></returns>
-		public bool TryGetLayout(out Layout layout)
+		public bool TryGetLayout(out TLayout layout)
 		{
 			var hasMore = enumerator.MoveNext();
-			layout = hasMore ? enumerator.Current : null;
+			layout = hasMore ? enumerator.Current : default(TLayout);
 
 			return hasMore;
 		}

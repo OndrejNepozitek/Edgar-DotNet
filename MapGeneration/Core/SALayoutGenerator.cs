@@ -20,20 +20,23 @@
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
-	public class SALayoutGenerator<TNode> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
+	public class SALayoutGenerator<TLayout, TNode, TConfiguration, TEnergyData> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
+		where TEnergyData : IEnergyData<TEnergyData>, new() 
+		where TConfiguration : struct, IEnergyConfiguration<TConfiguration, IntAlias<GridPolygon>, TEnergyData>
+		where TLayout : ILayout<int, TConfiguration>
 	{
 		private IChainDecomposition<int> chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>());
-		private IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> configurationSpaces;
+		private IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> configurationSpaces;
 		private readonly ConfigurationSpacesGenerator configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
-		private LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>> layoutOperations;
+		private ILayoutOperations<TLayout, int> layoutOperations;
 		private Random random = new Random(0);
 
 		private IMapDescription<TNode> mapDescription;
 		private FastGraph<TNode> graph;
-		private IGeneratorPlanner generatorPlanner = new LazyGeneratorPlanner();
+		private IGeneratorPlanner<TLayout> generatorPlanner = new LazyGeneratorPlanner<TLayout>();
 
 		private readonly Stopwatch stopwatch = new Stopwatch();
-		private readonly Action<Layout> firstLayoutTimer;
+		private readonly Action<TLayout> firstLayoutTimer;
 
 		// Debug and benchmark variables
 		private int iterationsCount;
@@ -65,8 +68,19 @@
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
 
-		public SALayoutGenerator()
+		private Func<FastGraph<TNode>, TLayout> layoutCreator;
+		private Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator;
+
+		public SALayoutGenerator(Func<FastGraph<TNode>, TLayout> layoutCreator, Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator)
 		{
+			this.layoutCreator = layoutCreator;
+			this.layoutOperationsCreator = layoutOperationsCreator;
+
+			if (layoutOperationsCreator == null)
+			{
+				this.layoutOperationsCreator = (configurationSpaces, sigma) => new LayoutOperations<int, TLayout, TConfiguration, IntAlias<GridPolygon>, TEnergyData>(configurationSpaces, new PolygonOverlap(), sigma);
+			}
+
 			firstLayoutTimer = layout =>
 			{
 				if (timeFirst == -1)
@@ -79,11 +93,11 @@
 		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
 		{
 			// TODO: should not be done like this
-			configurationSpaces = configurationSpacesGenerator.Generate((MapDescription<TNode>)mapDescription);
+			configurationSpaces = configurationSpacesGenerator.Generate<TNode, TConfiguration>((MapDescription<TNode>)mapDescription);
 			var avgArea = GetAverageArea(configurationSpaces.GetAllShapes());
 			avgSize = GetAverageSize(configurationSpaces.GetAllShapes());
 			var sigma = sigmaFromAvg ? sigmaScale * avgSize : 15800f;
-			layoutOperations = new LayoutOperations<int, Layout, Configuration, IntAlias<GridPolygon>>(configurationSpaces, new PolygonOverlap(), sigma);
+			layoutOperations = layoutOperationsCreator(configurationSpaces, sigma);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
 			context = new SAContext();
@@ -95,10 +109,10 @@
 			timeFirst = -1;
 			stopwatch.Restart();
 
-			var fullLayouts = new List<Layout>();
+			var fullLayouts = new List<TLayout>();
 
 			var graphChains = chainDecomposition.GetChains(graph);
-			var initialLayout = new Layout(graph);
+			var initialLayout = layoutCreator(graph);
 
 			if (withDebugOutput)
 			{
@@ -129,7 +143,7 @@
 			return fullLayouts.Select(x => ConvertLayout(x)).ToList();
 		}
 
-		private IEnumerable<Layout> GetExtendedLayouts(Layout layout, List<int> chain, int chainNumber)
+		private IEnumerable<TLayout> GetExtendedLayouts(TLayout layout, List<int> chain, int chainNumber)
 		{
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
@@ -141,7 +155,7 @@
 
 			var t = t0;
 
-			var layouts = new List<Layout>();
+			var layouts = new List<TLayout>();
 			var originalLayout = layout; //AddChainToLayout(layout, chain);
 			var currentLayout = originalLayout;
 
@@ -149,7 +163,7 @@
 
 			if (withDebugOutput)
 			{
-				Console.WriteLine($"Initial energy: {currentLayout.GetEnergy()}");
+				Console.WriteLine($"Initial energy: {layoutOperations.GetEnergy(currentLayout)}");
 			}
 
 			#endregion
@@ -226,7 +240,7 @@
 
 							if (withDebugOutput)
 							{
-								Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {perturbedLayout.GetEnergy()}");
+								Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
 							}
 
 							#endregion
@@ -305,55 +319,44 @@
 			#endregion
 		}
 
-		private Layout AddChainToLayout(Layout layout, List<int> chain)
+		private TLayout AddChainToLayout(TLayout layout, List<int> chain)
 		{
-			layout = layout.Clone();
+			layout = (TLayout) layout.Clone();
 
 			foreach (var node in chain)
 			{
 				layoutOperations.AddNodeGreedily(layout, node);
 			}
 
-			layoutOperations.RecomputeValidityVectors(layout);
-			layoutOperations.RecomputeEnergy(layout);
+			layoutOperations.UpdateLayout(layout);
 
 			return layout;
 		}
 
-		private Layout PerturbLayout(Layout layout, List<int> chain, out double energyDelta)
+		private TLayout PerturbLayout(TLayout layout, List<int> chain, out double energyDelta)
 		{
 			// TODO: sometimes perturb a node that is not in the current chain?
 
-			var energy = layout.GetEnergy();
-			Layout newLayout;
-
-			if (perturbOutsideChain && random.NextDouble() < perturbOutsideChainProb)
-			{
-				var chooseFrom = graph.Vertices.Where(x => layout.GetConfiguration(x, out var _)).Where(x => !chain.Contains(x)).ToList();
-				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chooseFrom, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chooseFrom, true);
-			}
-			else
-			{
-				newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true, perturbPositionAfterShape) : layoutOperations.PerturbPosition(layout, chain, true);
-			}
+			var energy = layoutOperations.GetEnergy(layout);
+			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true) : layoutOperations.PerturbPosition(layout, chain, true);
 
 			if (enableLayoutValidityCheck)
 			{
 				CheckLayoutValidity(newLayout);
 			}
 
-			var newEnergy = newLayout.GetEnergy();
+			var newEnergy = layoutOperations.GetEnergy(newLayout);
 			energyDelta = newEnergy - energy;
 
 			return newLayout;
 		}
 
-		private bool IsLayoutValid(Layout layout)
+		private bool IsLayoutValid(TLayout layout)
 		{
-			return layout.GetEnergy() == 0; // TODO: may it cause problems?
+			return layoutOperations.IsLayoutValid(layout);
 		}
 
-		private bool IsDifferentEnough(Layout layout, List<Layout> layouts, List<int> chain = null)
+		private bool IsDifferentEnough(TLayout layout, List<TLayout> layouts, List<int> chain = null)
 		{
 			if (!enableDifferenceFromAverageSize)
 			{
@@ -363,7 +366,7 @@
 			return layouts.All(x => IsDifferentEnough(layout, x, chain));
 		}
 
-		private bool IsDifferentEnough(Layout first, Layout second, List<int> chain = null)
+		private bool IsDifferentEnough(TLayout first, TLayout second, List<int> chain = null)
 		{
 			var diff = 0d;
 
@@ -383,7 +386,7 @@
 			return differenceFromAverageScale * diff >= 1;
 		}
 
-		private double GetDifference(Layout first, Layout second, List<int> chain = null)
+		private double GetDifference(TLayout first, TLayout second, List<int> chain = null)
 		{
 			var diff = 0f;
 
@@ -410,7 +413,7 @@
 			return diff;
 		}
 
-		private IMapLayout<TNode> ConvertLayout(Layout layout, bool addRooms = true)
+		private IMapLayout<TNode> ConvertLayout(TLayout layout, bool addRooms = true)
 		{
 			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<int, Room<TNode>>();
@@ -458,7 +461,7 @@
 			return new MapLayout<TNode>(rooms);
 		}
 
-		private List<OrthogonalLine> GetDoors(Configuration configuration1, Configuration configuration2)
+		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
 				configurationSpaces.GetConfigurationSpace(configuration1.ShapeContainer, configuration2.ShapeContainer))
@@ -507,14 +510,14 @@
 
 		private struct LayoutNode
 		{
-			public Layout Layout;
+			public TLayout Layout;
 
 			public int NumberOfChains;
 		}
 
 		private class SAInstance
 		{
-			public IEnumerator<Layout> Layouts;
+			public IEnumerator<TLayout> Layouts;
 
 			public int NumberOfChains;
 		}
@@ -605,7 +608,7 @@
 
 		#region Generator planners
 
-		public void SetGeneratorPlanner(IGeneratorPlanner planner)
+		public void SetGeneratorPlanner(IGeneratorPlanner<TLayout> planner)
 		{
 			generatorPlanner = planner;
 			generatorPlanner.OnLayoutGenerated += firstLayoutTimer;
@@ -713,12 +716,11 @@
 		/// This check significantly slows down the generator.
 		/// </remarks>
 		/// <param name="layout"></param>
-		private void CheckLayoutValidity(Layout layout)
+		private void CheckLayoutValidity(TLayout layout)
 		{
-			var copy = layout.Clone();
+			var copy = (TLayout) layout.Clone();
 
-			layoutOperations.RecomputeEnergy(copy);
-			layoutOperations.RecomputeValidityVectors(copy);
+			layoutOperations.UpdateLayout(copy);
 
 			foreach (var vertex in graph.Vertices)
 			{

@@ -54,7 +54,7 @@
 			if (runsCount == 1)
 				return;
 
-			var setupsGroup = new SetupsGroup();
+			var setupsGroup = MakeSetupsGroup();
 
 			for (var i = 0; i < runsCount; i++)
 			{

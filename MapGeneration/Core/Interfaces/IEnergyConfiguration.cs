@@ -1,9 +1,9 @@
 ﻿namespace MapGeneration.Core.Interfaces
 {
-	public interface IEnergyConfiguration<out TConfiguration, TShapeContainer> : IConfiguration<TConfiguration, TShapeContainer>
+	public interface IEnergyConfiguration<out TConfiguration, TShapeContainer, TEnergyData> : IConfiguration<TConfiguration, TShapeContainer>
 	{
-		EnergyData EnergyData { get; }
+		TEnergyData EnergyData { get; }
 
-		TConfiguration SetEnergyData(EnergyData energyData);
+		TConfiguration SetEnergyData(TEnergyData energyData);
 	}
 }

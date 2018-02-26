@@ -29,13 +29,14 @@
 			this.polygonUtils = polygonUtils;
 		}
 
-		public IConfigurationSpaces<int, IntAlias<GridPolygon>, Configuration> Generate<TNode>(MapDescription<TNode> mapDescription)
+		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription)
+			where TConfiguration : IConfiguration<TConfiguration, IntAlias<GridPolygon>>
 		{
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;
 			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<DoorLine>>>();
-			var shapes = new List<ConfigurationSpaces.WeightedShape>();
-			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces.WeightedShape>>();
+			var shapes = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
+			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
 
 			// Handle universal shapes
 			foreach (var shape in mapDescription.RoomShapes)
@@ -44,7 +45,7 @@
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
-				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, probability)));
+				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
 			}
 
 			// Handle shapes for nodes
@@ -59,21 +60,21 @@
 					continue;
 				}
 
-				var shapesContainer = new List<ConfigurationSpaces.WeightedShape>();
+				var shapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 				foreach (var shape in shapesForNode)
 				{
 					var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
 					var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 					rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
-					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces.WeightedShape(x.Item1, probability)));
+					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
 				}
 
 				shapesForNodes.Add(vertex, shapesContainer);
 			}
 
 			// Prepare data structures
-			var shapesForNodesArray = new List<ConfigurationSpaces.WeightedShape>[shapesForNodes.Count];
+			var shapesForNodesArray = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>[shapesForNodes.Count];
 
 			foreach (var pair in shapesForNodes)
 			{
@@ -96,7 +97,7 @@
 				}
 			}
 
-			return new ConfigurationSpaces(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
+			return new ConfigurationSpaces<TConfiguration>(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
 		}
 
 		private List<Tuple<IntAlias<GridPolygon>, List<DoorLine>>> PreparePolygons(

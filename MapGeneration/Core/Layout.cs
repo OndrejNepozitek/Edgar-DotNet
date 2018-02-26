@@ -4,27 +4,30 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
+	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public class Layout : ILayout<int, Configuration>
+	public class Layout<TConfiguration, TEnergyData> : IEnergyLayout<int, TConfiguration>
+		where TConfiguration : struct, IEnergyConfiguration<TConfiguration, IntAlias<GridPolygon>, TEnergyData>
+		where TEnergyData : IEnergyData<TEnergyData>
 	{
-		private readonly Configuration?[] vertices;
+		private readonly TConfiguration?[] vertices;
 
 		public IGraph<int> Graph { get; }
 
 		public Layout(IGraph<int> graph)
 		{
 			Graph = graph;
-			vertices = new Configuration?[Graph.VerticesCount];
+			vertices = new TConfiguration?[Graph.VerticesCount];
 		}
 
-		private Layout(IGraph<int> graph, Configuration?[] vertices)
+		private Layout(IGraph<int> graph, TConfiguration?[] vertices)
 		{
 			Graph = graph;
-			this.vertices = (Configuration?[]) vertices.Clone();
+			this.vertices = (TConfiguration?[]) vertices.Clone();
 		}
 
-		public bool GetConfiguration(int node, out Configuration configuration)
+		public bool GetConfiguration(int node, out TConfiguration configuration)
 		{
 			if (vertices[node].HasValue)
 			{
@@ -32,11 +35,11 @@
 				return true;
 			}
 
-			configuration = default(Configuration);
+			configuration = default(TConfiguration);
 			return false;
 		}
 
-		public void SetConfiguration(int node, Configuration configuration)
+		public void SetConfiguration(int node, TConfiguration configuration)
 		{
 			vertices[node] = configuration;
 		}
@@ -46,12 +49,12 @@
 			return vertices.Where(x => x.HasValue).Sum(x => x.Value.EnergyData.Energy);
 		}
 
-		public Layout Clone()
+		public Layout<TConfiguration, TEnergyData> Clone()
 		{
-			return new Layout(Graph, vertices);
+			return new Layout<TConfiguration, TEnergyData>(Graph, vertices);
 		}
 
-		public IEnumerable<Configuration> GetAllConfigurations()
+		public IEnumerable<TConfiguration> GetAllConfigurations()
 		{
 			foreach (var configuration in vertices)
 			{
@@ -62,9 +65,13 @@
 			}
 		}
 
-		ILayout<int, Configuration> ILayout<int, Configuration>.Clone()
+		ILayout<int, TConfiguration> ILayout<int, TConfiguration>.Clone()
 		{
 			return Clone();
 		}
+
+		public float Energy { get; set; } = 0; // TODO: change
+
+		public bool IsValid { get; set; } = true; // TODO: change
 	}
 }

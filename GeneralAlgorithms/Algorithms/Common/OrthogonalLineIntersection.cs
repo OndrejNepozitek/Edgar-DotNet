@@ -41,7 +41,7 @@
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		public bool DoIntersect(List<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
+		public bool DoIntersect(IEnumerable<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
 		{
 			return GetIntersectionsLazy(lines1, lines2).Any();
 		}
