@@ -20,9 +20,8 @@
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
-	public class SALayoutGenerator<TLayout, TNode, TConfiguration, TEnergyData> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
-		where TEnergyData : IEnergyData<TEnergyData>, new() 
-		where TConfiguration : struct, IEnergyConfiguration<TConfiguration, IntAlias<GridPolygon>, TEnergyData>
+	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
+		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		where TLayout : ILayout<int, TConfiguration>
 	{
 		private IChainDecomposition<int> chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>());
@@ -76,10 +75,10 @@
 			this.layoutCreator = layoutCreator;
 			this.layoutOperationsCreator = layoutOperationsCreator;
 
-			if (layoutOperationsCreator == null)
-			{
-				this.layoutOperationsCreator = (configurationSpaces, sigma) => new LayoutOperations<int, TLayout, TConfiguration, IntAlias<GridPolygon>, TEnergyData>(configurationSpaces, new PolygonOverlap(), sigma);
-			}
+			//if (layoutOperationsCreator == null)
+			//{
+			//	this.layoutOperationsCreator = (configurationSpaces, sigma) => new LayoutOperations<int, TLayout, TConfiguration, IntAlias<GridPolygon>, TEnergyData>(configurationSpaces, new PolygonOverlap(), sigma);
+			//}
 
 			firstLayoutTimer = layout =>
 			{

@@ -12,7 +12,7 @@
 	public class LayoutOperations<TNode, TLayout, TConfiguration, TShapeContainer, TEnergyData> : ILayoutOperations<TLayout, TNode>, IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TConfiguration, TShapeContainer, TEnergyData>, new()
-		where TEnergyData : IEnergyData<TEnergyData>, new()
+		where TEnergyData : IValidityVectorEnergyData<TEnergyData>, new()
 		where TNode : IEquatable<TNode>
 	{
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> ConfigurationSpaces;
@@ -185,7 +185,7 @@
 			var newDistance = oldConfiguration.EnergyData.MoveDistance;
 
 			// Recalculate validities
-			var validityVector = configuration.ValidityVector;
+			var validityVector = configuration.EnergyData.ValidityVector;
 			var neighbours = graph.GetNeighbours(node).ToList(); // TODO: can we avoid ToList() ?
 
 			// Update validity vectors and energies of vertices
@@ -202,11 +202,11 @@
 				var updateEnergies = true;
 				var newVertexConfiguration = nodeConfiguration;
 				var isNeighbourValid = false; // This variable has a meaningful value only if the current vertex is a neighbour
+				var neighbourValidityVector = nodeConfiguration.EnergyData.ValidityVector;
 
 				//// If the vertex is a neighbour of the perturbed node, we must check if its validity vector changed
 				if (isNeighbour)
 				{
-					var neighbourValidityVector = nodeConfiguration.ValidityVector;
 					isNeighbourValid = ConfigurationSpaces.HaveValidPosition(configuration, nodeConfiguration);
 					var reverseNeighbourIndex = graph.GetNeighbourIndex(vertex, node);
 
@@ -217,7 +217,8 @@
 						neighbourValidityVector[reverseNeighbourIndex] = !isNeighbourValid;
 						validityVector[neighbourIndex] = !isNeighbourValid;
 
-						newVertexConfiguration = newVertexConfiguration.SetValidityVector(neighbourValidityVector);
+						var energyData = newVertexConfiguration.EnergyData.SetValidityVector(neighbourValidityVector);
+						newVertexConfiguration = newVertexConfiguration.SetEnergyData(energyData);
 					}
 					else
 					{
@@ -231,6 +232,7 @@
 					continue;
 
 				var vertexEnergyData = RecomputeEnergyData(oldConfiguration, configuration, nodeConfiguration, isNeighbour, isNeighbourValid);
+				vertexEnergyData = vertexEnergyData.SetValidityVector(neighbourValidityVector);
 
 				newVertexConfiguration = newVertexConfiguration.SetEnergyData(vertexEnergyData);
 				newLayout.SetConfiguration(vertex, newVertexConfiguration);
@@ -242,8 +244,7 @@
 			// Update energy and validity vector of the perturbed node
 			var newEnergy = ComputeEnergy(newOverlap, newDistance);
 
-			configuration = configuration.SetEnergyData(CreateEnergyData(newEnergy, newOverlap, newDistance));
-			configuration = configuration.SetValidityVector(validityVector);
+			configuration = configuration.SetEnergyData(CreateEnergyData(newEnergy, newOverlap, newDistance, validityVector));
 
 			newLayout.SetConfiguration(node, configuration);
 
@@ -299,12 +300,13 @@
 		//	return newLayout;
 		//}
 
-		private TEnergyData CreateEnergyData(float energy, int overlap, int distance)
+		private TEnergyData CreateEnergyData(float energy, int overlap, int distance, SimpleBitVector32 validityVector)
 		{
 			var energyData = new TEnergyData();
 			energyData = energyData.SetEnergy(energy);
 			energyData = energyData.SetMoveDistance(distance);
 			energyData = energyData.SetOverlap(overlap);
+			energyData = energyData.SetValidityVector(validityVector);
 
 			return energyData;
 		}
@@ -340,7 +342,7 @@
 
 			var newEnergy = ComputeEnergy(overlapTotal, distanceTotal);
 
-			return CreateEnergyData(newEnergy, overlapTotal, distanceTotal);
+			return CreateEnergyData(newEnergy, overlapTotal, distanceTotal, configuration.EnergyData.ValidityVector);
 		}
 
 		/// <summary>
@@ -378,7 +380,8 @@
 					validityVector[i] = !isValid;
 				}
 
-				layout.SetConfiguration(vertex, configuration.SetValidityVector(validityVector));
+				var newEnergyData = configuration.EnergyData.SetValidityVector(validityVector);
+				layout.SetConfiguration(vertex, configuration.SetEnergyData(newEnergyData));
 			}
 		}
 
@@ -482,7 +485,7 @@
 
 			var energy = ComputeEnergy(overlap, distance);
 
-			return CreateEnergyData(energy, overlap, distance);
+			return CreateEnergyData(energy, overlap, distance, configuration.EnergyData.ValidityVector);
 		}
 
 		/// <summary>

@@ -9,7 +9,7 @@
 	using Utils;
 
 	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration>
-		where TConfiguration : IConfiguration<TConfiguration, TShapeContainer>
+		where TConfiguration : IConfiguration<TShapeContainer>
 	{
 		protected Random Random = new Random();
 		protected ILineIntersection<OrthogonalLine> LineIntersection;

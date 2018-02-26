@@ -131,9 +131,11 @@
     <Compile Include="Core\Interfaces\ILayoutOperations.cs" />
     <Compile Include="Core\Interfaces\IMapDescription.cs" />
     <Compile Include="Core\Interfaces\IMapLayout.cs" />
+    <Compile Include="Core\Interfaces\IMutableConfiguration.cs" />
     <Compile Include="Core\Interfaces\IRandomInjectable.cs" />
     <Compile Include="Core\Interfaces\Iroom.cs" />
     <Compile Include="Core\Interfaces\IRoomDescription.cs" />
+    <Compile Include="Core\Interfaces\IValidityVectorEnergyData.cs" />
     <Compile Include="Core\LayoutOperations.cs" />
     <Compile Include="Core\MapDescription.cs" />
     <Compile Include="Core\MapLayout.cs" />

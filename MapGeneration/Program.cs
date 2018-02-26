@@ -40,17 +40,17 @@
 				using (var dw = new StreamWriter(time + "_debug1.txt"))
 				{
 
-					var layoutGenerator = new SALayoutGenerator<Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>, int, Core.Configuration<Core.EnergyData>, Core.EnergyData>(
+					var layoutGenerator = new SALayoutGenerator<Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>, int, Core.Configuration<Core.EnergyData>>(
 						(graph => new Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>(graph)),
-						null
+						(configurationSpaces, sigma) => new LayoutOperations<int, Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>, Core.Configuration<Core.EnergyData>, IntAlias<GridPolygon>, Core.EnergyData>(configurationSpaces, new PolygonOverlap(), sigma)
 					);
 					layoutGenerator.InjectRandomGenerator(new Random(0));
 					layoutGenerator.SetLayoutValidityCheck(false);
 
 					var scenario =
-						new BenchmarkScenario<SALayoutGenerator<Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>, int, Core.Configuration<Core.EnergyData>, Core.EnergyData>, int
+						new BenchmarkScenario<SALayoutGenerator<Layout<Core.Configuration<Core.EnergyData>, Core.EnergyData>, int, Core.Configuration<Core.EnergyData>>, int
 						>();
-					scenario.SetRunsCount(6);
+					scenario.SetRunsCount(3);
 
 					var setups2 = scenario.MakeSetupsGroup();
 					setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true); });
@@ -153,7 +153,7 @@
 						setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
 					}
 
-					// benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
+					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
 				}
 			}
 
@@ -162,15 +162,15 @@
 				using (var dw = new StreamWriter(time + "_debug.txt"))
 				{
 
-					var layoutGenerator = new SALayoutGenerator<Layout<Configuration, EnergyData>, int, Configuration, EnergyData>(
+					var layoutGenerator = new SALayoutGenerator<Layout<Configuration, EnergyData>, int, Configuration>(
 						(graph => new Layout<Configuration, EnergyData>(graph)),
 						((configurationSpaces, sigma) => new Core.Experimental.LayoutOperations<int, Layout<Configuration, EnergyData>, Configuration, IntAlias<GridPolygon>, EnergyData>(configurationSpaces, new PolygonOverlap(), sigma))
 						);
 					layoutGenerator.InjectRandomGenerator(new Random(0));
 					layoutGenerator.SetLayoutValidityCheck(false);
 
-					var scenario = new BenchmarkScenario<SALayoutGenerator<Layout<Configuration, EnergyData>, int, Configuration, EnergyData>, int>();
-					scenario.SetRunsCount(6);
+					var scenario = new BenchmarkScenario<SALayoutGenerator<Layout<Configuration, EnergyData>, int, Configuration>, int>();
+					scenario.SetRunsCount(3);
 
 					var setups2 = scenario.MakeSetupsGroup();
 					setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true); });

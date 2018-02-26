@@ -30,7 +30,7 @@
 		}
 
 		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription)
-			where TConfiguration : IConfiguration<TConfiguration, IntAlias<GridPolygon>>
+			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;

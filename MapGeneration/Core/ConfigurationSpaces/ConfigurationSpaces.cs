@@ -9,7 +9,7 @@
 	using Interfaces;
 
 	public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
-		where TConfiguration : IConfiguration<TConfiguration, IntAlias<GridPolygon>>
+		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 	{
 		protected List<WeightedShape> Shapes;
 		protected List<WeightedShape>[] ShapesForNodes;

@@ -6,6 +6,7 @@
 	using Interfaces;
 
 	public struct Configuration<TEnergyData> : IEnergyConfiguration<Configuration<TEnergyData>, IntAlias<GridPolygon>, TEnergyData>
+		where TEnergyData : IValidityVectorEnergyData<TEnergyData>
 	{
 		public IntAlias<GridPolygon> ShapeContainer { get; }
 
@@ -13,17 +14,14 @@
 
 		public IntVector2 Position { get; }
 
-		public SimpleBitVector32 ValidityVector { get; }
-
 		public TEnergyData EnergyData { get; }
 
-		public bool IsValid => ValidityVector.Data == 0;
+		public bool IsValid => EnergyData.ValidityVector.Data == 0;
 
-		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, SimpleBitVector32 validityVector, TEnergyData energyData)
+		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, TEnergyData energyData)
 		{
 			ShapeContainer = shape;
 			Position = position;
-			ValidityVector = validityVector;
 			EnergyData = energyData;
 		}
 
@@ -34,7 +32,6 @@
 			return new Configuration<TEnergyData>(
 				shape,
 				Position,
-				ValidityVector,
 				EnergyData
 			);
 		}
@@ -45,18 +42,6 @@
 			return new Configuration<TEnergyData>(
 				ShapeContainer,
 				position,
-				ValidityVector,
-				EnergyData
-			);
-		}
-
-		[Pure]
-		public Configuration<TEnergyData> SetValidityVector(SimpleBitVector32 validityVector)
-		{
-			return new Configuration<TEnergyData>(
-				ShapeContainer,
-				Position,
-				validityVector,
 				EnergyData
 			);
 		}
@@ -67,7 +52,6 @@
 			return new Configuration<TEnergyData>(
 				ShapeContainer,
 				Position,
-				ValidityVector,
 				energyData
 			);
 		}
