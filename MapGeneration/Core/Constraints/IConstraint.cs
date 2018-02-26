@@ -1,13 +1,11 @@
 ﻿namespace MapGeneration.Core.Constraints
 {
-	using System.Collections.Generic;
-
-	public interface IConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	public interface IConstraint<in TLayout, in TNode, in TConfiguration, TEnergyData>
 	{
-		TEnergyData ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, TEnergyData energyData);
+		void ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData);
 
-		TEnergyData UpdateEnergyData(TLayout layout, TConfiguration oldConfiguration, TConfiguration newConfiguration, TConfiguration configuration, bool areNeighbours, TEnergyData energyData);
+		void UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData);
 
-		TEnergyData UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, TEnergyData energyData);
+		void UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData);
 	}
 }

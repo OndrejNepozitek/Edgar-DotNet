@@ -2,10 +2,8 @@
 {
 	using GeneralAlgorithms.DataStructures.Common;
 
-	public interface IValidityVectorEnergyData<TEnergyData> : IEnergyData<TEnergyData>
+	public interface IValidityVectorEnergyData : IEnergyData
 	{
-		SimpleBitVector32 ValidityVector { get; }
-
-		TEnergyData SetValidityVector(SimpleBitVector32 validityVector);
+		SimpleBitVector32 ValidityVector { get; set; }
 	}
 }

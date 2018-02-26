@@ -1,11 +1,11 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Core.Interfaces.Configuration
 {
 	using GeneralAlgorithms.DataStructures.Common;
 
-	public interface IMutableConfiguration<out TConfiguration, TShapeContainer> : IConfiguration<TShapeContainer>
+	public interface IMutableConfiguration<TShapeContainer> : IConfiguration<TShapeContainer>
 	{
-		TConfiguration SetShape(TShapeContainer shapeContainer);
+		new TShapeContainer ShapeContainer { get; set; }
 
-		TConfiguration SetPosition(IntVector2 position);
+		new IntVector2 Position { get; set; }
 	}
 }

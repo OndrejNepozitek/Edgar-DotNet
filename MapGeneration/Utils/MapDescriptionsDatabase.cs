@@ -65,9 +65,9 @@
 				{
 					Tuple.Create("Fig 1 (17 vertices)", (IMapDescription<int>) m2),
 					Tuple.Create("Fig 7 top (9 vertices)", (IMapDescription<int>) m1),
-					Tuple.Create("Fig 7 bottom (17 vertices)", (IMapDescription<int>) m4),
+					/*Tuple.Create("Fig 7 bottom (17 vertices)", (IMapDescription<int>) m4),
 					Tuple.Create("Fig 8 (41 vertices)", (IMapDescription<int>) m3),
-					Tuple.Create("Fig 9 (15 vertices)", (IMapDescription<int>) m5),
+					Tuple.Create("Fig 9 (15 vertices)", (IMapDescription<int>) m5),*/
 				};
 			}
 

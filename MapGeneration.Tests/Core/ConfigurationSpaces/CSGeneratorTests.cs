@@ -211,10 +211,11 @@
 
 			mapDescription.AddRoomShapes(1, rectangleRoom, false);
 
-			var configurationSpaces = generator.Generate(mapDescription);
+			// var configurationSpaces = generator.Generate(mapDescription);
+			Assert.IsTrue(false); // TODO: repair
 
-			Assert.AreEqual(3, configurationSpaces.GetShapesForNode(0).Count);
-			Assert.AreEqual(1, configurationSpaces.GetShapesForNode(1).Count);
+			//Assert.AreEqual(3, configurationSpaces.GetShapesForNode(0).Count);
+			//Assert.AreEqual(1, configurationSpaces.GetShapesForNode(1).Count);
 		}
 	}
 }

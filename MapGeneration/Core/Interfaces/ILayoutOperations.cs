@@ -2,15 +2,15 @@
 {
 	using System.Collections.Generic;
 
-	public interface ILayoutOperations<TLayout, TNode> : IRandomInjectable
+	public interface ILayoutOperations<in TLayout, TNode> : IRandomInjectable
 	{
-		TLayout PerturbShape(TLayout layout, TNode node, bool updateLayout);
+		void PerturbShape(TLayout layout, TNode node, bool updateLayout);
 
-		TLayout PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout);
+		void PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout);
 
-		TLayout PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout);
+		void PerturbPosition(TLayout layout, TNode node, bool updateLayout);
 
-		TLayout PerturbPosition(TLayout layout, TNode node, bool updateLayout);
+		void PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout);
 
 		bool IsLayoutValid(TLayout layout);
 

@@ -1,21 +1,13 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Core.Interfaces.Configuration.EnergyData
 {
-	public interface IEnergyData<out TEnergyData>
+	public interface IEnergyData
 	{
-		float Energy { get; }
+		float Energy { get; set; }
 
-		int Overlap { get; }
+		int Overlap { get; set; }
 
-		int MoveDistance { get; }
+		int MoveDistance { get; set; }
 
-		bool IsValid { get; }
-
-		TEnergyData SetEnergy(float energy);
-
-		TEnergyData SetOverlap(int area);
-
-		TEnergyData SetMoveDistance(int moveDistance);
-
-		TEnergyData SetIsValid(bool isValid);
+		bool IsValid { get; set; }
 	}
 }

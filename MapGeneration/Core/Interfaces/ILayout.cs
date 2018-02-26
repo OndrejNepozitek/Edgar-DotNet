@@ -11,8 +11,6 @@
 
 		void SetConfiguration(TNode node, TConfiguration configuration);
 
-		ILayout<TNode, TConfiguration> Clone();
-
 		IEnumerable<TConfiguration> GetAllConfigurations();
 	}
 }

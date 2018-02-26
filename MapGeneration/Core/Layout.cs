@@ -1,37 +1,33 @@
 ﻿namespace MapGeneration.Core
 {
-	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces;
 
-	public class Layout<TConfiguration, TEnergyData> : IEnergyLayout<int, TConfiguration>
-		where TConfiguration : struct, IEnergyConfiguration<TConfiguration, IntAlias<GridPolygon>, TEnergyData>
-		where TEnergyData : IEnergyData<TEnergyData>
+	public class Layout<TConfiguration> : IEnergyLayout<int, TConfiguration>, ISmartCloneable<Layout<TConfiguration>>
+		where TConfiguration : ISmartCloneable<TConfiguration>
 	{
-		private readonly TConfiguration?[] vertices;
+		private readonly TConfiguration[] vertices;
+		private readonly bool[] hasValue;
+
+		public float Energy { get; set; } = 0; // TODO: change
+
+		public bool IsValid { get; set; } = true; // TODO: change
 
 		public IGraph<int> Graph { get; }
 
 		public Layout(IGraph<int> graph)
 		{
 			Graph = graph;
-			vertices = new TConfiguration?[Graph.VerticesCount];
-		}
-
-		private Layout(IGraph<int> graph, TConfiguration?[] vertices)
-		{
-			Graph = graph;
-			this.vertices = (TConfiguration?[]) vertices.Clone();
+			vertices = new TConfiguration[Graph.VerticesCount];
+			hasValue = new bool[Graph.VerticesCount];
 		}
 
 		public bool GetConfiguration(int node, out TConfiguration configuration)
 		{
-			if (vertices[node].HasValue)
+			if (hasValue[node])
 			{
-				configuration = vertices[node].Value;
+				configuration = vertices[node];
 				return true;
 			}
 
@@ -42,36 +38,36 @@
 		public void SetConfiguration(int node, TConfiguration configuration)
 		{
 			vertices[node] = configuration;
-		}
-
-		public float GetEnergy()
-		{
-			return vertices.Where(x => x.HasValue).Sum(x => x.Value.EnergyData.Energy);
-		}
-
-		public Layout<TConfiguration, TEnergyData> Clone()
-		{
-			return new Layout<TConfiguration, TEnergyData>(Graph, vertices);
+			hasValue[node] = true;
 		}
 
 		public IEnumerable<TConfiguration> GetAllConfigurations()
 		{
-			foreach (var configuration in vertices)
+			for (var i = 0; i < vertices.Length; i++)
 			{
-				if (configuration.HasValue)
+				if (hasValue[i])
 				{
-					yield return configuration.Value;
+					yield return vertices[i];
 				}
 			}
 		}
 
-		ILayout<int, TConfiguration> ILayout<int, TConfiguration>.Clone()
+		public Layout<TConfiguration> SmartClone()
 		{
-			return Clone();
+			var layout = new Layout<TConfiguration>(Graph);
+
+			for (var i = 0; i < vertices.Length; i++)
+			{
+				var configuration = vertices[i];
+
+				if (hasValue[i])
+				{
+					layout.vertices[i] = configuration.SmartClone();
+					layout.hasValue[i] = true;
+				}
+			}
+
+			return layout;
 		}
-
-		public float Energy { get; set; } = 0; // TODO: change
-
-		public bool IsValid { get; set; } = true; // TODO: change
 	}
 }

@@ -6,6 +6,7 @@
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces;
+	using Interfaces.Configuration;
 	using Utils;
 
 	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration>

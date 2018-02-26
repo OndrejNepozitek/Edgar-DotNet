@@ -16,13 +16,14 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using GraphDecomposition;
 	using Interfaces;
+	using Interfaces.Configuration;
 	using SimulatedAnnealing;
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
 	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
-		where TLayout : ILayout<int, TConfiguration>
+		where TLayout : ILayout<int, TConfiguration>, ISmartCloneable<TLayout>
 	{
 		private IChainDecomposition<int> chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>());
 		private IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> configurationSpaces;
@@ -320,7 +321,7 @@
 
 		private TLayout AddChainToLayout(TLayout layout, List<int> chain)
 		{
-			layout = (TLayout) layout.Clone();
+			layout = layout.SmartClone();
 
 			foreach (var node in chain)
 			{
@@ -335,9 +336,18 @@
 		private TLayout PerturbLayout(TLayout layout, List<int> chain, out double energyDelta)
 		{
 			// TODO: sometimes perturb a node that is not in the current chain?
+			var newLayout = layout.SmartClone();
 
-			var energy = layoutOperations.GetEnergy(layout);
-			var newLayout = random.NextDouble() <= shapePerturbChance ? layoutOperations.PerturbShape(layout, chain, true) : layoutOperations.PerturbPosition(layout, chain, true);
+			var energy = layoutOperations.GetEnergy(newLayout);
+
+			if (random.NextDouble() <= shapePerturbChance)
+			{
+				layoutOperations.PerturbShape(newLayout, chain, true);
+			}
+			else
+			{
+				layoutOperations.PerturbPosition(newLayout, chain, true);
+			}
 
 			if (enableLayoutValidityCheck)
 			{
@@ -717,7 +727,7 @@
 		/// <param name="layout"></param>
 		private void CheckLayoutValidity(TLayout layout)
 		{
-			var copy = (TLayout) layout.Clone();
+			var copy = layout.SmartClone();
 
 			layoutOperations.UpdateLayout(copy);
 

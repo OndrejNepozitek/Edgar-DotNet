@@ -56,59 +56,59 @@
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
-				var layoutGenerator = new SALayoutGenerator<int>();
-				layoutGenerator.EnableLazyProcessing(true);
-				layoutGenerator.SetCancellationToken(ct);
-				layoutGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
-				infoStopwatch.Start();
+				ILayoutGenerator<int> layoutGenerator = null; // new SALayoutGenerator<int>();
+				//layoutGenerator.EnableLazyProcessing(true);
+				//layoutGenerator.SetCancellationToken(ct);
+				//layoutGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+				//infoStopwatch.Start();
 
-				layoutGenerator.OnFinal += layout =>
-				{
-					if (!showFinalLayouts.Checked)
-						return;
+				//layoutGenerator.OnFinal += layout =>
+				//{
+				//	if (!showFinalLayouts.Checked)
+				//		return;
 
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action) (() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int) showFinalLayoutsTime.Value, ct);
-				};
+				//	layoutToDraw = layout;
+				//	mainPictureBox.BeginInvoke((Action) (() => mainPictureBox.Refresh()));
+				//	SleepWithFastCancellation((int) showFinalLayoutsTime.Value, ct);
+				//};
 
-				layoutGenerator.OnValidAndDifferent += layout =>
-				{
-					if (!showAcceptedLayouts.Checked)
-						return;
+				//layoutGenerator.OnValidAndDifferent += layout =>
+				//{
+				//	if (!showAcceptedLayouts.Checked)
+				//		return;
 
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int) showAcceptedLayoutsTime.Value, ct);
-				};
+				//	layoutToDraw = layout;
+				//	mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
+				//	SleepWithFastCancellation((int) showAcceptedLayoutsTime.Value, ct);
+				//};
 
-				layoutGenerator.OnPerturbed += layout =>
-				{
-					if (!showPerturbedLayouts.Checked)
-						return;
+				//layoutGenerator.OnPerturbed += layout =>
+				//{
+				//	if (!showPerturbedLayouts.Checked)
+				//		return;
 
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int) showPerturbedLayoutsTime.Value, ct);
-				};
+				//	layoutToDraw = layout;
+				//	mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
+				//	SleepWithFastCancellation((int) showPerturbedLayoutsTime.Value, ct);
+				//};
 
-				layoutGenerator.OnPerturbed += layout =>
-				{
-					iterationsCount++;
-					if (infoStopwatch.ElapsedMilliseconds >= 200)
-					{
-						BeginInvoke((Action)(UpdateInfoPanel));
-						infoStopwatch.Restart();
-					}
-				};
+				//layoutGenerator.OnPerturbed += layout =>
+				//{
+				//	iterationsCount++;
+				//	if (infoStopwatch.ElapsedMilliseconds >= 200)
+				//	{
+				//		BeginInvoke((Action)(UpdateInfoPanel));
+				//		infoStopwatch.Restart();
+				//	}
+				//};
 
-				layoutGenerator.OnFinal += layout =>
-				{
-					iterationsCount = 0;
-					layoutsCount++;
-					BeginInvoke((Action)(UpdateInfoPanel));
-					infoStopwatch.Restart();
-				};
+				//layoutGenerator.OnFinal += layout =>
+				//{
+				//	iterationsCount = 0;
+				//	layoutsCount++;
+				//	BeginInvoke((Action)(UpdateInfoPanel));
+				//	infoStopwatch.Restart();
+				//};
 
 				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
 

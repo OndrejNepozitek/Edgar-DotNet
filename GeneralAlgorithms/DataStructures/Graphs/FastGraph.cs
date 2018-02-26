@@ -84,9 +84,15 @@
 			throw new InvalidOperationException();
 		}
 
-		public bool HasEdge(int @from, int to)
+		public bool HasEdge(int from, int to)
 		{
-			throw new NotImplementedException();
+			foreach (var neighbour in GetNeighbours(from))
+			{
+				if (neighbour.Equals(to))
+					return true;
+			}
+
+			return false;
 		}
 
 		public void AddVertex(TNode vertex)
