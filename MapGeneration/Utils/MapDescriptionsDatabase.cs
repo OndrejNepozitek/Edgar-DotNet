@@ -5,10 +5,10 @@
 	using System.Linq;
 	using Core;
 	using Core.Doors.DoorModes;
-	using Core.Interfaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces.Core;
 
 	public class MapDescriptionsDatabase
 	{ 

@@ -2,11 +2,13 @@
 {
 	using System;
 	using GeneralAlgorithms.DataStructures.Common;
+	using Interfaces.Core.Doors;
 
-	public struct DoorLine : IEquatable<DoorLine>
+	public struct DoorLine : IDoorLine, IEquatable<DoorLine>
 	{
-		public readonly OrthogonalLine Line;
-		public readonly int Length;
+		public OrthogonalLine Line { get; }
+
+		public int Length { get; }
 
 		public DoorLine(OrthogonalLine line, int length)
 		{

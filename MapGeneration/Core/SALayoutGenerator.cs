@@ -15,8 +15,10 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using GraphDecomposition;
-	using Interfaces;
-	using Interfaces.Configuration;
+	using Interfaces.Benchmarks;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.ConfigurationSpaces;
 	using SimulatedAnnealing;
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
@@ -26,7 +28,7 @@
 		where TLayout : ILayout<int, TConfiguration>, ISmartCloneable<TLayout>
 	{
 		private IChainDecomposition<int> chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(new GraphDecomposer<int>());
-		private IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> configurationSpaces;
+		private IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private readonly ConfigurationSpacesGenerator configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 		private ILayoutOperations<TLayout, int> layoutOperations;
 		private Random random = new Random(0);
@@ -69,9 +71,9 @@
 		private double shapePerturbChance = 0.4f;
 
 		private Func<FastGraph<TNode>, TLayout> layoutCreator;
-		private Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator;
+		private Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator;
 
-		public SALayoutGenerator(Func<FastGraph<TNode>, TLayout> layoutCreator, Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator)
+		public SALayoutGenerator(Func<FastGraph<TNode>, TLayout> layoutCreator, Func<IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, float, ILayoutOperations<TLayout, int>> layoutOperationsCreator)
 		{
 			this.layoutCreator = layoutCreator;
 			this.layoutOperationsCreator = layoutOperationsCreator;

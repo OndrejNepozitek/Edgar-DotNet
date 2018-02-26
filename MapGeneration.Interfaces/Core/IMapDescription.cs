@@ -1,6 +1,5 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Interfaces.Core
 {
-	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	public interface IMapDescription<TNode>

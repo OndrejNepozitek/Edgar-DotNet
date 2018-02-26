@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Interfaces.Configuration
+﻿namespace MapGeneration.Interfaces.Core.Configuration
 {
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;

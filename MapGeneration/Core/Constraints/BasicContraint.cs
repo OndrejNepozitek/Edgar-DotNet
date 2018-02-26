@@ -3,11 +3,13 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces;
-	using Interfaces.Configuration;
-	using Interfaces.Configuration.EnergyData;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Core.ConfigurationSpaces;
 
 	public class BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : IConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
@@ -16,9 +18,9 @@
 	{
 		private readonly IPolygonOverlap polygonOverlap;
 		private readonly float energySigma;
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces;
+		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 
-		public BasicContraint(IPolygonOverlap polygonOverlap, float energySigma, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces)
+		public BasicContraint(IPolygonOverlap polygonOverlap, float energySigma, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.polygonOverlap = polygonOverlap;
 			this.energySigma = energySigma;

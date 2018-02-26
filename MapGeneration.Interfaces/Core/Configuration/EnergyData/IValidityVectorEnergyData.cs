@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Interfaces.Configuration.EnergyData
+﻿namespace MapGeneration.Interfaces.Core.Configuration.EnergyData
 {
 	using GeneralAlgorithms.DataStructures.Common;
 

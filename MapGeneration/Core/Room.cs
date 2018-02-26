@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
+	using Interfaces.Core;
 
 	public class Room<TNode> : IRoom<TNode>
 	{

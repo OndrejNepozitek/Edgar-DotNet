@@ -2,7 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using Core.Interfaces;
+	using Interfaces.Core;
 
 	/// <summary>
 	/// Class holding a scenario that should be run in a benchmark.

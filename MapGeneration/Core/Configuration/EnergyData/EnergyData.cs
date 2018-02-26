@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Core.Configuration.EnergyData
 {
-	using Interfaces;
-	using Interfaces.Configuration.EnergyData;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration.EnergyData;
 
 	public struct EnergyData : IEnergyData, ISmartCloneable<EnergyData>
 	{

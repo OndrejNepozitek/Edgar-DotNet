@@ -1,8 +1,9 @@
 ﻿namespace MapGeneration.Utils.ConfigParsing.Models
 {
 	using System.Collections.Generic;
-	using Core.Interfaces;
 	using GeneralAlgorithms.DataStructures.Common;
+	using Interfaces.Core;
+	using Interfaces.Core.Doors;
 
 	public class RoomDescriptionModel
 	{

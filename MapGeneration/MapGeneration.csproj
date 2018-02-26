@@ -95,7 +95,6 @@
     <Compile Include="Benchmarks\Benchmark.cs" />
     <Compile Include="Benchmarks\BenchmarkResult.cs" />
     <Compile Include="Benchmarks\BenchmarkScenario.cs" />
-    <Compile Include="Benchmarks\IBenchmarkable.cs" />
     <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
@@ -116,25 +115,6 @@
     <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
     <Compile Include="Core\IntAlias.cs" />
-    <Compile Include="Core\Interfaces\IChainDecomposition.cs" />
-    <Compile Include="Core\Interfaces\Configuration\IConfiguration.cs" />
-    <Compile Include="Core\Interfaces\IConfigurationSpaces.cs" />
-    <Compile Include="Core\Interfaces\ISmartCloneable.cs" />
-    <Compile Include="Core\Interfaces\IDoorHandler.cs" />
-    <Compile Include="Core\Interfaces\IDoorMode.cs" />
-    <Compile Include="Core\Interfaces\Configuration\IEnergyConfiguration.cs" />
-    <Compile Include="Core\Interfaces\Configuration\EnergyData\IEnergyData.cs" />
-    <Compile Include="Core\Interfaces\IEnergyLayout.cs" />
-    <Compile Include="Core\Interfaces\ILayout.cs" />
-    <Compile Include="Core\Interfaces\ILayoutGenerator.cs" />
-    <Compile Include="Core\Interfaces\ILayoutOperations.cs" />
-    <Compile Include="Core\Interfaces\IMapDescription.cs" />
-    <Compile Include="Core\Interfaces\IMapLayout.cs" />
-    <Compile Include="Core\Interfaces\Configuration\IMutableConfiguration.cs" />
-    <Compile Include="Core\Interfaces\IRandomInjectable.cs" />
-    <Compile Include="Core\Interfaces\Iroom.cs" />
-    <Compile Include="Core\Interfaces\IRoomDescription.cs" />
-    <Compile Include="Core\Interfaces\Configuration\EnergyData\IValidityVectorEnergyData.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
     <Compile Include="Core\MapDescription.cs" />
     <Compile Include="Core\MapLayout.cs" />
@@ -174,6 +154,10 @@
     <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj">
       <Project>{6505fed6-efb7-446e-bde5-713d167083ce}</Project>
       <Name>GeneralAlgorithms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj">
+      <Project>{3fb264c8-fe50-44e9-80e2-e9c6941460f3}</Project>
+      <Name>MapGeneration.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

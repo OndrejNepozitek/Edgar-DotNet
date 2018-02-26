@@ -2,12 +2,14 @@
 {
 	using System.Collections.Generic;
 	using System.Linq;
+	using ConfigurationSpaces;
 	using Constraints;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces;
-	using Interfaces.Configuration;
-	using Interfaces.Configuration.EnergyData;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Core.ConfigurationSpaces;
 
 	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
 		where TLayout : IEnergyLayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
@@ -16,7 +18,7 @@
 	{
 		private readonly List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>> constraints = new List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
 
-		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma) : base(configurationSpaces)
+		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma) : base(configurationSpaces)
 		{
 			constraints.Add(new BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer>(polygonOverlap, energySigma, configurationSpaces));
 		}

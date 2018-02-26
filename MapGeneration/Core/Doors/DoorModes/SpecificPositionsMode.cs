@@ -2,7 +2,8 @@
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces;
+	using Interfaces.Core;
+	using Interfaces.Core.Doors;
 
 	public class SpecificPositionsMode : IDoorMode
 	{

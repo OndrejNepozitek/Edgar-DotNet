@@ -6,8 +6,7 @@
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
-	using Interfaces.Configuration;
+	using Interfaces.Core.Configuration;
 
 	public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>

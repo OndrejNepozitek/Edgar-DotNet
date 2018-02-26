@@ -4,8 +4,8 @@
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
+	using Interfaces.Core;
 	using MapGeneration.Core.GraphDecomposition;
-	using MapGeneration.Core.Interfaces;
 	using NUnit.Framework;
 
 	public abstract class ChainDecomposersTests

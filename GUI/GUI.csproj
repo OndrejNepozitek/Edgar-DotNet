@@ -140,6 +140,10 @@
       <Project>{6505FED6-EFB7-446E-BDE5-713D167083CE}</Project>
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj">
+      <Project>{3FB264C8-FE50-44E9-80E2-E9C6941460F3}</Project>
+      <Name>MapGeneration.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapGeneration\MapGeneration.csproj">
       <Project>{8538b30d-b0c5-4bb8-8fa9-c9388e0758e7}</Project>
       <Name>MapGeneration</Name>

@@ -3,18 +3,20 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Interfaces;
-	using Interfaces.Configuration;
+	using ConfigurationSpaces;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.ConfigurationSpaces;
 	using Utils;
 
 	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : ILayoutOperations<TLayout, TNode>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer>, ISmartCloneable<TConfiguration>
 	{
-		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> ConfigurationSpaces;
+		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected Random Random = new Random();
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration> configurationSpaces)
+		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			ConfigurationSpaces = configurationSpaces;
 		}

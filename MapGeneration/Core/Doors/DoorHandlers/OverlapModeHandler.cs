@@ -4,16 +4,16 @@
 	using System.Collections.Generic;
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
+	using Interfaces.Core.Doors;
 
 	public class OverlapModeHandler : IDoorHandler
 	{
-		public List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
+		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
 			if (!(doorModeRaw is OverlapMode doorMode)) 
 				throw new InvalidOperationException("Invalid door mode supplied");
 
-			var lines = new List<DoorLine>();
+			var lines = new List<IDoorLine>();
 
 			foreach (var line in polygon.GetLines())
 			{

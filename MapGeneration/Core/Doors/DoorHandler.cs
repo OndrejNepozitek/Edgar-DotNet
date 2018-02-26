@@ -5,7 +5,7 @@
 	using DoorHandlers;
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
+	using Interfaces.Core.Doors;
 
 	public class DoorHandler : IDoorHandler
 	{
@@ -28,7 +28,7 @@
 			}
 		}
 
-		public List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
+		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
 		{
 			if (handlers.TryGetValue(doorMode.GetType(), out var handler))
 			{

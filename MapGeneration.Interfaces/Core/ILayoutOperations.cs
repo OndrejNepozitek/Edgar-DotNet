@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Interfaces.Core
 {
 	using System.Collections.Generic;
 

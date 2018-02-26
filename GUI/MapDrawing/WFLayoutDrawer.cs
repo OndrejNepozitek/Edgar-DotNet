@@ -9,7 +9,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Core.Interfaces;
+	using MapGeneration.Interfaces.Core;
 
 	/// <inheritdoc />
 	/// <summary>

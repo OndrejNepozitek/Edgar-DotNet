@@ -5,7 +5,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Core.Interfaces;
+	using MapGeneration.Interfaces.Core;
 
 	/// <summary>
 	/// Class that should help with drawing layouts to different outputs.

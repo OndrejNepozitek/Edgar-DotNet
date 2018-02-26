@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Benchmarks
+﻿namespace MapGeneration.Interfaces.Benchmarks
 {
 	/// <summary>
 	/// Interface for all layout generators that are ready to be benchmarked.

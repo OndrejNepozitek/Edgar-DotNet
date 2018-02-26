@@ -4,12 +4,14 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using Doors;
-	using Interfaces.Configuration;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Doors;
 
 	public class ConfigurationSpacesGenerator
 	{
@@ -30,12 +32,12 @@
 			this.polygonUtils = polygonUtils;
 		}
 
-		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription)
+		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription)
 			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;
-			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<DoorLine>>>();
+			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<IDoorLine>>>();
 			var shapes = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
 
@@ -101,10 +103,10 @@
 			return new ConfigurationSpaces<TConfiguration>(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
 		}
 
-		private List<Tuple<IntAlias<GridPolygon>, List<DoorLine>>> PreparePolygons(
+		private List<Tuple<IntAlias<GridPolygon>, List<IDoorLine>>> PreparePolygons(
 			RoomDescription roomDescription, bool shouldRotate, ref int aliasCounter)
 		{
-			var result = new List<Tuple<IntAlias<GridPolygon>, List<DoorLine>>>();
+			var result = new List<Tuple<IntAlias<GridPolygon>, List<IDoorLine>>>();
 			var doorLines = doorHandler.GetDoorPositions(roomDescription.Shape, roomDescription.DoorsMode);
 			var shape = roomDescription.Shape;
 			var rotations = shouldRotate ? GridPolygon.PossibleRotations : new[] {0};
@@ -117,7 +119,7 @@
 				// Both the shape and doors are moved so the polygon is in the first quadrant and touches axes
 				rotatedShape = rotatedShape + (-1 * smallesPoint);
 				rotatedShape = polygonUtils.NormalizePolygon(rotatedShape);
-				var rotatedDoorLines = doorLines.Select(x => new DoorLine(x.Line.Rotate(rotation) + (-1 * smallesPoint), x.Length)).ToList();
+				var rotatedDoorLines = doorLines.Select(x => new DoorLine(x.Line.Rotate(rotation) + (-1 * smallesPoint), x.Length)).Cast<IDoorLine>().ToList();
 
 				if (result.Any(x => x.Item1.Value.Equals(rotatedShape)))
 					continue;
@@ -128,18 +130,18 @@
 			return result;
 		}
 
-		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<DoorLine> doorLines, GridPolygon fixedCenter, List<DoorLine> doorLinesFixed)
+		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed)
 		{
 			var configurationSpaceLines = new List<OrthogonalLine>();
 			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLine>>();
 
 			// One list for every direction
-			var lines = new List<DoorLine>[4];
+			var lines = new List<IDoorLine>[4];
 
 			// Init array
 			for (var i = 0; i < lines.Length; i++)
 			{
-				lines[i] = new List<DoorLine>();
+				lines[i] = new List<IDoorLine>();
 			}
 
 			// Populate lists with lines

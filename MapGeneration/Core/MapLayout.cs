@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Core
 {
 	using System.Collections.Generic;
-	using Interfaces;
+	using Interfaces.Core;
 
 	public class MapLayout<TNode> : IMapLayout<TNode>
 	{

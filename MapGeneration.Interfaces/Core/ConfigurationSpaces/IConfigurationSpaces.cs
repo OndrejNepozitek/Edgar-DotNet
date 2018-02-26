@@ -1,10 +1,9 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Interfaces.Core.ConfigurationSpaces
 {
 	using System.Collections.Generic;
-	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
 
-	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration> : IRandomInjectable
+	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, TConfigurationSpace> : IRandomInjectable
 	{
 		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
@@ -20,6 +19,6 @@
 
 		bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2);
 
-		ConfigurationSpace GetConfigurationSpace(TShape shape1, TShape shape2);
+		TConfigurationSpace GetConfigurationSpace(TShape shape1, TShape shape2);
 	}
 }

@@ -3,7 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces;
+	using Interfaces.Core;
+
 	public class DummyChainsDecomposition : IChainDecomposition<int>
 	{
 		public List<List<int>> GetChains(IGraph<int> graph)

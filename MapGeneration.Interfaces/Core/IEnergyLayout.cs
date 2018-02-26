@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Interfaces.Core
 {
 	public interface IEnergyLayout<TNode, TConfiguration> : ILayout<TNode, TConfiguration> 
 	{

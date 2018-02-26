@@ -6,7 +6,7 @@
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces;
+	using Interfaces.Core;
 
 	public class BasicChainsDecomposition<TNode> : IChainDecomposition<TNode>
 		where TNode : IEquatable<TNode>

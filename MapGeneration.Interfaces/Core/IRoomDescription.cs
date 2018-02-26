@@ -1,5 +1,6 @@
-﻿namespace MapGeneration.Core.Interfaces
+﻿namespace MapGeneration.Interfaces.Core
 {
+	using Doors;
 	using GeneralAlgorithms.DataStructures.Polygons;
 
 	public interface IRoomDescription

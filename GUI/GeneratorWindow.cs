@@ -8,8 +8,7 @@
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
 	using MapDrawing;
-	using MapGeneration.Core;
-	using MapGeneration.Core.Interfaces;
+	using MapGeneration.Interfaces.Core;
 
 	public partial class GeneratorWindow : Form
 	{

@@ -2,7 +2,7 @@
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces;
+	using Interfaces.Core;
 
 	public class Layout<TConfiguration> : IEnergyLayout<int, TConfiguration>, ISmartCloneable<Layout<TConfiguration>>
 		where TConfiguration : ISmartCloneable<TConfiguration>

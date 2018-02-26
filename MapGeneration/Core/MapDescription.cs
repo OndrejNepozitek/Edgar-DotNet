@@ -5,7 +5,7 @@
 	using System.Collections.ObjectModel;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces;
+	using Interfaces.Core;
 
 	public class MapDescription<TNode> : IMapDescription<TNode>
 	{

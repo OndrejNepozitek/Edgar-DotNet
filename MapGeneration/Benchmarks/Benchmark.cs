@@ -5,7 +5,8 @@
 	using System.IO;
 	using System.Linq;
 	using System.Text;
-	using Core.Interfaces;
+	using Interfaces.Benchmarks;
+	using Interfaces.Core;
 	using Utils;
 
 	/// <summary>

@@ -5,16 +5,17 @@
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
+	using Interfaces.Core;
+	using Interfaces.Core.Doors;
 
 	public class SpecificPositionsModeHandler : IDoorHandler
 	{
-		public List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
+		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
 			if (!(doorModeRaw is SpecificPositionsMode doorMode))
 				throw new InvalidOperationException("Invalid door mode supplied");
 
-			var doors = new List<DoorLine>();
+			var doors = new List<IDoorLine>();
 
 			foreach (var doorPosition in doorMode.DoorPositions)
 			{

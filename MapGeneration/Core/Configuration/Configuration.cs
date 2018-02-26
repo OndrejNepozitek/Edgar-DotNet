@@ -2,9 +2,9 @@
 {
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
-	using Interfaces.Configuration;
-	using Interfaces.Configuration.EnergyData;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
 
 	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>

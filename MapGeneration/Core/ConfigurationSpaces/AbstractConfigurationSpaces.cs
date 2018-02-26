@@ -5,11 +5,12 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces;
-	using Interfaces.Configuration;
+	using Interfaces.Core;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.ConfigurationSpaces;
 	using Utils;
 
-	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration>
+	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>
 		where TConfiguration : IConfiguration<TShapeContainer>
 	{
 		protected Random Random = new Random();

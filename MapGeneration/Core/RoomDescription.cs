@@ -1,7 +1,8 @@
 ﻿namespace MapGeneration.Core
 {
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces;
+	using Interfaces.Core;
+	using Interfaces.Core.Doors;
 
 	public class RoomDescription : IRoomDescription
 	{

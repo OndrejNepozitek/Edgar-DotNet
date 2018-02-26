@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Core.Doors.DoorModes
 {
-	using Interfaces;
+	using Interfaces.Core;
+	using Interfaces.Core.Doors;
 
 	public class OverlapMode : IDoorMode
 	{

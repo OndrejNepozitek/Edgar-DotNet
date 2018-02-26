@@ -17,10 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{9
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppCliWrapper", "CppCliWrapper\CppCliWrapper.vcxproj", "{838F1F40-49BF-4647-8FF3-385836A91CD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGeneration.Interfaces", "MapGeneration.Interfaces\MapGeneration.Interfaces.csproj", "{3FB264C8-FE50-44E9-80E2-E9C6941460F3}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -100,6 +99,18 @@ Global
 		{838F1F40-49BF-4647-8FF3-385836A91CD7}.Release|x64.Build.0 = Release|x64
 		{838F1F40-49BF-4647-8FF3-385836A91CD7}.Release|x86.ActiveCfg = Release|Win32
 		{838F1F40-49BF-4647-8FF3-385836A91CD7}.Release|x86.Build.0 = Release|Win32
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x64.Build.0 = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x86.Build.0 = Debug|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x64.Build.0 = Release|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x86.ActiveCfg = Release|Any CPU
+		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,5 +121,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F179471-9336-4BB8-BB31-4035B3D95A9A}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
