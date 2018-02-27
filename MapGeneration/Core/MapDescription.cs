@@ -6,15 +6,21 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
+	using Interfaces.Core.MapDescription;
 
-	public class MapDescription<TNode> : IMapDescription<int>
+	public class MapDescription<TNode> : ICorridorMapDescription<int>
 	{
 		private readonly List<RoomContainer> roomShapes = new List<RoomContainer>();
+		private readonly List<RoomContainer> corridorShapes = new List<RoomContainer>();
 		private readonly List<List<RoomContainer>> roomShapesForNodes = new List<List<RoomContainer>>();
 		private readonly List<Tuple<TNode, TNode>> passages = new List<Tuple<TNode, TNode>>();
 		private readonly Dictionary<TNode, int> rooms = new Dictionary<TNode, int>();
+		private bool withCorridors = false;
+		private bool isLocked = false;
 
 		public ReadOnlyCollection<RoomContainer> RoomShapes => roomShapes.AsReadOnly();
+
+		public ReadOnlyCollection<RoomContainer> CorridorShapes => corridorShapes.AsReadOnly();
 
 		public ReadOnlyCollection<ReadOnlyCollection<RoomContainer>> RoomShapesForNodes =>
 			roomShapesForNodes.Select(x => x?.AsReadOnly()).ToList().AsReadOnly();
@@ -28,6 +34,9 @@
 		/// <param name="normalizeProbabilities"></param>
 		public void AddRoomShapes(List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			shapes.ForEach(x => AddRoomShapes(x, rotate, probability, normalizeProbabilities));
 		}
 
@@ -40,6 +49,9 @@
 		/// <param name="normalizeProbabilities"></param>
 		public void AddRoomShapes(RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
 
@@ -49,13 +61,34 @@
 			roomShapes.Add(new RoomContainer(shape, rotate, probability, normalizeProbabilities));
 		}
 
+		public void AddCorridorShapes(RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
+		{
+			// TODO: fix
+			/*if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");*/
+
+			if (probability <= 0)
+				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
+
+			if (roomShapes.Any(x => shape.Equals(x.RoomDescription)))
+				throw new InvalidOperationException("Every RoomDescription can be added at most once");
+
+			corridorShapes.Add(new RoomContainer(shape, rotate, probability, normalizeProbabilities));
+		}
+
 		public void AddRoomShapes(TNode node, List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			shapes.ForEach(x => AddRoomShapes(node, x, rotate, probability, normalizeProbabilities));
 		}
 
 		public void AddRoomShapes(TNode node, RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
 
@@ -78,6 +111,9 @@
 
 		public void AddRoom(TNode node)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			if (rooms.ContainsKey(node))
 				throw new InvalidOperationException("Given node was already added");
 
@@ -87,6 +123,9 @@
 
 		public void AddPassage(TNode node1, TNode node2)
 		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
 			var passage = Tuple.Create(node1, node2);
 
 			if (passages.Any(x => x.Equals(passage)))
@@ -97,8 +136,10 @@
 
 		public IGraph<int> GetGraph()
 		{
+			isLocked = true;
 			var vertices = Enumerable.Range(0, rooms.Count);
 			var graph = new UndirectedAdjacencyListGraph<int>();
+			var corridorCounter = rooms.Count;
 
 			foreach (var vertex in vertices)
 			{
@@ -107,10 +148,30 @@
 
 			foreach (var passage in passages)
 			{
-				graph.AddEdge(rooms[passage.Item1], rooms[passage.Item2]);
+				if (withCorridors)
+				{
+					graph.AddVertex(corridorCounter);
+					graph.AddEdge(rooms[passage.Item1], corridorCounter);
+					graph.AddEdge(corridorCounter, rooms[passage.Item2]);
+					corridorCounter++;
+				}
+				else
+				{
+					graph.AddEdge(rooms[passage.Item1], rooms[passage.Item2]);
+				}
 			}
 
 			return graph;
+		}
+
+		public void SetWithCorridors(bool enable)
+		{
+			withCorridors = enable;
+		}
+
+		public bool IsCorridorRoom(int room)
+		{
+			return room >= rooms.Count;
 		}
 
 		public class RoomContainer

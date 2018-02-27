@@ -9,6 +9,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core;
+	using Interfaces.Core.MapDescription;
 
 	public class MapDescriptionsDatabase
 	{ 
@@ -304,6 +305,12 @@
 			mapDescription.AddRoomShapes(room1);
 			mapDescription.AddRoomShapes(room2);
 			mapDescription.AddRoomShapes(room3);
+
+			var corridor1 = new RoomDescription(
+				GridPolygon.GetRectangle(overlapScale, 1)
+				, doorMode);
+
+			mapDescription.AddCorridorShapes(corridor1);
 		}
 
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription)

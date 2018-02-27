@@ -52,7 +52,7 @@
 			}
 
 			// Handle shapes for nodes
-			foreach (var vertex in graph.Vertices)
+			foreach (var vertex in graph.Vertices.Where(x => !mapDescription.IsCorridorRoom(x)))
 			{
 				var shapesForNode = mapDescription.RoomShapesForNodes[vertex];
 
@@ -73,6 +73,23 @@
 				}
 
 				shapesForNodes.Add(vertex, shapesContainer);
+			}
+
+			// Corridor shapes
+			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
+			foreach (var shape in mapDescription.CorridorShapes)
+			{
+				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate, ref aliasCounter);
+				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
+
+				rotatedShapes.ForEach(x => allShapes.Add(x.Item1.Alias, x));
+				corridorShapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
+			}
+
+			// Handle shapes for corridores
+			foreach (var vertex in graph.Vertices.Where(mapDescription.IsCorridorRoom))
+			{
+				shapesForNodes.Add(vertex, corridorShapesContainer);
 			}
 
 			// Prepare data structures

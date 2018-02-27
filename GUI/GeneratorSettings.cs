@@ -1,6 +1,7 @@
 ﻿namespace GUI
 {
 	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapDescription;
 
 	public class GeneratorSettings
 	{
