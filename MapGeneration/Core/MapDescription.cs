@@ -7,20 +7,17 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
 
-	public class MapDescription<TNode> : IMapDescription<TNode>
+	public class MapDescription<TNode> : IMapDescription<int>
 	{
 		private readonly List<RoomContainer> roomShapes = new List<RoomContainer>();
-		private readonly Dictionary<TNode, List<RoomContainer>> roomShapesForNodes = new Dictionary<TNode, List<RoomContainer>>();
+		private readonly List<List<RoomContainer>> roomShapesForNodes = new List<List<RoomContainer>>();
 		private readonly List<Tuple<TNode, TNode>> passages = new List<Tuple<TNode, TNode>>();
+		private readonly Dictionary<TNode, int> rooms = new Dictionary<TNode, int>();
 
 		public ReadOnlyCollection<RoomContainer> RoomShapes => roomShapes.AsReadOnly();
 
-		public ReadOnlyDictionary<TNode, ReadOnlyCollection<RoomContainer>> RoomShapesForNodes =>
-			new ReadOnlyDictionary<TNode, ReadOnlyCollection<RoomContainer>>(
-				roomShapesForNodes.ToDictionary(x => x.Key, x => x.Value?.AsReadOnly())
-			);
-
-		public ReadOnlyCollection<Tuple<TNode, TNode>> Passages => passages.AsReadOnly();
+		public ReadOnlyCollection<ReadOnlyCollection<RoomContainer>> RoomShapesForNodes =>
+			roomShapesForNodes.Select(x => x?.AsReadOnly()).ToList().AsReadOnly();
 
 		/// <summary>
 		/// Add shapes that will be used for nodes that do not have specific shapes assigned.
@@ -62,13 +59,15 @@
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
 
-			if (!roomShapesForNodes.TryGetValue(node, out var roomShapesForNode))
+			if (!rooms.TryGetValue(node, out var alias))
 				throw new InvalidOperationException("Room must be first added to add shapes");
+
+			var roomShapesForNode = roomShapesForNodes[alias];
 
 			if (roomShapesForNode == null)
 			{
 				roomShapesForNode = new List<RoomContainer>();
-				roomShapesForNodes[node] = roomShapesForNode;
+				roomShapesForNodes[alias] = roomShapesForNode;
 			}
 
 			if (roomShapesForNode.Any(x => shape.Equals(x.RoomDescription)))
@@ -79,10 +78,11 @@
 
 		public void AddRoom(TNode node)
 		{
-			if (roomShapesForNodes.ContainsKey(node))
+			if (rooms.ContainsKey(node))
 				throw new InvalidOperationException("Given node was already added");
 
-			roomShapesForNodes.Add(node, null);
+			rooms.Add(node, rooms.Count);
+			roomShapesForNodes.Add(null);
 		}
 
 		public void AddPassage(TNode node1, TNode node2)
@@ -95,10 +95,10 @@
 			passages.Add(passage);
 		}
 
-		public IntGraph<TNode> GetGraph()
+		public IGraph<int> GetGraph()
 		{
-			var vertices = roomShapesForNodes.Keys;
-			var graph = new IntGraph<TNode>(() => new UndirectedAdjacencyListGraph<int>());
+			var vertices = Enumerable.Range(0, rooms.Count);
+			var graph = new UndirectedAdjacencyListGraph<int>();
 
 			foreach (var vertex in vertices)
 			{
@@ -107,7 +107,7 @@
 
 			foreach (var passage in passages)
 			{
-				graph.AddEdge(passage.Item1, passage.Item2);
+				graph.AddEdge(rooms[passage.Item1], rooms[passage.Item2]);
 			}
 
 			return graph;

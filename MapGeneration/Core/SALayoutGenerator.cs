@@ -23,7 +23,7 @@
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
-	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : ILayoutGenerator<TNode>, IRandomInjectable, IBenchmarkable
+	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : ILayoutGenerator<int>, IRandomInjectable, IBenchmarkable
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		where TLayout : ILayout<int, TConfiguration>, ISmartCloneable<TLayout>
 	{
@@ -33,8 +33,8 @@
 		private ILayoutOperations<TLayout, int> layoutOperations;
 		private Random random = new Random(0);
 
-		private IMapDescription<TNode> mapDescription;
-		private IntGraph<TNode> graph;
+		private IMapDescription<int> mapDescription;
+		private IGraph<int> graph;
 		private IGeneratorPlanner<TLayout> generatorPlanner = new LazyGeneratorPlanner<TLayout>();
 
 		private readonly Stopwatch stopwatch = new Stopwatch();
@@ -62,10 +62,10 @@
 		private SAContext context;
 
 		// Events
-		public event Action<IMapLayout<TNode>> OnPerturbed;
-		public event Action<IMapLayout<TNode>> OnValid;
-		public event Action<IMapLayout<TNode>> OnValidAndDifferent;
-		public event Action<IMapLayout<TNode>> OnFinal;
+		public event Action<IMapLayout<int>> OnPerturbed;
+		public event Action<IMapLayout<int>> OnValid;
+		public event Action<IMapLayout<int>> OnValidAndDifferent;
+		public event Action<IMapLayout<int>> OnFinal;
 
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
@@ -92,7 +92,7 @@
 			};
 		}
 
-		public IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10)
+		public IList<IMapLayout<int>> GetLayouts(IMapDescription<int> mapDescription, int numberOfLayouts = 10)
 		{
 			// TODO: should not be done like this
 			configurationSpaces = configurationSpacesGenerator.Generate<TNode, TConfiguration>((MapDescription<TNode>)mapDescription);
@@ -424,22 +424,22 @@
 			return diff;
 		}
 
-		private IMapLayout<TNode> ConvertLayout(TLayout layout, bool addRooms = true)
+		private IMapLayout<int> ConvertLayout(TLayout layout, bool addRooms = true)
 		{
-			var rooms = new List<IRoom<TNode>>();
-			var roomsDict = new Dictionary<int, Room<TNode>>();
+			var rooms = new List<IRoom<int>>();
+			var roomsDict = new Dictionary<int, Room<int>>();
 
 			foreach (var vertex in graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertex, out var configuration))
 				{
-					var room = new Room<TNode>(graph.GetOriginalVertex(vertex), configuration.Shape, configuration.Position);
+					var room = new Room<int>(vertex, configuration.Shape, configuration.Position);
 					rooms.Add(room);
 
 					if (!addRooms)
 						continue;
 
-					var doors = new List<Tuple<TNode, OrthogonalLine>>();
+					var doors = new List<Tuple<int, OrthogonalLine>>();
 					room.Doors = doors;
 					
 					roomsDict[vertex] = room;
@@ -461,15 +461,15 @@
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(random);
 
-								roomsDict[vertex].Doors.Add(Tuple.Create(graph.GetOriginalVertex(neighbour), randomChoice));
-								roomsDict[neighbour].Doors.Add(Tuple.Create(graph.GetOriginalVertex(vertex), randomChoice));
+								roomsDict[vertex].Doors.Add(Tuple.Create(neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(Tuple.Create(neighbour, randomChoice));
 							}
 						}
 					}
 				}
 			}
 
-			return new MapLayout<TNode>(rooms);
+			return new MapLayout<int>(rooms);
 		}
 
 		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)

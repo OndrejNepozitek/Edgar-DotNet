@@ -4,6 +4,6 @@
 
 	public interface IMapDescription<TNode>
 	{
-		IntGraph<TNode> GetGraph(); 
+		IGraph<TNode> GetGraph(); 
 	}
 }
