@@ -140,6 +140,7 @@
     <Compile Include="Utils\ConfigParsing\Models\RoomShapesModel.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomsRangeModel.cs" />
     <Compile Include="Utils\ConfigParsing\ParsingException.cs" />
+    <Compile Include="Utils\LayoutGeneratorFactory.cs" />
     <Compile Include="Utils\MapDescriptionsDatabase.cs" />
     <Compile Include="Utils\ConfigParsing\DefaultObjectFactory.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionModel.cs" />
