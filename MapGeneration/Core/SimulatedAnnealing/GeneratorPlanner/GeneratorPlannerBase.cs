@@ -45,6 +45,9 @@
 
 			while (layouts.Count < count)
 			{
+				if (context.CancellationToken.HasValue && context.CancellationToken.Value.IsCancellationRequested)
+					break;
+
 				if (context.IterationsCount > 1000000)
 					break;
 

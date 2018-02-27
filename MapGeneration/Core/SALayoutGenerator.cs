@@ -59,7 +59,7 @@
 
 		private CancellationToken? cancellationToken;
 
-		private SAContext context;
+		private SAContext context = new SAContext();
 
 		// Events
 		public event Action<IMapLayout<int>> OnPerturbed;
@@ -102,7 +102,8 @@
 			layoutOperations = layoutOperationsCreator(configurationSpaces, sigma);
 			configurationSpaces.InjectRandomGenerator(random);
 			layoutOperations.InjectRandomGenerator(random);
-			context = new SAContext();
+
+			context.IterationsCount = 0;
 
 			this.mapDescription = mapDescription;
 			graph = mapDescription.GetGraph();
@@ -598,6 +599,12 @@
 		public void SetCancellationToken(CancellationToken cancellationToken)
 		{
 			this.cancellationToken = cancellationToken;
+
+			// TODO: this is bad
+			if (context != null)
+			{
+				context.CancellationToken = cancellationToken;
+			}
 		}
 
 		#region Generator settings

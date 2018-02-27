@@ -113,9 +113,8 @@
 				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
 
 				isRunning = false;
-				Invoke((Action)(UpdateInfoPanel));
-				Invoke((Action)(OnFinished));
-
+				BeginInvoke((Action)(UpdateInfoPanel));
+				BeginInvoke((Action)(OnFinished));
 			}, ct);
 		}
 
