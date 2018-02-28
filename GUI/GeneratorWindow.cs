@@ -39,8 +39,8 @@
 
 			showFinalLayouts.Checked = settings.ShowFinalLayouts;
 			showFinalLayoutsTime.Value = settings.ShowFinalLayoutsTime;
-			showAcceptedLayouts.Checked = settings.ShowAcceptedLayouts;
-			showAcceptedLayoutsTime.Value = settings.ShowAcceptedLayoutsTime;
+			showPartialValidLayouts.Checked = settings.ShowPartialValidLayouts;
+			showAcceptedLayoutsTime.Value = settings.ShowPartialValidLayoutsTime;
 			showPerturbedLayouts.Checked = settings.ShowPerturbedLayouts;
 			showPerturbedLayoutsTime.Value = settings.ShowPerturbedLayoutsTime;
 
@@ -63,7 +63,7 @@
 				layoutGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 				infoStopwatch.Start();
 
-				layoutGenerator.OnFinal += layout =>
+				layoutGenerator.OnValid += layout =>
 				{
 					if (!showFinalLayouts.Checked)
 						return;
@@ -73,9 +73,9 @@
 					SleepWithFastCancellation((int)showFinalLayoutsTime.Value, ct);
 				};
 
-				layoutGenerator.OnValidAndDifferent += layout =>
+				layoutGenerator.OnPartialValid += layout =>
 				{
-					if (!showAcceptedLayouts.Checked)
+					if (!showPartialValidLayouts.Checked)
 						return;
 
 					layoutToDraw = layout;
@@ -103,7 +103,7 @@
 					}
 				};
 
-				layoutGenerator.OnFinal += layout =>
+				layoutGenerator.OnValid += layout =>
 				{
 					iterationsCount = 0;
 					layoutsCount++;

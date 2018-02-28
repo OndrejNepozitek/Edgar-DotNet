@@ -42,7 +42,7 @@
 			this.showPerturbedLayouts = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.showAcceptedLayoutsTime = new System.Windows.Forms.NumericUpDown();
-			this.showAcceptedLayouts = new System.Windows.Forms.CheckBox();
+			this.showPartialValidLayouts = new System.Windows.Forms.CheckBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.showFinalLayoutsTime = new System.Windows.Forms.NumericUpDown();
 			this.showFinalLayouts = new System.Windows.Forms.CheckBox();
@@ -170,7 +170,7 @@
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayouts);
 			this.progressGroupBox.Controls.Add(this.label2);
 			this.progressGroupBox.Controls.Add(this.showAcceptedLayoutsTime);
-			this.progressGroupBox.Controls.Add(this.showAcceptedLayouts);
+			this.progressGroupBox.Controls.Add(this.showPartialValidLayouts);
 			this.progressGroupBox.Controls.Add(this.label1);
 			this.progressGroupBox.Controls.Add(this.showFinalLayoutsTime);
 			this.progressGroupBox.Controls.Add(this.showFinalLayouts);
@@ -263,15 +263,15 @@
             0,
             0});
 			// 
-			// showAcceptedLayouts
+			// showPartialValidLayouts
 			// 
-			this.showAcceptedLayouts.AutoSize = true;
-			this.showAcceptedLayouts.Location = new System.Drawing.Point(6, 128);
-			this.showAcceptedLayouts.Name = "showAcceptedLayouts";
-			this.showAcceptedLayouts.Size = new System.Drawing.Size(175, 21);
-			this.showAcceptedLayouts.TabIndex = 3;
-			this.showAcceptedLayouts.Text = "Show accepted layouts";
-			this.showAcceptedLayouts.UseVisualStyleBackColor = true;
+			this.showPartialValidLayouts.AutoSize = true;
+			this.showPartialValidLayouts.Location = new System.Drawing.Point(6, 128);
+			this.showPartialValidLayouts.Name = "showPartialValidLayouts";
+			this.showPartialValidLayouts.Size = new System.Drawing.Size(189, 21);
+			this.showPartialValidLayouts.TabIndex = 3;
+			this.showPartialValidLayouts.Text = "Show partial valid layouts";
+			this.showPartialValidLayouts.UseVisualStyleBackColor = true;
 			// 
 			// label1
 			// 
@@ -537,7 +537,7 @@
 		private System.Windows.Forms.CheckBox showPerturbedLayouts;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.NumericUpDown showAcceptedLayoutsTime;
-		private System.Windows.Forms.CheckBox showAcceptedLayouts;
+		private System.Windows.Forms.CheckBox showPartialValidLayouts;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.NumericUpDown showFinalLayoutsTime;
 		private System.Windows.Forms.CheckBox showFinalLayouts;

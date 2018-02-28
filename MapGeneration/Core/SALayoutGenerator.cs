@@ -19,12 +19,13 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.LayoutGenerator;
 	using Interfaces.Core.MapDescription;
 	using SimulatedAnnealing;
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
-	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : ILayoutGenerator<int>, IRandomInjectable, IBenchmarkable
+	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : IObservableGenerator<int>, IRandomInjectable, IBenchmarkable
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		where TLayout : ILayout<int, TConfiguration>, ISmartCloneable<TLayout>
 	{
@@ -64,9 +65,8 @@
 
 		// Events
 		public event Action<IMapLayout<int>> OnPerturbed;
+		public event Action<IMapLayout<int>> OnPartialValid;
 		public event Action<IMapLayout<int>> OnValid;
-		public event Action<IMapLayout<int>> OnValidAndDifferent;
-		public event Action<IMapLayout<int>> OnFinal;
 
 		private double minimumDifference = 200; // TODO: change
 		private double shapePerturbChance = 0.4f;
@@ -218,13 +218,13 @@
 						}
 						#endregion
 
-						OnValid?.Invoke(ConvertLayout(perturbedLayout));
+						// OnValid?.Invoke(ConvertLayout(perturbedLayout));
 
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
 							layouts.Add(perturbedLayout);
-							OnValidAndDifferent?.Invoke(ConvertLayout(perturbedLayout));
+							OnPartialValid?.Invoke(ConvertLayout(perturbedLayout));
 
 							#region Random restarts
 							if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)

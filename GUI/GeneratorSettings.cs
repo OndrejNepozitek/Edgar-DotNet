@@ -15,9 +15,9 @@
 
 		public int ShowFinalLayoutsTime { get; set; }
 
-		public bool ShowAcceptedLayouts { get; set; }
+		public bool ShowPartialValidLayouts { get; set; }
 
-		public int ShowAcceptedLayoutsTime { get; set; }
+		public int ShowPartialValidLayoutsTime { get; set; }
 
 		public bool ShowPerturbedLayouts { get; set; }
 

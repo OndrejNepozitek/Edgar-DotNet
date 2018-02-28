@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using Interfaces.Core;
+	using Interfaces.Core.LayoutGenerator;
 
 	/// <summary>
 	/// Class holding a scenario that should be run in a benchmark.

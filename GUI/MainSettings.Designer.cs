@@ -41,6 +41,10 @@
 			this.loadedMapDescriptionsComboBox = new System.Windows.Forms.ComboBox();
 			this.chooseMapDescriptionLabel = new System.Windows.Forms.Label();
 			this.infoGroupBox = new System.Windows.Forms.GroupBox();
+			this.usedDescriptionInfoPanel = new System.Windows.Forms.Panel();
+			this.usedDescriptionPassagesCount = new System.Windows.Forms.Label();
+			this.usedDescriptionRoomsCount = new System.Windows.Forms.Label();
+			this.usedDescription = new System.Windows.Forms.Label();
 			this.descriptionNotChosen = new System.Windows.Forms.Label();
 			this.generalSettingsPanel = new System.Windows.Forms.Panel();
 			this.mainPanel = new System.Windows.Forms.Panel();
@@ -51,8 +55,8 @@
 			this.showPerturbedLayoutsTime = new System.Windows.Forms.NumericUpDown();
 			this.showPerturbedLayouts = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.showAcceptedLayoutsTime = new System.Windows.Forms.NumericUpDown();
-			this.showAcceptedLayouts = new System.Windows.Forms.CheckBox();
+			this.showPartialValidLayoutsTime = new System.Windows.Forms.NumericUpDown();
+			this.showPartialValidLayouts = new System.Windows.Forms.CheckBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.showFinalLayoutsTime = new System.Windows.Forms.NumericUpDown();
 			this.showFinalLayouts = new System.Windows.Forms.CheckBox();
@@ -60,26 +64,22 @@
 			this.mapDescriptionPanel = new System.Windows.Forms.Panel();
 			this.generateButtonPanel = new System.Windows.Forms.Panel();
 			this.generateButton = new System.Windows.Forms.Button();
-			this.usedDescriptionInfoPanel = new System.Windows.Forms.Panel();
-			this.usedDescription = new System.Windows.Forms.Label();
-			this.usedDescriptionRoomsCount = new System.Windows.Forms.Label();
-			this.usedDescriptionPassagesCount = new System.Windows.Forms.Label();
 			this.generalSettingsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.generatorSeedInput)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numberOfLayoutsInput)).BeginInit();
 			this.mapDescriptionGroupBox.SuspendLayout();
 			this.infoGroupBox.SuspendLayout();
+			this.usedDescriptionInfoPanel.SuspendLayout();
 			this.generalSettingsPanel.SuspendLayout();
 			this.mainPanel.SuspendLayout();
 			this.progressPanel.SuspendLayout();
 			this.progressGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.showAcceptedLayoutsTime)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.showPartialValidLayoutsTime)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.showFinalLayoutsTime)).BeginInit();
 			this.infoPanel.SuspendLayout();
 			this.mapDescriptionPanel.SuspendLayout();
 			this.generateButtonPanel.SuspendLayout();
-			this.usedDescriptionInfoPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mapDescriptionFileDialog
@@ -218,6 +218,45 @@
 			this.infoGroupBox.TabStop = false;
 			this.infoGroupBox.Text = "Info";
 			// 
+			// usedDescriptionInfoPanel
+			// 
+			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescriptionPassagesCount);
+			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescriptionRoomsCount);
+			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescription);
+			this.usedDescriptionInfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.usedDescriptionInfoPanel.Location = new System.Drawing.Point(3, 18);
+			this.usedDescriptionInfoPanel.Name = "usedDescriptionInfoPanel";
+			this.usedDescriptionInfoPanel.Size = new System.Drawing.Size(556, 86);
+			this.usedDescriptionInfoPanel.TabIndex = 1;
+			this.usedDescriptionInfoPanel.Visible = false;
+			// 
+			// usedDescriptionPassagesCount
+			// 
+			this.usedDescriptionPassagesCount.AutoSize = true;
+			this.usedDescriptionPassagesCount.Location = new System.Drawing.Point(11, 60);
+			this.usedDescriptionPassagesCount.Name = "usedDescriptionPassagesCount";
+			this.usedDescriptionPassagesCount.Size = new System.Drawing.Size(163, 17);
+			this.usedDescriptionPassagesCount.TabIndex = 2;
+			this.usedDescriptionPassagesCount.Text = "Number of passages: 16";
+			// 
+			// usedDescriptionRoomsCount
+			// 
+			this.usedDescriptionRoomsCount.AutoSize = true;
+			this.usedDescriptionRoomsCount.Location = new System.Drawing.Point(11, 40);
+			this.usedDescriptionRoomsCount.Name = "usedDescriptionRoomsCount";
+			this.usedDescriptionRoomsCount.Size = new System.Drawing.Size(133, 17);
+			this.usedDescriptionRoomsCount.TabIndex = 1;
+			this.usedDescriptionRoomsCount.Text = "Number of rooms: 9";
+			// 
+			// usedDescription
+			// 
+			this.usedDescription.AutoSize = true;
+			this.usedDescription.Location = new System.Drawing.Point(10, 11);
+			this.usedDescription.Name = "usedDescription";
+			this.usedDescription.Size = new System.Drawing.Size(237, 17);
+			this.usedDescription.TabIndex = 0;
+			this.usedDescription.Text = "Using uploaded map description file.";
+			// 
 			// descriptionNotChosen
 			// 
 			this.descriptionNotChosen.AutoSize = true;
@@ -269,8 +308,8 @@
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayoutsTime);
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayouts);
 			this.progressGroupBox.Controls.Add(this.label2);
-			this.progressGroupBox.Controls.Add(this.showAcceptedLayoutsTime);
-			this.progressGroupBox.Controls.Add(this.showAcceptedLayouts);
+			this.progressGroupBox.Controls.Add(this.showPartialValidLayoutsTime);
+			this.progressGroupBox.Controls.Add(this.showPartialValidLayouts);
 			this.progressGroupBox.Controls.Add(this.label1);
 			this.progressGroupBox.Controls.Add(this.showFinalLayoutsTime);
 			this.progressGroupBox.Controls.Add(this.showFinalLayouts);
@@ -343,21 +382,21 @@
 			// 
 			// showAcceptedLayoutsTime
 			// 
-			this.showAcceptedLayoutsTime.Location = new System.Drawing.Point(240, 99);
-			this.showAcceptedLayoutsTime.Maximum = new decimal(new int[] {
+			this.showPartialValidLayoutsTime.Location = new System.Drawing.Point(240, 99);
+			this.showPartialValidLayoutsTime.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-			this.showAcceptedLayoutsTime.Minimum = new decimal(new int[] {
+			this.showPartialValidLayoutsTime.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.showAcceptedLayoutsTime.Name = "showAcceptedLayoutsTime";
-			this.showAcceptedLayoutsTime.Size = new System.Drawing.Size(120, 22);
-			this.showAcceptedLayoutsTime.TabIndex = 4;
-			this.showAcceptedLayoutsTime.Value = new decimal(new int[] {
+			this.showPartialValidLayoutsTime.Name = "showPartialValidLayoutsTime";
+			this.showPartialValidLayoutsTime.Size = new System.Drawing.Size(120, 22);
+			this.showPartialValidLayoutsTime.TabIndex = 4;
+			this.showPartialValidLayoutsTime.Value = new decimal(new int[] {
             500,
             0,
             0,
@@ -365,13 +404,13 @@
 			// 
 			// showAcceptedLayouts
 			// 
-			this.showAcceptedLayouts.AutoSize = true;
-			this.showAcceptedLayouts.Location = new System.Drawing.Point(11, 99);
-			this.showAcceptedLayouts.Name = "showAcceptedLayouts";
-			this.showAcceptedLayouts.Size = new System.Drawing.Size(175, 21);
-			this.showAcceptedLayouts.TabIndex = 3;
-			this.showAcceptedLayouts.Text = "Show accepted layouts";
-			this.showAcceptedLayouts.UseVisualStyleBackColor = true;
+			this.showPartialValidLayouts.AutoSize = true;
+			this.showPartialValidLayouts.Location = new System.Drawing.Point(11, 99);
+			this.showPartialValidLayouts.Name = "showPartialValidLayouts";
+			this.showPartialValidLayouts.Size = new System.Drawing.Size(189, 21);
+			this.showPartialValidLayouts.TabIndex = 3;
+			this.showPartialValidLayouts.Text = "Show partial valid layouts";
+			this.showPartialValidLayouts.UseVisualStyleBackColor = true;
 			// 
 			// label1
 			// 
@@ -454,45 +493,6 @@
 			this.generateButton.UseVisualStyleBackColor = true;
 			this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
 			// 
-			// usedDescriptionInfoPanel
-			// 
-			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescriptionPassagesCount);
-			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescriptionRoomsCount);
-			this.usedDescriptionInfoPanel.Controls.Add(this.usedDescription);
-			this.usedDescriptionInfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.usedDescriptionInfoPanel.Location = new System.Drawing.Point(3, 18);
-			this.usedDescriptionInfoPanel.Name = "usedDescriptionInfoPanel";
-			this.usedDescriptionInfoPanel.Size = new System.Drawing.Size(556, 86);
-			this.usedDescriptionInfoPanel.TabIndex = 1;
-			this.usedDescriptionInfoPanel.Visible = false;
-			// 
-			// usedDescription
-			// 
-			this.usedDescription.AutoSize = true;
-			this.usedDescription.Location = new System.Drawing.Point(10, 11);
-			this.usedDescription.Name = "usedDescription";
-			this.usedDescription.Size = new System.Drawing.Size(237, 17);
-			this.usedDescription.TabIndex = 0;
-			this.usedDescription.Text = "Using uploaded map description file.";
-			// 
-			// usedDescriptionRoomsCount
-			// 
-			this.usedDescriptionRoomsCount.AutoSize = true;
-			this.usedDescriptionRoomsCount.Location = new System.Drawing.Point(11, 40);
-			this.usedDescriptionRoomsCount.Name = "usedDescriptionRoomsCount";
-			this.usedDescriptionRoomsCount.Size = new System.Drawing.Size(133, 17);
-			this.usedDescriptionRoomsCount.TabIndex = 1;
-			this.usedDescriptionRoomsCount.Text = "Number of rooms: 9";
-			// 
-			// usedDescriptionPassagesCount
-			// 
-			this.usedDescriptionPassagesCount.AutoSize = true;
-			this.usedDescriptionPassagesCount.Location = new System.Drawing.Point(11, 60);
-			this.usedDescriptionPassagesCount.Name = "usedDescriptionPassagesCount";
-			this.usedDescriptionPassagesCount.Size = new System.Drawing.Size(163, 17);
-			this.usedDescriptionPassagesCount.TabIndex = 2;
-			this.usedDescriptionPassagesCount.Text = "Number of passages: 16";
-			// 
 			// MainSettings
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -511,19 +511,19 @@
 			this.mapDescriptionGroupBox.PerformLayout();
 			this.infoGroupBox.ResumeLayout(false);
 			this.infoGroupBox.PerformLayout();
+			this.usedDescriptionInfoPanel.ResumeLayout(false);
+			this.usedDescriptionInfoPanel.PerformLayout();
 			this.generalSettingsPanel.ResumeLayout(false);
 			this.mainPanel.ResumeLayout(false);
 			this.progressPanel.ResumeLayout(false);
 			this.progressGroupBox.ResumeLayout(false);
 			this.progressGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.showAcceptedLayoutsTime)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.showPartialValidLayoutsTime)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.showFinalLayoutsTime)).EndInit();
 			this.infoPanel.ResumeLayout(false);
 			this.mapDescriptionPanel.ResumeLayout(false);
 			this.generateButtonPanel.ResumeLayout(false);
-			this.usedDescriptionInfoPanel.ResumeLayout(false);
-			this.usedDescriptionInfoPanel.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -556,8 +556,8 @@
 		private System.Windows.Forms.NumericUpDown showPerturbedLayoutsTime;
 		private System.Windows.Forms.CheckBox showPerturbedLayouts;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.NumericUpDown showAcceptedLayoutsTime;
-		private System.Windows.Forms.CheckBox showAcceptedLayouts;
+		private System.Windows.Forms.NumericUpDown showPartialValidLayoutsTime;
+		private System.Windows.Forms.CheckBox showPartialValidLayouts;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.NumericUpDown showFinalLayoutsTime;
 		private System.Windows.Forms.CheckBox showFinalLayouts;

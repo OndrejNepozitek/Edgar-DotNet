@@ -53,8 +53,9 @@
     <Compile Include="Core\Doors\IDoorMode.cs" />
     <Compile Include="Core\IEnergyLayout.cs" />
     <Compile Include="Core\ILayout.cs" />
-    <Compile Include="Core\ILayoutGenerator.cs" />
+    <Compile Include="Core\LayoutGenerator\ILayoutGenerator.cs" />
     <Compile Include="Core\ILayoutOperations.cs" />
+    <Compile Include="Core\LayoutGenerator\IObservableGenerator.cs" />
     <Compile Include="Core\MapDescription\ICorridorMapDescription.cs" />
     <Compile Include="Core\MapDescription\IMapDescription.cs" />
     <Compile Include="Core\IMapLayout.cs" />

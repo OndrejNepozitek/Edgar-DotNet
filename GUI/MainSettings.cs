@@ -82,8 +82,8 @@
 
 				ShowFinalLayouts = showFinalLayouts.Checked,
 				ShowFinalLayoutsTime = (int) showFinalLayoutsTime.Value,
-				ShowAcceptedLayouts = showAcceptedLayouts.Checked,
-				ShowAcceptedLayoutsTime = (int) showAcceptedLayoutsTime.Value,
+				ShowPartialValidLayouts = showPartialValidLayouts.Checked,
+				ShowPartialValidLayoutsTime = (int) showPartialValidLayoutsTime.Value,
 				ShowPerturbedLayouts = showPerturbedLayouts.Checked,
 				ShowPerturbedLayoutsTime = (int) showPerturbedLayoutsTime.Value,
 			});
