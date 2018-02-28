@@ -55,7 +55,8 @@
     <Compile Include="Core\ILayout.cs" />
     <Compile Include="Core\ILayoutGenerator.cs" />
     <Compile Include="Core\ILayoutOperations.cs" />
-    <Compile Include="Core\IMapDescription.cs" />
+    <Compile Include="Core\MapDescription\ICorridorMapDescription.cs" />
+    <Compile Include="Core\MapDescription\IMapDescription.cs" />
     <Compile Include="Core\IMapLayout.cs" />
     <Compile Include="Core\IRandomInjectable.cs" />
     <Compile Include="Core\IRoom.cs" />

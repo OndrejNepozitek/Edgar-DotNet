@@ -19,6 +19,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.MapDescription;
 	using SimulatedAnnealing;
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;

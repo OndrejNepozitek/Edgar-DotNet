@@ -7,6 +7,7 @@
 	using System.Text;
 	using Interfaces.Benchmarks;
 	using Interfaces.Core;
+	using Interfaces.Core.MapDescription;
 	using Utils;
 
 	/// <summary>

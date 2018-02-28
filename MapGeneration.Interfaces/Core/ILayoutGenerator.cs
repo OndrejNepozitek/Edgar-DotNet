@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core
 {
 	using System.Collections.Generic;
+	using MapDescription;
 
 	public interface ILayoutGenerator<TNode>
 	{
