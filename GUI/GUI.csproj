@@ -102,8 +102,6 @@
     <Compile Include="MainSettings.Designer.cs">
       <DependentUpon>MainSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapDrawing\AbstractLayoutDrawer.cs" />
-    <Compile Include="MapDrawing\SVGLayoutDrawer.cs" />
     <Compile Include="MapDrawing\WFLayoutDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

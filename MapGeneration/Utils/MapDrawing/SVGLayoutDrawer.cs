@@ -1,4 +1,4 @@
-﻿namespace GUI.MapDrawing
+﻿namespace MapGeneration.Utils.MapDrawing
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,7 +7,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core;
+	using Interfaces.Core;
 
 	/// <inheritdoc />
 	/// <summary>

@@ -146,6 +146,8 @@
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionModel.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionsSetModel.cs" />
     <Compile Include="Utils\ConfigParsing\Deserializers\IntVector2Deserializer.cs" />
+    <Compile Include="Utils\MapDrawing\AbstractLayoutDrawer.cs" />
+    <Compile Include="Utils\MapDrawing\SVGLayoutDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

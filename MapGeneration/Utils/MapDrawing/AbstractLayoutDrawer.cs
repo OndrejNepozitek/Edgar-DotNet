@@ -1,11 +1,11 @@
-﻿namespace GUI.MapDrawing
+﻿namespace MapGeneration.Utils.MapDrawing
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core;
+	using Interfaces.Core;
 
 	/// <summary>
 	/// Class that should help with drawing layouts to different outputs.

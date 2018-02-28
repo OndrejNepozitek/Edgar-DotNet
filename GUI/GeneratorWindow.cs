@@ -10,6 +10,7 @@
 	using MapDrawing;
 	using MapGeneration.Interfaces.Core;
 	using MapGeneration.Utils;
+	using MapGeneration.Utils.MapDrawing;
 
 	public partial class GeneratorWindow : Form
 	{
