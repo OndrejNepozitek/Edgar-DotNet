@@ -21,12 +21,12 @@
 			ConfigurationSpaces = configurationSpaces;
 		}
 
-		public void InjectRandomGenerator(Random random)
+		public virtual void InjectRandomGenerator(Random random)
 		{
 			Random = random;
 		}
 
-		public void PerturbShape(TLayout layout, TNode node, bool updateLayout)
+		public virtual void PerturbShape(TLayout layout, TNode node, bool updateLayout)
 		{
 			layout.GetConfiguration(node, out var configuration);
 
@@ -53,7 +53,7 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		public void PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		public virtual void PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
 			var canBePerturbed = nodeOptions.Where(x => ConfigurationSpaces.CanPerturbShape(x)).ToList();
 
@@ -63,7 +63,7 @@
 			PerturbShape(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
-		public void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
+		public virtual void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
 		{
 			var configurations = new List<TConfiguration>();
 
@@ -91,7 +91,7 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		public void PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		public virtual void PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
 			var canBePerturbed = nodeOptions.ToList();
