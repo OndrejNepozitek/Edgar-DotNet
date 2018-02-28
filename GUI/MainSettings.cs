@@ -4,10 +4,6 @@
 	using System.IO;
 	using System.Linq;
 	using System.Windows.Forms;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Core;
-	using MapGeneration.Core.Doors.DoorModes;
-	using MapGeneration.Interfaces.Core;
 	using MapGeneration.Interfaces.Core.MapDescription;
 	using MapGeneration.Utils.ConfigParsing;
 

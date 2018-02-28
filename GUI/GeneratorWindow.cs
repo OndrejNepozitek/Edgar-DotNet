@@ -57,10 +57,18 @@
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
-				var layoutGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator<int>();
-				layoutGenerator.EnableLazyProcessing(true);
-				layoutGenerator.SetCancellationToken(ct);
-				layoutGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+				var layoutGenerator = settings.LayoutGenerator;
+
+				if (layoutGenerator == null)
+				{
+					var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator<int>();
+					defaultGenerator.EnableLazyProcessing(true);
+					defaultGenerator.SetCancellationToken(ct);
+					defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+
+					layoutGenerator = defaultGenerator;
+				}
+					
 				infoStopwatch.Start();
 
 				layoutGenerator.OnValid += layout =>
