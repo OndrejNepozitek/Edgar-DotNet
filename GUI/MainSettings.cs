@@ -39,41 +39,6 @@
 				ShowSettingsError("Map description not chosen");
 			}
 
-			((MapDescription<int>) mapDescription).SetWithCorridors(true); // TODO: remove
-
-			{
-				var corridor1 = new RoomDescription(
-					GridPolygon.GetRectangle(1, 1)
-					, new OverlapMode(1, 0));
-
-				((MapDescription<int>)mapDescription).AddCorridorShapes(corridor1);
-			}
-
-			{
-				var corridor1 = new RoomDescription(
-					GridPolygon.GetRectangle(2, 1)
-					, new OverlapMode(1, 0));
-
-				((MapDescription<int>)mapDescription).AddCorridorShapes(corridor1);
-			}
-
-			{
-				var corridor1 = new RoomDescription(
-					GridPolygon.GetRectangle(3, 1)
-					, new OverlapMode(1, 0));
-
-				((MapDescription<int>)mapDescription).AddCorridorShapes(corridor1);
-			}
-
-			{
-				var corridor1 = new RoomDescription(
-					GridPolygon.GetRectangle(4, 1)
-					, new OverlapMode(1, 0));
-
-				((MapDescription<int>)mapDescription).AddCorridorShapes(corridor1);
-			}
-
-
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
 			{
 				MapDescription = mapDescription,
