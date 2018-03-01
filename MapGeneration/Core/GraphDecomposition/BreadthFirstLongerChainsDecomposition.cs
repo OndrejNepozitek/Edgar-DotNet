@@ -49,6 +49,11 @@
 			{
 				var chain = GetSmallestNeighbouringCycle(graph, faces, usedVertices);
 
+				if (chain == null && faces.Count != 0)
+				{
+					chain = GetNeighbouringPath(graph, usedVertices);
+				}
+				
 				if (chain == null)
 					continue;
 
@@ -176,7 +181,7 @@
 			}
 
 			if (smallestFaceIndex == -1)
-				throw new InvalidOperationException();
+				return null;
 
 			var smallestFace = faces[smallestFaceIndex].Where(x => usedVertices[x] == -1).ToList();
 			faces.RemoveAt(smallestFaceIndex);
