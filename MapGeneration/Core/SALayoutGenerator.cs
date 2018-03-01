@@ -25,7 +25,7 @@
 	using SimulatedAnnealing.GeneratorPlanner;
 	using Utils;
 
-	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : IObservableGenerator<int>, IRandomInjectable, IBenchmarkable
+	public class SALayoutGenerator<TLayout, TNode, TConfiguration> : IObservableGenerator<int>, IRandomInjectable, IBenchmarkable, ICancellable
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		where TLayout : ILayout<int, TConfiguration>, ISmartCloneable<TLayout>
 	{

@@ -63,10 +63,14 @@
 				{
 					var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator<int>();
 					defaultGenerator.EnableLazyProcessing(true);
-					defaultGenerator.SetCancellationToken(ct);
 					defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 					layoutGenerator = defaultGenerator;
+				}
+
+				if (layoutGenerator is ICancellable cancellable)
+				{
+					cancellable.SetCancellationToken(ct);
 				}
 					
 				infoStopwatch.Start();

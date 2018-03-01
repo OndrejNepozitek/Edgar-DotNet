@@ -47,6 +47,7 @@
     <Compile Include="Core\Configuration\IEnergyConfiguration.cs" />
     <Compile Include="Core\Configuration\IMutableConfiguration.cs" />
     <Compile Include="Core\Doors\IDoorLine.cs" />
+    <Compile Include="Core\ICancellable.cs" />
     <Compile Include="Core\IChainDecomposition.cs" />
     <Compile Include="Core\ConfigurationSpaces\IConfigurationSpaces.cs" />
     <Compile Include="Core\Doors\IDoorHandler.cs" />
