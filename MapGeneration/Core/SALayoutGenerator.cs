@@ -477,7 +477,7 @@
 		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
-				configurationSpaces.GetConfigurationSpace(configuration1.ShapeContainer, configuration2.ShapeContainer))
+				configurationSpaces.GetConfigurationSpace(configuration2.ShapeContainer, configuration1.ShapeContainer))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 

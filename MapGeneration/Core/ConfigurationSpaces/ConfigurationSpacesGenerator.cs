@@ -112,7 +112,7 @@
 					var shape2 = allShapes[j];
 
 					configurationSpaces[i][j] =
-						GetConfigurationSpace(shape2.Item1.Value, shape2.Item2, shape1.Item1.Value, shape1.Item2);
+						GetConfigurationSpace(shape1.Item1.Value, shape1.Item2, shape2.Item1.Value, shape2.Item2, offset);
 				}
 			}
 
