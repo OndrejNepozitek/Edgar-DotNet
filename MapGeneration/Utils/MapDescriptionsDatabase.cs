@@ -106,6 +106,45 @@
 			}
 		}
 
+		public static List<Tuple<string, MapDescription<int>>> GetReferenceSetWithCorridors(int offset = 2)
+		{
+			var scale = new IntVector2(1, 1);
+
+			var m1 = Reference_9Vertices_WithoutRoomShapes;
+			m1.SetWithCorridors(true);
+			AddClassicRoomShapes(m1, scale);
+			AddCorridorRoomShapes(m1, offset);
+
+			var m2 = Reference_17Vertices_WithoutRoomShapes;
+			m2.SetWithCorridors(true);
+			AddClassicRoomShapes(m2, scale);
+			AddCorridorRoomShapes(m2, offset);
+
+			var m3 = Reference_41Vertices_WithoutRoomShapes;
+			m3.SetWithCorridors(true);
+			AddClassicRoomShapes(m3, scale);
+			AddCorridorRoomShapes(m3, offset);
+
+			var m4 = Reference_Fig7Bottom_WithoutRoomShapes;
+			m4.SetWithCorridors(true);
+			AddClassicRoomShapes(m4, scale);
+			AddCorridorRoomShapes(m4, offset);
+
+			var m5 = Reference_Fig9_WithoutRoomShapes;
+			m5.SetWithCorridors(true);
+			AddClassicRoomShapes(m5, scale);
+			AddCorridorRoomShapes(m5, offset);
+
+			return new List<Tuple<string, MapDescription<int>>>()
+			{
+				Tuple.Create("Fig 1 (17 vertices)", m2),
+				Tuple.Create("Fig 7 top (9 vertices)", m1),
+				Tuple.Create("Fig 7 bottom (17 vertices)", m4),
+				Tuple.Create("Fig 8 (41 vertices)", m3),
+				Tuple.Create("Fig 9 (15 vertices)", m5),
+			};
+		}
+
 		private static MapDescription<int> Make_Reference_9Vertices_WithoutRoomShapes()
 		{
 			var mapDescription = new MapDescription<int>();
@@ -305,6 +344,45 @@
 			mapDescription.AddRoomShapes(room1);
 			mapDescription.AddRoomShapes(room2);
 			mapDescription.AddRoomShapes(room3);
+		}
+
+		public static void AddCorridorRoomShapes<TNode>(MapDescription<TNode> mapDescription, int offset)
+		{
+			{
+				var width = offset;
+				var room = new RoomDescription(
+					GridPolygon.GetRectangle(width, 1),
+					new SpecificPositionsMode(new List<OrthogonalLine>()
+					{
+						new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
+						new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),
+					})
+				);
+
+				mapDescription.AddCorridorShapes(room);
+			}
+
+			{
+				var width = offset;
+				var room = new RoomDescription(
+					new GridPolygonBuilder()
+						.AddPoint(0, 0)
+						.AddPoint(0, 2)
+						.AddPoint(2, 2)
+						.AddPoint(2, 1)
+						.AddPoint(1, 1)
+						.AddPoint(1, 0)
+						.Build()
+					,
+					new SpecificPositionsMode(new List<OrthogonalLine>()
+					{
+						new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
+						new OrthogonalLine(new IntVector2(2, 1), new IntVector2(2, 2)),
+					})
+				);
+
+				mapDescription.AddCorridorShapes(room);
+			}
 		}
 
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription)
