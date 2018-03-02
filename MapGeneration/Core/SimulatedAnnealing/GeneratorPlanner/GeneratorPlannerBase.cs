@@ -78,6 +78,7 @@
 					OnLayoutGenerated?.Invoke(layout);
 					layouts.Add(layout);
 					log.Add(new LogEntry(LogType.Final, instance, iterationsToGenerate));
+					AfterValid();
 					continue;
 				}
 				
@@ -122,6 +123,22 @@
 		protected virtual void AfterGeneration()
 		{
 
+		}
+
+		/// <summary>
+		/// Is called after a layout with all chains is generated.
+		/// </summary>
+		/// <remarks>
+		/// Should be called before any custom implementation.
+		/// </remarks>
+		protected virtual void AfterValid()
+		{
+
+		}
+
+		protected void ResetRows()
+		{
+			rows = new List<InstanceRow>();
 		}
 
 		/// <summary>

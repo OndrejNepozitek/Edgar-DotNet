@@ -121,7 +121,7 @@
 				MapDescription = mapDescription,
 				LayoutGenerator = layoutGenerator,
 
-				NumberOfLayouts = 100,
+				NumberOfLayouts = 10,
 
 				ShowPartialValidLayouts = true,
 				ShowPartialValidLayoutsTime = 500,

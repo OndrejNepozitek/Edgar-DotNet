@@ -12,6 +12,18 @@
 		private int currentRow;
 		private Instance lastInstance;
 
+		private readonly bool resetAfterValid = true;
+
+		public BasicGeneratorPlanner()
+		{
+
+		}
+
+		public BasicGeneratorPlanner(bool resetAfterValid)
+		{
+			this.resetAfterValid = resetAfterValid;
+		}
+
 		/// <summary>
 		/// Simulates how would non-lazy evaluation work.
 		/// </summary>
@@ -59,6 +71,16 @@
 
 			currentRow = 0;
 			lastInstance = null;
+		}
+
+		protected override void AfterValid()
+		{
+			base.AfterValid();
+
+			if (resetAfterValid)
+			{
+				ResetRows();
+			}
 		}
 	}
 }

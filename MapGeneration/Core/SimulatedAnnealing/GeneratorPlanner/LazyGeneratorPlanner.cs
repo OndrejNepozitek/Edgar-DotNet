@@ -4,8 +4,20 @@
 	using System.Linq;
 
 	/// <inheritdoc />
-	public class LazyGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout> 
+	public class LazyGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
 	{
+		private readonly bool resetAfterValid = true;
+
+		public LazyGeneratorPlanner()
+		{
+
+		}
+
+		public LazyGeneratorPlanner(bool resetAfterValid)
+		{
+			this.resetAfterValid = resetAfterValid;
+		}
+
 		/// <summary>
 		/// Alaways chooses a not finished layout on the highest level.
 		/// </summary>
@@ -30,6 +42,16 @@
 			}
 
 			return AddZeroLevelInstance();
+		}
+
+		protected override void AfterValid()
+		{
+			base.AfterValid();
+
+			if (resetAfterValid)
+			{
+				ResetRows();
+			}
 		}
 	}
 }
