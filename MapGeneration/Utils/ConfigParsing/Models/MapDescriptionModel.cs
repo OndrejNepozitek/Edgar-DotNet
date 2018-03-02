@@ -14,5 +14,7 @@
 		public List<IntVector2> Passages { get; set; }
 
 		public RoomDescriptionsSetModel CustomRoomDescriptionsSet { get; set; }
+
+		public CorridorsModel Corridors { get; set; }
 	}
 }

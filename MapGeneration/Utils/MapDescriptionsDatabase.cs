@@ -106,32 +106,37 @@
 			}
 		}
 
-		public static List<Tuple<string, MapDescription<int>>> GetReferenceSetWithCorridors(int offset = 2)
+		public static List<Tuple<string, MapDescription<int>>> GetReferenceSetWithCorridors(List<int> offsets)
 		{
+			if (offsets.Count > 1)
+				throw new NotSupportedException();
+
+			var offset = offsets.First();
+
 			var scale = new IntVector2(1, 1);
 
 			var m1 = Reference_9Vertices_WithoutRoomShapes;
-			m1.SetWithCorridors(true);
+			m1.SetWithCorridors(true, offsets);
 			AddClassicRoomShapes(m1, scale);
 			AddCorridorRoomShapes(m1, offset);
 
 			var m2 = Reference_17Vertices_WithoutRoomShapes;
-			m2.SetWithCorridors(true);
+			m2.SetWithCorridors(true, offsets);
 			AddClassicRoomShapes(m2, scale);
 			AddCorridorRoomShapes(m2, offset);
 
 			var m3 = Reference_41Vertices_WithoutRoomShapes;
-			m3.SetWithCorridors(true);
+			m3.SetWithCorridors(true, offsets);
 			AddClassicRoomShapes(m3, scale);
 			AddCorridorRoomShapes(m3, offset);
 
 			var m4 = Reference_Fig7Bottom_WithoutRoomShapes;
-			m4.SetWithCorridors(true);
+			m4.SetWithCorridors(true, offsets);
 			AddClassicRoomShapes(m4, scale);
 			AddCorridorRoomShapes(m4, offset);
 
 			var m5 = Reference_Fig9_WithoutRoomShapes;
-			m5.SetWithCorridors(true);
+			m5.SetWithCorridors(true, offsets);
 			AddClassicRoomShapes(m5, scale);
 			AddCorridorRoomShapes(m5, offset);
 

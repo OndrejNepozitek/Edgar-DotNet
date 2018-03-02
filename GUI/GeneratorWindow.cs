@@ -61,10 +61,20 @@
 
 				if (layoutGenerator == null)
 				{
-					var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
-					defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+					if (settings.MapDescription.IsWithCorridors)
+					{
+						var defaultGenerator = LayoutGeneratorFactory.GetSALayoutGeneratorWithCorridors(settings.MapDescription.CorridorsOffsets);
+						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
-					layoutGenerator = defaultGenerator;
+						layoutGenerator = defaultGenerator;
+					}
+					else
+					{
+						var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
+						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+
+						layoutGenerator = defaultGenerator;
+					}
 				}
 
 				if (layoutGenerator is ICancellable cancellable)

@@ -15,10 +15,11 @@
 		private readonly List<List<RoomContainer>> roomShapesForNodes = new List<List<RoomContainer>>();
 		private readonly List<Tuple<TNode, TNode>> passages = new List<Tuple<TNode, TNode>>();
 		private readonly Dictionary<TNode, int> rooms = new Dictionary<TNode, int>();
-		private bool withCorridors = false;
 		private bool isLocked = false;
 
-		public bool IsWithCorridors => withCorridors;
+		public bool IsWithCorridors { get; private set; }
+
+		public List<int> CorridorsOffsets { get; private set; }
 
 		public ReadOnlyCollection<RoomContainer> RoomShapes => roomShapes.AsReadOnly();
 
@@ -65,9 +66,8 @@
 
 		public void AddCorridorShapes(RoomDescription shape, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
 		{
-			// TODO: fix
-			/*if (isLocked)
-				throw new InvalidOperationException("MapDescription is locked");*/
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
 
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
@@ -76,6 +76,14 @@
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
 			corridorShapes.Add(new RoomContainer(shape, rotate, probability, normalizeProbabilities));
+		}
+
+		public void AddCorridorShapes(List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
+		{
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
+			shapes.ForEach(x => AddCorridorShapes(x, rotate, probability, normalizeProbabilities));
 		}
 
 		public void AddRoomShapes(TNode node, List<RoomDescription> shapes, bool rotate = true, double probability = 1, bool normalizeProbabilities = true)
@@ -150,7 +158,7 @@
 
 			foreach (var passage in passages)
 			{
-				if (withCorridors)
+				if (IsWithCorridors)
 				{
 					graph.AddVertex(corridorCounter);
 					graph.AddEdge(rooms[passage.Item1], corridorCounter);
@@ -166,9 +174,16 @@
 			return graph;
 		}
 
-		public void SetWithCorridors(bool enable)
+		public void SetWithCorridors(bool enable, List<int> offsets = null)
 		{
-			withCorridors = enable;
+			if (isLocked)
+				throw new InvalidOperationException("MapDescription is locked");
+
+			if (enable && (offsets == null || offsets.Count == 0))
+				throw new ArgumentException("At least one offset must be set if corridors are enabled");
+
+			IsWithCorridors = enable;
+			CorridorsOffsets = offsets;
 		}
 
 		public bool IsCorridorRoom(int room)

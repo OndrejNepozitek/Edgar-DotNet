@@ -48,7 +48,7 @@
 			return layoutGenerator;
 		}
 
-		public static SALayoutGenerator<MapDescription<int>, Layout<Configuration<EnergyDataCorridors>>, Configuration<EnergyDataCorridors>> GetSALayoutGeneratorWithCorridors()
+		public static SALayoutGenerator<MapDescription<int>, Layout<Configuration<EnergyDataCorridors>>, Configuration<EnergyDataCorridors>> GetSALayoutGeneratorWithCorridors(List<int> offsets)
 		{
 			var layoutGenerator = new SALayoutGenerator<MapDescription<int>, Layout<Configuration<EnergyDataCorridors>>, Configuration<EnergyDataCorridors>>();
 
@@ -62,7 +62,7 @@
 			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => generatorPlanner);
 			layoutGenerator.SetLayoutOperationsCreator((mapDescription, configurationSpaces) =>
 			{
-				var corridorConfigurationSpaces = configurationSpacesGenerator.Generate<int, Configuration<EnergyDataCorridors>>(mapDescription, 2);
+				var corridorConfigurationSpaces = configurationSpacesGenerator.Generate<int, Configuration<EnergyDataCorridors>>(mapDescription, offsets);
 				var layoutOperations = new LayoutOperationsWithCorridors<Layout<Configuration<EnergyDataCorridors>>, int, Configuration<EnergyDataCorridors>, IntAlias<GridPolygon>, EnergyDataCorridors>(configurationSpaces, mapDescription, corridorConfigurationSpaces);
 
 				var averageSize = GetAverageSize(configurationSpaces.GetAllShapes());

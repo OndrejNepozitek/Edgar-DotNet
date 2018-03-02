@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration
 {
 	using System;
+	using System.Collections.Generic;
 	using System.IO;
 	using Benchmarks;
 	using Utils;
@@ -23,7 +24,8 @@
 					//	((configurationSpaces, sigma) => new LayoutOperationsWithConstraints<Layout, int, Configuration, IntAlias<GridPolygon>, EnergyData>(configurationSpaces, new PolygonOverlap(), sigma))
 					//	);
 
-					var layoutGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
+					var offsets = new List<int>() {2};
+					var layoutGenerator = LayoutGeneratorFactory.GetSALayoutGeneratorWithCorridors(offsets);
 
 					layoutGenerator.InjectRandomGenerator(new Random(0));
 					layoutGenerator.SetLayoutValidityCheck(false);
@@ -132,7 +134,7 @@
 						setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
 					}
 
-					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
+					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.GetReferenceSetWithCorridors(offsets), 80, sw, dw);
 				}
 			}
 		}

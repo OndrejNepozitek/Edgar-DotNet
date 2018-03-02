@@ -38,7 +38,7 @@
 				.WithNodeDeserializer(new OrthogonalLineDeserializer(), s => s.OnTop())
 				.WithNodeDeserializer(new StringTupleDeserializer(), s => s.OnTop())
 				.WithTagMapping("!OverlapMode", typeof(OverlapMode))
-				.WithTagMapping("!SpecificPositions", typeof(SpecificPositionsMode))
+				.WithTagMapping("!SpecificPositionsMode", typeof(SpecificPositionsMode))
 				.WithObjectFactory(new DefaultObjectFactory())
 				.Build();
 		}
@@ -89,6 +89,7 @@
 
 			LoadRooms(mapDescription, mapDescriptionModel, roomDescriptionsSets);
 			LoadPassagess(mapDescription, mapDescriptionModel);
+			LoadCorridors(mapDescription, mapDescriptionModel, roomDescriptionsSets);
 
 			return mapDescription;
 		}
@@ -137,6 +138,29 @@
 			foreach (var passage in mapDescriptionModel.Passages)
 			{
 				mapDescription.AddPassage(passage.X, passage.Y);
+			}
+		}
+
+		private void LoadCorridors(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
+		{
+			if (mapDescriptionModel.Corridors == null)
+				return;
+
+			var corridors = mapDescriptionModel.Corridors;
+			var enable = corridors.Enable ?? true;
+
+			if (enable && (corridors.Offsets == null || corridors.Offsets.Count == 0))
+				throw new InvalidOperationException("There must be at least one offset if corridors are enabled");
+
+			mapDescription.SetWithCorridors(enable, corridors.Offsets);
+
+			if (enable && (corridors.CorridorShapes == null || corridors.CorridorShapes.Count == 0))
+				throw new InvalidOperationException("There must be at least one shape for corridors if they are enabled.");
+
+			foreach (var rooms in corridors.CorridorShapes)
+			{
+				var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
+				mapDescription.AddCorridorShapes(roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 			}
 		}
 
