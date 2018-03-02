@@ -3,11 +3,15 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 
-	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, TConfigurationSpace> : IRandomInjectable
+	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, TConfigurationSpace>
 	{
 		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
+		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
+
 		IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+
+		IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
 
 		TShape GetRandomShape(TNode node);
 

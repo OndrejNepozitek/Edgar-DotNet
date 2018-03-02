@@ -99,7 +99,9 @@
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpacesGenerator.cs" />
+    <Compile Include="Core\Configuration\EnergyData\EnergyDataCorridors.cs" />
     <Compile Include="Core\Constraints\BasicContraint.cs" />
+    <Compile Include="Core\Constraints\CorridorConstraints.cs" />
     <Compile Include="Core\Constraints\IConstraint.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
     <Compile Include="Core\IntAlias.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
+    <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />
     <Compile Include="Core\MapDescription.cs" />
     <Compile Include="Core\MapLayout.cs" />
     <Compile Include="Core\Room.cs" />

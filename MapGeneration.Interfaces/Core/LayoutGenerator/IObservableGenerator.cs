@@ -2,7 +2,7 @@
 {
 	using System;
 
-	public interface IObservableGenerator<TNode> : ILayoutGenerator<TNode>
+	public interface IObservableGenerator<TMapDescription, TNode> : ILayoutGenerator<TMapDescription, TNode>
 	{
 		event Action<IMapLayout<TNode>> OnPerturbed;
 

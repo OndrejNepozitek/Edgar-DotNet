@@ -10,7 +10,7 @@
 	using Interfaces.Core.ConfigurationSpaces;
 	using Utils;
 
-	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>
+	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>, IRandomInjectable
 		where TConfiguration : IConfiguration<TShapeContainer>
 	{
 		protected Random Random = new Random();
@@ -28,7 +28,12 @@
 
 		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
-			var intersection = GetMaximumIntersection(mainConfiguration, configurations);
+			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+		}
+
+		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		{
+			var intersection = GetMaximumIntersection(mainConfiguration, configurations, out configurationsSatisfied);
 
 			var line = intersection.GetWeightedRandom(x => x.Length + 1, Random);
 			return line.GetNthPoint(Random.Next(line.Length + 1));
@@ -59,6 +64,11 @@
 
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
+			return GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
+		}
+
+		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		{
 			var spaces = GetConfigurationSpaces(mainConfiguration, configurations);
 
 			for (var i = configurations.Count; i > 0; i--)
@@ -83,6 +93,7 @@
 
 					if (intersection != null && intersection.Count != 0)
 					{
+						configurationsSatisfied = indices.Length;
 						return intersection;
 					}
 				}

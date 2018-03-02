@@ -2,16 +2,12 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using Interfaces.Core;
-	using Interfaces.Core.LayoutGenerator;
 
 	/// <summary>
 	/// Class holding a scenario that should be run in a benchmark.
 	/// </summary>
 	/// <typeparam name="TLayoutGenerator"></typeparam>
-	/// <typeparam name="TNode"></typeparam>
-	public class BenchmarkScenario<TLayoutGenerator, TNode>
-		where TLayoutGenerator : ILayoutGenerator<TNode>
+	public class BenchmarkScenario<TLayoutGenerator>
 	{
 		private readonly List<SetupsGroup> setupsGroups = new List<SetupsGroup>();
 		private int runsCount = 1;
@@ -99,6 +95,14 @@
 			{
 				return setups;
 			}
+		}
+	}
+
+	public static class BenchmarkScenario
+	{
+		public static BenchmarkScenario<TLayoutGenerator> CreateScenarioFor<TLayoutGenerator>(TLayoutGenerator generator)
+		{
+			return new BenchmarkScenario<TLayoutGenerator>();
 		}
 	}
 }

@@ -67,9 +67,16 @@
 
 		public override IEnumerable<IntAlias<GridPolygon>> GetAllShapes()
 		{
+			var usedShapes = new HashSet<int>();
+
 			foreach (var shape in Shapes)
 			{
-				yield return shape.Shape;
+				if (!usedShapes.Contains(shape.Shape.Alias))
+				{
+					yield return shape.Shape;
+					usedShapes.Add(shape.Shape.Alias);
+				}
+				
 			}
 
 			foreach (var shapes in ShapesForNodes)
@@ -79,7 +86,11 @@
 
 				foreach (var shape in Shapes)
 				{
-					yield return shape.Shape;
+					if (!usedShapes.Contains(shape.Shape.Alias))
+					{
+						yield return shape.Shape;
+						usedShapes.Add(shape.Shape.Alias);
+					}
 				}
 			}
 		}

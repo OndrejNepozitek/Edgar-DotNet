@@ -61,8 +61,7 @@
 
 				if (layoutGenerator == null)
 				{
-					var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator<int>();
-					defaultGenerator.EnableLazyProcessing(true);
+					var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
 					defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 					layoutGenerator = defaultGenerator;

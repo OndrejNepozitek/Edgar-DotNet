@@ -44,15 +44,19 @@
 				vertexCounter = chainCounter;
 			}
 
+			var lastCount = -1;
+
 			// Process all the cycles
 			while (faces.Count != 0)
 			{
 				var chain = GetSmallestNeighbouringCycle(graph, faces, usedVertices);
 
-				if (chain == null && faces.Count != 0)
+				if (chain == null && faces.Count != 0 && lastCount == faces.Count)
 				{
-					chain = GetNeighbouringPath(graph, usedVertices);
+					chain = GetNeighbouringPath(graph, faces, usedVertices);
 				}
+
+				lastCount = faces.Count;
 				
 				if (chain == null)
 					continue;
@@ -63,14 +67,18 @@
 			// Process all the paths
 			while (usedVertices.Any(x => x.Value == -1))
 			{
-				var chain = GetNeighbouringPath(graph, usedVertices);
+				var chain = GetNeighbouringPath(graph, faces, usedVertices);
+
+				if (chain == null)
+					throw new InvalidOperationException();
+
 				chains.Add(chain);
 			}
 
 			return chains;
 		}
 
-		protected List<TNode> GetNeighbouringPath(IGraph<TNode> graph, Dictionary<TNode, int> usedVertices)
+		protected List<TNode> GetNeighbouringPath(IGraph<TNode> graph, List<List<TNode>> faces, Dictionary<TNode, int> usedVertices)
 		{
 			var firstVertex = default(TNode);
 			var firstDepth = int.MaxValue;
@@ -105,10 +113,11 @@
 			}
 
 			if (foundFirst == false)
-				throw new InvalidOperationException();
+				return null;
 
 			chain.Add(firstVertex);
 			usedVertices[firstVertex] = vertexCounter;
+			var vertexInFaces = false;
 
 			while (true)
 			{
@@ -120,6 +129,12 @@
 				{
 					if (usedVertices[neighbour] == -1 && UncoveredNeighbours(graph, neighbour, usedVertices) == 0)
 					{
+						if (faces.Any(x => x.Contains(neighbour)))
+						{
+							vertexInFaces = true;
+							continue;
+						}
+
 						chain.Add(neighbour);
 						usedVertices[neighbour] = vertexCounter;
 						addedNeighbour = true;
@@ -138,8 +153,17 @@
 				}
 
 				var nextVertex = neighbours[nextVertexIndex];
+
+				if (faces.Any(x => x.Contains(nextVertex)))
+				{
+					vertexInFaces = true;
+				}
+
 				chain.Add(nextVertex);
 				usedVertices[nextVertex] = vertexCounter;
+
+				if (vertexInFaces)
+					break;
 			}
 
 			vertexCounter++;

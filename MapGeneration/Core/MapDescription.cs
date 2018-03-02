@@ -18,6 +18,8 @@
 		private bool withCorridors = false;
 		private bool isLocked = false;
 
+		public bool IsWithCorridors => withCorridors;
+
 		public ReadOnlyCollection<RoomContainer> RoomShapes => roomShapes.AsReadOnly();
 
 		public ReadOnlyCollection<RoomContainer> CorridorShapes => corridorShapes.AsReadOnly();
@@ -172,6 +174,26 @@
 		public bool IsCorridorRoom(int room)
 		{
 			return room >= rooms.Count;
+		}
+
+		public IGraph<int> GetGraphWithoutCorrridors()
+		{
+			// TODO: keep dry
+			isLocked = true;
+			var vertices = Enumerable.Range(0, rooms.Count);
+			var graph = new UndirectedAdjacencyListGraph<int>();
+
+			foreach (var vertex in vertices)
+			{
+				graph.AddVertex(vertex);
+			}
+
+			foreach (var passage in passages)
+			{
+				graph.AddEdge(rooms[passage.Item1], rooms[passage.Item2]);
+			}
+
+			return graph;
 		}
 
 		public class RoomContainer

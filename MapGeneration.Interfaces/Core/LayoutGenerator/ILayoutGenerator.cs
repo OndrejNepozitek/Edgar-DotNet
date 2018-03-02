@@ -1,10 +1,9 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
 	using System.Collections.Generic;
-	using MapDescription;
 
-	public interface ILayoutGenerator<TNode>
+	public interface ILayoutGenerator<TMapDescription, TNode>
 	{
-		IList<IMapLayout<TNode>> GetLayouts(IMapDescription<TNode> mapDescription, int numberOfLayouts = 10);
+		IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts = 10);
 	}
 }

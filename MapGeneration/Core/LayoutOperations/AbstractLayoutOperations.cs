@@ -9,12 +9,13 @@
 	using Interfaces.Core.ConfigurationSpaces;
 	using Utils;
 
-	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : ILayoutOperations<TLayout, TNode>
+	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : ILayoutOperations<TLayout, TNode>, IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer>, ISmartCloneable<TConfiguration>
 	{
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
-		protected Random Random = new Random();
+		protected Random Random;
+		protected float ShapePerturbChance = 0.4f;
 
 		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
@@ -102,7 +103,34 @@
 			PerturbPosition(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
+		public virtual void PerturbLayout(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		{
+			if (Random.NextDouble() <= ShapePerturbChance)
+			{
+				PerturbShape(layout, nodeOptions, updateLayout);
+			}
+			else
+			{
+				PerturbPosition(layout, nodeOptions, updateLayout);
+			}
+		}
+
+		public virtual void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout)
+		{
+			foreach (var node in chain)
+			{
+				AddNodeGreedily(layout, node);
+			}
+
+			if (updateLayout)
+			{
+				UpdateLayout(layout);
+			}
+		}
+
 		public abstract bool IsLayoutValid(TLayout layout);
+
+		public abstract bool IsLayoutValid(TLayout layout, IList<TNode> nodeOptions);
 
 		public abstract float GetEnergy(TLayout layout);
 

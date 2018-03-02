@@ -32,9 +32,12 @@
 			this.polygonUtils = polygonUtils;
 		}
 
-		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription)
+		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription, int offset = 0)
 			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
+			if (offset < 0)
+				throw new ArgumentException("Offset must be greater than or equal to zero", nameof(offset));
+
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;
 			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<IDoorLine>>>();
@@ -146,8 +149,11 @@
 			return result;
 		}
 
-		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed)
+		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed, int offset = 0)
 		{
+			if (offset < 0)
+				throw new ArgumentException("Offset must be greater than or equal to zero", nameof(offset));
+
 			var configurationSpaceLines = new List<OrthogonalLine>();
 			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLine>>();
 
@@ -177,7 +183,7 @@
 				foreach (var cDoorLine in correspondingLines)
 				{
 					var cline = cDoorLine.Line;
-					var y = cline.From.Y - rotatedLine.From.Y;
+					var y = cline.From.Y - rotatedLine.From.Y - offset;
 					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - Math.Max(cDoorLine.Length, doorLine.Length)), y);
 					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + 1), y);
 
@@ -199,12 +205,12 @@
 		}
 
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter,
-			IDoorMode fixedDoorsMode)
+			IDoorMode fixedDoorsMode, int offset = 0)
 		{
 			var doorLinesFixed = doorHandler.GetDoorPositions(fixedCenter, fixedDoorsMode);
 			var doorLines = doorHandler.GetDoorPositions(polygon, doorsMode);
 
-			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed);
+			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offset);
 		}
 
 		private List<OrthogonalLine> RemoveOverlapping(GridPolygon polygon, GridPolygon fixedCenter, List<OrthogonalLine> lines)

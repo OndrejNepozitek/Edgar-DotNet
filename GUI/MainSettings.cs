@@ -4,7 +4,7 @@
 	using System.IO;
 	using System.Linq;
 	using System.Windows.Forms;
-	using MapGeneration.Interfaces.Core.MapDescription;
+	using MapGeneration.Core;
 	using MapGeneration.Utils.ConfigParsing;
 
 	public partial class MainSettings : Form
@@ -13,7 +13,7 @@
 		private GeneratorWindow generatorWindow;
 		private readonly Random random = new Random();
 
-		private IMapDescription<int> mapDescription;
+		private MapDescription<int> mapDescription;
 		private bool usingUploaded = false;
 
 		public MainSettings()

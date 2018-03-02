@@ -24,7 +24,7 @@
 		{
 			{
 				// C_3 - 2 faces
-				var graph = new FastGraph<int>(3);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 
 				graph.AddVertex(0);
 				graph.AddVertex(1);
@@ -47,7 +47,7 @@
 
 			{
 				// Two C_3s connected by a common vertex
-				var graph = new FastGraph<int>(5);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 
 				graph.AddVertex(0);
 				graph.AddVertex(1);
@@ -80,7 +80,7 @@
 		{
 			{
 				// K_3,3
-				var graph = new FastGraph<int>(6);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 
 				Enumerable.Range(0, 6).ToList().ForEach(x => graph.AddVertex(x));
 
@@ -97,7 +97,7 @@
 
 			{
 				// K_5
-				var graph = new FastGraph<int>(5);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 
 				Enumerable.Range(0, 5).ToList().ForEach(x => graph.AddVertex(x));
 

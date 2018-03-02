@@ -1,7 +1,6 @@
 ﻿namespace MapGeneration.Core.Constraints
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -20,10 +19,10 @@
 		private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 
-		public BasicContraint(IPolygonOverlap polygonOverlap, float energySigma, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public BasicContraint(IPolygonOverlap polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.polygonOverlap = polygonOverlap;
-			this.energySigma = energySigma;
+			energySigma = 10 * averageSize;
 			this.configurationSpaces = configurationSpaces;
 		}
 

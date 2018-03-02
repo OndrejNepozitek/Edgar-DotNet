@@ -4,7 +4,6 @@
 	using System.Linq;
 	using ConfigurationSpaces;
 	using Constraints;
-	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
@@ -18,9 +17,14 @@
 	{
 		private readonly List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>> constraints = new List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
 
-		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, IPolygonOverlap polygonOverlap, float energySigma) : base(configurationSpaces)
+		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces) : base(configurationSpaces)
 		{
-			constraints.Add(new BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer>(polygonOverlap, energySigma, configurationSpaces));
+
+		}
+
+		public void AddContraints(IConstraint<TLayout, TNode, TConfiguration, TEnergyData> constraint)
+		{
+			constraints.Add(constraint);
 		}
 
 		public override bool IsLayoutValid(TLayout layout)
@@ -32,6 +36,11 @@
 				return false;
 
 			return true;
+		}
+
+		public override bool IsLayoutValid(TLayout layout, IList<TNode> nodeOptions)
+		{
+			return IsLayoutValid(layout);
 		}
 
 		public override float GetEnergy(TLayout layout)
@@ -100,7 +109,7 @@
 						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
 							continue;
 
-						var energy = RunAllCompute(layout, node, CreateConfiguration(shape, position)).Energy;
+						var energy = ComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
 
 						if (energy < bestEnergy)
 						{
@@ -131,7 +140,7 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		private TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position)
+		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position)
 		{
 			var configuration = new TConfiguration
 			{
@@ -168,6 +177,11 @@
 			var newEnergyData = RunAllUpdate(node, oldLayout, layout);
 			configuration.EnergyData = newEnergyData;
 			layout.SetConfiguration(node, configuration);
+		}
+
+		protected TEnergyData ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration)
+		{
+			return RunAllCompute(layout, node, configuration);
 		}
 
 		private TEnergyData RunAllCompute(TLayout layout, TNode node, TConfiguration configuration)

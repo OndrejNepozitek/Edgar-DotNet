@@ -24,11 +24,11 @@
 
 		public static MapDescription<int> Reference_Fig9_WithoutRoomShapes => Make_Reference_Fig9_WithoutRoomShapes();
 
-		public static List<Tuple<string, IMapDescription<int>>> BasicSet;
+		public static List<Tuple<string, MapDescription<int>>> BasicSet;
 
-		public static List<Tuple<string, IMapDescription<int>>> Reference_17Vertices_ScaledSet;
+		public static List<Tuple<string, MapDescription<int>>> Reference_17Vertices_ScaledSet;
 
-		public static List<Tuple<string, IMapDescription<int>>> ReferenceSet;
+		public static List<Tuple<string, MapDescription<int>>> ReferenceSet;
 
 		static MapDescriptionsDatabase()
 		{
@@ -40,11 +40,11 @@
 				var m3 = Reference_41Vertices_WithoutRoomShapes;
 				AddClassicRoomShapes(m3);
 
-				BasicSet = new List<Tuple<string, IMapDescription<int>>>()
+				BasicSet = new List<Tuple<string, MapDescription<int>>>()
 				{
-					Tuple.Create("Reference 9 vertices", (IMapDescription<int>) m1),
-					Tuple.Create("Reference 17 vertices", (IMapDescription<int>) m2),
-					Tuple.Create("Reference 41 vertices", (IMapDescription<int>) m3),
+					Tuple.Create("Reference 9 vertices", m1),
+					Tuple.Create("Reference 17 vertices", m2),
+					Tuple.Create("Reference 41 vertices", m3),
 				};
 			}
 
@@ -62,13 +62,13 @@
 				var m5 = Reference_Fig9_WithoutRoomShapes;
 				AddClassicRoomShapes(m5, scale);
 
-				ReferenceSet = new List<Tuple<string, IMapDescription<int>>>()
+				ReferenceSet = new List<Tuple<string, MapDescription<int>>>()
 				{
-					Tuple.Create("Fig 1 (17 vertices)", (IMapDescription<int>) m2),
-					Tuple.Create("Fig 7 top (9 vertices)", (IMapDescription<int>) m1),
-					/*Tuple.Create("Fig 7 bottom (17 vertices)", (IMapDescription<int>) m4),
-					Tuple.Create("Fig 8 (41 vertices)", (IMapDescription<int>) m3),
-					Tuple.Create("Fig 9 (15 vertices)", (IMapDescription<int>) m5),*/
+					Tuple.Create("Fig 1 (17 vertices)", m2),
+					Tuple.Create("Fig 7 top (9 vertices)", m1),
+					Tuple.Create("Fig 7 bottom (17 vertices)", m4),
+					Tuple.Create("Fig 8 (41 vertices)", m3),
+					Tuple.Create("Fig 9 (15 vertices)", m5),
 				};
 			}
 
@@ -92,13 +92,13 @@
 				var m6 = Reference_41Vertices_WithoutRoomShapes;
 				AddClassicRoomShapes(m6, new IntVector2(25, 25));
 
-				Reference_17Vertices_ScaledSet = new List<Tuple<string, IMapDescription<int>>>()
+				Reference_17Vertices_ScaledSet = new List<Tuple<string, MapDescription<int>>>()
 				{
-					Tuple.Create("17 vertices - scale 1", (IMapDescription<int>) m0),
-					Tuple.Create("17 vertices - scale 5", (IMapDescription<int>) m1),
-					Tuple.Create("17 vertices - scale 10", (IMapDescription<int>) m2),
-					Tuple.Create("17 vertices - scale 25", (IMapDescription<int>) m3),
-					Tuple.Create("17 vertices - scale 50", (IMapDescription<int>) m7),
+					Tuple.Create("17 vertices - scale 1", m0),
+					Tuple.Create("17 vertices - scale 5", m1),
+					Tuple.Create("17 vertices - scale 10", m2),
+					Tuple.Create("17 vertices - scale 25", m3),
+					Tuple.Create("17 vertices - scale 50", m7),
 					/*Tuple.Create("41 vertices - scale 5", (IMapDescription<int>) m4),
 					Tuple.Create("41 vertices - scale 10", (IMapDescription<int>) m5),
 					Tuple.Create("41 vertices - scale 25", (IMapDescription<int>) m6),*/
@@ -305,12 +305,6 @@
 			mapDescription.AddRoomShapes(room1);
 			mapDescription.AddRoomShapes(room2);
 			mapDescription.AddRoomShapes(room3);
-
-			var corridor1 = new RoomDescription(
-				GridPolygon.GetRectangle(overlapScale, 1)
-				, doorMode);
-
-			mapDescription.AddCorridorShapes(corridor1);
 		}
 
 		public static void AddClassicRoomShapes<TNode>(MapDescription<TNode> mapDescription)

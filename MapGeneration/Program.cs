@@ -3,13 +3,7 @@
 	using System;
 	using System.IO;
 	using Benchmarks;
-	using Core;
-	using Core.LayoutOperations;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using Utils;
-	using EnergyData = Core.Configuration.EnergyData.EnergyData;
-	using Configuration = Core.Configuration.Configuration<Core.Configuration.EnergyData.EnergyData>;
 
 	internal class Program
 	{
@@ -24,40 +18,43 @@
 				using (var dw = new StreamWriter(time + "_debug.txt"))
 				{
 
-					var layoutGenerator = new SALayoutGenerator<Layout<Configuration>, int, Configuration>(
-						(graph => new Layout<Configuration>(graph)),
-						((configurationSpaces, sigma) => new LayoutOperationsWithConstraints<Layout<Configuration>, int, Configuration, IntAlias<GridPolygon>, EnergyData>(configurationSpaces, new PolygonOverlap(), sigma))
-						);
+					//var layoutGenerator = new SALayoutGenerator<Layout, int, Configuration>(
+					//	(graph => new Layout<Configuration>(graph)),
+					//	((configurationSpaces, sigma) => new LayoutOperationsWithConstraints<Layout, int, Configuration, IntAlias<GridPolygon>, EnergyData>(configurationSpaces, new PolygonOverlap(), sigma))
+					//	);
+
+					var layoutGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
+
 					layoutGenerator.InjectRandomGenerator(new Random(0));
 					layoutGenerator.SetLayoutValidityCheck(false);
 
-					var scenario = new BenchmarkScenario<SALayoutGenerator<Layout<Configuration>, int, Configuration>, int>();
+					var scenario = BenchmarkScenario.CreateScenarioFor(layoutGenerator);
 					scenario.SetRunsCount(6);
 
-					var setups2 = scenario.MakeSetupsGroup();
-					setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true); });
-					//setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false); });
+					//var setups2 = scenario.MakeSetupsGroup();
+					//setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true); });
+					////setups2.AddSetup("Not lazy", generator => { generator.EnableLazyProcessing(false); });
 
-					//var setups3 = scenario.MakeSetupsGroup();
-					//setups3.AddSetup("Perturb pos", generator => { generator.EnablePerturbPositionAfterShape(true);});
-					//setups3.AddSetup("No perturb", generator => { generator.EnablePerturbPositionAfterShape(false);});
+					////var setups3 = scenario.MakeSetupsGroup();
+					////setups3.AddSetup("Perturb pos", generator => { generator.EnablePerturbPositionAfterShape(true);});
+					////setups3.AddSetup("No perturb", generator => { generator.EnablePerturbPositionAfterShape(false);});
 
-					var setups4 = scenario.MakeSetupsGroup();
-					//for (var i = 0; i < 10; i++)
-					//{
-					//	var sigma = (int)Math.Pow(10, i);
-					//	setups4.AddSetup($"Sigma avg {sigma}", generator => { generator.EnableSigmaFromAvg(true, sigma); });
-					//}
-					//setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
-					setups4.AddSetup($"Sigma avg {100}", generator => { generator.EnableSigmaFromAvg(true, 10); });
+					//var setups4 = scenario.MakeSetupsGroup();
+					////for (var i = 0; i < 10; i++)
+					////{
+					////	var sigma = (int)Math.Pow(10, i);
+					////	setups4.AddSetup($"Sigma avg {sigma}", generator => { generator.EnableSigmaFromAvg(true, sigma); });
+					////}
+					////setups4.AddSetup("Sigma constant", generator => { generator.EnableSigmaFromAvg(false); });
+					//setups4.AddSetup($"Sigma avg {100}", generator => { generator.EnableSigmaFromAvg(true, 10); });
 
-					var setups6 = scenario.MakeSetupsGroup();
-					//for (var i = 1; i < 10; i++)
-					//{
-					//	var chance = i * 0.03f;
-					//	setups6.AddSetup($"Perturb outside with chance {chance}", generator => { generator.EnablePerturbOutsideChain(true, chance); });
-					//}
-					setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
+					//var setups6 = scenario.MakeSetupsGroup();
+					////for (var i = 1; i < 10; i++)
+					////{
+					////	var chance = i * 0.03f;
+					////	setups6.AddSetup($"Perturb outside with chance {chance}", generator => { generator.EnablePerturbOutsideChain(true, chance); });
+					////}
+					//setups6.AddSetup("Perturb inside", generator => { generator.EnablePerturbOutsideChain(false); });
 
 					{
 						// Chain decomposition
@@ -131,8 +128,8 @@
 					}
 
 					{
-						var setups = scenario.MakeSetupsGroup();
-						setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
+						//var setups = scenario.MakeSetupsGroup();
+						//setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
 					}
 
 					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
