@@ -56,7 +56,7 @@
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 			var generatorPlanner = new LazyGeneratorPlanner<Layout<Configuration<EnergyDataCorridors>>>();
 
-			layoutGenerator.SetChainDecompositionCreator(mapDescription => chainDecomposition);
+			layoutGenerator.SetChainDecompositionCreator(mapDescription => new CorridorsChainDecomposition<int>(mapDescription, chainDecomposition));
 			layoutGenerator.SetConfigurationSpacesCreator(mapDescription => configurationSpacesGenerator.Generate<int, Configuration<EnergyDataCorridors>>(mapDescription));
 			layoutGenerator.SetInitialLayoutCreator(mapDescription => new Layout<Configuration<EnergyDataCorridors>>(mapDescription.GetGraph()));
 			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => generatorPlanner);

@@ -111,11 +111,12 @@
     <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
     <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Configuration\EnergyData\EnergyData.cs" />
-    <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />
     <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\BreadthFirstLongerChainsDecomposition.cs" />
+    <Compile Include="Core\GraphDecomposition\CorridorsChainDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
+    <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />
     <Compile Include="Core\IntAlias.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />

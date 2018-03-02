@@ -128,8 +128,8 @@
 					}
 
 					{
-						//var setups = scenario.MakeSetupsGroup();
-						//setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
+						var setups = scenario.MakeSetupsGroup();
+						setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
 					}
 
 					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
