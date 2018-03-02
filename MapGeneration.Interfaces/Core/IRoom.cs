@@ -13,6 +13,8 @@
 
 		IntVector2 Position { get; }
 
+		bool IsCorridor { get; }
+
 		IList<Tuple<TNode, OrthogonalLine>> Doors { get; }
 	}
 }

@@ -432,11 +432,14 @@
 			var rooms = new List<IRoom<int>>();
 			var roomsDict = new Dictionary<int, Room<int>>();
 
+			var corridorMapDescription = mapDescription as ICorridorMapDescription<int>;
+			var hasCorridors = corridorMapDescription != null;
+
 			foreach (var vertex in layout.Graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertex, out var configuration))
 				{
-					var room = new Room<int>(vertex, configuration.Shape, configuration.Position);
+					var room = new Room<int>(vertex, configuration.Shape, configuration.Position, hasCorridors && corridorMapDescription.IsCorridorRoom(vertex));
 					rooms.Add(room);
 
 					if (!addRooms)

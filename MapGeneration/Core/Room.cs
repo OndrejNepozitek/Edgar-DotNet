@@ -14,13 +14,16 @@
 
 		public IntVector2 Position { get; }
 
+		public bool IsCorridor { get; }
+
 		public IList<Tuple<TNode, OrthogonalLine>> Doors { get; set; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position)
+		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor)
 		{
 			Node = node;
 			Shape = shape;
 			Position = position;
+			IsCorridor = isCorridor;
 			Doors = null;
 		}
 	}

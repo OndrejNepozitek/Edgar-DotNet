@@ -50,19 +50,20 @@
 		{
 			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.GetRooms().ToList();
-			var minWidth = polygons.Min(x => x.BoundingRectangle.Width);
+			var minWidth = layout.GetRooms().Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
 
 			for (var i = 0; i < rooms.Count; i++)
 			{
-				var outline = GetOutline(polygons[i], rooms[i].Doors?.Select(x => x.Item2).ToList())
+				var room = rooms[i];
+				var outline = GetOutline(polygons[i], room.Doors?.Select(x => x.Item2).ToList())
 					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
 
 				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
 				DrawRoom(polygon, outline, 2);
 
-				if (withNames)
+				if (withNames && !room.IsCorridor)
 				{
-					DrawTextOntoPolygon(polygon, rooms[i].Node.ToString(), 2.5f * minWidth);
+					DrawTextOntoPolygon(polygon, room.Node.ToString(), 2.5f * minWidth);
 				}
 			}
 		}
