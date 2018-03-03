@@ -24,8 +24,9 @@
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
+		/// <param name="showRoomNames"></param>
 		/// <returns></returns>
-		public string DrawLayout(IMapLayout<TNode> layout, int width)
+		public string DrawLayout(IMapLayout<TNode> layout, int width, bool showRoomNames = true)
 		{
 			if (width <= 0)
 				throw new ArgumentException("Width must be greater than zero.", nameof(width));
@@ -35,7 +36,7 @@
 
 			data.AppendLine($"<svg width=\"{width}\" height=\"{height}\" xmlns=\"http://www.w3.org/2000/svg\">");
 
-			DrawLayout(layout, width, height, true);
+			DrawLayout(layout, width, height, showRoomNames);
 
 			data.AppendLine("</svg>");
 

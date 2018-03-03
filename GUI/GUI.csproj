@@ -102,6 +102,7 @@
     <Compile Include="MainSettings.Designer.cs">
       <DependentUpon>MainSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapDrawing\OldMapDrawer.cs" />
     <Compile Include="MapDrawing\WFLayoutDrawer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,6 +153,10 @@
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />
     </ItemGroup>
+    <ItemGroup>
+      <GUIResources Include=".\Resources\**\*.*" />
+    </ItemGroup>
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(GUIResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

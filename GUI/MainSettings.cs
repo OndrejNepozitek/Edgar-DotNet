@@ -91,7 +91,7 @@
 			}
 			catch (Exception exception)
 			{
-				ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
+				ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}. Inner exception: {exception.InnerException}");
 				return;
 			}
 

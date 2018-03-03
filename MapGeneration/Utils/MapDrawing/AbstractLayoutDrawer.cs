@@ -55,7 +55,7 @@
 			for (var i = 0; i < rooms.Count; i++)
 			{
 				var room = rooms[i];
-				var outline = GetOutline(polygons[i], room.Doors?.Select(x => x.Item2).ToList())
+				var outline = GetOutline(polygons[i], room.Doors?.ToList())
 					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
 
 				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
@@ -151,7 +151,7 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<OrthogonalLine> doorLines)
+		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<Tuple<TNode, OrthogonalLine>> doorLines)
 		{
 			var outline = new List<Tuple<IntVector2, bool>>();
 
@@ -163,22 +163,22 @@
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<OrthogonalLine, int>(x, Math.Min(line.Contains(x.From), line.Contains(x.To)))).ToList();
-				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
+					new Tuple<TNode, OrthogonalLine, int>(x.Item1, x.Item2, Math.Min(line.Contains(x.Item2.From), line.Contains(x.Item2.To)))).ToList();
+				doorDistances.Sort((x1, x2) => x1.Item3.CompareTo(x2.Item3));
 
 				foreach (var pair in doorDistances)
 				{
-					if (pair.Item2 == -1)
+					if (pair.Item3 == -1)
 						continue;
 
-					var doorLine = pair.Item1;
+					var doorLine = pair.Item2;
 
-					if (line.Contains(doorLine.From) != pair.Item2)
+					if (line.Contains(doorLine.From) != pair.Item3)
 					{
 						doorLine = doorLine.SwitchOrientation();
 					}
 
-					doorLines.Remove(doorLine);
+					doorLines.Remove(Tuple.Create(pair.Item1, doorLine));
 
 					AddToOutline(Tuple.Create(doorLine.From, true));
 					AddToOutline(Tuple.Create(doorLine.To, false));

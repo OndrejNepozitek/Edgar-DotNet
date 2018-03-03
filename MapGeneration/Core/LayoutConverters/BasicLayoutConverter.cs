@@ -69,7 +69,7 @@
 								var randomChoice = doorChoices.GetRandom(Random);
 
 								roomsDict[vertex].Doors.Add(Tuple.Create(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(Tuple.Create(neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(Tuple.Create(vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}

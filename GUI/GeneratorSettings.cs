@@ -15,6 +15,10 @@
 
 		public int RandomGeneratorSeed { get; set; } = 0;
 
+		public bool ShowRoomNames { get; set; } = true;
+
+		public bool UseOldPaperStyle { get; set; } = false;
+
 		public bool ShowFinalLayouts { get; set; } = false;
 
 		public int ShowFinalLayoutsTime { get; set; } = 2000;

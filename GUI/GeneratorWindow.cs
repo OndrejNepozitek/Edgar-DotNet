@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
+	using System.Drawing;
 	using System.IO;
 	using System.Threading;
 	using System.Threading.Tasks;
@@ -15,8 +16,10 @@
 	public partial class GeneratorWindow : Form
 	{
 		private readonly GeneratorSettings settings;
+
 		private readonly WFLayoutDrawer<int> wfLayoutDraver = new WFLayoutDrawer<int>();
 		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
+		private readonly OldMapDrawer<int> oldMapDrawer = new OldMapDrawer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -43,6 +46,8 @@
 			showAcceptedLayoutsTime.Value = settings.ShowPartialValidLayoutsTime;
 			showPerturbedLayouts.Checked = settings.ShowPerturbedLayouts;
 			showPerturbedLayoutsTime.Value = settings.ShowPerturbedLayoutsTime;
+			showRoomNamesCheckbox.Checked = settings.ShowRoomNames;
+			useOldPaperStyleCheckbox.Checked = settings.UseOldPaperStyle;
 
 			slideshowPanel.Hide();
 			exportPanel.Hide();
@@ -165,7 +170,18 @@
 			if (layoutToDraw == null)
 				return;
 
-			wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox, e);
+			var showNames = showRoomNamesCheckbox.Checked;
+			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
+
+			if (useOldPaperStyle)
+			{
+				var bitmap = oldMapDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames);
+				e.Graphics.DrawImage(bitmap, new Point(0, 0));
+			}
+			else
+			{
+				wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox, e, showNames);
+			}
 		}
 
 		private void UpdateInfoPanel()
@@ -285,11 +301,21 @@
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, 800);
+						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, 800, showRoomNamesCheckbox.Checked);
 						sw.Write(data);
 					}
 				}
 			}
+		}
+
+		private void showRoomNamesCheckbox_CheckedChanged(object sender, EventArgs e)
+		{
+			mainPictureBox.Refresh();
+		}
+
+		private void useOldPaperStyleCheckbox_CheckedChanged(object sender, EventArgs e)
+		{
+			mainPictureBox.Refresh();
 		}
 	}
 }
