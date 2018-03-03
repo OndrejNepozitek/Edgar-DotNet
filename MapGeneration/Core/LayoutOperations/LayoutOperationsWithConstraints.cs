@@ -17,7 +17,7 @@
 	{
 		private readonly List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>> constraints = new List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
 
-		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces) : base(configurationSpaces)
+		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize) : base(configurationSpaces, averageSize)
 		{
 
 		}

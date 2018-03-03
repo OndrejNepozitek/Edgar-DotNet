@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.SimulatedAnnealing.GeneratorPlanner
+﻿namespace MapGeneration.Interfaces.Core
 {
 	using System;
 	using System.Collections.Generic;
@@ -25,7 +25,7 @@
 		/// <param name="context">Context of the generation.</param>
 		/// <param name="count">How many layouts should be generated.</param>
 		/// <returns></returns>
-		List<TLayout> Generate(TLayout initialLayout, List<List<int>> chains, Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing, ISAContext context, int count);
+		List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc, IGeneratorContext context);
 
 		/// <summary>
 		/// Returns a human readable log of the planning.

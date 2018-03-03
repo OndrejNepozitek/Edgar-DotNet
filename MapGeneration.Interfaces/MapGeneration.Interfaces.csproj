@@ -54,7 +54,11 @@
     <Compile Include="Core\Doors\IDoorHandler.cs" />
     <Compile Include="Core\Doors\IDoorMode.cs" />
     <Compile Include="Core\IEnergyLayout.cs" />
+    <Compile Include="Core\IGeneratorPlanner.cs" />
     <Compile Include="Core\ILayout.cs" />
+    <Compile Include="Core\ILayoutConverter.cs" />
+    <Compile Include="Core\ILayoutEvolver.cs" />
+    <Compile Include="Core\IGeneratorContext.cs" />
     <Compile Include="Core\LayoutGenerator\ILayoutGenerator.cs" />
     <Compile Include="Core\ILayoutOperations.cs" />
     <Compile Include="Core\LayoutGenerator\IObservableGenerator.cs" />

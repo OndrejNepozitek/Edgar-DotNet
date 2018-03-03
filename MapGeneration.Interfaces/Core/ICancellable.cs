@@ -4,6 +4,6 @@
 
 	public interface ICancellable
 	{
-		void SetCancellationToken(CancellationToken cancellationToken);
+		void SetCancellationToken(CancellationToken? cancellationToken);
 	}
 }

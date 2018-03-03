@@ -81,7 +81,7 @@
 				layoutCounts.Add(generator.LayoutsCount);
 				iterationCounts.Add(generator.IterationsCount);
 				timesFirst.Add((int) generator.TimeFirst);
-				timesTen.Add((int) generator.TimeTen);
+				timesTen.Add((int) generator.TimeTotal);
 			}
 
 			Console.SetCursorPosition(0, Console.CursorTop);
@@ -110,7 +110,7 @@
 
 			builder.AppendLine($"Layouts: {generator.LayoutsCount}, Iteration: {generator.IterationsCount}");
 			builder.AppendLine();
-			builder.AppendLine(generator.GetPlannerLog());
+			// builder.AppendLine(generator.GetPlannerLog()); TODO: fix
 
 			return builder.ToString();
 		}

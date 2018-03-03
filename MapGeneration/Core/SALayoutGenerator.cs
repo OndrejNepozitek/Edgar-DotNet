@@ -8,6 +8,7 @@
 	using Benchmarks;
 	using ConfigurationSpaces;
 	using Doors;
+	using Experimental;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
@@ -52,7 +53,7 @@
 
 		private CancellationToken? cancellationToken;
 
-		private SAContext context;
+		private GeneratorContext context;
 
 		private IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private ILayoutOperations<TLayout, int> layoutOperations;
@@ -113,7 +114,7 @@
 			var graphChains = chainDecomposition.GetChains(graph);
 			avgSize = GetAverageSize(configurationSpaces.GetAllShapes());
 
-			context = new SAContext()
+			context = new GeneratorContext()
 			{
 				CancellationToken = cancellationToken,
 			};
@@ -546,7 +547,7 @@
 
 		long IBenchmarkable.TimeFirst => timeFirst;
 
-		long IBenchmarkable.TimeTen => timeTen;
+		long IBenchmarkable.TimeTotal => timeTen;
 
 		int IBenchmarkable.IterationsCount => context.IterationsCount;
 
@@ -555,11 +556,6 @@
 		void IBenchmarkable.EnableBenchmark(bool enable)
 		{
 			BenchmarkEnabled = enable;
-		}
-
-		string IBenchmarkable.GetPlannerLog()
-		{
-			return generatorPlanner.GetLog();
 		}
 
 		public void EnableSigmaFromAvg(bool enable, int scale = 0)
@@ -668,61 +664,6 @@
 		{
 			generatorPlanner = planner;
 			generatorPlanner.OnLayoutGenerated += firstLayoutTimer;
-		}
-
-		#endregion
-
-		#region Random restarts
-
-		private bool enableRandomRestarts = true;
-		private RestartSuccessPlace randomRestartsSuccessPlace = RestartSuccessPlace.OnValidAndDifferent;
-		private bool randomRestartsResetCounter = false;
-		private float randomRestartsScale = 1;
-		private List<int> randomRestartProbabilities = new List<int>() {2, 3, 5, 7};
-
-		public void SetRandomRestarts(bool enable, RestartSuccessPlace successPlace = RestartSuccessPlace.OnValidAndDifferent, bool resetCounter = false, float scale = 1f)
-		{
-			enableRandomRestarts = enable;
-			randomRestartsSuccessPlace = successPlace;
-			randomRestartsResetCounter = resetCounter;
-
-			if (scale < 1)
-				throw new ArgumentException();
-
-			randomRestartsScale = scale;
-			randomRestartProbabilities = (new List<int>() { 2, 3, 5, 7 }).Select(x => (int)(x * randomRestartsScale)).ToList();
-		}
-
-		private bool ShouldRestart(int numberOfFailures)
-		{
-			// ReSharper disable once ReplaceWithSingleAssignment.False
-			var shouldRestart = false;
-
-			if (numberOfFailures > 8 && random.Next(0, randomRestartProbabilities[0]) == 0)
-			{
-				shouldRestart = true;
-			} else if (numberOfFailures > 6 && random.Next(0, randomRestartProbabilities[1]) == 0)
-			{
-				shouldRestart = true;
-			} else if (numberOfFailures > 4 && random.Next(0, randomRestartProbabilities[2]) == 0)
-			{
-				shouldRestart = true;
-			} else if (numberOfFailures > 2 && random.Next(0, randomRestartProbabilities[3]) == 0)
-			{
-				shouldRestart = true;
-			}
-
-			if (shouldRestart && withDebugOutput)
-			{
-				Console.WriteLine($"Break, we got {numberOfFailures} failures");
-			}
-
-			return shouldRestart;
-		}
-
-		public enum RestartSuccessPlace
-		{
-			OnValid, OnValidAndDifferent, OnAccepted
 		}
 
 		#endregion

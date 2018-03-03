@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
+	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
@@ -16,10 +17,13 @@
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected Random Random;
 		protected float ShapePerturbChance = 0.4f;
+		protected float DifferenceFromAverageScale = 0.4f;
+		protected int AverageSize;
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize)
 		{
 			ConfigurationSpaces = configurationSpaces;
+			AverageSize = averageSize;
 		}
 
 		public virtual void InjectRandomGenerator(Random random)
@@ -126,6 +130,27 @@
 			{
 				UpdateLayout(layout);
 			}
+		}
+
+		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain = null)
+		{
+			// TODO: make better
+			var diff = 0d;
+
+			var nodes = chain ?? layout1.Graph.Vertices;
+			foreach (var node in nodes)
+			{
+				if (layout1.GetConfiguration(node, out var c1) && layout2.GetConfiguration(node, out var c2))
+				{
+					diff += (float)(Math.Pow(
+						                5 * IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+							                c2.Shape.BoundingRectangle.Center + c2.Position) / (float)AverageSize, 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
+				}
+			}
+
+			diff = diff / (nodes.Count());
+
+			return DifferenceFromAverageScale * diff >= 1;
 		}
 
 		public abstract bool IsLayoutValid(TLayout layout);

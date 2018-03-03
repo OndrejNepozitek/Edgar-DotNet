@@ -26,8 +26,9 @@
 		public LayoutOperationsWithCorridors(
 			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
 			ICorridorMapDescription<TNode> mapDescription,
-			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> corridorConfigurationSpaces
-			) : base(configurationSpaces)
+			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> corridorConfigurationSpaces,
+			int averageSize
+			) : base(configurationSpaces, averageSize)
 		{
 			MapDescription = mapDescription;
 			CorridorConfigurationSpaces = corridorConfigurationSpaces;

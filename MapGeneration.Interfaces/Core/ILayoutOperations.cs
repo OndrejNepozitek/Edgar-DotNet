@@ -25,5 +25,7 @@
 		void AddNodeGreedily(TLayout layout, TNode node);
 
 		void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout);
+
+		bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain = null);
 	}
 }

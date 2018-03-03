@@ -3,20 +3,23 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Text;
+	using System.Threading;
+	using Interfaces.Core;
 
 	/// <summary>
 	/// Base class for generator planners.
 	/// Inheriting classes must implement just GetNextInstance() that is called
 	/// when a new layout should be chosen to be extended.
 	/// </summary>
-	public abstract class GeneratorPlannerBase<TLayout> : IGeneratorPlanner<TLayout>
+	public abstract class GeneratorPlannerBase<TLayout> : IGeneratorPlanner<TLayout>, ICancellable
 	{
 		private TLayout initialLayout;
-		private List<List<int>> chains;
-		private Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing;
 		private List<InstanceRow> rows;
 		private List<LogEntry> log;
 		private int nextId;
+		private Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc;
+
+		protected CancellationToken? CancellationToken;
 
 		public event Action<TLayout> OnLayoutGenerated;
 
@@ -29,15 +32,14 @@
 		/// <param name="context"></param>
 		/// <param name="count"></param>
 		/// <returns></returns>
-		public List<TLayout> Generate(TLayout initialLayout, List<List<int>> chains, Func<TLayout, List<int>, IEnumerable<TLayout>> simulatedAnnealing, ISAContext context, int count)
+		public List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc, IGeneratorContext context)
 		{
 			// Initialization
 			this.initialLayout = initialLayout;
-			this.chains = chains;
-			this.simulatedAnnealing = simulatedAnnealing;
 			rows = new List<InstanceRow>();
 			log = new List<LogEntry>();
 			nextId = 0;
+			this.layoutGeneratorFunc = layoutGeneratorFunc;
 			var layouts = new List<TLayout>();
 
 			BeforeGeneration();
@@ -45,7 +47,7 @@
 
 			while (layouts.Count < count)
 			{
-				if (context.CancellationToken.HasValue && context.CancellationToken.Value.IsCancellationRequested)
+				if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
 					break;
 
 				if (context.IterationsCount > 1000000)
@@ -73,7 +75,7 @@
 				}
 
 				// Check if the layout has already all the chains added
-				if (newDepth == chains.Count)
+				if (newDepth == chainsCount)
 				{
 					OnLayoutGenerated?.Invoke(layout);
 					layouts.Add(layout);
@@ -83,7 +85,7 @@
 				}
 				
 				// A new instance is created from the generated layout and added to the tree.
-				var saInstance = GetSAInstance(layout, chains[newDepth]);
+				var saInstance = GetSAInstance(layout, newDepth);
 				var nextInstance = new Instance(instance, saInstance, newDepth, iterationsToGenerate, nextId++);
 				instance.AddChild(nextInstance);
 				AddInstance(nextInstance, newDepth);
@@ -147,9 +149,9 @@
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private SAInstance<TLayout> GetSAInstance(TLayout layout, List<int> chain)
+		private SAInstance<TLayout> GetSAInstance(TLayout layout, int chainNumber)
 		{
-			var layouts = simulatedAnnealing(layout, chain);
+			var layouts = layoutGeneratorFunc(layout, chainNumber);
 
 			return new SAInstance<TLayout>(layouts);
 		}
@@ -269,7 +271,7 @@
 		/// <returns></returns>
 		protected Instance AddZeroLevelInstance()
 		{
-			var instance = new Instance(null, GetSAInstance(initialLayout, chains[0]), 0, 0, nextId++);
+			var instance = new Instance(null, GetSAInstance(initialLayout, 0), 0, 0, nextId++);
 			AddInstance(instance, 0);
 			log.Add(new LogEntry(LogType.Success, instance, 0));
 
@@ -392,6 +394,11 @@
 		private enum LogType
 		{
 			Fail, Success, Final
+		}
+
+		public virtual void SetCancellationToken(CancellationToken? cancellationToken)
+		{
+			CancellationToken = cancellationToken;
 		}
 	}
 }
