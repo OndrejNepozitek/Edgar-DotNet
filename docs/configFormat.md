@@ -21,8 +21,6 @@ Config files are used when working with the GUI. They should cover most of the A
 ## Sections
 Bellow you can find a list of all sections that can be used in config files. The order of sections is not important.
 
----
-
 ### `roomsRange` (required)
 ```yaml
 roomsRange:
@@ -57,8 +55,7 @@ passages:
   - [2, 5] 
 ```
 
-> _Note_:
-Passages are described as _yaml_ arrays suggesting that there could be more than two elements. But the parser expects every such array to contain **exactly** two elements and will throw an exception otherwise.
+**Note**: Passages are described as _yaml_ arrays suggesting that there could be more than two elements. But the parser expects every such array to contain **exactly** two elements and will throw an exception otherwise.
 
 ---
 
@@ -82,9 +79,9 @@ rooms:
         scale: [2,2]
 ```
 
-> This section is **required** if defaults are not set.
+**Note:** This section is **required** if defaults are not set.
 
-> _Typical usage_:
+**Typical usage:**
 When all but one room should have common settings. Settings of that one special room can then be overriden in this section. See the [different shapes for some rooms](differentShapesMapDescription.md) documentation.
 
 ---
@@ -108,9 +105,9 @@ defaultRoomShapes:
     setName: otherShapes
 ```
 
-> This section is **required** to be non empty if not all rooms have their room shapes described in the _rooms_ section.
+**Note:** This section is **required** to be non empty if not all rooms have their room shapes described in the _rooms_ section.
 
-> _Typical usage_:
+**Typical usage:**
 When there are many rooms that should use the same room shapes. Special rooms can then override defaults in the _rooms_ section.
 
 ## Misc

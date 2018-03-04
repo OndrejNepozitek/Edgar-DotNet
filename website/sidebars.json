@@ -1,8 +1,10 @@
 {
   "docs": {
     "Introduction": ["introduction", "installation"],
-    "Map description": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"],
-    "Misc": ["configFormat"]
+    "Guides": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"],
+    "Chain based generator": ["introduction3", "configurationSpaces", "layoutEvolver"],
+    "Advanced": ["constraints", "corridors"],
+    "Misc": ["configFormat", "benchmarks"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
