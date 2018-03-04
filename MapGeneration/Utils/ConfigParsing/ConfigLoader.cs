@@ -12,6 +12,7 @@
 	using Models;
 	using YamlDotNet.Serialization;
 	using YamlDotNet.Serialization.NamingConventions;
+	using YamlDotNet.Serialization.NodeDeserializers;
 
 	/// <summary>
 	/// Class that loads MapDescription from a file.
@@ -181,7 +182,6 @@
 			{
 				foreach (var pair in mapDescriptionModel.Rooms)
 				{
-					var name = pair.Key;
 					var room = pair.Value;
 
 					if (room.RoomShapes != null)
@@ -189,7 +189,11 @@
 						foreach (var rooms in room.RoomShapes)
 						{
 							var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-							mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+
+							foreach (var name in pair.Key)
+							{
+								mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+							}
 						}
 					}
 				}

@@ -3,7 +3,7 @@ roomsRange:
   to: 8
 
 rooms:
-  8:
+  [8]:
     roomShapes:
       -
         setName: bossRooms

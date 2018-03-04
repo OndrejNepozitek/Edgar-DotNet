@@ -84,7 +84,7 @@
 				if (shapes == null)
 					continue;
 
-				foreach (var shape in Shapes)
+				foreach (var shape in shapes)
 				{
 					if (!usedShapes.Contains(shape.Shape.Alias))
 					{

@@ -9,7 +9,7 @@
 
 		public RoomsRangeModel RoomsRange { get; set; }
 
-		public Dictionary<int, RoomModel> Rooms { get; set; }
+		public Dictionary<List<int>, RoomModel> Rooms { get; set; }
 
 		public List<IntVector2> Passages { get; set; }
 
