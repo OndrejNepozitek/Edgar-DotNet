@@ -25,7 +25,7 @@
 		{
 			{
 				// Two C_3s connected by a common vertex
-				var graph = new FastGraph<int>(5);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 
 				graph.AddVertex(0);
 				graph.AddVertex(1);
@@ -47,7 +47,7 @@
 
 			{
 				// Two intersecting paths
-				var graph = new FastGraph<int>(7);
+				var graph = new UndirectedAdjacencyListGraph<int>();
 				Enumerable.Range(0, 7).ToList().ForEach(x => graph.AddVertex(x));
 
 				graph.AddEdge(0, 1);

@@ -1,6 +1,5 @@
 #include "BoostWrapper.h"
-
-#include "Stdafx.h";
+#include "Stdafx.h"
 #include <boost\graph\adjacency_list.hpp>
 #include <boost\graph\boyer_myrvold_planar_test.hpp>
 #include <boost\graph\planar_face_traversal.hpp>
@@ -80,16 +79,16 @@ array<array<int>^>^ CppCliWrapper::BoostWrapper::GetFaces(int vertices_count, ar
 	output_visitor my_visitor;
 	boost::planar_face_traversal(g, &embedding[0], my_visitor);
 
-	array<array<int>^>^ faces = gcnew array<array<int>^>(my_visitor.faces.size());
+	array<array<int>^>^ faces = gcnew array<array<int>^>(static_cast<int>(my_visitor.faces.size()));
 
-	for (size_t i = 0; i < my_visitor.faces.size(); i++)
+	for (int i = 0; i < my_visitor.faces.size(); i++)
 	{
 		auto face_raw = my_visitor.faces[i];
-		auto face = gcnew array<int>(face_raw.size());
+		auto face = gcnew array<int>(static_cast<int>(face_raw.size()));
 
-		for (size_t j = 0; j < face_raw.size(); j++)
+		for (int j = 0; j < face_raw.size(); j++)
 		{
-			face[j] = face_raw[j];
+			face[j] = static_cast<int>(face_raw[j]);
 		}
 
 		faces[i] = face;
