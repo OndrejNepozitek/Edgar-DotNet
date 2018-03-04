@@ -1,6 +1,5 @@
 ﻿namespace GUI_debug
 {
-	using GUI;
 	using MapGeneration.Utils;
 	using System;
 	using System.Collections.Generic;
@@ -9,6 +8,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using GUI;
 	using MapGeneration.Benchmarks;
 	using MapGeneration.Core;
 	using MapGeneration.Core.Configuration;

@@ -169,6 +169,14 @@
       <Project>{3fb264c8-fe50-44e9-80e2-e9c6941460f3}</Project>
       <Name>MapGeneration.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
+      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
+      <Name>BoostWrapper</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Content</OutputItemType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

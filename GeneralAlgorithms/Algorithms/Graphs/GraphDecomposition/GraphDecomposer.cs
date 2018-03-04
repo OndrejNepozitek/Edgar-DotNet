@@ -3,7 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using CppCliWrapper;
+	using Common;
 	using DataStructures.Graphs;
 
 	public class GraphDecomposer<TNode> : IGraphDecomposer<TNode>
@@ -28,7 +28,7 @@
 				edges.Add(new Tuple<int, int>(v1, v2));
 			}
 
-			var facesRaw = BoostWrapper.GetFaces(graph.VerticesCount, edges.ToArray());
+			var facesRaw = GetFaces(graph.VerticesCount, edges.ToList());
 			var faces = new List<List<TNode>>();
 
 			if (facesRaw == null)
@@ -49,6 +49,42 @@
 			}
 
 			return faces;
+		}
+
+		private int[][] GetFaces(int verticesCount, List<Tuple<int, int>> edges)
+		{
+			var edgesSerialized = new int[edges.Count * 2];
+
+			for (var i = 0; i < edges.Count; i++)
+			{
+				var edge = edges[i];
+				edgesSerialized[2 * i] = edge.Item1;
+				edgesSerialized[2 * i + 1] = edge.Item2;
+			}
+
+			var faces = new int[2 * edges.Count];
+			var facesBorders = new int[2 * edges.Count];
+
+			var success = BoostWrapper.GetFaces(edgesSerialized, edgesSerialized.Length, verticesCount, faces, facesBorders, out var facesCount);
+
+			if (!success)
+			{
+				return null;
+			}
+
+			var result = new int[facesCount][];
+			var counter = 0;
+			for (var i = 0; i < facesCount; i++)
+			{
+				result[i] = new int[facesBorders[i]];
+
+				for (var j = 0; j < facesBorders[i]; j++)
+				{
+					result[i][j] = faces[counter++];
+				}
+			}
+
+			return result;
 		}
 	}
 }

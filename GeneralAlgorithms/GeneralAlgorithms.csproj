@@ -90,6 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Common\BoostWrapper.cs" />
     <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
     <Compile Include="Algorithms\Common\Extensions.cs" />
     <Compile Include="Algorithms\Common\ILineIntersection.cs" />
@@ -124,9 +125,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CppCliWrapper\CppCliWrapper.vcxproj">
-      <Project>{838f1f40-49bf-4647-8ff3-385836a91cd7}</Project>
-      <Name>CppCliWrapper</Name>
+    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
+      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
+      <Name>BoostWrapper</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Content</OutputItemType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
