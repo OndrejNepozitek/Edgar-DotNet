@@ -28,7 +28,7 @@
 			LayoutOperations = layoutOperations;
 		}
 
-		public IEnumerable<TLayout> Evolve(TLayout layout, IList<TNode> chain, int count)
+		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count)
 		{
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
@@ -41,7 +41,7 @@
 			var t = t0;
 
 			var layouts = new List<TLayout>();
-			var originalLayout = layout; 
+			var originalLayout = initialLayout; 
 			var currentLayout = originalLayout;
 
 			#region Debug output

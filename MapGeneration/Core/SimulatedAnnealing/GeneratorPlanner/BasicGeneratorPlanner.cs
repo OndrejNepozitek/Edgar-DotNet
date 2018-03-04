@@ -1,5 +1,6 @@
 ﻿namespace MapGeneration.Core.SimulatedAnnealing.GeneratorPlanner
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
@@ -7,6 +8,7 @@
 	/// This planner should not be used. It is here just to demonstrate that 
 	/// it would be slower to not use lazy evaluation.
 	/// </summary>
+	[Obsolete("This generator tries hard to show that non-lazy planning does not make any sense. Use any other planner.")]
 	public class BasicGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
 	{
 		private int currentRow;
@@ -16,7 +18,7 @@
 
 		public BasicGeneratorPlanner()
 		{
-
+			/* empty */
 		}
 
 		public BasicGeneratorPlanner(bool resetAfterValid)
