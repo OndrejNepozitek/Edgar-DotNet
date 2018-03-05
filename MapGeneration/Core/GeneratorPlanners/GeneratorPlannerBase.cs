@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.SimulatedAnnealing.GeneratorPlanner
+﻿namespace MapGeneration.Core.GeneratorPlanners
 {
 	using System;
 	using System.Collections.Generic;
@@ -17,7 +17,8 @@
 		private List<InstanceRow> rows;
 		private List<LogEntry> log;
 		private int nextId;
-		private Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc;
+		private LayoutGeneratorFunction<TLayout> layoutGeneratorFunc;
+		private int numberOfLayoutsFromOneInstance = 5;
 
 		protected CancellationToken? CancellationToken;
 
@@ -32,7 +33,7 @@
 		/// <param name="context"></param>
 		/// <param name="count"></param>
 		/// <returns></returns>
-		public List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc, IGeneratorContext context)
+		public List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, LayoutGeneratorFunction<TLayout> layoutGeneratorFunc, IGeneratorContext context)
 		{
 			// Initialization
 			this.initialLayout = initialLayout;
@@ -85,8 +86,7 @@
 				}
 				
 				// A new instance is created from the generated layout and added to the tree.
-				var saInstance = GetSAInstance(layout, newDepth);
-				var nextInstance = new Instance(instance, saInstance, newDepth, iterationsToGenerate, nextId++);
+				var nextInstance = new Instance(instance, GetLayouts(layout, newDepth), newDepth, iterationsToGenerate, nextId++);
 				instance.AddChild(nextInstance);
 				AddInstance(nextInstance, newDepth);
 				log.Add(new LogEntry(LogType.Success, nextInstance, iterationsToGenerate));
@@ -144,16 +144,25 @@
 		}
 
 		/// <summary>
-		/// Creates a SAInstance from given layout with given chain.
+		/// Sets how many layouts should be generated from each instance.
+		/// </summary>
+		/// <param name="numberOfLayouts"></param>
+		protected void SetNumberOfLayoutsToGenerate(int numberOfLayouts)
+		{
+			numberOfLayoutsFromOneInstance = numberOfLayouts;
+		}
+
+		/// <summary>
+		/// Gets an IEnumerable of extended layouts from given initial layout and chain number.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private SAInstance<TLayout> GetSAInstance(TLayout layout, int chainNumber)
+		private IEnumerable<TLayout> GetLayouts(TLayout layout, int chainNumber)
 		{
-			var layouts = layoutGeneratorFunc(layout, chainNumber);
+			var layouts = layoutGeneratorFunc(layout, chainNumber, numberOfLayoutsFromOneInstance);
 
-			return new SAInstance<TLayout>(layouts);
+			return layouts;
 		}
 
 		/// <inheritdoc />
@@ -271,7 +280,7 @@
 		/// <returns></returns>
 		protected Instance AddZeroLevelInstance()
 		{
-			var instance = new Instance(null, GetSAInstance(initialLayout, 0), 0, 0, nextId++);
+			var instance = new Instance(null, GetLayouts(initialLayout, 0), 0, 0, nextId++);
 			AddInstance(instance, 0);
 			log.Add(new LogEntry(LogType.Success, instance, 0));
 
@@ -284,6 +293,8 @@
 		/// </summary>
 		protected class Instance
 		{
+			private readonly IEnumerator<TLayout> enumerator;
+
 			/// <summary>
 			/// Parent of this instance. Null if on the zero level.
 			/// </summary>
@@ -293,8 +304,6 @@
 			/// All instance that were generated from this instance.
 			/// </summary>
 			public List<Instance> Children { get; } = new List<Instance>();
-
-			private SAInstance<TLayout> SAInstance { get; }
 
 			/// <summary>
 			/// The depth of the layout. It means that Depth + 1 chains were already added.
@@ -321,10 +330,10 @@
 			/// </summary>
 			public int Id { get; }
 
-			public Instance(Instance parent, SAInstance<TLayout> saInstance, int depth, int iterationsToGenerate, int id)
+			public Instance(Instance parent, IEnumerable<TLayout> layouts, int depth, int iterationsToGenerate, int id)
 			{
 				Parent = parent;
-				SAInstance = saInstance;
+				enumerator = layouts.GetEnumerator();
 				Depth = depth;
 				IterationsToGenerate = iterationsToGenerate;
 				Id = id;
@@ -345,15 +354,15 @@
 			/// <returns>Null if not successful.</returns>
 			public bool TryGetLayout(out TLayout layout)
 			{
-				if (SAInstance.TryGetLayout(out var layoutInner))
+				var hasMore = enumerator.MoveNext();
+				layout = hasMore ? enumerator.Current : default(TLayout);
+
+				if (!hasMore)
 				{
-					layout = layoutInner;
-					return true;
+					IsFinished = true;
 				}
 
-				IsFinished = true;
-				layout = default(TLayout);
-				return false;
+				return hasMore;
 			}
 
 			/// <summary>

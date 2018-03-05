@@ -124,7 +124,7 @@
 			// TODO: handle number of layouts to be evolved - who should control that? generator or planner?
 			// TODO: handle context.. this is ugly
 			var layouts = generatorPlanner.Generate(initialLayout, numberOfLayouts, chains.Count,
-				(layout, chainNumber) => layoutEvolver.Evolve(AddChain(layout, chainNumber), chains[chainNumber], 5), context);
+				(layout, chainNumber, numOfLayouts) => layoutEvolver.Evolve(AddChain(layout, chainNumber), chains[chainNumber], numOfLayouts), context);
 
 			// Stop stopwatch and prepare benchmark info
 			stopwatch.Stop();

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.SimulatedAnnealing.GeneratorPlanner
+﻿namespace MapGeneration.Core.GeneratorPlanners
 {
 	using System;
 	using System.Collections.Generic;

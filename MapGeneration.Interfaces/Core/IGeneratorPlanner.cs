@@ -25,7 +25,7 @@
 		/// <param name="context">Context of the generation.</param>
 		/// <param name="count">How many layouts should be generated.</param>
 		/// <returns></returns>
-		List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, Func<TLayout, int, IEnumerable<TLayout>> layoutGeneratorFunc, IGeneratorContext context);
+		List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, LayoutGeneratorFunction<TLayout> layoutGeneratorFunc, IGeneratorContext context);
 
 		/// <summary>
 		/// Returns a human readable log of the planning.
@@ -33,4 +33,14 @@
 		/// <returns></returns>
 		string GetLog();
 	}
+
+	/// <summary>
+	/// Delegate that returns valid layouts evolved from given initial layout.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <param name="initialLayout">Layout that will be used as a base for the generation process.</param>
+	/// <param name="chainNumber">Number of chain that should be added to the initial layout.</param>
+	/// <param name="numberOfLayouts">How many layouts should be generated.</param>
+	/// <returns></returns>
+	public delegate IEnumerable<TLayout> LayoutGeneratorFunction<TLayout>(TLayout initialLayout, int chainNumber, int numberOfLayouts);
 }

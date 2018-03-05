@@ -8,11 +8,12 @@
 	using Core.Constraints;
 	using Core.Doors;
 	using Core.Experimental;
+	using Core.GeneratorPlanners;
 	using Core.GraphDecomposition;
 	using Core.LayoutConverters;
 	using Core.LayoutEvolvers;
+	using Core.LayoutGenerators;
 	using Core.LayoutOperations;
-	using Core.SimulatedAnnealing.GeneratorPlanner;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;

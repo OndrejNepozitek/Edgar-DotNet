@@ -11,7 +11,7 @@
 	{
 		private static void Main(string[] args)
 		{
-			var benchmark = new Benchmark();
+			var benchmark = new Benchmark<int>();
 
 			var time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
 
@@ -135,7 +135,7 @@
 						setups.AddSetup("Random generator", generator => { generator.InjectRandomGenerator(new Random(0)); });
 					}
 
-					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, sw, dw);
+					benchmark.Execute(layoutGenerator, scenario, MapDescriptionsDatabase.ReferenceSet, 80, 1, sw, dw);
 				}
 			}
 		}
