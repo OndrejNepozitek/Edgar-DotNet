@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Experimental
+﻿namespace MapGeneration.Core.LayoutGenerators
 {
 	using System;
 	using System.Collections.Generic;
@@ -6,6 +6,7 @@
 	using System.Linq;
 	using System.Threading;
 	using ConfigurationSpaces;
+	using Experimental;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Benchmarks;
 	using Interfaces.Core;

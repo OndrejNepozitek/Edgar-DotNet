@@ -7,14 +7,20 @@
 	using Interfaces.Core;
 
 	/// <summary>
-	/// Base class for generator planners.
-	/// Inheriting classes must implement just GetNextInstance() that is called
-	/// when a new layout should be chosen to be extended.
+	/// Class that builds a tree of nodes where each node represent a layout that can be
+	/// used as an initial layout to generate more layouts until a full layout is generated.
 	/// </summary>
+	/// <remarks>
+	/// Each node in the tree has the number of added chains equal to the number of the row
+	/// on which it is located.
+	/// 
+	/// Inheriting classes can shape the tree by specifying in each step which node should
+	/// be extended.
+	/// </remarks>
 	public abstract class GeneratorPlannerBase<TLayout> : IGeneratorPlanner<TLayout>, ICancellable
 	{
 		private TLayout initialLayout;
-		private List<InstanceRow> rows;
+		private List<NodeRow> rows;
 		private List<LogEntry> log;
 		private int nextId;
 		private LayoutGeneratorFunction<TLayout> layoutGeneratorFunc;
@@ -24,27 +30,22 @@
 
 		public event Action<TLayout> OnLayoutGenerated;
 
-		/// <summary>
-		/// Calls GetNextInstance() and builds the tree data structure until a given number of layouts is generated.
-		/// </summary>
-		/// <param name="initialLayout"></param>
-		/// <param name="chains"></param>
-		/// <param name="simulatedAnnealing"></param>
-		/// <param name="context"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
+		/// <inheritdoc />
+		/// <remarks>
+		/// Calls abstract GetNextInstance() to build a tree of nodes until a given number of layouts is generated.
+		/// </remarks>
 		public List<TLayout> Generate(TLayout initialLayout, int count, int chainsCount, LayoutGeneratorFunction<TLayout> layoutGeneratorFunc, IGeneratorContext context)
 		{
 			// Initialization
 			this.initialLayout = initialLayout;
-			rows = new List<InstanceRow>();
+			rows = new List<NodeRow>();
 			log = new List<LogEntry>();
 			nextId = 0;
 			this.layoutGeneratorFunc = layoutGeneratorFunc;
 			var layouts = new List<TLayout>();
 
 			BeforeGeneration();
-			AddZeroLevelInstance();
+			AddZeroLevelNode();
 
 			while (layouts.Count < count)
 			{
@@ -86,9 +87,9 @@
 				}
 				
 				// A new instance is created from the generated layout and added to the tree.
-				var nextInstance = new Instance(instance, GetLayouts(layout, newDepth), newDepth, iterationsToGenerate, nextId++);
+				var nextInstance = new Node(instance, GetLayouts(layout, newDepth), newDepth, iterationsToGenerate, nextId++);
 				instance.AddChild(nextInstance);
-				AddInstance(nextInstance, newDepth);
+				AddNode(nextInstance, newDepth);
 				log.Add(new LogEntry(LogType.Success, nextInstance, iterationsToGenerate));
 			}
 
@@ -98,14 +99,14 @@
 		}
 
 		/// <summary>
-		/// Returns a next instance to be extended with a corresponding chain.
+		/// Returns a node that should be extended next.
 		/// </summary>
 		/// <remarks>
 		/// The returned instance must not be already finished.
 		/// </remarks>
 		/// <param name="rows"></param>
 		/// <returns></returns>
-		protected abstract Instance GetNextInstance(List<InstanceRow> rows);
+		protected abstract Node GetNextInstance(List<NodeRow> rows);
 
 		/// <summary>
 		/// Is called before the generation.
@@ -113,7 +114,7 @@
 		/// Should be called before any custom implementation.
 		protected virtual void BeforeGeneration()
 		{
-
+			/* empty */
 		}
 
 		/// <summary>
@@ -124,7 +125,7 @@
 		/// </remarks>
 		protected virtual void AfterGeneration()
 		{
-
+			/* empty */
 		}
 
 		/// <summary>
@@ -135,12 +136,18 @@
 		/// </remarks>
 		protected virtual void AfterValid()
 		{
-
+			/* empty */
 		}
 
+		/// <summary>
+		/// Clears the whole tree.
+		/// </summary>
+		/// <remarks>
+		/// Useful when one want to start over when a valid layout is generated.
+		/// </remarks>
 		protected void ResetRows()
 		{
-			rows = new List<InstanceRow>();
+			rows = new List<NodeRow>();
 		}
 
 		/// <summary>
@@ -156,7 +163,7 @@
 		/// Gets an IEnumerable of extended layouts from given initial layout and chain number.
 		/// </summary>
 		/// <param name="layout"></param>
-		/// <param name="chain"></param>
+		/// <param name="chainNumber"></param>
 		/// <returns></returns>
 		private IEnumerable<TLayout> GetLayouts(TLayout layout, int chainNumber)
 		{
@@ -174,18 +181,18 @@
 		{
 			var builder = new StringBuilder();
 
-			Instance previousInstance = null;
+			Node previousNode = null;
 
 			// Process every log entry
 			foreach (var logEntry in log)
 			{
-				var instance = logEntry.Instance;
+				var instance = logEntry.Node;
 
 				// TODO: maybe change the output?
 				if (instance.Depth == 0)
 				{
-					builder.AppendLine(GetLogChain(instance, previousInstance));
-					previousInstance = instance;
+					builder.AppendLine(GetLogChain(instance, previousNode));
+					previousNode = instance;
 					continue;
 				}
 
@@ -210,10 +217,10 @@
 				var detailedInfo = logEntry.Type == LogType.Fail ? string.Empty :
 					$", {childIndex + 1}/{instance.Parent.Children.Count}, Parent finished: {childIndex == instance.Parent.Children.Count - 1 && instance.Parent.IsFinished}";
 				var info = $"[{id}, Iterations: {logEntry.IterationsCount}{detailedInfo}]";
-				var prefix = GetLogChain(logEntry.Type == LogType.Fail ? instance : instance.Parent, previousInstance);
+				var prefix = GetLogChain(logEntry.Type == LogType.Fail ? instance : instance.Parent, previousNode);
 
 				builder.AppendLine(prefix + info);
-				previousInstance = instance;
+				previousNode = instance;
 			}
 
 			return builder.ToString();
@@ -224,86 +231,86 @@
 		/// </summary>
 		/// The goal is to make it as readable as possible so if two following entries
 		/// have part of the prefix equal, that part is then skipped.
-		/// <param name="instance"></param>
-		/// <param name="previousInstance"></param>
+		/// <param name="node"></param>
+		/// <param name="previousNode"></param>
 		/// <returns></returns>
-		protected string GetLogChain(Instance instance, Instance previousInstance)
+		protected string GetLogChain(Node node, Node previousNode)
 		{
 			var output = "";
 
-			if (previousInstance != null && instance != null)
+			if (previousNode != null && node != null)
 			{
-				while (previousInstance != null && previousInstance.Depth > instance.Depth)
+				while (previousNode != null && previousNode.Depth > node.Depth)
 				{
-					previousInstance = previousInstance.Parent;
+					previousNode = previousNode.Parent;
 				}
 			}
 
-			while (instance != null)
+			while (node != null)
 			{
-				if (previousInstance != null && instance.Depth < previousInstance.Depth)
+				if (previousNode != null && node.Depth < previousNode.Depth)
 				{
-					previousInstance = previousInstance.Parent;
+					previousNode = previousNode.Parent;
 				}
 
-				if (previousInstance != null && instance == previousInstance)
+				if (previousNode != null && node == previousNode)
 				{
-					output = new string(' ', (previousInstance.Depth + 1) * 6) + output;
+					output = new string(' ', (previousNode.Depth + 1) * 6) + output;
 					break;
 				}
 
-				output = $"[{instance.Id.ToString().PadLeft(3, '0')}] " + output;
-				instance = instance.Parent;
+				output = $"[{node.Id.ToString().PadLeft(3, '0')}] " + output;
+				node = node.Parent;
 			}
 
 			return output;
 		}
 
 		/// <summary>
-		/// Helper method to add a new instance to the data structure at a given depth.
+		/// Helper method to add a new node to the data structure at a given depth.
 		/// </summary>
-		/// <param name="instance"></param>
+		/// <param name="node"></param>
 		/// <param name="depth"></param>
-		private void AddInstance(Instance instance, int depth)
+		private void AddNode(Node node, int depth)
 		{
 			if (rows.Count <= depth)
 			{
-				rows.Add(new InstanceRow());
+				rows.Add(new NodeRow());
 			}
 
-			rows[depth].Instances.Add(instance);
+			rows[depth].Instances.Add(node);
 		}
 
 		/// <summary>
-		/// Uses the initial layout to create an instance on the zero-th level.
+		/// Uses the initial layout to create a node on the zero-th level.
 		/// </summary>
 		/// <returns></returns>
-		protected Instance AddZeroLevelInstance()
+		protected Node AddZeroLevelNode()
 		{
-			var instance = new Instance(null, GetLayouts(initialLayout, 0), 0, 0, nextId++);
-			AddInstance(instance, 0);
+			var instance = new Node(null, GetLayouts(initialLayout, 0), 0, 0, nextId++);
+			AddNode(instance, 0);
 			log.Add(new LogEntry(LogType.Success, instance, 0));
 
 			return instance;
 		}
 
 		/// <summary>
-		/// Class holding an instance of the simulated annealing together with information
-		/// that can be used for better logging or for smarter choosing of the next instance.
+		/// Class holding an enumerator created from a layout evolver.
+		/// It represents a node in a tree.
 		/// </summary>
-		protected class Instance
+		protected class Node
 		{
 			private readonly IEnumerator<TLayout> enumerator;
 
 			/// <summary>
 			/// Parent of this instance. Null if on the zero level.
 			/// </summary>
-			public Instance Parent { get; }
+			public Node Parent { get; }
 
 			/// <summary>
 			/// All instance that were generated from this instance.
 			/// </summary>
-			public List<Instance> Children { get; } = new List<Instance>();
+			public List<Node> Children { get; } = new List<Node>();
 
 			/// <summary>
 			/// The depth of the layout. It means that Depth + 1 chains were already added.
@@ -330,7 +337,7 @@
 			/// </summary>
 			public int Id { get; }
 
-			public Instance(Instance parent, IEnumerable<TLayout> layouts, int depth, int iterationsToGenerate, int id)
+			public Node(Node parent, IEnumerable<TLayout> layouts, int depth, int iterationsToGenerate, int id)
 			{
 				Parent = parent;
 				enumerator = layouts.GetEnumerator();
@@ -342,10 +349,10 @@
 			/// <summary>
 			/// Adds a child to the instance.
 			/// </summary>
-			/// <param name="instance"></param>
-			public void AddChild(Instance instance)
+			/// <param name="node"></param>
+			public void AddChild(Node node)
 			{
-				Children.Add(instance);
+				Children.Add(node);
 			}
 
 			/// <summary>
@@ -377,25 +384,25 @@
 		}
 
 		/// <summary>
-		/// Class holding a row of instances.
+		/// Class holding a row of nodes.
 		/// </summary>
-		protected class InstanceRow
+		protected class NodeRow
 		{
-			public List<Instance> Instances { get; } = new List<Instance>();
+			public List<Node> Instances { get; } = new List<Node>();
 		}
 
 		private class LogEntry
 		{
 			public LogType Type { get; }
 
-			public Instance Instance { get; }
+			public Node Node { get; }
 
 			public int IterationsCount { get; }
 
-			public LogEntry(LogType type, Instance instance, int iterationsCount)
+			public LogEntry(LogType type, Node node, int iterationsCount)
 			{
 				Type = type;
-				Instance = instance;
+				Node = node;
 				IterationsCount = iterationsCount;
 			}
 		}

@@ -1,85 +1,55 @@
 ﻿namespace MapGeneration.Core.GeneratorPlanners
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
+	/// <inheritdoc />
 	/// <summary>
-	/// This planner should not be used. It is here just to demonstrate that 
-	/// it would be slower to not use lazy evaluation.
+	/// Basic layout generator that always picks an unfinished node on the deepest level of the tree.
 	/// </summary>
-	[Obsolete("This generator tries hard to show that non-lazy planning does not make any sense. Use any other planner.")]
 	public class BasicGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
 	{
-		private int currentRow;
-		private Instance lastInstance;
+		private readonly bool clearTreeAfterComplete;
 
-		private readonly bool resetAfterValid = true;
-
-		public BasicGeneratorPlanner()
+		/// <summary>
+		/// </summary>
+		/// <param name="clearTreeAfterComplete">Whether the tree should be cleared after each complete layout that is generated.</param>
+		public BasicGeneratorPlanner(bool clearTreeAfterComplete = true)
 		{
-			/* empty */
-		}
-
-		public BasicGeneratorPlanner(bool resetAfterValid)
-		{
-			this.resetAfterValid = resetAfterValid;
+			this.clearTreeAfterComplete = clearTreeAfterComplete;
 		}
 
 		/// <summary>
-		/// Simulates how would non-lazy evaluation work.
+		/// Alaways chooses a not finished layout on the highest level.
 		/// </summary>
 		/// <param name="rows"></param>
 		/// <returns></returns>
-		protected override Instance GetNextInstance(List<InstanceRow> rows)
+		protected override Node GetNextInstance(List<NodeRow> rows)
 		{
-			if (lastInstance != null && lastInstance.IsFinished)
+			var depth = rows.Count - 1;
+
+			while (depth >= 0)
 			{
-				currentRow = rows.Count - 1;
-			}
+				var row = rows[depth];
+				var instance = row.Instances.FirstOrDefault(x => !x.IsFinished);
 
-			var instance = rows[currentRow].Instances.FirstOrDefault(x => !x.IsFinished);
-
-			if (instance != null)
-			{
-				lastInstance = instance;
-				return instance;
-			}
-				
-			var rowIndex = rows.Count - 1;
-
-			while (rowIndex >= 0)
-			{
-				instance = rows[rowIndex].Instances.FirstOrDefault(x => !x.IsFinished);
-
-				if (instance != null)
+				if (instance == null)
 				{
-					currentRow = rowIndex;
-					lastInstance = instance;
-					return instance;
+					depth--;
+					continue;
 				}
 
-				rowIndex--;
+				return instance;
 			}
 
-			instance = AddZeroLevelInstance();
-			lastInstance = instance;
-			return instance;
-		}
-
-		protected override void BeforeGeneration()
-		{
-			base.BeforeGeneration();
-
-			currentRow = 0;
-			lastInstance = null;
+			return AddZeroLevelNode();
 		}
 
 		protected override void AfterValid()
 		{
 			base.AfterValid();
 
-			if (resetAfterValid)
+			if (clearTreeAfterComplete)
 			{
 				ResetRows();
 			}
