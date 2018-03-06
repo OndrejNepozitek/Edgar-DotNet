@@ -2,6 +2,7 @@
 {
 	using System.Linq;
 	using Core;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.ConfigurationSpaces;
 

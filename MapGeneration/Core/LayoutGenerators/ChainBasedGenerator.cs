@@ -7,6 +7,7 @@
 	using System.Threading;
 	using ConfigurationSpaces;
 	using Experimental;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Benchmarks;
 	using Interfaces.Core;

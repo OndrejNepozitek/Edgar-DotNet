@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core
+﻿namespace GeneralAlgorithms.DataStructures.Common
 {
 	public class IntAlias<T>
 	{

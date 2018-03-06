@@ -1,8 +1,8 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Polygons
 {
 	using System.Collections.Generic;
+	using DataStructures.Common;
 	using DataStructures.Polygons;
-	using MapGeneration.Core;
 
 	public class FastPolygonOverlap : PolygonOverlapBase<IntAlias<GridPolygon>>
 	{
