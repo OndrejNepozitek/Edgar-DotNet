@@ -15,11 +15,11 @@
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
 		where TEnergyData : IEnergyData, new()
 	{
-		private readonly IPolygonOverlap polygonOverlap;
+		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
 		private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 
-		public BasicContraint(IPolygonOverlap polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public BasicContraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.polygonOverlap = polygonOverlap;
 			energySigma = 10 * averageSize;
@@ -132,7 +132,7 @@
 
 		private int ComputeOverlap(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.OverlapArea(configuration1.Shape, configuration1.Position, configuration2.Shape, configuration2.Position);
+			return polygonOverlap.OverlapArea(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position);
 		}
 
 		private int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)

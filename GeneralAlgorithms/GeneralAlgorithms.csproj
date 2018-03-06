@@ -101,6 +101,7 @@
     <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
     <Compile Include="Algorithms\Polygons\CachedPolygonPartitioning.cs" />
+    <Compile Include="Algorithms\Polygons\FastPolygonOverlap.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonOverlap.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonPartitioning.cs" />
@@ -108,6 +109,8 @@
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioning.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
     <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
+    <Compile Include="Algorithms\Polygons\PolygonOverlapBase.cs" />
+    <Compile Include="DataStructures\Common\IntAlias.cs" />
     <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />

@@ -42,7 +42,7 @@
 				var averageSize = configurationSpaces.GetAverageSize();
 
 				layoutOperations.AddContraints(new BasicContraint<Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>, EnergyData, IntAlias<GridPolygon>>(
-					new PolygonOverlap(),
+					new FastPolygonOverlap(), 
 					averageSize,
 					configurationSpaces
 				));
@@ -71,11 +71,12 @@
 			{
 				var corridorConfigurationSpaces = configurationSpacesGenerator.Generate<int, Configuration<EnergyDataCorridors>>(mapDescription, offsets);
 				var layoutOperations = new LayoutOperationsWithCorridors<Layout<Configuration<EnergyDataCorridors>>, int, Configuration<EnergyDataCorridors>, IntAlias<GridPolygon>, EnergyDataCorridors>(configurationSpaces, mapDescription, corridorConfigurationSpaces, configurationSpaces.GetAverageSize());
+				var polygonOverlap = new FastPolygonOverlap();
 
 				var averageSize = configurationSpaces.GetAverageSize();
 
 				layoutOperations.AddContraints(new BasicContraint<Layout<Configuration<EnergyDataCorridors>>, int, Configuration<EnergyDataCorridors>, EnergyDataCorridors, IntAlias<GridPolygon>>(
-					new PolygonOverlap(),
+					polygonOverlap,
 					averageSize,
 					configurationSpaces
 				));

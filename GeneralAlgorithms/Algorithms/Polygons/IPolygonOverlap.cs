@@ -1,16 +1,13 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Polygons
 {
 	using DataStructures.Common;
-	using DataStructures.Polygons;
 
-	public interface IPolygonOverlap
+	public interface IPolygonOverlap<in TShape>
 	{
-		bool DoOverlap(GridPolygon polygon1, IntVector2 position1, GridPolygon polygon2, IntVector2 position2);
+		bool DoOverlap(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
 
-		bool DoOverlap(GridRectangle rectangle1, GridRectangle rectangle2);
+		int OverlapArea(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
 
-		int OverlapArea(GridPolygon polygon1, IntVector2 position1, GridPolygon polygon2, IntVector2 position2);
-
-		bool DoTouch(GridPolygon polygon1, IntVector2 position1, GridPolygon polygon2, IntVector2 position2, int minimumLength = 1);
+		bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 1);
 	}
 }

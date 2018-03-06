@@ -15,13 +15,13 @@
 
 	public class ConfigurationSpacesGenerator
 	{
-		private readonly IPolygonOverlap polygonOverlap;
+		private readonly IPolygonOverlap<GridPolygon> polygonOverlap;
 		private readonly IDoorHandler doorHandler;
 		private readonly ILineIntersection<OrthogonalLine> lineIntersection;
 		private readonly IPolygonUtils<GridPolygon> polygonUtils;
 
 		public ConfigurationSpacesGenerator(
-			IPolygonOverlap polygonOverlap,
+			IPolygonOverlap<GridPolygon> polygonOverlap,
 			IDoorHandler doorHandler,
 			ILineIntersection<OrthogonalLine> lineIntersection,
 			IPolygonUtils<GridPolygon> polygonUtils)
