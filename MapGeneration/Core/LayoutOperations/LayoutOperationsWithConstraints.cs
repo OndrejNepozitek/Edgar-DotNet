@@ -87,7 +87,10 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			foreach (var shape in ConfigurationSpaces.GetShapesForNode(node))
+			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			// shapes.Shuffle(Random);
+
+			foreach (var shape in shapes)
 			{
 				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
