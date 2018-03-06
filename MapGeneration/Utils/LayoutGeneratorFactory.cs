@@ -2,8 +2,8 @@
 {
 	using System.Collections.Generic;
 	using Core;
-	using Core.Configuration;
-	using Core.Configuration.EnergyData;
+	using Core.Configurations;
+	using Core.Configurations.EnergyData;
 	using Core.ConfigurationSpaces;
 	using Core.Constraints;
 	using Core.Doors;
@@ -85,6 +85,11 @@
 					mapDescription,
 					averageSize,
 					corridorConfigurationSpaces
+				));
+
+				layoutOperations.AddContraints(new TouchingConstraints<Layout<Configuration<EnergyDataCorridors>>, int, Configuration<EnergyDataCorridors>, EnergyDataCorridors, IntAlias<GridPolygon>>(
+					mapDescription,
+					polygonOverlap
 				));
 
 				return layoutOperations;

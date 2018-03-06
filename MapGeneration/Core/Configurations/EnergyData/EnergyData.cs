@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Configuration.EnergyData
+﻿namespace MapGeneration.Core.Configurations.EnergyData
 {
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration.EnergyData;

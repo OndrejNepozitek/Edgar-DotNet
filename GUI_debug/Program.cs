@@ -11,8 +11,6 @@
 	using GUI;
 	using MapGeneration.Benchmarks;
 	using MapGeneration.Core;
-	using MapGeneration.Core.Configuration;
-	using MapGeneration.Core.Configuration.EnergyData;
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Constraints;
 	using MapGeneration.Core.Doors;

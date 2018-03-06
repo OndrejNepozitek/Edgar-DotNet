@@ -3,5 +3,7 @@
 	public interface IEnergyDataCorridors : IEnergyData
 	{
 		int CorridorDistance { get; set; }
+
+		int NumberOfTouching { get; set; }
 	}
 }

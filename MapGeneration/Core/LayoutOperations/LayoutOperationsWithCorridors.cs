@@ -104,6 +104,11 @@
 			foreach (var corridor in corridors)
 			{
 				clone.GetConfiguration(corridor, out var configuration);
+
+				//var energyData = configuration.EnergyData;
+				//energyData.IsValid = true;
+				//configuration.EnergyData = energyData;
+
 				layout.SetConfiguration(corridor, configuration);
 			}
 

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Configuration.EnergyData
+﻿namespace MapGeneration.Core.Configurations.EnergyData
 {
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration.EnergyData;
@@ -13,15 +13,18 @@
 
 		public int CorridorDistance { get; set; }
 
+		public int NumberOfTouching { get; set; }
+
 		public bool IsValid { get; set; }
 
-		public EnergyDataCorridors(float energy, int overlap, int moveDistance, bool isValid, int corridorDistance)
+		public EnergyDataCorridors(float energy, int overlap, int moveDistance, bool isValid, int corridorDistance, int numberOfTouching)
 		{
 			Energy = energy;
 			Overlap = overlap;
 			MoveDistance = moveDistance;
 			CorridorDistance = corridorDistance;
 			IsValid = isValid;
+			NumberOfTouching = numberOfTouching;
 		}
 
 		public EnergyDataCorridors SmartClone()
@@ -31,7 +34,8 @@
 				Overlap,
 				MoveDistance,
 				IsValid,
-				CorridorDistance
+				CorridorDistance,
+				NumberOfTouching
 			);
 		}
 	}

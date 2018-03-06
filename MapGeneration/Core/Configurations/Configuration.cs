@@ -1,11 +1,11 @@
-﻿namespace MapGeneration.Core.Configuration
+﻿namespace MapGeneration.Core.Configurations
 {
+	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
-	using System.Collections.Generic;
 
 	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>

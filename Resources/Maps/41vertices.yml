@@ -55,7 +55,7 @@ defaultRoomShapes:
     setName: otherShapes
 
 corridors:
-  enable: true
+  enable: false
   offsets: [2]
   corridorShapes:
     -
