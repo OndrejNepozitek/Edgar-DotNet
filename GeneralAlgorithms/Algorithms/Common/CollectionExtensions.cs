@@ -7,7 +7,7 @@
 	public static class CollectionExtensions
 	{
 		/// <summary>
-		/// Check if two collection are equal.
+		/// Check if two collections are equal.
 		/// The order does not matter.
 		/// </summary>
 		/// <remarks>
@@ -19,7 +19,6 @@
 		/// <param name="secondEnumerable"></param>
 		/// <returns></returns>
 		public static bool SequenceEqualWithoutOrder<T>(this IEnumerable<T> firstEnumerable, IEnumerable<T> secondEnumerable)
-			where T : IEquatable<T>
 		{
 			var first = firstEnumerable.ToList();
 			var second = secondEnumerable.ToList();
