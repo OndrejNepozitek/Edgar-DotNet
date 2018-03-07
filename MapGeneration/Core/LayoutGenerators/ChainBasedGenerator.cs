@@ -7,6 +7,7 @@
 	using System.Threading;
 	using ConfigurationSpaces;
 	using Experimental;
+	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Benchmarks;
@@ -89,8 +90,15 @@
 		public event Action<IMapLayout<TNode>> OnPartialValid;
 		public event Action<IMapLayout<TNode>> OnValid;
 
+		private readonly GraphUtils graphUtils = new GraphUtils();
+
 		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts = 10)
 		{
+			var graph = mapDescription.GetGraph();
+
+			if (!graphUtils.IsConnected(graph))
+				throw new ArgumentException("Given mapDescription must represent a connected graph.", nameof(mapDescription));
+
 			// Create instances and inject the random generator and the cancellation token if possible
 			configurationSpaces = configurationSpacesCreator(mapDescription);
 			TryInjectRandomAndCancellationToken(configurationSpaces);
@@ -113,8 +121,6 @@
 			layoutEvolver = layoutEvolverCreator(mapDescription, layoutOperations);
 			TryInjectRandomAndCancellationToken(layoutEvolver);
 
-
-			var graph = mapDescription.GetGraph();
 			chains = chainDecomposition.GetChains(graph);
 			context = new GeneratorContext();
 
