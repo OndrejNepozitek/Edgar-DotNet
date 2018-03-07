@@ -17,7 +17,7 @@
 		}
 
 		[Test]
-		public void IsConnected_Empty()
+		public void IsConnected_Connected_Empty()
 		{
 			var graph = new UndirectedAdjacencyListGraph<int>();
 
@@ -83,6 +83,49 @@
 			graph.AddVerticesRange(0, 20);
 
 			Assert.IsFalse(graphUtils.IsConnected(graph));
+		}
+
+		[Test]
+		public void IsPlanar_Planar_Empty()
+		{
+			var graph = new UndirectedAdjacencyListGraph<int>();
+
+			Assert.IsTrue(graphUtils.IsPlanar(graph));
+		}
+
+		[Test]
+		public void IsPlanar_Planar_C3()
+		{
+			// C_3
+			var graph = new UndirectedAdjacencyListGraph<int>();
+			graph.AddVerticesRange(0, 3);
+
+			graph.AddEdge(0, 1);
+			graph.AddEdge(1, 2);
+			graph.AddEdge(2, 0);
+
+			Assert.IsTrue(graphUtils.IsPlanar(graph));
+		}
+
+		[Test]
+		public void IsPlanar_NotPlanar_K5()
+		{
+			// K_5
+			var graph = new UndirectedAdjacencyListGraph<int>();
+			graph.AddVerticesRange(0, 5);
+
+			graph.AddEdge(0, 1);
+			graph.AddEdge(0, 2);
+			graph.AddEdge(0, 3);
+			graph.AddEdge(0, 4);
+			graph.AddEdge(1, 2);
+			graph.AddEdge(1, 3);
+			graph.AddEdge(1, 4);
+			graph.AddEdge(2, 3);
+			graph.AddEdge(2, 4);
+			graph.AddEdge(3, 4);
+
+			Assert.IsFalse(graphUtils.IsPlanar(graph));
 		}
 	}
 }

@@ -99,6 +99,9 @@
 			if (!graphUtils.IsConnected(graph))
 				throw new ArgumentException("Given mapDescription must represent a connected graph.", nameof(mapDescription));
 
+			if (!graphUtils.IsPlanar(graph))
+				throw new ArgumentException("Given mapDescription must represent a planar graph.", nameof(mapDescription));
+
 			// Create instances and inject the random generator and the cancellation token if possible
 			configurationSpaces = configurationSpacesCreator(mapDescription);
 			TryInjectRandomAndCancellationToken(configurationSpaces);
