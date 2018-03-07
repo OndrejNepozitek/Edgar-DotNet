@@ -2,7 +2,7 @@
   "docs": {
     "Introduction": ["introduction", "installation"],
     "Guides": ["basicMapDescription", "differentShapesMapDescription", "complexMapDescription"],
-    "Chain based generator": ["introduction3", "configurationSpaces", "layoutEvolver"],
+    "Chain based generator": ["introduction3", "configurationSpaces", "layoutEvolver", "generatorPlanners"],
     "Advanced": ["constraints", "corridors"],
     "Misc": ["configFormat", "benchmarks"]
   },
