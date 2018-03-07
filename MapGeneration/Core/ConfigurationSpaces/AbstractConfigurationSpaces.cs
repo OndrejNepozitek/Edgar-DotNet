@@ -99,7 +99,7 @@
 				}
 			}
 
-			throw new InvalidOperationException("There should always be at least one point in the intersection");
+			throw new InvalidOperationException("There should always be at least one point in the intersection for shapes that may be neighbours in the layout.");
 		}
 
 		protected abstract IList<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, IList<TConfiguration> configurations);

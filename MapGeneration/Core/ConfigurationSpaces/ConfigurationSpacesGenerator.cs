@@ -178,7 +178,7 @@
 				var oppositeDirection = OrthogonalLine.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection].Select(x => new DoorLine(x.Line.Rotate(rotation), x.Length));
+				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length).Select(x => new DoorLine(x.Line.Rotate(rotation), x.Length));
 
 				foreach (var cDoorLine in correspondingLines)
 				{
