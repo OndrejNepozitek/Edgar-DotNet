@@ -43,7 +43,6 @@
     <Compile Include="Benchmarks\IBenchmarkable.cs" />
     <Compile Include="Core\Configuration\EnergyData\IEnergyData.cs" />
     <Compile Include="Core\Configuration\EnergyData\IEnergyDataCorridors.cs" />
-    <Compile Include="Core\Configuration\EnergyData\IValidityVectorEnergyData.cs" />
     <Compile Include="Core\Configuration\IConfiguration.cs" />
     <Compile Include="Core\Configuration\IEnergyConfiguration.cs" />
     <Compile Include="Core\Configuration\IMutableConfiguration.cs" />
