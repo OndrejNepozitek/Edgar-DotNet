@@ -8,7 +8,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using Doors;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Doors;
@@ -37,6 +36,9 @@
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
+
+			if (mapDescription.IsWithCorridors && mapDescription.CorridorShapes.Count == 0)
+				throw new ArgumentException("The map description has corridors enabled but there are no shapes for them.", nameof(mapDescription));
 
 			var graph = mapDescription.GetGraph();
 			var aliasCounter = 0;
