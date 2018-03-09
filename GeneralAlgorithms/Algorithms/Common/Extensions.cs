@@ -1,5 +1,6 @@
 ﻿namespace GeneralAlgorithms.Algorithms.Common
 {
+	using DataStructures.Common;
 	using DataStructures.Graphs;
 
 	public static class Extensions

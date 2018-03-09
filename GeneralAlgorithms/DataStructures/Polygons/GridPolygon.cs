@@ -197,22 +197,22 @@
 		/// <summary>
 		/// Helper method to create a rectangle with given sides.
 		/// </summary>
-		/// <param name="a">Width of the polygon.</param>
-		/// <param name="b">Height of the polygon.</param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
 		/// <returns></returns>
-		public static GridPolygon GetRectangle(int a, int b)
+		public static GridPolygon GetRectangle(int width, int height)
 		{
-			if (a <= 0) 
-				throw new ArgumentOutOfRangeException(nameof(a), "Both a and b must be greater than 0");
+			if (width <= 0) 
+				throw new ArgumentOutOfRangeException(nameof(width), "Both a and b must be greater than 0");
 
-			if (b <= 0)
-				throw new ArgumentOutOfRangeException(nameof(b), "Both a and b must be greater than 0");
+			if (height <= 0)
+				throw new ArgumentOutOfRangeException(nameof(height), "Both a and b must be greater than 0");
 
 			var polygon = new GridPolygonBuilder()
 				.AddPoint(0, 0)
-				.AddPoint(0, b)
-				.AddPoint(a, b)
-				.AddPoint(a, 0);
+				.AddPoint(0, height)
+				.AddPoint(width, height)
+				.AddPoint(width, 0);
 
 			return polygon.Build();
 		}

@@ -18,16 +18,21 @@
 
 		public GridRectangle(IntVector2 a, IntVector2 b)
 		{
-			if (a <= b)
+			if (a.X == b.X || a.Y == b.Y)
+				throw new ArgumentException();
+
+			A = new IntVector2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
+			B = new IntVector2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+		}
+
+		public GridRectangle Rotate(int degrees)
+		{
+			if (degrees % 90 != 0)
 			{
-				A = a;
-				B = b;
+				throw new InvalidOperationException("Degrees must be divisible by 90");
 			}
-			else
-			{
-				A = b;
-				B = a;
-			}
+
+			return new GridRectangle(A.RotateAroundCenter(degrees), B.RotateAroundCenter(degrees));
 		}
 
 		public static GridRectangle operator +(GridRectangle rectangle, IntVector2 position)

@@ -1,5 +1,8 @@
 ﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -197,6 +200,203 @@
 				Assert.AreEqual(true, polygonOverlap.DoTouch(pr1, pos1, pr2, pos2, 2));
 				Assert.AreEqual(false, polygonOverlap.DoTouch(pr1, pos1, pr2, pos2, 3));
 			}
+		}
+
+		[Test]
+		public void OverlapAlongLine_Rectangles_NonOverlapping()
+		{
+			var p1 = GridPolygon.GetSquare(5);
+			var p2 = GridPolygon.GetRectangle(2, 3) + new IntVector2(10, 10);
+			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			Assert.AreEqual(0, result.Count);
+		}
+
+		[Test]
+		public void OverlapAlongLine_Rectangles_OverlapEnd()
+		{
+			var p1 = GridPolygon.GetSquare(5);
+			var p2 = GridPolygon.GetRectangle(2, 3) + new IntVector2(0, 8);
+			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 10));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(0, 4), true),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_Rectangles_OverlapStart()
+		{
+			var p1 = GridPolygon.GetSquare(5);
+			var p2 = GridPolygon.GetRectangle(2, 3);
+			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 10));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(0, 0), true),
+				Tuple.Create(new IntVector2(0, 3), false),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_Rectangles_OverlapStart2()
+		{
+			var p1 = GridPolygon.GetSquare(5);
+			var p2 = GridPolygon.GetRectangle(2, 3) + new IntVector2(0, -3);
+			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 10));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+
+			Assert.AreEqual(0, result.Count);
+		}
+
+		[Test]
+		public void OverlapAlongLine_SquareAndL()
+		{
+			var p1 = GridPolygon.GetSquare(6);
+			var p2 = GetLShape();
+			var line = new OrthogonalLine(new IntVector2(-2, 3), new IntVector2(5, 3));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(-2, 3), true),
+				Tuple.Create(new IntVector2(3, 3), false),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_SquareAndL2()
+		{
+			var p1 = GridPolygon.GetSquare(6);
+			var p2 = GetLShape();
+			var line = new OrthogonalLine(new IntVector2(3, 5), new IntVector2(3, -2));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(3, 2), true),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_SquareAndL3()
+		{
+			var p1 = GridPolygon.GetSquare(6);
+			var p2 = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, 6)
+				.AddPoint(6, 6)
+				.AddPoint(6, 3)
+				.AddPoint(3, 3)
+				.AddPoint(3, 0)
+				.Build();
+			var line = new OrthogonalLine(new IntVector2(3, 2), new IntVector2(3, -5));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(3, 2), true),
+				Tuple.Create(new IntVector2(3, -3), false),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_LAndL()
+		{
+			var p1 = GetLShape();
+			var p2 = GetLShape();
+			var line = new OrthogonalLine(new IntVector2(-3, -5), new IntVector2(-3, 2));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(-3, -2), true),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_LAndL2()
+		{
+			var p1 = GetLShape();
+			var p2 = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, 9)
+				.AddPoint(3, 9)
+				.AddPoint(3, 3)
+				.AddPoint(6, 3)
+				.AddPoint(6, 0)
+				.Build();
+			var line = new OrthogonalLine(new IntVector2(3, 8), new IntVector2(3, -2));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(3, 2), true),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_LAndL3()
+		{
+			var p1 = GetLShape();
+			var p2 = GetLShape();
+			var line = new OrthogonalLine(new IntVector2(3, 5), new IntVector2(3, -2));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(3, 2), true),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
+		}
+
+		[Test]
+		public void OverlapAlongLine_ComplexCase()
+		{
+			var p1 = GetPlusShape();
+			var p2 = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, 8)
+				.AddPoint(8, 8)
+				.AddPoint(8, 2)
+				.AddPoint(6, 2)
+				.AddPoint(6, 6)
+				.AddPoint(2, 6)
+				.AddPoint(2, 0)
+				.Build();
+
+			var line = new OrthogonalLine(new IntVector2(0, -2), new IntVector2(15, -2));
+
+			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+			var expected = new List<Tuple<IntVector2, bool>>()
+			{
+				Tuple.Create(new IntVector2(0, -2), true),
+				Tuple.Create(new IntVector2(2, -2), false),
+				Tuple.Create(new IntVector2(3, -2), true),
+				Tuple.Create(new IntVector2(6, -2), false),
+			};
+
+			Assert.IsTrue(expected.SequenceEqual(result));
 		}
 
 		private static GridPolygon GetPlusShape()

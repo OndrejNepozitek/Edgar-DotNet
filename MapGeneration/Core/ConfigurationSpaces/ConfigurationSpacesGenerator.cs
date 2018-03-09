@@ -240,26 +240,68 @@
 			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offsets);
 		}
 
+		/// <summary>
+		/// Returns a list of positions such that a given polygon does not overlap a given fixed one.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="fixedCenter"></param>
+		/// <param name="lines"></param>
+		/// <returns></returns>
 		private List<OrthogonalLine> RemoveOverlapping(GridPolygon polygon, GridPolygon fixedCenter, List<OrthogonalLine> lines)
 		{
 			var nonOverlapping = new List<OrthogonalLine>();
 
 			foreach (var line in lines)
 			{
-				nonOverlapping.AddRange(PartitionLine(line, point => polygonOverlap.DoOverlap(polygon, point, fixedCenter, new IntVector2(0, 0))));
+				var overlapAlongLine = polygonOverlap.OverlapAlongLine(polygon, fixedCenter, line);
+
+				var lastOverlap = false;
+				var lastPoint = line.From;
+
+				foreach (var @event in overlapAlongLine)
+				{
+					var point = @event.Item1;
+					var overlap = @event.Item2;
+
+					if (overlap && !lastOverlap)
+					{
+						var endPoint = point + -1 * line.GetDirectionVector();
+
+						if (line.Contains(endPoint) != -1)
+						{
+							nonOverlapping.Add(new OrthogonalLine(lastPoint, endPoint));
+						}
+					}
+
+					lastOverlap = overlap;
+					lastPoint = point;
+				}
+
+				if (overlapAlongLine.Count == 0)
+				{
+					nonOverlapping.Add(line);
+				}
+				else if (!lastOverlap && lastPoint != line.To)
+				{
+					nonOverlapping.Add(new OrthogonalLine(lastPoint, line.To));
+				}
 			}
 
 			return nonOverlapping;
 		}
 
+		/// <summary>
+		/// Returns a list of lines where every point is unique.
+		/// </summary>
+		/// <param name="lines"></param>
+		/// <returns></returns>
 		private List<OrthogonalLine> RemoveIntersections(List<OrthogonalLine> lines)
 		{
 			var linesWithoutIntersections = new List<OrthogonalLine>();
 
 			foreach (var line in lines)
 			{
-				var intersection =
-					lineIntersection.GetIntersections(new List<OrthogonalLine>() {line}, linesWithoutIntersections);
+				var intersection = lineIntersection.GetIntersections(new List<OrthogonalLine>() {line}, linesWithoutIntersections);
 
 				if (intersection.Count == 0)
 				{
@@ -267,59 +309,46 @@
 				}
 				else
 				{
-					var intersectionPoints = intersection.SelectMany(x => x.GetPoints()).ToList();
-					// TODO: this is far from optimal as it checks if the point is contained among all points
-					//- it could utilize that intersection is given as lines and work with endpoints
-					linesWithoutIntersections.AddRange(PartitionLine(line, point => intersectionPoints.Contains(point)));
+					linesWithoutIntersections.AddRange(PartitionByIntersection(line, intersection));
 				}
 			}
 
 			return linesWithoutIntersections;
 		}
 
-		private List<OrthogonalLine> PartitionLine(OrthogonalLine line, Predicate<IntVector2> predicate)
+		/// <summary>
+		/// Returns a list of lines obtained by removing all the intersections from the original line.
+		/// </summary>
+		/// <param name="line"></param>
+		/// <param name="intersection"></param>
+		/// <returns></returns>
+		private List<OrthogonalLine> PartitionByIntersection(OrthogonalLine line, IList<OrthogonalLine> intersection)
 		{
 			var result = new List<OrthogonalLine>();
-			var normalized = line.GetNormalized();
+			var rotation = line.ComputeRotation();
+			var rotatedLine = line.Rotate(rotation, false);
+			var directionVector = rotatedLine.GetDirectionVector();
+			var rotatedIntersection = intersection.Select(x => x.Rotate(rotation, false).GetNormalized()).ToList();
+			rotatedIntersection.Sort((x1, x2) => x1.From.CompareTo(x2.From));
 
-			if (normalized.GetDirection() == OrthogonalLine.Direction.Right)
+			var lastPoint = rotatedLine.From - directionVector;
+
+			foreach (var intersectionLine in rotatedIntersection)
 			{
-				var lastRemoved = normalized.From.X - 1;
-				var y = normalized.From.Y;
-				for (var i = normalized.From.X; i <= normalized.To.X + 1; i++)
+				if (intersectionLine.From != lastPoint && intersectionLine.From - directionVector != lastPoint)
 				{
-					var point = new IntVector2(i, y);
-					if (predicate(point) || i == normalized.To.X + 1)
-					{
-						if (lastRemoved != i - 1)
-						{
-							result.Add(new OrthogonalLine(new IntVector2(lastRemoved + 1, y), new IntVector2(i - 1, y)));
-						}
-
-						lastRemoved = i;
-					}
+					result.Add(new OrthogonalLine(lastPoint + directionVector, intersectionLine.From - directionVector));
 				}
-			}
-			else
-			{
-				var lastRemoved = normalized.From.Y - 1;
-				var x = normalized.From.X;
-				for (var i = normalized.From.Y; i <= normalized.To.Y + 1; i++)
-				{
-					var point = new IntVector2(x, i);
-					if (predicate(point) || i == normalized.To.Y + 1)
-					{
-						if (lastRemoved != i - 1)
-						{
-							result.Add(new OrthogonalLine(new IntVector2(x, lastRemoved + 1), new IntVector2(x, i - 1)));
-						}
 
-						lastRemoved = i;
-					}
-				}
+				lastPoint = intersectionLine.To;
 			}
 
-			return result;
+			if (rotatedLine.To != lastPoint && rotatedLine.To - directionVector != lastPoint)
+			{
+				result.Add(new OrthogonalLine(lastPoint + directionVector, rotatedLine.To));
+			}
+
+			return result.Select(x => x.Rotate(-rotation, false)).ToList();
 		}
 	}
 }

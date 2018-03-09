@@ -124,13 +124,13 @@
 			layoutEvolver = layoutEvolverCreator(mapDescription, layoutOperations);
 			TryInjectRandomAndCancellationToken(layoutEvolver);
 
+			// Restart stopwatch
+			stopwatch.Restart();
+
 			chains = chainDecomposition.GetChains(graph);
 			context = new GeneratorContext();
 
 			RegisterEventHandlers();
-
-			// Restart stopwatch
-			stopwatch.Restart();
 
 			// TODO: handle number of layouts to be evolved - who should control that? generator or planner?
 			// TODO: handle context.. this is ugly

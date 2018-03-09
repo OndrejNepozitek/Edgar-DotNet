@@ -121,15 +121,21 @@
 		/// Positive degrees mean clockwise rotation.
 		/// </remarks>
 		/// <param name="degrees"></param>
-		/// <exception cref="ArgumentException">Thrown when degress are not a multiple od 90.</exception>
+		/// <param name="checkDirection">Throws if set to true and the rotated line has an undefined direction.</param>
+		/// <exception cref="ArgumentException">Thrown when degress are not a multiple of 90.</exception>
 		/// <returns></returns>
 		[Pure]
-		public OrthogonalLine Rotate(int degrees)
+		public OrthogonalLine Rotate(int degrees, bool checkDirection = true)
 		{
 			if (degrees % 90 != 0)
 				throw new ArgumentException("Degress must be a multiple of 90.", nameof(degrees));
 
-			return new OrthogonalLine(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees), RotateDirection(GetDirection(), degrees));
+			if (checkDirection)
+			{
+				return new OrthogonalLine(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees), RotateDirection(GetDirection(), degrees));
+			}
+
+			return new OrthogonalLine(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees));
 		}
 
 		/// <summary>
