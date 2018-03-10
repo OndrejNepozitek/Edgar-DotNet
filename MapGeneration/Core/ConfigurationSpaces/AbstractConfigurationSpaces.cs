@@ -60,6 +60,7 @@
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var spaces = GetConfigurationSpaces(mainConfiguration, configurations);
+			spaces.Shuffle(Random);
 
 			for (var i = configurations.Count; i > 0; i--)
 			{
