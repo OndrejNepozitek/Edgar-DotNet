@@ -16,6 +16,14 @@
 	using Interfaces.Core.LayoutGenerator;
 	using Interfaces.Core.MapDescription;
 
+	/// <inheritdoc cref="ILayoutGenerator{TMapDescription,TNode}" />
+	/// <summary>
+	/// Chain based layout generator.
+	/// </summary>
+	/// <typeparam name="TMapDescription">Type of the map description.</typeparam>
+	/// <typeparam name="TLayout">Type of the layout that will be used in the process.</typeparam>
+	/// <typeparam name="TNode">Type of nodes in the map description.</typeparam>
+	/// <typeparam name="TConfiguration">Type of configuration used.</typeparam>
 	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration> : IObservableGenerator<TMapDescription, TNode>, ICancellable, IBenchmarkable, IRandomInjectable
 		where TMapDescription : IMapDescription<TNode>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
@@ -86,13 +94,19 @@
 		protected bool LayoutValidityCheckEnabled;
 
 		// Events
+
+		/// <inheritdoc />
 		public event Action<IMapLayout<TNode>> OnPerturbed;
+
+		/// <inheritdoc />
 		public event Action<IMapLayout<TNode>> OnPartialValid;
+
+		/// <inheritdoc />
 		public event Action<IMapLayout<TNode>> OnValid;
 
 		private readonly GraphUtils graphUtils = new GraphUtils();
 
-		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts = 10)
+		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
 		{
 			var graph = mapDescription.GetGraph();
 
@@ -151,6 +165,12 @@
 			return layouts.Select(x => layoutConverter.Convert(x, true)).ToList();
 		}
 
+		/// <summary>
+		/// Adds a next chain to a given layout.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chainNumber"></param>
+		/// <returns></returns>
 		protected virtual TLayout AddChain(TLayout layout, int chainNumber)
 		{
 			if (chainNumber >= chains.Count)
@@ -227,44 +247,88 @@
 
 		#region Creators
 
+		/// <summary>
+		/// Sets a function that can create a layout evolver.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetLayoutEvolverCreator(Func<TMapDescription, ILayoutOperations<TLayout, TNode>, ILayoutEvolver<TLayout, TNode>> creator)
 		{
 			layoutEvolverCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create a layout converter.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetLayoutConverterCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutConverter<TLayout, IMapLayout<TNode>>> creator)
 		{
 			layoutConverterCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create a generator planner.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetGeneratorPlannerCreator(Func<TMapDescription, IGeneratorPlanner<TLayout>> creator)
 		{
 			generatorPlannerCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create an initial layout.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetInitialLayoutCreator(Func<TMapDescription, TLayout> creator)
 		{
 			initialLayoutCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create an instance of layout operations.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetLayoutOperationsCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutOperations<TLayout, TNode>> creator)
 		{
 			layoutOperationsCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create configuration spaces.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetConfigurationSpacesCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>> creator)
 		{
 			configurationSpacesCreator = creator;
 		}
 
+		/// <summary>
+		/// Sets a function that can create a chain decomposition.
+		/// </summary>
+		/// <remarks>
+		/// Will be called on every call to GetLayouts().
+		/// </remarks>
+		/// <param name="creator"></param>
 		public void SetChainDecompositionCreator(Func<TMapDescription, IChainDecomposition<TNode>> creator)
 		{
 			chainDecompositionCreator = creator;
-		}
-
-		public void SetGeneratorPlanner(IGeneratorPlanner<TLayout> planner)
-		{
-			generatorPlanner = planner;
 		}
 
 		#endregion
@@ -305,6 +369,11 @@
 			}
 		}
 
+		/// <summary>
+		/// Checks if a given object is IRandomInjectable and/or ICancellable
+		/// and tries to inject a random generator or a cancellation token.
+		/// </summary>
+		/// <param name="o"></param>
 		protected void TryInjectRandomAndCancellationToken(object o)
 		{
 			if (o is IRandomInjectable randomInjectable)
@@ -318,27 +387,34 @@
 			}
 		}
 
-		public void SetCancellationToken(CancellationToken? cancellationToken)
-		{
-			CancellationToken = cancellationToken;
-		}
-
+		/// <inheritdoc />
 		long IBenchmarkable.TimeFirst => timeFirst;
 
+		/// <inheritdoc />
 		long IBenchmarkable.TimeTotal => timeTotal;
 
+		/// <inheritdoc />
 		int IBenchmarkable.IterationsCount => context.IterationsCount;
 
+		/// <inheritdoc />
 		int IBenchmarkable.LayoutsCount => layoutsCount;
 
+		/// <inheritdoc />
 		public void EnableBenchmark(bool enable)
 		{
 			BenchmarkEnabled = true;
 		}
 
+		/// <inheritdoc />
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;
+		}
+
+		/// <inheritdoc />
+		public void SetCancellationToken(CancellationToken? cancellationToken)
+		{
+			CancellationToken = cancellationToken;
 		}
 	}
 }
