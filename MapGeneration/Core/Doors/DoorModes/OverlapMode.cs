@@ -1,18 +1,34 @@
 ﻿namespace MapGeneration.Core.Doors.DoorModes
 {
-	using Interfaces.Core;
+	using System;
 	using Interfaces.Core.Doors;
 
+	/// <summary>
+	/// Mode that is used to generate doors of a specified length on all sides of the polygon.
+	/// The only condition is that doors are at least CornerDistance far from corners.
+	/// </summary>
 	public class OverlapMode : IDoorMode
 	{
+		/// <summary>
+		/// Length of doors.
+		/// </summary>
 		public int DoorLength { get; private set; }
 
-		public int MinimumOverlap { get; private set; }
+		/// <summary>
+		/// How far from the corners must the door be.
+		/// </summary>
+		public int CornerDistance { get; private set; }
 
-		public OverlapMode(int doorLength, int minimumOverlap)
+		public OverlapMode(int doorLength, int cornerDistance)
 		{
+			if (doorLength < 1)
+				throw new ArgumentException("Lenght of doors must be at least 1.", nameof(doorLength));
+
+			if (cornerDistance < 0)
+				throw new ArgumentException("Minimum overlap must not be less than 0.", nameof(cornerDistance));
+
 			DoorLength = doorLength;
-			MinimumOverlap = minimumOverlap;
+			CornerDistance = cornerDistance;
 		}
 
 		/// <summary>
@@ -20,7 +36,7 @@
 		/// </summary>
 		private OverlapMode()
 		{
-
+			/* empty */
 		}
 	}
 }

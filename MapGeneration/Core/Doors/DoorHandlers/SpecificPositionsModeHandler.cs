@@ -5,11 +5,18 @@
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Doors;
 
+	/// <summary>
+	/// Generates door positions for <see cref="SpecificPositionsMode"/>.
+	/// </summary>
 	public class SpecificPositionsModeHandler : IDoorHandler
 	{
+		/// <inheritdoc />
+		/// <remarks>
+		/// Checks if all positions are contained on one of polygon's sides.
+		/// Changes direction if needed.
+		/// </remarks>
 		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
 			if (!(doorModeRaw is SpecificPositionsMode doorMode))

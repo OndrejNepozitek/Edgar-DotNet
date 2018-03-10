@@ -2,9 +2,11 @@
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core;
 	using Interfaces.Core.Doors;
 
+	/// <summary>
+	/// Mode that holds all the door positions.
+	/// </summary>
 	public class SpecificPositionsMode : IDoorMode
 	{
 		public List<OrthogonalLine> DoorPositions { get; private set; }
@@ -19,7 +21,7 @@
 		/// </summary>
 		private SpecificPositionsMode()
 		{
-
+			/* empty */
 		}
 	}
 }

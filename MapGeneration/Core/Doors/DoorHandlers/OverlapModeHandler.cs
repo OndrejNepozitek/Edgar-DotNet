@@ -6,8 +6,12 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.Doors;
 
+	/// <summary>
+	/// Generates door positions for <see cref="OverlapMode"/>.
+	/// </summary>
 	public class OverlapModeHandler : IDoorHandler
 	{
+		/// <inheritdoc />
 		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
 			if (!(doorModeRaw is OverlapMode doorMode)) 
@@ -17,10 +21,10 @@
 
 			foreach (var line in polygon.GetLines())
 			{
-				if (line.Length < 2 * doorMode.MinimumOverlap + doorMode.DoorLength)
+				if (line.Length < 2 * doorMode.CornerDistance + doorMode.DoorLength)
 					continue;
 				
-				lines.Add(new DoorLine(line.Shrink(doorMode.MinimumOverlap, doorMode.MinimumOverlap + doorMode.DoorLength), doorMode.DoorLength));
+				lines.Add(new DoorLine(line.Shrink(doorMode.CornerDistance, doorMode.CornerDistance + doorMode.DoorLength), doorMode.DoorLength));
 			}
 
 			return lines;

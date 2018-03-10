@@ -80,7 +80,7 @@ customRoomDescriptionsSet:
   default:
     doorMode: !OverlapMode
       doorLength: 1
-      minimumOverlap: 3
+      cornerDistance: 3
   roomDescriptions:
     18-26-rectangle:
       shape: [[0,0], [0,26], [18,26], [18,0]]
@@ -98,12 +98,12 @@ customRoomDescriptionsSet:
       shape: [[0,0], [0,5], [5,5], [5,0]]
       doorMode: !OverlapMode
         doorLength: 1
-        minimumOverlap: 1
+        cornerDistance: 1
     5-8-rectangle:
       shape: [[0,0], [0,8], [5,8], [5,0]]
       doorMode: !OverlapMode
         doorLength: 1
-        minimumOverlap: 1
+        cornerDistance: 1
     7-18-rectangle:
       shape: [[0,0], [0,18], [7,18], [7,0]]
     12-16-rectangle:

@@ -7,12 +7,23 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.Doors;
 
+	/// <inheritdoc />
+	/// <summary>
+	/// Door handler to be used in a context where multiple door modes are used.
+	/// </summary>
+	/// <remarks>
+	/// This door handler does not have any logic itself - it just calls registered
+	/// door handlers based on given door modes.
+	/// </remarks>
 	public class DoorHandler : IDoorHandler
 	{
 		private readonly Dictionary<Type, IDoorHandler> handlers = new Dictionary<Type, IDoorHandler>();
 
 		private static DoorHandler _defaultHandler;
 
+		/// <summary>
+		/// Instance of a default door handler. Currently supports OverlapMode and SpecificPositionsMode.
+		/// </summary>
 		public static DoorHandler DefaultHandler
 		{
 			get
@@ -28,6 +39,13 @@
 			}
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		/// Gets door positions by by returning an output of a registered door handler.
+		/// </remarks>
+		/// <param name="polygon"></param>
+		/// <param name="doorMode"></param>
+		/// <returns></returns>
 		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
 		{
 			if (handlers.TryGetValue(doorMode.GetType(), out var handler))
@@ -38,9 +56,14 @@
 			throw new InvalidOperationException("Handler not found");
 		}
 
-		public void RegisterHandler(Type type, IDoorHandler handler)
+		/// <summary>
+		/// Register a door handler for a given type of door mode.
+		/// </summary>
+		/// <param name="doorModeType"></param>
+		/// <param name="handler"></param>
+		public void RegisterHandler(Type doorModeType, IDoorHandler handler)
 		{
-			handlers.Add(type, handler);
+			handlers.Add(doorModeType, handler);
 		}
 	}
 }

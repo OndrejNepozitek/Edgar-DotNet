@@ -4,10 +4,13 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces.Core.Doors;
 
+	/// <inheritdoc cref="IDoorLine" />
 	public struct DoorLine : IDoorLine, IEquatable<DoorLine>
 	{
+		/// <inheritdoc />
 		public OrthogonalLine Line { get; }
 
+		/// <inheritdoc />
 		public int Length { get; }
 
 		public DoorLine(OrthogonalLine line, int length)
@@ -16,6 +19,7 @@
 			Length = length;
 		}
 
+		/// <inheritdoc />
 		public override bool Equals(object obj)
 		{
 			if (!(obj is DoorLine))
@@ -27,11 +31,13 @@
 			return Equals(line);
 		}
 
+		/// <inheritdoc />
 		public bool Equals(DoorLine other)
 		{
 			return Line.Equals(other.Line) && Length == other.Length;
 		}
 
+		/// <inheritdoc />
 		public override int GetHashCode()
 		{
 			unchecked
