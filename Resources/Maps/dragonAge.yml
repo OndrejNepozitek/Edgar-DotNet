@@ -111,7 +111,7 @@ customRoomDescriptionsSet:
 
 corridors:
   enable: true
-  offsets: [2]
+  offsets: [1]
   corridorShapes:
     -
       setName: corridors
