@@ -41,6 +41,12 @@
 			hasValue[node] = true;
 		}
 
+		public void RemoveConfiguration(int node)
+		{
+			vertices[node] = default(TConfiguration);
+			hasValue[node] = false;
+		}
+
 		public IEnumerable<TConfiguration> GetAllConfigurations()
 		{
 			for (var i = 0; i < vertices.Length; i++)

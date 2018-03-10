@@ -11,6 +11,8 @@
 
 		void SetConfiguration(TNode node, TConfiguration configuration);
 
+		void RemoveConfiguration(TNode node);
+
 		IEnumerable<TConfiguration> GetAllConfigurations();
 	}
 }

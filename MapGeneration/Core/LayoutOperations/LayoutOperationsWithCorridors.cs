@@ -71,6 +71,15 @@
 			}
 
 			var nonCorridors = nodeOptions.Where(x => !MapDescription.IsCorridorRoom(x)).ToList();
+			var firstCorridor = nodeOptions.First(x => MapDescription.IsCorridorRoom(x));
+
+			if (layout.GetConfiguration(firstCorridor, out var _))
+			{
+				foreach (var corridor in nodeOptions.Where(x => MapDescription.IsCorridorRoom(x)))
+				{
+					layout.RemoveConfiguration(corridor);
+				}
+			}
 
 			if (Random.NextDouble() < 0.4f)
 			{
