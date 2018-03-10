@@ -105,6 +105,7 @@
     <Compile Include="Core\Constraints\BasicContraint.cs" />
     <Compile Include="Core\Constraints\CorridorConstraints.cs" />
     <Compile Include="Core\Constraints\TouchingConstraints.cs" />
+    <Compile Include="Core\Constraints\WidthHeightRatioConstraint.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\SpecificPositionsModeHandler.cs" />
