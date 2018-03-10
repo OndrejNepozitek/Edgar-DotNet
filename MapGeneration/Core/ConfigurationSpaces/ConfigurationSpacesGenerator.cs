@@ -156,7 +156,7 @@
 				rotatedShape = polygonUtils.NormalizePolygon(rotatedShape);
 				var rotatedDoorLines = doorLines.Select(x => new DoorLine(x.Line.Rotate(rotation) + (-1 * smallesPoint), x.Length)).Cast<IDoorLine>().ToList();
 
-				if (result.Any(x => x.Item1.Equals(rotatedShape)))
+				if (result.Any(x => x.Item1.Equals(rotatedShape) && x.Item2.SequenceEqualWithoutOrder(rotatedDoorLines)))
 					continue;
 
 				result.Add(Tuple.Create(rotatedShape, rotatedDoorLines));
