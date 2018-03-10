@@ -6,12 +6,14 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 
-	public class TouchingConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : IConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	public class TouchingConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
-		where TEnergyData : IEnergyDataCorridors, new()
+		where TEnergyData : ICorridorsData, new()
 	{
 		private readonly ICorridorMapDescription<TNode> mapDescription;
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
@@ -22,10 +24,10 @@
 			this.polygonOverlap = polygonOverlap;
 		}
 
-		public void ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			var numberOfTouching = 0;
 
@@ -49,16 +51,14 @@
 			energyData.NumberOfTouching = numberOfTouching;
 			energyData.Energy += numberOfTouching;
 
-			if (numberOfTouching != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return numberOfTouching == 0;
 		}
 
-		public void UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(perturbedNode) || mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			var isTouchingOld = 0;
 			var isTouchingNew = 0;
@@ -77,16 +77,13 @@
 			energyData.NumberOfTouching = numberOfTouchingTotal;
 			energyData.Energy += numberOfTouchingTotal;
 
-			if (numberOfTouchingTotal != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return numberOfTouchingTotal == 0;
 		}
 
-		public void UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
 			var newNumberOfTouching = oldConfiguration.EnergyData.NumberOfTouching;
@@ -107,10 +104,7 @@
 			energyData.NumberOfTouching = newNumberOfTouching;
 			energyData.Energy += newNumberOfTouching;
 
-			if (newNumberOfTouching != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return newNumberOfTouching == 0;
 		}
 
 		private bool DoTouch(TConfiguration configuration1, TConfiguration configuration2)

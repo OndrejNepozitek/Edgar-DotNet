@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.Layouts
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;

@@ -9,28 +9,37 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
 	using Utils;
 
-	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
-		where TLayout : IEnergyLayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
+	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
+		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
+		where TLayoutEnergyData : IEnergyData, new()
 	{
-		private readonly List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>> constraints = new List<IConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
+		private readonly List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>> nodeConstraints = new List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
+		private readonly List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>> layoutConstraints = new List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>>();
 
 		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize) : base(configurationSpaces, averageSize)
 		{
 
 		}
 
-		public void AddContraints(IConstraint<TLayout, TNode, TConfiguration, TEnergyData> constraint)
+		public void AddNodeConstraint(INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData> constraint)
 		{
-			constraints.Add(constraint);
+			nodeConstraints.Add(constraint);
+		}
+
+		public void AddLayoutConstraint(ILayoutConstraint<TLayout, TNode, TLayoutEnergyData> constraint)
+		{
+			layoutConstraints.Add(constraint);
 		}
 
 		public override bool IsLayoutValid(TLayout layout)
 		{
-			if (!layout.IsValid)
+			if (!layout.EnergyData.IsValid)
 				return false;
 
 			if (layout.GetAllConfigurations().Any(x => !x.EnergyData.IsValid))
@@ -46,22 +55,23 @@
 
 		public override float GetEnergy(TLayout layout)
 		{
-			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy) + layout.Energy;
+			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy) + layout.EnergyData.Energy;
 		}
 
 		public override void UpdateLayout(TLayout layout)
 		{
-			layout.IsValid = true;
-
 			foreach (var node in layout.Graph.Vertices)
 			{
 				if (!layout.GetConfiguration(node, out var configuration))
 					continue;
 
-				var newEnergyData = RunAllCompute(layout, node, configuration);
+				var newEnergyData = NodeRunAllCompute(layout, node, configuration);
 				configuration.EnergyData = newEnergyData;
 				layout.SetConfiguration(node, configuration);
 			}
+
+			var layoutEnergyData = LayoutRunAllCompute(layout);
+			layout.EnergyData = layoutEnergyData;
 		}
 
 		public override void AddNodeGreedily(TLayout layout, TNode node)
@@ -113,7 +123,7 @@
 						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
 							continue;
 
-						var energy = ComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+						var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
 
 						if (energy < bestEnergy)
 						{
@@ -171,56 +181,108 @@
 				if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
 					continue;
 
-				var vertexEnergyData = RunAllUpdate(layout, node, oldConfiguration, configuration, vertex, nodeConfiguration);
+				var vertexEnergyData = NodeRunAllUpdate(layout, node, oldConfiguration, configuration, vertex, nodeConfiguration);
 
 				nodeConfiguration.EnergyData = vertexEnergyData;
 				layout.SetConfiguration(vertex, nodeConfiguration);
 			}
 
 			// Update energy and validity vector of the perturbed node
-			var newEnergyData = RunAllUpdate(node, oldLayout, layout);
+			var newEnergyData = NodeRunAllUpdate(node, oldLayout, layout);
 			configuration.EnergyData = newEnergyData;
 			layout.SetConfiguration(node, configuration);
+
+			var layoutEnergyData = LayoutRunAllUpdate(node, oldLayout, layout);
+			layout.EnergyData = layoutEnergyData;
 		}
 
-		protected TEnergyData ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration)
+		protected TEnergyData NodeComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration)
 		{
-			return RunAllCompute(layout, node, configuration);
+			return NodeRunAllCompute(layout, node, configuration);
 		}
 
-		private TEnergyData RunAllCompute(TLayout layout, TNode node, TConfiguration configuration)
+		private TEnergyData NodeRunAllCompute(TLayout layout, TNode node, TConfiguration configuration)
 		{
-			var energyData = new TEnergyData { IsValid = true };
+			var energyData = new TEnergyData();
+			var valid = true;
 
-			foreach (var constraint in constraints)
+			foreach (var constraint in nodeConstraints)
 			{
-				constraint.ComputeEnergyData(layout, node, configuration, ref energyData);
+				if (!constraint.ComputeEnergyData(layout, node, configuration, ref energyData))
+				{
+					valid = false;
+				}
 			}
 
+			energyData.IsValid = valid;
 			return energyData;
 		}
 
-		private TEnergyData RunAllUpdate(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration)
+		private TEnergyData NodeRunAllUpdate(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration)
 		{
-			var energyData = new TEnergyData { IsValid = true };
+			var energyData = new TEnergyData();
+			var valid = true;
 
-			foreach (var constraint in constraints)
+			foreach (var constraint in nodeConstraints)
 			{
-				constraint.UpdateEnergyData(layout, perturbedNode, oldConfiguration, newConfiguration, node, configuration, ref energyData);
+				if (!constraint.UpdateEnergyData(layout, perturbedNode, oldConfiguration, newConfiguration, node, configuration, ref energyData))
+				{
+					valid = false;
+				}
 			}
 
+			energyData.IsValid = valid;
 			return energyData;
 		}
 
-		private TEnergyData RunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
+		private TEnergyData NodeRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
 		{
-			var energyData = new TEnergyData { IsValid = true };
+			var energyData = new TEnergyData();
+			var valid = true;
 
-			foreach (var constraint in constraints)
+			foreach (var constraint in nodeConstraints)
 			{
-				constraint.UpdateEnergyData(oldLayout, newLayout, node, ref energyData);
+				if (!constraint.UpdateEnergyData(oldLayout, newLayout, node, ref energyData))
+				{
+					valid = false;
+				}
 			}
 
+			energyData.IsValid = valid;
+			return energyData;
+		}
+
+		private TLayoutEnergyData LayoutRunAllCompute(TLayout layout)
+		{
+			var energyData = new TLayoutEnergyData();
+			var valid = true;
+
+			foreach (var constraint in layoutConstraints)
+			{
+				if (!constraint.ComputeLayoutEnergyData(layout, ref energyData))
+				{
+					valid = false;
+				}
+			}
+
+			energyData.IsValid = valid;
+			return energyData;
+		}
+
+		private TLayoutEnergyData LayoutRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
+		{
+			var energyData = new TLayoutEnergyData();
+			var valid = true;
+
+			foreach (var constraint in layoutConstraints)
+			{
+				if (!constraint.UpdateLayoutEnergyData(oldLayout, newLayout, node, ref energyData))
+				{
+					valid = false;
+				}
+			}
+
+			energyData.IsValid = valid;
 			return energyData;
 		}
 	}

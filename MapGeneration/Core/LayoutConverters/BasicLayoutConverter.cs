@@ -9,6 +9,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 	using Utils;
 

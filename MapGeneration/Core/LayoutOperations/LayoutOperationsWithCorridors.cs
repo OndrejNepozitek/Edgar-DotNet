@@ -4,20 +4,21 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
-	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 	using Utils;
 
-	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData>
-		where TLayout : IEnergyLayout<TNode, TConfiguration>, ISmartCloneable<TLayout> 
+	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>
+		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
+		where TLayoutEnergyData : IEnergyData, new()
 	{
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> CorridorConfigurationSpaces;
 		protected readonly ICorridorMapDescription<TNode> MapDescription;
@@ -213,7 +214,7 @@
 						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
 							continue;
 
-						var energy = ComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+						var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
 
 						if (energy < bestEnergy)
 						{
@@ -286,7 +287,7 @@
 						{
 							var position = intersectionLine.GetNthPoint(intersectionLine.Length);
 
-							var energyData = ComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
 
 							if (energyData.IsValid)
 							{
@@ -304,7 +305,7 @@
 
 						foreach (var position in points)
 						{
-							var energyData = ComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
 
 							if (energyData.IsValid)
 							{

@@ -3,11 +3,11 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration.EnergyData;
 
-	/// <inheritdoc cref="IEnergyDataCorridors" />
+	/// <inheritdoc cref="ICorridorsData" />
 	/// <summary>
 	/// Basic implementation of an IEnergyDataCorridors interface.
 	/// </summary>
-	public struct EnergyDataCorridors : IEnergyDataCorridors, ISmartCloneable<EnergyDataCorridors>
+	public struct CorridorsData : ICorridorsData, ISmartCloneable<CorridorsData>
 	{
 		/// <inheritdoc />
 		public float Energy { get; set; }
@@ -27,7 +27,7 @@
 		/// <inheritdoc />
 		public bool IsValid { get; set; }
 
-		public EnergyDataCorridors(float energy, int overlap, int moveDistance, bool isValid, int corridorDistance, int numberOfTouching)
+		public CorridorsData(float energy, int overlap, int moveDistance, bool isValid, int corridorDistance, int numberOfTouching)
 		{
 			Energy = energy;
 			Overlap = overlap;
@@ -37,9 +37,9 @@
 			NumberOfTouching = numberOfTouching;
 		}
 
-		public EnergyDataCorridors SmartClone()
+		public CorridorsData SmartClone()
 		{
-			return new EnergyDataCorridors(
+			return new CorridorsData(
 				Energy,
 				Overlap,
 				MoveDistance,

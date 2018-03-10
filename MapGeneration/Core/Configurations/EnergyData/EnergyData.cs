@@ -7,15 +7,15 @@
 	/// <summary>
 	/// Basic implementation of an IEnergyData interface.
 	/// </summary>
-	public struct EnergyData : IEnergyData, ISmartCloneable<EnergyData>
+	public struct EnergyData : INodeEnergyData, ISmartCloneable<EnergyData>
 	{
 		/// <inheritdoc />
 		public float Energy { get; set; }
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="INodeEnergyData" />
 		public int Overlap { get; set; }
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="INodeEnergyData" />
 		public int MoveDistance { get; set; }
 
 		/// <inheritdoc />

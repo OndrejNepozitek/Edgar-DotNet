@@ -14,6 +14,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.LayoutGenerator;
+	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 
 	/// <inheritdoc cref="ILayoutGenerator{TMapDescription,TNode}" />
@@ -92,6 +93,7 @@
 		// Settings
 		protected bool BenchmarkEnabled;
 		protected bool LayoutValidityCheckEnabled;
+		protected Func<TLayout, object> EnergyDataGetter;
 
 		// Events
 
@@ -105,6 +107,11 @@
 		public event Action<IMapLayout<TNode>> OnValid;
 
 		private readonly GraphUtils graphUtils = new GraphUtils();
+
+		public ChainBasedGenerator()
+		{
+			PrepareEnergyDataGetter();
+		}
 
 		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
 		{
@@ -367,6 +374,28 @@
 				if (!configurationCopy.Equals(configurationLayout))
 					throw new InvalidOperationException("Configurations must be equal");
 			}
+
+			if (EnergyDataGetter != null)
+			{
+				var energyDataLayout = EnergyDataGetter(layout);
+				var energyDataCopy = EnergyDataGetter(copy);
+
+				if (!energyDataLayout.Equals(energyDataCopy))
+					throw new InvalidOperationException("Configurations must be equal");
+			}
+		}
+
+		private void PrepareEnergyDataGetter()
+		{
+			var isEnergyLayout = typeof(TLayout).GetInterfaces().Any(x =>
+				x.IsGenericType &&
+				x.GetGenericTypeDefinition() == typeof(IEnergyLayout<,,>));
+
+			if (!isEnergyLayout)
+				return;
+
+			var propertyInfo = typeof(TLayout).GetProperty(nameof(IEnergyLayout<object, object, object>.EnergyData));
+			EnergyDataGetter = (layout) => propertyInfo.GetValue(layout);
 		}
 
 		/// <summary>

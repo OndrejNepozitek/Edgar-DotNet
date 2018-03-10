@@ -32,7 +32,7 @@
 					layoutGenerator.SetLayoutValidityCheck(false);
 
 					var scenario = BenchmarkScenario.CreateScenarioFor(layoutGenerator);
-					scenario.SetRunsCount(2);
+					//scenario.SetRunsCount(2);
 
 					//var setups2 = scenario.MakeSetupsGroup();
 					//setups2.AddSetup("Lazy", generator => { generator.EnableLazyProcessing(true); });

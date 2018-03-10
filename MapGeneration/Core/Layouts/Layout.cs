@@ -1,18 +1,18 @@
-﻿namespace MapGeneration.Core
+﻿namespace MapGeneration.Core.Layouts
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
+	using Interfaces.Core.Layouts;
 
-	public class Layout<TConfiguration> : IEnergyLayout<int, TConfiguration>, ISmartCloneable<Layout<TConfiguration>>
+	public class Layout<TConfiguration, TLayoutEnergyData> : IEnergyLayout<int, TConfiguration, TLayoutEnergyData>, ISmartCloneable<Layout<TConfiguration, TLayoutEnergyData>>
 		where TConfiguration : ISmartCloneable<TConfiguration>
+		where TLayoutEnergyData : ISmartCloneable<TLayoutEnergyData>
 	{
 		private readonly TConfiguration[] vertices;
 		private readonly bool[] hasValue;
 
-		public float Energy { get; set; } = 0; // TODO: change
-
-		public bool IsValid { get; set; } = true; // TODO: change
+		public TLayoutEnergyData EnergyData { get; set; }
 
 		public IGraph<int> Graph { get; }
 
@@ -52,9 +52,9 @@
 			}
 		}
 
-		public Layout<TConfiguration> SmartClone()
+		public Layout<TConfiguration, TLayoutEnergyData> SmartClone()
 		{
-			var layout = new Layout<TConfiguration>(Graph);
+			var layout = new Layout<TConfiguration, TLayoutEnergyData>(Graph);
 
 			for (var i = 0; i < vertices.Length; i++)
 			{
@@ -66,6 +66,8 @@
 					layout.hasValue[i] = true;
 				}
 			}
+
+			layout.EnergyData = EnergyData.SmartClone();
 
 			return layout;
 		}

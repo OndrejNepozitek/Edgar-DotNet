@@ -100,10 +100,10 @@
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpacesGenerator.cs" />
-    <Compile Include="Core\Configurations\EnergyData\EnergyDataCorridors.cs" />
+    <Compile Include="Core\Configurations\EnergyData\BasicEnergyData.cs" />
+    <Compile Include="Core\Configurations\EnergyData\CorridorsData.cs" />
     <Compile Include="Core\Constraints\BasicContraint.cs" />
     <Compile Include="Core\Constraints\CorridorConstraints.cs" />
-    <Compile Include="Core\Constraints\IConstraint.cs" />
     <Compile Include="Core\Constraints\TouchingConstraints.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
@@ -128,7 +128,7 @@
     <Compile Include="Core\MapLayout.cs" />
     <Compile Include="Core\Room.cs" />
     <Compile Include="Core\RoomDescription.cs" />
-    <Compile Include="Core\Layout.cs" />
+    <Compile Include="Core\Layouts\Layout.cs" />
     <Compile Include="Core\GeneratorPlanners\SlowGeneratorPlanner.cs" />
     <Compile Include="Core\GeneratorPlanners\GeneratorPlannerBase.cs" />
     <Compile Include="Core\GeneratorPlanners\BasicGeneratorPlanner.cs" />

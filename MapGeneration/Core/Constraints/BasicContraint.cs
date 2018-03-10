@@ -5,15 +5,16 @@
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
 
-	public class BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : IConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	public class BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
-		where TEnergyData : IEnergyData, new()
+		where TEnergyData : INodeEnergyData, new()
 	{
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
 		private readonly float energySigma;
@@ -26,7 +27,7 @@
 			this.configurationSpaces = configurationSpaces;
 		}
 
-		public void ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			var overlap = 0;
 			var distance = 0;
@@ -62,13 +63,11 @@
 			energyData.MoveDistance = distance;
 			energyData.Energy += energy;
 
-			if (overlap != 0 || distance != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return overlap == 0 && distance == 0;
 		}
 
-		public void UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			var overlapOld = ComputeOverlap(configuration, oldConfiguration);
 			var overlapNew = ComputeOverlap(configuration, newConfiguration);
@@ -91,13 +90,10 @@
 			energyData.Overlap = overlapTotal;
 			energyData.Energy += newEnergy;
 
-			if (overlapTotal != 0 || distanceTotal != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return overlapTotal == 0 && distanceTotal == 0;
 		}
 
-		public void UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
 			var newOverlap = oldConfiguration.EnergyData.Overlap;
@@ -124,10 +120,7 @@
 			energyData.Overlap = newOverlap;
 			energyData.Energy += newEnergy;
 
-			if (newOverlap != 0 || newDistance != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return newOverlap == 0 && newDistance == 0;
 		}
 
 		private int ComputeOverlap(TConfiguration configuration1, TConfiguration configuration2)

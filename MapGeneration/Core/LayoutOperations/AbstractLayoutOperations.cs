@@ -8,6 +8,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Layouts;
 	using Utils;
 
 	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : ILayoutOperations<TLayout, TNode>, IRandomInjectable

@@ -9,12 +9,14 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 
-	public class CorridorConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : IConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	public class CorridorConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
-		where TEnergyData : IEnergyDataCorridors, new()
+		where TEnergyData : ICorridorsData, new()
 	{
 		private readonly ICorridorMapDescription<TNode> mapDescription;
 		private readonly float energySigma;
@@ -29,10 +31,10 @@
 			graphWithoutCorridors = this.mapDescription.GetGraphWithoutCorrridors();
 		}
 
-		public void ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			var distance = 0;
 			var neighbours = graphWithoutCorridors.GetNeighbours(node).ToList();
@@ -56,16 +58,14 @@
 			energyData.CorridorDistance = distance;
 			energyData.Energy += energy;
 
-			if (distance != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return distance == 0;
 		}
 
-		public void UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			// MoveDistance should not be recomputed as it is used only when two nodes are neighbours which is not the case here
 			var distanceTotal = configuration.EnergyData.CorridorDistance;
@@ -83,16 +83,13 @@
 			energyData.CorridorDistance = distanceTotal;
 			energyData.Energy += newEnergy;
 
-			if (distanceTotal != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return distanceTotal == 0;
 		}
 
-		public void UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
-				return;
+				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
 			var newOverlap = oldConfiguration.EnergyData.Overlap;
@@ -118,10 +115,7 @@
 			energyData.CorridorDistance = newDistance;
 			energyData.Energy += newEnergy;
 
-			if (newDistance != 0)
-			{
-				energyData.IsValid = false;
-			}
+			return newDistance == 0;
 		}
 
 		// TODO: keep dry

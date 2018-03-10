@@ -1,9 +1,10 @@
 ﻿namespace MapGeneration.Interfaces.Core.Configuration.EnergyData
 {
+	/// <inheritdoc />
 	/// <summary>
 	/// Represents energy data used when working with corridors.
 	/// </summary>
-	public interface IEnergyDataCorridors : IEnergyData
+	public interface ICorridorsData : INodeEnergyData
 	{
 		/// <summary>
 		/// How far is the node from valid position with respect to the neighbours
