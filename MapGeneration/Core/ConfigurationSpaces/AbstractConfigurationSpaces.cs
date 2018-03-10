@@ -10,10 +10,14 @@
 	using Interfaces.Core.ConfigurationSpaces;
 	using Utils;
 
+	/// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
+	/// <summary>
+	/// Abstract class for configuration spaces with common methods already implemented.
+	/// </summary>
 	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>, IRandomInjectable
 		where TConfiguration : IConfiguration<TShapeContainer>
 	{
-		protected Random Random = new Random();
+		protected Random Random;
 		protected ILineIntersection<OrthogonalLine> LineIntersection;
 
 		protected AbstractConfigurationSpaces(ILineIntersection<OrthogonalLine> lineIntersection)
@@ -21,52 +25,38 @@
 			LineIntersection = lineIntersection;
 		}
 
+		/// <inheritdoc />
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;
 		}
 
+		/// <inheritdoc />
 		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
 			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
 		}
 
+		/// <inheritdoc />
 		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations, out configurationsSatisfied);
 
 			var line = intersection.GetWeightedRandom(x => x.Length + 1, Random);
 			return line.GetNthPoint(Random.Next(line.Length + 1));
-			//return GetRandomPoint(intersection.GetWeightedRandom(x => x.Length > 0 ? x.Length / 25 + 1 : 1, Random));
 		}
 
-		private IntVector2 GetRandomPoint(OrthogonalLine line)
-		{
-			var length = line.Length + 1;
-			var wantedChoices = length;
-
-			if (length <= wantedChoices)
-			{
-				return line.GetNthPoint(Random.Next(length));
-			}
-
-			var partsSize = length / wantedChoices;
-			var partsCount = length / partsSize;
-			var randomPart = Random.Next(partsCount + 1);
-
-			if (randomPart != partsCount)
-			{
-				return line.GetNthPoint(randomPart * partsSize);
-			}
-
-			return line.GetNthPoint(length - 1);
-		}
-
+		/// <inheritdoc />
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
 			return GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		/// Tries possible combinations of given configurations until an intersection is found.
+		/// Throws when no intersecion was found.
+		/// </remarks>
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var spaces = GetConfigurationSpaces(mainConfiguration, configurations);
@@ -102,20 +92,41 @@
 			throw new InvalidOperationException("There should always be at least one point in the intersection for shapes that may be neighbours in the layout.");
 		}
 
+		/// <summary>
+		/// Gets configurations spaces of a given main configuration with respect to other configurations.
+		/// </summary>
+		/// <remarks>
+		/// The main configuration will play a role of a shape that can be moved. Other configurations stays fixed.
+		/// </remarks>
+		/// <param name="mainConfiguration">Plays a role of a shape that can be moved.</param>
+		/// <param name="configurations">Fixed configurations.</param>
+		/// <returns></returns>
 		protected abstract IList<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
-		protected abstract ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configurations);
+		/// <summary>
+		/// Gets a configuration space for given two configurations.
+		/// </summary>
+		/// <param name="mainConfiguration">Configuration with a shape that can be moved.</param>
+		/// <param name="configuration">Configuration with a shape that is fixed.</param>
+		/// <returns></returns>
+		protected abstract ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration);
 
-		public abstract ConfigurationSpace GetConfigurationSpace(TShapeContainer shape1, TShapeContainer shape2);
+		/// <inheritdoc />
+		public abstract ConfigurationSpace GetConfigurationSpace(TShapeContainer movingPolygon, TShapeContainer fixedPolygon);
 
+		/// <inheritdoc />
 		public abstract TShapeContainer GetRandomShape(TNode node);
 
+		/// <inheritdoc />
 		public abstract bool CanPerturbShape(TNode node);
 
+		/// <inheritdoc />
 		public abstract IReadOnlyCollection<TShapeContainer> GetShapesForNode(TNode node);
 
+		/// <inheritdoc />
 		public abstract IEnumerable<TShapeContainer> GetAllShapes();
 
+		/// <inheritdoc />
 		public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			var space = GetConfigurationSpace(configuration1, configuration2);
