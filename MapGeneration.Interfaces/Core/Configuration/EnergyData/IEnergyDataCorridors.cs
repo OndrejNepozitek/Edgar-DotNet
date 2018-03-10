@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core.Configuration.EnergyData
 {
 	/// <summary>
-	/// Energy data used when working with corridors.
+	/// Represents energy data used when working with corridors.
 	/// </summary>
 	public interface IEnergyDataCorridors : IEnergyData
 	{

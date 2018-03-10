@@ -4,11 +4,13 @@
 	using System.Collections.Generic;
 
 	/// <summary>
-	/// Interface describing a generator planner.
+	/// Represents a generator planner.
+	/// </summary>
+	/// <remarks>
 	/// Implementations of this interface will be used to plan what
 	/// layouts should be further extended when adding chains to 
 	/// partial layouts.
-	/// </summary>
+	/// </remarks>
 	public interface IGeneratorPlanner<TLayout>
 	{
 		/// <summary>

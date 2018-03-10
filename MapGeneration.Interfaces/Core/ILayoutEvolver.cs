@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 
 	/// <summary>
-	/// Interface for all classes capable of evolving layouts.
+	/// Represents types capable of evolving layouts.
 	/// </summary>
 	/// <typeparam name="TLayout">Type of the layout that will be evolved.</typeparam>
 	/// <typeparam name="TNode">Type of the nodes that are present in the layout.</typeparam>

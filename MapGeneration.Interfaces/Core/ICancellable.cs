@@ -3,7 +3,7 @@
 	using System.Threading;
 
 	/// <summary>
-	/// Interface for types that can be cancelled by a cancellation token.
+	/// Represents types that can be cancelled by a cancellation token.
 	/// </summary>
 	public interface ICancellable
 	{

@@ -3,7 +3,14 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 
-	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, TConfigurationSpace>
+	/// <summary>
+	/// Represents a data structure holding configuration spaces.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TShape"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
+	/// <typeparam name="TConfigurationSpace"></typeparam>
+	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, out TConfigurationSpace>
 	{
 		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 

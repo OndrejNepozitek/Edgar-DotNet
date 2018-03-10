@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core.Configuration.EnergyData
 {
 	/// <summary>
-	/// Basic interface for energy data.
+	/// Represents an energy data.
 	/// </summary>
 	public interface IEnergyData
 	{

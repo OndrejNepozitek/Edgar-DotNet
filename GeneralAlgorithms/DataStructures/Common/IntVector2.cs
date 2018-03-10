@@ -6,7 +6,7 @@
 	using Algorithms.Math;
 
 	/// <summary>
-	/// Integer vector with 2 elements. Represent a point in a 2D discrete space.
+	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
 	/// </summary>
 	public struct IntVector2 : IComparable<IntVector2>, IEquatable<IntVector2>
 	{

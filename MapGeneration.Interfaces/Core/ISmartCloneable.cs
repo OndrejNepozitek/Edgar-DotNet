@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core
 {
 	/// <summary>
-	/// Interface for types that can be cloned.
+	/// Represents types that can be cloned.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public interface ISmartCloneable<out T>

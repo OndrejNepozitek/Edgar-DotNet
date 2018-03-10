@@ -1,7 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Benchmarks
 {
 	/// <summary>
-	/// Interface for all layout generators that are ready to be benchmarked.
+	/// Represents layout generators that can be benchmarked.
 	/// </summary>
 	public interface IBenchmarkable
 	{

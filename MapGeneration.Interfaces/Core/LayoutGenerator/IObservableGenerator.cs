@@ -4,7 +4,7 @@
 
 	/// <inheritdoc />
 	/// <summary>
-	/// Interfaces for layout generated that can be observed for example from GUI.
+	/// Layout generators that can be observed for example from GUI.
 	/// </summary>
 	/// <typeparam name="TMapDescription"></typeparam>
 	/// <typeparam name="TNode"></typeparam>

@@ -2,7 +2,7 @@
 {
 	/// <inheritdoc />
 	/// <summary>
-	/// Configuration with an energy data.
+	/// Represents a configuration with an energy data.
 	/// </summary>
 	/// <typeparam name="TShapeContainer"></typeparam>
 	/// <typeparam name="TEnergyData"></typeparam>
