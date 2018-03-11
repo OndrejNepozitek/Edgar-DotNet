@@ -76,6 +76,42 @@
 			return maxIndex;
 		}
 
+		/// <summary>
+		/// Computes an index of the first minimum element with respect to given function.
+		/// </summary>
+		/// <typeparam name="TElement"></typeparam>
+		/// <typeparam name="TResult"></typeparam>
+		/// <param name="collection"></param>
+		/// <param name="func"></param>
+		/// <returns></returns>
+		public static int MinBy<TElement, TResult>(this IEnumerable<TElement> collection, Func<TElement, TResult> func)
+			where TResult : IComparable<TResult>
+		{
+			var min = default(TResult);
+			var minIndex = -1;
+			var i = 0;
+
+			foreach (var element in collection)
+			{
+				var result = func(element);
+
+				if (i == 0)
+				{
+					minIndex = i;
+					min = result;
+				}
+				else if (result.CompareTo(min) < 0)
+				{
+					minIndex = i;
+					min = result;
+				}
+
+				i++;
+			}
+
+			return minIndex;
+		}
+
 		public static T GetWeightedRandom<T>(this IList<T> elements, Func<T, double> weightSelector, Random random)
 		{
 			var totalWeight = elements.Sum(weightSelector);

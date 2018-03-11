@@ -105,7 +105,7 @@
     <Compile Include="Core\Constraints\BasicContraint.cs" />
     <Compile Include="Core\Constraints\CorridorConstraints.cs" />
     <Compile Include="Core\Constraints\TouchingConstraints.cs" />
-    <Compile Include="Core\Constraints\WidthHeightRatioConstraint.cs" />
+    <Compile Include="Core\Constraints\MaximumAreaConstraint.cs" />
     <Compile Include="Core\Doors\DoorHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
     <Compile Include="Core\Doors\DoorHandlers\SpecificPositionsModeHandler.cs" />
@@ -114,9 +114,10 @@
     <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
     <Compile Include="Core\Configurations\Configuration.cs" />
     <Compile Include="Core\Configurations\EnergyData\EnergyData.cs" />
+    <Compile Include="Core\GraphDecomposition\BreadthFirstChainDecomposition.cs" />
+    <Compile Include="Core\GraphDecomposition\ChainDecompositionBase.cs" />
     <Compile Include="Core\LayoutGenerators\ChainBasedGenerator.cs" />
     <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\BreadthFirstLongerChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\CorridorsChainDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
     <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />

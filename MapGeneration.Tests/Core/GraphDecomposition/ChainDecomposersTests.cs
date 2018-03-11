@@ -64,12 +64,12 @@
 		}
 
 		[TestFixture]
-		public class BreadthFirstLongerChainsDecompositionTests : ChainDecomposersTests
+		public class BreadthFirstChainDecompositionTests : ChainDecomposersTests
 		{
 			protected override void CreateConcrete()
 			{
 				var graphDecomposer = new GraphDecomposer<int>();
-				chainDecomposition = new BreadthFirstLongerChainsDecomposition<int>(graphDecomposer);
+				chainDecomposition = new BreadthFirstChainDecomposition<int>(graphDecomposer);
 			}
 		}
 
