@@ -26,6 +26,11 @@ passages:
 
 defaultRoomShapes:
   -
-    setName: rectangles
-  -
-    setName: otherShapes
+    setName: basicSet
+
+corridors:
+  enable: true
+  offsets: [1]
+  corridorShapes:
+    -
+      setName: corridors
