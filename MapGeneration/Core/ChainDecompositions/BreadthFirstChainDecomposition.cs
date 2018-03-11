@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.GraphDecomposition
+﻿namespace MapGeneration.Core.ChainDecompositions
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,6 +7,12 @@
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
+	/// <summary>
+	/// The algorithm starts with the smallest chains. It then looks for connected faces that
+	/// are as small as possible. If no such face exists, paths close to already covered nodes
+	/// are considered. When a face can be processed, it has greater priority than paths.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
 		where TNode : IEquatable<TNode>
 	{
@@ -14,6 +20,7 @@
 		{
 		}
 
+		/// <inheritdoc />
 		public override List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			Initialize(graph);
@@ -132,7 +139,7 @@
 			// Add vertices starting with the ones that neighbour with nodes on the highest depths
 			while (nextFace.Count != 0)
 			{
-				var nextVertexIndex = nextFace.MinBy(SmallestUsedNeighbourDepth);
+				var nextVertexIndex = nextFace.MinBy(SmallestCoveredNeighbourDepth);
 				var nextVertex = nextFace[nextVertexIndex];
 
 				SetDepth(nextVertex, counter++);
@@ -152,6 +159,13 @@
 			return chain;
 		}
 
+		/// <summary>
+		/// Gets a path that is conencted to already discovered vertices.
+		/// </summary>
+		/// <remarks>
+		/// It tries to minimize the number of chains with only a single node.
+		/// </remarks>
+		/// <returns></returns>
 		private List<TNode> GetNextPath()
 		{
 			var firstVertex = default(TNode);
@@ -293,6 +307,11 @@
 			return soloNeighbours;
 		}
 
+		/// <summary>
+		/// Gets the first cycle.
+		/// </summary>
+		/// <param name="faces"></param>
+		/// <returns></returns>
 		private List<TNode> GetFirstCycle(List<List<TNode>> faces)
 		{
 			if (faces.Count == 0)
@@ -313,9 +332,12 @@
 			return smallestFace;
 		}
 
+		/// <summary>
+		/// Removes all faces that have all nodes already covered.
+		/// </summary>
+		/// <param name="faces"></param>
 		private void RemoveCoveredNodes(List<List<TNode>> faces)
 		{
-			// Remove all faces that have all nodes already covered
 			// Loops are reversed because removing elements changes index
 			for (var i = faces.Count - 1; i >= 0; i--)
 			{

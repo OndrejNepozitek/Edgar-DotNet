@@ -1,11 +1,17 @@
-﻿namespace MapGeneration.Core.GraphDecomposition
+﻿namespace MapGeneration.Core.ChainDecompositions
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
+	using Interfaces.Core.ChainDecompositions;
 
+	/// <inheritdoc />
+	/// <summary>
+	/// Base class for chain decomposer with some utility functions.
+	/// </summary>
 	public abstract class ChainDecompositionBase<TNode> : IChainDecomposition<TNode>
 	{
 		protected IGraph<TNode> Graph;
@@ -13,12 +19,14 @@
 		protected Dictionary<TNode, int> CoveredVertices;
 		protected int ChainsCounter;
 		protected List<List<TNode>> Faces;
+		protected GraphUtils GraphUtils = new GraphUtils();
 
 		protected ChainDecompositionBase(IGraphDecomposer<TNode> graphDecomposer)
 		{
 			GraphDecomposer = graphDecomposer;
 		}
 
+		/// <inheritdoc />
 		public abstract List<List<TNode>> GetChains(IGraph<TNode> graph);
 
 		/// <summary>
@@ -27,6 +35,9 @@
 		/// <param name="graph"></param>
 		protected void Initialize(IGraph<TNode> graph)
 		{
+			if (!GraphUtils.IsConnected(graph))
+				throw new ArgumentException("The graph must be connected", nameof(graph));
+
 			Graph = graph;
 			Faces = GraphDecomposer.GetFaces(Graph);
 			CoveredVertices = new Dictionary<TNode, int>();
@@ -35,7 +46,12 @@
 			graph.Vertices.ToList().ForEach(x => SetDepth(x, -1));
 		}
 
-		protected int SmallestUsedNeighbourDepth(TNode node)
+		/// <summary>
+		/// Returns the smallest depth among all neighbours that all already covered.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		protected int SmallestCoveredNeighbourDepth(TNode node)
 		{
 			var neighbours = Graph.GetNeighbours(node);
 			var smallestDepth = int.MaxValue;
@@ -53,21 +69,41 @@
 			return smallestDepth;
 		}
 
+		/// <summary>
+		/// Gets the depth of a given node.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		protected int GetDepth(TNode node)
 		{
 			return CoveredVertices[node];
 		}
 
+		/// <summary>
+		/// Sets the depth of a given node.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="depth"></param>
 		protected void SetDepth(TNode node, int depth)
 		{
 			CoveredVertices[node] = depth;
 		}
 
+		/// <summary>
+		/// Checks whether a given node is already covered.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		protected bool IsCovered(TNode node)
 		{
 			return GetDepth(node) != -1;
 		}
 
+		/// <summary>
+		/// Counts the number of uncovered neighbours of a given node.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		protected int UncoveredNeighboursCount(TNode node)
 		{
 			var neighbours = Graph.GetNeighbours(node);

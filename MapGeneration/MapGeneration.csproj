@@ -114,13 +114,10 @@
     <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
     <Compile Include="Core\Configurations\Configuration.cs" />
     <Compile Include="Core\Configurations\EnergyData\EnergyData.cs" />
-    <Compile Include="Core\GraphDecomposition\BreadthFirstChainDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\ChainDecompositionBase.cs" />
+    <Compile Include="Core\ChainDecompositions\BreadthFirstChainDecomposition.cs" />
+    <Compile Include="Core\ChainDecompositions\ChainDecompositionBase.cs" />
     <Compile Include="Core\LayoutGenerators\ChainBasedGenerator.cs" />
-    <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\CorridorsChainDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
+    <Compile Include="Core\ChainDecompositions\CorridorsChainDecomposition.cs" />
     <Compile Include="Core\LayoutConverters\BasicLayoutConverter.cs" />
     <Compile Include="Core\LayoutEvolvers\SimulatedAnnealingEvolver.cs" />
     <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />

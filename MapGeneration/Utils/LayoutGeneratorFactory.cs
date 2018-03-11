@@ -2,6 +2,7 @@
 {
 	using System.Collections.Generic;
 	using Core;
+	using Core.ChainDecompositions;
 	using Core.Configurations;
 	using Core.Configurations.EnergyData;
 	using Core.ConfigurationSpaces;
@@ -9,7 +10,6 @@
 	using Core.Doors;
 	using Core.Experimental;
 	using Core.GeneratorPlanners;
-	using Core.GraphDecomposition;
 	using Core.LayoutConverters;
 	using Core.LayoutEvolvers;
 	using Core.LayoutGenerators;

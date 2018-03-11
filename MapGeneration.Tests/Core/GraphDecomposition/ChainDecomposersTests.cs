@@ -5,7 +5,7 @@
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
-	using MapGeneration.Core.GraphDecomposition;
+	using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 
 	public abstract class ChainDecomposersTests

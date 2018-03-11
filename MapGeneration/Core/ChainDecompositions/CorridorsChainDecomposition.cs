@@ -1,12 +1,23 @@
-﻿namespace MapGeneration.Core.GraphDecomposition
+﻿namespace MapGeneration.Core.ChainDecompositions
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
+	using Interfaces.Core.ChainDecompositions;
 	using Interfaces.Core.MapDescription;
 
+	/// <inheritdoc />
+	/// <summary>
+	/// Chain decomposition for map descriptions with corridors.
+	/// </summary>
+	/// <remarks>
+	/// It uses a chain decomposition for normal map description with a graph without corridors.
+	/// It then adds all the corridors to corresponding chains. The benefit of this approach is
+	/// that graphs with corridors have very specific structure and classic chain decompositions
+	/// may not give optimal results. By removing corridors, we can use classic chain decompositions.
+	/// </remarks>
+	/// <typeparam name="TNode"></typeparam>
 	public class CorridorsChainDecomposition<TNode> : IChainDecomposition<TNode>
 	{
 		private readonly ICorridorMapDescription<TNode> mapDescription;
@@ -18,6 +29,7 @@
 			this.decomposition = decomposition;
 		}
 
+		/// <inheritdoc />
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			if (!mapDescription.IsWithCorridors)
