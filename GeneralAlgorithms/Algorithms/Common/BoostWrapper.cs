@@ -4,7 +4,7 @@
 
 	public static class BoostWrapper
 	{
-		[DllImport("BoostWrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("BoostWrapper", CallingConvention = CallingConvention.Cdecl)]
 		[return: MarshalAs(UnmanagedType.I1)]
 		public static extern bool GetFaces(
 			[MarshalAs(UnmanagedType.LPArray)] int[] edges,
@@ -15,7 +15,7 @@
 			out int facesCount
 		);
 
-		[DllImport("BoostWrapper.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("BoostWrapper", CallingConvention = CallingConvention.Cdecl)]
 		[return: MarshalAs(UnmanagedType.I1)]
 		public static extern bool IsPlanar(
 			[MarshalAs(UnmanagedType.LPArray)] int[] edges,
