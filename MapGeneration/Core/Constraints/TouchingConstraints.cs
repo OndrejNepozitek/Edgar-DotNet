@@ -5,7 +5,7 @@
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
 
 	/// <summary>
 	/// Ensures that rooms that are not neighbours do not touch.

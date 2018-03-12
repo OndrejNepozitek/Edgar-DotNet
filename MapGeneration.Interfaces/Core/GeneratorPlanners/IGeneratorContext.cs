@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.GeneratorPlanners
 {
 	// TODO: chage this class or move it elsewhere
 	/// <summary>

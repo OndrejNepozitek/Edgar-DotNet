@@ -10,7 +10,7 @@
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
 
 	/// <summary>
 	/// Constraint made for map descriptions with corridors.

@@ -4,6 +4,7 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
 	using Interfaces.Core.Layouts;
+	using Interfaces.Utils;
 
 	/// <inheritdoc cref="ILayout{TNode,TConfiguration}" />
 	/// <summary>

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core.MapDescription
+﻿namespace MapGeneration.Interfaces.Core.MapDescriptions
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;

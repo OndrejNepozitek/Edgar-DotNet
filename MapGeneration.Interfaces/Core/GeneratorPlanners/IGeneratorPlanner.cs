@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.GeneratorPlanners
 {
 	using System;
 	using System.Collections.Generic;

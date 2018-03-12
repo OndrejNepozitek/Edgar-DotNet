@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Utils
 {
 	using System;
 

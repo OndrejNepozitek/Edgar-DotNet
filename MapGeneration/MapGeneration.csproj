@@ -123,10 +123,10 @@
     <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />
-    <Compile Include="Core\MapDescription.cs" />
+    <Compile Include="Core\MapDescriptions\MapDescription.cs" />
     <Compile Include="Core\MapLayout.cs" />
     <Compile Include="Core\Room.cs" />
-    <Compile Include="Core\RoomDescription.cs" />
+    <Compile Include="Core\MapDescriptions\RoomDescription.cs" />
     <Compile Include="Core\Layouts\Layout.cs" />
     <Compile Include="Core\GeneratorPlanners\SlowGeneratorPlanner.cs" />
     <Compile Include="Core\GeneratorPlanners\GeneratorPlannerBase.cs" />

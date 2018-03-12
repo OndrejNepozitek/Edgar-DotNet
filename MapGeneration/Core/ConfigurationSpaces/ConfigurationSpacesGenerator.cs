@@ -11,6 +11,7 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Doors;
+	using MapDescriptions;
 
 	public class ConfigurationSpacesGenerator
 	{

@@ -10,6 +10,7 @@
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorModes;
+	using MapGeneration.Core.MapDescriptions;
 	using NUnit.Framework;
 
 	[TestFixture]

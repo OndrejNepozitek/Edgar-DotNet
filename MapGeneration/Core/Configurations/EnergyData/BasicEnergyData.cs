@@ -2,6 +2,7 @@
 {
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Utils;
 
 	public struct BasicEnergyData : IEnergyData, ISmartCloneable<BasicEnergyData>
 	{

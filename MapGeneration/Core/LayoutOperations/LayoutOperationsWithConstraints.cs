@@ -11,6 +11,7 @@
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
+	using Interfaces.Utils;
 	using Utils;
 
 	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>

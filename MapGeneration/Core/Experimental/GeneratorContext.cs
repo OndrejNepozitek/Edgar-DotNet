@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Core.Experimental
 {
 	using Interfaces.Core;
+	using Interfaces.Core.GeneratorPlanners;
 
 	// TODO: rename or remove
 	/// <inheritdoc />

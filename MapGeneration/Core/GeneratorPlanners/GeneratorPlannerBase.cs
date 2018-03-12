@@ -5,6 +5,8 @@
 	using System.Text;
 	using System.Threading;
 	using Interfaces.Core;
+	using Interfaces.Core.GeneratorPlanners;
+	using Interfaces.Utils;
 
 	/// <summary>
 	/// Class that builds a tree of nodes where each node represent a layout that can be

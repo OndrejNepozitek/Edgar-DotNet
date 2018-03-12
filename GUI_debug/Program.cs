@@ -16,7 +16,7 @@
 	using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorModes;
 	using MapGeneration.Core.LayoutOperations;
-	using MapGeneration.Interfaces.Core.MapDescription;
+	using MapGeneration.Core.MapDescriptions;
 
 	static class Program
 	{

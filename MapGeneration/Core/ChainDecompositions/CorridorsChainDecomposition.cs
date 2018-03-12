@@ -5,7 +5,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core.ChainDecompositions;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
 
 	/// <inheritdoc />
 	/// <summary>

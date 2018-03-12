@@ -10,6 +10,7 @@
 	using System.Windows.Forms;
 	using MapDrawing;
 	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Utils;
 	using MapGeneration.Utils;
 	using MapGeneration.Utils.MapDrawing;
 

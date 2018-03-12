@@ -8,7 +8,10 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
+	using Interfaces.Core.LayoutEvolvers;
+	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
+	using Interfaces.Utils;
 
 	public class SimulatedAnnealingEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>

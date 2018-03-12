@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.LayoutConverters
 {
 	public interface ILayoutConverter<in TLayoutFrom, out TLayoutTo>
 	{

@@ -5,6 +5,7 @@
 	using System.Linq;
 	using System.Windows.Forms;
 	using MapGeneration.Core;
+	using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Utils.ConfigParsing;
 
 	public partial class MainSettings : Form

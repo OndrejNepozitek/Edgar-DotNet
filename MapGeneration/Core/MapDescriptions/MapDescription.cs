@@ -1,12 +1,11 @@
-﻿namespace MapGeneration.Core
+﻿namespace MapGeneration.Core.MapDescriptions
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
 
 	public class MapDescription<TNode> : ICorridorMapDescription<int>
 	{

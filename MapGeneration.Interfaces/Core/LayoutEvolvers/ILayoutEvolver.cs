@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.LayoutEvolvers
 {
 	using System;
 	using System.Collections.Generic;

@@ -6,6 +6,7 @@
 	using System.Linq;
 	using Core;
 	using Core.Doors.DoorModes;
+	using Core.MapDescriptions;
 	using Deserializers;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;

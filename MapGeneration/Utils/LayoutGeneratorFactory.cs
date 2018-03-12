@@ -15,6 +15,7 @@
 	using Core.LayoutGenerators;
 	using Core.LayoutOperations;
 	using Core.Layouts;
+	using Core.MapDescriptions;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;

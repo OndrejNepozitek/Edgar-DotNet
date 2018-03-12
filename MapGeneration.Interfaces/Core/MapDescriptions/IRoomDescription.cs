@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.MapDescriptions
 {
 	using Doors;
 	using GeneralAlgorithms.DataStructures.Polygons;
