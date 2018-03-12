@@ -5,7 +5,6 @@
 	using System.Linq;
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.LayoutOperations;
@@ -13,7 +12,11 @@
 	using Interfaces.Utils;
 	using Utils;
 
-	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : ILayoutOperations<TLayout, TNode>, IRandomInjectable
+	/// <inheritdoc cref="IChainBasedLayoutOperations{TLayout,TNode}" />
+	/// <summary>
+	/// Base class for layout operations.
+	/// </summary>
+	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : IChainBasedLayoutOperations<TLayout, TNode>, IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer>, ISmartCloneable<TConfiguration>
 	{
@@ -29,11 +32,20 @@
 			AverageSize = averageSize;
 		}
 
+		/// <inheritdoc />
 		public virtual void InjectRandomGenerator(Random random)
 		{
 			Random = random;
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Perturbs a node by getting random shapes from configurations spaces until a
+		/// different shape is found.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <param name="updateLayout"></param>
 		public virtual void PerturbShape(TLayout layout, TNode node, bool updateLayout)
 		{
 			layout.GetConfiguration(node, out var configuration);
@@ -61,9 +73,10 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		public virtual void PerturbShape(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		/// <inheritdoc />
+		public virtual void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
-			var canBePerturbed = nodeOptions.Where(x => ConfigurationSpaces.CanPerturbShape(x)).ToList();
+			var canBePerturbed = chain.Where(x => ConfigurationSpaces.CanPerturbShape(x)).ToList();
 
 			if (canBePerturbed.Count == 0)
 				return;
@@ -71,6 +84,11 @@
 			PerturbShape(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Pertubs a position of a given node by getting a random point from a maximum
+		/// intersection of configuration space of already laid out neighbours. TODO: is "laid out" ok?
+		/// </summary>
 		public virtual void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
 		{
 			var configurations = new List<TConfiguration>();
@@ -99,10 +117,11 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		public virtual void PerturbPosition(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		/// <inheritdoc />
+		public virtual void PerturbPosition(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
-			var canBePerturbed = nodeOptions.ToList();
+			var canBePerturbed = chain.ToList();
 
 			if (canBePerturbed.Count == 0)
 				return;
@@ -110,18 +129,27 @@
 			PerturbPosition(layout, canBePerturbed.GetRandom(Random), updateLayout);
 		}
 
-		public virtual void PerturbLayout(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		/// <inheritdoc />
+		/// <summary>
+		/// Perturbs a given layout by first choosing whether to perturb a shape or a positions
+		/// and than calling corresponding methods.
+		/// </summary>
+		public virtual void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			if (Random.NextDouble() <= ShapePerturbChance)
 			{
-				PerturbShape(layout, nodeOptions, updateLayout);
+				PerturbShape(layout, chain, updateLayout);
 			}
 			else
 			{
-				PerturbPosition(layout, nodeOptions, updateLayout);
+				PerturbPosition(layout, chain, updateLayout);
 			}
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Adds a given chain by greedily adding nodes one by one.
+		/// </summary>
 		public virtual void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			foreach (var node in chain)
@@ -135,13 +163,22 @@
 			}
 		}
 
-		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain = null)
+		/// <inheritdoc />
+		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2)
+		{
+			return AreDifferentEnough(layout1, layout2, layout1.Graph.Vertices.ToList());
+		}
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Checks if two layouts are different enough by comparing positions of corresponding nodes.
+		/// </summary>
+		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain)
 		{
 			// TODO: make better
 			var diff = 0d;
 
-			var nodes = chain ?? layout1.Graph.Vertices;
-			foreach (var node in nodes)
+			foreach (var node in chain)
 			{
 				if (layout1.GetConfiguration(node, out var c1) && layout2.GetConfiguration(node, out var c2))
 				{
@@ -151,21 +188,36 @@
 				}
 			}
 
-			diff = diff / (nodes.Count());
+			diff = diff / (chain.Count());
 
 			return DifferenceFromAverageScale * diff >= 1;
 		}
 
+		/// <inheritdoc />
 		public abstract bool IsLayoutValid(TLayout layout);
 
-		public abstract bool IsLayoutValid(TLayout layout, IList<TNode> nodeOptions);
+		/// <inheritdoc />
+		public abstract bool IsLayoutValid(TLayout layout, IList<TNode> chain);
 
+		/// <inheritdoc />
 		public abstract float GetEnergy(TLayout layout);
 
+		/// <inheritdoc />
 		public abstract void UpdateLayout(TLayout layout);
 
+		/// <inheritdoc />
 		public abstract void AddNodeGreedily(TLayout layout, TNode node);
 
-		protected abstract void UpdateLayout(TLayout layout, TNode node, TConfiguration configuration);
+		/// <summary>
+		/// Updates energies after perturbing a given node.
+		/// </summary>
+		/// <remarks>
+		/// This method is responsible for modifying the layout by setting the configuration
+		/// to the perturbed node.
+		/// </remarks>
+		/// <param name="layout">Original layout.</param>
+		/// <param name="perturbedNode">Node that was perturbed.</param>
+		/// <param name="configuration">New configuration of the perturbed node.</param>
+		protected abstract void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration);
 	}
 }

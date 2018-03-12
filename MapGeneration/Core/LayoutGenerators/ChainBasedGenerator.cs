@@ -39,7 +39,7 @@
 		private IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private IChainDecomposition<TNode> chainDecomposition;
 		private ILayoutEvolver<TLayout, TNode> layoutEvolver;
-		private ILayoutOperations<TLayout, TNode> layoutOperations;
+		private IChainBasedLayoutOperations<TLayout, TNode> layoutOperations;
 		private IGeneratorPlanner<TLayout> generatorPlanner;
 		private ILayoutConverter<TLayout, IMapLayout<TNode>> layoutConverter;
 
@@ -56,14 +56,14 @@
 
 		private Func<
 			TMapDescription,
-			ILayoutOperations<TLayout, TNode>,
+			IChainBasedLayoutOperations<TLayout, TNode>,
 			ILayoutEvolver<TLayout, TNode>
 		> layoutEvolverCreator;
 
 		private Func<
 			TMapDescription,
 			IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>,
-			ILayoutOperations<TLayout, TNode>
+			IChainBasedLayoutOperations<TLayout, TNode>
 		> layoutOperationsCreator;
 
 		private Func<
@@ -267,7 +267,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutEvolverCreator(Func<TMapDescription, ILayoutOperations<TLayout, TNode>, ILayoutEvolver<TLayout, TNode>> creator)
+		public void SetLayoutEvolverCreator(Func<TMapDescription, IChainBasedLayoutOperations<TLayout, TNode>, ILayoutEvolver<TLayout, TNode>> creator)
 		{
 			layoutEvolverCreator = creator;
 		}
@@ -315,7 +315,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutOperationsCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutOperations<TLayout, TNode>> creator)
+		public void SetLayoutOperationsCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, IChainBasedLayoutOperations<TLayout, TNode>> creator)
 		{
 			layoutOperationsCreator = creator;
 		}

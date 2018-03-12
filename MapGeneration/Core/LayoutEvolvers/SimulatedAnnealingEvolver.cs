@@ -6,7 +6,6 @@
 	using System.Threading;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.LayoutEvolvers;
 	using Interfaces.Core.LayoutOperations;
@@ -20,7 +19,7 @@
 		protected Random Random;
 		protected CancellationToken? CancellationToken;
 
-		protected ILayoutOperations<TLayout, TNode> LayoutOperations;
+		protected IChainBasedLayoutOperations<TLayout, TNode> LayoutOperations;
 
 		public event Action<TLayout> OnPerturbed;
 		public event Action<TLayout> OnValid;
@@ -28,7 +27,7 @@
 		protected int Cycles = 50;
 		protected int TrialsPerCycle = 100;
 
-		public SimulatedAnnealingEvolver(ILayoutOperations<TLayout, TNode> layoutOperations)
+		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations)
 		{
 			LayoutOperations = layoutOperations;
 		}
@@ -220,9 +219,9 @@
 			return newLayout;
 		}
 
-		private bool IsDifferentEnough(TLayout layout, IList<TLayout> layouts, IList<TNode> chain = null)
+		private bool IsDifferentEnough(TLayout layout, IList<TLayout> layouts)
 		{
-			return layouts.All(x => LayoutOperations.AreDifferentEnough(layout, x, chain));
+			return layouts.All(x => LayoutOperations.AreDifferentEnough(layout, x));
 		}
 
 		#region Random restarts

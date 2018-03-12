@@ -3,17 +3,17 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
-	using Constraints;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Utils;
-	using Utils;
 
+	/// <summary>
+	/// Layout operations that compute energy based on given constraints.
+	/// </summary>
 	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
 		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
@@ -25,19 +25,33 @@
 
 		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize) : base(configurationSpaces, averageSize)
 		{
-
+			/* empty */
 		}
 
+		/// <summary>
+		/// Adds a constraint for nodes.
+		/// </summary>
+		/// <param name="constraint"></param>
 		public void AddNodeConstraint(INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData> constraint)
 		{
 			nodeConstraints.Add(constraint);
 		}
 
+		/// <summary>
+		/// Adds a contraint for layouts.
+		/// </summary>
+		/// <param name="constraint"></param>
 		public void AddLayoutConstraint(ILayoutConstraint<TLayout, TNode, TLayoutEnergyData> constraint)
 		{
 			layoutConstraints.Add(constraint);
 		}
 
+		/// <summary>
+		/// Checks if a given layout is valid by first checking whether the layout itself is valid
+		/// and then checking whether all configurations of nodes are valid.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
 		public override bool IsLayoutValid(TLayout layout)
 		{
 			if (!layout.EnergyData.IsValid)
@@ -49,16 +63,36 @@
 			return true;
 		}
 
-		public override bool IsLayoutValid(TLayout layout, IList<TNode> nodeOptions)
+		/// <summary>
+		/// TODO: should it check if all nodes are laid out?
+		/// Checks if a given layout is valid by first checking whether the layout itself is valid
+		/// and then checking whether all configurations of nodes are valid.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chain"></param>
+		/// <returns></returns>
+		public override bool IsLayoutValid(TLayout layout, IList<TNode> chain)
 		{
 			return IsLayoutValid(layout);
 		}
 
+		/// <summary>
+		/// Gets an energy of a given layout by summing energies of nodes and the energy of the layout itself.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
 		public override float GetEnergy(TLayout layout)
 		{
 			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy) + layout.EnergyData.Energy;
 		}
 
+		/// <summary>
+		/// Updates a given layout by computing energies of all nodes and the energy of the layout iself.
+		/// </summary>
+		/// <remarks>
+		/// Energies are computed from constraints.
+		/// </remarks>
+		/// <param name="layout"></param>
 		public override void UpdateLayout(TLayout layout)
 		{
 			foreach (var node in layout.Graph.Vertices)
@@ -75,6 +109,12 @@
 			layout.EnergyData = layoutEnergyData;
 		}
 
+		/// <summary>
+		/// Tries all shapes and positions from the maximum intersection to find a configuration
+		/// with the lowest energy.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
 		public override void AddNodeGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
@@ -88,6 +128,7 @@
 				}
 			}
 
+			// The first node is set to have a random shape and [0,0] position
 			if (configurations.Count == 0)
 			{
 				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2()));
@@ -101,12 +142,16 @@
 			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
 			// shapes.Shuffle(Random);
 
+			// Try all shapes
 			foreach (var shape in shapes)
 			{
 				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
+				// Try all lines from the maximum intersection
 				foreach (var intersectionLine in intersection)
 				{
+					// Limit the number of points to 20.
+					// It is very slow to try all the positions if rooms are big.
 					var tryAll = true;
 					var mod = 1;
 					const int maxPoints = 20;
@@ -143,7 +188,6 @@
 
 					// There is no point of looking for more solutions when you already reached a valid state
 					// and so no position would be accepted anyway
-					// TODO: What about making it somehow random? If there are more valid positions, choose one at random.
 					if (bestEnergy <= 0)
 					{
 						break;
@@ -155,6 +199,12 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
+		/// <summary>
+		/// Creates a configuration with a given shape container and position.
+		/// </summary>
+		/// <param name="shapeContainer"></param>
+		/// <param name="position"></param>
+		/// <returns></returns>
 		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position)
 		{
 			var configuration = new TConfiguration
@@ -166,42 +216,57 @@
 			return configuration;
 		}
 
-		protected override void UpdateLayout(TLayout layout, TNode node, TConfiguration configuration)
+
+		protected override void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
 		{
 			// Prepare new layout with temporary configuration to compute energies
 			var graph = layout.Graph;
 			var oldLayout = layout.SmartClone(); // TODO: is the clone needed?
-			oldLayout.GetConfiguration(node, out var oldConfiguration);
+			oldLayout.GetConfiguration(perturbedNode, out var oldConfiguration);
 
 			// Update validity vectors and energies of vertices
 			foreach (var vertex in graph.Vertices)
 			{
-				if (vertex.Equals(node))
+				if (vertex.Equals(perturbedNode))
 					continue;
 
 				if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
 					continue;
 
-				var vertexEnergyData = NodeRunAllUpdate(layout, node, oldConfiguration, configuration, vertex, nodeConfiguration);
+				var vertexEnergyData = NodeRunAllUpdate(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
 
 				nodeConfiguration.EnergyData = vertexEnergyData;
 				layout.SetConfiguration(vertex, nodeConfiguration);
 			}
 
 			// Update energy and validity vector of the perturbed node
-			var newEnergyData = NodeRunAllUpdate(node, oldLayout, layout);
+			var newEnergyData = NodeRunAllUpdate(perturbedNode, oldLayout, layout);
 			configuration.EnergyData = newEnergyData;
-			layout.SetConfiguration(node, configuration);
+			layout.SetConfiguration(perturbedNode, configuration);
 
-			var layoutEnergyData = LayoutRunAllUpdate(node, oldLayout, layout);
+			var layoutEnergyData = LayoutRunAllUpdate(perturbedNode, oldLayout, layout);
 			layout.EnergyData = layoutEnergyData;
 		}
 
+		/// <summary>
+		/// Computes energy data of a give node with a given configuration.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		protected TEnergyData NodeComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration)
 		{
 			return NodeRunAllCompute(layout, node, configuration);
 		}
 
+		/// <summary>
+		/// Run all constraints to compute energy data for a given node and configuration.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		private TEnergyData NodeRunAllCompute(TLayout layout, TNode node, TConfiguration configuration)
 		{
 			var energyData = new TEnergyData();
@@ -219,6 +284,16 @@
 			return energyData;
 		}
 
+		/// <summary>
+		/// Computes updated energy data of a given node by running all constraints.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="perturbedNode"></param>
+		/// <param name="oldConfiguration"></param>
+		/// <param name="newConfiguration"></param>
+		/// <param name="node"></param>
+		/// <param name="configuration"></param>
+		/// <returns></returns>
 		private TEnergyData NodeRunAllUpdate(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration)
 		{
 			var energyData = new TEnergyData();
@@ -236,6 +311,13 @@
 			return energyData;
 		}
 
+		/// <summary>
+		/// Computes updated energy data of the node that was perturbed.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="oldLayout"></param>
+		/// <param name="newLayout"></param>
+		/// <returns></returns>
 		private TEnergyData NodeRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
 		{
 			var energyData = new TEnergyData();
@@ -253,6 +335,11 @@
 			return energyData;
 		}
 
+		/// <summary>
+		/// Computes energy data of a given layout.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
 		private TLayoutEnergyData LayoutRunAllCompute(TLayout layout)
 		{
 			var energyData = new TLayoutEnergyData();
@@ -270,6 +357,13 @@
 			return energyData;
 		}
 
+		/// <summary>
+		/// Updates energy data of a given layout.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="oldLayout"></param>
+		/// <param name="newLayout"></param>
+		/// <returns></returns>
 		private TLayoutEnergyData LayoutRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
 		{
 			var energyData = new TLayoutEnergyData();
