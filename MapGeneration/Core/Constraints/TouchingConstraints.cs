@@ -1,15 +1,19 @@
 ﻿namespace MapGeneration.Core.Constraints
 {
-	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
-	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescription;
 
+	/// <summary>
+	/// Ensures that rooms that are not neighbours do not touch.
+	/// </summary>
+	/// <remarks>
+	/// This contraint makes sense only when working with corridors.
+	/// Resulting layouts are more visually pleasing.
+	/// </remarks>
 	public class TouchingConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
@@ -24,6 +28,7 @@
 			this.polygonOverlap = polygonOverlap;
 		}
 
+		/// <inheritdoc />
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
@@ -54,6 +59,7 @@
 			return numberOfTouching == 0;
 		}
 
+		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
@@ -69,9 +75,6 @@
 				isTouchingNew = DoTouch(configuration, newConfiguration) ? 1 : 0;
 			}
 
-			//var overlapOld = ComputeOverlap(configuration, oldConfiguration);
-			//var overlapNew = ComputeOverlap(configuration, newConfiguration);
-
 			var numberOfTouchingTotal = configuration.EnergyData.NumberOfTouching + (isTouchingNew - isTouchingOld);
 
 			energyData.NumberOfTouching = numberOfTouchingTotal;
@@ -80,6 +83,7 @@
 			return numberOfTouchingTotal == 0;
 		}
 
+		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
@@ -110,11 +114,6 @@
 		private bool DoTouch(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 1);
-		}
-
-		private int ComputeOverlap(TConfiguration configuration1, TConfiguration configuration2)
-		{
-			return polygonOverlap.OverlapArea(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position);
 		}
 
 		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)

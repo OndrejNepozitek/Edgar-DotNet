@@ -5,6 +5,7 @@
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
+	using Interfaces.Core.ChainDecompositions;
 	using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 

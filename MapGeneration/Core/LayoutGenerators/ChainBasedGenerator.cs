@@ -12,6 +12,7 @@
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Benchmarks;
 	using Interfaces.Core;
+	using Interfaces.Core.ChainDecompositions;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.LayoutGenerator;
 	using Interfaces.Core.Layouts;
