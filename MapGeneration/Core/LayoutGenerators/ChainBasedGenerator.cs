@@ -21,6 +21,7 @@
 	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
+	using Interfaces.Core.MapLayouts;
 	using Interfaces.Utils;
 
 	/// <inheritdoc cref="ILayoutGenerator{TMapDescription,TNode}" />

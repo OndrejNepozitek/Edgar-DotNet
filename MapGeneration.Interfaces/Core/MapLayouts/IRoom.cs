@@ -1,10 +1,13 @@
-﻿namespace MapGeneration.Interfaces.Core
+﻿namespace MapGeneration.Interfaces.Core.MapLayouts
 {
-	using System;
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 
+	/// <summary>
+	/// Represents a layout room.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
 	public interface IRoom<TNode>
 	{
 		TNode Node { get; }
@@ -15,6 +18,6 @@
 
 		bool IsCorridor { get; }
 
-		IList<Tuple<TNode, OrthogonalLine>> Doors { get; }
+		IList<IDoorInfo<TNode>> Doors { get; }
 	}
 }

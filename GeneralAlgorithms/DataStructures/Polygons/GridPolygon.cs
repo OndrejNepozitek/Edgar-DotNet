@@ -6,6 +6,7 @@
 	using System.Linq;
 	using Algorithms.Polygons;
 	using Common;
+	using Newtonsoft.Json;
 
 	/// <summary>
 	/// A class representing an immutable polygon where each of its vertices has integer coordinates.
@@ -21,11 +22,13 @@
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 
+		[JsonProperty]
 		private readonly List<IntVector2> points;
 
 		private readonly int hash;
 
 		// TODO: maybe should be struct rather than a class
+		[JsonIgnore]
 		public GridRectangle BoundingRectangle { get; }
 
 		/// <summary>

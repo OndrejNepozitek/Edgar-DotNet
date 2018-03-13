@@ -51,6 +51,7 @@
     <Compile Include="Core\Constraints\INodeConstraint.cs" />
     <Compile Include="Core\Doors\IDoorLine.cs" />
     <Compile Include="Core\LayoutOperations\IChainBasedLayoutOperations.cs" />
+    <Compile Include="Core\MapLayouts\IDoorInfo.cs" />
     <Compile Include="Utils\ICancellable.cs" />
     <Compile Include="Core\ChainDecompositions\IChainDecomposition.cs" />
     <Compile Include="Core\ConfigurationSpaces\IConfigurationSpaces.cs" />
@@ -67,10 +68,11 @@
     <Compile Include="Core\LayoutGenerator\IObservableGenerator.cs" />
     <Compile Include="Core\MapDescriptions\ICorridorMapDescription.cs" />
     <Compile Include="Core\MapDescriptions\IMapDescription.cs" />
-    <Compile Include="Core\IMapLayout.cs" />
+    <Compile Include="Core\MapLayouts\IMapLayout.cs" />
     <Compile Include="Utils\IRandomInjectable.cs" />
-    <Compile Include="Core\IRoom.cs" />
+    <Compile Include="Core\MapLayouts\IRoom.cs" />
     <Compile Include="Core\MapDescriptions\IRoomDescription.cs" />
+    <Compile Include="Utils\ISerializer.cs" />
     <Compile Include="Utils\ISmartCloneable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +81,9 @@
       <Project>{6505fed6-efb7-446e-bde5-713d167083ce}</Project>
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

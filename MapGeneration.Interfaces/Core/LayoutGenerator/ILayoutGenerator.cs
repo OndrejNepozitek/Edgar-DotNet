@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
 	using System.Collections.Generic;
+	using MapLayouts;
 
 	/// <summary>
 	/// Interface for all layout generator.

@@ -6,6 +6,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core;
+	using Interfaces.Core.MapLayouts;
 
 	/// <summary>
 	/// Class that should help with drawing layouts to different outputs.
@@ -22,7 +23,7 @@
 		/// <param name="withNames">Whether names should be displayed</param>
 		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames)
 		{
-			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -48,9 +49,9 @@
 		/// <param name="withNames">Whether names should be displayed</param>
 		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames)
 		{
-			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
-			var rooms = layout.GetRooms().ToList();
-			var minWidth = layout.GetRooms().Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var rooms = layout.Rooms.ToList();
+			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
 
 			for (var i = 0; i < rooms.Count; i++)
 			{
@@ -151,7 +152,7 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<Tuple<TNode, OrthogonalLine>> doorLines)
+		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<IDoorInfo<TNode>> doorLines)
 		{
 			var outline = new List<Tuple<IntVector2, bool>>();
 
@@ -163,22 +164,22 @@
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<TNode, OrthogonalLine, int>(x.Item1, x.Item2, Math.Min(line.Contains(x.Item2.From), line.Contains(x.Item2.To)))).ToList();
-				doorDistances.Sort((x1, x2) => x1.Item3.CompareTo(x2.Item3));
+					new Tuple<IDoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
 				foreach (var pair in doorDistances)
 				{
-					if (pair.Item3 == -1)
+					if (pair.Item2 == -1)
 						continue;
 
-					var doorLine = pair.Item2;
+					var doorLine = pair.Item1.DoorLine;
 
-					if (line.Contains(doorLine.From) != pair.Item3)
+					if (line.Contains(doorLine.From) != pair.Item2)
 					{
 						doorLine = doorLine.SwitchOrientation();
 					}
 
-					doorLines.Remove(Tuple.Create(pair.Item1, doorLine));
+					doorLines.Remove(pair.Item1);
 
 					AddToOutline(Tuple.Create(doorLine.From, true));
 					AddToOutline(Tuple.Create(doorLine.To, false));

@@ -1,6 +1,7 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
 	using System;
+	using MapLayouts;
 
 	/// <inheritdoc />
 	/// <summary>

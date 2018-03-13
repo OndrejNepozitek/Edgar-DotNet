@@ -12,7 +12,9 @@
 	using Interfaces.Core.LayoutConverters;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
+	using Interfaces.Core.MapLayouts;
 	using Interfaces.Utils;
+	using MapLayouts;
 	using Utils;
 
 	public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
@@ -47,7 +49,7 @@
 					if (!addDoors)
 						continue;
 
-					var doors = new List<Tuple<TNode, OrthogonalLine>>();
+					var doors = new List<IDoorInfo<TNode>>();
 					room.Doors = doors;
 
 					roomsDict[vertex] = room;
@@ -71,8 +73,8 @@
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(Tuple.Create(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(Tuple.Create(vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new DoorInfo<TNode>(neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(new DoorInfo<TNode>(vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}

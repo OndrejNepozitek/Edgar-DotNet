@@ -9,10 +9,11 @@
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
 	using MapDrawing;
-	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Interfaces.Utils;
 	using MapGeneration.Utils;
 	using MapGeneration.Utils.MapDrawing;
+	using MapGeneration.Utils.Serialization;
 
 	public partial class GeneratorWindow : Form
 	{
@@ -21,6 +22,7 @@
 		private readonly WFLayoutDrawer<int> wfLayoutDraver = new WFLayoutDrawer<int>();
 		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
 		private readonly OldMapDrawer<int> oldMapDrawer = new OldMapDrawer<int>();
+		private readonly JsonSerializer<int> jsonSerializer = new JsonSerializer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -139,6 +141,9 @@
 				};
 
 				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
+
+				var serializer = new JsonSerializer<int>();
+				serializer.Serialize(generatedLayouts, new StreamWriter("test.json"));
 
 				isRunning = false;
 				BeginInvoke((Action)(UpdateInfoPanel));
@@ -317,6 +322,44 @@
 		private void useOldPaperStyleCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
 			mainPictureBox.Refresh();
+		}
+
+		private void exportJsonButton_Click(object sender, EventArgs e)
+		{
+			automaticSlideshowCheckbox.Checked = false;
+			UpdateSlideshowInfo();
+			saveExportDialog.DefaultExt = "json";
+
+			if (saveExportDialog.ShowDialog() == DialogResult.OK)
+			{
+				var filename = saveExportDialog.FileName;
+
+				using (var fs = File.Open(filename, FileMode.Create))
+				{
+					using (var sw = new StreamWriter(fs))
+					{
+						jsonSerializer.Serialize(layoutToDraw, sw);
+					}
+				}
+			}
+		}
+
+		private void exportAllJsonButton_Click(object sender, EventArgs e)
+		{
+			saveExportDialog.DefaultExt = "json";
+
+			if (saveExportDialog.ShowDialog() == DialogResult.OK)
+			{
+				var filename = saveExportDialog.FileName;
+
+				using (var fs = File.Open(filename, FileMode.Create))
+				{
+					using (var sw = new StreamWriter(fs))
+					{
+						jsonSerializer.Serialize(generatedLayouts, sw);
+					}
+				}
+			}
 		}
 	}
 }

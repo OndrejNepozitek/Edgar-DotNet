@@ -10,6 +10,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Utils.MapDrawing;
 
 	/// <inheritdoc />

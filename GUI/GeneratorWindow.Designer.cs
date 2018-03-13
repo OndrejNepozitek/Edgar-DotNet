@@ -33,6 +33,11 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.actionsPanel = new System.Windows.Forms.Panel();
 			this.actionsGroupBox = new System.Windows.Forms.GroupBox();
+			this.exportAllJsonButton = new System.Windows.Forms.Button();
+			this.drawingSettingsPanel = new System.Windows.Forms.Panel();
+			this.drawingSettingsGroupBox = new System.Windows.Forms.GroupBox();
+			this.useOldPaperStyleCheckbox = new System.Windows.Forms.CheckBox();
+			this.showRoomNamesCheckbox = new System.Windows.Forms.CheckBox();
 			this.progressPanel = new System.Windows.Forms.Panel();
 			this.progressGroupBox = new System.Windows.Forms.GroupBox();
 			this.label7 = new System.Windows.Forms.Label();
@@ -60,19 +65,16 @@
 			this.currentlyShowLayoutLabel = new System.Windows.Forms.Label();
 			this.automaticSlideshowCheckbox = new System.Windows.Forms.CheckBox();
 			this.exportPanel = new System.Windows.Forms.Panel();
-			this.exportTxtButton = new System.Windows.Forms.Button();
+			this.exportJsonButton = new System.Windows.Forms.Button();
 			this.exportSvgButton = new System.Windows.Forms.Button();
 			this.saveExportDialog = new System.Windows.Forms.SaveFileDialog();
-			this.drawingSettingsPanel = new System.Windows.Forms.Panel();
-			this.drawingSettingsGroupBox = new System.Windows.Forms.GroupBox();
-			this.exportAllTxtButton = new System.Windows.Forms.Button();
-			this.useOldPaperStyleCheckbox = new System.Windows.Forms.CheckBox();
-			this.showRoomNamesCheckbox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.actionsPanel.SuspendLayout();
 			this.actionsGroupBox.SuspendLayout();
+			this.drawingSettingsPanel.SuspendLayout();
+			this.drawingSettingsGroupBox.SuspendLayout();
 			this.progressPanel.SuspendLayout();
 			this.progressGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.showPerturbedLayoutsTime)).BeginInit();
@@ -84,8 +86,6 @@
 			this.topPanel.SuspendLayout();
 			this.slideshowPanel.SuspendLayout();
 			this.exportPanel.SuspendLayout();
-			this.drawingSettingsPanel.SuspendLayout();
-			this.drawingSettingsGroupBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -141,7 +141,7 @@
 			// 
 			// actionsGroupBox
 			// 
-			this.actionsGroupBox.Controls.Add(this.exportAllTxtButton);
+			this.actionsGroupBox.Controls.Add(this.exportAllJsonButton);
 			this.actionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.actionsGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.actionsGroupBox.Name = "actionsGroupBox";
@@ -149,6 +149,60 @@
 			this.actionsGroupBox.TabIndex = 0;
 			this.actionsGroupBox.TabStop = false;
 			this.actionsGroupBox.Text = "Actions";
+			// 
+			// exportAllJsonButton
+			// 
+			this.exportAllJsonButton.Location = new System.Drawing.Point(8, 21);
+			this.exportAllJsonButton.Name = "exportAllJsonButton";
+			this.exportAllJsonButton.Size = new System.Drawing.Size(125, 34);
+			this.exportAllJsonButton.TabIndex = 1;
+			this.exportAllJsonButton.Text = "Export all JSON";
+			this.exportAllJsonButton.UseVisualStyleBackColor = true;
+			this.exportAllJsonButton.Click += new System.EventHandler(this.exportAllJsonButton_Click);
+			// 
+			// drawingSettingsPanel
+			// 
+			this.drawingSettingsPanel.Controls.Add(this.drawingSettingsGroupBox);
+			this.drawingSettingsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.drawingSettingsPanel.Location = new System.Drawing.Point(3, 351);
+			this.drawingSettingsPanel.Name = "drawingSettingsPanel";
+			this.drawingSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.drawingSettingsPanel.Size = new System.Drawing.Size(338, 100);
+			this.drawingSettingsPanel.TabIndex = 10;
+			// 
+			// drawingSettingsGroupBox
+			// 
+			this.drawingSettingsGroupBox.Controls.Add(this.useOldPaperStyleCheckbox);
+			this.drawingSettingsGroupBox.Controls.Add(this.showRoomNamesCheckbox);
+			this.drawingSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.drawingSettingsGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.drawingSettingsGroupBox.Name = "drawingSettingsGroupBox";
+			this.drawingSettingsGroupBox.Size = new System.Drawing.Size(338, 90);
+			this.drawingSettingsGroupBox.TabIndex = 0;
+			this.drawingSettingsGroupBox.TabStop = false;
+			this.drawingSettingsGroupBox.Text = "Display settings";
+			// 
+			// useOldPaperStyleCheckbox
+			// 
+			this.useOldPaperStyleCheckbox.AutoSize = true;
+			this.useOldPaperStyleCheckbox.Location = new System.Drawing.Point(6, 57);
+			this.useOldPaperStyleCheckbox.Name = "useOldPaperStyleCheckbox";
+			this.useOldPaperStyleCheckbox.Size = new System.Drawing.Size(152, 21);
+			this.useOldPaperStyleCheckbox.TabIndex = 8;
+			this.useOldPaperStyleCheckbox.Text = "Use old paper style";
+			this.useOldPaperStyleCheckbox.UseVisualStyleBackColor = true;
+			this.useOldPaperStyleCheckbox.CheckedChanged += new System.EventHandler(this.useOldPaperStyleCheckbox_CheckedChanged);
+			// 
+			// showRoomNamesCheckbox
+			// 
+			this.showRoomNamesCheckbox.AutoSize = true;
+			this.showRoomNamesCheckbox.Location = new System.Drawing.Point(6, 30);
+			this.showRoomNamesCheckbox.Name = "showRoomNamesCheckbox";
+			this.showRoomNamesCheckbox.Size = new System.Drawing.Size(146, 21);
+			this.showRoomNamesCheckbox.TabIndex = 7;
+			this.showRoomNamesCheckbox.Text = "Show room names";
+			this.showRoomNamesCheckbox.UseVisualStyleBackColor = true;
+			this.showRoomNamesCheckbox.CheckedChanged += new System.EventHandler(this.showRoomNamesCheckbox_CheckedChanged);
 			// 
 			// progressPanel
 			// 
@@ -458,7 +512,7 @@
 			// 
 			// exportPanel
 			// 
-			this.exportPanel.Controls.Add(this.exportTxtButton);
+			this.exportPanel.Controls.Add(this.exportJsonButton);
 			this.exportPanel.Controls.Add(this.exportSvgButton);
 			this.exportPanel.Dock = System.Windows.Forms.DockStyle.Left;
 			this.exportPanel.Location = new System.Drawing.Point(10, 5);
@@ -466,15 +520,16 @@
 			this.exportPanel.Size = new System.Drawing.Size(215, 34);
 			this.exportPanel.TabIndex = 2;
 			// 
-			// exportTxtButton
+			// exportJsonButton
 			// 
-			this.exportTxtButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.exportTxtButton.Location = new System.Drawing.Point(110, 0);
-			this.exportTxtButton.Name = "exportTxtButton";
-			this.exportTxtButton.Size = new System.Drawing.Size(105, 34);
-			this.exportTxtButton.TabIndex = 1;
-			this.exportTxtButton.Text = "Export TXT";
-			this.exportTxtButton.UseVisualStyleBackColor = true;
+			this.exportJsonButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.exportJsonButton.Location = new System.Drawing.Point(110, 0);
+			this.exportJsonButton.Name = "exportJsonButton";
+			this.exportJsonButton.Size = new System.Drawing.Size(105, 34);
+			this.exportJsonButton.TabIndex = 1;
+			this.exportJsonButton.Text = "Export JSON";
+			this.exportJsonButton.UseVisualStyleBackColor = true;
+			this.exportJsonButton.Click += new System.EventHandler(this.exportJsonButton_Click);
 			// 
 			// exportSvgButton
 			// 
@@ -486,59 +541,6 @@
 			this.exportSvgButton.Text = "Export SVG";
 			this.exportSvgButton.UseVisualStyleBackColor = true;
 			this.exportSvgButton.Click += new System.EventHandler(this.exportSvgButton_Click);
-			// 
-			// drawingSettingsPanel
-			// 
-			this.drawingSettingsPanel.Controls.Add(this.drawingSettingsGroupBox);
-			this.drawingSettingsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.drawingSettingsPanel.Location = new System.Drawing.Point(3, 351);
-			this.drawingSettingsPanel.Name = "drawingSettingsPanel";
-			this.drawingSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.drawingSettingsPanel.Size = new System.Drawing.Size(338, 100);
-			this.drawingSettingsPanel.TabIndex = 10;
-			// 
-			// drawingSettingsGroupBox
-			// 
-			this.drawingSettingsGroupBox.Controls.Add(this.useOldPaperStyleCheckbox);
-			this.drawingSettingsGroupBox.Controls.Add(this.showRoomNamesCheckbox);
-			this.drawingSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.drawingSettingsGroupBox.Location = new System.Drawing.Point(0, 0);
-			this.drawingSettingsGroupBox.Name = "drawingSettingsGroupBox";
-			this.drawingSettingsGroupBox.Size = new System.Drawing.Size(338, 90);
-			this.drawingSettingsGroupBox.TabIndex = 0;
-			this.drawingSettingsGroupBox.TabStop = false;
-			this.drawingSettingsGroupBox.Text = "Display settings";
-			// 
-			// exportAllTxtButton
-			// 
-			this.exportAllTxtButton.Location = new System.Drawing.Point(8, 21);
-			this.exportAllTxtButton.Name = "exportAllTxtButton";
-			this.exportAllTxtButton.Size = new System.Drawing.Size(125, 34);
-			this.exportAllTxtButton.TabIndex = 1;
-			this.exportAllTxtButton.Text = "Export all TXT";
-			this.exportAllTxtButton.UseVisualStyleBackColor = true;
-			// 
-			// useOldPaperStyleCheckbox
-			// 
-			this.useOldPaperStyleCheckbox.AutoSize = true;
-			this.useOldPaperStyleCheckbox.Location = new System.Drawing.Point(6, 57);
-			this.useOldPaperStyleCheckbox.Name = "useOldPaperStyleCheckbox";
-			this.useOldPaperStyleCheckbox.Size = new System.Drawing.Size(152, 21);
-			this.useOldPaperStyleCheckbox.TabIndex = 8;
-			this.useOldPaperStyleCheckbox.Text = "Use old paper style";
-			this.useOldPaperStyleCheckbox.UseVisualStyleBackColor = true;
-			this.useOldPaperStyleCheckbox.CheckedChanged += new System.EventHandler(this.useOldPaperStyleCheckbox_CheckedChanged);
-			// 
-			// showRoomNamesCheckbox
-			// 
-			this.showRoomNamesCheckbox.AutoSize = true;
-			this.showRoomNamesCheckbox.Location = new System.Drawing.Point(6, 30);
-			this.showRoomNamesCheckbox.Name = "showRoomNamesCheckbox";
-			this.showRoomNamesCheckbox.Size = new System.Drawing.Size(146, 21);
-			this.showRoomNamesCheckbox.TabIndex = 7;
-			this.showRoomNamesCheckbox.Text = "Show room names";
-			this.showRoomNamesCheckbox.UseVisualStyleBackColor = true;
-			this.showRoomNamesCheckbox.CheckedChanged += new System.EventHandler(this.showRoomNamesCheckbox_CheckedChanged);
 			// 
 			// GeneratorWindow
 			// 
@@ -556,6 +558,9 @@
 			this.groupBox1.ResumeLayout(false);
 			this.actionsPanel.ResumeLayout(false);
 			this.actionsGroupBox.ResumeLayout(false);
+			this.drawingSettingsPanel.ResumeLayout(false);
+			this.drawingSettingsGroupBox.ResumeLayout(false);
+			this.drawingSettingsGroupBox.PerformLayout();
 			this.progressPanel.ResumeLayout(false);
 			this.progressGroupBox.ResumeLayout(false);
 			this.progressGroupBox.PerformLayout();
@@ -570,9 +575,6 @@
 			this.slideshowPanel.ResumeLayout(false);
 			this.slideshowPanel.PerformLayout();
 			this.exportPanel.ResumeLayout(false);
-			this.drawingSettingsPanel.ResumeLayout(false);
-			this.drawingSettingsGroupBox.ResumeLayout(false);
-			this.drawingSettingsGroupBox.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -603,7 +605,7 @@
 		private System.Windows.Forms.Label infoGeneratingLayout;
 		private System.Windows.Forms.Label infoStatus;
 		private System.Windows.Forms.Panel topPanel;
-		private System.Windows.Forms.Button exportTxtButton;
+		private System.Windows.Forms.Button exportJsonButton;
 		private System.Windows.Forms.Button exportSvgButton;
 		private System.Windows.Forms.Panel slideshowPanel;
 		private System.Windows.Forms.CheckBox automaticSlideshowCheckbox;
@@ -614,7 +616,7 @@
 		private System.Windows.Forms.Panel actionsPanel;
 		private System.Windows.Forms.GroupBox actionsGroupBox;
 		private System.Windows.Forms.SaveFileDialog saveExportDialog;
-		private System.Windows.Forms.Button exportAllTxtButton;
+		private System.Windows.Forms.Button exportAllJsonButton;
 		private System.Windows.Forms.Panel drawingSettingsPanel;
 		private System.Windows.Forms.GroupBox drawingSettingsGroupBox;
 		private System.Windows.Forms.CheckBox useOldPaperStyleCheckbox;

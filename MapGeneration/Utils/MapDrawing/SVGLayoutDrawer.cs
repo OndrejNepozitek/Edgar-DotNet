@@ -8,6 +8,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core;
+	using Interfaces.Core.MapLayouts;
 
 	/// <inheritdoc />
 	/// <summary>
@@ -49,7 +50,7 @@
 
 		private float GetWidthHeightRatio(IMapLayout<TNode> layout)
 		{
-			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);

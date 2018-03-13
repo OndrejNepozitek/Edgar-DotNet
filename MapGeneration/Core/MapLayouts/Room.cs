@@ -1,11 +1,11 @@
-﻿namespace MapGeneration.Core
+﻿namespace MapGeneration.Core.MapLayouts
 {
-	using System;
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
+	using Interfaces.Core.MapLayouts;
 
+	/// <inheritdoc />
 	public class Room<TNode> : IRoom<TNode>
 	{
 		public TNode Node { get; }
@@ -16,7 +16,7 @@
 
 		public bool IsCorridor { get; }
 
-		public IList<Tuple<TNode, OrthogonalLine>> Doors { get; set; }
+		public IList<IDoorInfo<TNode>> Doors { get; set; }
 
 		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor)
 		{

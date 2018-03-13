@@ -80,6 +80,9 @@
     <Reference Include="DataStrcutres">
       <HintPath>..\Libraries\C-Sharp-Algorithms\DataStrcutres.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -124,8 +127,9 @@
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />
     <Compile Include="Core\MapDescriptions\MapDescription.cs" />
-    <Compile Include="Core\MapLayout.cs" />
-    <Compile Include="Core\Room.cs" />
+    <Compile Include="Core\MapLayouts\DoorInfo.cs" />
+    <Compile Include="Core\MapLayouts\MapLayout.cs" />
+    <Compile Include="Core\MapLayouts\Room.cs" />
     <Compile Include="Core\MapDescriptions\RoomDescription.cs" />
     <Compile Include="Core\Layouts\Layout.cs" />
     <Compile Include="Core\GeneratorPlanners\SlowGeneratorPlanner.cs" />
@@ -153,6 +157,10 @@
     <Compile Include="Utils\ConfigParsing\Deserializers\IntVector2Deserializer.cs" />
     <Compile Include="Utils\MapDrawing\AbstractLayoutDrawer.cs" />
     <Compile Include="Utils\MapDrawing\SVGLayoutDrawer.cs" />
+    <Compile Include="Utils\Serialization\JsonSerializer.cs" />
+    <Compile Include="Utils\Serialization\ModelConverter.cs" />
+    <Compile Include="Utils\Serialization\Models\DoorModel.cs" />
+    <Compile Include="Utils\Serialization\Models\RoomModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

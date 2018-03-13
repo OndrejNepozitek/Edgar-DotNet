@@ -9,6 +9,7 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Utils.MapDrawing;
 
 	public class OldMapDrawer<TNode> : AbstractLayoutDrawer<TNode>
