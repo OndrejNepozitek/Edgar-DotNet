@@ -31,9 +31,10 @@
 
 		private void generateButton_Click(object sender, EventArgs e)
 		{
-			if (loadedMapDescriptionsComboBox == null)
+			if (mapDescription == null)
 			{
 				ShowSettingsError("Map description not chosen");
+				return;
 			}
 
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
