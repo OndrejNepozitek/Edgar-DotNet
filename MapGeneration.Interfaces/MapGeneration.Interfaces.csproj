@@ -71,7 +71,6 @@
     <Compile Include="Core\MapLayouts\IMapLayout.cs" />
     <Compile Include="Utils\IRandomInjectable.cs" />
     <Compile Include="Core\MapLayouts\IRoom.cs" />
-    <Compile Include="Core\MapDescriptions\IRoomDescription.cs" />
     <Compile Include="Utils\ISerializer.cs" />
     <Compile Include="Utils\ISmartCloneable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

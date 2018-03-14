@@ -1,11 +1,12 @@
 ﻿namespace MapGeneration.Core.MapDescriptions
 {
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Doors;
-	using Interfaces.Core.MapDescriptions;
 
-	public class RoomDescription : IRoomDescription
+	/// <summary>
+	/// Description of a room.
+	/// </summary>
+	public class RoomDescription
 	{
 		public GridPolygon Shape { get; }
 

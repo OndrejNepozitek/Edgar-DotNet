@@ -38,7 +38,7 @@
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			if (mapDescription.IsWithCorridors && mapDescription.CorridorShapes.Count == 0)
+			if (mapDescription.IsWithCorridors && mapDescription.GetCorridorShapes().Count == 0)
 				throw new ArgumentException("The map description has corridors enabled but there are no shapes for them.", nameof(mapDescription));
 
 			var graph = mapDescription.GetGraph();
@@ -48,7 +48,7 @@
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
 
 			// Handle universal shapes
-			foreach (var shape in mapDescription.RoomShapes)
+			foreach (var shape in mapDescription.GetRoomShapes())
 			{
 				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
@@ -59,7 +59,7 @@
 			// Handle shapes for nodes
 			foreach (var vertex in graph.Vertices.Where(x => !mapDescription.IsCorridorRoom(x)))
 			{
-				var shapesForNode = mapDescription.RoomShapesForNodes[vertex];
+				var shapesForNode = mapDescription.GetRoomShapesForNodes()[vertex];
 
 				if (shapesForNode == null)
 				{
@@ -81,7 +81,7 @@
 
 			// Corridor shapes
 			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
-			foreach (var shape in mapDescription.CorridorShapes)
+			foreach (var shape in mapDescription.GetCorridorShapes())
 			{
 				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
