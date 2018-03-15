@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Map generation Blog</title>
+        <title>Procedural layout generation Blog</title>
         <link>https://ondrejnepozitek.github.io//MapGeneration/blog</link>
-        <description>The best place to stay up-to-date with the latest Map generation news and events.</description>
+        <description>The best place to stay up-to-date with the latest Procedural layout generation news and events.</description>
         <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>Map generation Blog</title>
+            <title>Procedural layout generation Blog</title>
             <url>https://ondrejnepozitek.github.io//MapGeneration/undefined</url>
             <link>https://ondrejnepozitek.github.io//MapGeneration/blog</link>
         </image>
