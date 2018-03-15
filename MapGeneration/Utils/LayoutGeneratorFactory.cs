@@ -25,7 +25,7 @@
 
 	public static class LayoutGeneratorFactory
 	{
-		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>> GetDefaultSALayoutGenerator()
+		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>> GetDefaultChainBasedGenerator()
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<int>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>>();
 
@@ -57,7 +57,7 @@
 			return layoutGenerator;
 		}
 
-		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>> GetSALayoutGeneratorWithCorridors(List<int> offsets)
+		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>> GetChainBasedGeneratorWithCorridors(List<int> offsets)
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>>();
 
