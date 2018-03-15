@@ -43,7 +43,7 @@ const siteConfig = {
     new Date().getFullYear() +
     ' Your Name or Your Company Name',
   organizationName: 'OndrejNepozitek', // or set an env variable ORGANIZATION_NAME
-  projectName: 'ProcLayoutGen', // or set an env variable PROJECT_NAME
+  projectName: 'MapGeneration', // or set an env variable PROJECT_NAME
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: 'default',
