@@ -1,0 +1,85 @@
+---
+id: corridorsMapDescription
+title: Corridors
+sidebar_label: Corridors
+---
+
+There are currently 2 layout generators implemented. The first one generates layouts where neighbouring rooms are connected by doors. The second one, on the other hand, connects neighbouring rooms by corridors.
+
+In this tutorial, we will look into how to use the latter one.
+
+## Setup
+In this tutorial, we will use a graph with 17 vertices codenamed *Example1*:
+
+![alt-text](assets/graphs/example1.svg)
+
+We will use basic default shapes for rooms - a square and a rectangle - as they are not important for this tutorial.
+
+## Adding corridors
+
+Corridors could be handled as normal rooms just with specific shapes. Hovewer, this approach is very slow as the total number of nodes in the graph becomes at least twice the original count (because map description needs connected graphs).
+
+Instead, a completely different approach was implemented. The algoritm ignores corridor rooms and tries to get valid layouts consisting only of the ogirinal rooms without corridors. Hovewer, the algorithms does not place neighbouring rooms directly next to each other. It places such rooms in a way that they are specified number of units away from each other (this is reffered to be the *offset of configuration spaces* througnout this documentation). When a valid layout is found, the algorithms tries to greedily add corridor rooms. 
+
+**Note:** Currently, `MapDescription` class supports either not having corridors or adding a corridor between every pair of neighbouring rooms.
+
+In this tutorial, we will set the offset of non corridor neighbours to be equal to 1 and then set room shapes of corridor rooms to be 1x1 squares.
+
+Let's add corridors:
+
+### Using C# api
+
+First, we have to obtain the right instance of `ChainBasedGenerator` class:
+
+```csharp
+var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(new List<int>() { 1 });
+```
+
+And now we setup the map description:
+
+```csharp
+var mapDescription = new MapDescription<int>();
+
+// Graph and default shapes are set here.
+
+// Setup corridor shapes
+var corridorRoom = new RoomDescription(
+  GridPolygon.GetSquare(1),
+  new SpecificPositionsMode(new List<OrthogonalLine>()
+  {
+    new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
+    new OrthogonalLine(new IntVector2(0, 1), new IntVector2(1, 1))
+  })
+);
+
+mapDescription.AddCorridorShapes(corridorRoom);
+
+// Enable corridors
+mapDescription.SetWithCorridors(true, new List<int>() { 1 });
+```
+
+### Using config files
+
+## Summary
+The map description is now ready to be used in a layout generator. You can find the full C# source code [here TODO](TODO) and the config file [here TODO](TODO).
+
+Don't forget to use the appropriate layout generator if using the C# api.
+
+## Results
+
+<div class="results">
+  <a href="/MapGeneration/docs/assets/corridors/0.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/corridors/0.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/corridors/1.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/corridors/1.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/corridors/2.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/corridors/2.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/corridors/3.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/corridors/3.jpg" alt="result">
+  </a>
+</div>
+
+**Note:** Click on images to see them in a full size.

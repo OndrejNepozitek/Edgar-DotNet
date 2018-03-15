@@ -18,6 +18,7 @@
     "Constraints": "Constraints",
     "corridors": "Corridors",
     "Corridors": "Corridors",
+    "corridorsMapDescription": "Corridors",
     "differentShapesMapDescription": "Rooms with different shapes",
     "Rooms with different shapes": "Rooms with different shapes",
     "generatorPlanners": "Generator planners",
