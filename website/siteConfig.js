@@ -6,8 +6,8 @@
  */
 
 const siteConfig = {
-  title: 'Map generation' /* title for your website */,
-  tagline: 'An application for generating map layouts for games',
+  title: 'Procedural layout generation' /* title for your website */,
+  tagline: 'Library for procedural generation of 2D layouts based on a graph of room connections.',
   url: 'https://ondrejnepozitek.github.io/' /* your website url */,
   baseUrl: '/MapGeneration/' /* base url for your project */,
   projectName: 'MapGeneration',
@@ -43,7 +43,7 @@ const siteConfig = {
     new Date().getFullYear() +
     ' Your Name or Your Company Name',
   organizationName: 'OndrejNepozitek', // or set an env variable ORGANIZATION_NAME
-  projectName: 'MapGeneration', // or set an env variable PROJECT_NAME
+  projectName: 'ProcLayoutGen', // or set an env variable PROJECT_NAME
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: 'default',

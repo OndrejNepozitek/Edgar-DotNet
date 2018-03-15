@@ -1,7 +1,7 @@
 ---
 id: differentShapesMapDescription
-title: Different shapes for some rooms
-sidebar_label: Different shapes for some rooms
+title: Rooms with different shapes
+sidebar_label: Rooms with different shapes
 ---
 
 User can easily specify that some rooms should have different shapes than the others. It can be useful for example when you want to set a special rooms shape for your boss room.

@@ -18,3 +18,22 @@
 pre code {
     border-left-width: 0px;
 }
+
+.results {
+    padding: 10px 0px 0px 0px;
+}
+
+.results img {
+    width: calc(25% - 4px);
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.results p {
+    max-width: 100% !important;
+}
+
+.results a {
+    font-size: 0px;
+}
