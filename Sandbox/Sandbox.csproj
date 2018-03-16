@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{93F99DE4-5100-4B25-8602-C636C62768E7}</ProjectGuid>
+    <ProjectGuid>{6609983F-B790-4E65-A329-832AFE28BA77}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>GUI</RootNamespace>
-    <AssemblyName>GUI</AssemblyName>
+    <RootNamespace>Sandbox</RootNamespace>
+    <AssemblyName>Sandbox</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -31,51 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
-    <OutputPath>bin\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
-    <OutputPath>bin\x86\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataStrcutres, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,29 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeneratorSettings.cs" />
-    <Compile Include="GeneratorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneratorWindow.Designer.cs">
-      <DependentUpon>GeneratorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainSettings.Designer.cs">
-      <DependentUpon>MainSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MapDrawing\OldMapDrawer.cs" />
-    <Compile Include="MapDrawing\WFLayoutDrawer.cs" />
+    <Compile Include="Examples\BasicsExample.cs" />
+    <Compile Include="Examples\CorridorsExample.cs" />
+    <Compile Include="Examples\DifferentShapesExample.cs" />
+    <Compile Include="Examples\IExample.cs" />
+    <Compile Include="GraphsDatabase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GeneratorWindow.resx">
-      <DependentUpon>GeneratorWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainSettings.resx">
-      <DependentUpon>MainSettings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -139,12 +79,16 @@
       <Project>{6505FED6-EFB7-446E-BDE5-713D167083CE}</Project>
       <Name>GeneralAlgorithms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GUI\GUI.csproj">
+      <Project>{93f99de4-5100-4b25-8602-c636c62768e7}</Project>
+      <Name>GUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj">
       <Project>{3FB264C8-FE50-44E9-80E2-E9C6941460F3}</Project>
       <Name>MapGeneration.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapGeneration\MapGeneration.csproj">
-      <Project>{8538b30d-b0c5-4bb8-8fa9-c9388e0758e7}</Project>
+      <Project>{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}</Project>
       <Name>MapGeneration</Name>
     </ProjectReference>
     <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">

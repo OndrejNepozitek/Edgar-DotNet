@@ -26,7 +26,7 @@
 					//	);
 
 					var offsets = new List<int>() {2};
-					var layoutGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
+					var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator();
 
 					layoutGenerator.InjectRandomGenerator(new Random(0));
 					layoutGenerator.SetLayoutValidityCheck(false);

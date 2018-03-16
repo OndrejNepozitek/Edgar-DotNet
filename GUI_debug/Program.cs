@@ -109,7 +109,7 @@
 			//		return operations;
 			//	});
 
-			var layoutGenerator = LayoutGeneratorFactory.GetSALayoutGeneratorWithCorridors(new List<int>() { 2 });
+			var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(new List<int>() { 2 });
 			layoutGenerator.InjectRandomGenerator(random);
 			layoutGenerator.SetLayoutValidityCheck(false);
 			// layoutGenerator.SetSimulatedAnnealing(50, 500, 10);

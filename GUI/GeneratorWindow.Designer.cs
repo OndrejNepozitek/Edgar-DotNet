@@ -68,6 +68,7 @@
 			this.exportJsonButton = new System.Windows.Forms.Button();
 			this.exportSvgButton = new System.Windows.Forms.Button();
 			this.saveExportDialog = new System.Windows.Forms.SaveFileDialog();
+			this.exportAllJpgButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -141,6 +142,7 @@
 			// 
 			// actionsGroupBox
 			// 
+			this.actionsGroupBox.Controls.Add(this.exportAllJpgButton);
 			this.actionsGroupBox.Controls.Add(this.exportAllJsonButton);
 			this.actionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.actionsGroupBox.Location = new System.Drawing.Point(0, 0);
@@ -542,6 +544,16 @@
 			this.exportSvgButton.UseVisualStyleBackColor = true;
 			this.exportSvgButton.Click += new System.EventHandler(this.exportSvgButton_Click);
 			// 
+			// exportAllJpgButton
+			// 
+			this.exportAllJpgButton.Location = new System.Drawing.Point(139, 20);
+			this.exportAllJpgButton.Name = "exportAllJpgButton";
+			this.exportAllJpgButton.Size = new System.Drawing.Size(125, 34);
+			this.exportAllJpgButton.TabIndex = 2;
+			this.exportAllJpgButton.Text = "Export all JPG";
+			this.exportAllJpgButton.UseVisualStyleBackColor = true;
+			this.exportAllJpgButton.Click += new System.EventHandler(this.exportAllJpgButton_Click);
+			// 
 			// GeneratorWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -621,5 +633,6 @@
 		private System.Windows.Forms.GroupBox drawingSettingsGroupBox;
 		private System.Windows.Forms.CheckBox useOldPaperStyleCheckbox;
 		private System.Windows.Forms.CheckBox showRoomNamesCheckbox;
+		private System.Windows.Forms.Button exportAllJpgButton;
 	}
 }

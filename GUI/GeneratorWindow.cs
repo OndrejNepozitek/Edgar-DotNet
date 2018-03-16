@@ -71,14 +71,14 @@
 				{
 					if (settings.MapDescription.IsWithCorridors)
 					{
-						var defaultGenerator = LayoutGeneratorFactory.GetSALayoutGeneratorWithCorridors(settings.MapDescription.CorridorsOffsets);
+						var defaultGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(settings.MapDescription.CorridorsOffsets);
 						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 						layoutGenerator = defaultGenerator;
 					}
 					else
 					{
-						var defaultGenerator = LayoutGeneratorFactory.GetDefaultSALayoutGenerator();
+						var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator();
 						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 						layoutGenerator = defaultGenerator;
@@ -186,7 +186,8 @@
 			}
 			else
 			{
-				wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox, e, showNames);
+				var bitmap = wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames);
+				e.Graphics.DrawImage(bitmap, new Point(0, 0));
 			}
 		}
 
@@ -360,6 +361,34 @@
 					}
 				}
 			}
+		}
+
+		private void exportAllJpgButton_Click(object sender, EventArgs e)
+		{
+			var time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+			var folder = $"Output/{time}";
+			var showNames = showRoomNamesCheckbox.Checked;
+			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
+
+			Directory.CreateDirectory(folder);
+
+			for (var i = 0; i < generatedLayouts.Count; i++)
+			{
+				Bitmap bitmap;
+
+				if (useOldPaperStyle)
+				{
+					bitmap = oldMapDrawer.DrawLayout(generatedLayouts[i], 600, 600, showNames);
+				}
+				else
+				{
+					bitmap = wfLayoutDraver.DrawLayout(generatedLayouts[i], 600, 600, showNames);
+				}
+
+				bitmap.Save($"{folder}/{i}.jpg");
+			}
+
+			MessageBox.Show($"Images were saved to {folder}", "Images saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }
