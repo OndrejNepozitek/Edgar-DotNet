@@ -77,9 +77,6 @@
     <Reference Include="Algorithms">
       <HintPath>..\Libraries\C-Sharp-Algorithms\Algorithms.dll</HintPath>
     </Reference>
-    <Reference Include="DataStrcutres">
-      <HintPath>..\Libraries\C-Sharp-Algorithms\DataStrcutres.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
