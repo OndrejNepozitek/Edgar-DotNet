@@ -6,7 +6,6 @@
 	using System.Linq;
 	using Algorithms.Polygons;
 	using Common;
-	using Newtonsoft.Json;
 
 	/// <summary>
 	/// A class representing an immutable polygon where each of its vertices has integer coordinates.

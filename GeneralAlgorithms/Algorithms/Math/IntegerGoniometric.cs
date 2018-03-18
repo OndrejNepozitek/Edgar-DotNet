@@ -5,6 +5,14 @@
 
 	public static class IntegerGoniometric
 	{
+		/// <summary>
+		/// Returns the sine of given degrees.
+		/// </summary>
+		/// <remarks>
+		/// Only degrees divisible by 90 are permitted.
+		/// </remarks>
+		/// <param name="degrees"></param>
+		/// <returns></returns>
 		public static int Sin(int degrees)
 		{
 			degrees = degrees.Mod(360);
@@ -28,6 +36,14 @@
 			}
 		}
 
+		/// <summary>
+		/// Returns the cosine of given degrees.
+		/// </summary>
+		/// <remarks>
+		/// Only degrees divisible by 90 are permitted.
+		/// </remarks>
+		/// <param name="degrees"></param>
+		/// <returns></returns>
 		public static int Cos(int degrees)
 		{
 			degrees = degrees.Mod(360);
