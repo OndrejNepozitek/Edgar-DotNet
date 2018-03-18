@@ -457,11 +457,13 @@
 
 		#endregion
 
+		/// <inheritdoc />
 		public bool Equals(OrthogonalLine other)
 		{
 			return From.Equals(other.From) && To.Equals(other.To);
 		}
 
+		/// <inheritdoc />
 		public override bool Equals(object obj)
 		{
 			if (obj is null) return false;
@@ -469,6 +471,7 @@
 			return obj is OrthogonalLine line && Equals(line);
 		}
 
+		/// <inheritdoc />
 		public override int GetHashCode()
 		{
 			unchecked
@@ -477,6 +480,7 @@
 			}
 		}
 
+		/// <inheritdoc />
 		public override string ToString()
 		{
 			return $"IntLine: {From.ToStringShort()} -> {To.ToStringShort()} ({GetDirection()})";

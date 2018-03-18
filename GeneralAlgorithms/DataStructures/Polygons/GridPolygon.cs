@@ -22,13 +22,11 @@
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 
-		[JsonProperty]
 		private readonly List<IntVector2> points;
 
 		private readonly int hash;
 
 		// TODO: maybe should be struct rather than a class
-		[JsonIgnore]
 		public GridRectangle BoundingRectangle { get; }
 
 		/// <summary>
@@ -148,21 +146,34 @@
 			return lines;
 		}
 
+		/// <inheritdoc />
 		public override bool Equals(object obj)
 		{
 			return obj is GridPolygon other && points.SequenceEqual(other.GetPoints());
 		}
 
+		/// <inheritdoc />
 		public override int GetHashCode()
 		{
 			return hash;
 		}
 
+		/// <summary>
+		/// Computes a polygon that has all points moved by a given position.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="position"></param>
+		/// <returns></returns>
 		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)
 		{
 			return new GridPolygon(polygon.points.Select(x => x + position));
 		}
 
+		/// <summary>
+		/// Scales the polygon.
+		/// </summary>
+		/// <param name="factor"></param>
+		/// <returns></returns>
 		public GridPolygon Scale(IntVector2 factor)
 		{
 			if (factor.X <= 0 || factor.Y <= 0) 
@@ -171,17 +182,29 @@
 			return new GridPolygon(points.Select(x => x.ElementWiseProduct(factor)));
 		}
 
+		/// <summary>
+		/// Rotates the polygon.
+		/// </summary>
+		/// <param name="degrees">Degrees divisble by 90.</param>
+		/// <returns></returns>
 		public GridPolygon Rotate(int degrees)
 		{
 			if (degrees % 90 != 0)
 			{
-				throw new InvalidOperationException("Degrees must be divisible by 90");
+				throw new ArgumentException("Degrees must be divisible by 90", nameof(degrees));
 			}
 
 			var rotatedPoints = GetPoints().Select(x => x.RotateAroundCenter(degrees));
 			return new GridPolygon(rotatedPoints);
 		}
 
+		/// <summary>
+		/// Get all possible rotations of the polygon.
+		/// </summary>
+		/// <remarks>
+		/// Possibly includes duplicates as e.g. all rotations of a square ale equal.
+		/// </remarks>
+		/// <returns></returns>
 		public IEnumerable<GridPolygon> GetAllRotations()
 		{
 			return PossibleRotations.Select(Rotate);

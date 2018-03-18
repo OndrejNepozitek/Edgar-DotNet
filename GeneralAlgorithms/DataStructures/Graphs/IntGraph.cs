@@ -149,12 +149,6 @@
 		}
 
 		/// <inheritdoc />
-		int IGraph<int>.GetNeighbourIndex(int vertex, int neighbour)
-		{
-			throw new NotSupportedException();
-		}
-
-		/// <inheritdoc />
 		public bool HasEdge(int from, int to)
 		{
 			return graphAlias.HasEdge(from, to);

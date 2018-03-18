@@ -9,8 +9,14 @@
 	/// <typeparam name="T"></typeparam>
 	public class Edge<T> : IEdge<T>, IEquatable<Edge<T>>
 	{
+		/// <summary>
+		/// First vertex of the edge.
+		/// </summary>
 		public T From { get; }
 
+		/// <summary>
+		/// Second vertex of the edge.
+		/// </summary>
 		public T To { get; }
 
 		public Edge(T from, T to)
