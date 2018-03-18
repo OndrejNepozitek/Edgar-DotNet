@@ -1,6 +1,6 @@
 ---
-id: introduction2
-title: Introduction
+id: guides
+title: Guides
 sidebar_label: Introduction
 ---
 

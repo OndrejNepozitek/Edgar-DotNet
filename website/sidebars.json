@@ -1,8 +1,8 @@
 {
   "docs": {
     "Introduction": ["introduction", "installation"],
-    "Guides": ["introduction2", "basicMapDescription", "differentShapesMapDescription", "corridorsMapDescription", "complexMapDescription"],
-    "Chain based generator": ["introduction3", "configurationSpaces", "layoutEvolver", "generatorPlanners"],
+    "Guides": ["guides", "basicMapDescription", "differentShapesMapDescription", "corridorsMapDescription", "complexMapDescription"],
+    "Chain based generator": ["chainBasedGenerator", "configurationSpaces", "layoutEvolver", "generatorPlanners"],
     "Advanced": ["constraints", "corridors"],
     "Misc": ["configFormat", "benchmarks"]
   },

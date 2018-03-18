@@ -44,11 +44,14 @@ All evolvers must implement `ILayoutEvolver<TLayout, TNode>` interface. The sour
 
 _Implementing your own evolver can be really easy as you can use existing `LayoutOperations` to handle all the layout operations and just focus on the evolution itself._
 
+### Lazy evaluation
+The `Evolve` method of `ILayoutEvolver<TLayout, TNode>` returns an `IEnumerable<TLayout>`. This makes it possible to easily implement layout evolvers with lazy evaluation (using `yield return` syntax). Lazy evaluation can have a _huge_ impact on the overall convergence speed because [generator planners](generatorPlanners.md) are able to make optimizations without ever generating more partial layouts than they really need.
+
 ### Hooking into `ChainBasedGenerator`
 `ChainBasedGenerator` provides a method with the following signature to inject your own `ILayoutEvolver<TLayout, TNode>` implementation. The creator is then called everytime the generation is started. 
 
 ```C#
-void SetLayoutEvolverCreator(Func<TMapDescription, ILayoutOperations> creator);
+void SetLayoutEvolverCreator(Func<TMapDescription, IChainBasedLayoutOperations, ILayoutEvolver> creator);
 ```
 
 __Note__: If your evolver does some heavy lifting on instantiation and does not depend on the actual `MapDescription` and/or `LayoutOperations`, you may create an instance beforehand and then return always the same one from the creator function.

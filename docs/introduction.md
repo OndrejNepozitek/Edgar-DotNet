@@ -6,6 +6,8 @@ sidebar_label: Introduction
 
 This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
 
+See the [Guides](guides.md) section to learn how to use the application and the [Chain based generator](chainBasedGenerator.md) section if you want to find out how it all works or plan to extend the generator.
+
 ## Features
 - Any planar connected graph as an input
 - Any orthogonal polygon as a room shape
@@ -27,4 +29,26 @@ Some things in this library are done differently and/or improved:
 - A specialized version of the generator was implemented to support **adding (usally) short corridors** between rooms to the layout without sacrificing most of the convergence speed. (Average number of iterations usually stays the same but iterations themselves are slower.)
 
 ## Examples
-TODO
+
+### Input
+
+![alt-text](assets/introduction/introduction.svg)
+
+### Results
+
+<div class="results">
+  <a href="/MapGeneration/docs/assets/introduction/0.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/introduction/0.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/introduction/1.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/introduction/1.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/introduction/2.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/introduction/2.jpg" alt="result">
+  </a>
+  <a href="/MapGeneration/docs/assets/introduction/3.jpg" target="_blank">
+    <img src="/MapGeneration/docs/assets/introduction/3.jpg" alt="result">
+  </a>
+</div>
+
+**Note:** Click on images to see them in a full size.
