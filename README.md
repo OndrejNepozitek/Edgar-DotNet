@@ -2,7 +2,7 @@
 
 This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
 
-See the [Guides](guides.md) section to learn how to use the application and the [Chain based generator](chainBasedGenerator.md) section if you want to find out how it all works or plan to extend the generator.
+## See the documentation [here](https://ondrejnepozitek.github.io/MapGeneration/docs/introduction.html)
 
 ## Features
 - Any planar connected graph as an input
@@ -33,10 +33,10 @@ Some things in this library are done differently and/or improved:
 ### Results
 
 <div class="results">
-  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/0.jpg" target="_blank"><img width="25%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/0.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/1.jpg" target="_blank"><img width="25%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/1.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/2.jpg" target="_blank"><img width="25%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/2.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/3.jpg" target="_blank"><img width="25%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/3.jpg" alt="result"></a>
+  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/0.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/0.jpg" alt="result"></a>
+  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/1.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/1.jpg" alt="result"></a>
+  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/2.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/2.jpg" alt="result"></a>
+  <a href="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/3.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/MapGeneration/docs/assets/introduction/3.jpg" alt="result"></a>
 </div>
 
 **Note:** Click on images to see them in a full size.
