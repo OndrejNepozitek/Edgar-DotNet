@@ -1,2 +1,2 @@
 # Ignore boost files in language statistics
-BoostWrapper/boost/ linguist-vendored
+BoostWrapper/boost/* linguist-vendored
