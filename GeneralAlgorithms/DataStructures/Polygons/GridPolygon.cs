@@ -85,11 +85,11 @@
 		private bool IsClockwiseOriented(IList<IntVector2> points)
 		{
 			var previous = points[points.Count - 1];
-			var sum = 0;
+			var sum = 0L;
 
 			foreach (var point in points)
 			{
-				sum += (point.X - previous.X) * (point.Y + previous.Y);
+				sum += (point.X - previous.X) * (long) (point.Y + previous.Y);
 				previous = point;
 			}
 
