@@ -6,6 +6,7 @@
 	using MapGeneration.Core.Doors.DoorModes;
 	using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Utils;
+	using Utils;
 
 	public class CorridorsExample : IExample
 	{

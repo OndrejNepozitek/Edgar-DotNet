@@ -238,7 +238,7 @@
 			randomRestartsSuccessPlace = successPlace;
 			randomRestartsResetCounter = resetCounter;
 
-			if (scale < 1)
+			if (scale <= 0)
 				throw new ArgumentException();
 
 			randomRestartsScale = scale;

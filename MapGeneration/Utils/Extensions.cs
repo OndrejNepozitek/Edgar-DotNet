@@ -15,7 +15,7 @@
 			return (int)configurationSpaces.GetAllShapes().Select(x => x.Value.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
 		}
 
-		public static void SetupWithGraph<TNode>(this MapDescription<TNode> mapDescription, IGraph<TNode> graph)
+		public static MapDescription<TNode> SetupWithGraph<TNode>(this MapDescription<TNode> mapDescription, IGraph<TNode> graph)
 		{
 			foreach (var vertex in graph.Vertices)
 			{
@@ -26,6 +26,8 @@
 			{
 				mapDescription.AddPassage(edge.From, edge.To);
 			}
+
+			return mapDescription;
 		}
 	}
 }

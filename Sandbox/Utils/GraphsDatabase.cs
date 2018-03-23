@@ -1,10 +1,14 @@
-﻿namespace Sandbox
+﻿namespace Sandbox.Utils
 {
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	public class GraphsDatabase
 	{
+		/// <remarks>
+		/// Figure 1 graph from the original paper.
+		/// </remarks>
+		/// <returns></returns>
 		public static IGraph<int> GetExample1()
 		{
 			var graph = new UndirectedAdjacencyListGraph<int>();
