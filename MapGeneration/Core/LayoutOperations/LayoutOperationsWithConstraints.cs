@@ -10,6 +10,7 @@
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Utils;
+	using Utils;
 
 	/// <summary>
 	/// Layout operations that compute energy based on given constraints.
@@ -152,38 +153,42 @@
 				{
 					// Limit the number of points to 20.
 					// It is very slow to try all the positions if rooms are big.
-					var tryAll = true;
-					var mod = 1;
 					const int maxPoints = 20;
 
 					if (intersectionLine.Length > maxPoints)
 					{
-						tryAll = false;
-						mod = intersectionLine.Length / maxPoints;
+						var mod = intersectionLine.Length / maxPoints - 1;
+
+						for (var i = 0; i < maxPoints; i++)
+						{
+							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
+
+							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+
+							if (energy < bestEnergy)
+							{
+								bestEnergy = energy;
+								bestShape = shape;
+								bestPosition = position;
+							}
+						}
 					}
-
-					var i = 0;
-
-					foreach (var position in intersectionLine.GetPoints())
+					else
 					{
-						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
-							continue;
+						var points = intersectionLine.GetPoints();
+						points.Shuffle(Random);
 
-						var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
-
-						if (energy < bestEnergy)
+						foreach (var position in points)
 						{
-							bestEnergy = energy;
-							bestShape = shape;
-							bestPosition = position;
-						}
+							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
 
-						if (bestEnergy <= 0)
-						{
-							break;
+							if (energy < bestEnergy)
+							{
+								bestEnergy = energy;
+								bestShape = shape;
+								bestPosition = position;
+							}
 						}
-
-						i++;
 					}
 
 					// There is no point of looking for more solutions when you already reached a valid state

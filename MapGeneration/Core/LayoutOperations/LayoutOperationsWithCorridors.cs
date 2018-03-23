@@ -330,11 +330,15 @@
 
 				foreach (var intersectionLine in intersection)
 				{
-					if (intersectionLine.Length > 20)
+					const int maxPoints = 20;
+
+					if (intersectionLine.Length > maxPoints)
 					{
-						for (var i = 0; i < 20; i++)
+						var mod = intersectionLine.Length / maxPoints - 1;
+
+						for (var i = 0; i < maxPoints; i++)
 						{
-							var position = intersectionLine.GetNthPoint(intersectionLine.Length);
+							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
 							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
 
