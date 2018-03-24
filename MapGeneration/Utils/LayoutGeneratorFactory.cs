@@ -57,7 +57,13 @@
 			return layoutGenerator;
 		}
 
-		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>> GetChainBasedGeneratorWithCorridors(List<int> offsets)
+		/// <summary>
+		/// Gets a generator that can work with corridors.
+		/// </summary>
+		/// <param name="offsets"></param>
+		/// <param name="canTouch">Whether rooms can touch. Perfomance is decreased when set to false.</param>
+		/// <returns></returns>
+		public static ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>> GetChainBasedGeneratorWithCorridors(List<int> offsets, bool canTouch = false)
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>>();
 
@@ -91,10 +97,13 @@
 					corridorConfigurationSpaces
 				));
 
-				layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-					mapDescription,
-					polygonOverlap
-				));
+				if (!canTouch)
+				{
+					layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+						mapDescription,
+						polygonOverlap
+					));
+				}
 
 				return layoutOperations;
 			});
