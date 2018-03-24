@@ -11,6 +11,7 @@
 	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Utils;
+	using LayoutOperations;
 
 	public class SimulatedAnnealingEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
@@ -99,49 +100,58 @@
 						}
 						#endregion
 
-						// OnValid?.Invoke(ConvertLayout(perturbedLayout));
-
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							layouts.Add(perturbedLayout);
-							OnValid?.Invoke(perturbedLayout);
+							var shouldContinue = true;
 
-							#region Random restarts
-							if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
+							// TODO: should be like this?
+							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
 							{
-								wasAccepted = true;
-
-								if (randomRestartsResetCounter)
-								{
-									numberOfFailures = 0;
-								}
+								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain);
 							}
-							#endregion
 
-							yield return perturbedLayout;
-
-							#region Debug output
-
-							//if (withDebugOutput)
-							//{
-							//	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
-							//}
-
-							#endregion
-
-							if (layouts.Count >= count)
+							if (shouldContinue)
 							{
+								layouts.Add(perturbedLayout);
+								OnValid?.Invoke(perturbedLayout);
+
+								#region Random restarts
+								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
+								{
+									wasAccepted = true;
+
+									if (randomRestartsResetCounter)
+									{
+										numberOfFailures = 0;
+									}
+								}
+								#endregion
+
+								yield return perturbedLayout;
+
 								#region Debug output
 
 								//if (withDebugOutput)
 								//{
-								//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
+								//	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
 								//}
 
 								#endregion
 
-								yield break;
+								if (layouts.Count >= count)
+								{
+									#region Debug output
+
+									//if (withDebugOutput)
+									//{
+									//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
+									//}
+
+									#endregion
+
+									yield break;
+								}
 							}
 						}
 					}

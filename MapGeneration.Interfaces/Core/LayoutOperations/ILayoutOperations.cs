@@ -1,7 +1,5 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutOperations
 {
-	using System.Collections.Generic;
-
 	/// <summary>
 	/// Represents a type with useful layout operations.
 	/// </summary>

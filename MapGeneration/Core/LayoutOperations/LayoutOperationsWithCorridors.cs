@@ -9,6 +9,7 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
 	using Interfaces.Utils;
@@ -17,7 +18,9 @@
 	/// <summary>
 	/// Layout operations for evolving layouts with corridors.
 	/// </summary>
-	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>
+	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : 
+		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>,
+		ILayoutOperationsWithCorridors<TLayout, TNode>
 		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
@@ -100,14 +103,18 @@
 				var random = nonCorridors.GetRandom(Random);
 				PerturbNonCorridorPosition(layout, random, updateLayout);
 			}
+		}
 
-			if (base.IsLayoutValid(layout))
+		/// <inheritdoc />
+		public bool AddCorridors(TLayout layout, IList<TNode> chain)
+		{
+			if (AddCorridorsInternal(layout, chain))
 			{
-				if (AddCorridors(layout, chain))
-				{
-					UpdateLayout(layout);
-				}
+				UpdateLayout(layout);
+				return true;
 			}
+
+			return false;
 		}
 
 		/// <summary>
@@ -116,7 +123,7 @@
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
+		private bool AddCorridorsInternal(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
 			var corridors = chain.Where(x => MapDescription.IsCorridorRoom(x)).ToList();
@@ -134,30 +141,6 @@
 			}
 
 			return true;
-		}
-
-		/// <summary>
-		/// Checks if a given layout is valid by first ensuring that all
-		/// corridor rooms in a given chain are already laid out and then
-		/// calling the base implementation of the validity check.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="chain"></param>
-		/// <returns></returns>
-		public override bool IsLayoutValid(TLayout layout, IList<TNode> chain)
-		{
-			if (!MapDescription.IsWithCorridors)
-			{
-				return base.IsLayoutValid(layout, chain);
-			}
-
-			var firstCorridor = chain.First(x => MapDescription.IsCorridorRoom(x));
-			if (layout.GetConfiguration(firstCorridor, out var _))
-			{
-				return base.IsLayoutValid(layout, chain);
-			}
-
-			return false;
 		}
 
 		/// <summary>
