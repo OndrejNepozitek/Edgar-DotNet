@@ -171,6 +171,11 @@
 								bestShape = shape;
 								bestPosition = position;
 							}
+
+							if (bestEnergy <= 0)
+							{
+								break;
+							}
 						}
 					}
 					else
@@ -187,6 +192,11 @@
 								bestEnergy = energy;
 								bestShape = shape;
 								bestPosition = position;
+							}
+
+							if (bestEnergy <= 0)
+							{
+								break;
 							}
 						}
 					}

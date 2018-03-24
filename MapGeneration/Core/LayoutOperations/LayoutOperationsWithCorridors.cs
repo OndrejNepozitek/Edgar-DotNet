@@ -349,6 +349,11 @@
 								foundValid = true;
 								break;
 							}
+
+							if (foundValid)
+							{
+								break;
+							}
 						}
 					}
 					else
@@ -365,6 +370,11 @@
 								bestShape = shape;
 								bestPosition = position;
 								foundValid = true;
+								break;
+							}
+
+							if (foundValid)
+							{
 								break;
 							}
 						}
