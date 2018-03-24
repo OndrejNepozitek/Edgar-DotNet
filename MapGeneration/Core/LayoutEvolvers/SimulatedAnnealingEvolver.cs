@@ -105,7 +105,7 @@
 						{
 							var shouldContinue = true;
 
-							// TODO: should be like this?
+							// TODO: should it be like this?
 							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
 							{
 								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain);

@@ -1,14 +1,12 @@
 ﻿namespace MapGeneration.Utils
 {
 	using System.Collections.Generic;
-	using Core;
 	using Core.ChainDecompositions;
 	using Core.Configurations;
 	using Core.Configurations.EnergyData;
 	using Core.ConfigurationSpaces;
 	using Core.Constraints;
 	using Core.Doors;
-	using Core.Experimental;
 	using Core.GeneratorPlanners;
 	using Core.LayoutConverters;
 	using Core.LayoutEvolvers;
@@ -21,7 +19,6 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Configuration.EnergyData;
 
 	public static class LayoutGeneratorFactory
 	{
