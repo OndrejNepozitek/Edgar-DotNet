@@ -32,7 +32,7 @@
 	/// <typeparam name="TLayout">Type of the layout that will be used in the process.</typeparam>
 	/// <typeparam name="TNode">Type of nodes in the map description.</typeparam>
 	/// <typeparam name="TConfiguration">Type of configuration used.</typeparam>
-	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration> : IObservableGenerator<TMapDescription, TNode>, ICancellable, IBenchmarkable, IRandomInjectable
+	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration> : IChainBasedLayoutGenerator<TMapDescription, TNode>
 		where TMapDescription : IMapDescription<TNode>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 	{

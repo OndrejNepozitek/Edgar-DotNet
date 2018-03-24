@@ -50,6 +50,7 @@
     <Compile Include="Core\Constraints\ILayoutConstraint.cs" />
     <Compile Include="Core\Constraints\INodeConstraint.cs" />
     <Compile Include="Core\Doors\IDoorLine.cs" />
+    <Compile Include="Core\LayoutGenerator\IChainBasedLayoutGenerator.cs" />
     <Compile Include="Core\LayoutOperations\IChainBasedLayoutOperations.cs" />
     <Compile Include="Core\LayoutOperations\ILayoutOperationsWithCorridors.cs" />
     <Compile Include="Core\MapLayouts\IDoorInfo.cs" />
