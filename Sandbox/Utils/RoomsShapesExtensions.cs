@@ -60,7 +60,7 @@
 			return mapDescription;
 		}
 
-		public static MapDescription<TNode> AddCorridorRoomShapes<TNode>(this MapDescription<TNode> mapDescription, List<int> offsets)
+		public static MapDescription<TNode> AddCorridorRoomShapes<TNode>(this MapDescription<TNode> mapDescription, List<int> offsets, bool enableCorridors = true)
 		{
 			foreach (var offset in offsets)
 			{
@@ -77,8 +77,11 @@
 				mapDescription.AddCorridorShapes(room);
 			}
 
-			mapDescription.SetWithCorridors(true, offsets);
-
+			if (enableCorridors)
+			{
+				mapDescription.SetWithCorridors(true, offsets);
+			}
+			
 			return mapDescription;
 		}
 	}
