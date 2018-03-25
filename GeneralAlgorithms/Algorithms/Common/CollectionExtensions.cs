@@ -137,8 +137,7 @@
 				randomNumber -= weight;
 			}
 
-			// TODO: can it get here due to the rounding of doubles?
-			throw new InvalidOperationException("Should never get here");
+			throw new InvalidOperationException("Should never get here. If we get here, nothing was chosen because of rounding errors of doubles.");
 		}
 	}
 }
