@@ -32,7 +32,7 @@
 	/// <typeparam name="TLayout">Type of the layout that will be used in the process.</typeparam>
 	/// <typeparam name="TNode">Type of nodes in the map description.</typeparam>
 	/// <typeparam name="TConfiguration">Type of configuration used.</typeparam>
-	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration> : IChainBasedLayoutGenerator<TMapDescription, TNode>
+	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration, TOutputLayout> : IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>, IObservableGenerator<TMapDescription, TOutputLayout>
 		where TMapDescription : IMapDescription<TNode>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 	{
@@ -42,7 +42,7 @@
 		private ILayoutEvolver<TLayout, TNode> layoutEvolver;
 		private IChainBasedLayoutOperations<TLayout, TNode> layoutOperations;
 		private IGeneratorPlanner<TLayout> generatorPlanner;
-		private ILayoutConverter<TLayout, IMapLayout<TNode>> layoutConverter;
+		private ILayoutConverter<TLayout, TOutputLayout> layoutConverter;
 
 		// Creators
 		private Func<
@@ -75,7 +75,7 @@
 		private Func<
 			TMapDescription,
 			IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>,
-			ILayoutConverter<TLayout, IMapLayout<TNode>>
+			ILayoutConverter<TLayout, TOutputLayout>
 		> layoutConverterCreator;
 		
 		private Func<
@@ -105,13 +105,13 @@
 		// Events
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnPerturbed;
+		public event Action<TOutputLayout> OnPerturbed;
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnPartialValid;
+		public event Action<TOutputLayout> OnPartialValid;
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnValid;
+		public event Action<TOutputLayout> OnValid;
 
 		private readonly GraphUtils graphUtils = new GraphUtils();
 
@@ -120,7 +120,7 @@
 			PrepareEnergyDataGetter();
 		}
 
-		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
+		public IList<TOutputLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
 		{
 			var graph = mapDescription.GetGraph();
 
@@ -280,7 +280,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutConverterCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutConverter<TLayout, IMapLayout<TNode>>> creator)
+		public void SetLayoutConverterCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutConverter<TLayout, TOutputLayout>> creator)
 		{
 			layoutConverterCreator = creator;
 		}

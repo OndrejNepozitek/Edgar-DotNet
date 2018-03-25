@@ -119,6 +119,9 @@
     <Compile Include="Core\Configurations\EnergyData\EnergyData.cs" />
     <Compile Include="Core\ChainDecompositions\BreadthFirstChainDecomposition.cs" />
     <Compile Include="Core\ChainDecompositions\ChainDecompositionBase.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\CorridorNodesCreatorFactory.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\StringCorridorNodesCreator.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\IntCorridorNodesCreator.cs" />
     <Compile Include="Core\LayoutGenerators\ChainBasedGenerator.cs" />
     <Compile Include="Core\ChainDecompositions\CorridorsChainDecomposition.cs" />
     <Compile Include="Core\LayoutConverters\BasicLayoutConverter.cs" />

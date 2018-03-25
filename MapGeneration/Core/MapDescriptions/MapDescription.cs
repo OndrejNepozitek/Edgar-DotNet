@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
 	using System.Linq;
+	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core.MapDescriptions;
 
@@ -281,6 +282,23 @@
 		public virtual ReadOnlyCollection<ReadOnlyCollection<RoomContainer>> GetRoomShapesForNodes()
 		{
 			return RoomShapesForNodes.Select(x => x?.AsReadOnly()).ToList().AsReadOnly();
+		}
+
+		/// <summary>
+		/// Returns the mapping from original vertices to ints.
+		/// </summary>
+		/// <returns></returns>
+		public virtual TwoWayDictionary<TNode, int> GetRoomsMapping()
+		{
+			IsLocked = true;
+			var mapping = new TwoWayDictionary<TNode, int>();
+
+			foreach (var pair in Rooms)
+			{
+				mapping.Add(pair.Key, pair.Value);
+			}
+
+			return mapping;
 		}
 
 		protected virtual void ThrowIfLocked()
