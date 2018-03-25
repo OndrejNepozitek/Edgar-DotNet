@@ -10,7 +10,6 @@
 	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Benchmarks;
 	using Interfaces.Core;
 	using Interfaces.Core.ChainDecompositions;
 	using Interfaces.Core.ConfigurationSpaces;
@@ -424,16 +423,16 @@
 		}
 
 		/// <inheritdoc />
-		long IBenchmarkable.TimeFirst => timeFirst;
+		long IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.TimeFirst => timeFirst;
 
 		/// <inheritdoc />
-		long IBenchmarkable.TimeTotal => timeTotal;
+		long IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.TimeTotal => timeTotal;
 
 		/// <inheritdoc />
-		int IBenchmarkable.IterationsCount => context.IterationsCount;
+		int IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.IterationsCount => context.IterationsCount;
 
 		/// <inheritdoc />
-		int IBenchmarkable.LayoutsCount => layoutsCount;
+		int IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.LayoutsCount => layoutsCount;
 
 		/// <inheritdoc />
 		public void EnableBenchmark(bool enable)

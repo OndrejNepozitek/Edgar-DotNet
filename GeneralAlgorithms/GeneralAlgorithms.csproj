@@ -109,6 +109,7 @@
     <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
     <Compile Include="DataStructures\Common\IntVector2.cs" />
+    <Compile Include="DataStructures\Common\TwoWayDictionary.cs" />
     <Compile Include="DataStructures\Graphs\IntGraph.cs" />
     <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraph.cs" />
     <Compile Include="DataStructures\Graphs\Edge.cs" />

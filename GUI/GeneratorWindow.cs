@@ -71,14 +71,14 @@
 				{
 					if (settings.MapDescription.IsWithCorridors)
 					{
-						var defaultGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(settings.MapDescription.CorridorsOffsets);
+						var defaultGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(settings.MapDescription.CorridorsOffsets);
 						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 						layoutGenerator = defaultGenerator;
 					}
 					else
 					{
-						var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator();
+						var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
 						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 						layoutGenerator = defaultGenerator;
@@ -141,9 +141,6 @@
 				};
 
 				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
-
-				var serializer = new JsonSerializer<int>();
-				serializer.Serialize(generatedLayouts, new StreamWriter("test.json"));
 
 				isRunning = false;
 				BeginInvoke((Action)(UpdateInfoPanel));

@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Benchmarks\IBenchmarkable.cs" />
+    <Compile Include="Core\LayoutGenerator\IBenchmarkableLayoutGenerator.cs" />
     <Compile Include="Core\Configuration\EnergyData\INodeEnergyData.cs" />
     <Compile Include="Core\Configuration\EnergyData\IEnergyData.cs" />
     <Compile Include="Core\Configuration\EnergyData\ICorridorsData.cs" />

@@ -29,59 +29,24 @@
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			var mapDescription = MapDescriptionsDatabase.Reference_41Vertices_WithoutRoomShapes;
-			mapDescription.SetWithCorridors(true);
+			var offsets = new List<int>() {2};
+			var mapDescription = new MapDescription<string>();
+
+			mapDescription.AddRoom("0");
+			mapDescription.AddRoom("1");
+			mapDescription.AddRoom("2");
+			mapDescription.AddRoom("3");
+
+			mapDescription.AddPassage("0", "1");
+			mapDescription.AddPassage("1", "2");
+			mapDescription.AddPassage("2", "3");
+			mapDescription.AddPassage("3", "0");
+
+
+			mapDescription.SetWithCorridors(true, offsets);
+
 			MapDescriptionsDatabase.AddClassicRoomShapes(mapDescription);
-
-			{
-				var width = 3;
-				var room = new RoomDescription(
-					GridPolygon.GetRectangle(width, 1),
-					new SpecificPositionsMode(new List<OrthogonalLine>()
-					{
-						new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
-						new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),
-					})
-				);
-
-				mapDescription.AddCorridorShapes(room);
-			}
-
-			{
-				var width = 2;
-				var room = new RoomDescription(
-					GridPolygon.GetRectangle(width, 1),
-					new SpecificPositionsMode(new List<OrthogonalLine>()
-					{
-						new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
-						new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),
-					})
-				);
-
-				mapDescription.AddCorridorShapes(room);
-			}
-
-			{
-				var width = 2;
-				var room = new RoomDescription(
-					new GridPolygonBuilder()
-						.AddPoint(0, 0)
-						.AddPoint(0, 2)
-						.AddPoint(2, 2)
-						.AddPoint(2, 1)
-						.AddPoint(1, 1)
-						.AddPoint(1, 0)
-						.Build()
-					,
-					new SpecificPositionsMode(new List<OrthogonalLine>()
-					{
-						new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
-						new OrthogonalLine(new IntVector2(2, 1), new IntVector2(2, 2)),
-					})
-				);
-
-				mapDescription.AddCorridorShapes(room);
-			}
+			MapDescriptionsDatabase.AddCorridorRoomShapes(mapDescription, offsets[0]);
 
 			var random = new Random(0);
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
@@ -109,26 +74,26 @@
 			//		return operations;
 			//	});
 
-			var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(new List<int>() { 2 });
+			var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<string>(new List<int>() { 2 });
 			layoutGenerator.InjectRandomGenerator(random);
 			layoutGenerator.SetLayoutValidityCheck(false);
 			// layoutGenerator.SetSimulatedAnnealing(50, 500, 10);
 
-			var settings = new GeneratorSettings
-			{
-				MapDescription = mapDescription,
-				LayoutGenerator = layoutGenerator,
+			//var settings = new GeneratorSettings
+			//{
+			//	MapDescription = mapDescription,
+			//	LayoutGenerator = layoutGenerator,
 
-				NumberOfLayouts = 10,
+			//	NumberOfLayouts = 10,
 
-				ShowPartialValidLayouts = true,
-				ShowPartialValidLayoutsTime = 500,
-			};
+			//	ShowPartialValidLayouts = true,
+			//	ShowPartialValidLayoutsTime = 500,
+			//};
 
-			var benchmark = new Benchmark();
-			// benchmark.Execute(layoutGenerator, "Test", new List<Tuple<string, MapDescription<int>>>() { new Tuple<string, MapDescription<int>>("Test", mapDescription)}, 20);
+			var benchmark = Benchmark.CreateFor(layoutGenerator);
+			benchmark.Execute(layoutGenerator, "Test", new List<Tuple<string, MapDescription<string>>>() { new Tuple<string, MapDescription<string>>("Test", mapDescription)}, 20);
 
-			Application.Run(new GeneratorWindow(settings));
+			//Application.Run(new GeneratorWindow(settings));
 		}
 	}
 }

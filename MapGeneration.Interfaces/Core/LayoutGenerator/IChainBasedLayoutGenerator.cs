@@ -1,9 +1,12 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
-	using Benchmarks;
 	using Utils;
 
-	public interface IChainBasedLayoutGenerator<in TMapDescription, TNode> : IObservableGenerator<TMapDescription, TNode>, IRandomInjectable, ICancellable, IBenchmarkable
+	public interface IChainBasedLayoutGenerator<in TMapDescription, TLayout> : 
+		IObservableGenerator<TMapDescription, TLayout>,
+		IBenchmarkableLayoutGenerator<TMapDescription, TLayout>,
+		IRandomInjectable,
+		ICancellable
 	{
 		
 	}

@@ -1,9 +1,9 @@
-﻿namespace MapGeneration.Interfaces.Benchmarks
+﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
 	/// <summary>
 	/// Represents layout generators that can be benchmarked.
 	/// </summary>
-	public interface IBenchmarkable
+	public interface IBenchmarkableLayoutGenerator<in TMapDescription, TLayout> : ILayoutGenerator<TMapDescription, TLayout>
 	{
 		/// <summary>
 		/// Number of milliseconds until a first layout is generated.
