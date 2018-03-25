@@ -144,7 +144,6 @@
 		/// <returns></returns>
 		public OrthogonalLine SwitchOrientation()
 		{
-			// TODO: will not work if direction is Undefined
 			return new OrthogonalLine(To, From, GetOppositeDirection(GetDirection()));
 		}
 
@@ -226,6 +225,9 @@
 
 				case Direction.Left:
 					return Direction.Right;
+
+				case Direction.Undefined:
+					return Direction.Undefined;
 
 				default:
 					throw new ArgumentOutOfRangeException();
