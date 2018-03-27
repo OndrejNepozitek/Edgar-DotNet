@@ -7,7 +7,6 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.MapLayouts;
 
 	/// <inheritdoc />
@@ -46,7 +45,6 @@
 
 			return svgData;
 		}
-
 
 		private float GetWidthHeightRatio(IMapLayout<TNode> layout)
 		{

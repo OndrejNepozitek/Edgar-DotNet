@@ -38,7 +38,7 @@
 
 			base.DrawLayout(layout, width, height, withNames);
 
-			return bitmap; // TODO: memorky leak?
+			return bitmap;
 		}
 
 		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
