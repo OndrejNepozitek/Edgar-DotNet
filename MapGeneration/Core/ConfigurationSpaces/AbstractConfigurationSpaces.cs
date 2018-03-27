@@ -68,7 +68,6 @@
 				foreach (var indices in configurations.GetCombinations(i))
 				{
 					List<OrthogonalLine> intersection = null;
-					// TODO: Would it be better if GetIntersections was lazy?
 
 					foreach (var index in indices)
 					{
