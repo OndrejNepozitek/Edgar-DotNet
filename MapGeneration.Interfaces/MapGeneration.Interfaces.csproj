@@ -65,7 +65,7 @@
     <Compile Include="Core\Layouts\ILayout.cs" />
     <Compile Include="Core\LayoutConverters\ILayoutConverter.cs" />
     <Compile Include="Core\LayoutEvolvers\ILayoutEvolver.cs" />
-    <Compile Include="Core\GeneratorPlanners\IGeneratorContext.cs" />
+    <Compile Include="Core\LayoutGenerator\IGeneratorContext.cs" />
     <Compile Include="Core\LayoutGenerator\ILayoutGenerator.cs" />
     <Compile Include="Core\LayoutOperations\ILayoutOperations.cs" />
     <Compile Include="Core\LayoutGenerator\IObservableGenerator.cs" />

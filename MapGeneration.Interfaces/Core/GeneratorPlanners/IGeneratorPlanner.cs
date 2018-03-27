@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using LayoutGenerator;
 
 	/// <summary>
 	/// Represents a generator planner.

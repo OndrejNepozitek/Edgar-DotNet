@@ -6,6 +6,7 @@
 	using System.Threading;
 	using Interfaces.Core;
 	using Interfaces.Core.GeneratorPlanners;
+	using Interfaces.Core.LayoutGenerator;
 	using Interfaces.Utils;
 
 	/// <summary>

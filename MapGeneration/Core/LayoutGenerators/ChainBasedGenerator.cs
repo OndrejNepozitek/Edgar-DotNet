@@ -6,7 +6,6 @@
 	using System.Linq;
 	using System.Threading;
 	using ConfigurationSpaces;
-	using Experimental;
 	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;

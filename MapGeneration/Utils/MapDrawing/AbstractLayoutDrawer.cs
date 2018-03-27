@@ -5,7 +5,6 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.MapLayouts;
 
 	/// <summary>
