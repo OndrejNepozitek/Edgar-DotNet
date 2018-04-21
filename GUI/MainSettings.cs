@@ -49,6 +49,15 @@
 				ShowPartialValidLayoutsTime = (int) showPartialValidLayoutsTime.Value,
 				ShowPerturbedLayouts = showPerturbedLayouts.Checked,
 				ShowPerturbedLayoutsTime = (int) showPerturbedLayoutsTime.Value,
+				ExportShownLayouts = exportShownLayoutsCheckbox.Checked,
+
+				UseOldPaperStyle = useOldPaperStyleCheckbox.Checked,
+				ShowRoomNames = showRoomNamesCheckbox.Checked,
+
+				FixedFontSize = fixedFontSizeCheckbox.Checked,
+				FixedFontSizeValue = (int) fixedFontSizeValue.Value,
+				FidexSquareExport = fixedSquareExportCheckbox.Checked,
+				FixedSquareExportValue = (int) fixedSquareExportValue.Value,
 			});
 			
 			generatorWindow.Show();

@@ -31,12 +31,13 @@
 		/// <param name="pictureBox"></param>
 		/// <param name="eventArgs"></param>
 		/// <param name="withNames"></param>
-		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true)
+		/// <param name="fixedFontSize"></param>
+		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
 
-			base.DrawLayout(layout, width, height, withNames);
+			base.DrawLayout(layout, width, height, withNames, fixedFontSize);
 
 			return bitmap;
 		}

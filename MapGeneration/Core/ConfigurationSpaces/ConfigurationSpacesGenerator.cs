@@ -329,7 +329,7 @@
 		{
 			var result = new List<OrthogonalLine>();
 			var rotation = line.ComputeRotation();
-			var rotatedLine = line.Rotate(rotation, false);
+			var rotatedLine = line.Rotate(rotation, true);
 			var directionVector = rotatedLine.GetDirectionVector();
 			var rotatedIntersection = intersection.Select(x => x.Rotate(rotation, false).GetNormalized()).ToList();
 			rotatedIntersection.Sort((x1, x2) => x1.From.CompareTo(x2.From));

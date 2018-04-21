@@ -25,18 +25,19 @@
 		/// <param name="layout"></param>
 		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
 		/// <param name="showRoomNames"></param>
+		/// <param name="fixedFontSize"></param>
 		/// <returns></returns>
-		public string DrawLayout(IMapLayout<TNode> layout, int width, bool showRoomNames = true)
+		public string DrawLayout(IMapLayout<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false)
 		{
 			if (width <= 0)
 				throw new ArgumentException("Width must be greater than zero.", nameof(width));
 
 			var ratio = GetWidthHeightRatio(layout);
-			var height = (int) (width / ratio);
+			var height = forceSquare ? width : (int) (width / ratio);
 
 			data.AppendLine($"<svg width=\"{width}\" height=\"{height}\" xmlns=\"http://www.w3.org/2000/svg\">");
 
-			DrawLayout(layout, width, height, showRoomNames);
+			DrawLayout(layout, width, height, showRoomNames, fixedFontSize, 0.1f);
 
 			data.AppendLine("</svg>");
 
@@ -109,7 +110,7 @@
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
 
 			data.AppendLine(
-				$"    <text x=\"{biggestRectangle.Center.X}\" y=\"{biggestRectangle.Center.Y}\" alignment-baseline=\"middle\" text-anchor=\"middle\" font-size=\"{(int) (1.2 * penWidth)}\">{text}</text>");
+				$"    <text x=\"{biggestRectangle.Center.X}\" y=\"{biggestRectangle.Center.Y}\" alignment-baseline=\"middle\" text-anchor=\"middle\" style=\"font-family: helvetica;\" font-size=\"{(int) (1.2 * penWidth)}\">{text}</text>");
 		}
 	}
 }

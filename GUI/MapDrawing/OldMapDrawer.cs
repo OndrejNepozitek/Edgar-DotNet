@@ -36,8 +36,9 @@
 		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
 		/// <param name="height"></param>
 		/// <param name="withNames"></param>
+		/// <param name="fixedFontSize"></param>
 		/// <returns></returns>
-		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true)
+		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
@@ -60,7 +61,7 @@
 				StartCap = LineCap.Square
 			};
 
-			base.DrawLayout(layout, width, height, withNames);
+			base.DrawLayout(layout, width, height, withNames, fixedFontSize);
 
 			textureImgInner.Dispose();
 			innerBrush.Dispose();

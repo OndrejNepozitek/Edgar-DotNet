@@ -37,6 +37,13 @@
 		private int slideshowIndex;
 		private int slideshowTaskId;
 
+		private const int defaultWidth = 600;
+		private const int defaultHeight = 600;
+
+		private string dumpFolder;
+		private int dumpCount;
+		private GeneratorEvent lastEvent;
+
 		public GeneratorWindow(GeneratorSettings settings)
 		{
 			this.settings = settings;
@@ -51,6 +58,12 @@
 			showPerturbedLayoutsTime.Value = settings.ShowPerturbedLayoutsTime;
 			showRoomNamesCheckbox.Checked = settings.ShowRoomNames;
 			useOldPaperStyleCheckbox.Checked = settings.UseOldPaperStyle;
+			exportShownLayoutsCheckbox.Checked = settings.ExportShownLayouts;
+
+			fixedFontSizeCheckbox.Checked = settings.FixedFontSize;
+			fixedFontSizeValue.Value = settings.FixedFontSizeValue;
+			fixedSquareExportCheckbox.Checked = settings.FidexSquareExport;
+			fixedSquareExportValue.Value = settings.FixedSquareExportValue;
 
 			slideshowPanel.Hide();
 			exportPanel.Hide();
@@ -65,6 +78,8 @@
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
+				dumpFolder = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
+				dumpCount = 0;
 				var layoutGenerator = settings.LayoutGenerator;
 
 				if (layoutGenerator == null)
@@ -97,6 +112,7 @@
 					if (!showFinalLayouts.Checked)
 						return;
 
+					lastEvent = GeneratorEvent.OnValid;
 					layoutToDraw = layout;
 					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
 					SleepWithFastCancellation((int)showFinalLayoutsTime.Value, ct);
@@ -107,6 +123,7 @@
 					if (!showPartialValidLayouts.Checked)
 						return;
 
+					lastEvent = GeneratorEvent.OnPartialValid;
 					layoutToDraw = layout;
 					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
 					SleepWithFastCancellation((int)showAcceptedLayoutsTime.Value, ct);
@@ -117,6 +134,7 @@
 					if (!showPerturbedLayouts.Checked)
 						return;
 
+					lastEvent = GeneratorEvent.OnPerturbed;
 					layoutToDraw = layout;
 					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
 					SleepWithFastCancellation((int)showPerturbedLayoutsTime.Value, ct);
@@ -124,6 +142,7 @@
 
 				layoutGenerator.OnPerturbed += layout =>
 				{
+					lastEvent = GeneratorEvent.OnPerturbed;
 					iterationsCount++;
 					if (infoStopwatch.ElapsedMilliseconds >= 200)
 					{
@@ -134,6 +153,7 @@
 
 				layoutGenerator.OnValid += layout =>
 				{
+					lastEvent = GeneratorEvent.OnValid;
 					iterationsCount = 0;
 					layoutsCount++;
 					BeginInvoke((Action)(UpdateInfoPanel));
@@ -173,17 +193,21 @@
 			if (layoutToDraw == null)
 				return;
 
+			if (exportShownLayoutsCheckbox.Checked)
+				DumpSvg();
+
 			var showNames = showRoomNamesCheckbox.Checked;
 			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
+			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
 
 			if (useOldPaperStyle)
 			{
-				var bitmap = oldMapDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames);
+				var bitmap = oldMapDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
 				e.Graphics.DrawImage(bitmap, new Point(0, 0));
 			}
 			else
 			{
-				var bitmap = wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames);
+				var bitmap = wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
 				e.Graphics.DrawImage(bitmap, new Point(0, 0));
 			}
 		}
@@ -297,6 +321,9 @@
 			UpdateSlideshowInfo();
 			saveExportDialog.DefaultExt = "svg";
 
+			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : defaultWidth;
+			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
+
 			if (saveExportDialog.ShowDialog() == DialogResult.OK)
 			{
 				var filename = saveExportDialog.FileName;
@@ -305,7 +332,7 @@
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, 800, showRoomNamesCheckbox.Checked);
+						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
 						sw.Write(data);
 					}
 				}
@@ -360,12 +387,34 @@
 			}
 		}
 
+		private void DumpSvg()
+		{
+			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : defaultWidth;
+			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
+			var folder = $"Output/{dumpFolder}";
+			var filename = $"{folder}/{dumpCount++}_{lastEvent.ToString()}.svg";
+			Directory.CreateDirectory(folder);
+
+			using (var fs = File.Open(filename, FileMode.Create))
+			{
+				using (var sw = new StreamWriter(fs))
+				{
+					var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
+					sw.Write(data);
+				}
+			}
+		}
+
 		private void exportAllJpgButton_Click(object sender, EventArgs e)
 		{
 			var time = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
 			var folder = $"Output/{time}";
 			var showNames = showRoomNamesCheckbox.Checked;
 			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
+
+			var width = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : defaultWidth;
+			var height = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : defaultHeight;
+			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?) fixedFontSizeValue.Value : null;
 
 			Directory.CreateDirectory(folder);
 
@@ -375,17 +424,48 @@
 
 				if (useOldPaperStyle)
 				{
-					bitmap = oldMapDrawer.DrawLayout(generatedLayouts[i], 600, 600, showNames);
+					bitmap = oldMapDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
 				}
 				else
 				{
-					bitmap = wfLayoutDraver.DrawLayout(generatedLayouts[i], 600, 600, showNames);
+					bitmap = wfLayoutDraver.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
 				}
 
 				bitmap.Save($"{folder}/{i}.jpg");
 			}
 
 			MessageBox.Show($"Images were saved to {folder}", "Images saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		private void fixedFontSizeCheckbox_CheckedChanged(object sender, EventArgs e)
+		{
+			mainPictureBox.Refresh();
+		}
+
+		private void fixedSquareExportCheckbox_CheckedChanged(object sender, EventArgs e)
+		{
+			mainPictureBox.Refresh();
+		}
+
+		private void fixedFontSizeValue_ValueChanged(object sender, EventArgs e)
+		{
+			if (fixedFontSizeCheckbox.Checked)
+			{
+				mainPictureBox.Refresh();
+			}
+		}
+
+		private void fixedSquareExportValue_ValueChanged(object sender, EventArgs e)
+		{
+			if (fixedSquareExportCheckbox.Checked)
+			{
+				mainPictureBox.Refresh();
+			}
+		}
+
+		private enum GeneratorEvent
+		{
+			OnPerturbed, OnPartialValid, OnValid
 		}
 	}
 }

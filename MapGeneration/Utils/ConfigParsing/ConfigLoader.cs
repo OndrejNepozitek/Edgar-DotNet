@@ -32,6 +32,8 @@
 		/// </summary>
 		private const string MapsPath = "Resources/Maps";
 
+		private const string CustomSetName = "custom";
+
 		public ConfigLoader()
 		{
 			deserializer = new DeserializerBuilder()
@@ -89,6 +91,11 @@
 			var mapDescription = new MapDescription<int>();
 			var roomDescriptionsSets = LoadRoomDescriptionsSetsFromResources();
 
+			if (mapDescriptionModel.CustomRoomDescriptionsSet != null)
+			{
+				roomDescriptionsSets.Add(CustomSetName, mapDescriptionModel.CustomRoomDescriptionsSet);
+			}
+			
 			LoadRooms(mapDescription, mapDescriptionModel, roomDescriptionsSets);
 			LoadPassagess(mapDescription, mapDescriptionModel);
 			LoadCorridors(mapDescription, mapDescriptionModel, roomDescriptionsSets);
@@ -123,6 +130,11 @@
 					if (string.IsNullOrEmpty(model.Name))
 					{
 						throw new InvalidOperationException("Name must not be empty");
+					}
+
+					if (model.Name == CustomSetName)
+					{
+						throw new InvalidOperationException($"'{CustomSetName}' is a reserved set name");
 					}
 
 					models.Add(model.Name, model);

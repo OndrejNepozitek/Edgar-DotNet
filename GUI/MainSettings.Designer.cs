@@ -64,6 +64,17 @@
 			this.mapDescriptionPanel = new System.Windows.Forms.Panel();
 			this.generateButtonPanel = new System.Windows.Forms.Panel();
 			this.generateButton = new System.Windows.Forms.Button();
+			this.drawingSettingsPanel = new System.Windows.Forms.Panel();
+			this.drawingSettingsGroupBox = new System.Windows.Forms.GroupBox();
+			this.label5 = new System.Windows.Forms.Label();
+			this.fixedSquareExportValue = new System.Windows.Forms.NumericUpDown();
+			this.fixedSquareExportCheckbox = new System.Windows.Forms.CheckBox();
+			this.label8 = new System.Windows.Forms.Label();
+			this.useOldPaperStyleCheckbox = new System.Windows.Forms.CheckBox();
+			this.fixedFontSizeValue = new System.Windows.Forms.NumericUpDown();
+			this.showRoomNamesCheckbox = new System.Windows.Forms.CheckBox();
+			this.fixedFontSizeCheckbox = new System.Windows.Forms.CheckBox();
+			this.exportShownLayoutsCheckbox = new System.Windows.Forms.CheckBox();
 			this.generalSettingsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.generatorSeedInput)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numberOfLayoutsInput)).BeginInit();
@@ -80,6 +91,10 @@
 			this.infoPanel.SuspendLayout();
 			this.mapDescriptionPanel.SuspendLayout();
 			this.generateButtonPanel.SuspendLayout();
+			this.drawingSettingsPanel.SuspendLayout();
+			this.drawingSettingsGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.fixedSquareExportValue)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.fixedFontSizeValue)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// mapDescriptionFileDialog
@@ -97,7 +112,7 @@
 			this.generalSettingsGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.generalSettingsGroupBox.Margin = new System.Windows.Forms.Padding(5);
 			this.generalSettingsGroupBox.Name = "generalSettingsGroupBox";
-			this.generalSettingsGroupBox.Size = new System.Drawing.Size(562, 92);
+			this.generalSettingsGroupBox.Size = new System.Drawing.Size(541, 92);
 			this.generalSettingsGroupBox.TabIndex = 0;
 			this.generalSettingsGroupBox.TabStop = false;
 			this.generalSettingsGroupBox.Text = "General settings";
@@ -163,7 +178,7 @@
 			this.mapDescriptionGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mapDescriptionGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.mapDescriptionGroupBox.Name = "mapDescriptionGroupBox";
-			this.mapDescriptionGroupBox.Size = new System.Drawing.Size(562, 126);
+			this.mapDescriptionGroupBox.Size = new System.Drawing.Size(541, 126);
 			this.mapDescriptionGroupBox.TabIndex = 0;
 			this.mapDescriptionGroupBox.TabStop = false;
 			this.mapDescriptionGroupBox.Text = "Map description file";
@@ -213,7 +228,7 @@
 			this.infoGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.infoGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.infoGroupBox.Name = "infoGroupBox";
-			this.infoGroupBox.Size = new System.Drawing.Size(562, 107);
+			this.infoGroupBox.Size = new System.Drawing.Size(541, 107);
 			this.infoGroupBox.TabIndex = 1;
 			this.infoGroupBox.TabStop = false;
 			this.infoGroupBox.Text = "Info";
@@ -226,7 +241,7 @@
 			this.usedDescriptionInfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.usedDescriptionInfoPanel.Location = new System.Drawing.Point(3, 18);
 			this.usedDescriptionInfoPanel.Name = "usedDescriptionInfoPanel";
-			this.usedDescriptionInfoPanel.Size = new System.Drawing.Size(556, 86);
+			this.usedDescriptionInfoPanel.Size = new System.Drawing.Size(535, 86);
 			this.usedDescriptionInfoPanel.TabIndex = 1;
 			this.usedDescriptionInfoPanel.Visible = false;
 			// 
@@ -274,12 +289,13 @@
 			this.generalSettingsPanel.Location = new System.Drawing.Point(5, 5);
 			this.generalSettingsPanel.Name = "generalSettingsPanel";
 			this.generalSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.generalSettingsPanel.Size = new System.Drawing.Size(562, 102);
+			this.generalSettingsPanel.Size = new System.Drawing.Size(541, 102);
 			this.generalSettingsPanel.TabIndex = 2;
 			// 
 			// mainPanel
 			// 
 			this.mainPanel.AutoScroll = true;
+			this.mainPanel.Controls.Add(this.drawingSettingsPanel);
 			this.mainPanel.Controls.Add(this.progressPanel);
 			this.mainPanel.Controls.Add(this.infoPanel);
 			this.mainPanel.Controls.Add(this.mapDescriptionPanel);
@@ -288,7 +304,7 @@
 			this.mainPanel.Location = new System.Drawing.Point(0, 0);
 			this.mainPanel.Name = "mainPanel";
 			this.mainPanel.Padding = new System.Windows.Forms.Padding(5);
-			this.mainPanel.Size = new System.Drawing.Size(572, 597);
+			this.mainPanel.Size = new System.Drawing.Size(572, 537);
 			this.mainPanel.TabIndex = 4;
 			// 
 			// progressPanel
@@ -298,11 +314,12 @@
 			this.progressPanel.Location = new System.Drawing.Point(5, 360);
 			this.progressPanel.Name = "progressPanel";
 			this.progressPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.progressPanel.Size = new System.Drawing.Size(562, 168);
+			this.progressPanel.Size = new System.Drawing.Size(541, 195);
 			this.progressPanel.TabIndex = 6;
 			// 
 			// progressGroupBox
 			// 
+			this.progressGroupBox.Controls.Add(this.exportShownLayoutsCheckbox);
 			this.progressGroupBox.Controls.Add(this.label7);
 			this.progressGroupBox.Controls.Add(this.label6);
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayoutsTime);
@@ -316,7 +333,7 @@
 			this.progressGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.progressGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.progressGroupBox.Name = "progressGroupBox";
-			this.progressGroupBox.Size = new System.Drawing.Size(562, 158);
+			this.progressGroupBox.Size = new System.Drawing.Size(541, 185);
 			this.progressGroupBox.TabIndex = 0;
 			this.progressGroupBox.TabStop = false;
 			this.progressGroupBox.Text = "Progress showing settings";
@@ -380,7 +397,7 @@
 			this.label2.TabIndex = 5;
 			this.label2.Text = "ms";
 			// 
-			// showAcceptedLayoutsTime
+			// showPartialValidLayoutsTime
 			// 
 			this.showPartialValidLayoutsTime.Location = new System.Drawing.Point(240, 99);
 			this.showPartialValidLayoutsTime.Maximum = new decimal(new int[] {
@@ -402,7 +419,7 @@
             0,
             0});
 			// 
-			// showAcceptedLayouts
+			// showPartialValidLayouts
 			// 
 			this.showPartialValidLayouts.AutoSize = true;
 			this.showPartialValidLayouts.Location = new System.Drawing.Point(11, 99);
@@ -460,7 +477,7 @@
 			this.infoPanel.Location = new System.Drawing.Point(5, 243);
 			this.infoPanel.Name = "infoPanel";
 			this.infoPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.infoPanel.Size = new System.Drawing.Size(562, 117);
+			this.infoPanel.Size = new System.Drawing.Size(541, 117);
 			this.infoPanel.TabIndex = 4;
 			// 
 			// mapDescriptionPanel
@@ -470,7 +487,7 @@
 			this.mapDescriptionPanel.Location = new System.Drawing.Point(5, 107);
 			this.mapDescriptionPanel.Name = "mapDescriptionPanel";
 			this.mapDescriptionPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.mapDescriptionPanel.Size = new System.Drawing.Size(562, 136);
+			this.mapDescriptionPanel.Size = new System.Drawing.Size(541, 136);
 			this.mapDescriptionPanel.TabIndex = 3;
 			// 
 			// generateButtonPanel
@@ -492,6 +509,146 @@
 			this.generateButton.Text = "Generate";
 			this.generateButton.UseVisualStyleBackColor = true;
 			this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
+			// 
+			// drawingSettingsPanel
+			// 
+			this.drawingSettingsPanel.Controls.Add(this.drawingSettingsGroupBox);
+			this.drawingSettingsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.drawingSettingsPanel.Location = new System.Drawing.Point(5, 555);
+			this.drawingSettingsPanel.Name = "drawingSettingsPanel";
+			this.drawingSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+			this.drawingSettingsPanel.Size = new System.Drawing.Size(541, 153);
+			this.drawingSettingsPanel.TabIndex = 11;
+			// 
+			// drawingSettingsGroupBox
+			// 
+			this.drawingSettingsGroupBox.Controls.Add(this.label5);
+			this.drawingSettingsGroupBox.Controls.Add(this.fixedSquareExportValue);
+			this.drawingSettingsGroupBox.Controls.Add(this.fixedSquareExportCheckbox);
+			this.drawingSettingsGroupBox.Controls.Add(this.label8);
+			this.drawingSettingsGroupBox.Controls.Add(this.useOldPaperStyleCheckbox);
+			this.drawingSettingsGroupBox.Controls.Add(this.fixedFontSizeValue);
+			this.drawingSettingsGroupBox.Controls.Add(this.showRoomNamesCheckbox);
+			this.drawingSettingsGroupBox.Controls.Add(this.fixedFontSizeCheckbox);
+			this.drawingSettingsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.drawingSettingsGroupBox.Location = new System.Drawing.Point(0, 0);
+			this.drawingSettingsGroupBox.Name = "drawingSettingsGroupBox";
+			this.drawingSettingsGroupBox.Size = new System.Drawing.Size(541, 143);
+			this.drawingSettingsGroupBox.TabIndex = 0;
+			this.drawingSettingsGroupBox.TabStop = false;
+			this.drawingSettingsGroupBox.Text = "Display settings";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(300, 115);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(22, 17);
+			this.label5.TabIndex = 12;
+			this.label5.Text = "px";
+			// 
+			// fixedSquareExportValue
+			// 
+			this.fixedSquareExportValue.Location = new System.Drawing.Point(223, 111);
+			this.fixedSquareExportValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.fixedSquareExportValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.fixedSquareExportValue.Name = "fixedSquareExportValue";
+			this.fixedSquareExportValue.Size = new System.Drawing.Size(71, 22);
+			this.fixedSquareExportValue.TabIndex = 14;
+			this.fixedSquareExportValue.Value = new decimal(new int[] {
+            800,
+            0,
+            0,
+            0});
+			// 
+			// fixedSquareExportCheckbox
+			// 
+			this.fixedSquareExportCheckbox.AutoSize = true;
+			this.fixedSquareExportCheckbox.Location = new System.Drawing.Point(6, 111);
+			this.fixedSquareExportCheckbox.Name = "fixedSquareExportCheckbox";
+			this.fixedSquareExportCheckbox.Size = new System.Drawing.Size(154, 21);
+			this.fixedSquareExportCheckbox.TabIndex = 13;
+			this.fixedSquareExportCheckbox.Text = "Fixed square export";
+			this.fixedSquareExportCheckbox.UseVisualStyleBackColor = true;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(300, 88);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(22, 17);
+			this.label8.TabIndex = 10;
+			this.label8.Text = "px";
+			// 
+			// useOldPaperStyleCheckbox
+			// 
+			this.useOldPaperStyleCheckbox.AutoSize = true;
+			this.useOldPaperStyleCheckbox.Location = new System.Drawing.Point(6, 57);
+			this.useOldPaperStyleCheckbox.Name = "useOldPaperStyleCheckbox";
+			this.useOldPaperStyleCheckbox.Size = new System.Drawing.Size(152, 21);
+			this.useOldPaperStyleCheckbox.TabIndex = 8;
+			this.useOldPaperStyleCheckbox.Text = "Use old paper style";
+			this.useOldPaperStyleCheckbox.UseVisualStyleBackColor = true;
+			// 
+			// fixedFontSizeValue
+			// 
+			this.fixedFontSizeValue.Location = new System.Drawing.Point(223, 84);
+			this.fixedFontSizeValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.fixedFontSizeValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.fixedFontSizeValue.Name = "fixedFontSizeValue";
+			this.fixedFontSizeValue.Size = new System.Drawing.Size(71, 22);
+			this.fixedFontSizeValue.TabIndex = 11;
+			this.fixedFontSizeValue.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+			// 
+			// showRoomNamesCheckbox
+			// 
+			this.showRoomNamesCheckbox.AutoSize = true;
+			this.showRoomNamesCheckbox.Location = new System.Drawing.Point(6, 30);
+			this.showRoomNamesCheckbox.Name = "showRoomNamesCheckbox";
+			this.showRoomNamesCheckbox.Size = new System.Drawing.Size(146, 21);
+			this.showRoomNamesCheckbox.TabIndex = 7;
+			this.showRoomNamesCheckbox.Text = "Show room names";
+			this.showRoomNamesCheckbox.UseVisualStyleBackColor = true;
+			// 
+			// fixedFontSizeCheckbox
+			// 
+			this.fixedFontSizeCheckbox.AutoSize = true;
+			this.fixedFontSizeCheckbox.Location = new System.Drawing.Point(6, 84);
+			this.fixedFontSizeCheckbox.Name = "fixedFontSizeCheckbox";
+			this.fixedFontSizeCheckbox.Size = new System.Drawing.Size(120, 21);
+			this.fixedFontSizeCheckbox.TabIndex = 10;
+			this.fixedFontSizeCheckbox.Text = "Fixed font size";
+			this.fixedFontSizeCheckbox.UseVisualStyleBackColor = true;
+			// 
+			// exportShownLayoutsCheckbox
+			// 
+			this.exportShownLayoutsCheckbox.AutoSize = true;
+			this.exportShownLayoutsCheckbox.Location = new System.Drawing.Point(11, 153);
+			this.exportShownLayoutsCheckbox.Name = "exportShownLayoutsCheckbox";
+			this.exportShownLayoutsCheckbox.Size = new System.Drawing.Size(163, 21);
+			this.exportShownLayoutsCheckbox.TabIndex = 10;
+			this.exportShownLayoutsCheckbox.Text = "Export shown layouts";
+			this.exportShownLayoutsCheckbox.UseVisualStyleBackColor = true;
 			// 
 			// MainSettings
 			// 
@@ -524,6 +681,11 @@
 			this.infoPanel.ResumeLayout(false);
 			this.mapDescriptionPanel.ResumeLayout(false);
 			this.generateButtonPanel.ResumeLayout(false);
+			this.drawingSettingsPanel.ResumeLayout(false);
+			this.drawingSettingsGroupBox.ResumeLayout(false);
+			this.drawingSettingsGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.fixedSquareExportValue)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.fixedFontSizeValue)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -565,5 +727,16 @@
 		private System.Windows.Forms.Label usedDescriptionPassagesCount;
 		private System.Windows.Forms.Label usedDescriptionRoomsCount;
 		private System.Windows.Forms.Label usedDescription;
+		private System.Windows.Forms.Panel drawingSettingsPanel;
+		private System.Windows.Forms.GroupBox drawingSettingsGroupBox;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.NumericUpDown fixedSquareExportValue;
+		private System.Windows.Forms.CheckBox fixedSquareExportCheckbox;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.CheckBox useOldPaperStyleCheckbox;
+		private System.Windows.Forms.NumericUpDown fixedFontSizeValue;
+		private System.Windows.Forms.CheckBox showRoomNamesCheckbox;
+		private System.Windows.Forms.CheckBox fixedFontSizeCheckbox;
+		private System.Windows.Forms.CheckBox exportShownLayoutsCheckbox;
 	}
 }

@@ -20,7 +20,9 @@
 		/// <param name="width">Width of the output</param>
 		/// <param name="height">Height of the output</param>
 		/// <param name="withNames">Whether names should be displayed</param>
-		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames)
+		/// <param name="fixedFontSize"></param>
+		/// <param name="borderSize"></param>
+		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
@@ -30,10 +32,10 @@
 			var maxx = points.Max(x => x.X);
 			var maxy = points.Max(x => x.Y);
 
-			var scale = GetScale(minx, miny, maxx, maxy, width, height);
+			var scale = GetScale(minx, miny, maxx, maxy, width, height, borderSize);
 			var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
 
-			DrawLayout(layout, scale, offset, withNames);
+			DrawLayout(layout, scale, offset, withNames, fixedFontSize);
 		}
 
 		/// <summary>
@@ -46,7 +48,8 @@
 		/// <param name="scale">Scale factor</param>
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
-		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames)
+		/// <param name="fixedFontSize"></param>
+		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames, int? fixedFontSize = null)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
@@ -63,7 +66,7 @@
 
 				if (withNames && !room.IsCorridor)
 				{
-					DrawTextOntoPolygon(polygon, room.Node.ToString(), 2.5f * minWidth);
+					DrawTextOntoPolygon(polygon, room.Node.ToString(), fixedFontSize ?? 2.5f * minWidth);
 				}
 			}
 		}

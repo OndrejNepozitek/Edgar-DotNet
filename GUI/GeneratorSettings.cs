@@ -29,5 +29,15 @@
 		public bool ShowPerturbedLayouts { get; set; } = false;
 
 		public int ShowPerturbedLayoutsTime { get; set; } = 50;
+
+		public bool ExportShownLayouts { get; set; } = false;
+
+		public bool FixedFontSize { get; set; } = false;
+
+		public int FixedFontSizeValue { get; set; } = 12;
+
+		public bool FidexSquareExport { get; set; } = false;
+
+		public int FixedSquareExportValue { get; set; } = 800;
 	}
 }
