@@ -201,8 +201,8 @@
 				{
 					var cline = cDoorLine.Line;
 					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - Math.Max(cDoorLine.Length, doorLine.Length)), y);
-					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + 1), y);
+					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
+					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
 
 					if (from.X < to.X) continue;
 
