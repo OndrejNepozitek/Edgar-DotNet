@@ -153,7 +153,7 @@
 		}
 
 		/// <remarks>
-		/// Figure 9 bottom graph from the original paper.
+		/// Figure 9 graph from the original paper.
 		/// </remarks>
 		/// <returns></returns>
 		public static IGraph<int> GetExample5()

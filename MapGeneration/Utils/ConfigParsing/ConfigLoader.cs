@@ -104,6 +104,19 @@
 		}
 
 		/// <summary>
+		/// Loads MapDescription from a given file.
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		public MapDescription<int> LoadMapDescription(string filename)
+		{
+			using (var sr = new StreamReader(filename))
+			{
+				return LoadMapDescription(sr);
+			}
+		}
+
+		/// <summary>
 		/// Gets a list of yaml files inside the maps resources folder.
 		/// </summary>
 		/// <returns></returns>

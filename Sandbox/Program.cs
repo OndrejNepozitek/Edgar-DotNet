@@ -31,20 +31,29 @@
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			RunBenchmark();
+			// RunBenchmark();
 			// CompareOldAndNew();
-			// RunGui();
+			RunGui();
 		}
 
 		public static void RunGui()
 		{
+			var configLoader = new ConfigLoader();
 			var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-			// var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors(new List<int>() {1});
+			// var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(new List<int>() {1});
 			layoutGenerator.InjectRandomGenerator(new Random(0));
 
 			// var mapDescription = new BasicsExample().GetMapDescription();
+			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_basicDescription.yml");
+
+			// var mapDescription = new DifferentShapesExample().GetMapDescription();
+			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentShapes.yml");
+
+			// var mapDescription = new DIfferentProbabilitiesExample().GetMapDescription();
+			var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentProbabilities.yml");
+
 			// var mapDescription = new CorridorsExample().GetMapDescription();
-			var mapDescription = new DifferentShapesExample().GetMapDescription();
+			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_corridors.yml");
 
 			var settings = new GeneratorSettings
 			{
