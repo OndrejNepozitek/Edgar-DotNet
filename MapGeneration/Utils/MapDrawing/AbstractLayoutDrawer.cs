@@ -61,7 +61,14 @@
 				var outline = GetOutline(polygons[i], room.Doors?.ToList())
 					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
 
-				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
+				var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+
+				if (transformedPoints.All(x => x == new IntVector2(0, 0)))
+				{
+					throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
+				}
+
+				var polygon = new GridPolygon(transformedPoints);
 				DrawRoom(polygon, outline, 2);
 
 				if (withNames && !room.IsCorridor)

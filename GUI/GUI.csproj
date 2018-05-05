@@ -96,6 +96,7 @@
     <Compile Include="GeneratorWindow.Designer.cs">
       <DependentUpon>GeneratorWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="GuiExceptionHandler.cs" />
     <Compile Include="MainSettings.cs">
       <SubType>Form</SubType>
     </Compile>

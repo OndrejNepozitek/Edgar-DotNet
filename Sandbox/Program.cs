@@ -28,6 +28,7 @@
 		[STAThread]
 		static void Main()
 		{
+			GuiExceptionHandler.SetupCatching();
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
