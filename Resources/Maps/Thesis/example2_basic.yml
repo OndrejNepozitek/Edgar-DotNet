@@ -26,11 +26,4 @@ passages:
 
 defaultRoomShapes:
   -
-    setName: basicSet
-
-corridors:
-  enable: false
-  offsets: [1]
-  corridorShapes:
-    -
-      setName: corridors
+    setName: thesis_basic

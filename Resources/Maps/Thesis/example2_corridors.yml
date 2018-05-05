@@ -23,14 +23,16 @@ passages:
   - [12,14]
   - [14,15]
   - [15,16]
-
+  
 defaultRoomShapes:
   -
-    setName: basicSet
+    setName: thesis_basic
+  -
+    setName: thesis_advanced
 
 corridors:
-  enable: false
-  offsets: [1]
+  enable: true
+  offsets: [2]
   corridorShapes:
     -
-      setName: corridors
+      setName: thesis_corridors

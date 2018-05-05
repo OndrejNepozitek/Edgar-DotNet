@@ -16,8 +16,11 @@
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
 		where TNode : IEquatable<TNode>
 	{
-		public BreadthFirstChainDecomposition(IGraphDecomposer<TNode> graphDecomposer) : base(graphDecomposer)
+		private bool groupSoloVertices;
+
+		public BreadthFirstChainDecomposition(IGraphDecomposer<TNode> graphDecomposer, bool groupSoloVertices = true) : base(graphDecomposer)
 		{
+			this.groupSoloVertices = groupSoloVertices;
 		}
 
 		/// <inheritdoc />
@@ -220,7 +223,7 @@
 			// Check if we have an origin vertex and if the first vertex has any uncovered neighbour.
 			// If it does not have any uncovered neighbour, it will normally form a chain of the lenght 1.
 			// We want to prevent it and check if the origin node has any neighbour with the same characteristics.
-			if (hasOrigin && UncoveredNeighboursCount(firstVertex) == 0)
+			if (groupSoloVertices && hasOrigin && UncoveredNeighboursCount(firstVertex) == 0)
 			{
 				var soloNeighbours = GetSoloNeighbours(origin, out nodeInFaces);
 
@@ -240,24 +243,27 @@
 				if (neighbours.Count == 0)
 					break;
 
-				var soloNeighbours = GetSoloNeighbours(lastNode, out var nodeInFacesLocal);
-
-				if (nodeInFacesLocal)
+				if (groupSoloVertices)
 				{
-					nodeInFaces = true;
-				}
+					var soloNeighbours = GetSoloNeighbours(lastNode, out var nodeInFacesLocal);
 
-				// Add solo neighbours as above.
-				// Break if we found at least one.
-				if (soloNeighbours.Count != 0)
-				{
-					foreach (var neighbour in soloNeighbours)
+					if (nodeInFacesLocal)
 					{
-						chain.Add(neighbour);
-						SetDepth(neighbour, ChainsCounter);
+						nodeInFaces = true;
 					}
 
-					break;
+					// Add solo neighbours as above.
+					// Break if we found at least one.
+					if (soloNeighbours.Count != 0)
+					{
+						foreach (var neighbour in soloNeighbours)
+						{
+							chain.Add(neighbour);
+							SetDepth(neighbour, ChainsCounter);
+						}
+
+						break;
+					}
 				}
 
 				var nextNode = neighbours[0];

@@ -110,7 +110,7 @@
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
 
 			data.AppendLine(
-				$"    <text x=\"{biggestRectangle.Center.X}\" y=\"{biggestRectangle.Center.Y}\" alignment-baseline=\"middle\" text-anchor=\"middle\" style=\"font-family: helvetica;\" font-size=\"{(int) (1.2 * penWidth)}\">{text}</text>");
+				$"    <text x=\"{biggestRectangle.Center.X}\" y=\"{biggestRectangle.Center.Y + 7}\" alignment-baseline=\"middle\" text-anchor=\"middle\" style=\"font-family: arial;\" font-size=\"{(int) (1.2 * penWidth)}\">{text}</text>");
 		}
 	}
 }

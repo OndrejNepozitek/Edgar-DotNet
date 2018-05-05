@@ -99,6 +99,7 @@
     <Compile Include="Benchmarks\Benchmark.cs" />
     <Compile Include="Benchmarks\BenchmarkResult.cs" />
     <Compile Include="Benchmarks\BenchmarkScenario.cs" />
+    <Compile Include="Core\ChainDecompositions\OldChainDecomposition.cs" />
     <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
