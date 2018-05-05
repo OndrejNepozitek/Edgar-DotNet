@@ -8,7 +8,7 @@
 	using MapGeneration.Utils;
 	using Utils;
 
-	public class DIfferentProbabilitiesExample : IExample
+	public class DifferentProbabilitiesExample : IExample
 	{
 		public MapDescription<int> GetMapDescription()
 		{

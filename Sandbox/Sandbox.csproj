@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Examples\BasicsExample.cs" />
     <Compile Include="Examples\CorridorsExample.cs" />
-    <Compile Include="Examples\DIfferentProbabilitiesExample.cs" />
+    <Compile Include="Examples\DifferentProbabilitiesExample.cs" />
     <Compile Include="Examples\DifferentShapesExample.cs" />
     <Compile Include="Examples\IExample.cs" />
     <Compile Include="Utils\GraphsDatabase.cs" />
