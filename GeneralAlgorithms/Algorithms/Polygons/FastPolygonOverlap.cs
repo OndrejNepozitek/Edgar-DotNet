@@ -4,6 +4,9 @@
 	using DataStructures.Common;
 	using DataStructures.Polygons;
 
+	/// <summary>
+	/// Computes polygon overlap by fast caching with int aliases.
+	/// </summary>
 	public class FastPolygonOverlap : PolygonOverlapBase<IntAlias<GridPolygon>>
 	{
 		private readonly List<List<GridRectangle>> decompositions = new List<List<GridRectangle>>();

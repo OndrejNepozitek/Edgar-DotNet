@@ -3,6 +3,10 @@
 	using System.Collections.Generic;
 	using DataStructures.Polygons;
 
+	/// <summary>
+	/// Computes polygon overlap by caching polygon partitions of polygons.
+	/// See <see cref="FastPolygonOverlap"/> for a faster implementation.
+	/// </summary>
 	public class PolygonOverlap : PolygonOverlapBase<GridPolygon>
 	{
 		private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();

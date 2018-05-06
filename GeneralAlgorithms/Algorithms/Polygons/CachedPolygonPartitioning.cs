@@ -3,6 +3,9 @@
 	using System.Collections.Generic;
 	using DataStructures.Polygons;
 
+	/// <summary>
+	/// Class that computes partition and caches results for later use.
+	/// </summary>
 	public class CachedPolygonPartitioning : IPolygonPartitioning
 	{
 		private readonly IPolygonPartitioning polygonPartitioning;

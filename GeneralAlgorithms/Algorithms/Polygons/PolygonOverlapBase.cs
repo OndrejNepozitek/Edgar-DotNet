@@ -6,6 +6,10 @@
 	using DataStructures.Common;
 	using DataStructures.Polygons;
 
+	/// <summary>
+	/// Base class for implementing the <see cref="IPolygonOverlap{TShape}"/> interface.
+	/// </summary>
+	/// <typeparam name="TShape"></typeparam>
 	public abstract class PolygonOverlapBase<TShape> : IPolygonOverlap<TShape>
 	{
 		/// <inheritdoc />

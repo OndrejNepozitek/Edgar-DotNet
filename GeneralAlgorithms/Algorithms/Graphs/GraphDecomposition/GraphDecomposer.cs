@@ -6,8 +6,18 @@
 	using Common;
 	using DataStructures.Graphs;
 
+	/// <inheritdoc />
 	public class GraphDecomposer<TNode> : IGraphDecomposer<TNode>
 	{
+		/// <summary>
+		/// Gets faces of a given graph.
+		/// </summary>
+		/// <remarks>
+		/// The graph is mapped to integer vertices/edges and C++ code
+		/// is called to retrieve faces.
+		/// </remarks>
+		/// <param name="graph"></param>
+		/// <returns></returns>
 		public List<List<TNode>> GetFaces(IGraph<TNode> graph)
 		{
 			var usedVerticesCount = 0;
