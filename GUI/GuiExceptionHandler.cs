@@ -6,6 +6,9 @@
 
 	public class GuiExceptionHandler
 	{
+		/// <summary>
+		/// Shows message box instead of unhandled exceptions.
+		/// </summary>
 		public static void SetupCatching()
 		{
 			if (!AppDomain.CurrentDomain.FriendlyName.EndsWith("vshost.exe"))

@@ -5,11 +5,9 @@
 	using System.Drawing;
 	using System.Drawing.Drawing2D;
 	using System.Linq;
-	using System.Windows.Forms;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core;
 	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Utils.MapDrawing;
 
@@ -28,11 +26,11 @@
 		/// Draws the layout to a given PictureBox.
 		/// </summary>
 		/// <param name="layout"></param>
-		/// <param name="pictureBox"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="height"></param>
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
-		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
+		/// <param name="width"></param>
+		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);

@@ -38,7 +38,7 @@
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <returns></returns>
-		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
+		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);

@@ -15,6 +15,9 @@
 	using MapGeneration.Utils.MapDrawing;
 	using MapGeneration.Utils.Serialization;
 
+	/// <summary>
+	/// Window that shows progress of the layout generator. 
+	/// </summary>
 	public partial class GeneratorWindow : Form
 	{
 		private readonly GeneratorSettings settings;
@@ -37,8 +40,8 @@
 		private int slideshowIndex;
 		private int slideshowTaskId;
 
-		private const int defaultWidth = 600;
-		private const int defaultHeight = 600;
+		private const int DefaultWidth = 600;
+		private const int DefaultHeight = 600;
 
 		private string dumpFolder;
 		private int dumpCount;
@@ -72,6 +75,9 @@
 			Run();
 		}
 
+		/// <summary>
+		/// Run the generator.
+		/// </summary>
 		private void Run()
 		{
 			cancellationTokenSource = new CancellationTokenSource();
@@ -100,6 +106,7 @@
 					}
 				}
 
+				// Set cancellation token
 				if (layoutGenerator is ICancellable cancellable)
 				{
 					cancellable.SetCancellationToken(ct);
@@ -107,6 +114,7 @@
 					
 				infoStopwatch.Start();
 
+				// Register handler that shows generated layouts OnValid
 				layoutGenerator.OnValid += layout =>
 				{
 					if (!showFinalLayouts.Checked)
@@ -118,6 +126,7 @@
 					SleepWithFastCancellation((int)showFinalLayoutsTime.Value, ct);
 				};
 
+				// Register handler that shows generated layouts OnPartialValid
 				layoutGenerator.OnPartialValid += layout =>
 				{
 					if (!showPartialValidLayouts.Checked)
@@ -129,6 +138,7 @@
 					SleepWithFastCancellation((int)showAcceptedLayoutsTime.Value, ct);
 				};
 
+				// Register handler that shows generated layouts OnPerturbed
 				layoutGenerator.OnPerturbed += layout =>
 				{
 					if (!showPerturbedLayouts.Checked)
@@ -140,6 +150,7 @@
 					SleepWithFastCancellation((int)showPerturbedLayoutsTime.Value, ct);
 				};
 
+				// Register handler that counts iteration count
 				layoutGenerator.OnPerturbed += layout =>
 				{
 					lastEvent = GeneratorEvent.OnPerturbed;
@@ -151,6 +162,7 @@
 					}
 				};
 
+				// Register handler that resets iteration count
 				layoutGenerator.OnValid += layout =>
 				{
 					lastEvent = GeneratorEvent.OnValid;
@@ -168,6 +180,11 @@
 			}, ct);
 		}
 
+		/// <summary>
+		/// Smarter thread sleep that checks cancellation token and ends prematurelly if needed.
+		/// </summary>
+		/// <param name="ms"></param>
+		/// <param name="ct"></param>
 		private void SleepWithFastCancellation(int ms, CancellationToken ct)
 		{
 			const int timeSpan = 100;
@@ -321,7 +338,7 @@
 			UpdateSlideshowInfo();
 			saveExportDialog.DefaultExt = "svg";
 
-			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : defaultWidth;
+			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : DefaultWidth;
 			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
 
 			if (saveExportDialog.ShowDialog() == DialogResult.OK)
@@ -389,7 +406,7 @@
 
 		private void DumpSvg()
 		{
-			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : defaultWidth;
+			var width = fixedSquareExportCheckbox.Checked ? (int)fixedSquareExportValue.Value : DefaultWidth;
 			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
 			var folder = $"Output/{dumpFolder}";
 			var filename = $"{folder}/{dumpCount++}_{lastEvent.ToString()}.svg";
@@ -412,8 +429,8 @@
 			var showNames = showRoomNamesCheckbox.Checked;
 			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
 
-			var width = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : defaultWidth;
-			var height = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : defaultHeight;
+			var width = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : DefaultWidth;
+			var height = fixedSquareExportCheckbox.Checked ? (int) fixedSquareExportValue.Value : DefaultHeight;
 			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?) fixedFontSizeValue.Value : null;
 
 			Directory.CreateDirectory(folder);

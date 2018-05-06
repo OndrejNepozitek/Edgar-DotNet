@@ -4,10 +4,12 @@
 	using System.IO;
 	using System.Linq;
 	using System.Windows.Forms;
-	using MapGeneration.Core;
 	using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Utils.ConfigParsing;
 
+	/// <summary>
+	/// Windows that shows main settings of the layout generator.
+	/// </summary>
 	public partial class MainSettings : Form
 	{
 		private readonly ConfigLoader configLoader = new ConfigLoader();
