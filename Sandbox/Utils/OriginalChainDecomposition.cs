@@ -6,6 +6,9 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using MapGeneration.Interfaces.Core.ChainDecompositions;
 
+	/// <summary>
+	/// Hardcoded chain decomposition from the original paper.
+	/// </summary>
 	public class OriginalChainDecomposition : IChainDecomposition<int>
 	{
 		public List<List<int>> GetChains(IGraph<int> graph)

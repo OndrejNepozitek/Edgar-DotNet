@@ -10,6 +10,13 @@
 
 	public static class RoomsShapesExtensions
 	{
+		/// <summary>
+		/// Adds basic room shapes to a given map description.
+		/// </summary>
+		/// <typeparam name="TNode"></typeparam>
+		/// <param name="mapDescription"></param>
+		/// <param name="scale"></param>
+		/// <returns></returns>
 		public static MapDescription<TNode> AddClassicRoomShapes<TNode>(this MapDescription<TNode> mapDescription,
 			IntVector2 scale)
 		{
@@ -60,6 +67,14 @@
 			return mapDescription;
 		}
 
+		/// <summary>
+		/// Adds basic corridor room shape to a given map description.
+		/// </summary>
+		/// <typeparam name="TNode"></typeparam>
+		/// <param name="mapDescription"></param>
+		/// <param name="offsets"></param>
+		/// <param name="enableCorridors"></param>
+		/// <returns></returns>
 		public static MapDescription<TNode> AddCorridorRoomShapes<TNode>(this MapDescription<TNode> mapDescription, List<int> offsets, bool enableCorridors = true)
 		{
 			foreach (var offset in offsets)

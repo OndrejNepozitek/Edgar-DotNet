@@ -34,10 +34,13 @@
 
 			// RunBenchmark();
 			// CompareOldAndNew();
-			RunGui();
+			RunExample();
 		}
 
-		public static void RunGui()
+		/// <summary>
+		/// Runs one of the example presented in the Tutorial.
+		/// </summary>
+		public static void RunExample()
 		{
 			var configLoader = new ConfigLoader();
 			var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
@@ -70,6 +73,9 @@
 			Application.Run(new GeneratorWindow(settings));
 		}
 
+		/// <summary>
+		/// Runs a prepared benchmark.
+		/// </summary>
 		public static void RunBenchmark()
 		{
 			var scale = new IntVector2(1, 1);
@@ -113,6 +119,9 @@
 			});
 		}
 
+		/// <summary>
+		/// Benchmark our speed improvements.
+		/// </summary>
 		public static void CompareOldAndNew()
 		{
 			//var mapDescriptions = GetMapDescriptionsSet(new IntVector2(1, 1), false);
