@@ -11,8 +11,13 @@
 	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Utils;
-	using LayoutOperations;
 
+	/// <summary>
+	/// Implementation of a simulated annealing evolver.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
 	public class SimulatedAnnealingEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
@@ -33,6 +38,7 @@
 			LayoutOperations = layoutOperations;
 		}
 
+		/// <inheritdoc />
 		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count)
 		{
 			const double p0 = 0.2d;
@@ -203,15 +209,6 @@
 
 				t = t * ratio;
 			}
-
-			#region Debug output
-
-			//if (withDebugOutput)
-			//{
-			//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
-			//}
-
-			#endregion
 		}
 
 		private TLayout PerturbLayout(TLayout layout, IList<TNode> chain, out double energyDelta)
@@ -242,6 +239,13 @@
 		private float randomRestartsScale = 1;
 		private List<int> randomRestartProbabilities = new List<int>() { 2, 3, 5, 7 };
 
+		/// <summary>
+		/// Set up random restarts strategy.
+		/// </summary>
+		/// <param name="enable"></param>
+		/// <param name="successPlace"></param>
+		/// <param name="resetCounter"></param>
+		/// <param name="scale"></param>
 		public void SetRandomRestarts(bool enable, RestartSuccessPlace successPlace = RestartSuccessPlace.OnValidAndDifferent, bool resetCounter = false, float scale = 1f)
 		{
 			enableRandomRestarts = enable;
@@ -277,11 +281,6 @@
 				shouldRestart = true;
 			}
 
-			//if (shouldRestart && withDebugOutput)
-			//{
-			//	Console.WriteLine($"Break, we got {numberOfFailures} failures");
-			//}
-
 			return shouldRestart;
 		}
 
@@ -292,10 +291,15 @@
 
 		#endregion
 
+		/// <summary>
+		/// Set up simulated annealing parameters.
+		/// </summary>
+		/// <param name="cycles"></param>
+		/// <param name="trialsPerCycle"></param>
 		public void Configure(int cycles, int trialsPerCycle)
 		{
-			this.Cycles = cycles;
-			this.TrialsPerCycle = trialsPerCycle;
+			Cycles = cycles;
+			TrialsPerCycle = trialsPerCycle;
 		}
 
 		public void InjectRandomGenerator(Random random)

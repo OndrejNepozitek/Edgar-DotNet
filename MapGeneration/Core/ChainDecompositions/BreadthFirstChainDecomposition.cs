@@ -16,7 +16,7 @@
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
 		where TNode : IEquatable<TNode>
 	{
-		private bool groupSoloVertices;
+		private readonly bool groupSoloVertices;
 
 		public BreadthFirstChainDecomposition(IGraphDecomposer<TNode> graphDecomposer, bool groupSoloVertices = true) : base(graphDecomposer)
 		{

@@ -17,6 +17,12 @@
 	using MapLayouts;
 	using Utils;
 
+	/// <summary>
+	/// Basic implementation of a layout converter.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
 	public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
 		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
@@ -33,6 +39,7 @@
 			CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
 		}
 
+		/// <inheritdoc />
 		public IMapLayout<TNode> Convert(TLayout layout, bool addDoors)
 		{
 			var rooms = new List<IRoom<TNode>>();

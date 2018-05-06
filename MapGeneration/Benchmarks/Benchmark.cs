@@ -189,6 +189,11 @@
 			return new Benchmark<TMapDescription, TLayout>();
 		}
 
+		/// <summary>
+		/// Creates default files for the benchmark.
+		/// </summary>
+		/// <param name="action"></param>
+		/// <param name="name"></param>
 		public static void WithDefaultFiles(Action<StreamWriter, StreamWriter> action, string name = null)
 		{
 			name = name ?? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();

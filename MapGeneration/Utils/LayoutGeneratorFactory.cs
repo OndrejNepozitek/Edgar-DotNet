@@ -23,6 +23,11 @@
 
 	public static class LayoutGeneratorFactory
 	{
+		/// <summary>
+		/// Gets a basic layout generator that should not be used to generated layouts with corridors.
+		/// </summary>
+		/// <typeparam name="TNode"></typeparam>
+		/// <returns></returns>
 		public static ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>, IMapLayout<TNode>> GetDefaultChainBasedGenerator<TNode>()
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>, IMapLayout<TNode>>();

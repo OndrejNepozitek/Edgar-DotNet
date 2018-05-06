@@ -9,7 +9,6 @@
 	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.ChainDecompositions;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.GeneratorPlanners;
@@ -19,7 +18,6 @@
 	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
-	using Interfaces.Core.MapLayouts;
 	using Interfaces.Utils;
 
 	/// <inheritdoc cref="ILayoutGenerator{TMapDescription,TNode}" />

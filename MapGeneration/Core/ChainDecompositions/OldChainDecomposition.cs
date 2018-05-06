@@ -8,6 +8,7 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core.ChainDecompositions;
 
+	[Obsolete("Do not use this chain decomposition. It is here only to showcase the difference between old and new aproaches.")]
 	public class OldChainDecomposition<TNode> : IChainDecomposition<TNode>
 		where TNode : IEquatable<TNode>
 	{
@@ -20,9 +21,6 @@
 
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
-			// TODO: Add checks for planarity
-			// TODO: Add checks for connectivity?
-			// TODO: check empty graphs
 
 			var chains = new List<List<TNode>>();
 			var usedVertices = new Dictionary<TNode, bool>();

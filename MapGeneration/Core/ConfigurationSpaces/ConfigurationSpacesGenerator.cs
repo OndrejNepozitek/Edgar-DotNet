@@ -13,6 +13,9 @@
 	using Interfaces.Core.Doors;
 	using MapDescriptions;
 
+	/// <summary>
+	/// Class that computes configuration spaces.
+	/// </summary>
 	public class ConfigurationSpacesGenerator
 	{
 		private readonly IPolygonOverlap<GridPolygon> polygonOverlap;
@@ -32,6 +35,14 @@
 			this.polygonUtils = polygonUtils;
 		}
 
+		/// <summary>
+		/// Computes configuration spaces for a given map description.
+		/// </summary>
+		/// <typeparam name="TNode"></typeparam>
+		/// <typeparam name="TConfiguration"></typeparam>
+		/// <param name="mapDescription"></param>
+		/// <param name="offsets"></param>
+		/// <returns></returns>
 		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription, List<int> offsets = null)
 			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
@@ -234,6 +245,15 @@
 			return new ConfigurationSpace() { Lines = configurationSpaceLines, ReverseDoors = reverseDoor };
 		}
 
+		/// <summary>
+		/// Computes configuration space of given two polygons.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="doorsMode"></param>
+		/// <param name="fixedCenter"></param>
+		/// <param name="fixedDoorsMode"></param>
+		/// <param name="offsets"></param>
+		/// <returns></returns>
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter,
 			IDoorMode fixedDoorsMode, List<int> offsets = null)
 		{
