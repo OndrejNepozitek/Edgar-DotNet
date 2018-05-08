@@ -10,19 +10,17 @@
 	using Graphs;
 	using RangeTree;
 
+	/// <remarks>
+	/// Adapted from https://github.com/mikolalysenko/rectangle-decomposition
+	/// </remarks>>
 	public class GridPolygonPartitioning : IPolygonPartitioning
 	{
 		private readonly HopcroftKarp<int> hopcroftKarp = new HopcroftKarp<int>();
 
+		/// <inheritdoc />
 		public List<GridRectangle> GetPartitions(GridPolygon polygon)
 		{
 			IList<IntVector2> points = polygon.GetPoints();
-
-			/*if (!polygon.IsClockwiseOriented())
-			{
-				points = points.Reverse().ToList();
-				throw new InvalidOperationException(); // TODO: should be tested
-			}*/
 
 			var vertices = new List<Vertex>();
 
@@ -68,6 +66,7 @@
 				vertices.Add(vertex);
 			}
 
+			// Build interval trees for segments
 			var horizontalSegments = new List<Segment>();
 			var verticalSegments = new List<Segment>();
 
@@ -85,17 +84,18 @@
 					horizontalSegments.Add(new Segment(from, to, true));
 				}
 
-				// TODO: is this right?
 				from.Next = to;
 				to.Prev = from;
 			}
-
+			
 			var horizontalTree = new RangeTree<int, Segment>(horizontalSegments, new SegmentComparer());
 			var verticalTree = new RangeTree<int, Segment>(verticalSegments, new SegmentComparer());
 
+			//Find horizontal and vertical diagonals
 			var horizontalDiagonals = GetDiagonals(vertices, verticalTree, false);
 			var verticalDiagonals = GetDiagonals(vertices, horizontalTree, true);
 
+			//Find all splitting edges
 			if (horizontalDiagonals.Count != 0)
 			{
 				var splitters = FindSplitters(horizontalDiagonals, verticalDiagonals);
@@ -106,6 +106,7 @@
 				}
 			}
 
+			//Split all concave vertices
 			SplitConvave(vertices);
 
 			var rectangles = FindRegions(vertices);
@@ -113,6 +114,11 @@
 			return rectangles;
 		}
 
+		/// <summary>
+		/// Construct the partitioning.
+		/// </summary>
+		/// <param name="vertices"></param>
+		/// <returns></returns>
 		private List<GridRectangle> FindRegions(List<Vertex> vertices)
 		{
 			var n = vertices.Count;
@@ -138,9 +144,6 @@
 
 				while (!v.Visited)
 				{
-					//backups.Add(v.BackupNext);
-					//backups.Add(v.BackupPrev);
-
 					path.Add(v);
 
 					minx = Math.Min(v.Point.X, minx);
@@ -202,6 +205,10 @@
 			return rectangles;
 		}
 
+		/// <summary>
+		/// Split all concave vertices.
+		/// </summary>
+		/// <param name="vertices"></param>
 		private void SplitConvave(List<Vertex> vertices)
 		{
 			var leftSegments = new List<Segment>();
@@ -287,7 +294,6 @@
 				v.Concave = false;
 
 				//Split vertices
-				// TODO: maybe make backup
 				splitA.Prev = closestSegment.From;
 				closestSegment.From.Next = splitA;
 
@@ -333,7 +339,6 @@
 				}
 
 				//Fix up links
-				// TODO: maybe make backup
 				splitA.Next.Prev = splitA;
 				splitB.Prev.Next = splitB;
 			}
@@ -418,7 +423,7 @@
 		private List<Segment> GetDiagonals(List<Vertex> vertices, RangeTree<int, Segment> tree, bool horizontal)
 		{
 			var concave = vertices.Where(x => x.Concave).ToList();
-			concave.Sort((x, y) => x.CompareTo(y, horizontal)); // TODO: test
+			concave.Sort((x, y) => x.CompareTo(y, horizontal));
 			var diagonals = new List<Segment>();
 
 			for (var i = 0; i < concave.Count - 1; i++)
@@ -458,7 +463,7 @@
 				c++;
 			}
 
-			// TODO: the graph must be built in such a way that edges go always from first partition to the second one
+			// CHECK: the graph must be built in such a way that edges go always from first partition to the second one
 			var selected = BipartiteIndependentSet(horizontalDiagonals.Count, verticalDiagonals.Count,
 				crossings.Select(x => new Tuple<int, int>(x.Item1.Number, x.Item2.Number)).ToList());
 
@@ -479,6 +484,13 @@
 			return result;
 		}
 
+		/// <summary>
+		/// Compute a maximum independent set of a given bipartite graph.
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <param name="edges"></param>
+		/// <returns></returns>
 		public List<int> BipartiteIndependentSet(int left, int right, List<Tuple<int, int>> edges)
 		{
 			var cover = BipartiteVertexCover(left, right, edges);
@@ -503,29 +515,13 @@
 			return set;
 		}
 
-		private List<int> Complement(List<int> list, int n)
-		{
-			var result = new List<int>();
-			var a = 0;
-			var b = 0;
-			var sorted = list.OrderBy(x => x).ToList();
-			for (var i = 0; i < n; ++i)
-			{
-				if (a < list.Count && sorted[a] == i)
-				{
-					a += 1;
-
-				}
-				else
-				{
-					result.Add(i);
-
-				}
-			}
-
-			return result;
-		}
-
+		/// <summary>
+		/// Compute a minimum vertex cover of a given bipartite graph.
+		/// </summary>
+		/// <param name="left"></param>
+		/// <param name="right"></param>
+		/// <param name="edges"></param>
+		/// <returns></returns>
 		public Tuple<List<int>, List<int>> BipartiteVertexCover(int left, int right, List<Tuple<int, int>> edges)
 		{
 			var graph = new UndirectedAdjacencyListGraph<int>();
