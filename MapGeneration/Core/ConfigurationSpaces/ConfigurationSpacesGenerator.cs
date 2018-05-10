@@ -130,6 +130,11 @@
 				}
 			}
 
+			if (shapes.Count == 0 && graph.Vertices.Any(x => !shapesForNodes.ContainsKey(x) || shapesForNodes[x] == null || shapesForNodes[x].Count == 0))
+			{
+				throw new ArgumentException("There must be at least one shape for each node", nameof(mapDescription));
+			}
+
 			return new ConfigurationSpaces<TConfiguration>(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
 
 			// Return an already existing alias or create a new one

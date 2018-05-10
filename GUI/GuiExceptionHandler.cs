@@ -32,7 +32,14 @@
 
 		private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			MessageBox.Show("Fatal error");
+			if (e.ExceptionObject is Exception exception)
+			{
+				MessageBox.Show(exception.Message);
+			}
+			else
+			{
+				MessageBox.Show("Fatal error");
+			}
 		}
 	}
 }

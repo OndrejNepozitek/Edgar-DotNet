@@ -84,100 +84,118 @@
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
-				dumpFolder = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
-				dumpCount = 0;
-				var layoutGenerator = settings.LayoutGenerator;
-
-				if (layoutGenerator == null)
+				try
 				{
-					if (settings.MapDescription.IsWithCorridors)
-					{
-						var defaultGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(settings.MapDescription.CorridorsOffsets);
-						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+					dumpFolder = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
+					dumpCount = 0;
+					var layoutGenerator = settings.LayoutGenerator;
 
-						layoutGenerator = defaultGenerator;
+					if (layoutGenerator == null)
+					{
+						if (settings.MapDescription.IsWithCorridors)
+						{
+							var defaultGenerator =
+								LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(settings.MapDescription.CorridorsOffsets);
+							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+
+							layoutGenerator = defaultGenerator;
+						}
+						else
+						{
+							var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+
+							layoutGenerator = defaultGenerator;
+						}
 					}
-					else
-					{
-						var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
-						layoutGenerator = defaultGenerator;
+					// Set cancellation token
+					if (layoutGenerator is ICancellable cancellable)
+					{
+						cancellable.SetCancellationToken(ct);
 					}
-				}
 
-				// Set cancellation token
-				if (layoutGenerator is ICancellable cancellable)
-				{
-					cancellable.SetCancellationToken(ct);
-				}
-					
-				infoStopwatch.Start();
+					infoStopwatch.Start();
 
-				// Register handler that shows generated layouts OnValid
-				layoutGenerator.OnValid += layout =>
-				{
-					if (!showFinalLayouts.Checked)
-						return;
-
-					lastEvent = GeneratorEvent.OnValid;
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int)showFinalLayoutsTime.Value, ct);
-				};
-
-				// Register handler that shows generated layouts OnPartialValid
-				layoutGenerator.OnPartialValid += layout =>
-				{
-					if (!showPartialValidLayouts.Checked)
-						return;
-
-					lastEvent = GeneratorEvent.OnPartialValid;
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int)showAcceptedLayoutsTime.Value, ct);
-				};
-
-				// Register handler that shows generated layouts OnPerturbed
-				layoutGenerator.OnPerturbed += layout =>
-				{
-					if (!showPerturbedLayouts.Checked)
-						return;
-
-					lastEvent = GeneratorEvent.OnPerturbed;
-					layoutToDraw = layout;
-					mainPictureBox.BeginInvoke((Action)(() => mainPictureBox.Refresh()));
-					SleepWithFastCancellation((int)showPerturbedLayoutsTime.Value, ct);
-				};
-
-				// Register handler that counts iteration count
-				layoutGenerator.OnPerturbed += layout =>
-				{
-					lastEvent = GeneratorEvent.OnPerturbed;
-					iterationsCount++;
-					if (infoStopwatch.ElapsedMilliseconds >= 200)
+					// Register handler that shows generated layouts OnValid
+					layoutGenerator.OnValid += layout =>
 					{
-						BeginInvoke((Action)(UpdateInfoPanel));
+						if (!showFinalLayouts.Checked)
+							return;
+
+						lastEvent = GeneratorEvent.OnValid;
+						layoutToDraw = layout;
+						mainPictureBox.BeginInvoke((Action) (() => mainPictureBox.Refresh()));
+						SleepWithFastCancellation((int) showFinalLayoutsTime.Value, ct);
+					};
+
+					// Register handler that shows generated layouts OnPartialValid
+					layoutGenerator.OnPartialValid += layout =>
+					{
+						if (!showPartialValidLayouts.Checked)
+							return;
+
+						lastEvent = GeneratorEvent.OnPartialValid;
+						layoutToDraw = layout;
+						mainPictureBox.BeginInvoke((Action) (() => mainPictureBox.Refresh()));
+						SleepWithFastCancellation((int) showAcceptedLayoutsTime.Value, ct);
+					};
+
+					// Register handler that shows generated layouts OnPerturbed
+					layoutGenerator.OnPerturbed += layout =>
+					{
+						if (!showPerturbedLayouts.Checked)
+							return;
+
+						lastEvent = GeneratorEvent.OnPerturbed;
+						layoutToDraw = layout;
+						mainPictureBox.BeginInvoke((Action) (() => mainPictureBox.Refresh()));
+						SleepWithFastCancellation((int) showPerturbedLayoutsTime.Value, ct);
+					};
+
+					// Register handler that counts iteration count
+					layoutGenerator.OnPerturbed += layout =>
+					{
+						lastEvent = GeneratorEvent.OnPerturbed;
+						iterationsCount++;
+						if (infoStopwatch.ElapsedMilliseconds >= 200)
+						{
+							BeginInvoke((Action) (UpdateInfoPanel));
+							infoStopwatch.Restart();
+						}
+					};
+
+					// Register handler that resets iteration count
+					layoutGenerator.OnValid += layout =>
+					{
+						lastEvent = GeneratorEvent.OnValid;
+						iterationsCount = 0;
+						layoutsCount++;
+						BeginInvoke((Action) (UpdateInfoPanel));
 						infoStopwatch.Restart();
-					}
-				};
+					};
 
-				// Register handler that resets iteration count
-				layoutGenerator.OnValid += layout =>
+					generatedLayouts =
+						(List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
+
+					isRunning = false;
+					BeginInvoke((Action) (UpdateInfoPanel));
+					BeginInvoke((Action) (OnFinished));
+				}
+				catch (Exception e)
 				{
-					lastEvent = GeneratorEvent.OnValid;
-					iterationsCount = 0;
-					layoutsCount++;
-					BeginInvoke((Action)(UpdateInfoPanel));
-					infoStopwatch.Restart();
-				};
-
-				generatedLayouts = (List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
-
-				isRunning = false;
-				BeginInvoke((Action)(UpdateInfoPanel));
-				BeginInvoke((Action)(OnFinished));
+					ShowExceptionAndClose(e);
+				}
 			}, ct);
+		}
+
+		private void ShowExceptionAndClose(Exception e)
+		{
+			BeginInvoke((Action)(() =>
+			{
+				MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Close();
+			}));
 		}
 
 		/// <summary>
