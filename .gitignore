@@ -303,3 +303,6 @@ __pycache__/
 
 # OpenCover UI analysis results
 OpenCover/
+
+
+!BoostWrapper/boost/boost/preprocessor/debug/
