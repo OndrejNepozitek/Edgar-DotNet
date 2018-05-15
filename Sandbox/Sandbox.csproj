@@ -110,7 +110,9 @@
   <Target Name="AfterBuild">
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />
+      <DestinationResources Include="$(TargetDir)\Resources\**\*.*" />
     </ItemGroup>
+    <Delete Files="@(DestinationResources)" /> 
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
