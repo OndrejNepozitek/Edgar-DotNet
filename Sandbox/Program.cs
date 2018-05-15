@@ -36,7 +36,7 @@
 			RunBenchmark();
 			// CompareOldAndNew();
 			// RunExample();
-			// ConverToXml();
+			ConvertToXml();
 		}
 
 		/// <summary>
@@ -280,15 +280,15 @@
 			};
 		}
 
-		public static void ConverToXml()
+		public static void ConvertToXml()
 		{
 			foreach (var filename in Directory.GetFiles("Resources/Maps/Thesis"))
 			{
-				ConverToXml(filename);
+				ConvertToXml(filename);
 			}
 		}
 
-		public static void ConverToXml(string filename)
+		public static void ConvertToXml(string filename)
 		{
 			var configLoader = new ConfigLoader();
 			var withoutExt = Path.GetFileNameWithoutExtension(filename);
