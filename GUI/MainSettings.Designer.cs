@@ -154,7 +154,7 @@
 			this.numberOfLayoutsInput.Size = new System.Drawing.Size(120, 22);
 			this.numberOfLayoutsInput.TabIndex = 1;
 			this.numberOfLayoutsInput.Value = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -419,6 +419,8 @@
 			// showRoomNamesCheckbox
 			// 
 			this.showRoomNamesCheckbox.AutoSize = true;
+			this.showRoomNamesCheckbox.Checked = true;
+			this.showRoomNamesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.showRoomNamesCheckbox.Location = new System.Drawing.Point(6, 30);
 			this.showRoomNamesCheckbox.Name = "showRoomNamesCheckbox";
 			this.showRoomNamesCheckbox.Size = new System.Drawing.Size(146, 21);
@@ -584,7 +586,7 @@
 			this.showFinalLayoutsTime.Size = new System.Drawing.Size(120, 22);
 			this.showFinalLayoutsTime.TabIndex = 1;
 			this.showFinalLayoutsTime.Value = new decimal(new int[] {
-            2000,
+            1000,
             0,
             0,
             0});
@@ -592,6 +594,8 @@
 			// showFinalLayouts
 			// 
 			this.showFinalLayouts.AutoSize = true;
+			this.showFinalLayouts.Checked = true;
+			this.showFinalLayouts.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.showFinalLayouts.Location = new System.Drawing.Point(11, 28);
 			this.showFinalLayouts.Name = "showFinalLayouts";
 			this.showFinalLayouts.Size = new System.Drawing.Size(143, 21);
