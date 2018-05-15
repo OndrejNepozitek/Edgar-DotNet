@@ -61,7 +61,6 @@
 			this.progressPanel = new System.Windows.Forms.Panel();
 			this.progressGroupBox = new System.Windows.Forms.GroupBox();
 			this.exportShownLayoutsCheckbox = new System.Windows.Forms.CheckBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.showPerturbedLayoutsTime = new System.Windows.Forms.NumericUpDown();
 			this.showPerturbedLayouts = new System.Windows.Forms.CheckBox();
@@ -311,7 +310,7 @@
 			// 
 			this.drawingSettingsPanel.Controls.Add(this.drawingSettingsGroupBox);
 			this.drawingSettingsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.drawingSettingsPanel.Location = new System.Drawing.Point(5, 555);
+			this.drawingSettingsPanel.Location = new System.Drawing.Point(5, 512);
 			this.drawingSettingsPanel.Name = "drawingSettingsPanel";
 			this.drawingSettingsPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
 			this.drawingSettingsPanel.Size = new System.Drawing.Size(541, 153);
@@ -444,13 +443,12 @@
 			this.progressPanel.Location = new System.Drawing.Point(5, 360);
 			this.progressPanel.Name = "progressPanel";
 			this.progressPanel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-			this.progressPanel.Size = new System.Drawing.Size(541, 195);
+			this.progressPanel.Size = new System.Drawing.Size(541, 152);
 			this.progressPanel.TabIndex = 6;
 			// 
 			// progressGroupBox
 			// 
 			this.progressGroupBox.Controls.Add(this.exportShownLayoutsCheckbox);
-			this.progressGroupBox.Controls.Add(this.label7);
 			this.progressGroupBox.Controls.Add(this.label6);
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayoutsTime);
 			this.progressGroupBox.Controls.Add(this.showPerturbedLayouts);
@@ -463,7 +461,7 @@
 			this.progressGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.progressGroupBox.Location = new System.Drawing.Point(0, 0);
 			this.progressGroupBox.Name = "progressGroupBox";
-			this.progressGroupBox.Size = new System.Drawing.Size(541, 185);
+			this.progressGroupBox.Size = new System.Drawing.Size(541, 142);
 			this.progressGroupBox.TabIndex = 0;
 			this.progressGroupBox.TabStop = false;
 			this.progressGroupBox.Text = "Progress showing settings";
@@ -471,26 +469,17 @@
 			// exportShownLayoutsCheckbox
 			// 
 			this.exportShownLayoutsCheckbox.AutoSize = true;
-			this.exportShownLayoutsCheckbox.Location = new System.Drawing.Point(11, 153);
+			this.exportShownLayoutsCheckbox.Location = new System.Drawing.Point(11, 109);
 			this.exportShownLayoutsCheckbox.Name = "exportShownLayoutsCheckbox";
 			this.exportShownLayoutsCheckbox.Size = new System.Drawing.Size(163, 21);
 			this.exportShownLayoutsCheckbox.TabIndex = 10;
 			this.exportShownLayoutsCheckbox.Text = "Export shown layouts";
 			this.exportShownLayoutsCheckbox.UseVisualStyleBackColor = true;
 			// 
-			// label7
-			// 
-			this.label7.Location = new System.Drawing.Point(11, 22);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(524, 35);
-			this.label7.TabIndex = 9;
-			this.label7.Text = "Layout generator provides events that are fired when for example layout is accept" +
-    "ed. These events can be used to show the progress of the generator.";
-			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(368, 128);
+			this.label6.Location = new System.Drawing.Point(368, 84);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(26, 17);
 			this.label6.TabIndex = 8;
@@ -498,7 +487,7 @@
 			// 
 			// showPerturbedLayoutsTime
 			// 
-			this.showPerturbedLayoutsTime.Location = new System.Drawing.Point(240, 126);
+			this.showPerturbedLayoutsTime.Location = new System.Drawing.Point(240, 82);
 			this.showPerturbedLayoutsTime.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -521,7 +510,7 @@
 			// showPerturbedLayouts
 			// 
 			this.showPerturbedLayouts.AutoSize = true;
-			this.showPerturbedLayouts.Location = new System.Drawing.Point(11, 126);
+			this.showPerturbedLayouts.Location = new System.Drawing.Point(11, 82);
 			this.showPerturbedLayouts.Name = "showPerturbedLayouts";
 			this.showPerturbedLayouts.Size = new System.Drawing.Size(197, 21);
 			this.showPerturbedLayouts.TabIndex = 6;
@@ -531,7 +520,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(368, 101);
+			this.label2.Location = new System.Drawing.Point(368, 57);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(26, 17);
 			this.label2.TabIndex = 5;
@@ -539,7 +528,7 @@
 			// 
 			// showPartialValidLayoutsTime
 			// 
-			this.showPartialValidLayoutsTime.Location = new System.Drawing.Point(240, 99);
+			this.showPartialValidLayoutsTime.Location = new System.Drawing.Point(240, 55);
 			this.showPartialValidLayoutsTime.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -562,7 +551,7 @@
 			// showPartialValidLayouts
 			// 
 			this.showPartialValidLayouts.AutoSize = true;
-			this.showPartialValidLayouts.Location = new System.Drawing.Point(11, 99);
+			this.showPartialValidLayouts.Location = new System.Drawing.Point(11, 55);
 			this.showPartialValidLayouts.Name = "showPartialValidLayouts";
 			this.showPartialValidLayouts.Size = new System.Drawing.Size(189, 21);
 			this.showPartialValidLayouts.TabIndex = 3;
@@ -572,7 +561,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(368, 74);
+			this.label1.Location = new System.Drawing.Point(368, 30);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(26, 17);
 			this.label1.TabIndex = 2;
@@ -580,7 +569,7 @@
 			// 
 			// showFinalLayoutsTime
 			// 
-			this.showFinalLayoutsTime.Location = new System.Drawing.Point(240, 72);
+			this.showFinalLayoutsTime.Location = new System.Drawing.Point(240, 28);
 			this.showFinalLayoutsTime.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -603,7 +592,7 @@
 			// showFinalLayouts
 			// 
 			this.showFinalLayouts.AutoSize = true;
-			this.showFinalLayouts.Location = new System.Drawing.Point(11, 72);
+			this.showFinalLayouts.Location = new System.Drawing.Point(11, 28);
 			this.showFinalLayouts.Name = "showFinalLayouts";
 			this.showFinalLayouts.Size = new System.Drawing.Size(143, 21);
 			this.showFinalLayouts.TabIndex = 0;
@@ -713,7 +702,6 @@
 		private System.Windows.Forms.Button generateButton;
 		private System.Windows.Forms.Panel progressPanel;
 		private System.Windows.Forms.GroupBox progressGroupBox;
-		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.NumericUpDown showPerturbedLayoutsTime;
 		private System.Windows.Forms.CheckBox showPerturbedLayouts;

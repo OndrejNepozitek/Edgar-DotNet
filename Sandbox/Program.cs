@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Text;
 	using System.Windows.Forms;
 	using Examples;
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
@@ -32,9 +33,10 @@
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			// RunBenchmark();
+			RunBenchmark();
 			// CompareOldAndNew();
-			RunExample();
+			// RunExample();
+			// ConverToXml();
 		}
 
 		/// <summary>
@@ -93,19 +95,19 @@
 			layoutGenerator.InjectRandomGenerator(new Random(0));
 			layoutGenerator.SetLayoutValidityCheck(false);
 
-			// layoutGenerator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
-			// layoutGenerator.SetChainDecompositionCreator(mapDescription => new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>(), false));
-			// layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
-			layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
-			{
-				var evolver =
-					new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int,
-						Configuration<EnergyData>>(layoutOperations);
-				evolver.Configure(50, 500);
-				evolver.SetRandomRestarts(true, SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>>.RestartSuccessPlace.OnAccepted, false, 0.5f);
+			//layoutGenerator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
+			//// layoutGenerator.SetChainDecompositionCreator(mapDescription => new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>(), false));
+			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
+			//layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
+			//{
+			//	var evolver =
+			//		new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int,
+			//			Configuration<EnergyData>>(layoutOperations);
+			//	evolver.Configure(50, 500);
+			//	evolver.SetRandomRestarts(true, SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>>.RestartSuccessPlace.OnAccepted, false, 0.5f);
 
-				return evolver;
-			});
+			//	return evolver;
+			//});
 
 			var scenario = BenchmarkScenario.CreateScenarioFor(layoutGenerator);
 			scenario.SetRunsCount(2);
@@ -115,7 +117,7 @@
 
 			Benchmark.WithDefaultFiles((sw, dw) =>
 			{
-				benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 20, 1, sw, dw);
+				benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100, 1, sw, dw);
 			});
 		}
 
@@ -214,13 +216,13 @@
 			{
 				files = new List<string>()
 				{
-					"backtracking_advanced",
+					//"backtracking_advanced",
 					"generating_one_layout_advanced",
 					"example1_advanced",
-					"example2_advanced",
-					"example3_advanced",
+					//"example2_advanced",
+					//"example3_advanced",
 					"game1_basic",
-					"game2_basic",
+					//"game2_basic",
 				};
 			}
 
@@ -276,6 +278,41 @@
 						.AddCorridorRoomShapes(offsets, enableCorridors)
 				),
 			};
+		}
+
+		public static void ConverToXml()
+		{
+			foreach (var filename in Directory.GetFiles("Resources/Maps/Thesis"))
+			{
+				ConverToXml(filename);
+			}
+		}
+
+		public static void ConverToXml(string filename)
+		{
+			var configLoader = new ConfigLoader();
+			var withoutExt = Path.GetFileNameWithoutExtension(filename);
+			var xmlName = $"{withoutExt}.xml";
+			var mapDescription = configLoader.LoadMapDescription(filename);
+			var graph = mapDescription.GetGraph();
+
+			using (var sw = new StreamWriter($"D:\\Trash\\LevelSyn-1.1\\data\\Thesis\\{xmlName}"))
+			{
+				sw.WriteLine("<?xml version=\"1.0\" standalone=\"yes\" ?>");
+				sw.WriteLine("<Graph>");
+
+				foreach (var vertex in graph.Vertices)
+				{
+					sw.WriteLine($"  <Node name=\"{vertex}\" />");
+				}
+
+				foreach (var edge in graph.Edges)
+				{
+					sw.WriteLine($"  <Edge node0=\"{edge.From}\" node1=\"{edge.To}\" />");
+				}
+
+				sw.WriteLine("</Graph>");
+			}
 		}
 	}
 }
