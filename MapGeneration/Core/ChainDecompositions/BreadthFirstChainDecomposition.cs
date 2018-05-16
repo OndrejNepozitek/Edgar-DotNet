@@ -28,8 +28,11 @@
 		{
 			Initialize(graph);
 
-			// Get faces and remove the largest one
-			Faces.RemoveAt(Faces.MaxBy(x => x.Count));
+			if (Faces.Count != 0)
+			{
+				// Get faces and remove the largest one
+				Faces.RemoveAt(Faces.MaxBy(x => x.Count));
+			}
 
 			var chains = new List<List<TNode>>();
 
