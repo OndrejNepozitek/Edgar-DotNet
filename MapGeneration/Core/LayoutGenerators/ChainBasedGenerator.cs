@@ -120,8 +120,8 @@
 		{
 			var graph = mapDescription.GetGraph();
 
-			if (graph.VerticesCount == 0)
-				throw new ArgumentException("Given mapDescription must contain at least one node.", nameof(mapDescription));
+			if (graph.VerticesCount < 2)
+				throw new ArgumentException("Given mapDescription must contain at least two nodes.", nameof(mapDescription));
 
 			if (!graphUtils.IsConnected(graph))
 				throw new ArgumentException("Given mapDescription must represent a connected graph.", nameof(mapDescription));
