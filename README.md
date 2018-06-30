@@ -1,4 +1,4 @@
-# MapGeneration
+# ProceduralLevelGenerator - WIP
 
 This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
 
