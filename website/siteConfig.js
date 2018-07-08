@@ -9,12 +9,13 @@ const siteConfig = {
   title: 'Procedural layout generation' /* title for your website */,
   tagline: 'Library for procedural generation of 2D layouts based on a graph of room connections.',
   url: 'https://ondrejnepozitek.github.io/' /* your website url */,
-  baseUrl: '/MapGeneration/' /* base url for your project */,
-  projectName: 'MapGeneration',
+  baseUrl: '/ProceduralLevelGenerator/' /* base url for your project */,
+  projectName: 'ProceduralLevelGenerator',
   headerLinks: [
     {doc: 'introduction', label: 'Docs'},
-    {page: 'help', label: 'Help'},
-    {blog: true, label: 'Blog'},
+    {href: 'https://github.com/OndrejNepozitek/ProceduralLevelGenerator/', label: 'Github'},
+    // {page: 'help', label: 'Help'},
+    // {blog: true, label: 'Blog'},
   ],
   /* path to images for header/footer */
   /*headerIcon: 'img/docusaurus.svg',*/
@@ -41,9 +42,9 @@ const siteConfig = {
   copyright:
     'Copyright © ' +
     new Date().getFullYear() +
-    ' Your Name or Your Company Name',
+    ' Ondřej Nepožitek',
   organizationName: 'OndrejNepozitek', // or set an env variable ORGANIZATION_NAME
-  projectName: 'MapGeneration', // or set an env variable PROJECT_NAME
+  projectName: 'ProceduralLevelGenerator', // or set an env variable PROJECT_NAME
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: 'default',

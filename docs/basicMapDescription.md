@@ -32,7 +32,7 @@ mapDescription.AddPassage(2, 3);
 
 ### Using config files
 ```yaml
-# basicDescription.yml
+# Maps/tutorial_basic.yml
 
 # We want 4 vertices
 roomsRange:
@@ -53,7 +53,7 @@ The next step is to add room shapes. We must create an instance of a `RoomDescri
 ### Polygons
 We define polygons by a sequence of their vertices. In this tutorial, we will use an *8x8 square* and a *6x10 rectangle* but it is possible to use any orthogonal polygon.
 
-**Note:** Orthogonal (or rectilinear) polygon is a polygon of whose edge intersections are at right angles. When on an integer grid, all sides of orthogonal polygons are aligned with one of the axes.
+**Note:** Orthogonal (or rectilinear) polygon is a polygon of whose edge intersections are at right angles. When on an integer grid, each side of an orthogonal polygon is aligned with one of the axes.
 
 ### Door modes
 `IDoorMode` is an interface that specifies door positions of a given polygon. The most simple *door mode* is an `OverlapMode` - it lets us specify the lenght of doors and how far from corners they must be. In this tutorial, we will use doors with length of 1 unit and at least 1 unit away from corners.
@@ -83,12 +83,12 @@ mapDescription.AddRoomShapes(rectangleRoom);
 ```
 
 ### Using config files
-We first create a *basic_rooms.yml* file under the *Resources/Rooms* folder. Here we add our room descriptions:
+We first create a *tutorial_basicRooms.yml* file under the *Resources/Rooms* folder. Here we add our room descriptions:
 
 ```yaml
-# basicRooms.yml
+# Resources/Rooms/tutorial_basicRooms.yml
 
-name: basicRooms
+name: tutorial_basicRooms
 roomDescriptions:
   # Create 8x8 square
   8-square:
@@ -107,31 +107,31 @@ roomDescriptions:
 And now we have to register them to be used in our map description:
 
 ```yaml
-# basicDescription.yml
+# Resources/Maps/tutorial_basic.yml
 
 # Rooms and passages are added here.
 
 defaultRoomShapes:
-  - setName: basicRooms
+  - setName: tutorial_basicRooms
 ```
 
 ## Summary
-The map description is now ready to be used in a layout generator. You can find the full C# source code [here TODO](TODO) and the config file [here TODO](TODO).
+The map description is now ready to be used in a layout generator. You can find the full C# source code [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/master/Sandbox/Examples/BasicsExample.cs) and the config files [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/tree/master/Resources).
 
 ## Results
 
 <div class="results">
-  <a href="/MapGeneration/docs/assets/basics/0.jpg" target="_blank">
-    <img src="/MapGeneration/docs/assets/basics/0.jpg" alt="result">
+  <a href="/ProceduralLevelGenerator/docs/assets/basics/0.jpg" target="_blank">
+    <img src="/ProceduralLevelGenerator/docs/assets/basics/0.jpg" alt="result">
   </a>
-  <a href="/MapGeneration/docs/assets/basics/1.jpg" target="_blank">
-    <img src="/MapGeneration/docs/assets/basics/1.jpg" alt="result">
+  <a href="/ProceduralLevelGenerator/docs/assets/basics/1.jpg" target="_blank">
+    <img src="/ProceduralLevelGenerator/docs/assets/basics/1.jpg" alt="result">
   </a>
-  <a href="/MapGeneration/docs/assets/basics/2.jpg" target="_blank">
-    <img src="/MapGeneration/docs/assets/basics/2.jpg" alt="result">
+  <a href="/ProceduralLevelGenerator/docs/assets/basics/2.jpg" target="_blank">
+    <img src="/ProceduralLevelGenerator/docs/assets/basics/2.jpg" alt="result">
   </a>
-  <a href="/MapGeneration/docs/assets/basics/3.jpg" target="_blank">
-    <img src="/MapGeneration/docs/assets/basics/3.jpg" alt="result">
+  <a href="/ProceduralLevelGenerator/docs/assets/basics/3.jpg" target="_blank">
+    <img src="/ProceduralLevelGenerator/docs/assets/basics/3.jpg" alt="result">
   </a>
 </div>
 

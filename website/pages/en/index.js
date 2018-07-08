@@ -81,7 +81,7 @@ class HomeSplash extends React.Component {
           <ProjectTitle />
           <PromoSection>
             <Button href={docUrl('introduction.html', language)}>Documentation</Button>
-            <Button href="https://github.com/OndrejNepozitek/MapGeneration/">Github</Button>
+            <Button href="https://github.com/OndrejNepozitek/ProceduralLevelGenerator/">Github</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -200,9 +200,6 @@ class Index extends React.Component {
     return (
       <div>
         <HomeSplash language={language} />
-        <div className="mainContainer">
-          <Features />
-        </div>
       </div>
     );
   }

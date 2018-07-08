@@ -2,6 +2,8 @@
   "docs": {
     "Introduction": ["introduction", "installation"],
     "Guides": ["guides", "basicMapDescription", "differentShapesMapDescription", "differentProbabilitiesMapDescription",  "corridorsMapDescription"],
+    // "Chain based generator": ["chainBasedGenerator", "configurationSpaces", "layoutEvolver", "generatorPlanners"],
+    // "Advanced": ["constraints", "corridors"],
     "Misc": ["gui", "configFormat", "benchmarks"]
   },
   "docs-other": {
