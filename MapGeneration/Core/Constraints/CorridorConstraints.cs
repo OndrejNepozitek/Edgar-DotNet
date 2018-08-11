@@ -5,14 +5,21 @@
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
 
+	/// <summary>
+	/// Constraint made for map descriptions with corridors.
+	/// </summary>
+	/// <remarks>
+	/// It ensures that neighbours in the original graph without corridors are exactly a specified
+	/// offset away from each other. It is then really easy to use a hungry algorithm to connect
+	/// rooms by corridors. Valid positions are check with modified configurations spaces.
+	/// </remarks>
 	public class CorridorConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
@@ -31,6 +38,7 @@
 			graphWithoutCorridors = this.mapDescription.GetGraphWithoutCorrridors();
 		}
 
+		/// <inheritdoc />
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
@@ -61,6 +69,7 @@
 			return distance == 0;
 		}
 
+		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
@@ -86,13 +95,13 @@
 			return distanceTotal == 0;
 		}
 
+		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
-			var newOverlap = oldConfiguration.EnergyData.Overlap;
 			var newDistance = oldConfiguration.EnergyData.CorridorDistance;
 
 			foreach (var vertex in oldLayout.Graph.Vertices)
@@ -108,9 +117,6 @@
 			}
 
 			var newEnergy = ComputeEnergy(0, newDistance);
-
-			//if (energyData.MoveDistance != 0)
-			//	throw new InvalidOperationException();
 
 			energyData.CorridorDistance = newDistance;
 			energyData.Energy += newEnergy;
@@ -135,11 +141,6 @@
 		private float ComputeEnergy(int overlap, float distance)
 		{
 			return (float)(Math.Pow(Math.E, overlap / (energySigma * 625)) * Math.Pow(Math.E, distance / (energySigma * 50)) - 1);
-		}
-
-		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)
-		{
-			return layout.Graph.HasEdge(node1, node2);
 		}
 
 		private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)

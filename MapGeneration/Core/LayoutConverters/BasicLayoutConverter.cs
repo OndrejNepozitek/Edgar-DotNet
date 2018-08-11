@@ -4,48 +4,63 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
+	using CorridorNodesCreators;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.LayoutConverters;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapLayouts;
+	using Interfaces.Utils;
+	using MapDescriptions;
+	using MapLayouts;
 	using Utils;
 
+	/// <summary>
+	/// Basic implementation of a layout converter.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
 	public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
-		where TLayout : ILayout<TNode, TConfiguration>
+		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 	{
-		protected readonly IMapDescription<TNode> MapDescription;
+		protected readonly MapDescription<TNode> MapDescription;
 		protected Random Random;
-		protected readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
+		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
 
-		public BasicLayoutConverter(IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public BasicLayoutConverter(MapDescription<TNode> mapDescription, IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, ICorridorNodesCreator<TNode> corridorNodesCreator = null)
 		{
 			MapDescription = mapDescription;
-			this.configurationSpaces = configurationSpaces;
+			ConfigurationSpaces = configurationSpaces;
+			CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
 		}
 
+		/// <inheritdoc />
 		public IMapLayout<TNode> Convert(TLayout layout, bool addDoors)
 		{
 			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
-			var corridorMapDescription = MapDescription as ICorridorMapDescription<TNode>;
-			var hasCorridors = corridorMapDescription != null;
+			var mapping = MapDescription.GetRoomsMapping();
+			CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
 
-			foreach (var vertex in layout.Graph.Vertices)
+			foreach (var vertexAlias in layout.Graph.Vertices)
 			{
-				if (layout.GetConfiguration(vertex, out var configuration))
+				if (layout.GetConfiguration(vertexAlias, out var configuration))
 				{
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, hasCorridors && corridorMapDescription.IsCorridorRoom(vertex));
+					var vertex = mapping.GetByValue(vertexAlias);
+
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.IsCorridorRoom(vertexAlias));
 					rooms.Add(room);
 
 					if (!addDoors)
 						continue;
 
-					var doors = new List<Tuple<TNode, OrthogonalLine>>();
+					var doors = new List<IDoorInfo<TNode>>();
 					room.Doors = doors;
 
 					roomsDict[vertex] = room;
@@ -56,21 +71,25 @@
 			{
 				var generatedDoors = new HashSet<Tuple<TNode, TNode>>();
 
-				foreach (var vertex in layout.Graph.Vertices)
+				foreach (var vertexAlias in layout.Graph.Vertices)
 				{
-					if (layout.GetConfiguration(vertex, out var configuration))
-					{
-						var neighbours = layout.Graph.GetNeighbours(vertex);
+					var vertex = mapping.GetByValue(vertexAlias);
 
-						foreach (var neighbour in neighbours)
+					if (layout.GetConfiguration(vertexAlias, out var configuration))
+					{
+						var neighbours = layout.Graph.GetNeighbours(vertexAlias);
+
+						foreach (var neighbourAlias in neighbours)
 						{
-							if (layout.GetConfiguration(neighbour, out var neighbourConfiguration) && !generatedDoors.Contains(Tuple.Create(neighbour, vertex)))
+							var neighbour = mapping.GetByValue(neighbourAlias);
+
+							if (layout.GetConfiguration(neighbourAlias, out var neighbourConfiguration) && !generatedDoors.Contains(Tuple.Create(neighbour, vertex)))
 							{
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(Tuple.Create(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(Tuple.Create(vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new DoorInfo<TNode>(neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(new DoorInfo<TNode>(vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}
@@ -84,7 +103,7 @@
 		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
-				configurationSpaces.GetConfigurationSpace(configuration2.ShapeContainer, configuration1.ShapeContainer))
+				ConfigurationSpaces.GetConfigurationSpace(configuration2.ShapeContainer, configuration1.ShapeContainer))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 

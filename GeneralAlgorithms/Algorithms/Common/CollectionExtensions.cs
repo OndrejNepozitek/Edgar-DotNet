@@ -42,7 +42,7 @@
 		}
 
 		/// <summary>
-		/// Computes an index of the first maximum element with respect to given function.
+		/// Computes an index of the first maximum element with respect to a given function.
 		/// </summary>
 		/// <typeparam name="TElement"></typeparam>
 		/// <typeparam name="TResult"></typeparam>
@@ -77,7 +77,7 @@
 		}
 
 		/// <summary>
-		/// Computes an index of the first minimum element with respect to given function.
+		/// Computes an index of the first minimum element with respect to a given function.
 		/// </summary>
 		/// <typeparam name="TElement"></typeparam>
 		/// <typeparam name="TResult"></typeparam>
@@ -112,6 +112,14 @@
 			return minIndex;
 		}
 
+		/// <summary>
+		/// Returns a random number based on a given weight function.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="elements">Collection of elements.</param>
+		/// <param name="weightSelector">A function that assigns weight to individual elements.</param>
+		/// <param name="random">Random number generator to be used.</param>
+		/// <returns></returns>
 		public static T GetWeightedRandom<T>(this IList<T> elements, Func<T, double> weightSelector, Random random)
 		{
 			var totalWeight = elements.Sum(weightSelector);
@@ -129,8 +137,7 @@
 				randomNumber -= weight;
 			}
 
-			// TODO: can it get here due to the rounding of doubles?
-			throw new InvalidOperationException("Should never get here");
+			throw new InvalidOperationException("Should never get here. If we get here, nothing was chosen because of rounding errors of doubles.");
 		}
 	}
 }

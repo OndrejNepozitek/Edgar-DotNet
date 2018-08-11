@@ -29,7 +29,7 @@ defaultRoomShapes:
     setName: basicSet
 
 corridors:
-  enable: true
+  enable: false
   offsets: [1]
   corridorShapes:
     -

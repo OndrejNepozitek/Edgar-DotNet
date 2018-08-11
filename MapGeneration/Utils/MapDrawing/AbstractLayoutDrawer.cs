@@ -5,7 +5,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
+	using Interfaces.Core.MapLayouts;
 
 	/// <summary>
 	/// Class that should help with drawing layouts to different outputs.
@@ -20,9 +20,11 @@
 		/// <param name="width">Width of the output</param>
 		/// <param name="height">Height of the output</param>
 		/// <param name="withNames">Whether names should be displayed</param>
-		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames)
+		/// <param name="fixedFontSize"></param>
+		/// <param name="borderSize"></param>
+		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
 		{
-			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -30,10 +32,10 @@
 			var maxx = points.Max(x => x.X);
 			var maxy = points.Max(x => x.Y);
 
-			var scale = GetScale(minx, miny, maxx, maxy, width, height);
+			var scale = GetScale(minx, miny, maxx, maxy, width, height, borderSize);
 			var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
 
-			DrawLayout(layout, scale, offset, withNames);
+			DrawLayout(layout, scale, offset, withNames, fixedFontSize);
 		}
 
 		/// <summary>
@@ -46,11 +48,12 @@
 		/// <param name="scale">Scale factor</param>
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
-		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames)
+		/// <param name="fixedFontSize"></param>
+		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames, int? fixedFontSize = null)
 		{
-			var polygons = layout.GetRooms().Select(x => x.Shape + x.Position).ToList();
-			var rooms = layout.GetRooms().ToList();
-			var minWidth = layout.GetRooms().Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var rooms = layout.Rooms.ToList();
+			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
 
 			for (var i = 0; i < rooms.Count; i++)
 			{
@@ -58,12 +61,19 @@
 				var outline = GetOutline(polygons[i], room.Doors?.ToList())
 					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
 
-				var polygon = new GridPolygon(polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)));
+				var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+
+				if (transformedPoints.All(x => x == new IntVector2(0, 0)))
+				{
+					throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
+				}
+
+				var polygon = new GridPolygon(transformedPoints);
 				DrawRoom(polygon, outline, 2);
 
 				if (withNames && !room.IsCorridor)
 				{
-					DrawTextOntoPolygon(polygon, room.Node.ToString(), 2.5f * minWidth);
+					DrawTextOntoPolygon(polygon, room.Node.ToString(), fixedFontSize ?? 2.5f * minWidth);
 				}
 			}
 		}
@@ -151,7 +161,7 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<Tuple<TNode, OrthogonalLine>> doorLines)
+		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<IDoorInfo<TNode>> doorLines)
 		{
 			var outline = new List<Tuple<IntVector2, bool>>();
 
@@ -163,22 +173,22 @@
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<TNode, OrthogonalLine, int>(x.Item1, x.Item2, Math.Min(line.Contains(x.Item2.From), line.Contains(x.Item2.To)))).ToList();
-				doorDistances.Sort((x1, x2) => x1.Item3.CompareTo(x2.Item3));
+					new Tuple<IDoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
 				foreach (var pair in doorDistances)
 				{
-					if (pair.Item3 == -1)
+					if (pair.Item2 == -1)
 						continue;
 
-					var doorLine = pair.Item2;
+					var doorLine = pair.Item1.DoorLine;
 
-					if (line.Contains(doorLine.From) != pair.Item3)
+					if (line.Contains(doorLine.From) != pair.Item2)
 					{
 						doorLine = doorLine.SwitchOrientation();
 					}
 
-					doorLines.Remove(Tuple.Create(pair.Item1, doorLine));
+					doorLines.Remove(pair.Item1);
 
 					AddToOutline(Tuple.Create(doorLine.From, true));
 					AddToOutline(Tuple.Create(doorLine.To, false));

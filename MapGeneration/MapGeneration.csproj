@@ -80,8 +80,8 @@
     <Reference Include="Algorithms">
       <HintPath>..\Libraries\C-Sharp-Algorithms\Algorithms.dll</HintPath>
     </Reference>
-    <Reference Include="DataStrcutres">
-      <HintPath>..\Libraries\C-Sharp-Algorithms\DataStrcutres.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -99,6 +99,7 @@
     <Compile Include="Benchmarks\Benchmark.cs" />
     <Compile Include="Benchmarks\BenchmarkResult.cs" />
     <Compile Include="Benchmarks\BenchmarkScenario.cs" />
+    <Compile Include="Core\ChainDecompositions\OldChainDecomposition.cs" />
     <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
     <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
@@ -117,28 +118,28 @@
     <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
     <Compile Include="Core\Configurations\Configuration.cs" />
     <Compile Include="Core\Configurations\EnergyData\EnergyData.cs" />
-    <Compile Include="Core\GraphDecomposition\BreadthFirstChainDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\ChainDecompositionBase.cs" />
+    <Compile Include="Core\ChainDecompositions\BreadthFirstChainDecomposition.cs" />
+    <Compile Include="Core\ChainDecompositions\ChainDecompositionBase.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\CorridorNodesCreatorFactory.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\StringCorridorNodesCreator.cs" />
+    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\IntCorridorNodesCreator.cs" />
     <Compile Include="Core\LayoutGenerators\ChainBasedGenerator.cs" />
-    <Compile Include="Core\GraphDecomposition\BasicChainsDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\CorridorsChainDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\DummyChainsDecomposition.cs" />
-    <Compile Include="Core\GraphDecomposition\LongerChainsDecomposition.cs" />
+    <Compile Include="Core\ChainDecompositions\CorridorsChainDecomposition.cs" />
     <Compile Include="Core\LayoutConverters\BasicLayoutConverter.cs" />
     <Compile Include="Core\LayoutEvolvers\SimulatedAnnealingEvolver.cs" />
     <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
     <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />
-    <Compile Include="Core\MapDescription.cs" />
-    <Compile Include="Core\MapLayout.cs" />
-    <Compile Include="Core\Room.cs" />
-    <Compile Include="Core\RoomDescription.cs" />
+    <Compile Include="Core\MapDescriptions\MapDescription.cs" />
+    <Compile Include="Core\MapLayouts\DoorInfo.cs" />
+    <Compile Include="Core\MapLayouts\MapLayout.cs" />
+    <Compile Include="Core\MapLayouts\Room.cs" />
+    <Compile Include="Core\MapDescriptions\RoomDescription.cs" />
     <Compile Include="Core\Layouts\Layout.cs" />
     <Compile Include="Core\GeneratorPlanners\SlowGeneratorPlanner.cs" />
     <Compile Include="Core\GeneratorPlanners\GeneratorPlannerBase.cs" />
     <Compile Include="Core\GeneratorPlanners\BasicGeneratorPlanner.cs" />
-    <Compile Include="Core\Experimental\GeneratorContext.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Core\LayoutGenerators\GeneratorContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\CollectionExtensions.cs" />
     <Compile Include="Utils\ConfigParsing\ConfigLoader.cs" />
@@ -152,13 +153,16 @@
     <Compile Include="Utils\ConfigParsing\ParsingException.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\LayoutGeneratorFactory.cs" />
-    <Compile Include="Utils\MapDescriptionsDatabase.cs" />
     <Compile Include="Utils\ConfigParsing\DefaultObjectFactory.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionModel.cs" />
     <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionsSetModel.cs" />
     <Compile Include="Utils\ConfigParsing\Deserializers\IntVector2Deserializer.cs" />
     <Compile Include="Utils\MapDrawing\AbstractLayoutDrawer.cs" />
     <Compile Include="Utils\MapDrawing\SVGLayoutDrawer.cs" />
+    <Compile Include="Utils\Serialization\JsonSerializer.cs" />
+    <Compile Include="Utils\Serialization\ModelConverter.cs" />
+    <Compile Include="Utils\Serialization\Models\DoorModel.cs" />
+    <Compile Include="Utils\Serialization\Models\RoomModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

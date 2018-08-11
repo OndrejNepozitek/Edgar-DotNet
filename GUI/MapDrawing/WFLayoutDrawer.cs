@@ -5,11 +5,10 @@
 	using System.Drawing;
 	using System.Drawing.Drawing2D;
 	using System.Linq;
-	using System.Windows.Forms;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Utils.MapDrawing;
 
 	/// <inheritdoc />
@@ -20,31 +19,31 @@
 	public class WFLayoutDrawer<TNode> : AbstractLayoutDrawer<TNode>
 	{
 		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
-		private PictureBox pictureBox;
-		private PaintEventArgs eventArgs;
+		private Bitmap bitmap;
+		private Graphics graphics;
 
 		/// <summary>
 		/// Draws the layout to a given PictureBox.
 		/// </summary>
 		/// <param name="layout"></param>
-		/// <param name="pictureBox"></param>
-		/// <param name="eventArgs"></param>
+		/// <param name="height"></param>
 		/// <param name="withNames"></param>
-		public void DrawLayout(IMapLayout<TNode> layout, PictureBox pictureBox, PaintEventArgs eventArgs, bool withNames = true)
+		/// <param name="fixedFontSize"></param>
+		/// <param name="width"></param>
+		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
-			var width = pictureBox.Width;
-			var height = pictureBox.Height;
+			bitmap = new Bitmap(width, height);
+			graphics = Graphics.FromImage(bitmap);
 
-			this.pictureBox = pictureBox;
-			this.eventArgs = eventArgs;
+			base.DrawLayout(layout, width, height, withNames, fixedFontSize);
 
-			DrawLayout(layout, width, height, withNames);
+			return bitmap;
 		}
 
 		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
-			eventArgs.Graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
+			graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
 
 			var lastPoint = outline[outline.Count - 1].Item1;
 			var pen = new Pen(Color.Black, penWidth)
@@ -60,7 +59,7 @@
 				if (pair.Item2)
 				{
 					
-					eventArgs.Graphics.DrawLine(pen, lastPoint.X, lastPoint.Y, point.X, point.Y);
+					graphics.DrawLine(pen, lastPoint.X, lastPoint.Y, point.X, point.Y);
 				}
 
 				lastPoint = point;
@@ -87,7 +86,7 @@
 					Alignment = StringAlignment.Center
 				};
 
-				eventArgs.Graphics.DrawString(text, font, Brushes.Black, rect, sf);
+				graphics.DrawString(text, font, Brushes.Black, rect, sf);
 			}
 		}
 	}

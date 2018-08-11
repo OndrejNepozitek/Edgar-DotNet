@@ -7,6 +7,9 @@
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
 
+	/// <summary>
+	/// Ensures that a bounding rectangle of the whole layout has less than specified area.
+	/// </summary>
 	public class MaximumAreaConstraint<TLayout, TNode, TConfiguration, TShapeContainer, TLayoutEnergyData> : ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IConfiguration<TShapeContainer>

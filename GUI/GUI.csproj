@@ -75,7 +75,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataStrcutres, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -96,6 +95,7 @@
     <Compile Include="GeneratorWindow.Designer.cs">
       <DependentUpon>GeneratorWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="GuiExceptionHandler.cs" />
     <Compile Include="MainSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,16 +147,22 @@
       <Project>{8538b30d-b0c5-4bb8-8fa9-c9388e0758e7}</Project>
       <Name>MapGeneration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
+      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
+      <Name>BoostWrapper</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <OutputItemType>Content</OutputItemType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />
+      <DestinationResources Include="$(TargetDir)\Resources\**\*.*" />
     </ItemGroup>
-    <ItemGroup>
-      <GUIResources Include=".\Resources\**\*.*" />
-    </ItemGroup>
+    <Delete Files="@(DestinationResources)" /> 
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(GUIResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

@@ -5,6 +5,9 @@
 	using Doors;
 	using GeneralAlgorithms.DataStructures.Common;
 
+	/// <summary>
+	/// Configuration space of a pair of polygons.
+	/// </summary>
 	public class ConfigurationSpace
 	{
 		public List<OrthogonalLine> Lines;

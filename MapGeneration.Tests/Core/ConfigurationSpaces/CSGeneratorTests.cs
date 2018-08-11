@@ -1,15 +1,19 @@
 ﻿namespace MapGeneration.Tests.Core.ConfigurationSpaces
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces.Core.Configuration;
 	using MapGeneration.Core;
+	using MapGeneration.Core.Configurations;
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorModes;
+	using MapGeneration.Core.MapDescriptions;
 	using NUnit.Framework;
 
 	[TestFixture]
@@ -20,7 +24,8 @@
 		[SetUp]
 		public void SetUp()
 		{
-			generator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
+			generator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler,
+				new OrthogonalLineIntersection(), new GridPolygonUtils());
 		}
 
 		[Test]
@@ -29,7 +34,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 0),  p2, new OverlapMode(1, 0));
+			var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 0));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -175,6 +180,16 @@
 
 			//Assert.AreEqual(3, configurationSpaces.GetShapesForNode(0).Count);
 			//Assert.AreEqual(1, configurationSpaces.GetShapesForNode(1).Count);
+		}
+
+		[Test]
+		public void Generate_NodeWithoutShape()
+		{
+			var mapDescription = new MapDescription<int>();
+			mapDescription.AddRoom(0);
+
+			Assert.Throws<ArgumentException>(
+				() => generator.Generate<int, IConfiguration<IntAlias<GridPolygon>>>(mapDescription));
 		}
 	}
 }

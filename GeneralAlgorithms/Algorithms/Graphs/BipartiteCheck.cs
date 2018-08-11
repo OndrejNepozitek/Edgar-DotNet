@@ -4,6 +4,10 @@
 	using System.Collections.Generic;
 	using DataStructures.Graphs;
 
+	/// <summary>
+	/// Class that checks whether a graph is bipartite.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class BipartiteCheck<T>
 	{
 		/// <summary>

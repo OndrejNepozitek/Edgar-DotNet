@@ -1,0 +1,51 @@
+﻿namespace Sandbox.Examples
+{
+	using System.Collections.Generic;
+	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
+	using MapGeneration.Core.Doors.DoorModes;
+	using MapGeneration.Core.MapDescriptions;
+	using MapGeneration.Utils;
+	using Utils;
+
+	public class CorridorsExample : IExample
+	{
+		public MapDescription<int> GetMapDescription()
+		{
+			var mapDescription = new MapDescription<int>();
+			mapDescription.SetupWithGraph(GraphsDatabase.GetExample1());
+
+			// Add room shapes
+			var doorMode = new OverlapMode(1, 1);
+
+			var squareRoom = new RoomDescription(
+				GridPolygon.GetSquare(8),
+				doorMode
+			);
+			var rectangleRoom = new RoomDescription(
+				GridPolygon.GetRectangle(6, 10),
+				doorMode
+			);
+
+			mapDescription.AddRoomShapes(squareRoom);
+			mapDescription.AddRoomShapes(rectangleRoom);
+
+			// Setup corridor shapes
+			var corridorRoom = new RoomDescription(
+				GridPolygon.GetSquare(1),
+				new SpecificPositionsMode(new List<OrthogonalLine>()
+				{
+					new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
+					new OrthogonalLine(new IntVector2(0, 1), new IntVector2(1, 1))
+				})
+			);
+
+			mapDescription.AddCorridorShapes(corridorRoom);
+
+			// Enable corridors
+			mapDescription.SetWithCorridors(true, new List<int>() { 1 });
+
+			return mapDescription;
+		}
+	}
+}

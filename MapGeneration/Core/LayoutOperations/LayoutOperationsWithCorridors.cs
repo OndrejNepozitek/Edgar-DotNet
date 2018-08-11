@@ -6,15 +6,21 @@
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
+	using Interfaces.Utils;
 	using Utils;
 
-	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>
+	/// <summary>
+	/// Layout operations for evolving layouts with corridors.
+	/// </summary>
+	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : 
+		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>,
+		ILayoutOperationsWithCorridors<TLayout, TNode>
 		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
@@ -62,20 +68,27 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-		public override void PerturbLayout(TLayout layout, IList<TNode> nodeOptions, bool updateLayout)
+		/// <summary>
+		/// Perturbs non corridor rooms until a valid layout is found.
+		/// Then tries to use a greedy algorithm to lay out corridor rooms.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chain"></param>
+		/// <param name="updateLayout"></param>
+		public override void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			if (!MapDescription.IsWithCorridors)
 			{
-				base.PerturbLayout(layout, nodeOptions, updateLayout);
+				base.PerturbLayout(layout, chain, updateLayout);
 				return;
 			}
 
-			var nonCorridors = nodeOptions.Where(x => !MapDescription.IsCorridorRoom(x)).ToList();
-			var firstCorridor = nodeOptions.First(x => MapDescription.IsCorridorRoom(x));
+			var nonCorridors = chain.Where(x => !MapDescription.IsCorridorRoom(x)).ToList();
+			var firstCorridor = chain.First(x => MapDescription.IsCorridorRoom(x));
 
 			if (layout.GetConfiguration(firstCorridor, out var _))
 			{
-				foreach (var corridor in nodeOptions.Where(x => MapDescription.IsCorridorRoom(x)))
+				foreach (var corridor in chain.Where(x => MapDescription.IsCorridorRoom(x)))
 				{
 					layout.RemoveConfiguration(corridor);
 				}
@@ -90,20 +103,30 @@
 				var random = nonCorridors.GetRandom(Random);
 				PerturbNonCorridorPosition(layout, random, updateLayout);
 			}
-
-			if (base.IsLayoutValid(layout))
-			{
-				if (AddCorridors(layout, nodeOptions))
-				{
-					UpdateLayout(layout);
-				}
-			}
 		}
 
-		private bool AddCorridors(TLayout layout, IList<TNode> nodeOptions)
+		/// <inheritdoc />
+		public bool AddCorridors(TLayout layout, IList<TNode> chain)
+		{
+			if (AddCorridorsInternal(layout, chain))
+			{
+				UpdateLayout(layout);
+				return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Greedily adds corridors from a given chain to the layout.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chain"></param>
+		/// <returns></returns>
+		private bool AddCorridorsInternal(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
-			var corridors = nodeOptions.Where(x => MapDescription.IsCorridorRoom(x)).ToList();
+			var corridors = chain.Where(x => MapDescription.IsCorridorRoom(x)).ToList();
 
 			foreach (var corridor in corridors)
 			{
@@ -114,33 +137,18 @@
 			foreach (var corridor in corridors)
 			{
 				clone.GetConfiguration(corridor, out var configuration);
-
-				//var energyData = configuration.EnergyData;
-				//energyData.IsValid = true;
-				//configuration.EnergyData = energyData;
-
 				layout.SetConfiguration(corridor, configuration);
 			}
 
 			return true;
 		}
 
-		public override bool IsLayoutValid(TLayout layout, IList<TNode> nodeOptions)
-		{
-			if (!MapDescription.IsWithCorridors)
-			{
-				return base.IsLayoutValid(layout, nodeOptions);
-			}
-
-			var firstCorridor = nodeOptions.First(x => MapDescription.IsCorridorRoom(x));
-			if (layout.GetConfiguration(firstCorridor, out var _))
-			{
-				return base.IsLayoutValid(layout, nodeOptions);
-			}
-
-			return false;
-		}
-
+		/// <summary>
+		/// Gets neighbours from the original graph without corridors.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		protected List<TConfiguration> GetNeighboursOverCorridors(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
@@ -157,7 +165,7 @@
 		}
 
 		/// <summary>
-		/// Adds only non corridor rooms to the layout.
+		/// Greedily adds only non corridor nodes to the layout.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
@@ -183,6 +191,15 @@
 			}
 		}
 
+		/// <summary>
+		/// Greedily adds non corridor node to the layout.
+		/// </summary>
+		/// <remarks>
+		/// Uses special configuration spaces where shapes are not directly connected
+		/// but are rather at a specified distance from each other.
+		/// </remarks>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
 		private void AddNonCorridorGreedily(TLayout layout, TNode node)
 		{
 			var configurations = GetNeighboursOverCorridors(layout, node);
@@ -254,6 +271,12 @@
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
+		/// <summary>
+		/// Adds corridor node greedily.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <returns></returns>
 		public bool AddCorridorGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
@@ -290,11 +313,15 @@
 
 				foreach (var intersectionLine in intersection)
 				{
-					if (intersectionLine.Length > 20)
+					const int maxPoints = 20;
+
+					if (intersectionLine.Length > maxPoints)
 					{
-						for (var i = 0; i < 20; i++)
+						var mod = intersectionLine.Length / maxPoints - 1;
+
+						for (var i = 0; i < maxPoints; i++)
 						{
-							var position = intersectionLine.GetNthPoint(intersectionLine.Length);
+							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
 							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
 
@@ -303,6 +330,11 @@
 								bestShape = shape;
 								bestPosition = position;
 								foundValid = true;
+								break;
+							}
+
+							if (foundValid)
+							{
 								break;
 							}
 						}
@@ -323,6 +355,11 @@
 								foundValid = true;
 								break;
 							}
+
+							if (foundValid)
+							{
+								break;
+							}
 						}
 					}
 
@@ -339,6 +376,7 @@
 			return foundValid;
 		}
 
+		/// <inheritdoc />
 		public override void InjectRandomGenerator(Random random)
 		{
 			base.InjectRandomGenerator(random);

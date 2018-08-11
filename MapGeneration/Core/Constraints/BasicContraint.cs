@@ -11,6 +11,15 @@
 	using Interfaces.Core.Constraints;
 	using Interfaces.Core.Layouts;
 
+	/// <summary>
+	/// Basic contraint that checks if no polygons overlap and if neighbouring
+	/// nodes are connected by doors.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
+	/// <typeparam name="TEnergyData"></typeparam>
+	/// <typeparam name="TShapeContainer"></typeparam>
 	public class BasicContraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
@@ -27,6 +36,8 @@
 			this.configurationSpaces = configurationSpaces;
 		}
 
+		/// <inheritdoc />
+		/// <returns>True if there is no overlap and all neighbours are connected by doors.</returns>
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			var overlap = 0;
@@ -66,6 +77,11 @@
 			return overlap == 0 && distance == 0;
 		}
 
+		/// <inheritdoc />
+		/// <remarks>
+		/// Recomputes only the relation to the perturbed node.
+		/// </remarks>
+		/// <returns>True if there is no overlap and all neighbours are connected by doors.</returns>
 		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
@@ -93,6 +109,10 @@
 			return overlapTotal == 0 && distanceTotal == 0;
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Updates energy data by collecting differences from all the other nodes.
+		/// </summary>
 		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
 			oldLayout.GetConfiguration(node, out var oldConfiguration);

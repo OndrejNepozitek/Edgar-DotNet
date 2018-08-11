@@ -8,9 +8,13 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core;
+	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Utils.MapDrawing;
 
+	/// <summary>
+	/// Draws a layout on an old paper texture.
+	/// </summary>
+	/// <typeparam name="TNode"></typeparam>
 	public class OldMapDrawer<TNode> : AbstractLayoutDrawer<TNode>
 	{
 		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
@@ -25,7 +29,16 @@
 		private TextureBrush outlineBrush;
 		private Pen outlinePen;
 
-		public new Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true)
+		/// <summary>
+		/// Draws a given layout and returns a bitmap.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
+		/// <param name="height"></param>
+		/// <param name="withNames"></param>
+		/// <param name="fixedFontSize"></param>
+		/// <returns></returns>
+		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
@@ -48,7 +61,7 @@
 				StartCap = LineCap.Square
 			};
 
-			base.DrawLayout(layout, width, height, withNames);
+			base.DrawLayout(layout, width, height, withNames, fixedFontSize);
 
 			textureImgInner.Dispose();
 			innerBrush.Dispose();
@@ -57,9 +70,10 @@
 			outlineBrush.Dispose();
 			outlinePen.Dispose();
 
-			return bitmap; // TODO: memory leak?
+			return bitmap;
 		}
 
+		/// <inheritdoc />
 		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
@@ -85,6 +99,7 @@
 			}
 		}
 
+		/// <inheritdoc />
 		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
 		{
 			var partitions = polygonPartitioning.GetPartitions(polygon);

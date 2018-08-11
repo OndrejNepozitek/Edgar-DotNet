@@ -11,7 +11,11 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
 	using Interfaces.Core.Doors;
+	using MapDescriptions;
 
+	/// <summary>
+	/// Class that computes configuration spaces.
+	/// </summary>
 	public class ConfigurationSpacesGenerator
 	{
 		private readonly IPolygonOverlap<GridPolygon> polygonOverlap;
@@ -31,13 +35,21 @@
 			this.polygonUtils = polygonUtils;
 		}
 
+		/// <summary>
+		/// Computes configuration spaces for a given map description.
+		/// </summary>
+		/// <typeparam name="TNode"></typeparam>
+		/// <typeparam name="TConfiguration"></typeparam>
+		/// <param name="mapDescription"></param>
+		/// <param name="offsets"></param>
+		/// <returns></returns>
 		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription, List<int> offsets = null)
 			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			if (mapDescription.IsWithCorridors && mapDescription.CorridorShapes.Count == 0)
+			if (mapDescription.IsWithCorridors && mapDescription.GetCorridorShapes().Count == 0)
 				throw new ArgumentException("The map description has corridors enabled but there are no shapes for them.", nameof(mapDescription));
 
 			var graph = mapDescription.GetGraph();
@@ -47,7 +59,7 @@
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
 
 			// Handle universal shapes
-			foreach (var shape in mapDescription.RoomShapes)
+			foreach (var shape in mapDescription.GetRoomShapes())
 			{
 				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
@@ -58,7 +70,7 @@
 			// Handle shapes for nodes
 			foreach (var vertex in graph.Vertices.Where(x => !mapDescription.IsCorridorRoom(x)))
 			{
-				var shapesForNode = mapDescription.RoomShapesForNodes[vertex];
+				var shapesForNode = mapDescription.GetRoomShapesForNodes()[vertex];
 
 				if (shapesForNode == null)
 				{
@@ -80,7 +92,7 @@
 
 			// Corridor shapes
 			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
-			foreach (var shape in mapDescription.CorridorShapes)
+			foreach (var shape in mapDescription.GetCorridorShapes())
 			{
 				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
@@ -116,6 +128,11 @@
 					configurationSpaces[i][j] =
 						GetConfigurationSpace(shape1.Item1.Value, shape1.Item2, shape2.Item1.Value, shape2.Item2, offsets);
 				}
+			}
+
+			if (shapes.Count == 0 && graph.Vertices.Any(x => !shapesForNodes.ContainsKey(x) || shapesForNodes[x] == null || shapesForNodes[x].Count == 0))
+			{
+				throw new ArgumentException("There must be at least one shape for each node", nameof(mapDescription));
 			}
 
 			return new ConfigurationSpaces<TConfiguration>(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
@@ -200,8 +217,8 @@
 				{
 					var cline = cDoorLine.Line;
 					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - Math.Max(cDoorLine.Length, doorLine.Length)), y);
-					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + 1), y);
+					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
+					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
 
 					if (from.X < to.X) continue;
 
@@ -233,6 +250,15 @@
 			return new ConfigurationSpace() { Lines = configurationSpaceLines, ReverseDoors = reverseDoor };
 		}
 
+		/// <summary>
+		/// Computes configuration space of given two polygons.
+		/// </summary>
+		/// <param name="polygon"></param>
+		/// <param name="doorsMode"></param>
+		/// <param name="fixedCenter"></param>
+		/// <param name="fixedDoorsMode"></param>
+		/// <param name="offsets"></param>
+		/// <returns></returns>
 		public ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, IDoorMode doorsMode, GridPolygon fixedCenter,
 			IDoorMode fixedDoorsMode, List<int> offsets = null)
 		{
@@ -328,7 +354,7 @@
 		{
 			var result = new List<OrthogonalLine>();
 			var rotation = line.ComputeRotation();
-			var rotatedLine = line.Rotate(rotation, false);
+			var rotatedLine = line.Rotate(rotation, true);
 			var directionVector = rotatedLine.GetDirectionVector();
 			var rotatedIntersection = intersection.Select(x => x.Rotate(rotation, false).GetNormalized()).ToList();
 			rotatedIntersection.Sort((x1, x2) => x1.From.CompareTo(x2.From));

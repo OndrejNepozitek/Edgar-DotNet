@@ -5,16 +5,13 @@
 	using System.IO;
 	using System.Linq;
 	using System.Text;
-	using Interfaces.Benchmarks;
-	using Interfaces.Core;
 	using Interfaces.Core.LayoutGenerator;
-	using Interfaces.Core.MapDescription;
 	using Utils;
 
 	/// <summary>
 	/// Class to easily benchmark ILayoutGenerator instances.
 	/// </summary>
-	public class Benchmark<TNode>
+	public class Benchmark<TMapDescription, TLayout>
 	{
 		private const int NameLength = 30;
 		private const int CollumnLength = 15;
@@ -24,7 +21,7 @@
 		/// </summary>
 		/// <typeparam name="TGenerator"></typeparam>
 		/// <typeparam name="TMapDescription"></typeparam>
-		/// <typeparam name="TNode"></typeparam>
+		/// <typeparam name="TLayout"></typeparam>
 		/// <param name="generator">Generator to be used</param>
 		/// <param name="label">Label of the run. Will be used in a header of the result.</param>
 		/// <param name="mapDescriptions">Map descriptions to be given to the generator. First item of the tuple represents a name of the map description.</param>
@@ -32,8 +29,7 @@
 		/// <param name="numberOfLayouts">How many layouts should be generated in every run.</param>
 		/// <param name="writer">Will be used in conjuction with Console.Out if not null.</param>
 		/// <param name="debugWriter">Text writer for debug info. Debug info is not displayed if null.</param>
-		public void Execute<TGenerator, TMapDescription>(TGenerator generator, string label, List<Tuple<string, TMapDescription>> mapDescriptions, int repeats = 10, int numberOfLayouts = 10, TextWriter writer = null, TextWriter debugWriter = null) 
-			where TGenerator : ILayoutGenerator<TMapDescription, TNode>, IBenchmarkable
+		public void Execute(IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator, string label, List<Tuple<string, TMapDescription>> mapDescriptions, int repeats = 10, int numberOfLayouts = 10, TextWriter writer = null, TextWriter debugWriter = null) 
 		{
 			var results = mapDescriptions.Select(x => Execute(generator, x.Item1, x.Item2, repeats, numberOfLayouts, debugWriter: debugWriter));
 
@@ -52,8 +48,8 @@
 		/// Executes a benchmark with a given map description.
 		/// </summary>
 		/// <typeparam name="TGenerator"></typeparam>
-		/// <typeparam name="TNode"></typeparam>
 		/// <typeparam name="TMapDescription"></typeparam>
+		/// <typeparam name="TLayout"></typeparam>
 		/// <param name="generator">Generator to be used.</param>
 		/// <param name="label">Name of a given map description.</param>
 		/// <param name="input">Map description to be given to the generator.</param>
@@ -62,8 +58,7 @@
 		/// <param name="showCurrentProgress">Whether a current progress should be shown to the console.</param>
 		/// <param name="debugWriter">Text writer for debug info. Debug info is not displayed if null.</param>
 		/// <returns></returns>
-		public BenchmarkResult Execute<TGenerator, TMapDescription>(TGenerator generator, string label, TMapDescription input, int repeats = 10, int numberOfLayouts = 10, bool showCurrentProgress = true, TextWriter debugWriter = null)
-			where TGenerator : ILayoutGenerator<TMapDescription, TNode>, IBenchmarkable
+		public BenchmarkResult Execute(IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator, string label, TMapDescription input, int repeats = 10, int numberOfLayouts = 10, bool showCurrentProgress = true, TextWriter debugWriter = null)
 		{
 			generator.EnableBenchmark(true);
 
@@ -110,7 +105,7 @@
 			};
 		}
 
-		private string GetDebugInfo<TGenerator>(TGenerator generator) where TGenerator : IBenchmarkable
+		private string GetDebugInfo(IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator)
 		{
 			var builder = new StringBuilder();
 
@@ -125,17 +120,16 @@
 		/// Runs a given scenario. It makes a cartesian product of all the scenario possibilities.
 		/// </summary>
 		/// <typeparam name="TGenerator"></typeparam>
-		/// <typeparam name="TMapDescription"></typeparam>
-		/// <typeparam name="TNode"></typeparam>
+		/// <typeparam name="TLayout"></typeparam>
 		/// <param name="generator"></param>
 		/// <param name="scenario"></param>
 		/// <param name="mapDescriptions"></param>
 		/// <param name="repeats"></param>
 		/// <param name="numberOfLayouts"></param>
 		/// <param name="writer"></param>
-		public void Execute<TGenerator, TMapDescription>(TGenerator generator, BenchmarkScenario<TGenerator> scenario, List<Tuple<string, TMapDescription>> mapDescriptions,
+		public void Execute<TGenerator>(TGenerator generator, BenchmarkScenario<TGenerator> scenario, List<Tuple<string, TMapDescription>> mapDescriptions,
 			int repeats = 10, int numberOfLayouts = 10, TextWriter writer = null, TextWriter debugWriter = null)
-			where TGenerator : ILayoutGenerator<TMapDescription, TNode>, IBenchmarkable
+			where TGenerator : IBenchmarkableLayoutGenerator<TMapDescription, TLayout>
 		{
 			foreach (var product in scenario.GetSetupsGroups().Select(x => x.GetSetups()).Where(x => x.Count != 0).CartesianProduct())
 			{
@@ -185,6 +179,32 @@
 		{
 			Console.WriteLine(text);
 			writer?.WriteLine(text);
+		}
+	}
+
+	public static class Benchmark
+	{
+		public static Benchmark<TMapDescription, TLayout> CreateFor<TMapDescription, TLayout>(IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator)
+		{
+			return new Benchmark<TMapDescription, TLayout>();
+		}
+
+		/// <summary>
+		/// Creates default files for the benchmark.
+		/// </summary>
+		/// <param name="action"></param>
+		/// <param name="name"></param>
+		public static void WithDefaultFiles(Action<StreamWriter, StreamWriter> action, string name = null)
+		{
+			name = name ?? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
+
+			using (var sw = new StreamWriter(name + ".txt"))
+			{
+				using (var dw = new StreamWriter(name + "_debug.txt"))
+				{
+					action(sw, dw);
+				}
+			}
 		}
 	}
 }

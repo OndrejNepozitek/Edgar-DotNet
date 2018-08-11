@@ -55,12 +55,6 @@
 		}
 
 		/// <inheritdoc />
-		int IGraph<T>.GetNeighbourIndex(T vertex, T neighbour)
-		{
-			throw new NotSupportedException();
-		}
-
-		/// <inheritdoc />
 		public bool HasEdge(T from, T to)
 		{
 			foreach (var neighbour in GetNeighbours(from))

@@ -6,10 +6,18 @@
 	using System.Threading;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
+	using Interfaces.Core.LayoutEvolvers;
+	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
+	using Interfaces.Utils;
 
+	/// <summary>
+	/// Implementation of a simulated annealing evolver.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
 	public class SimulatedAnnealingEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
@@ -17,7 +25,7 @@
 		protected Random Random;
 		protected CancellationToken? CancellationToken;
 
-		protected ILayoutOperations<TLayout, TNode> LayoutOperations;
+		protected IChainBasedLayoutOperations<TLayout, TNode> LayoutOperations;
 
 		public event Action<TLayout> OnPerturbed;
 		public event Action<TLayout> OnValid;
@@ -25,11 +33,12 @@
 		protected int Cycles = 50;
 		protected int TrialsPerCycle = 100;
 
-		public SimulatedAnnealingEvolver(ILayoutOperations<TLayout, TNode> layoutOperations)
+		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations)
 		{
 			LayoutOperations = layoutOperations;
 		}
 
+		/// <inheritdoc />
 		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count)
 		{
 			const double p0 = 0.2d;
@@ -97,49 +106,58 @@
 						}
 						#endregion
 
-						// OnValid?.Invoke(ConvertLayout(perturbedLayout));
-
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							layouts.Add(perturbedLayout);
-							OnValid?.Invoke(perturbedLayout);
+							var shouldContinue = true;
 
-							#region Random restarts
-							if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
+							// TODO: should it be like this?
+							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
 							{
-								wasAccepted = true;
-
-								if (randomRestartsResetCounter)
-								{
-									numberOfFailures = 0;
-								}
+								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain);
 							}
-							#endregion
 
-							yield return perturbedLayout;
-
-							#region Debug output
-
-							//if (withDebugOutput)
-							//{
-							//	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
-							//}
-
-							#endregion
-
-							if (layouts.Count >= count)
+							if (shouldContinue)
 							{
+								layouts.Add(perturbedLayout);
+								OnValid?.Invoke(perturbedLayout);
+
+								#region Random restarts
+								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
+								{
+									wasAccepted = true;
+
+									if (randomRestartsResetCounter)
+									{
+										numberOfFailures = 0;
+									}
+								}
+								#endregion
+
+								yield return perturbedLayout;
+
 								#region Debug output
 
 								//if (withDebugOutput)
 								//{
-								//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
+								//	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
 								//}
 
 								#endregion
 
-								yield break;
+								if (layouts.Count >= count)
+								{
+									#region Debug output
+
+									//if (withDebugOutput)
+									//{
+									//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
+									//}
+
+									#endregion
+
+									yield break;
+								}
 							}
 						}
 					}
@@ -191,15 +209,6 @@
 
 				t = t * ratio;
 			}
-
-			#region Debug output
-
-			//if (withDebugOutput)
-			//{
-			//	Console.WriteLine($"Returning {layouts.Count} partial layouts");
-			//}
-
-			#endregion
 		}
 
 		private TLayout PerturbLayout(TLayout layout, IList<TNode> chain, out double energyDelta)
@@ -217,9 +226,9 @@
 			return newLayout;
 		}
 
-		private bool IsDifferentEnough(TLayout layout, IList<TLayout> layouts, IList<TNode> chain = null)
+		private bool IsDifferentEnough(TLayout layout, IList<TLayout> layouts)
 		{
-			return layouts.All(x => LayoutOperations.AreDifferentEnough(layout, x, chain));
+			return layouts.All(x => LayoutOperations.AreDifferentEnough(layout, x));
 		}
 
 		#region Random restarts
@@ -230,13 +239,20 @@
 		private float randomRestartsScale = 1;
 		private List<int> randomRestartProbabilities = new List<int>() { 2, 3, 5, 7 };
 
+		/// <summary>
+		/// Set up random restarts strategy.
+		/// </summary>
+		/// <param name="enable"></param>
+		/// <param name="successPlace"></param>
+		/// <param name="resetCounter"></param>
+		/// <param name="scale"></param>
 		public void SetRandomRestarts(bool enable, RestartSuccessPlace successPlace = RestartSuccessPlace.OnValidAndDifferent, bool resetCounter = false, float scale = 1f)
 		{
 			enableRandomRestarts = enable;
 			randomRestartsSuccessPlace = successPlace;
 			randomRestartsResetCounter = resetCounter;
 
-			if (scale < 1)
+			if (scale <= 0)
 				throw new ArgumentException();
 
 			randomRestartsScale = scale;
@@ -265,11 +281,6 @@
 				shouldRestart = true;
 			}
 
-			//if (shouldRestart && withDebugOutput)
-			//{
-			//	Console.WriteLine($"Break, we got {numberOfFailures} failures");
-			//}
-
 			return shouldRestart;
 		}
 
@@ -280,10 +291,15 @@
 
 		#endregion
 
+		/// <summary>
+		/// Set up simulated annealing parameters.
+		/// </summary>
+		/// <param name="cycles"></param>
+		/// <param name="trialsPerCycle"></param>
 		public void Configure(int cycles, int trialsPerCycle)
 		{
-			this.Cycles = cycles;
-			this.TrialsPerCycle = trialsPerCycle;
+			Cycles = cycles;
+			TrialsPerCycle = trialsPerCycle;
 		}
 
 		public void InjectRandomGenerator(Random random)

@@ -5,7 +5,7 @@
 
 	/// <inheritdoc />
 	/// <summary>
-	/// Basic layout generator that always picks an unfinished node on the deepest level of the tree.
+	/// Basic generator planner that always picks an unfinished node on the deepest level of the tree.
 	/// </summary>
 	public class BasicGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
 	{

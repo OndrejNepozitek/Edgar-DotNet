@@ -8,6 +8,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Utils;
 	using Utils;
 
 	/// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
@@ -67,7 +68,6 @@
 				foreach (var indices in configurations.GetCombinations(i))
 				{
 					List<OrthogonalLine> intersection = null;
-					// TODO: Would it be better if GetIntersections was lazy?
 
 					foreach (var index in indices)
 					{

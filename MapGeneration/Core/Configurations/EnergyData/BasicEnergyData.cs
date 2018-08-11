@@ -1,8 +1,9 @@
 ﻿namespace MapGeneration.Core.Configurations.EnergyData
 {
-	using Interfaces.Core;
 	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Utils;
 
+	/// <inheritdoc cref="IEnergyData" />
 	public struct BasicEnergyData : IEnergyData, ISmartCloneable<BasicEnergyData>
 	{
 		public float Energy { get; set; }

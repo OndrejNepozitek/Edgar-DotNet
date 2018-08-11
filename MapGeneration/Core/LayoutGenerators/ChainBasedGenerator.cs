@@ -6,16 +6,19 @@
 	using System.Linq;
 	using System.Threading;
 	using ConfigurationSpaces;
-	using Experimental;
 	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Benchmarks;
-	using Interfaces.Core;
+	using Interfaces.Core.ChainDecompositions;
 	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.GeneratorPlanners;
+	using Interfaces.Core.LayoutConverters;
+	using Interfaces.Core.LayoutEvolvers;
 	using Interfaces.Core.LayoutGenerator;
+	using Interfaces.Core.LayoutOperations;
 	using Interfaces.Core.Layouts;
-	using Interfaces.Core.MapDescription;
+	using Interfaces.Core.MapDescriptions;
+	using Interfaces.Utils;
 
 	/// <inheritdoc cref="ILayoutGenerator{TMapDescription,TNode}" />
 	/// <summary>
@@ -25,7 +28,7 @@
 	/// <typeparam name="TLayout">Type of the layout that will be used in the process.</typeparam>
 	/// <typeparam name="TNode">Type of nodes in the map description.</typeparam>
 	/// <typeparam name="TConfiguration">Type of configuration used.</typeparam>
-	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration> : IObservableGenerator<TMapDescription, TNode>, ICancellable, IBenchmarkable, IRandomInjectable
+	public class ChainBasedGenerator<TMapDescription, TLayout, TNode, TConfiguration, TOutputLayout> : IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>, IObservableGenerator<TMapDescription, TOutputLayout>, ICancellable
 		where TMapDescription : IMapDescription<TNode>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 	{
@@ -33,9 +36,9 @@
 		private IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private IChainDecomposition<TNode> chainDecomposition;
 		private ILayoutEvolver<TLayout, TNode> layoutEvolver;
-		private ILayoutOperations<TLayout, TNode> layoutOperations;
+		private IChainBasedLayoutOperations<TLayout, TNode> layoutOperations;
 		private IGeneratorPlanner<TLayout> generatorPlanner;
-		private ILayoutConverter<TLayout, IMapLayout<TNode>> layoutConverter;
+		private ILayoutConverter<TLayout, TOutputLayout> layoutConverter;
 
 		// Creators
 		private Func<
@@ -50,14 +53,14 @@
 
 		private Func<
 			TMapDescription,
-			ILayoutOperations<TLayout, TNode>,
+			IChainBasedLayoutOperations<TLayout, TNode>,
 			ILayoutEvolver<TLayout, TNode>
 		> layoutEvolverCreator;
 
 		private Func<
 			TMapDescription,
 			IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>,
-			ILayoutOperations<TLayout, TNode>
+			IChainBasedLayoutOperations<TLayout, TNode>
 		> layoutOperationsCreator;
 
 		private Func<
@@ -68,7 +71,7 @@
 		private Func<
 			TMapDescription,
 			IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>,
-			ILayoutConverter<TLayout, IMapLayout<TNode>>
+			ILayoutConverter<TLayout, TOutputLayout>
 		> layoutConverterCreator;
 		
 		private Func<
@@ -98,13 +101,13 @@
 		// Events
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnPerturbed;
+		public event Action<TOutputLayout> OnPerturbed;
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnPartialValid;
+		public event Action<TOutputLayout> OnPartialValid;
 
 		/// <inheritdoc />
-		public event Action<IMapLayout<TNode>> OnValid;
+		public event Action<TOutputLayout> OnValid;
 
 		private readonly GraphUtils graphUtils = new GraphUtils();
 
@@ -113,9 +116,12 @@
 			PrepareEnergyDataGetter();
 		}
 
-		public IList<IMapLayout<TNode>> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
+		public IList<TOutputLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
 		{
 			var graph = mapDescription.GetGraph();
+
+			if (graph.VerticesCount < 2)
+				throw new ArgumentException("Given mapDescription must contain at least two nodes.", nameof(mapDescription));
 
 			if (!graphUtils.IsConnected(graph))
 				throw new ArgumentException("Given mapDescription must represent a connected graph.", nameof(mapDescription));
@@ -261,7 +267,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutEvolverCreator(Func<TMapDescription, ILayoutOperations<TLayout, TNode>, ILayoutEvolver<TLayout, TNode>> creator)
+		public void SetLayoutEvolverCreator(Func<TMapDescription, IChainBasedLayoutOperations<TLayout, TNode>, ILayoutEvolver<TLayout, TNode>> creator)
 		{
 			layoutEvolverCreator = creator;
 		}
@@ -273,7 +279,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutConverterCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutConverter<TLayout, IMapLayout<TNode>>> creator)
+		public void SetLayoutConverterCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutConverter<TLayout, TOutputLayout>> creator)
 		{
 			layoutConverterCreator = creator;
 		}
@@ -309,7 +315,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetLayoutOperationsCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, ILayoutOperations<TLayout, TNode>> creator)
+		public void SetLayoutOperationsCreator(Func<TMapDescription, IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace>, IChainBasedLayoutOperations<TLayout, TNode>> creator)
 		{
 			layoutOperationsCreator = creator;
 		}
@@ -417,16 +423,16 @@
 		}
 
 		/// <inheritdoc />
-		long IBenchmarkable.TimeFirst => timeFirst;
+		long IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.TimeFirst => timeFirst;
 
 		/// <inheritdoc />
-		long IBenchmarkable.TimeTotal => timeTotal;
+		long IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.TimeTotal => timeTotal;
 
 		/// <inheritdoc />
-		int IBenchmarkable.IterationsCount => context.IterationsCount;
+		int IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.IterationsCount => context.IterationsCount;
 
 		/// <inheritdoc />
-		int IBenchmarkable.LayoutsCount => layoutsCount;
+		int IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>.LayoutsCount => layoutsCount;
 
 		/// <inheritdoc />
 		public void EnableBenchmark(bool enable)

@@ -6,6 +6,7 @@
 	using System.Linq;
 	using Core;
 	using Core.Doors.DoorModes;
+	using Core.MapDescriptions;
 	using Deserializers;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -30,6 +31,8 @@
 		/// Path to the folder with map configs.
 		/// </summary>
 		private const string MapsPath = "Resources/Maps";
+
+		private const string CustomSetName = "custom";
 
 		public ConfigLoader()
 		{
@@ -88,11 +91,29 @@
 			var mapDescription = new MapDescription<int>();
 			var roomDescriptionsSets = LoadRoomDescriptionsSetsFromResources();
 
+			if (mapDescriptionModel.CustomRoomDescriptionsSet != null)
+			{
+				roomDescriptionsSets.Add(CustomSetName, mapDescriptionModel.CustomRoomDescriptionsSet);
+			}
+			
 			LoadRooms(mapDescription, mapDescriptionModel, roomDescriptionsSets);
 			LoadPassagess(mapDescription, mapDescriptionModel);
 			LoadCorridors(mapDescription, mapDescriptionModel, roomDescriptionsSets);
 
 			return mapDescription;
+		}
+
+		/// <summary>
+		/// Loads MapDescription from a given file.
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		public MapDescription<int> LoadMapDescription(string filename)
+		{
+			using (var sr = new StreamReader(filename))
+			{
+				return LoadMapDescription(sr);
+			}
 		}
 
 		/// <summary>
@@ -122,6 +143,11 @@
 					if (string.IsNullOrEmpty(model.Name))
 					{
 						throw new InvalidOperationException("Name must not be empty");
+					}
+
+					if (model.Name == CustomSetName)
+					{
+						throw new InvalidOperationException($"'{CustomSetName}' is a reserved set name");
 					}
 
 					models.Add(model.Name, model);

@@ -6,6 +6,7 @@
 	using Interfaces.Core;
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Utils;
 
 	/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
 	/// <summary>

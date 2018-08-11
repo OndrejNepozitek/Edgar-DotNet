@@ -4,6 +4,10 @@
 	using System.Collections.Generic;
 	using DataStructures.Graphs;
 
+	/// <summary>
+	/// Implementation of the Hopcroft-Karp algorithm.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public class HopcroftKarp<T>
 	{
 		private readonly BipartiteCheck<T> bipartiteCheck = new BipartiteCheck<T>();
@@ -19,10 +23,15 @@
 		private int[] pairV;
 		private int[] dist;
 
+		/// <summary>
+		/// Gets maximum matching of a given bipartite graph.
+		/// </summary>
+		/// <param name="graph"></param>
+		/// <returns></returns>
 		public List<Edge<T>> GetMaximumMatching(IGraph<T> graph)
 		{
 			if (!bipartiteCheck.IsBipartite(graph, out var parts))
-				throw new InvalidOperationException("Given graph is not bipartite");
+				throw new ArgumentException("Given graph is not bipartite", nameof(graph));
 
 			convertedGraph = ConvertGraph(graph, parts.Item1, parts.Item2);
 
@@ -43,15 +52,13 @@
 				SetPairV(i + sizeU, Nil);
 			}
 
-			var result = 0;
-
 			while (BFS())
 			{
 				for (var u = 0; u < sizeU; u++)
 				{
 					if (GetPairU(u) == Nil && DFS(u))
 					{
-						result++;
+						/* empty */
 					}
 				}
 			}

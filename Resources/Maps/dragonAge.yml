@@ -1,6 +1,6 @@
 roomsRange:
-  from: 1
-  to: 22
+  from: 0
+  to: 21
 
 passages:
   - [1,4]
@@ -23,8 +23,8 @@ passages:
   - [17,21]
   - [18,19]
   - [18,20]
-  - [21,22]
-  - [5,22]
+  - [21,0]
+  - [5,0]
   - [7,1]
 
 rooms:
@@ -34,7 +34,7 @@ rooms:
       - roomDescriptionName: 18-26-rectangle
 
   # Square like shapes
-  [2, 3, 22]:
+  [2, 3, 0]:
     roomShapes:
       - roomDescriptionName: 12-square
 

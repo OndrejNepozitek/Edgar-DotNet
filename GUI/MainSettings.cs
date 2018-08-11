@@ -4,9 +4,12 @@
 	using System.IO;
 	using System.Linq;
 	using System.Windows.Forms;
-	using MapGeneration.Core;
+	using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Utils.ConfigParsing;
 
+	/// <summary>
+	/// Windows that shows main settings of the layout generator.
+	/// </summary>
 	public partial class MainSettings : Form
 	{
 		private readonly ConfigLoader configLoader = new ConfigLoader();
@@ -30,9 +33,10 @@
 
 		private void generateButton_Click(object sender, EventArgs e)
 		{
-			if (loadedMapDescriptionsComboBox == null)
+			if (mapDescription == null)
 			{
 				ShowSettingsError("Map description not chosen");
+				return;
 			}
 
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
@@ -47,6 +51,15 @@
 				ShowPartialValidLayoutsTime = (int) showPartialValidLayoutsTime.Value,
 				ShowPerturbedLayouts = showPerturbedLayouts.Checked,
 				ShowPerturbedLayoutsTime = (int) showPerturbedLayoutsTime.Value,
+				ExportShownLayouts = exportShownLayoutsCheckbox.Checked,
+
+				UseOldPaperStyle = useOldPaperStyleCheckbox.Checked,
+				ShowRoomNames = showRoomNamesCheckbox.Checked,
+
+				FixedFontSize = fixedFontSizeCheckbox.Checked,
+				FixedFontSizeValue = (int) fixedFontSizeValue.Value,
+				FidexSquareExport = fixedSquareExportCheckbox.Checked,
+				FixedSquareExportValue = (int) fixedSquareExportValue.Value,
 			});
 			
 			generatorWindow.Show();

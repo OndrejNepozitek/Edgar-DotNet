@@ -5,7 +5,8 @@
 	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
-	using MapGeneration.Core.GraphDecomposition;
+	using Interfaces.Core.ChainDecompositions;
+	using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 
 	public abstract class ChainDecomposersTests
@@ -70,26 +71,6 @@
 			{
 				var graphDecomposer = new GraphDecomposer<int>();
 				chainDecomposition = new BreadthFirstChainDecomposition<int>(graphDecomposer);
-			}
-		}
-
-		[TestFixture]
-		public class BasicChainsDecompositionTests : ChainDecomposersTests
-		{
-			protected override void CreateConcrete()
-			{
-				var graphDecomposer = new GraphDecomposer<int>();
-				chainDecomposition = new BasicChainsDecomposition<int>(graphDecomposer);
-			}
-		}
-
-		[TestFixture]
-		public class LongerChainsDecompositionTests : ChainDecomposersTests
-		{
-			protected override void CreateConcrete()
-			{
-				var graphDecomposer = new GraphDecomposer<int>();
-				chainDecomposition = new BasicChainsDecomposition<int>(graphDecomposer);
 			}
 		}
 	}
