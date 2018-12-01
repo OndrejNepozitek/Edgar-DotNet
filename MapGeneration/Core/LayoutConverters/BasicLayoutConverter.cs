@@ -31,12 +31,19 @@
 		protected Random Random;
 		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
+		protected readonly Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> IntAliasMapping;
 
-		public BasicLayoutConverter(MapDescription<TNode> mapDescription, IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, ICorridorNodesCreator<TNode> corridorNodesCreator = null)
+		public BasicLayoutConverter(
+			MapDescription<TNode> mapDescription, 
+			IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
+			Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> intAliasMapping,
+			ICorridorNodesCreator<TNode> corridorNodesCreator = null
+		)
 		{
 			MapDescription = mapDescription;
 			ConfigurationSpaces = configurationSpaces;
 			CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
+			IntAliasMapping = intAliasMapping;
 		}
 
 		/// <inheritdoc />
@@ -53,8 +60,9 @@
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
 				{
 					var vertex = mapping.GetByValue(vertexAlias);
+					var roomInfo = IntAliasMapping[configuration.ShapeContainer.Alias];
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.IsCorridorRoom(vertexAlias));
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.IsCorridorRoom(vertexAlias), roomInfo.RoomDescription, roomInfo.Rotation);
 					rooms.Add(room);
 
 					if (!addDoors)

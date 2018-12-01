@@ -3,6 +3,7 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces.Core.MapDescriptions;
 	using Interfaces.Core.MapLayouts;
 
 	/// <inheritdoc />
@@ -18,12 +19,18 @@
 
 		public IList<IDoorInfo<TNode>> Doors { get; set; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor)
+		public IRoomDescription RoomDescription { get; }
+
+		public int Rotation { get; }
+
+		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, IRoomDescription roomDescription, int rotation)
 		{
 			Node = node;
 			Shape = shape;
 			Position = position;
 			IsCorridor = isCorridor;
+			RoomDescription = roomDescription;
+			Rotation = rotation;
 			Doors = null;
 		}
 	}
