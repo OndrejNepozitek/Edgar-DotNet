@@ -2,11 +2,12 @@
 {
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.Doors;
+	using Interfaces.Core.MapDescriptions;
 
 	/// <summary>
 	/// Description of a room.
 	/// </summary>
-	public class RoomDescription
+	public class RoomDescription : IRoomDescription
 	{
 		public GridPolygon Shape { get; }
 

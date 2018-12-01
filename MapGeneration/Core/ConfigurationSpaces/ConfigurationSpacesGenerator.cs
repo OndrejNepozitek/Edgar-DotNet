@@ -23,6 +23,14 @@
 		private readonly ILineIntersection<OrthogonalLine> lineIntersection;
 		private readonly IPolygonUtils<GridPolygon> polygonUtils;
 
+		/// <summary>
+		/// Information about which int alias corresponds to which map description and possible rotation.
+		/// </summary>
+		/// <remarks>
+		/// Is overwritten after each call to Generate().
+		/// </remarks>
+		public Dictionary<int, RoomInfo> LastIntAliasMapping { get; private set; }
+
 		public ConfigurationSpacesGenerator(
 			IPolygonOverlap<GridPolygon> polygonOverlap,
 			IDoorHandler doorHandler,
@@ -57,11 +65,12 @@
 			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<IDoorLine>>>();
 			var shapes = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
+			var intAliasMapping = new Dictionary<int, RoomInfo>();
 
 			// Handle universal shapes
 			foreach (var shape in mapDescription.GetRoomShapes())
 			{
-				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
+				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(x => CreateAlias(x.Item1, x.Item2, x.Item3, shape.RoomDescription)).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -81,7 +90,7 @@
 				var shapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 				foreach (var shape in shapesForNode)
 				{
-					var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
+					var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(x => CreateAlias(x.Item1, x.Item2, x.Item3, shape.RoomDescription)).ToList();
 					var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -94,7 +103,7 @@
 			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 			foreach (var shape in mapDescription.GetCorridorShapes())
 			{
-				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(CreateAlias).ToList();
+				var rotatedShapes = PreparePolygons(shape.RoomDescription, shape.ShouldRotate).Select(x => CreateAlias(x.Item1, x.Item2, x.Item3, shape.RoomDescription)).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				corridorShapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -135,30 +144,38 @@
 				throw new ArgumentException("There must be at least one shape for each node", nameof(mapDescription));
 			}
 
+			LastIntAliasMapping = intAliasMapping;
+
 			return new ConfigurationSpaces<TConfiguration>(shapes, shapesForNodesArray, configurationSpaces, lineIntersection);
 
 			// Return an already existing alias or create a new one
-			Tuple<IntAlias<GridPolygon>, List<IDoorLine>> CreateAlias(Tuple<GridPolygon, List<IDoorLine>> room)
+			Tuple<IntAlias<GridPolygon>, List<IDoorLine>> CreateAlias(GridPolygon polygon, List<IDoorLine> doorLines, int rotation, RoomDescription roomDescription)
 			{
 				foreach (var pair in allShapes)
 				{
-					if (pair.Value.Item1.Value.Equals(room.Item1) && pair.Value.Item2.SequenceEqual(room.Item2))
+					var roomInfo = intAliasMapping[pair.Key];
+
+					if (pair.Value.Item1.Value.Equals(polygon)
+					    && pair.Value.Item2.SequenceEqual(doorLines)
+					    && roomInfo.RoomDescription == roomDescription 
+					    && roomInfo.Rotation == rotation)
 					{
 						return pair.Value;
 					}
 				}
 
-				var alias = new IntAlias<GridPolygon>(aliasCounter++, room.Item1);
-				var aliasTuple = Tuple.Create(alias, room.Item2);
+				var alias = new IntAlias<GridPolygon>(aliasCounter++, polygon);
+				var aliasTuple = Tuple.Create(alias, doorLines);
 				allShapes.Add(alias.Alias, aliasTuple);
+				intAliasMapping.Add(alias.Alias, new RoomInfo(roomDescription, rotation));
 
 				return aliasTuple;
 			}
 		}
 
-		private List<Tuple<GridPolygon, List<IDoorLine>>> PreparePolygons(RoomDescription roomDescription, bool shouldRotate)
+		private List<Tuple<GridPolygon, List<IDoorLine>, int>> PreparePolygons(RoomDescription roomDescription, bool shouldRotate)
 		{
-			var result = new List<Tuple<GridPolygon, List<IDoorLine>>>();
+			var result = new List<Tuple<GridPolygon, List<IDoorLine>, int>>();
 			var doorLines = doorHandler.GetDoorPositions(roomDescription.Shape, roomDescription.DoorsMode);
 			var shape = roomDescription.Shape;
 			var rotations = shouldRotate ? GridPolygon.PossibleRotations : new[] {0};
@@ -176,7 +193,7 @@
 				if (result.Any(x => x.Item1.Equals(rotatedShape) && x.Item2.SequenceEqualWithoutOrder(rotatedDoorLines)))
 					continue;
 
-				result.Add(Tuple.Create(rotatedShape, rotatedDoorLines));
+				result.Add(Tuple.Create(rotatedShape, rotatedDoorLines, rotation));
 			}
 
 			return result;
@@ -377,6 +394,19 @@
 			}
 
 			return result.Select(x => x.Rotate(-rotation, false)).ToList();
+		}
+
+		public class RoomInfo
+		{
+			public RoomDescription RoomDescription { get; }
+
+			public int Rotation { get; }
+
+			public RoomInfo(RoomDescription roomDescription, int rotation)
+			{
+				RoomDescription = roomDescription;
+				Rotation = rotation;
+			}
 		}
 	}
 }

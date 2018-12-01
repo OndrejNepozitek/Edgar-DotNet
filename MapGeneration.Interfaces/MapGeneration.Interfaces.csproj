@@ -54,6 +54,7 @@
     <Compile Include="Core\LayoutConverters\ICorridorNodesFactory.cs" />
     <Compile Include="Core\LayoutOperations\IChainBasedLayoutOperations.cs" />
     <Compile Include="Core\LayoutOperations\ILayoutOperationsWithCorridors.cs" />
+    <Compile Include="Core\MapDescriptions\IRoomDescription.cs" />
     <Compile Include="Core\MapLayouts\IDoorInfo.cs" />
     <Compile Include="Utils\ICancellable.cs" />
     <Compile Include="Core\ChainDecompositions\IChainDecomposition.cs" />

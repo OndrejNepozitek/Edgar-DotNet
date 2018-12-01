@@ -3,6 +3,7 @@
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
+	using MapDescriptions;
 
 	/// <summary>
 	/// Represents a layout room.
@@ -19,5 +20,9 @@
 		bool IsCorridor { get; }
 
 		IList<IDoorInfo<TNode>> Doors { get; }
+
+		IRoomDescription RoomDescription { get; }
+
+		int Rotation { get; }
 	}
 }
