@@ -6,6 +6,9 @@ To produce a game level, the algorithm takes a set of polygonal building blocks 
 
 ## See the documentation [here](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/introduction.html)
 
+## Bachelor thesis and paper
+This library was created as a part of my bachelor thesis. Text of the thesis can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/bachelor_thesis.pdf). After completing the thesis, we decided to transform it to a paper and submit it to the Game-On 2018 conference. The extended version of the paper can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/extended_paper.pdf). This version also contains a practical use-case of the algorithm, which is not present in the regular version due to length limitations.
+
 ## Features
 - Any planar connected graph can be used as an input
 - Any orthogonal polygon can be used as a room shape
