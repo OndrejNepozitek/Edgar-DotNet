@@ -2,7 +2,7 @@
   "docs": {
     "Introduction": ["introduction", "installation"],
     "Guides": ["guides", "basicMapDescription", "differentShapesMapDescription", "differentProbabilitiesMapDescription",  "corridorsMapDescription"],
-    "Misc": ["gui", "configFormat", "benchmarks"]
+    "Misc": ["gui", "configFormat"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
