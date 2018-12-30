@@ -2,45 +2,79 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Runtime.InteropServices;
+	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.Doors;
 
 	public static class DoorUtils
 	{
-		//public static List<IDoorLine> FixDoorDirections(GridPolygon polygon, IEnumerable<IDoorLine> doorLines)
-		//{
-		//	var polygonLines = polygon.GetLines();
-		//}
+		/// <summary>
+		/// Merges all door lines that are directly next to each other and have the same length.
+		/// </summary>
+		/// <param name="doorLines"></param>
+		/// <returns></returns>
+		public static List<IDoorLine> MergeDoorLines(IEnumerable<IDoorLine> doorLines)
+		{
+			var doorLinesByDirection = doorLines.GroupBy(x => x.Line.GetDirection());
+			var result = new List<IDoorLine>();
 
-		//private static DoorLine FixDoorDirection(List<OrthogonalLine> polygonLines, IDoorLine doorLine)
-		//{
-		//	if (doorLine.Length == 0)
-		//		throw new InvalidOperationException();
+			foreach (var grouping in doorLinesByDirection)
+			{
+				var sameDirectionDoorLines = new LinkedList<IDoorLine>(grouping);
 
-		//	var doorPosition = doorLine.Line;
+				while (sameDirectionDoorLines.Count != 0)
+				{
+					var doorLineNode = sameDirectionDoorLines.First;
+					var doorLine = doorLineNode.Value;
+					sameDirectionDoorLines.RemoveFirst();
 
-		//	if (doorPosition.GetDirection() == OrthogonalLine.Direction.Undefined)
-		//		throw new InvalidOperationException("Cannot fix door direction when original direction is undefined");
+					while (true)
+					{
+						var found = false;
+						var nextDoorLineNode = sameDirectionDoorLines.First;
 
-		//	foreach (var side in polygonLines)
-		//	{
-		//		if (side.Contains(doorPosition.From) == -1 || side.Contains(doorPosition.To) == -1)
-		//			continue;
+						while (nextDoorLineNode != null)
+						{
+							var otherDoorLineNode = nextDoorLineNode;
+							var otherDoorLine = otherDoorLineNode.Value;
+							nextDoorLineNode = otherDoorLineNode.Next;
 
-		//		var isGoodDirection = doorPosition.From + doorPosition.Length * side.GetDirectionVector() == doorPosition.To;
+							if (otherDoorLine.Length != doorLine.Length)
+							{
+								continue;
+							}
+								
+							if (doorLine.Line.To + doorLine.Line.GetDirectionVector() == otherDoorLine.Line.From)
+							{
+								doorLine = new DoorLine(new OrthogonalLine(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length);
+								found = true;
+								sameDirectionDoorLines.Remove(otherDoorLineNode);
+							}
+							else if (doorLine.Line.From - doorLine.Line.GetDirectionVector() == otherDoorLine.Line.To)
+							{
+								doorLine = new DoorLine(new OrthogonalLine(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length);
+								found = true;
+								sameDirectionDoorLines.Remove(otherDoorLineNode);
+							}
+						}
 
+						if (!found)
+							break;
+					}
 
+					result.Add(doorLine);
+				}
+			}
 
-		//		var from = isGoodDirection ? doorPosition.From : doorPosition.To;
+			return result;
+		}
 
-		//		return new DoorLine(new OrthogonalLine(from, from, side.GetDirection()), doorPosition.Length);
-		//	}
-
-		//	throw new InvalidOperationException("Given door position is not on any side of the polygon");
-		//}
-
+		/// <summary>
+		/// Transform door line according to a given transformation.
+		/// </summary>
+		/// <param name="doorLine"></param>
+		/// <param name="transformation"></param>
+		/// <returns></returns>
 		public static IDoorLine TransformDoorLine(IDoorLine doorLine, Transformation transformation)
 		{
 			var doorPosition = doorLine.Line;

@@ -232,6 +232,9 @@
 			var configurationSpaceLines = new List<OrthogonalLine>();
 			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLine>>();
 
+			doorLines = DoorUtils.MergeDoorLines(doorLines);
+			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
+
 			// One list for every direction
 			var lines = new List<IDoorLine>[4];
 
