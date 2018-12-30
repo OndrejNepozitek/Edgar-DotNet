@@ -253,5 +253,112 @@
 				Assert.Throws<ArgumentException>(() => p.Build());
 			}
 		}
+
+		[Test]
+		public void Transform_ReturnsTransformed()
+		{
+			var polygon = GridPolygon.GetRectangle(2, 1);
+
+			{
+				var transformed = polygon.Transform(Transformation.Identity);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(0, 1),
+					new IntVector2(2, 1),
+					new IntVector2(2, 0)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.Rotate90);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(1, 0),
+					new IntVector2(1, -2),
+					new IntVector2(0, -2)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.Rotate180);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(0, -1),
+					new IntVector2(-2, -1),
+					new IntVector2(-2, 0)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.Rotate270);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(-1, 0),
+					new IntVector2(-1, 2),
+					new IntVector2(0, 2)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.MirrorX);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(2, 0),
+					new IntVector2(2, -1),
+					new IntVector2(0, -1)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.MirrorY);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(-2, 0),
+					new IntVector2(-2, 1),
+					new IntVector2(0, 1)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.Diagonal13);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(0, 2),
+					new IntVector2(1, 2),
+					new IntVector2(1, 0)
+				}));
+			}
+
+			{
+				var transformed = polygon.Transform(Transformation.Diagonal24);
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				{
+					new IntVector2(0, 0),
+					new IntVector2(0, -2),
+					new IntVector2(-1, -2),
+					new IntVector2(-1, 0)
+				}));
+			}
+		}
+
+		[Test]
+		public void GetAllTransformations_ReturnsCorrectCount()
+		{
+			var square = GridPolygon.GetSquare(1);
+			var rectangle = GridPolygon.GetRectangle(1, 2);
+
+			var transformedSquares = square.GetAllTransformations();
+			var transformedRectangles = rectangle.GetAllTransformations();
+
+			Assert.That(transformedSquares.Count(), Is.EqualTo(8));
+			Assert.That(transformedRectangles.Count(), Is.EqualTo(8));
+		}
 	}
 }

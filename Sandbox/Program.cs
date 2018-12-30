@@ -36,7 +36,7 @@
 			RunBenchmark();
 			// CompareOldAndNew();
 			// RunExample();
-			ConvertToXml();
+			// ConvertToXml();
 		}
 
 		/// <summary>
@@ -97,7 +97,7 @@
 
 			//layoutGenerator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
 			//// layoutGenerator.SetChainDecompositionCreator(mapDescription => new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>(), false));
-			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
+			// layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
 			//layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
 			//{
 			//	var evolver =
@@ -113,7 +113,7 @@
 			scenario.SetRunsCount(2);
 
 			var setups = scenario.MakeSetupsGroup();
-			setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random(0)));
+			setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random()));
 
 			Benchmark.WithDefaultFiles((sw, dw) =>
 			{
@@ -216,13 +216,13 @@
 			{
 				files = new List<string>()
 				{
-					//"backtracking_advanced",
+					"backtracking_advanced",
 					"generating_one_layout_advanced",
 					"example1_advanced",
-					//"example2_advanced",
-					//"example3_advanced",
+					"example2_advanced",
+					"example3_advanced",
 					"game1_basic",
-					//"game2_basic",
+					"game2_basic",
 				};
 			}
 

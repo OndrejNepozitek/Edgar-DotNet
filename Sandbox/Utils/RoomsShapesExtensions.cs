@@ -58,8 +58,8 @@
 					.Build().Scale(scale)
 				, doorMode);
 
-			mapDescription.AddRoomShapes(squareRoom, true, 4);
-			mapDescription.AddRoomShapes(rectangleRoom, true, 2);
+			mapDescription.AddRoomShapes(squareRoom, probability: 4);
+			mapDescription.AddRoomShapes(rectangleRoom, probability: 2);
 			mapDescription.AddRoomShapes(room1);
 			mapDescription.AddRoomShapes(room2);
 			mapDescription.AddRoomShapes(room3);

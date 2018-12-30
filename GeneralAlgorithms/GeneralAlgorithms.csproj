@@ -89,6 +89,7 @@
     <Compile Include="Algorithms\Common\Extensions.cs" />
     <Compile Include="Algorithms\Common\ILineIntersection.cs" />
     <Compile Include="Algorithms\Common\OrthogonalLineIntersection.cs" />
+    <Compile Include="Algorithms\Common\TransformationHelper.cs" />
     <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
     <Compile Include="DataStructures\Polygons\GridRectangle.cs" />
     <Compile Include="DataStructures\Polygons\IPolygon.cs" />
+    <Compile Include="DataStructures\Common\Transformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

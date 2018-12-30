@@ -40,7 +40,7 @@
 		}
 
 		/// <summary>
-		/// Construct an orthogonal line from given endpoints an a direction.
+		/// Construct an orthogonal line from given endpoints and a direction.
 		/// </summary>
 		/// <remarks>
 		/// Direction is used only when the line is degenerated - that means
