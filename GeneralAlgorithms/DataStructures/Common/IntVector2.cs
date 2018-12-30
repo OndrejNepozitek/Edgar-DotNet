@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using System.Diagnostics.Contracts;
 	using Algorithms.Math;
+	using Polygons;
 
 	/// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
@@ -129,6 +130,45 @@
 			var y = -X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
 
 			return new IntVector2(x, y);
+		}
+
+		/// <summary>
+		/// Transforms a given vector.
+		/// </summary>
+		/// <param name="transformation"></param>
+		/// <returns></returns>
+		[Pure]
+		public IntVector2 Transform(Transformation transformation)
+		{
+			switch (transformation)
+			{
+				case Transformation.Identity:
+					return this;
+
+				case Transformation.Rotate90:
+					return RotateAroundCenter(90);
+
+				case Transformation.Rotate180:
+					return RotateAroundCenter(180);
+
+				case Transformation.Rotate270:
+					return RotateAroundCenter(270);
+
+				case Transformation.MirrorX:
+					return new IntVector2(X, -Y);
+
+				case Transformation.MirrorY:
+					return new IntVector2(-X, Y);
+
+				case Transformation.Diagonal13:
+					return new IntVector2(Y, X);
+
+				case Transformation.Diagonal24:
+					return new IntVector2(-Y, -X);
+
+				default:
+					throw new ArgumentException("Given polygon transformation is not implemented");
+			}
 		}
 
 		/// <summary>

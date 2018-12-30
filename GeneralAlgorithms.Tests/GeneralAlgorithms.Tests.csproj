@@ -97,6 +97,7 @@
     <Compile Include="Algorithms\Polygons\GridPolygonOverlapTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonPartitioningTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonUtilsTests.cs" />
+    <Compile Include="DataStructures\Common\IntVector2Tests.cs" />
     <Compile Include="DataStructures\Common\OrthogonalLineTests.cs" />
     <Compile Include="DataStructures\Common\SimpleBitVector32Tests.cs" />
     <Compile Include="DataStructures\Graphs\GraphTests.cs" />

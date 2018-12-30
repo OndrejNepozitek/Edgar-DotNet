@@ -166,14 +166,14 @@
 			var squareRoom = new RoomDescription(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
 			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
 
-			mapDescription.AddRoomShapes(squareRoom, rotate: true);
-			mapDescription.AddRoomShapes(rectangleRoom, rotate: true, probability: 0.5d);
+			mapDescription.AddRoomShapes(squareRoom);
+			mapDescription.AddRoomShapes(rectangleRoom, probability: 0.5d);
 
 			mapDescription.AddRoom(0);
 			mapDescription.AddRoom(1);
 			mapDescription.AddPassage(0, 1);
 
-			mapDescription.AddRoomShapes(1, rectangleRoom, false);
+			mapDescription.AddRoomShapes(1, rectangleRoom, new List<Transformation>() {Transformation.Identity});
 
 			// var configurationSpaces = generator.Generate(mapDescription);
 			Assert.IsTrue(false); // TODO: repair

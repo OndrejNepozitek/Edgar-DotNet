@@ -21,16 +21,19 @@
 
 		public IRoomDescription RoomDescription { get; }
 
-		public int Rotation { get; }
+		public Transformation Transformation { get; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, IRoomDescription roomDescription, int rotation)
+		public IList<Transformation> Transformations { get; }
+
+		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, IRoomDescription roomDescription, Transformation transformation, IList<Transformation> transformations)
 		{
 			Node = node;
 			Shape = shape;
 			Position = position;
 			IsCorridor = isCorridor;
 			RoomDescription = roomDescription;
-			Rotation = rotation;
+			Transformation = transformation;
+			Transformations = transformations;
 			Doors = null;
 		}
 	}

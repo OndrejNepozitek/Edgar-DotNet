@@ -187,7 +187,7 @@
 			foreach (var rooms in corridors.CorridorShapes)
 			{
 				var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-				mapDescription.AddCorridorShapes(roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+				mapDescription.AddCorridorShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 			}
 		}
 
@@ -218,7 +218,7 @@
 
 							foreach (var name in pair.Key)
 							{
-								mapDescription.AddRoomShapes(name, roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+								mapDescription.AddRoomShapes(name, roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 							}
 						}
 					}
@@ -230,9 +230,14 @@
 				foreach (var rooms in mapDescriptionModel.DefaultRoomShapes)
 				{
 					var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-					mapDescription.AddRoomShapes(roomShapes, rooms.Rotate ?? true, rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+					mapDescription.AddRoomShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 				}
 			}
+		}
+
+		private List<Transformation> GetTransformations(bool? rotate)
+		{
+			return (rotate.HasValue && rotate.Value == false) ? new List<Transformation>() {Transformation.Identity} : null;
 		}
 
 		private List<RoomDescription> GetRoomDescriptions(RoomShapesModel roomShapesModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets, RoomDescriptionsSetModel customRoomDescriptionsSet, IntVector2? scale)

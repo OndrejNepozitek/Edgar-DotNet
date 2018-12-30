@@ -168,6 +168,8 @@
 			return new GridPolygon(polygon.points.Select(x => x + position));
 		}
 
+		#region Transformations
+
 		/// <summary>
 		/// Scales the polygon.
 		/// </summary>
@@ -175,7 +177,7 @@
 		/// <returns></returns>
 		public GridPolygon Scale(IntVector2 factor)
 		{
-			if (factor.X <= 0 || factor.Y <= 0) 
+			if (factor.X <= 0 || factor.Y <= 0)
 				throw new ArgumentOutOfRangeException(nameof(factor), "Both components of factor must be positive");
 
 			return new GridPolygon(points.Select(x => x.ElementWiseProduct(factor)));
@@ -210,6 +212,53 @@
 		}
 
 		/// <summary>
+		/// Transforms a given polygon.
+		/// </summary>
+		/// <remarks>
+		/// Returns a new polygon rather than modifying the original one.
+		/// 
+		/// Some transformations would result in a counter-clockwise order of points, which is currently not allowed.
+		/// In that case, the order of points is reversed with the first point staying the same.
+		/// </remarks>
+		/// <param name="transformation"></param>
+		/// <returns></returns>
+		public GridPolygon Transform(Transformation transformation)
+		{
+			var newPoints = points.Select(x => x.Transform(transformation));
+
+			// Change order of points if needed
+			if (transformation == Transformation.MirrorX
+			    || transformation == Transformation.MirrorY
+			    || transformation == Transformation.Diagonal13
+			    || transformation == Transformation.Diagonal24)
+			{
+				var newPointsList = newPoints.ToList();
+				newPoints = new[] {newPointsList[0]}.Concat(newPointsList.Skip(1).Reverse());
+			}
+
+			return new GridPolygon(newPoints);
+		}
+
+		/// <summary>
+		/// Get all possible transformations of the polygon.
+		/// </summary>
+		/// <remarks>
+		/// Possibly includes duplicates as e.g. all rotations of a square ale equal.
+		/// </remarks>
+		/// <returns></returns>
+		public IEnumerable<GridPolygon> GetAllTransformations()
+		{
+			foreach (var transformation in (Transformation[])Enum.GetValues(typeof(Transformation)))
+			{
+				yield return Transform(transformation);
+			}
+		}
+
+		#endregion
+
+		#region Factories
+
+		/// <summary>
 		/// Helper method for creating a polygon with side a.
 		/// </summary>
 		/// <param name="a">Length of the side.</param>
@@ -227,7 +276,7 @@
 		/// <returns></returns>
 		public static GridPolygon GetRectangle(int width, int height)
 		{
-			if (width <= 0) 
+			if (width <= 0)
 				throw new ArgumentOutOfRangeException(nameof(width), "Both a and b must be greater than 0");
 
 			if (height <= 0)
@@ -241,5 +290,7 @@
 
 			return polygon.Build();
 		}
+
+		#endregion
 	}
 }
