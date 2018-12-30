@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ConfigurationSpaces\CSGeneratorTests.cs" />
+    <Compile Include="Core\Doors\DoorUtilsTests.cs" />
     <Compile Include="Core\Doors\OverlapModeHandlerTests.cs" />
     <Compile Include="Core\GraphDecomposition\ChainDecomposersTests.cs" />
     <Compile Include="Grid\ConfigurationSpaceGeneratorTests.cs" />
