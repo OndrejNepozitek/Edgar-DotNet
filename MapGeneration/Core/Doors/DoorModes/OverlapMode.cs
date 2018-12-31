@@ -21,9 +21,6 @@
 
 		public OverlapMode(int doorLength, int cornerDistance)
 		{
-			if (doorLength < 1)
-				throw new ArgumentException("Lenght of doors must be at least 1.", nameof(doorLength));
-
 			if (cornerDistance < 0)
 				throw new ArgumentException("Minimum overlap must not be less than 0.", nameof(cornerDistance));
 

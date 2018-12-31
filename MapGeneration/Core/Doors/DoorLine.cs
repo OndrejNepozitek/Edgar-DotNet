@@ -34,7 +34,7 @@
 		/// <inheritdoc />
 		public bool Equals(DoorLine other)
 		{
-			return Line.Equals(other.Line) && Length == other.Length;
+			return Line.Equals(other.Line) && Length == other.Length && Line.GetDirection().Equals(other.Line.GetDirection());
 		}
 
 		/// <inheritdoc />
