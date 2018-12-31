@@ -20,6 +20,9 @@
 
 			foreach (var grouping in doorLinesByDirection)
 			{
+				if (grouping.Key == OrthogonalLine.Direction.Undefined)
+					throw new ArgumentException("There must be no door lines with undefined direction");
+
 				var sameDirectionDoorLines = new LinkedList<IDoorLine>(grouping);
 
 				while (sameDirectionDoorLines.Count != 0)

@@ -1,6 +1,8 @@
 ﻿namespace MapGeneration.Core.Doors.DoorModes
 {
+	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using Interfaces.Core.Doors;
 
@@ -13,6 +15,9 @@
 
 		public SpecificPositionsMode(List<OrthogonalLine> doorPositions)
 		{
+			if (doorPositions.Distinct().Count() != doorPositions.Count)
+				throw new ArgumentException("All door positions must be unique");
+
 			DoorPositions = doorPositions;
 		}
 

@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -22,20 +23,22 @@
 			if (!(doorModeRaw is SpecificPositionsMode doorMode))
 				throw new InvalidOperationException("Invalid door mode supplied");
 
+			if (doorMode.DoorPositions.Distinct().Count() != doorMode.DoorPositions.Count)
+				throw new ArgumentException("All door positions must be unique");
+
 			var doors = new List<IDoorLine>();
 
 			foreach (var doorPosition in doorMode.DoorPositions)
 			{
-				doors.Add(GetDoorLine(polygon, doorPosition));
+				doors.AddRange(GetDoorLine(polygon, doorPosition));
 			}
 
 			return doors;
 		}
 
-		private DoorLine GetDoorLine(GridPolygon polygon, OrthogonalLine doorPosition)
+		private IEnumerable<IDoorLine> GetDoorLine(GridPolygon polygon, OrthogonalLine doorPosition)
 		{
-			if (doorPosition.Length == 0)
-				throw new InvalidOperationException();
+			var found = false;
 
 			foreach (var side in polygon.GetLines())
 			{
@@ -45,10 +48,12 @@
 				var isGoodDirection = doorPosition.From + doorPosition.Length * side.GetDirectionVector() == doorPosition.To;
 				var from = isGoodDirection ? doorPosition.From : doorPosition.To;
 
-				return new DoorLine(new OrthogonalLine(from, from, side.GetDirection()), doorPosition.Length);
+				found = true;
+				yield return new DoorLine(new OrthogonalLine(from, from, side.GetDirection()), doorPosition.Length);
 			}
 
-			throw new InvalidOperationException("Given door position is not on any side of the polygon");
+			if (found == false)
+				throw new InvalidOperationException("Given door position is not on any side of the polygon");
 		}
 	}
 }
