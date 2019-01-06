@@ -1,6 +1,6 @@
 # ProceduralLevelGenerator
 
-[![Gitter chat](https://badges.gitter.im/OndrejNepozitek/ProceduralLevelGenerator.png)](https://gitter.im/OndrejNepozitek/ProceduralLevelGenerator)
+[![Gitter chat](https://badges.gitter.im/OndrejNepozitek/ProceduralLevelGenerator.png)](https://gitter.im/ProceduralLevelGenerator/community)
 
 This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
 
