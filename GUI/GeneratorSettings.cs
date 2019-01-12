@@ -39,5 +39,9 @@
 		public bool FidexSquareExport { get; set; } = false;
 
 		public int FixedSquareExportValue { get; set; } = 800;
+
+		public bool FixedPositionsAndScale { get; set; } = false;
+
+		public decimal FixedPositionsAndScaleValue { get; set; } = 35;
 	}
 }

@@ -104,7 +104,7 @@
 		/// <param name="height"></param>
 		/// <param name="scale"></param>
 		/// <returns></returns>
-		protected IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
+		public IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
 			var centery = scale * (maxy + miny) / 2;
@@ -124,7 +124,7 @@
 		/// <param name="expectedHeight"></param>
 		/// <param name="borderSize">How much of the original image should be used for each border. </param>
 		/// <returns></returns>
-		protected float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
+		public float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
 		{
 			var neededWidth = (1 + borderSize) * (maxx - minx);
 			var neededHeight = (1 + borderSize) * (maxy - miny);
