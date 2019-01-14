@@ -86,7 +86,7 @@
 		private int layoutsCount;
 		private readonly Stopwatch stopwatch = new Stopwatch();
 
-		protected Random Random;
+		protected Random Random = new Random();
 		protected CancellationToken? CancellationToken;
 
 		private List<List<TNode>> chains;

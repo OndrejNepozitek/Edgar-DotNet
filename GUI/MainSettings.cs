@@ -60,6 +60,9 @@
 				FixedFontSizeValue = (int) fixedFontSizeValue.Value,
 				FidexSquareExport = fixedSquareExportCheckbox.Checked,
 				FixedSquareExportValue = (int) fixedSquareExportValue.Value,
+
+				FixedPositionsAndScale = fixedPositionsAndScaleCheckbox.Checked,
+				FixedPositionsAndScaleValue = fixedPositionsAndScaleValue.Value,
 			});
 			
 			generatorWindow.Show();

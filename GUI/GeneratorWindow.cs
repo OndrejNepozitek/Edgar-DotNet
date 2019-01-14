@@ -5,9 +5,11 @@
 	using System.Diagnostics;
 	using System.Drawing;
 	using System.IO;
+	using System.Linq;
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
+	using GeneralAlgorithms.DataStructures.Common;
 	using MapDrawing;
 	using MapGeneration.Interfaces.Core.MapLayouts;
 	using MapGeneration.Interfaces.Utils;
@@ -22,7 +24,7 @@
 	{
 		private readonly GeneratorSettings settings;
 
-		private readonly WFLayoutDrawer<int> wfLayoutDraver = new WFLayoutDrawer<int>();
+		private readonly WFLayoutDrawer<int> wfLayoutDrawer = new WFLayoutDrawer<int>();
 		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
 		private readonly OldMapDrawer<int> oldMapDrawer = new OldMapDrawer<int>();
 		private readonly JsonSerializer<int> jsonSerializer = new JsonSerializer<int>();
@@ -36,6 +38,7 @@
 		private readonly Stopwatch infoStopwatch = new Stopwatch();
 
 		private IMapLayout<int> layoutToDraw;
+		private IMapLayout<int> firstChainToDraw;
 		private List<IMapLayout<int>> generatedLayouts;
 		private int slideshowIndex;
 		private int slideshowTaskId;
@@ -46,6 +49,10 @@
 		private string dumpFolder;
 		private int dumpCount;
 		private GeneratorEvent lastEvent;
+
+		private float fixedScaleRatio = 1f;
+		private float fixedScale;
+		private IntVector2 fixedOffset;
 
 		public GeneratorWindow(GeneratorSettings settings)
 		{
@@ -67,6 +74,8 @@
 			fixedFontSizeValue.Value = settings.FixedFontSizeValue;
 			fixedSquareExportCheckbox.Checked = settings.FidexSquareExport;
 			fixedSquareExportValue.Value = settings.FixedSquareExportValue;
+			fixedPositionsAndScaleCheckbox.Checked = settings.FixedPositionsAndScale;
+			fixedPositionsAndScaleValue.Value = settings.FixedPositionsAndScaleValue;
 
 			slideshowPanel.Hide();
 			exportPanel.Hide();
@@ -231,9 +240,28 @@
 			if (exportShownLayoutsCheckbox.Checked)
 				DumpSvg();
 
+			UpdateLayoutType();
+
 			var showNames = showRoomNamesCheckbox.Checked;
 			var useOldPaperStyle = useOldPaperStyleCheckbox.Checked;
 			var fixedFontSize = fixedFontSizeCheckbox.Checked ? (int?)fixedFontSizeValue.Value : null;
+
+			if (firstChainToDraw == null)
+			{
+				firstChainToDraw = layoutToDraw;
+				RecomputeFixedScaleAndOffset();
+			}
+			else
+			{
+				var previousRoomsCount = firstChainToDraw.Rooms.Count();
+				var currentRoomsCount = layoutToDraw.Rooms.Count();
+
+				if (previousRoomsCount == currentRoomsCount)
+				{
+					firstChainToDraw = layoutToDraw;
+					RecomputeFixedScaleAndOffset();
+				}
+			}
 
 			if (useOldPaperStyle)
 			{
@@ -242,9 +270,38 @@
 			}
 			else
 			{
-				var bitmap = wfLayoutDraver.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
+				Bitmap bitmap;
+
+				if (fixedPositionsAndScaleCheckbox.Checked)
+				{
+					bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize, fixedScale, fixedOffset);
+				}
+				else
+				{
+					bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
+				}
+				 
 				e.Graphics.DrawImage(bitmap, new Point(0, 0));
 			}
+		}
+
+		private void RecomputeFixedScaleAndOffset()
+		{
+			var layout = firstChainToDraw;
+
+			if (layout == null)
+				return;
+
+			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
+
+			var minx = points.Min(x => x.X);
+			var miny = points.Min(x => x.Y);
+			var maxx = points.Max(x => x.X);
+			var maxy = points.Max(x => x.Y);
+
+			fixedScale = (float)fixedPositionsAndScaleValue.Value / 100 * wfLayoutDrawer.GetScale(minx, miny, maxx, maxy, mainPictureBox.Width, mainPictureBox.Height);
+			fixedOffset = wfLayoutDrawer.GetOffset(minx, miny, maxx, maxy, mainPictureBox.Width, mainPictureBox.Height, fixedScale);
 		}
 
 		private void UpdateInfoPanel()
@@ -265,6 +322,31 @@
 			}
 		}
 
+		private void UpdateLayoutType()
+		{
+			if ((showPartialValidLayouts.Checked || showPerturbedLayouts.Checked) && showFinalLayouts.Checked)
+			{
+				switch (lastEvent)
+				{
+					case GeneratorEvent.OnPerturbed:
+						infoLayoutType.Text = "";
+						break;
+
+					case GeneratorEvent.OnPartialValid:
+						infoLayoutType.Text = "";
+						break;
+
+					case GeneratorEvent.OnValid:
+						infoLayoutType.Text = "Final layout";
+						break;
+				}
+			}
+			else
+			{
+				infoLayoutType.Text = "";
+			}
+		}
+
 		private void OnFinished()
 		{
 			automaticSlideshowCheckbox.Checked = true;
@@ -272,6 +354,7 @@
 			slideshowPanel.Show();
 			exportPanel.Show();
 			actionsPanel.Show();
+			infoLayoutType.Hide();
 		}
 
 		private void GeneratorWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -288,6 +371,7 @@
 		private void GeneratorWindow_Resize(object sender, EventArgs e)
 		{
 			mainPictureBox.Refresh();
+			RecomputeFixedScaleAndOffset();
 		}
 
 		private void slideshowLeftButton_Click(object sender, EventArgs e)
@@ -463,7 +547,7 @@
 				}
 				else
 				{
-					bitmap = wfLayoutDraver.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
+					bitmap = wfLayoutDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
 				}
 
 				bitmap.Save($"{folder}/{i}.jpg");
@@ -501,6 +585,11 @@
 		private enum GeneratorEvent
 		{
 			OnPerturbed, OnPartialValid, OnValid
+		}
+
+		private void fixedPositionsAndScaleValue_ValueChanged(object sender, EventArgs e)
+		{
+			RecomputeFixedScaleAndOffset();
 		}
 	}
 }

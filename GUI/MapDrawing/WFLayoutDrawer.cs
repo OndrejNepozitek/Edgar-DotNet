@@ -30,12 +30,24 @@
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="width"></param>
-		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null)
+		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, IntVector2? offset = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
 
-			base.DrawLayout(layout, width, height, withNames, fixedFontSize);
+			if (scale != null || offset != null)
+			{
+				if (scale == null || offset == null)
+				{
+					throw new ArgumentException("Scale and offset must either both be null or not-null");
+				}
+
+				base.DrawLayout(layout, scale.Value, offset.Value, withNames, fixedFontSize);
+			}
+			else
+			{
+				base.DrawLayout(layout, width, height, withNames, fixedFontSize);
+			}
 
 			return bitmap;
 		}
