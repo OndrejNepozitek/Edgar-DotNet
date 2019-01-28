@@ -12,7 +12,6 @@
     <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Advanced.Algorithms" Version="0.0.128-beta" />
     <PackageReference Include="GraphPlanarityTesting" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="RangeTree" Version="1.0.0" />
