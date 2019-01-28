@@ -20,7 +20,7 @@
 	/// </summary>
 	public class ConfigLoader
 	{
-		private readonly Deserializer deserializer;
+		private readonly IDeserializer deserializer;
 
 		/// <summary>
 		/// Path to the folder with room configs.
