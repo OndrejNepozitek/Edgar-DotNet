@@ -215,12 +215,12 @@
 			{
 				files = new List<string>()
 				{
-					//"backtracking_advanced",
-					//"generating_one_layout_advanced",
-					//"example1_advanced",
-					//"example2_advanced",
-					//"example3_advanced",
-					//"game1_basic",
+					"backtracking_advanced",
+					"generating_one_layout_advanced",
+					"example1_advanced",
+					"example2_advanced",
+					"example3_advanced",
+					"game1_basic",
 					"game2_basic",
 				};
 			}

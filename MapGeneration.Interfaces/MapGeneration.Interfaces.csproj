@@ -1,91 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3FB264C8-FE50-44E9-80E2-E9C6941460F3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MapGeneration.Interfaces</RootNamespace>
-    <AssemblyName>MapGeneration.Interfaces</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyTitle>MapGeneration.Interfaces</AssemblyTitle>
+    <Product>MapGeneration.Interfaces</Product>
+    <Copyright>Copyright ©  2018</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\LayoutGenerator\IBenchmarkableLayoutGenerator.cs" />
-    <Compile Include="Core\Configuration\EnergyData\INodeEnergyData.cs" />
-    <Compile Include="Core\Configuration\EnergyData\IEnergyData.cs" />
-    <Compile Include="Core\Configuration\EnergyData\ICorridorsData.cs" />
-    <Compile Include="Core\Configuration\IConfiguration.cs" />
-    <Compile Include="Core\Configuration\IEnergyConfiguration.cs" />
-    <Compile Include="Core\Configuration\IMutableConfiguration.cs" />
-    <Compile Include="Core\Constraints\ILayoutConstraint.cs" />
-    <Compile Include="Core\Constraints\INodeConstraint.cs" />
-    <Compile Include="Core\Doors\IDoorLine.cs" />
-    <Compile Include="Core\LayoutConverters\ICorridorNodesFactory.cs" />
-    <Compile Include="Core\LayoutOperations\IChainBasedLayoutOperations.cs" />
-    <Compile Include="Core\LayoutOperations\ILayoutOperationsWithCorridors.cs" />
-    <Compile Include="Core\MapDescriptions\IRoomDescription.cs" />
-    <Compile Include="Core\MapLayouts\IDoorInfo.cs" />
-    <Compile Include="Utils\ICancellable.cs" />
-    <Compile Include="Core\ChainDecompositions\IChainDecomposition.cs" />
-    <Compile Include="Core\ConfigurationSpaces\IConfigurationSpaces.cs" />
-    <Compile Include="Core\Doors\IDoorHandler.cs" />
-    <Compile Include="Core\Doors\IDoorMode.cs" />
-    <Compile Include="Core\Layouts\IEnergyLayout.cs" />
-    <Compile Include="Core\GeneratorPlanners\IGeneratorPlanner.cs" />
-    <Compile Include="Core\Layouts\ILayout.cs" />
-    <Compile Include="Core\LayoutConverters\ILayoutConverter.cs" />
-    <Compile Include="Core\LayoutEvolvers\ILayoutEvolver.cs" />
-    <Compile Include="Core\LayoutGenerator\IGeneratorContext.cs" />
-    <Compile Include="Core\LayoutGenerator\ILayoutGenerator.cs" />
-    <Compile Include="Core\LayoutOperations\ILayoutOperations.cs" />
-    <Compile Include="Core\LayoutGenerator\IObservableGenerator.cs" />
-    <Compile Include="Core\MapDescriptions\ICorridorMapDescription.cs" />
-    <Compile Include="Core\MapDescriptions\IMapDescription.cs" />
-    <Compile Include="Core\MapLayouts\IMapLayout.cs" />
-    <Compile Include="Utils\IRandomInjectable.cs" />
-    <Compile Include="Core\MapLayouts\IRoom.cs" />
-    <Compile Include="Utils\ISerializer.cs" />
-    <Compile Include="Utils\ISmartCloneable.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj">
-      <Project>{6505fed6-efb7-446e-bde5-713d167083ce}</Project>
-      <Name>GeneralAlgorithms</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

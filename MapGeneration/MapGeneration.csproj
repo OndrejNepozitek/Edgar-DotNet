@@ -1,182 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>MapGeneration</RootNamespace>
-    <AssemblyName>MapGeneration</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <AssemblyTitle>MapGeneration</AssemblyTitle>
+    <Product>MapGeneration</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
-    <OutputPath>bin\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
-    <OutputPath>bin\x86\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="YamlDotNet, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YamlDotNet.4.3.0\lib\net45\YamlDotNet.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Benchmarks\Benchmark.cs" />
-    <Compile Include="Benchmarks\BenchmarkResult.cs" />
-    <Compile Include="Benchmarks\BenchmarkScenario.cs" />
-    <Compile Include="Core\ChainDecompositions\OldChainDecomposition.cs" />
-    <Compile Include="Core\ConfigurationSpaces\AbstractConfigurationSpaces.cs" />
-    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpace.cs" />
-    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpaces.cs" />
-    <Compile Include="Core\ConfigurationSpaces\ConfigurationSpacesGenerator.cs" />
-    <Compile Include="Core\Configurations\EnergyData\BasicEnergyData.cs" />
-    <Compile Include="Core\Configurations\EnergyData\CorridorsData.cs" />
-    <Compile Include="Core\Constraints\BasicContraint.cs" />
-    <Compile Include="Core\Constraints\CorridorConstraints.cs" />
-    <Compile Include="Core\Constraints\TouchingConstraints.cs" />
-    <Compile Include="Core\Constraints\MaximumAreaConstraint.cs" />
-    <Compile Include="Core\Doors\DoorHandler.cs" />
-    <Compile Include="Core\Doors\DoorHandlers\OverlapModeHandler.cs" />
-    <Compile Include="Core\Doors\DoorHandlers\SpecificPositionsModeHandler.cs" />
-    <Compile Include="Core\Doors\DoorLine.cs" />
-    <Compile Include="Core\Doors\DoorModes\OverlapMode.cs" />
-    <Compile Include="Core\Doors\DoorModes\SpecificPositionsMode.cs" />
-    <Compile Include="Core\Configurations\Configuration.cs" />
-    <Compile Include="Core\Configurations\EnergyData\EnergyData.cs" />
-    <Compile Include="Core\ChainDecompositions\BreadthFirstChainDecomposition.cs" />
-    <Compile Include="Core\ChainDecompositions\ChainDecompositionBase.cs" />
-    <Compile Include="Core\Doors\DoorUtils.cs" />
-    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\CorridorNodesCreatorFactory.cs" />
-    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\StringCorridorNodesCreator.cs" />
-    <Compile Include="Core\LayoutConverters\CorridorNodesCreators\IntCorridorNodesCreator.cs" />
-    <Compile Include="Core\LayoutGenerators\ChainBasedGenerator.cs" />
-    <Compile Include="Core\ChainDecompositions\CorridorsChainDecomposition.cs" />
-    <Compile Include="Core\LayoutConverters\BasicLayoutConverter.cs" />
-    <Compile Include="Core\LayoutEvolvers\SimulatedAnnealingEvolver.cs" />
-    <Compile Include="Core\LayoutOperations\AbstractLayoutOperations.cs" />
-    <Compile Include="Core\LayoutOperations\LayoutOperationsWithConstraints.cs" />
-    <Compile Include="Core\LayoutOperations\LayoutOperationsWithCorridors.cs" />
-    <Compile Include="Core\MapDescriptions\MapDescription.cs" />
-    <Compile Include="Core\MapLayouts\DoorInfo.cs" />
-    <Compile Include="Core\MapLayouts\MapLayout.cs" />
-    <Compile Include="Core\MapLayouts\Room.cs" />
-    <Compile Include="Core\MapDescriptions\RoomDescription.cs" />
-    <Compile Include="Core\Layouts\Layout.cs" />
-    <Compile Include="Core\GeneratorPlanners\SlowGeneratorPlanner.cs" />
-    <Compile Include="Core\GeneratorPlanners\GeneratorPlannerBase.cs" />
-    <Compile Include="Core\GeneratorPlanners\BasicGeneratorPlanner.cs" />
-    <Compile Include="Core\LayoutGenerators\GeneratorContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\CollectionExtensions.cs" />
-    <Compile Include="Utils\ConfigParsing\ConfigLoader.cs" />
-    <Compile Include="Utils\ConfigParsing\Deserializers\OrthogonalLineDeserializer.cs" />
-    <Compile Include="Utils\ConfigParsing\Deserializers\StringTupleDeserializer.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\CorridorsModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\MapDescriptionModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\RoomModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\RoomShapesModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\RoomsRangeModel.cs" />
-    <Compile Include="Utils\ConfigParsing\ParsingException.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\LayoutGeneratorFactory.cs" />
-    <Compile Include="Utils\ConfigParsing\DefaultObjectFactory.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Models\RoomDescriptionsSetModel.cs" />
-    <Compile Include="Utils\ConfigParsing\Deserializers\IntVector2Deserializer.cs" />
-    <Compile Include="Utils\MapDrawing\AbstractLayoutDrawer.cs" />
-    <Compile Include="Utils\MapDrawing\SVGLayoutDrawer.cs" />
-    <Compile Include="Utils\Serialization\JsonSerializer.cs" />
-    <Compile Include="Utils\Serialization\ModelConverter.cs" />
-    <Compile Include="Utils\Serialization\Models\DoorModel.cs" />
-    <Compile Include="Utils\Serialization\Models\RoomModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj">
-      <Project>{6505fed6-efb7-446e-bde5-713d167083ce}</Project>
-      <Name>GeneralAlgorithms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj">
-      <Project>{3fb264c8-fe50-44e9-80e2-e9c6941460f3}</Project>
-      <Name>MapGeneration.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterBuild">
+  <Target Name="CopyResources" AfterTargets="Build">
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="false" />
   </Target>
+  <ItemGroup>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="YamlDotNet" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
+    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj" />
+  </ItemGroup>
 </Project>

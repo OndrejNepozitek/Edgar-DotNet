@@ -1,126 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6505FED6-EFB7-446E-BDE5-713D167083CE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeneralAlgorithms</RootNamespace>
-    <AssemblyName>GeneralAlgorithms</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
-    <OutputPath>bin\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
-    <OutputPath>bin\x86\Release x86\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyTitle>GeneralAlgorithms</AssemblyTitle>
+    <Product>GeneralAlgorithms</Product>
+    <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GraphPlanarityTesting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\GraphPlanarityTesting.1.0.0\lib\netstandard2.0\GraphPlanarityTesting.dll</HintPath>
-    </Reference>
-    <Reference Include="RangeTree, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RangeTree.1.0.0\lib\netstandard1.2\RangeTree.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
-    <Compile Include="Algorithms\Common\Extensions.cs" />
-    <Compile Include="Algorithms\Common\ILineIntersection.cs" />
-    <Compile Include="Algorithms\Common\OrthogonalLineIntersection.cs" />
-    <Compile Include="Algorithms\Common\TransformationHelper.cs" />
-    <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
-    <Compile Include="Algorithms\Graphs\GraphUtils.cs" />
-    <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
-    <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
-    <Compile Include="Algorithms\Polygons\CachedPolygonPartitioning.cs" />
-    <Compile Include="Algorithms\Polygons\FastPolygonOverlap.cs" />
-    <Compile Include="Algorithms\Polygons\GridPolygonBuilder.cs" />
-    <Compile Include="Algorithms\Polygons\IPolygonOverlap.cs" />
-    <Compile Include="Algorithms\Polygons\IPolygonPartitioning.cs" />
-    <Compile Include="Algorithms\Polygons\PolygonOverlap.cs" />
-    <Compile Include="Algorithms\Polygons\GridPolygonPartitioning.cs" />
-    <Compile Include="Algorithms\Polygons\GridPolygonUtils.cs" />
-    <Compile Include="Algorithms\Polygons\IPolygonUtils.cs" />
-    <Compile Include="Algorithms\Polygons\PolygonOverlapBase.cs" />
-    <Compile Include="DataStructures\Common\IntAlias.cs" />
-    <Compile Include="DataStructures\Common\SimpleBitVector32.cs" />
-    <Compile Include="DataStructures\Common\OrthogonalLine.cs" />
-    <Compile Include="DataStructures\Common\IntVector2.cs" />
-    <Compile Include="DataStructures\Common\TwoWayDictionary.cs" />
-    <Compile Include="DataStructures\Graphs\IntGraph.cs" />
-    <Compile Include="DataStructures\Graphs\UndirectedAdjacencyListGraph.cs" />
-    <Compile Include="DataStructures\Graphs\Edge.cs" />
-    <Compile Include="DataStructures\Graphs\IEdge.cs" />
-    <Compile Include="DataStructures\Graphs\IGraph.cs" />
-    <Compile Include="DataStructures\Polygons\GridPolygon.cs" />
-    <Compile Include="DataStructures\Polygons\GridRectangle.cs" />
-    <Compile Include="DataStructures\Polygons\IPolygon.cs" />
-    <Compile Include="DataStructures\Common\Transformation.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Advanced.Algorithms" Version="0.0.128-beta" />
+    <PackageReference Include="GraphPlanarityTesting" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="RangeTree" Version="1.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
