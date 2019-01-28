@@ -5,6 +5,7 @@
 	using System.Linq;
 	using Common;
 	using DataStructures.Graphs;
+	using GraphPlanarityTesting.PlanarityTesting.BoyerMyrvold;
 
 	/// <summary>
 	/// Utility methods for graphs
@@ -66,18 +67,63 @@
 			if (graph.VerticesCount == 0)
 				return true;
 
-			var alias = new IntGraph<T>(graph, () => new UndirectedAdjacencyListGraph<int>());
+			var boyerMyrvold = new BoyerMyrvold<T>();
 
-			// Prepare edges for the C++ code
-			var edges = new List<int>();
+			return boyerMyrvold.IsPlanar(TransformGraph(graph));
+		}
 
-			foreach (var edge in alias.Edges)
+		/// <summary>
+		/// Gets faces of a given graph.
+		/// </summary>
+		/// <remarks>
+		/// Only distinct elements from each face are returned.
+		/// </remarks>
+		/// <param name="graph"></param>
+		/// <returns></returns>
+		public List<List<T>> GetPlanarFaces<T>(IGraph<T> graph)
+		{
+			if (graph.IsDirected)
+				throw new ArgumentException("The graph must not be directed", nameof(graph));
+
+			var boyerMyrvold = new BoyerMyrvold<T>();
+			var isPlanar = boyerMyrvold.TryGetPlanarFaces(TransformGraph(graph), out var faces);
+
+			if (!isPlanar)
 			{
-				edges.Add(edge.From);
-				edges.Add(edge.To);
+				throw new InvalidOperationException("Graph is not planar");
 			}
 
-			return BoostWrapper.IsPlanar(edges.ToArray(), edges.Count, alias.VerticesCount);
+			var facesDistinct = new List<List<T>>();
+
+			foreach (var faceRaw in faces.Faces)
+			{
+				facesDistinct.Add(faceRaw.Distinct().ToList());
+			}
+
+			return facesDistinct;
+		}
+
+		/// <summary>
+		/// Transforms a given graph for the planarity testing library.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="oldGraph"></param>
+		/// <returns></returns>
+		private GraphPlanarityTesting.Graphs.DataStructures.IGraph<T> TransformGraph<T>(IGraph<T> oldGraph)
+		{
+			var newGraph = new GraphPlanarityTesting.Graphs.DataStructures.UndirectedAdjacencyListGraph<T>();
+
+			foreach (var vertex in oldGraph.Vertices)
+			{
+				newGraph.AddVertex(vertex);
+			}
+
+			foreach (var edge in oldGraph.Edges)
+			{
+				newGraph.AddEdge(edge.From, edge.To);
+			}
+
+			return newGraph;
 		}
 	}
 }

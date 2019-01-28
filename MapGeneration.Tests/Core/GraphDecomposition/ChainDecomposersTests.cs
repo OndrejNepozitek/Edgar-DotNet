@@ -2,7 +2,6 @@
 {
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core;
 	using Interfaces.Core.ChainDecompositions;
@@ -69,8 +68,7 @@
 		{
 			protected override void CreateConcrete()
 			{
-				var graphDecomposer = new GraphDecomposer<int>();
-				chainDecomposition = new BreadthFirstChainDecomposition<int>(graphDecomposer);
+				chainDecomposition = new BreadthFirstChainDecomposition<int>();
 			}
 		}
 	}

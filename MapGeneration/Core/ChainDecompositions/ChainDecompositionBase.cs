@@ -4,7 +4,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Graphs;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core.ChainDecompositions;
 
@@ -15,16 +14,11 @@
 	public abstract class ChainDecompositionBase<TNode> : IChainDecomposition<TNode>
 	{
 		protected IGraph<TNode> Graph;
-		protected IGraphDecomposer<TNode> GraphDecomposer;
 		protected Dictionary<TNode, int> CoveredVertices;
 		protected int ChainsCounter;
 		protected List<List<TNode>> Faces;
 		protected GraphUtils GraphUtils = new GraphUtils();
 
-		protected ChainDecompositionBase(IGraphDecomposer<TNode> graphDecomposer)
-		{
-			GraphDecomposer = graphDecomposer;
-		}
 
 		/// <inheritdoc />
 		public abstract List<List<TNode>> GetChains(IGraph<TNode> graph);
@@ -39,7 +33,7 @@
 				throw new ArgumentException("The graph must be connected", nameof(graph));
 
 			Graph = graph;
-			Faces = GraphDecomposer.GetFaces(Graph);
+			Faces = GraphUtils.GetPlanarFaces(Graph);
 			CoveredVertices = new Dictionary<TNode, int>();
 
 			// Initialize all vertices to the -1 depth

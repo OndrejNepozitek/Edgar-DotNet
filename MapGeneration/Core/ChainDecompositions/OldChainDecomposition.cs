@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
+	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using Interfaces.Core.ChainDecompositions;
 
@@ -12,19 +12,14 @@
 	public class OldChainDecomposition<TNode> : IChainDecomposition<TNode>
 		where TNode : IEquatable<TNode>
 	{
-		protected IGraphDecomposer<TNode> GraphDecomposer;
-
-		public OldChainDecomposition(IGraphDecomposer<TNode> graphDecomposer)
-		{
-			GraphDecomposer = graphDecomposer;
-		}
+		protected GraphUtils GraphUtils = new GraphUtils();
 
 		public List<List<TNode>> GetChains(IGraph<TNode> graph)
 		{
 
 			var chains = new List<List<TNode>>();
 			var usedVertices = new Dictionary<TNode, bool>();
-			var faces = GraphDecomposer.GetFaces(graph);
+			var faces = GraphUtils.GetPlanarFaces(graph);
 
 			faces.RemoveAt(faces.MaxBy(x => x.Count));
 			graph.Vertices.ToList().ForEach(x => usedVertices.Add(x, false));

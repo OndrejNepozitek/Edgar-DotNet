@@ -4,7 +4,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	/// <summary>
@@ -18,7 +17,7 @@
 	{
 		private readonly bool groupSoloVertices;
 
-		public BreadthFirstChainDecomposition(IGraphDecomposer<TNode> graphDecomposer, bool groupSoloVertices = true) : base(graphDecomposer)
+		public BreadthFirstChainDecomposition(bool groupSoloVertices = true)
 		{
 			this.groupSoloVertices = groupSoloVertices;
 		}

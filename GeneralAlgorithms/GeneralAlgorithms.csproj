@@ -68,8 +68,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Algorithms">
-      <HintPath>..\Libraries\C-Sharp-Algorithms\Algorithms.dll</HintPath>
+    <Reference Include="GraphPlanarityTesting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GraphPlanarityTesting.1.0.0\lib\netstandard2.0\GraphPlanarityTesting.dll</HintPath>
     </Reference>
     <Reference Include="RangeTree, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RangeTree.1.0.0\lib\netstandard1.2\RangeTree.dll</HintPath>
@@ -84,15 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Common\BoostWrapper.cs" />
     <Compile Include="Algorithms\Common\CollectionExtensions.cs" />
     <Compile Include="Algorithms\Common\Extensions.cs" />
     <Compile Include="Algorithms\Common\ILineIntersection.cs" />
     <Compile Include="Algorithms\Common\OrthogonalLineIntersection.cs" />
     <Compile Include="Algorithms\Common\TransformationHelper.cs" />
     <Compile Include="Algorithms\Graphs\BipartiteCheck.cs" />
-    <Compile Include="Algorithms\Graphs\GraphDecomposition\GraphDecomposer.cs" />
-    <Compile Include="Algorithms\Graphs\GraphDecomposition\IGraphDecomposer.cs" />
     <Compile Include="Algorithms\Graphs\GraphUtils.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftKarp.cs" />
     <Compile Include="Algorithms\Math\IntegerGoniometric.cs" />
@@ -124,16 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
-      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
-      <Name>BoostWrapper</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

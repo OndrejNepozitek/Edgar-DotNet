@@ -6,7 +6,6 @@
 	using System.Text;
 	using System.Windows.Forms;
 	using Examples;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GUI;
 	using MapGeneration.Benchmarks;
@@ -113,7 +112,7 @@
 			scenario.SetRunsCount(2);
 
 			var setups = scenario.MakeSetupsGroup();
-			setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random()));
+			setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random(0)));
 
 			Benchmark.WithDefaultFiles((sw, dw) =>
 			{
@@ -145,7 +144,7 @@
 				setups.AddSetup("Old", (generator) =>
 				{
 					//generator.SetChainDecompositionCreator(mapDescription => new OriginalChainDecomposition());
-					generator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
+					generator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>());
 					//generator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
 					//generator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
 					//{
@@ -173,7 +172,7 @@
 				setups.AddSetup("New", (generator) =>
 				{
 					generator.SetChainDecompositionCreator(mapDescription =>
-							new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>()));
+							new BreadthFirstChainDecomposition<int>());
 					generator.SetGeneratorPlannerCreator(mapDescription => new BasicGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
 					generator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
 					{
@@ -216,12 +215,12 @@
 			{
 				files = new List<string>()
 				{
-					"backtracking_advanced",
-					"generating_one_layout_advanced",
-					"example1_advanced",
-					"example2_advanced",
-					"example3_advanced",
-					"game1_basic",
+					//"backtracking_advanced",
+					//"generating_one_layout_advanced",
+					//"example1_advanced",
+					//"example2_advanced",
+					//"example3_advanced",
+					//"game1_basic",
 					"game2_basic",
 				};
 			}

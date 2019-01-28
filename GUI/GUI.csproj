@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
     <OutputPath>bin\Release x86\</OutputPath>
@@ -39,7 +40,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -49,7 +49,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -59,7 +58,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
     <OutputPath>bin\x86\Release x86\</OutputPath>
@@ -69,7 +67,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -147,14 +144,6 @@
       <Project>{8538b30d-b0c5-4bb8-8fa9-c9388e0758e7}</Project>
       <Name>MapGeneration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
-      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
-      <Name>BoostWrapper</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
@@ -162,7 +151,7 @@
       <GeneratorResources Include="..\Resources\**\*.*" />
       <DestinationResources Include="$(TargetDir)\Resources\**\*.*" />
     </ItemGroup>
-    <Delete Files="@(DestinationResources)" /> 
+    <Delete Files="@(DestinationResources)" />
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

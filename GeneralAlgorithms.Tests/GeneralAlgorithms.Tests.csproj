@@ -91,7 +91,6 @@
   <ItemGroup>
     <Compile Include="Algorithms\Common\OrthogonalLineIntersectionTests.cs" />
     <Compile Include="Algorithms\Graphs\BipartiteCheckTests.cs" />
-    <Compile Include="Algorithms\Graphs\GraphDecomposerTests.cs" />
     <Compile Include="Algorithms\Graphs\GraphUtilsTests.cs" />
     <Compile Include="Algorithms\Graphs\HopcroftKarpTests.cs" />
     <Compile Include="Algorithms\Polygons\GridPolygonOverlapTests.cs" />
@@ -113,14 +112,6 @@
     <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj">
       <Project>{6505fed6-efb7-446e-bde5-713d167083ce}</Project>
       <Name>GeneralAlgorithms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BoostWrapper\BoostWrapper.vcxproj">
-      <Project>{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}</Project>
-      <Name>BoostWrapper</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <OutputItemType>Content</OutputItemType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Targets>Build;DebugSymbolsProjectOutputGroup</Targets>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -15,7 +15,6 @@
 	using Core.Layouts;
 	using Core.MapDescriptions;
 	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Graphs.GraphDecomposition;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
@@ -32,7 +31,7 @@
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>, IMapLayout<TNode>>();
 
-			var chainDecomposition = new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>());
+			var chainDecomposition = new BreadthFirstChainDecomposition<int>();
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 			var generatorPlanner = new BasicGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>();
 
@@ -70,7 +69,7 @@
 		{
 			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>, BasicEnergyData>, int, Configuration<CorridorsData>, IMapLayout<TNode>>();
 
-			var chainDecomposition = new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>());
+			var chainDecomposition = new BreadthFirstChainDecomposition<int>();
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 			var generatorPlanner = new BasicGeneratorPlanner<Layout<Configuration<CorridorsData>, BasicEnergyData>>();
 
