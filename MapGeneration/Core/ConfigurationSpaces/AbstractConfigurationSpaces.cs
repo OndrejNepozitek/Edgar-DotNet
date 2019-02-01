@@ -35,13 +35,18 @@
 		/// <inheritdoc />
 		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
-			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var _);
 		}
 
 		/// <inheritdoc />
 		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations, out configurationsSatisfied);
+
+			if (configurationsSatisfied == 0)
+			{
+				return mainConfiguration.Position;
+			}
 
 			var line = intersection.GetWeightedRandom(x => x.Length + 1, Random);
 			return line.GetNthPoint(Random.Next(line.Length + 1));
@@ -90,7 +95,8 @@
 				}
 			}
 
-			throw new InvalidOperationException("There should always be at least one point in the intersection for shapes that may be neighbours in the layout.");
+			configurationsSatisfied = 0;
+			return null;
 		}
 
 		/// <summary>

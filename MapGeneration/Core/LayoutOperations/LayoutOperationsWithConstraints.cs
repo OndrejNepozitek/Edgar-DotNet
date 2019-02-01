@@ -1,5 +1,6 @@
 ﻿namespace MapGeneration.Core.LayoutOperations
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using ConfigurationSpaces;
@@ -148,6 +149,9 @@
 			{
 				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
+				if (intersection == null)
+					continue;
+
 				// Try all lines from the maximum intersection
 				foreach (var intersectionLine in intersection)
 				{
@@ -208,6 +212,11 @@
 						break;
 					}
 				}
+			}
+
+			if (bestEnergy == float.MaxValue)
+			{
+				throw new ArgumentException("No shape for the current room could be connected to its neighbours");
 			}
 
 			var newConfiguration = CreateConfiguration(bestShape, bestPosition);

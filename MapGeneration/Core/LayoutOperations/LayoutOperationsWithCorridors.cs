@@ -55,7 +55,16 @@
 			if (!layout.GetConfiguration(node, out var mainConfiguration))
 				throw new InvalidOperationException();
 
-			var newPosition = CorridorConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations);
+			var newPosition = CorridorConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+
+			// If zero configurations were satisfied, that means that the current shape was not compatible
+			// with any of its neighbours so we perturb shape instead.
+			if (configurationsSatisfied == 0)
+			{
+				PerturbShape(layout, node, updateLayout);
+				return;
+			}
+
 			var newConfiguration = mainConfiguration.SmartClone();
 			newConfiguration.Position = newPosition;
 
