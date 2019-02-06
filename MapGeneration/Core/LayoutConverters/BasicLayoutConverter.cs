@@ -42,8 +42,12 @@
 		{
 			MapDescription = mapDescription;
 			ConfigurationSpaces = configurationSpaces;
-			CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
 			IntAliasMapping = intAliasMapping;
+
+			if (MapDescription.IsWithCorridors)
+			{
+				CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
+			}
 		}
 
 		/// <inheritdoc />
@@ -53,8 +57,12 @@
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
 			var mapping = MapDescription.GetRoomsMapping();
-			CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
 
+			if (MapDescription.IsWithCorridors)
+			{
+				CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
+			}
+			
 			foreach (var vertexAlias in layout.Graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
