@@ -72,7 +72,7 @@
 		}
 
 		/// <inheritdoc />
-		public bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 1)
+		public bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 0)
 		{
 			if (minimumLength < 0)
 				throw new ArgumentException("The minimum length must by at least 0.", nameof(minimumLength));
@@ -147,6 +147,12 @@
 			}
 
 			return events.Select(x => Tuple.Create(x.Item1.RotateAroundCenter(-rotation), x.Item2)).ToList();
+		}
+
+		/// <inheritdoc />
+		public int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
+		{
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

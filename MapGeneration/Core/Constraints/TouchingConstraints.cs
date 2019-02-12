@@ -71,8 +71,8 @@
 
 			if (!AreNeighbours(layout, perturbedNode, node))
 			{
-				isTouchingOld = DoTouch(configuration, oldConfiguration) ? 1 : 0;
-				isTouchingNew = DoTouch(configuration, newConfiguration) ? 1 : 0;
+				isTouchingOld += DoTouch(configuration, oldConfiguration) ? 1 : 0;
+				isTouchingNew += DoTouch(configuration, newConfiguration) ? 1 : 0;
 			}
 
 			var numberOfTouchingTotal = configuration.EnergyData.NumberOfTouching + (isTouchingNew - isTouchingOld);
@@ -113,7 +113,7 @@
 
 		private bool DoTouch(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 1);
+			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 0);
 		}
 
 		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)

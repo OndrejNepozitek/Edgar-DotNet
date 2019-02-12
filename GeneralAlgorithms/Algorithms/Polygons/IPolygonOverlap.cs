@@ -39,7 +39,7 @@
 		/// <param name="position2"></param>
 		/// <param name="minimumLength"></param>
 		/// <returns></returns>
-		bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 1);
+		bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 0);
 
 		/// <summary>
 		/// Returns a list of point where a given moving polygon starts or ends overlapping a given fixed polygon.
@@ -56,5 +56,23 @@
 		/// <param name="line"></param>
 		/// <returns></returns>
 		IList<Tuple<IntVector2, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line);
+
+		/// <summary>
+		/// Gets distance between the two polygons.
+		/// </summary>
+		/// <remarks>
+		/// We are interested in the smallest distance between any two points of given polygons.
+		/// Manhattan distance is used.
+		/// </remarks>
+		/// <param name="polygon1"></param>
+		/// <param name="position1"></param>
+		/// <param name="polygon2"></param>
+		/// <param name="position2"></param>
+		/// <returns>
+		/// -1 if polygons overlap
+		/// 0 if polygons share at least one point
+		/// positive number othetwise
+		/// </returns>
+		int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
 	}
 }
