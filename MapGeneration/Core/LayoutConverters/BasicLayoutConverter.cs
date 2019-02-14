@@ -148,7 +148,7 @@
 					var doorStart = doorLine.Line.GetNthPoint(Math.Max(0, index - offset) + i);
 					var doorEnd = doorStart + doorLine.Length * doorLine.Line.GetDirectionVector();
 
-					doors.Add(new OrthogonalLine(doorStart, doorEnd));
+					doors.Add(new OrthogonalLine(doorStart, doorEnd, doorLine.Line.GetDirection()));
 				}
 			}
 
