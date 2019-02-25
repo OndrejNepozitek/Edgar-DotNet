@@ -230,6 +230,11 @@
 			{
 				var intersection = CorridorConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
+				if (intersection == null)
+					continue;
+
+				intersection.Shuffle(Random);
+
 				foreach (var intersectionLine in intersection)
 				{
 					var tryAll = true;

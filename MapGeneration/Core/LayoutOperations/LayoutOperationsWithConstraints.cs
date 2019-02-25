@@ -152,6 +152,8 @@
 				if (intersection == null)
 					continue;
 
+				intersection.Shuffle(Random);
+
 				// Try all lines from the maximum intersection
 				foreach (var intersectionLine in intersection)
 				{
