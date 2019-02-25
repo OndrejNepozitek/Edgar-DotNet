@@ -96,14 +96,11 @@
 			var verticalDiagonals = GetDiagonals(vertices, horizontalTree, true);
 
 			//Find all splitting edges
-			if (horizontalDiagonals.Count != 0)
-			{
-				var splitters = FindSplitters(horizontalDiagonals, verticalDiagonals);
+			var splitters = FindSplitters(horizontalDiagonals, verticalDiagonals);
 
-				foreach (var splitter in splitters)
-				{
-					SplitSegment(splitter);
-				}
+			foreach (var splitter in splitters)
+			{
+				SplitSegment(splitter);
 			}
 
 			//Split all concave vertices
@@ -134,9 +131,6 @@
 				if (vertex.Visited) continue;
 				var v = vertex;
 
-				var backups = new List<Vertex>();
-				var path = new List<Vertex>();
-
 				var minx = int.MaxValue;
 				var miny = int.MaxValue;
 				var maxx = int.MinValue;
@@ -144,8 +138,6 @@
 
 				while (!v.Visited)
 				{
-					path.Add(v);
-
 					minx = Math.Min(v.Point.X, minx);
 					miny = Math.Min(v.Point.Y, miny);
 					maxx = Math.Max(v.Point.X, maxx);
@@ -153,47 +145,6 @@
 
 					v.Visited = true;
 					v = v.Next;
-				}
-
-				// Handle degenerate cases
-				if (minx == maxx || miny == maxy)
-				{
-					Vertex v1;
-					Vertex v2;
-
-					if (minx == maxx)
-					{
-						var v1Index = path.MaxBy(x => -x.Point.Y);
-						var v2Index = path.MaxBy(x => x.Point.Y);
-
-						v1 = path[v1Index];
-						v2 = path[v2Index];
-					}
-					else
-					{
-						var v1Index = path.MaxBy(x => -x.Point.X);
-						var v2Index = path.MaxBy(x => x.Point.X);
-
-						v1 = path[v1Index];
-						v2 = path[v2Index];
-					}
-
-					backups.Add(v1.BackupPrev);
-					backups.Add(v1.BackupNext);
-					backups.Add(v2.BackupPrev);
-					backups.Add(v2.BackupNext);
-
-					foreach (var b in backups)
-					{
-						v = b;
-
-						if (v == null) continue;
-
-						minx = Math.Min(v.Point.X, minx);
-						miny = Math.Min(v.Point.Y, miny);
-						maxx = Math.Max(v.Point.X, maxx);
-						maxy = Math.Max(v.Point.Y, maxy);
-					}
 				}
 
 				if (minx == maxx || miny == maxy)
@@ -354,16 +305,13 @@
 			var pb = b.Prev;
 			var nb = b.Next;
 
-			na.SaveBackup();
-			pa.SaveBackup();
-
 			//Fix concavity
 			a.Concave = false;
 			b.Concave = false;
 
 			//Compute orientation
-			var ao = pa.GetCoord(segment.Horizontal) == a.GetCoord(segment.Horizontal);
-			var bo = pb.GetCoord(segment.Horizontal) == b.GetCoord(segment.Horizontal);
+			var ao = pa.GetCoord(!segment.Horizontal) == a.GetCoord(!segment.Horizontal);
+			var bo = pb.GetCoord(!segment.Horizontal) == b.GetCoord(!segment.Horizontal);
 
 			if (ao && bo)
 			{
@@ -595,6 +543,11 @@
 
 		private List<Tuple<Segment, Segment>> FindCrossings(List<Segment> horizontalDiagonals, List<Segment> verticalDiagonals)
 		{
+			if (horizontalDiagonals.Count == 0 || verticalDiagonals.Count == 0)
+			{
+				return new List<Tuple<Segment, Segment>>();
+			}
+
 			var horizontalTree = new RangeTree<int, Segment>(horizontalDiagonals, new SegmentComparer());
 			var crosssings = new List<Tuple<Segment, Segment>>();
 
@@ -686,44 +639,15 @@
 			private Vertex next;
 			private Vertex prev;
 
-			public Vertex Next
-			{
-				get => next;
-				set
-				{
-					if (Next != value)
-						BackupNext = next;
+			public Vertex Next;
 
-					next = value;
-				}
-			}
-
-			public Vertex Prev
-			{
-				get => prev;
-				set
-				{
-					if (Prev != value)
-						BackupPrev = prev;
-
-					prev = value;
-				}
-			}
-
-			public Vertex BackupNext;
-			public Vertex BackupPrev;
+			public Vertex Prev;
 
 			public Vertex(IntVector2 point, int index, bool concave)
 			{
 				Point = point;
 				Index = index;
 				Concave = concave;
-			}
-
-			public void SaveBackup()
-			{
-				/*BackupNext = Next;
-				BackupPrev = Prev;*/
 			}
 
 			public int GetCoord(bool isX = true)

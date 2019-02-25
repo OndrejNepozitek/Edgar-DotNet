@@ -134,6 +134,60 @@
 		}
 
 		[Test]
+		public void GetPolygons_AnotherShape()
+		{
+			var polygon = new GridPolygonBuilder()
+				.AddPoint(0, 0)
+				.AddPoint(0, 3)
+				.AddPoint(-1, 3)
+				.AddPoint(-1, 5)
+				.AddPoint(5, 5)
+				.AddPoint(5, 3)
+				.AddPoint(4, 3)
+				.AddPoint(4, 0)
+				.AddPoint(5, 0)
+				.AddPoint(5, -2)
+				.AddPoint(-1, -2)
+				.AddPoint(-1, 0)
+				.Build();
+
+			var partitions = partitioner.GetPartitions(polygon);
+			var expected = new List<List<GridRectangle>>()
+			{
+				new List<GridRectangle>()
+				{
+					new GridRectangle(new IntVector2(-1, -2), new IntVector2(5, 0)),
+					new GridRectangle(new IntVector2(0, 0), new IntVector2(4, 3)),
+					new GridRectangle(new IntVector2(-1, 3), new IntVector2(5, 5)),
+				},
+			};
+
+			var matched = false;
+
+			foreach (var rectangles in expected)
+			{
+				foreach (var r in rectangles)
+				{
+					if (!partitions.Contains(r))
+					{
+						break;
+					}
+				}
+
+				matched = true;
+			}
+
+			Assert.AreEqual(expected[0].Count, partitions.Count);
+			Assert.AreEqual(true, matched);
+
+			foreach (var p in polygon.GetAllRotations().Select(x => utils.NormalizePolygon(x)))
+			{
+				var rotated = partitioner.GetPartitions(p);
+				Assert.AreEqual(expected[0].Count, rotated.Count);
+			}
+		}
+
+		[Test]
 		public void GetPolygons_ComplexShape()
 		{
 			var polygon = new GridPolygonBuilder()
