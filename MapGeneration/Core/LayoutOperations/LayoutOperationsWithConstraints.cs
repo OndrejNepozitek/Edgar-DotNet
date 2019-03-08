@@ -142,7 +142,7 @@
 			var bestPosition = new IntVector2();
 
 			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
-			// shapes.Shuffle(Random);
+			shapes.Shuffle(Random);
 
 			// Try all shapes
 			foreach (var shape in shapes)
