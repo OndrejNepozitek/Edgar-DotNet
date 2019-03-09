@@ -114,10 +114,7 @@
 			var setups = scenario.MakeSetupsGroup();
 			setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random(0)));
 
-			Benchmark.WithDefaultFiles((sw, dw) =>
-			{
-				benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100, 1, sw, dw);
-			});
+			benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100);
 		}
 
 		/// <summary>
@@ -187,10 +184,7 @@
 				});
 			}
 
-			Benchmark.WithDefaultFiles((sw, dw) =>
-			{
-				benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 80, 1, sw, dw);
-			});
+			benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100);
 		}
 
 		public static List<Tuple<string, MapDescription<int>>> GetMapDescriptionsForThesis(bool withCorridors)
