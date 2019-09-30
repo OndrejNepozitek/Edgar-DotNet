@@ -178,7 +178,7 @@
 			var r2 = GridPolygon.GetSquare(3);
 
 			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, 0)));
-			Assert.AreEqual(false, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -3)));
+			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -3)));
 			Assert.AreEqual(true, polygonOverlap.DoTouch(r1, new IntVector2(0, 0), r2, new IntVector2(6, -2)));
 		}
 
