@@ -1,108 +1,35 @@
-﻿namespace MapGeneration.Benchmarks
+﻿using System;
+using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Interfaces.Core.LayoutGenerator;
+using MapGeneration.Interfaces.Core.MapLayouts;
+
+namespace MapGeneration.Benchmarks
 {
-	using System;
-	using System.Collections.Generic;
+    public class BenchmarkScenario<TMapDescription, TLayout> : IBenchmarkScenario<GeneratorInput<TMapDescription>, TMapDescription, TLayout>
+    {
+        public string Name { get; }
 
-	/// <summary>
-	/// Class holding a scenario that should be run in a benchmark.
-	/// </summary>
-	/// <typeparam name="TLayoutGenerator"></typeparam>
-	public class BenchmarkScenario<TLayoutGenerator>
-	{
-		private readonly List<SetupsGroup> setupsGroups = new List<SetupsGroup>();
-		private int runsCount = 1;
+        private readonly Func<GeneratorInput<TMapDescription>, IBenchmarkableLayoutGenerator<TMapDescription, TLayout>> generatorFactory;
 
-		/// <summary>
-		/// Adds a setup to the scenario.
-		/// </summary>
-		/// <param name="setupsGroup"></param>
-		public void AddSetupsGroup(SetupsGroup setupsGroup)
-		{
-			setupsGroups.Add(setupsGroup);
-		}
+        public BenchmarkScenario(string name, Func<GeneratorInput<TMapDescription>, IBenchmarkableLayoutGenerator<TMapDescription, TLayout>> generatorFactory)
+        {
+            this.generatorFactory = generatorFactory ?? throw new ArgumentNullException(nameof(generatorFactory));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+        }
 
-		/// <summary>
-		/// Creates a setups group and adds it to the scenario.
-		/// </summary>
-		/// <remarks>
-		/// This is a shortcut for creating a setups group and then adding it to the scenario.
-		/// Generic parameters can be infered as it is a method.
-		/// </remarks>
-		/// <returns></returns>
-		public SetupsGroup MakeSetupsGroup()
-		{
-			var group = new SetupsGroup();
-			setupsGroups.Add(group);
+        public IBenchmarkableLayoutGenerator<TMapDescription, TLayout> GetGeneratorFor(GeneratorInput<TMapDescription> input)
+        {
+            return generatorFactory(input);
+        }
+    }
 
-			return group;
-		}
-
-		/// <summary>
-		/// How many times should all the setups be run. Defaults to 1.
-		/// </summary>
-		/// <param name="count"></param>
-		public void SetRunsCount(int count)
-		{
-			runsCount = count;
-		}
-
-		private void AddRuns()
-		{
-			if (runsCount == 1)
-				return;
-
-			var setupsGroup = MakeSetupsGroup();
-
-			for (var i = 0; i < runsCount; i++)
-			{
-				setupsGroup.AddSetup($"Run {i+1}", generator => {});	
-			}
-		}
-
-		/// <summary>
-		/// Gets all setups groups of the scenario.
-		/// </summary>
-		/// <returns></returns>
-		public List<SetupsGroup> GetSetupsGroups()
-		{
-			AddRuns();
-
-			return setupsGroups;
-		}
-
-		/// <summary>
-		/// Class holding a setups group.
-		/// </summary>
-		public class SetupsGroup
-		{
-			private readonly List<Tuple<string, Action<TLayoutGenerator>>> setups = new List<Tuple<string, Action<TLayoutGenerator>>>();
-
-			/// <summary>
-			/// Adds a setup to the group.
-			/// </summary>
-			/// <param name="name"></param>
-			/// <param name="setup">This action will be used in the benchmark when setting up the generator.</param>
-			public void AddSetup(string name, Action<TLayoutGenerator> setup)
-			{
-				setups.Add(Tuple.Create(name, setup));
-			}
-
-			/// <summary>
-			/// Get all added setups.
-			/// </summary>
-			/// <returns></returns>
-			public List<Tuple<string, Action<TLayoutGenerator>>> GetSetups()
-			{
-				return setups;
-			}
-		}
-	}
-
-	public static class BenchmarkScenario
-	{
-		public static BenchmarkScenario<TLayoutGenerator> CreateScenarioFor<TLayoutGenerator>(TLayoutGenerator generator)
-		{
-			return new BenchmarkScenario<TLayoutGenerator>();
-		}
-	}
+    public static class BenchmarkScenario
+    {
+        public static BenchmarkScenario<MapDescription<TNode>, IMapLayout<TNode>> CreateForNodeType<TNode>(string name,
+            Func<GeneratorInput<MapDescription<TNode>>, IBenchmarkableLayoutGenerator<MapDescription<TNode>, IMapLayout<TNode>>> generatorFactory)
+        {
+            return new BenchmarkScenario<MapDescription<TNode>, IMapLayout<TNode>>(name, generatorFactory);
+        }
+    }
 }

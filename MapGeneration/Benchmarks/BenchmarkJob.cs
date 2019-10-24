@@ -7,58 +7,56 @@
 	using Interfaces.Core.LayoutGenerator;
 	using Utils;
 
-	public class BenchmarkJob<TMapDescription, TLayout> : IPreviewableBenchmarkJob<BenchmarkResult>
+	public class BenchmarkJob<TMapDescription, TLayout> : IPreviewableBenchmarkJob<BenchmarkJobResult>
 	{
 		private readonly IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator;
-		private readonly string label;
-		private readonly TMapDescription input;
+		private readonly string inputName;
+        private readonly TMapDescription input;
 		private readonly int repeats;
 
-		public event Action<BenchmarkResult> OnPreview;
+		public event Action<BenchmarkJobResult> OnPreview;
 
 		public BenchmarkJob(
-			IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator, string label,
-			TMapDescription input, int repeats = 10)
+			IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator, string inputName,
+            TMapDescription input, int repeats = 10)
 		{
 			this.generator = generator;
-			this.label = label;
+			this.inputName = inputName;
 			this.input = input;
-			this.repeats = repeats;
+            this.repeats = repeats;
 		}
 
-		public BenchmarkResult Execute()
+		public BenchmarkJobResult Execute()
 		{
 			generator.EnableBenchmark(true);
 
-			var successRates = new List<int>();
-			var iterationCounts = new List<int>();
-			var times = new List<int>();
+            var runs = new List<GeneratorRun>();
 
-			for (int i = 0; i < repeats; i++)
+            for (int i = 0; i < repeats; i++)
 			{
 				generator.GetLayouts(input, 1);
+                runs.Add(new GeneratorRun(generator.LayoutsCount == 1, (int) generator.TimeTotal, generator.IterationsCount));
 
-				successRates.Add(generator.LayoutsCount);
-				iterationCounts.Add(generator.IterationsCount);
-				times.Add((int)generator.TimeTotal);
-
-				OnPreview?.Invoke(GetResult($"Run {i + 1}/{repeats}", successRates, iterationCounts, times));
+                OnPreview?.Invoke(GetResult($"Run {i + 1}/{repeats}", runs));
 			}
 
-			return GetResult(label, successRates, iterationCounts, times);
+			return GetResult(inputName, runs);
 		}
 
-		private BenchmarkResult GetResult(string name, List<int> successRates, List<int> iterationsCounts, List<int> times)
-		{
-			return new BenchmarkResult()
-			{
-				Name = name,
-				SuccessRate = successRates.Sum() / (double) successRates.Count * 100,
-				TimeAverage = times.Average(),
-				TimeMedian = times.GetMedian(),
-				IterationsAverage = iterationsCounts.Average(),
-				IterationsMedian = iterationsCounts.GetMedian(),
-			};
-		}
-	}
+        private BenchmarkJobResult GetResult(string name, List<GeneratorRun> runs)
+        {
+            var successfulRuns = runs.Where(x => x.IsSuccessful).ToList();
+
+            return new BenchmarkJobResult()
+            {
+                InputName = name,
+                SuccessRate = successfulRuns.Count / (double)runs.Count * 100,
+                TimeAverage = successfulRuns.Select(x => x.Time).Average(),
+                TimeMedian = successfulRuns.Select(x => x.Time).GetMedian(),
+                IterationsAverage = successfulRuns.Select(x => x.Iterations).Average(),
+                IterationsMedian = successfulRuns.Select(x => x.Iterations).GetMedian(),
+                Runs = runs,
+            };
+        }
+    }
 }

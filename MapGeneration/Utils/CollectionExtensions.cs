@@ -123,7 +123,7 @@
 		/// </summary>
 		/// <param name="source"></param>
 		/// <returns></returns>
-		public static double GetMedian(this IEnumerable<int> source)
+		public static T GetMedian<T>(this IEnumerable<T> source)
 		{
 			// Create a copy of the input, and sort the copy
 			var temp = source.ToArray();
@@ -139,8 +139,7 @@
 			{
 				// Count is even, average two middle elements
 				var a = temp[count / 2 - 1];
-				var b = temp[count / 2];
-				return (a + b) / 2d;
+                return a;
 			}
 
 			// Count is odd, return the middle element

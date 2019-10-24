@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration", "MapGeneration\MapGeneration.csproj", "{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralAlgorithms", "GeneralAlgorithms\GeneralAlgorithms.csproj", "{6505FED6-EFB7-446E-BDE5-713D167083CE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTesting", "UnitTesting", "{913B8829-7BC1-4627-995B-8ECF6AC15FBA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{913B8829-7BC1-4627-995B-8ECF6AC15FBA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralAlgorithms.Tests", "GeneralAlgorithms.Tests\GeneralAlgorithms.Tests.csproj", "{CD72AFE4-17C9-4F89-892A-1C86127B7466}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.Interfaces", "MapGeneration.Interfaces\MapGeneration.Interfaces.csproj", "{3FB264C8-FE50-44E9-80E2-E9C6941460F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{6609983F-B790-4E65-A329-832AFE28BA77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{9D61AC5D-3924-435E-94FC-14062AAC3937}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,18 @@ Global
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Release|x64.Build.0 = Release|Any CPU
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Release|x86.ActiveCfg = Release|Any CPU
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Release|x86.Build.0 = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|x64.Build.0 = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D61AC5D-3924-435E-94FC-14062AAC3937}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +134,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466} = {913B8829-7BC1-4627-995B-8ECF6AC15FBA}
 		{D21972B1-D75A-4ADC-802F-394BD5FFE654} = {913B8829-7BC1-4627-995B-8ECF6AC15FBA}
+		{9D61AC5D-3924-435E-94FC-14062AAC3937} = {913B8829-7BC1-4627-995B-8ECF6AC15FBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F179471-9336-4BB8-BB31-4035B3D95A9A}

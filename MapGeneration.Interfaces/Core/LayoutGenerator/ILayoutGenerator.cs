@@ -1,10 +1,9 @@
 ﻿namespace MapGeneration.Interfaces.Core.LayoutGenerator
 {
 	using System.Collections.Generic;
-	using MapLayouts;
 
-	/// <summary>
-	/// Interface for all layout generator.
+    /// <summary>
+	/// Interface for all layout generators.
 	/// </summary>
 	/// <typeparam name="TMapDescription">Type of the map description</typeparam>
 	/// <typeparam name="TLayout">Type of the layout that is returned</typeparam>
