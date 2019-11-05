@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MapGeneration.Benchmarks.ResultSaving;
+using Sandbox.Features;
 
 namespace Sandbox
 {
@@ -27,8 +28,9 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			var task = RunBenchmark();
-            task.Wait();
+            new TwoStageGeneration().Run();
+			//´var task = RunBenchmark();
+            // task.Wait();
             // CompareOldAndNew();
             // RunExample();
             // ConvertToXml();
@@ -189,41 +191,35 @@ namespace Sandbox
 			return inputs;
 		}
 
-		public static List<Tuple<string, MapDescription<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
-		{
-			return new List<Tuple<string, MapDescription<int>>>()
-			{
-				new Tuple<string, MapDescription<int>>("Example 1 (fig. 1)",
-					new MapDescription<int>()
-						.SetupWithGraph(GraphsDatabase.GetExample1())
-						.AddClassicRoomShapes(scale)
-						.AddCorridorRoomShapes(offsets, enableCorridors)
-				),
-				new Tuple<string, MapDescription<int>>("Example 2 (fig. 7 top)",
-					new MapDescription<int>()
-						.SetupWithGraph(GraphsDatabase.GetExample2())
-						.AddClassicRoomShapes(scale)
-						.AddCorridorRoomShapes(offsets, enableCorridors)
-				),
-				new Tuple<string, MapDescription<int>>("Example 3 (fig. 7 bottom)",
-					new MapDescription<int>()
-						.SetupWithGraph(GraphsDatabase.GetExample3())
-						.AddClassicRoomShapes(scale)
-						.AddCorridorRoomShapes(offsets, enableCorridors)
-				),
-				new Tuple<string, MapDescription<int>>("Example 4 (fig. 8)",
-					new MapDescription<int>()
-						.SetupWithGraph(GraphsDatabase.GetExample4())
-						.AddClassicRoomShapes(scale)
-						.AddCorridorRoomShapes(offsets, enableCorridors)
-				),
-				new Tuple<string, MapDescription<int>>("Example 5 (fig. 9)",
-					new MapDescription<int>()
-						.SetupWithGraph(GraphsDatabase.GetExample5())
-						.AddClassicRoomShapes(scale)
-						.AddCorridorRoomShapes(offsets, enableCorridors)
-				),
-			};
-		}
+        public static List<GeneratorInput<MapDescription<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
+        {
+            return new List<GeneratorInput<MapDescription<int>>>()
+            {
+                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
+                    .SetupWithGraph(GraphsDatabase.GetExample1())
+                    .AddClassicRoomShapes(scale)
+                    .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample2())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample3())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample4())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample5())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
+            };
+        }
     }
 }
