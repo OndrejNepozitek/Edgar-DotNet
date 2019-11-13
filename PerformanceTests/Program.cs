@@ -48,18 +48,34 @@ namespace PerformanceTests
 
         public static async Task RunBenchmark(Options options)
         {
-            var mapDescriptions = GetMapDescriptionsSet(new IntVector2(1, 1), false, new List<int>());
+            var scale = new IntVector2(1, 1);
+            var offsets = new List<int>() { 2 };
+
+            var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
+            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, true, offsets));
+
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 
             var scenario = BenchmarkScenario.CreateForNodeType<int>(
                 "From commit",
                 input =>
                 {
-                    var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-                    layoutGenerator.InjectRandomGenerator(new Random(0));
-                    layoutGenerator.SetLayoutValidityCheck(false);
+                    if (input.MapDescription.IsWithCorridors)
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        layoutGenerator.SetLayoutValidityCheck(false);
 
-                    return layoutGenerator;
+                        return layoutGenerator;
+                    }
+                    else
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        layoutGenerator.SetLayoutValidityCheck(false);
+
+                        return layoutGenerator;
+                    }
                 });
 
             // Dry run
@@ -92,7 +108,7 @@ namespace PerformanceTests
 
         public static List<GeneratorInput<MapDescription<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
         {
-            return new List<GeneratorInput<MapDescription<int>>>()
+            var inputs = new List<GeneratorInput<MapDescription<int>>>()
             {
                 new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
                     .SetupWithGraph(GraphsDatabase.GetExample1())
@@ -119,6 +135,13 @@ namespace PerformanceTests
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
             };
+
+            if (enableCorridors)
+            {
+                inputs.ForEach(x => x.Name += " wc");
+            }
+
+            return inputs;
         }
     }
 }
