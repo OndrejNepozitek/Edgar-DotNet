@@ -9,8 +9,7 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Core.LayoutOperations;
-	using Interfaces.Core.Layouts;
+    using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
 	using Interfaces.Utils;
 	using Utils;
@@ -19,9 +18,8 @@
 	/// Layout operations for evolving layouts with corridors.
 	/// </summary>
 	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : 
-		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>,
-		ILayoutOperationsWithCorridors<TLayout, TNode>
-		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
+		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>
+        where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
 		where TLayoutEnergyData : IEnergyData, new()
@@ -114,25 +112,30 @@
 			}
 		}
 
-		/// <inheritdoc />
-		public bool AddCorridors(TLayout layout, IList<TNode> chain)
-		{
-			if (AddCorridorsInternal(layout, chain))
-			{
-				UpdateLayout(layout);
-				return true;
-			}
+        /// <summary>
+        /// Tries to add corridors.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public override bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+        {
+            if (AddCorridors(layout, chain))
+            {
+                UpdateLayout(layout);
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
+        /// <summary>
 		/// Greedily adds corridors from a given chain to the layout.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private bool AddCorridorsInternal(TLayout layout, IEnumerable<TNode> chain)
+		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
 			var corridors = chain.Where(x => MapDescription.IsCorridorRoom(x)).ToList();

@@ -19,8 +19,7 @@
 		protected List<List<TNode>> Faces;
 		protected GraphUtils GraphUtils = new GraphUtils();
 
-
-		/// <inheritdoc />
+        /// <inheritdoc />
 		public abstract List<List<TNode>> GetChains(IGraph<TNode> graph);
 
 		/// <summary>

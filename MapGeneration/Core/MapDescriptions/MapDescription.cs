@@ -21,9 +21,14 @@
 		protected readonly List<Tuple<TNode, TNode>> Passages = new List<Tuple<TNode, TNode>>();
 		protected readonly Dictionary<TNode, int> Rooms = new Dictionary<TNode, int>();
 		protected List<Transformation> DefaultTransformations;
+
+        protected IGraph<int> stageOneGraph;
+        protected IGraph<int> graph;
+        protected List<IRoomDescription> roomDescriptions;
+
 		protected bool IsLocked;
 
-		public MapDescription()
+        public MapDescription()
 		{
 			DefaultTransformations = TransformationHelper.GetAllTransforamtion().ToList();
 		}
@@ -43,7 +48,7 @@
 		/// <param name="transformations">Allowed transformation of the shapes.</param>
 		/// <param name="probability">The probability of choosing any of given shapes.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(List<RoomDescription> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddRoomShapes(List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
@@ -57,14 +62,14 @@
 		/// <param name="transformations">Allowed transformation of the shape.</param>
 		/// <param name="probability">The probability of choosing a given shape.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(RoomDescription shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddRoomShapes(RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
 
-			if (RoomShapes.Any(x => shape.Equals(x.RoomDescription)))
+			if (RoomShapes.Any(x => shape.Equals(x.RoomTemplate)))
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
 			if (transformations != null && transformations.Count == 0)
@@ -82,14 +87,14 @@
 		/// <param name="transformations">Allowed transformation of the shape.</param>
 		/// <param name="probability">The probability of choosing a given shape.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddCorridorShapes(RoomDescription shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddCorridorShapes(RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
 			if (probability <= 0)
 				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
 
-			if (RoomShapes.Any(x => shape.Equals(x.RoomDescription)))
+			if (RoomShapes.Any(x => shape.Equals(x.RoomTemplate)))
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
 			if (transformations != null && transformations.Count == 0)
@@ -107,7 +112,7 @@
 		/// <param name="transformations">Allowed transformation of the shapes.</param>
 		/// <param name="probability">The probability of choosing any of given shapes.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddCorridorShapes(List<RoomDescription> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddCorridorShapes(List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
@@ -122,7 +127,7 @@
 		/// <param name="transformations">Allowed transformation of the shapes.</param>
 		/// <param name="probability">The probability of choosing any of given shapes.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(TNode node, List<RoomDescription> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddRoomShapes(TNode node, List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
@@ -137,7 +142,7 @@
 		/// <param name="transformations">Allowed transformation of the shape.</param>
 		/// <param name="probability">The probability of choosing a given shape.</param>
 		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(TNode node, RoomDescription shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
+		public virtual void AddRoomShapes(TNode node, RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
 		{
 			ThrowIfLocked();
 
@@ -155,7 +160,7 @@
 				RoomShapesForNodes[alias] = roomShapesForNode;
 			}
 
-			if (roomShapesForNode.Any(x => shape.Equals(x.RoomDescription)))
+			if (roomShapesForNode.Any(x => shape.Equals(x.RoomTemplate)))
 				throw new InvalidOperationException("Every RoomDescription can be added at most once");
 
 			if (transformations != null && transformations.Count == 0)
@@ -174,7 +179,7 @@
 		/// Adds a given node to the map description.
 		/// </summary>
 		/// <remarks>
-		/// Any room must be added with this method before assignig shapes to it.
+		/// Any room must be added with this method before assigning shapes to it.
 		/// </remarks>
 		/// <param name="node"></param>
 		public virtual void AddRoom(TNode node)
@@ -212,36 +217,69 @@
 
 		/// <inheritdoc />
 		public virtual IGraph<int> GetGraph()
-		{
-			IsLocked = true;
-			var vertices = Enumerable.Range(0, Rooms.Count);
-			var graph = new UndirectedAdjacencyListGraph<int>();
-			var corridorCounter = Rooms.Count;
+        {
+            if (graph == null)
+            {
+                SetupGraphs();
+            }
 
-			foreach (var vertex in vertices)
-			{
-				graph.AddVertex(vertex);
-			}
+            // TODO 2SG: this should be later removed
+            return IsWithCorridors ? graph : stageOneGraph;
+        }
 
-			foreach (var passage in Passages)
-			{
-				if (IsWithCorridors)
-				{
-					graph.AddVertex(corridorCounter);
-					graph.AddEdge(Rooms[passage.Item1], corridorCounter);
-					graph.AddEdge(corridorCounter, Rooms[passage.Item2]);
-					corridorCounter++;
-				}
-				else
-				{
-					graph.AddEdge(Rooms[passage.Item1], Rooms[passage.Item2]);
-				}
-			}
+        public IGraph<int> GetStageOneGraph()
+        {
+            if (stageOneGraph == null)
+            {
+                SetupGraphs();
+            }
 
-			return graph;
-		}
+            return stageOneGraph;
+        }
 
-		/// <summary>
+        public IRoomDescription GetRoomDescription(int node)
+        {
+            if (graph == null)
+            {
+                SetupGraphs();
+            }
+
+            return roomDescriptions[node];
+        }
+
+        protected void SetupGraphs()
+        {
+            IsLocked = true;
+
+            var vertices = Enumerable.Range(0, Rooms.Count);
+            var corridorCounter = Rooms.Count;
+
+            stageOneGraph = new UndirectedAdjacencyListGraph<int>();
+            graph = new UndirectedAdjacencyListGraph<int>();
+            roomDescriptions = new List<IRoomDescription>();
+
+            foreach (var vertex in vertices)
+            {
+                graph.AddVertex(vertex);
+                stageOneGraph.AddVertex(vertex);
+
+                roomDescriptions.Add(new BasicRoomDescription());
+            }
+
+            foreach (var passage in Passages)
+            {
+                stageOneGraph.AddEdge(Rooms[passage.Item1], Rooms[passage.Item2]);
+
+                graph.AddVertex(corridorCounter);
+                graph.AddEdge(Rooms[passage.Item1], corridorCounter);
+                graph.AddEdge(corridorCounter, Rooms[passage.Item2]);
+                corridorCounter++;
+
+                roomDescriptions.Add(new CorridorRoomDescription());
+            }
+        }
+
+        /// <summary>
 		/// Sets whether the map description should be with corridors.
 		/// </summary>
 		/// <param name="enable">Whether corridors should be enabled.</param>
@@ -265,24 +303,9 @@
 
 		/// <inheritdoc />
 		public virtual IGraph<int> GetGraphWithoutCorrridors()
-		{
-			// TODO: keep dry
-			IsLocked = true;
-			var vertices = Enumerable.Range(0, Rooms.Count);
-			var graph = new UndirectedAdjacencyListGraph<int>();
-
-			foreach (var vertex in vertices)
-			{
-				graph.AddVertex(vertex);
-			}
-
-			foreach (var passage in Passages)
-			{
-				graph.AddEdge(Rooms[passage.Item1], Rooms[passage.Item2]);
-			}
-
-			return graph;
-		}
+        {
+            return GetStageOneGraph();
+        }
 
 		/// <summary>
 		/// Sets default room transformations.
@@ -366,7 +389,7 @@
 
 		public class RoomContainer
 		{
-			public RoomDescription RoomDescription { get; }
+			public RoomTemplate RoomTemplate { get; }
 
 			public double Probability { get; }
 
@@ -374,9 +397,9 @@
 
 			public List<Transformation> Transformations { get; }
 
-			public RoomContainer(RoomDescription roomDescription, List<Transformation> transformations, double probability, bool normalizeProbabilities)
+			public RoomContainer(RoomTemplate roomTemplate, List<Transformation> transformations, double probability, bool normalizeProbabilities)
 			{
-				RoomDescription = roomDescription;
+				RoomTemplate = roomTemplate;
 				Probability = probability;
 				NormalizeProbabilities = normalizeProbabilities;
 				Transformations = transformations;

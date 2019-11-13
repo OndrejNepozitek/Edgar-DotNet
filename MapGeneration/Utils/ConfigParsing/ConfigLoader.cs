@@ -240,7 +240,7 @@
 			return (rotate.HasValue && rotate.Value == false) ? new List<Transformation>() {Transformation.Identity} : null;
 		}
 
-		private List<RoomDescription> GetRoomDescriptions(RoomShapesModel roomShapesModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets, RoomDescriptionsSetModel customRoomDescriptionsSet, IntVector2? scale)
+		private List<RoomTemplate> GetRoomDescriptions(RoomShapesModel roomShapesModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets, RoomDescriptionsSetModel customRoomDescriptionsSet, IntVector2? scale)
 		{
 			var setModel = GetSetModel(roomShapesModel.SetName, roomDescriptionsSets, customRoomDescriptionsSet);
 			var setName = string.IsNullOrEmpty(roomShapesModel.SetName) ? "custom" : roomShapesModel.SetName;
@@ -254,9 +254,9 @@
 			return roomDescriptions;
 		}
 
-		private RoomDescription ConvertRoomModelToDescription(RoomDescriptionModel model, IntVector2? scale)
+		private RoomTemplate ConvertRoomModelToDescription(RoomDescriptionModel model, IntVector2? scale)
 		{
-			return new RoomDescription(new GridPolygon(model.Shape).Scale(scale ?? new IntVector2(1, 1)), model.DoorMode);
+			return new RoomTemplate(new GridPolygon(model.Shape).Scale(scale ?? new IntVector2(1, 1)), model.DoorMode);
 		}
 
 		private List<RoomDescriptionModel> GetFilledRoomModels(RoomDescriptionsSetModel setModel, string roomDescriptionName, string setName)

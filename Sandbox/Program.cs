@@ -193,7 +193,7 @@ namespace Sandbox
 
         public static List<GeneratorInput<MapDescription<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
         {
-            return new List<GeneratorInput<MapDescription<int>>>()
+            var inputs = new List<GeneratorInput<MapDescription<int>>>()
             {
                 new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
                     .SetupWithGraph(GraphsDatabase.GetExample1())
@@ -220,6 +220,13 @@ namespace Sandbox
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
             };
+
+            if (enableCorridors)
+            {
+                inputs.ForEach(x => x.Name += " wc");
+            }
+
+            return inputs;
         }
     }
 }

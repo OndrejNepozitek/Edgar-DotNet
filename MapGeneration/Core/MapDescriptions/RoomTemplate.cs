@@ -7,13 +7,13 @@
 	/// <summary>
 	/// Description of a room.
 	/// </summary>
-	public class RoomDescription : IRoomDescription
+	public class RoomTemplate : IRoomTemplate
 	{
 		public GridPolygon Shape { get; }
 
 		public IDoorMode DoorsMode { get; }
 
-		public RoomDescription(GridPolygon shape, IDoorMode doorsMode)
+		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode)
 		{
 			Shape = new GridPolygon(shape.GetPoints());
 			DoorsMode = doorsMode;

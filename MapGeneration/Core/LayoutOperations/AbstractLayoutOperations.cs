@@ -172,7 +172,16 @@
 			}
 		}
 
-		/// <inheritdoc />
+        /// <inheritdoc />
+        /// <remarks>
+        /// Do nothing. Implementers may override.
+        /// </remarks>
+        public virtual bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+        {
+            return true;
+        }
+
+        /// <inheritdoc />
 		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2)
 		{
 			return AreDifferentEnough(layout1, layout2, layout1.Graph.Vertices.ToList());

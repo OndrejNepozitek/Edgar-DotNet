@@ -52,13 +52,22 @@
 		/// <param name="updateLayout">Whether energies should be updated.</param>
 		void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout);
 
-		/// <summary>
-		/// Checks if configurations of nodes from a given chain are different enough.
-		/// </summary>
-		/// <param name="layout1"></param>
-		/// <param name="layout2"></param>
-		/// <param name="chain"></param>
-		/// <returns></returns>
-		bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain);
-	}
+        /// <summary>
+        /// Tries to complete a given chain.
+        /// This operation may fail, in which case false is returned and the layout is not modified.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns>Whether a given chain was completed successfully</returns>
+        bool TryCompleteChain(TLayout layout, IList<TNode> chain);
+
+        /// <summary>
+        /// Checks if configurations of nodes from a given chain are different enough.
+        /// </summary>
+        /// <param name="layout1"></param>
+        /// <param name="layout2"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain);
+    }
 }

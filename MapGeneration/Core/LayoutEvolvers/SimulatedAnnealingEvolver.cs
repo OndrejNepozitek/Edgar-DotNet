@@ -111,13 +111,9 @@
 						{
 							var shouldContinue = true;
 
-							// TODO: should it be like this?
-							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
-							{
-								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain);
-							}
+                            shouldContinue = LayoutOperations.TryCompleteChain(perturbedLayout, chain);
 
-							if (shouldContinue)
+                            if (shouldContinue)
 							{
 								layouts.Add(perturbedLayout);
 								OnValid?.Invoke(perturbedLayout);

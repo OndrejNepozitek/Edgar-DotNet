@@ -22,18 +22,31 @@ namespace Sandbox.Features
             var scale = new IntVector2(1, 1);
             var offsets = new List<int>() { 2 };
 
-            var mapDescriptions = Program.GetMapDescriptionsSet(scale, true, offsets);
+            var mapDescriptions = Program.GetMapDescriptionsSet(scale, false, offsets);
+            mapDescriptions.AddRange(Program.GetMapDescriptionsSet(scale, true, offsets));
+
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 
             var scenario = BenchmarkScenario.CreateForNodeType<int>(
                 "TwoStage",
                 input =>
                 {
-                    var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
-                    layoutGenerator.InjectRandomGenerator(new Random(0));
-                    layoutGenerator.SetLayoutValidityCheck(false);
+                    if (input.MapDescription.IsWithCorridors)
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        layoutGenerator.SetLayoutValidityCheck(false);
 
-                    return layoutGenerator;
+                        return layoutGenerator;
+                    }
+                    else
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        layoutGenerator.SetLayoutValidityCheck(false);
+
+                        return layoutGenerator;
+                    }
                 });
 
             var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
@@ -50,7 +63,7 @@ namespace Sandbox.Features
             Console.WriteLine();
             Console.WriteLine("Compare to reference result");
 
-            var referenceResultText = File.ReadAllText("BenchmarkResults/1572948785_TwoStage_Reference.json");
+            var referenceResultText = File.ReadAllText("BenchmarkResults/1573636758_TwoStage_Reference.json");
             var referenceResult = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(referenceResultText);
             var allEqual = true;
 
@@ -68,8 +81,11 @@ namespace Sandbox.Features
                 }
             }
 
+            var originalColor = Console.ForegroundColor;
             Console.WriteLine();
+            Console.ForegroundColor = allEqual ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed;
             Console.WriteLine($"All equal: {allEqual}");
+            Console.ForegroundColor = originalColor;
         }
 
         private bool RunsEqual(IList<GeneratorRun> runs1, IList<GeneratorRun> runs2)
