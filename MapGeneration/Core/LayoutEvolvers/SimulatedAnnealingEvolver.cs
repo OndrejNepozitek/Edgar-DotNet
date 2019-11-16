@@ -109,14 +109,14 @@
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							var shouldContinue = true;
-
-                            shouldContinue = LayoutOperations.TryCompleteChain(perturbedLayout, chain);
+                            // TODO 2SG: should we clone before TryCompleteChain or should TryCompleteChain not change the layout?
+                            var newLayout = perturbedLayout.SmartClone();
+                            var shouldContinue = LayoutOperations.TryCompleteChain(newLayout, chain);
 
                             if (shouldContinue)
 							{
-								layouts.Add(perturbedLayout);
-								OnValid?.Invoke(perturbedLayout);
+								layouts.Add(newLayout);
+								OnValid?.Invoke(newLayout);
 
 								#region Random restarts
 								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
@@ -130,7 +130,7 @@
 								}
 								#endregion
 
-								yield return perturbedLayout;
+								yield return newLayout;
 
 								#region Debug output
 

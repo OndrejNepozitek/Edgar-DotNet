@@ -91,17 +91,8 @@
 			}
 
 			var nonCorridors = chain.Where(x => !MapDescription.IsCorridorRoom(x)).ToList();
-			var firstCorridor = chain.First(x => MapDescription.IsCorridorRoom(x));
 
-			if (layout.GetConfiguration(firstCorridor, out var _))
-			{
-				foreach (var corridor in chain.Where(x => MapDescription.IsCorridorRoom(x)))
-				{
-					layout.RemoveConfiguration(corridor);
-				}
-			}
-
-			if (Random.NextDouble() < 0.4f)
+            if (Random.NextDouble() < 0.4f)
 			{
 				PerturbShape(layout, nonCorridors, updateLayout);
 			}

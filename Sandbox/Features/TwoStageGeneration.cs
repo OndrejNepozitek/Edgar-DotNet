@@ -22,8 +22,8 @@ namespace Sandbox.Features
             var scale = new IntVector2(1, 1);
             var offsets = new List<int>() { 2 };
 
-            var mapDescriptions = Program.GetMapDescriptionsSet(scale, false, offsets);
-            mapDescriptions.AddRange(Program.GetMapDescriptionsSet(scale, true, offsets));
+            var mapDescriptions = Program.GetMapDescriptionsSet(scale, true, offsets);
+            mapDescriptions.AddRange(Program.GetMapDescriptionsSet(scale, false, offsets));
 
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 

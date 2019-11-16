@@ -40,7 +40,7 @@
 		}
 
 		/// <summary>
-		/// Adds a contraint for layouts.
+		/// Adds a constraint for layouts.
 		/// </summary>
 		/// <param name="constraint"></param>
 		public void AddLayoutConstraint(ILayoutConstraint<TLayout, TNode, TLayoutEnergyData> constraint)
