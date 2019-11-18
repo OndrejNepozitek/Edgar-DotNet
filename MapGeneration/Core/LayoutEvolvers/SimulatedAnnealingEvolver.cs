@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Core.LayoutEvolvers
+﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+
+namespace MapGeneration.Core.LayoutEvolvers
 {
 	using System;
 	using System.Collections.Generic;
@@ -27,8 +29,8 @@
 
 		protected IChainBasedLayoutOperations<TLayout, TNode> LayoutOperations;
 
-		public event Action<TLayout> OnPerturbed;
-		public event Action<TLayout> OnValid;
+		public event EventHandler<TLayout> OnPerturbed;
+		public event EventHandler<TLayout> OnValid;
 
 		protected int Cycles = 50;
 		protected int TrialsPerCycle = 100;
@@ -39,7 +41,7 @@
 		}
 
 		/// <inheritdoc />
-		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count)
+		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IChain<TNode> chain, int count)
 		{
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
@@ -87,12 +89,12 @@
 					if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
 						yield break;
 
-					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta);
+					var perturbedLayout = PerturbLayout(currentLayout, chain.Nodes, out var energyDelta);
 
-					OnPerturbed?.Invoke(perturbedLayout);
+					OnPerturbed?.Invoke(this, perturbedLayout);
 
 					// TODO: can we check the energy instead?
-					if (LayoutOperations.IsLayoutValid(perturbedLayout, chain))
+					if (LayoutOperations.IsLayoutValid(perturbedLayout, chain.Nodes))
 					{
 						#region Random restarts
 						if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValid)
@@ -114,13 +116,13 @@
 							// TODO: should it be like this?
 							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
 							{
-								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain);
+								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain.Nodes);
 							}
 
 							if (shouldContinue)
 							{
 								layouts.Add(perturbedLayout);
-								OnValid?.Invoke(perturbedLayout);
+								OnValid?.Invoke(this, perturbedLayout);
 
 								#region Random restarts
 								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)

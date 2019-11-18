@@ -89,7 +89,7 @@
 		protected Random Random = new Random();
 		protected CancellationToken? CancellationToken;
 
-		private List<List<TNode>> chains;
+		private IList<IChain<TNode>> chains;
 		private TLayout initialLayout;
 		private GeneratorContext context;
 
@@ -191,7 +191,7 @@
 
 			layout = layout.SmartClone();
 
-			layoutOperations.AddChain(layout, chains[chainNumber], true);
+			layoutOperations.AddChain(layout, chains[chainNumber].Nodes, true);
 
 			return layout;
 		}
@@ -235,7 +235,7 @@
 			}
 		}
 
-		private void IterationsCounterHandler(TLayout layout)
+		private void IterationsCounterHandler(object sender, TLayout layout)
 		{
 			context.IterationsCount++;
 		}
@@ -245,12 +245,12 @@
 			OnValid?.Invoke(layoutConverter.Convert(layout, true));
 		}
 
-		private void PartialValidLayoutsHandler(TLayout layout)
+		private void PartialValidLayoutsHandler(object sender, TLayout layout)
 		{
 			OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
 		}
 
-		private void PerturbedLayoutsHandler(TLayout layout)
+		private void PerturbedLayoutsHandler(object sender, TLayout layout)
 		{
 			OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
 		}
@@ -359,7 +359,7 @@
 			LayoutValidityCheckEnabled = enable;
 		}
 
-		private void CheckLayoutValidity(TLayout layout)
+		private void CheckLayoutValidity(object sender, TLayout layout)
 		{
 			var copy = layout.SmartClone();
 

@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Core.ChainDecompositions
+﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+
+namespace MapGeneration.Core.ChainDecompositions
 {
 	using System;
 	using System.Collections.Generic;
@@ -23,7 +25,7 @@
 		}
 
 		/// <inheritdoc />
-		public override List<List<TNode>> GetChains(IGraph<TNode> graph)
+		public override IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			Initialize(graph);
 
@@ -33,11 +35,11 @@
 				Faces.RemoveAt(Faces.MaxBy(x => x.Count));
 			}
 
-			var chains = new List<List<TNode>>();
+			var chains = new List<IChain<TNode>>();
 
 			if (Faces.Count != 0)
 			{
-				chains.Add(GetFirstCycle(Faces));
+				chains.Add(new Chain<TNode>(GetFirstCycle(Faces), chains.Count));
 			}
 
 			// Process cycles
@@ -54,7 +56,7 @@
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(chain);
+				chains.Add(new Chain<TNode>(chain, chains.Count));
 			}
 
 			// Add remaining nodes
@@ -66,7 +68,7 @@
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(chain);
+				chains.Add(new Chain<TNode>(chain, chains.Count));
 			}
 
 			return chains;

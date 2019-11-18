@@ -21,7 +21,7 @@
 
 
 		/// <inheritdoc />
-		public abstract List<List<TNode>> GetChains(IGraph<TNode> graph);
+		public abstract IList<IChain<TNode>> GetChains(IGraph<TNode> graph);
 
 		/// <summary>
 		/// Setups graph and gets faces.

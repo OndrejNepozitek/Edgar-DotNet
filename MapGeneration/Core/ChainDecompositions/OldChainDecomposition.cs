@@ -14,8 +14,9 @@
 	{
 		protected GraphUtils GraphUtils = new GraphUtils();
 
-		public List<List<TNode>> GetChains(IGraph<TNode> graph)
+		public IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
 		{
+            throw new NotImplementedException();
 
 			var chains = new List<List<TNode>>();
 			var usedVertices = new Dictionary<TNode, bool>();
@@ -46,8 +47,9 @@
 				chains.Add(chain);
 			}
 
-			return chains;
-		}
+			// return chains;
+            return null;
+        }
 
 		protected virtual List<TNode> GetNeighbouringPath(IGraph<TNode> graph, Dictionary<TNode, bool> usedVertices)
 		{

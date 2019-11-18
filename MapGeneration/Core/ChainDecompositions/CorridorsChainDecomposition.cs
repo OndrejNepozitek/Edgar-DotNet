@@ -30,7 +30,7 @@
 		}
 
 		/// <inheritdoc />
-		public List<List<TNode>> GetChains(IGraph<TNode> graph)
+		public IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			if (!mapDescription.IsWithCorridors)
 				throw new InvalidOperationException("Map description must be with corridors to use this decomposition.");
@@ -41,11 +41,14 @@
 			var usedVertices = new HashSet<TNode>();
 			var corridors = graph.Vertices.Where(x => mapDescription.IsCorridorRoom(x)).ToList();
 
-			foreach (var face in faces)
+            foreach (var face in faces)
 			{
-				face.ForEach(x => usedVertices.Add(x));
+                foreach (var node in face.Nodes)
+                {
+                    usedVertices.Add(node);
+                }
 
-				var corridorsToRemove = new List<TNode>();
+                var corridorsToRemove = new List<TNode>();
 				foreach (var corridor in corridors)
 				{
 					var neighbours = graph.GetNeighbours(corridor).ToList();
@@ -56,7 +59,7 @@
 					if (usedVertices.Contains(neighbours[0]) && usedVertices.Contains(neighbours[1]))
 					{
 						corridorsToRemove.Add(corridor);
-						face.Add(corridor);
+						face.Nodes.Add(corridor);
 					}
 				}
 				corridorsToRemove.ForEach(x => corridors.Remove(x));

@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Interfaces.Core.LayoutEvolvers
+﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+
+namespace MapGeneration.Interfaces.Core.LayoutEvolvers
 {
 	using System;
 	using System.Collections.Generic;
@@ -13,12 +15,12 @@
 		/// <summary>
 		/// An event that is fired whenever a layout is perturbed.
 		/// </summary>
-		event Action<TLayout> OnPerturbed;
+		event EventHandler<TLayout> OnPerturbed;
 
 		/// <summary>
 		/// An event that is fired whenever a valid layout is produced.
 		/// </summary>
-		event Action<TLayout> OnValid;
+		event EventHandler<TLayout> OnValid;
 
 		/// <summary>
 		/// Returns valid layouts evolved from a given initial layout.
@@ -34,6 +36,6 @@
 		/// <param name="chain">Only nodes from the chain should be perturbed.</param>
 		/// <param name="count">How many layouts should be produced.</param>
 		/// <returns></returns>
-		IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count);
+		IEnumerable<TLayout> Evolve(TLayout initialLayout, IChain<TNode> chain, int count);
 	}
 }
