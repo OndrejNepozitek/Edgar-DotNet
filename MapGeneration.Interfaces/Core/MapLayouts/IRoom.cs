@@ -47,7 +47,7 @@
 		Transformation Transformation { get; }
 
 		/// <summary>
-		/// All possible transformations of the room room description.
+		/// All possible transformations of the room description.
 		/// </summary>
 		IList<Transformation> Transformations { get; }
 	}
