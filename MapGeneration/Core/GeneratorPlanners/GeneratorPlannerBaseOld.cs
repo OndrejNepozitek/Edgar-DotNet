@@ -20,7 +20,7 @@
 	/// Inheriting classes can shape the tree by specifying in each step which node should
 	/// be extended.
 	/// </remarks>
-	public abstract class GeneratorPlannerBase<TLayout> : IGeneratorPlanner<TLayout>, ICancellable
+	public abstract class GeneratorPlannerBaseOld<TLayout> : IGeneratorPlannerOld<TLayout>, ICancellable
 	{
 		private TLayout initialLayout;
 		private List<NodeRow> rows;

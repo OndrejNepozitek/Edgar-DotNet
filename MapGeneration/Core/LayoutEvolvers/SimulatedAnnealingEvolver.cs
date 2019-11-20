@@ -35,14 +35,22 @@ namespace MapGeneration.Core.LayoutEvolvers
 		protected int Cycles = 50;
 		protected int TrialsPerCycle = 100;
 
-		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations)
-		{
-			LayoutOperations = layoutOperations;
-		}
+        private readonly bool addNodesGreedilyBeforeEvolve;
+
+		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations, bool addNodesGreedilyBeforeEvolve = false)
+        {
+            LayoutOperations = layoutOperations;
+            this.addNodesGreedilyBeforeEvolve = addNodesGreedilyBeforeEvolve;
+        }
 
 		/// <inheritdoc />
 		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IChain<TNode> chain, int count)
 		{
+            if (addNodesGreedilyBeforeEvolve)
+            {
+                LayoutOperations.AddChain(initialLayout, chain.Nodes, true);
+            }
+
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
@@ -307,7 +315,7 @@ namespace MapGeneration.Core.LayoutEvolvers
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;
-		}
+        }
 
 		public void SetCancellationToken(CancellationToken? cancellationToken)
 		{

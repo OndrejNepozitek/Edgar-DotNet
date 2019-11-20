@@ -9,7 +9,7 @@
 	/// it would be really slow to not use lazy evaluation.
 	/// </summary>
 	[Obsolete("This generator tries hard to show that non-lazy planning does not make any sense. Use any other planner.")]
-	public class SlowGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
+	public class SlowGeneratorPlanner<TLayout> : GeneratorPlannerBaseOld<TLayout>
 	{
 		private int currentRow;
 		private Node lastNode;

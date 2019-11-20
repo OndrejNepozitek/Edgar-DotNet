@@ -40,6 +40,7 @@ namespace Sandbox
             var scale = new IntVector2(1, 1);
             var offsets = new List<int>() { 2 };
 
+            // var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
             var mapDescriptions = GetMapDescriptionsSet(scale, true, offsets);
             mapDescriptions.AddRange(GetMapDescriptionsSet(scale, false, offsets));
 
@@ -59,9 +60,9 @@ namespace Sandbox
                     }
                     else
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator<int>(input.MapDescription);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
-                        layoutGenerator.SetLayoutValidityCheck(false);
+                        // layoutGenerator.SetLayoutValidityCheck(false);
 
                         return layoutGenerator;
                     }

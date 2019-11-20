@@ -37,7 +37,7 @@
 		private IChainDecomposition<TNode> chainDecomposition;
 		private ILayoutEvolver<TLayout, TNode> layoutEvolver;
 		private IChainBasedLayoutOperations<TLayout, TNode> layoutOperations;
-		private IGeneratorPlanner<TLayout> generatorPlanner;
+		private IGeneratorPlannerOld<TLayout> generatorPlanner;
 		private ILayoutConverter<TLayout, TOutputLayout> layoutConverter;
 
 		// Creators
@@ -65,7 +65,7 @@
 
 		private Func<
 			TMapDescription,
-			IGeneratorPlanner<TLayout>
+			IGeneratorPlannerOld<TLayout>
 		> generatorPlannerCreator;
 
 		private Func<
@@ -291,7 +291,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetGeneratorPlannerCreator(Func<TMapDescription, IGeneratorPlanner<TLayout>> creator)
+		public void SetGeneratorPlannerCreator(Func<TMapDescription, IGeneratorPlannerOld<TLayout>> creator)
 		{
 			generatorPlannerCreator = creator;
 		}
