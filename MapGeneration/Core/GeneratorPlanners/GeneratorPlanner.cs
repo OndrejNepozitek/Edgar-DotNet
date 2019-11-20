@@ -46,7 +46,7 @@ namespace MapGeneration.Core.GeneratorPlanners
             nextId = 0;
             var chainsCount = chains.Count;
 
-            TLayout finalLayout = default;
+            var finalLayout = default(TLayout);
 
             AddZeroLevelNode();
 
