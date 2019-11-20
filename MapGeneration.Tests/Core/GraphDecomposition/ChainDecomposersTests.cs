@@ -42,7 +42,7 @@
 
 				var chains = chainDecomposition.GetChains(graph);
 
-				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x).Distinct()));
+				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x.Nodes).Distinct()));
 			}
 
 			{
@@ -59,7 +59,7 @@
 
 				var chains = chainDecomposition.GetChains(graph);
 
-				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x).Distinct()));
+				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x.Nodes).Distinct()));
 			}
 		}
 
