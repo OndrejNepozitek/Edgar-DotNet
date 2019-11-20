@@ -1,11 +1,9 @@
-﻿using MapGeneration.Interfaces.Core.LayoutGenerator;
-
-namespace MapGeneration.Interfaces.Benchmarks
+﻿namespace MapGeneration.Interfaces.Benchmarks
 {
-    public interface IBenchmarkScenario<in TInput, in TMapDescription, TLayout>
+    public interface IBenchmarkScenario<in TInput>
     {
         string Name { get; }
 
-        IBenchmarkableLayoutGenerator<TMapDescription, TLayout> GetGeneratorFor(TInput input);
+        IGeneratorRunner GetRunnerFor(TInput input);
     }
 }

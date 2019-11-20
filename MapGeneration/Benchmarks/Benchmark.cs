@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.LayoutGenerator;
 using MapGeneration.Interfaces.Core.MapLayouts;
 
 namespace MapGeneration.Benchmarks
 {
-    public class Benchmark<TMapDescription, TLayout> : IBenchmark<GeneratorInput<TMapDescription>, TMapDescription, TLayout>
+    public class Benchmark<TMapDescription, TLayout> : IBenchmark<GeneratorInput<TMapDescription>>
     {
         public IList<GeneratorInput<TMapDescription>> GetInputs()
         {
             throw new NotImplementedException();
         }
 
-        public IList<IBenchmarkScenario<GeneratorInput<TMapDescription>, TMapDescription, TLayout>> GetScenarios()
+        public IList<IBenchmarkScenario<GeneratorInput<TMapDescription>>> GetScenarios()
         {
             throw new NotImplementedException();
         }

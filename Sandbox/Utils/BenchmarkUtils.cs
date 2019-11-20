@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.ResultSaving;
+using MapGeneration.Interfaces.Benchmarks;
 using Newtonsoft.Json;
 
 namespace Sandbox.Utils

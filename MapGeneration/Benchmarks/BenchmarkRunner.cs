@@ -8,10 +8,10 @@ using MapGeneration.Interfaces.Core.MapLayouts;
 
 namespace MapGeneration.Benchmarks
 {
-    public class BenchmarkRunner<TMapDescription, TLayout>
+    public class BenchmarkRunner<TMapDescription>
     {
         public BenchmarkResult Run(
-            IBenchmark<GeneratorInput<TMapDescription>, TMapDescription, TLayout> benchmark,
+            IBenchmark<GeneratorInput<TMapDescription>> benchmark,
             IList<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)
         {
             if (benchmark == null) throw new ArgumentNullException(nameof(benchmark));
@@ -35,7 +35,7 @@ namespace MapGeneration.Benchmarks
         }
 
         public BenchmarkScenarioResult Run(
-            IBenchmarkScenario<GeneratorInput<TMapDescription>, TMapDescription, TLayout> scenario,
+            IBenchmarkScenario<GeneratorInput<TMapDescription>> scenario,
             IEnumerable<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)
         {
             if (scenario == null) throw new ArgumentNullException(nameof(scenario));
@@ -47,31 +47,30 @@ namespace MapGeneration.Benchmarks
                 options = new BenchmarkOptions();
             }
 
-            var benchmarkJobs = new List<BenchmarkJob<TMapDescription, TLayout>>();
-            var benchmark = new BenchmarkUtils.Benchmark<BenchmarkJob<TMapDescription, TLayout>, BenchmarkJobResult>();
+            var benchmarkJobs = new List<BenchmarkJob>();
+            var benchmark = new BenchmarkUtils.Benchmark<BenchmarkJob, BenchmarkJobResult>();
             benchmark.SetConsoleOutput(options.WithConsoleOutput, options.WithConsolePreview);
             benchmark.AddFileOutput();
 
             foreach (var input in inputs)
             {
-                var generator = scenario.GetGeneratorFor(input);
+                var runner = scenario.GetRunnerFor(input);
 
-                benchmarkJobs.Add(new BenchmarkJob<TMapDescription, TLayout>(generator, input.Name,
-                    input.MapDescription, repeats));
+                benchmarkJobs.Add(new BenchmarkJob(runner, input.Name, repeats));
             }
 
             var benchmarkJobResults = benchmark.Run(benchmarkJobs.ToArray(), scenario.Name);
 
             return new BenchmarkScenarioResult(scenario.Name,
-                benchmarkJobResults.Select(x => new BenchmarkScenarioResult.InputResult(x.InputName, x.Runs)).ToList());
+                benchmarkJobResults.Select(x => new BenchmarkScenarioResult.InputResult(x.InputName, x.Runs.Cast<GeneratorRun>().ToList())).ToList());
         }
     }
 
     public static class BenchmarkRunner
     {
-        public static BenchmarkRunner<MapDescription<TNode>, IMapLayout<TNode>> CreateForNodeType<TNode>()
+        public static BenchmarkRunner<MapDescription<TNode>> CreateForNodeType<TNode>()
         {
-            return new BenchmarkRunner<MapDescription<TNode>, IMapLayout<TNode>>();
+            return new BenchmarkRunner<MapDescription<TNode>>();
         }
     }
 }

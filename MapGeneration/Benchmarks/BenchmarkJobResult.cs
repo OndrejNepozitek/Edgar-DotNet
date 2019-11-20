@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MapGeneration.Interfaces.Benchmarks;
 
 namespace MapGeneration.Benchmarks
 {
@@ -46,6 +47,6 @@ namespace MapGeneration.Benchmarks
 		public string IterationsPerSecondSummary => $"{IterationsAverage / TimeAverage:##}k/{IterationsMedian / TimeMedian:##}k";
 
         [Show(ShowIn.None)]
-        public List<GeneratorRun> Runs { get; set; }
+        public List<IGeneratorRun> Runs { get; set; }
 	}
 }

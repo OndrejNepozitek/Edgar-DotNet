@@ -1,41 +1,39 @@
-﻿namespace MapGeneration.Benchmarks
+﻿using MapGeneration.Interfaces.Benchmarks;
+
+namespace MapGeneration.Benchmarks
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using BenchmarkUtils;
-	using Interfaces.Core.LayoutGenerator;
-	using Utils;
+    using Utils;
 
-	public class BenchmarkJob<TMapDescription, TLayout> : IPreviewableBenchmarkJob<BenchmarkJobResult>
+	public class BenchmarkJob : IPreviewableBenchmarkJob<BenchmarkJobResult>
 	{
-		private readonly IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator;
+		private readonly IGeneratorRunner generatorRunner;
 		private readonly string inputName;
-        private readonly TMapDescription input;
-		private readonly int repeats;
+        private readonly int repeats;
 
 		public event Action<BenchmarkJobResult> OnPreview;
 
-		public BenchmarkJob(
-			IBenchmarkableLayoutGenerator<TMapDescription, TLayout> generator, string inputName,
-            TMapDescription input, int repeats = 10)
+		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10)
 		{
-			this.generator = generator;
+			this.generatorRunner = generatorRunner;
 			this.inputName = inputName;
-			this.input = input;
             this.repeats = repeats;
 		}
 
 		public BenchmarkJobResult Execute()
 		{
-			generator.EnableBenchmark(true);
+            // TODO:
+			// generatorRunner.EnableBenchmark(true);
 
-            var runs = new List<GeneratorRun>();
+            var runs = new List<IGeneratorRun>();
 
             for (int i = 0; i < repeats; i++)
 			{
-				generator.GetLayouts(input, 1);
-                runs.Add(new GeneratorRun(generator.LayoutsCount == 1, (int) generator.TimeTotal, generator.IterationsCount));
+				var generatorRun = generatorRunner.Run();
+                runs.Add(generatorRun);
 
                 OnPreview?.Invoke(GetResult($"Run {i + 1}/{repeats}", runs));
 			}
@@ -43,7 +41,7 @@
 			return GetResult(inputName, runs);
 		}
 
-        private BenchmarkJobResult GetResult(string name, List<GeneratorRun> runs)
+        private BenchmarkJobResult GetResult(string name, List<IGeneratorRun> runs)
         {
             var successfulRuns = runs.Where(x => x.IsSuccessful).ToList();
 

@@ -2,8 +2,8 @@
 
 namespace MapGeneration.Interfaces.Benchmarks
 {
-    public interface IBenchmark<TInput, TMapDescription, TLayout>
+    public interface IBenchmark<TInput>
     {
-        IList<IBenchmarkScenario<TInput, TMapDescription, TLayout>> GetScenarios();
+        IList<IBenchmarkScenario<TInput>> GetScenarios();
     }
 }

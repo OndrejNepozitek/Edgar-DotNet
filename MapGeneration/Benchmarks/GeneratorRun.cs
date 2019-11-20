@@ -1,6 +1,8 @@
-﻿namespace MapGeneration.Benchmarks
+﻿using MapGeneration.Interfaces.Benchmarks;
+
+namespace MapGeneration.Benchmarks
 {
-    public class GeneratorRun
+    public class GeneratorRun : IGeneratorRun
     {
         public bool IsSuccessful { get; set; }
 
@@ -8,11 +10,14 @@
 
         public int Iterations { get; set; }
 
-        public GeneratorRun(bool isSuccessful, double time, int iterations)
+        public object AdditionalData { get; set; }
+
+        public GeneratorRun(bool isSuccessful, double time, int iterations, object additionalData = null)
         {
             IsSuccessful = isSuccessful;
             Time = time;
             Iterations = iterations;
+            AdditionalData = additionalData;
         }
     }
 }

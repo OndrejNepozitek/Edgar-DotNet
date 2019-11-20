@@ -3,8 +3,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
-	using Interfaces.Core.ChainDecompositions;
+    using Interfaces.Core.ChainDecompositions;
 	using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 
