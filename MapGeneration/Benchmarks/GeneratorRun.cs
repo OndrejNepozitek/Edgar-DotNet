@@ -2,7 +2,7 @@
 
 namespace MapGeneration.Benchmarks
 {
-    public class GeneratorRun : IGeneratorRun
+    public class GeneratorRun : IGeneratorRun<object>
     {
         public bool IsSuccessful { get; set; }
 
@@ -21,7 +21,7 @@ namespace MapGeneration.Benchmarks
         }
     }
 
-    public class GeneratorRun<TAdditionalData> : IGeneratorRun
+    public class GeneratorRun<TAdditionalData> : IGeneratorRun<TAdditionalData>
     {
         public bool IsSuccessful { get; set; }
 

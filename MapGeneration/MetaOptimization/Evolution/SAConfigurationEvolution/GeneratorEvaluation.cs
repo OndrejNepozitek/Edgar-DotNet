@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Benchmarks;
-using MapGeneration.Core.LayoutEvolvers;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Interfaces.Benchmarks;
 using MapGeneration.MetaOptimization.Stats;
-using Newtonsoft.Json.Linq;
 
 namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 {
@@ -13,7 +11,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
     {
         private readonly List<GeneratorData> generatorData;
 
-        public GeneratorEvaluation(List<IGeneratorRun> generatorRuns)
+        public GeneratorEvaluation(List<IGeneratorRun<AdditionalRunData>> generatorRuns)
         {
             generatorData = generatorRuns.Select(AnalyzeRun).ToList();
             generatorData.Sort((x1, x2) => x1.Iterations.CompareTo(x2.Iterations));
@@ -44,7 +42,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             return averageData;
         }
 
-        private GeneratorData AnalyzeRun(IGeneratorRun run)
+        private GeneratorData AnalyzeRun(IGeneratorRun<AdditionalRunData> run)
         {
             var generatorData = new GeneratorData()
             {
@@ -52,7 +50,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                 Time = run.Time,
             };
 
-            var simulatedAnnealingEvents = (run as GeneratorRun<List<SimulatedAnnealingEventArgs>>).AdditionalData;
+            var simulatedAnnealingEvents = run.AdditionalData.SimulatedAnnealingEventArgs;
             var chainsCount = simulatedAnnealingEvents.Max(x => x.ChainNumber) + 1;
 
             for (int i = 0; i < chainsCount; i++)

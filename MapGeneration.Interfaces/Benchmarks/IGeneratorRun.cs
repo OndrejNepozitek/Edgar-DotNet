@@ -8,4 +8,9 @@
 
         int Iterations { get; }
     }
+
+    public interface IGeneratorRun<TAdditionalData> : IGeneratorRun
+    {
+        TAdditionalData AdditionalData { get; }
+    }
 }

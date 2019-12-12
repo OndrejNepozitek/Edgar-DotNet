@@ -44,37 +44,44 @@ namespace Sandbox.Features
         {
             var analyzers = new List<IPerformanceAnalyzer<GeneratorConfiguration, Individual>>()
             {
-                // new ChainMergeAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                // new ChainOrderAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                new SAMaxIterationsAnalyzer<GeneratorConfiguration, GeneratorData>(),
+                new ChainMergeAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
+                new ChainOrderAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
+                // new SAMaxIterationsAnalyzer<GeneratorConfiguration, GeneratorData>(),
             };
 
-            var mapDescription = new MapDescription<int>()
-                .SetupWithGraph(GraphsDatabase.GetExample3())
-                .AddClassicRoomShapes(new IntVector2(1, 1));
-                // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
+            //var mapDescription = new MapDescription<int>()
+            //    .SetupWithGraph(GraphsDatabase.GetExample3())
+            //    .AddClassicRoomShapes(new IntVector2(1, 1));
+            //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
             var settings = new JsonSerializerSettings()
             {
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
                 TypeNameHandling = TypeNameHandling.All,
             };
-            var json = File.ReadAllText("Resources/MapDescriptions/example1_corridors.json");
 
-            mapDescription = JsonConvert.DeserializeObject<MapDescription<int>>(json, settings);
-            mapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
+            //var input = new GeneratorInput<MapDescription<int>>(
+            //    "example1", 
+            //    JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1.json"), settings)
+            //);
+            var input = new GeneratorInput<MapDescription<int>>(
+                "example1_corridors",
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1_corridors.json"), settings)
+            );
 
-            var evolution = new SAConfigurationEvolution(mapDescription, analyzers, new EvolutionOptions()
+            input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
+
+            var evolution = new SAConfigurationEvolution(input, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
             });
             var chainDecomposition = new BreadthFirstChainDecomposition<int>();
-            var chains = chainDecomposition.GetChains(mapDescription.GetGraph());
+            var chains = chainDecomposition.GetChains(input.MapDescription.GetGraph());
 
-            if (mapDescription.IsWithCorridors)
+            if (input.MapDescription.IsWithCorridors)
             {
-                var corridorsDecompositions = new CorridorsChainDecomposition<int>(mapDescription, chainDecomposition);
-                chains = corridorsDecompositions.GetChains(mapDescription.GetGraph());
+                var corridorsDecompositions = new CorridorsChainDecomposition<int>(input.MapDescription, chainDecomposition);
+                chains = corridorsDecompositions.GetChains(input.MapDescription.GetGraph());
             }
 
             var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
