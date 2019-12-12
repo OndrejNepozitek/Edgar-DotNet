@@ -1,4 +1,6 @@
-﻿namespace GeneralAlgorithms.DataStructures.Polygons
+﻿using Newtonsoft.Json;
+
+namespace GeneralAlgorithms.DataStructures.Polygons
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,11 +23,15 @@
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 
+		// TODO: handle better
+		[JsonProperty]
 		private readonly List<IntVector2> points;
 
+        [JsonProperty]
 		private readonly int hash;
 
 		// TODO: maybe should be struct rather than a class
+        [JsonProperty]
 		public GridRectangle BoundingRectangle { get; }
 
 		/// <summary>
@@ -42,6 +48,12 @@
 			hash = ComputeHash();
 			BoundingRectangle = GetBoundingRectabgle();
 		}
+
+		// TODO: handle better
+		[JsonConstructor]
+        private GridPolygon()
+        {
+        }
 
 		private void CheckIntegrity()
 		{

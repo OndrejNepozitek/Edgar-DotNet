@@ -1,4 +1,6 @@
-﻿namespace GeneralAlgorithms.DataStructures.Common
+﻿using Newtonsoft.Json;
+
+namespace GeneralAlgorithms.DataStructures.Common
 {
 	using System;
 	using System.Collections.Generic;
@@ -12,6 +14,9 @@
 	{
 		public readonly IntVector2 From;
 		public readonly IntVector2 To;
+
+		// TODO: handle better
+		[JsonProperty]
 		private readonly Direction degeneratedDirection;
 
 		private static readonly List<Direction> OrderedDirections = new List<Direction>() { Direction.Right, Direction.Bottom, Direction.Left, Direction.Top };
@@ -51,6 +56,8 @@
 		/// <param name="to"></param>
 		/// <param name="direction"></param>
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
+        // TODO: remove
+        [JsonConstructor]
 		public OrthogonalLine(IntVector2 from, IntVector2 to, Direction direction)
 		{
 			if (from.X != to.X && from.Y != to.Y)

@@ -57,7 +57,7 @@ namespace Sandbox.Utils
             {
                 var referenceInputResult =
                     referenceResult.InputResults.Single(x => x.InputName == inputResult.InputName);
-                var runsEqual = RunsEqual(inputResult.Runs, referenceInputResult.Runs);
+                var runsEqual = RunsEqual(inputResult.Runs.Cast<IGeneratorRun>().ToList(), referenceInputResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
 
                 var averageTime = inputResult.Runs.Average(x => x.Time);
                 var referenceAverageTime = referenceInputResult.Runs.Average(x => x.Time);
@@ -85,7 +85,7 @@ namespace Sandbox.Utils
             return allEqual;
         }
 
-        private static bool RunsEqual(IList<GeneratorRun> runs1, IList<GeneratorRun> runs2)
+        private static bool RunsEqual(IList<IGeneratorRun> runs1, IList<IGeneratorRun> runs2)
         {
             if (runs1.Count == 0 || runs2.Count == 0)
             {

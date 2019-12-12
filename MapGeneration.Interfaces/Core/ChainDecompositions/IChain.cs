@@ -4,7 +4,7 @@ namespace MapGeneration.Interfaces.Core.ChainDecompositions
 {
     public interface IChain<TNode>
     {
-        IList<TNode> Nodes { get; }
+        List<TNode> Nodes { get; }
 
         int Number { get; }
     }

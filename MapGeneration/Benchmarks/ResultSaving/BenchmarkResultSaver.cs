@@ -9,14 +9,17 @@ namespace MapGeneration.Benchmarks.ResultSaving
 {
     public class BenchmarkResultSaver
     {
-        public void SaveResult(BenchmarkScenarioResult scenarioResult, string name = null)
+        public void SaveResult(BenchmarkScenarioResult scenarioResult, string name = null, string directory = "BenchmarkResults/", bool withDatetime = true)
         {
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
 
             var json = JsonConvert.SerializeObject(scenarioResult, Formatting.Indented);
 
-            Directory.CreateDirectory("BenchmarkResults");
-            File.WriteAllText($"BenchmarkResults/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{name ?? scenarioResult.Name ?? string.Empty}.json", json);
+            // TODO: ugly?
+            var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
+            // TODO: ugly? How to pass directory
+            Directory.CreateDirectory(directory);
+            File.WriteAllText($"{directory}{datetime}{name ?? scenarioResult.Name ?? string.Empty}.json", json);
         }
 
         public async Task UploadCommitResult(BenchmarkScenarioResult scenarioResult, UploadConfig config, CommitInfo commitInfo)

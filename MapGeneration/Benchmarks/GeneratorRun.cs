@@ -20,4 +20,23 @@ namespace MapGeneration.Benchmarks
             AdditionalData = additionalData;
         }
     }
+
+    public class GeneratorRun<TAdditionalData> : IGeneratorRun
+    {
+        public bool IsSuccessful { get; set; }
+
+        public double Time { get; set; }
+
+        public int Iterations { get; set; }
+
+        public TAdditionalData AdditionalData { get; set; }
+
+        public GeneratorRun(bool isSuccessful, double time, int iterations, TAdditionalData additionalData)
+        {
+            IsSuccessful = isSuccessful;
+            Time = time;
+            Iterations = iterations;
+            AdditionalData = additionalData;
+        }
+    }
 }

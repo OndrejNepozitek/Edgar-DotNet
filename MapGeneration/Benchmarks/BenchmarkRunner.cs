@@ -62,7 +62,7 @@ namespace MapGeneration.Benchmarks
             var benchmarkJobResults = benchmark.Run(benchmarkJobs.ToArray(), scenario.Name);
 
             return new BenchmarkScenarioResult(scenario.Name,
-                benchmarkJobResults.Select(x => new BenchmarkScenarioResult.InputResult(x.InputName, x.Runs.Cast<GeneratorRun>().ToList())).ToList());
+                benchmarkJobResults.Select(x => new BenchmarkScenarioResult.InputResult(x.InputName, x.Runs.ToList())).ToList());
         }
     }
 

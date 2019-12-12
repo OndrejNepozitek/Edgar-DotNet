@@ -1,4 +1,5 @@
-﻿using MapGeneration.Interfaces.Core.LayoutGenerator;
+﻿using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+using MapGeneration.Interfaces.Core.LayoutGenerator;
 using MapGeneration.Interfaces.Utils;
 
 namespace MapGeneration.Utils
@@ -99,7 +100,7 @@ namespace MapGeneration.Utils
 
             var layoutEvolver =
                 new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int,
-                    Configuration<EnergyData>>(layoutOperations, true);
+                    Configuration<EnergyData>>(layoutOperations, addNodesGreedilyBeforeEvolve: true);
 
             var layoutGenerator = new SimpleChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>, BasicEnergyData>, IMapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 

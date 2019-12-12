@@ -1,20 +1,19 @@
-﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using GeneralAlgorithms.DataStructures.Common;
+using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Interfaces.Core.ChainDecompositions;
+using MapGeneration.Interfaces.Core.Configuration;
+using MapGeneration.Interfaces.Core.LayoutEvolvers;
+using MapGeneration.Interfaces.Core.LayoutOperations;
+using MapGeneration.Interfaces.Core.Layouts;
+using MapGeneration.Interfaces.Utils;
 
-namespace MapGeneration.Core.LayoutEvolvers
+namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Threading;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.LayoutEvolvers;
-	using Interfaces.Core.LayoutOperations;
-	using Interfaces.Core.Layouts;
-	using Interfaces.Utils;
-
-	/// <summary>
+    /// <summary>
 	/// Implementation of a simulated annealing evolver.
 	/// </summary>
 	/// <typeparam name="TLayout"></typeparam>
@@ -31,16 +30,36 @@ namespace MapGeneration.Core.LayoutEvolvers
 
 		public event EventHandler<TLayout> OnPerturbed;
 		public event EventHandler<TLayout> OnValid;
+		public event EventHandler<SimulatedAnnealingEventArgs> OnEvent;
 
-		protected int Cycles = 50;
-		protected int TrialsPerCycle = 100;
+        protected SimulatedAnnealingConfiguration Configuration;
+        protected SimulatedAnnealingConfigurationProvider ConfigurationProvider;
 
         private readonly bool addNodesGreedilyBeforeEvolve;
 
-		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations, bool addNodesGreedilyBeforeEvolve = false)
+		// TODO: should configuration be null by default?
+		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations, SimulatedAnnealingConfiguration configuration = null, bool addNodesGreedilyBeforeEvolve = false)
         {
-            LayoutOperations = layoutOperations;
+            LayoutOperations = layoutOperations ?? throw new ArgumentNullException(nameof(layoutOperations));
+            Configuration = configuration ?? SimulatedAnnealingConfiguration.GetDefaultConfiguration();
+			this.addNodesGreedilyBeforeEvolve = addNodesGreedilyBeforeEvolve;
+        }
+
+        public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations, SimulatedAnnealingConfigurationProvider configurationProvider, bool addNodesGreedilyBeforeEvolve = false)
+        {
+            LayoutOperations = layoutOperations ?? throw new ArgumentNullException(nameof(layoutOperations));
+            ConfigurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
             this.addNodesGreedilyBeforeEvolve = addNodesGreedilyBeforeEvolve;
+        }
+
+        protected SimulatedAnnealingConfiguration GetConfiguration(int chainNumber)
+        {
+            if (ConfigurationProvider != null)
+            {
+                return ConfigurationProvider.GetConfiguration(chainNumber);
+            }
+
+            return Configuration;
         }
 
 		/// <inheritdoc />
@@ -51,11 +70,13 @@ namespace MapGeneration.Core.LayoutEvolvers
                 LayoutOperations.AddChain(initialLayout, chain.Nodes, true);
             }
 
+            var configuration = GetConfiguration(chain.Number);
+
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
 			var t1 = -1d / Math.Log(p1);
-			var ratio = Math.Pow(t1 / t0, 1d / (Cycles - 1));
+			var ratio = Math.Pow(t1 / t0, 1d / (configuration.Cycles - 1));
 			var deltaEAvg = 0d;
 			var acceptedSolutions = 1;
 
@@ -76,7 +97,10 @@ namespace MapGeneration.Core.LayoutEvolvers
 
 			var numberOfFailures = 0;
 
-			for (var i = 0; i < Cycles; i++)
+            var iterations = 0;
+            var lastEventIterations = 0;
+
+            for (var i = 0; i < configuration.Cycles; i++)
 			{
 				var wasAccepted = false;
 
@@ -86,17 +110,31 @@ namespace MapGeneration.Core.LayoutEvolvers
 				{
 					if (ShouldRestart(numberOfFailures))
 					{
-						break;
+                        OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                        {
+                            Type = SimulatedAnnealingEventType.RandomRestart,
+                            IterationsSinceLastEvent = iterations - lastEventIterations,
+                            IterationsTotal = iterations,
+                            LayoutsGenerated = layouts.Count,
+                            ChainNumber = chain.Number,
+                        });
+						yield break;
 					}
 				}
 
 				#endregion
 
-				for (var j = 0; j < TrialsPerCycle; j++)
+                if (iterations - lastEventIterations > configuration.MaxIterationsWithoutSuccess)
+                {
+                    break;
+                }
+
+				for (var j = 0; j < configuration.TrialsPerCycle; j++)
 				{
 					if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
 						yield break;
 
+                    iterations++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain.Nodes, out var energyDelta);
 
 					OnPerturbed?.Invoke(this, perturbedLayout);
@@ -142,20 +180,31 @@ namespace MapGeneration.Core.LayoutEvolvers
 										numberOfFailures = 0;
 									}
 								}
-								#endregion
+                                #endregion
 
-								yield return perturbedLayout;
+                                OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                                {
+                                    Type = SimulatedAnnealingEventType.LayoutGenerated,
+                                    IterationsSinceLastEvent = iterations - lastEventIterations,
+                                    IterationsTotal = iterations,
+                                    LayoutsGenerated = layouts.Count,
+                                    ChainNumber = chain.Number,
+                                });
 
-								#region Debug output
+                                yield return perturbedLayout;
 
-								//if (withDebugOutput)
-								//{
-								//	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
-								//}
+                                lastEventIterations = iterations;
 
-								#endregion
+                                #region Debug output
 
-								if (layouts.Count >= count)
+                                //if (withDebugOutput)
+                                //{
+                                //	Console.WriteLine($"Found layout, cycle {i}, trial {j}, energy {layoutOperations.GetEnergy(perturbedLayout)}");
+                                //}
+
+                                #endregion
+
+                                if (layouts.Count >= count)
 								{
 									#region Debug output
 
@@ -219,7 +268,16 @@ namespace MapGeneration.Core.LayoutEvolvers
 
 				t = t * ratio;
 			}
-		}
+
+            OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+            {
+                Type = SimulatedAnnealingEventType.OutOfIterations,
+                IterationsSinceLastEvent = iterations - lastEventIterations,
+                IterationsTotal = iterations,
+                LayoutsGenerated = layouts.Count,
+                ChainNumber = chain.Number,
+            });
+        }
 
 		private TLayout PerturbLayout(TLayout layout, IList<TNode> chain, out double energyDelta)
 		{
@@ -300,18 +358,7 @@ namespace MapGeneration.Core.LayoutEvolvers
 		}
 
 		#endregion
-
-		/// <summary>
-		/// Set up simulated annealing parameters.
-		/// </summary>
-		/// <param name="cycles"></param>
-		/// <param name="trialsPerCycle"></param>
-		public void Configure(int cycles, int trialsPerCycle)
-		{
-			Cycles = cycles;
-			TrialsPerCycle = trialsPerCycle;
-		}
-
+		
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;

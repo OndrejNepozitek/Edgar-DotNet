@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Core.MapDescriptions
+﻿using Newtonsoft.Json;
+
+namespace MapGeneration.Core.MapDescriptions
 {
 	using System;
 	using System.Collections.Generic;
@@ -15,12 +17,25 @@
 	/// <typeparam name="TNode"></typeparam>
 	public class MapDescription<TNode> : ICorridorMapDescription<int>
 	{
+		// TODO: handle better
+		[JsonProperty]
 		protected readonly List<RoomContainer> RoomShapes = new List<RoomContainer>();
+
+        [JsonProperty]
 		protected readonly List<RoomContainer> CorridorShapes = new List<RoomContainer>();
+
+        [JsonProperty]
 		protected readonly List<List<RoomContainer>> RoomShapesForNodes = new List<List<RoomContainer>>();
+
+        [JsonProperty]
 		protected readonly List<Tuple<TNode, TNode>> Passages = new List<Tuple<TNode, TNode>>();
+
+        [JsonProperty]
 		protected readonly Dictionary<TNode, int> Rooms = new Dictionary<TNode, int>();
+
+        [JsonProperty]
 		protected List<Transformation> DefaultTransformations;
+
 		protected bool IsLocked;
 
 		public MapDescription()
@@ -29,9 +44,11 @@
 		}
 
 		/// <inheritdoc />
+        [JsonProperty]
 		public bool IsWithCorridors { get; protected set; }
 
 		/// <inheritdoc />
+		[JsonProperty]
 		public List<int> CorridorsOffsets { get; protected set; }
 
 		#region Room shapes

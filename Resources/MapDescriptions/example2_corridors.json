@@ -1,0 +1,3808 @@
+{
+  "$id": "1",
+  "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1[[System.Int32, mscorlib]], MapGeneration",
+  "RoomShapes": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+    "$values": [
+      {
+        "$id": "3",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "4",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "5",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "6",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "7",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 5
+                },
+                {
+                  "$id": "8",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 4,
+                  "Y": 5
+                },
+                {
+                  "$id": "9",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 4,
+                  "Y": -2
+                },
+                {
+                  "$id": "10",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": -2
+                }
+              ]
+            },
+            "hash": 4786433,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "11",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -3,
+                "Y": -2
+              },
+              "B": {
+                "$id": "12",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 4,
+                "Y": 5
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 0,
+                "Y": 1
+              },
+              "Area": 49,
+              "Width": 7,
+              "Height": 7
+            }
+          },
+          "DoorsMode": {
+            "$id": "13",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "14",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "15",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "16",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "17",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "18",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "19",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "20",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "21",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "22",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "23",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "24",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "25",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "26",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 5
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 5
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "27",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "28",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "29",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "30",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "31",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "32",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "33",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "34",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "35",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "36",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "37",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "38",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      },
+      {
+        "$id": "39",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "40",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "41",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "42",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "43",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 7
+                },
+                {
+                  "$id": "44",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 7,
+                  "Y": 7
+                },
+                {
+                  "$id": "45",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 7,
+                  "Y": -2
+                },
+                {
+                  "$id": "46",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": -2
+                }
+              ]
+            },
+            "hash": 4813481,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "47",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -3,
+                "Y": -2
+              },
+              "B": {
+                "$id": "48",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 7,
+                "Y": 7
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 2,
+                "Y": 2
+              },
+              "Area": 90,
+              "Width": 10,
+              "Height": 9
+            }
+          },
+          "DoorsMode": {
+            "$id": "49",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "50",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "51",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "52",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 3
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "53",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "54",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "55",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "56",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "57",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "58",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "59",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "60",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "61",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "62",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 3
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 4
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "63",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "64",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "65",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "66",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "67",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "68",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "69",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "70",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "71",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "72",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "73",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "74",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "75",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": 7
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": 7
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "76",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 4
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 4
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "77",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 3
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "78",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "79",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "80",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "81",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "82",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "83",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "84",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "85",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "86",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 5,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "87",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "88",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "89",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 3
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "90",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "91",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "92",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "93",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "94",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      }
+    ]
+  },
+  "CorridorShapes": {
+    "$id": "95",
+    "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+    "$values": [
+      {
+        "$id": "96",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "97",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "98",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "99",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "100",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -2
+                },
+                {
+                  "$id": "101",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": -2
+                },
+                {
+                  "$id": "102",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": -1
+                },
+                {
+                  "$id": "103",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -1
+                },
+                {
+                  "$id": "104",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": 0
+                },
+                {
+                  "$id": "105",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": 0
+                },
+                {
+                  "$id": "106",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -1
+                },
+                {
+                  "$id": "107",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 3,
+                  "Y": -1
+                },
+                {
+                  "$id": "108",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 3,
+                  "Y": -2
+                },
+                {
+                  "$id": "109",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -2
+                },
+                {
+                  "$id": "110",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -3
+                },
+                {
+                  "$id": "111",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -3
+                }
+              ]
+            },
+            "hash": 1593463585,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "112",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 0,
+                "Y": -3
+              },
+              "B": {
+                "$id": "113",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 3,
+                "Y": 0
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 1,
+                "Y": -1
+              },
+              "Area": 9,
+              "Width": 3,
+              "Height": 3
+            }
+          },
+          "DoorsMode": {
+            "$id": "114",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "115",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "116",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "117",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      },
+      {
+        "$id": "118",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "119",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "120",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "121",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "122",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -3
+                },
+                {
+                  "$id": "123",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": -3
+                },
+                {
+                  "$id": "124",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": -1
+                },
+                {
+                  "$id": "125",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -1
+                },
+                {
+                  "$id": "126",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": 0
+                },
+                {
+                  "$id": "127",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": 0
+                },
+                {
+                  "$id": "128",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -1
+                },
+                {
+                  "$id": "129",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 3,
+                  "Y": -1
+                },
+                {
+                  "$id": "130",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 3,
+                  "Y": -3
+                },
+                {
+                  "$id": "131",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -3
+                },
+                {
+                  "$id": "132",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": -4
+                },
+                {
+                  "$id": "133",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": -4
+                }
+              ]
+            },
+            "hash": -1286260263,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "134",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 0,
+                "Y": -4
+              },
+              "B": {
+                "$id": "135",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 3,
+                "Y": 0
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 1,
+                "Y": -2
+              },
+              "Area": 12,
+              "Width": 3,
+              "Height": 4
+            }
+          },
+          "DoorsMode": {
+            "$id": "136",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "137",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "138",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": -3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "139",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -2
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 3,
+                    "Y": -3
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      },
+      {
+        "$id": "140",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "141",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "142",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "143",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "144",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 1
+                },
+                {
+                  "$id": "145",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 0
+                },
+                {
+                  "$id": "146",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 0
+                },
+                {
+                  "$id": "147",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 1
+                }
+              ]
+            },
+            "hash": 4756697,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "148",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -3,
+                "Y": 0
+              },
+              "B": {
+                "$id": "149",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -1,
+                "Y": 1
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -2,
+                "Y": 0
+              },
+              "Area": 2,
+              "Width": 2,
+              "Height": 1
+            }
+          },
+          "DoorsMode": {
+            "$id": "150",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "151",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "152",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                },
+                {
+                  "$id": "153",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 0
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      },
+      {
+        "$id": "154",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+        "RoomDescription": {
+          "$id": "155",
+          "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+          "Shape": {
+            "$id": "156",
+            "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+            "points": {
+              "$id": "157",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "158",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": 1
+                },
+                {
+                  "$id": "159",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": 0
+                },
+                {
+                  "$id": "160",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 0
+                },
+                {
+                  "$id": "161",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 1
+                }
+              ]
+            },
+            "hash": 4769393,
+            "BoundingRectangle": {
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+              "A": {
+                "$id": "162",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -3,
+                "Y": 0
+              },
+              "B": {
+                "$id": "163",
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": 0,
+                "Y": 1
+              },
+              "Center": {
+                "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                "X": -1,
+                "Y": 0
+              },
+              "Area": 3,
+              "Width": 3,
+              "Height": 1
+            }
+          },
+          "DoorsMode": {
+            "$id": "164",
+            "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+            "DoorPositions": {
+              "$id": "165",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                {
+                  "$id": "166",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 1
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 1
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                },
+                {
+                  "$id": "167",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                  "From": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -2,
+                    "Y": 0
+                  },
+                  "To": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 0
+                  },
+                  "degeneratedDirection": 4,
+                  "Length": 1
+                }
+              ]
+            }
+          }
+        },
+        "Probability": 1.0,
+        "NormalizeProbabilities": true,
+        "Transformations": null
+      }
+    ]
+  },
+  "RoomShapesForNodes": {
+    "$id": "168",
+    "$type": "System.Collections.Generic.List`1[[System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib]], mscorlib",
+    "$values": [
+      {
+        "$id": "169",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "170",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$id": "171",
+              "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+              "Shape": {
+                "$id": "172",
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+                "points": {
+                  "$id": "173",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "174",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -9,
+                      "Y": -4
+                    },
+                    {
+                      "$id": "175",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -11,
+                      "Y": -4
+                    },
+                    {
+                      "$id": "176",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -11,
+                      "Y": 4
+                    },
+                    {
+                      "$id": "177",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -9,
+                      "Y": 4
+                    },
+                    {
+                      "$id": "178",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -9,
+                      "Y": 6
+                    },
+                    {
+                      "$id": "179",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 6
+                    },
+                    {
+                      "$id": "180",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 4
+                    },
+                    {
+                      "$id": "181",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 0,
+                      "Y": 4
+                    },
+                    {
+                      "$id": "182",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 0,
+                      "Y": -4
+                    },
+                    {
+                      "$id": "183",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": -4
+                    },
+                    {
+                      "$id": "184",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": -6
+                    },
+                    {
+                      "$id": "185",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -9,
+                      "Y": -6
+                    }
+                  ]
+                },
+                "hash": -2077526103,
+                "BoundingRectangle": {
+                  "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                  "A": {
+                    "$id": "186",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -11,
+                    "Y": -6
+                  },
+                  "B": {
+                    "$id": "187",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 0,
+                    "Y": 6
+                  },
+                  "Center": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -5,
+                    "Y": 0
+                  },
+                  "Area": 132,
+                  "Width": 11,
+                  "Height": 12
+                }
+              },
+              "DoorsMode": {
+                "$id": "188",
+                "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+                "DoorPositions": {
+                  "$id": "189",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "190",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "191",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "192",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "193",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "194",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "195",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "196",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "197",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "198",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "199",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "200",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "201",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "202",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "203",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "204",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "205",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "206",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "207",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "208",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "209",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "210",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "211",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "212",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "213",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "214",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "215",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "216",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -11,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "217",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "$id": "218",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "219",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "4"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          },
+          {
+            "$id": "220",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$id": "221",
+              "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+              "Shape": {
+                "$id": "222",
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+                "points": {
+                  "$id": "223",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "224",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -5,
+                      "Y": 2
+                    },
+                    {
+                      "$id": "225",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": 2
+                    },
+                    {
+                      "$id": "226",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    {
+                      "$id": "227",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -5,
+                      "Y": -2
+                    }
+                  ]
+                },
+                "hash": 4721249,
+                "BoundingRectangle": {
+                  "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                  "A": {
+                    "$id": "228",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -5,
+                    "Y": -2
+                  },
+                  "B": {
+                    "$id": "229",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 2
+                  },
+                  "Center": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "Area": 16,
+                  "Width": 4,
+                  "Height": 4
+                }
+              },
+              "DoorsMode": {
+                "$id": "230",
+                "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+                "DoorPositions": {
+                  "$id": "231",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "232",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "233",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      },
+      {
+        "$id": "234",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "235",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "4"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          },
+          {
+            "$id": "236",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "221"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      },
+      null,
+      {
+        "$id": "237",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "238",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "4"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          },
+          {
+            "$id": "239",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "221"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      },
+      null,
+      {
+        "$id": "240",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "241",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$id": "242",
+              "$type": "MapGeneration.Core.MapDescriptions.RoomDescription, MapGeneration",
+              "Shape": {
+                "$id": "243",
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+                "points": {
+                  "$id": "244",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "245",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -10,
+                      "Y": 5
+                    },
+                    {
+                      "$id": "246",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 4,
+                      "Y": 5
+                    },
+                    {
+                      "$id": "247",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 4,
+                      "Y": -6
+                    },
+                    {
+                      "$id": "248",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -10,
+                      "Y": -6
+                    }
+                  ]
+                },
+                "hash": 4701161,
+                "BoundingRectangle": {
+                  "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                  "A": {
+                    "$id": "249",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -10,
+                    "Y": -6
+                  },
+                  "B": {
+                    "$id": "250",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 4,
+                    "Y": 5
+                  },
+                  "Center": {
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  "Area": 154,
+                  "Width": 14,
+                  "Height": 11
+                }
+              },
+              "DoorsMode": {
+                "$id": "251",
+                "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+                "DoorPositions": {
+                  "$id": "252",
+                  "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                  "$values": [
+                    {
+                      "$id": "253",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "254",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "255",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "256",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "257",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "258",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "259",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "260",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "261",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "262",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "263",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "264",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "265",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -3
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "266",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -8,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "267",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "268",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "269",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "270",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "271",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "272",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "273",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "274",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "275",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 2,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "276",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -3
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "277",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "278",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "279",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "280",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 1
+                    },
+                    {
+                      "$id": "281",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "282",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "283",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "284",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "285",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "286",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -3
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -10,
+                        "Y": -3
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "287",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -8,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -8,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "288",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "289",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "290",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "291",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "292",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "293",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "294",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "295",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "296",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "297",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 2,
+                        "Y": -6
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 2,
+                        "Y": -6
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "298",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -3
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -3
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "299",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "300",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": -1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "301",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 0
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 0
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "302",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 1
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 1
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "303",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 2
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 4,
+                        "Y": 2
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "304",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 1,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "305",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": 0,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "306",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -1,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "307",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -2,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "308",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -3,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "309",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -4,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "310",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -5,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "311",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -6,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    },
+                    {
+                      "$id": "312",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                      "From": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 5
+                      },
+                      "To": {
+                        "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                        "X": -7,
+                        "Y": 5
+                      },
+                      "degeneratedDirection": 4,
+                      "Length": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      },
+      {
+        "$id": "313",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+        "$values": [
+          {
+            "$id": "314",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "4"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          },
+          {
+            "$id": "315",
+            "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+RoomContainer[[System.Int32, mscorlib]], MapGeneration",
+            "RoomDescription": {
+              "$ref": "221"
+            },
+            "Probability": 1.0,
+            "NormalizeProbabilities": true,
+            "Transformations": null
+          }
+        ]
+      }
+    ]
+  },
+  "Passages": {
+    "$id": "316",
+    "$type": "System.Collections.Generic.List`1[[System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib]], mscorlib",
+    "$values": [
+      {
+        "$id": "317",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 1,
+        "Item2": 0
+      },
+      {
+        "$id": "318",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 0,
+        "Item2": 2
+      },
+      {
+        "$id": "319",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 1,
+        "Item2": 3
+      },
+      {
+        "$id": "320",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 3,
+        "Item2": 2
+      },
+      {
+        "$id": "321",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 3,
+        "Item2": 4
+      },
+      {
+        "$id": "322",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 4,
+        "Item2": 5
+      },
+      {
+        "$id": "323",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 5,
+        "Item2": 8
+      },
+      {
+        "$id": "324",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 5,
+        "Item2": 6
+      },
+      {
+        "$id": "325",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 6,
+        "Item2": 7
+      },
+      {
+        "$id": "326",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 7,
+        "Item2": 8
+      },
+      {
+        "$id": "327",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 11,
+        "Item2": 9
+      },
+      {
+        "$id": "328",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 10,
+        "Item2": 9
+      },
+      {
+        "$id": "329",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 9,
+        "Item2": 4
+      },
+      {
+        "$id": "330",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 7,
+        "Item2": 12
+      },
+      {
+        "$id": "331",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 8,
+        "Item2": 13
+      },
+      {
+        "$id": "332",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 14,
+        "Item2": 13
+      },
+      {
+        "$id": "333",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 13,
+        "Item2": 15
+      },
+      {
+        "$id": "334",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 15,
+        "Item2": 16
+      },
+      {
+        "$id": "335",
+        "$type": "System.Tuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+        "Item1": 15,
+        "Item2": 17
+      }
+    ]
+  },
+  "Rooms": {
+    "$id": "336",
+    "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "11": 11,
+    "12": 12,
+    "13": 13,
+    "14": 14,
+    "15": 15,
+    "16": 16,
+    "17": 17
+  },
+  "DefaultTransformations": {
+    "$id": "337",
+    "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+    "$values": [
+      0
+    ]
+  },
+  "IsWithCorridors": true,
+  "CorridorsOffsets": {
+    "$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
+    "$values": [
+      3,
+      1
+    ]
+  }
+}
