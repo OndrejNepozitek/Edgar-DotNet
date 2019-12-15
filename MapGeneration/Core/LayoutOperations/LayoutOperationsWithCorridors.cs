@@ -17,13 +17,12 @@
 	/// <summary>
 	/// Layout operations for evolving layouts with corridors.
 	/// </summary>
-	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : 
-		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>
-        where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
+	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : 
+		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData>
+        where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
-		where TLayoutEnergyData : IEnergyData, new()
-	{
+    {
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> CorridorConfigurationSpaces;
 		protected readonly ICorridorMapDescription<TNode> MapDescription;
 		protected readonly IGraph<TNode> GraphWithoutCorridors;

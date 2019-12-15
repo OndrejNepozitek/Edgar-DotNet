@@ -19,14 +19,12 @@ namespace MapGeneration.Core.LayoutOperations
 	/// <summary>
 	/// Layout operations that compute energy based on given constraints.
 	/// </summary>
-	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
-		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout>
+	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
+		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
-		where TLayoutEnergyData : IEnergyData, new()
-	{
+    {
 		private readonly List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>> nodeConstraints = new List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
-		private readonly List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>> layoutConstraints = new List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>>();
 
         public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageTwoConfigurationSpaces) : base(stageOneConfigurationSpaces, averageSize, mapDescription, stageTwoConfigurationSpaces)
         {
@@ -41,16 +39,7 @@ namespace MapGeneration.Core.LayoutOperations
 			nodeConstraints.Add(constraint);
 		}
 
-		/// <summary>
-		/// Adds a constraint for layouts.
-		/// </summary>
-		/// <param name="constraint"></param>
-		public void AddLayoutConstraint(ILayoutConstraint<TLayout, TNode, TLayoutEnergyData> constraint)
-		{
-			layoutConstraints.Add(constraint);
-		}
-
-		/// <summary>
+        /// <summary>
 		/// Checks if a given layout is valid by first checking whether the layout itself is valid
 		/// and then checking whether all configurations of nodes are valid.
 		/// </summary>
@@ -58,9 +47,6 @@ namespace MapGeneration.Core.LayoutOperations
 		/// <returns></returns>
 		public override bool IsLayoutValid(TLayout layout)
 		{
-			if (!layout.EnergyData.IsValid)
-				return false;
-
 			if (layout.GetAllConfigurations().Any(x => !x.EnergyData.IsValid))
 				return false;
 
@@ -81,17 +67,17 @@ namespace MapGeneration.Core.LayoutOperations
 		}
 
 		/// <summary>
-		/// Gets an energy of a given layout by summing energies of nodes and the energy of the layout itself.
+		/// Gets an energy of a given layout by summing energies of individual nodes.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <returns></returns>
 		public override float GetEnergy(TLayout layout)
 		{
-			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy) + layout.EnergyData.Energy;
+			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy);
 		}
 
 		/// <summary>
-		/// Updates a given layout by computing energies of all nodes and the energy of the layout iself.
+		/// Updates a given layout by computing energies of all nodes.
 		/// </summary>
 		/// <remarks>
 		/// Energies are computed from constraints.
@@ -108,10 +94,7 @@ namespace MapGeneration.Core.LayoutOperations
 				configuration.EnergyData = newEnergyData;
 				layout.SetConfiguration(node, configuration);
 			}
-
-			var layoutEnergyData = LayoutRunAllCompute(layout);
-			layout.EnergyData = layoutEnergyData;
-		}
+        }
 
 		/// <summary>
 		/// Tries all shapes and positions from the maximum intersection to find a configuration
@@ -271,9 +254,6 @@ namespace MapGeneration.Core.LayoutOperations
 			var newEnergyData = NodeRunAllUpdate(perturbedNode, oldLayout, layout);
 			configuration.EnergyData = newEnergyData;
 			layout.SetConfiguration(perturbedNode, configuration);
-
-			var layoutEnergyData = LayoutRunAllUpdate(perturbedNode, oldLayout, layout);
-			layout.EnergyData = layoutEnergyData;
 		}
 
 		/// <summary>
@@ -362,53 +342,6 @@ namespace MapGeneration.Core.LayoutOperations
 			energyData.IsValid = valid;
 			return energyData;
 		}
-
-		/// <summary>
-		/// Computes energy data of a given layout.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <returns></returns>
-		private TLayoutEnergyData LayoutRunAllCompute(TLayout layout)
-		{
-			var energyData = new TLayoutEnergyData();
-			var valid = true;
-
-			foreach (var constraint in layoutConstraints)
-			{
-				if (!constraint.ComputeLayoutEnergyData(layout, ref energyData))
-				{
-					valid = false;
-				}
-			}
-
-			energyData.IsValid = valid;
-			return energyData;
-		}
-
-		/// <summary>
-		/// Updates energy data of a given layout.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="oldLayout"></param>
-		/// <param name="newLayout"></param>
-		/// <returns></returns>
-		private TLayoutEnergyData LayoutRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
-		{
-			var energyData = new TLayoutEnergyData();
-			var valid = true;
-
-			foreach (var constraint in layoutConstraints)
-			{
-				if (!constraint.UpdateLayoutEnergyData(oldLayout, newLayout, node, ref energyData))
-				{
-					valid = false;
-				}
-			}
-
-			energyData.IsValid = valid;
-			return energyData;
-		}
-
 
 		/// <summary>
 		/// Tries to add corridors.
