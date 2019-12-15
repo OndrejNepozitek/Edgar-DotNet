@@ -29,11 +29,11 @@
 		protected readonly IGraph<TNode> GraphWithoutCorridors;
 
 		public LayoutOperationsWithCorridors(
-			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
+			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces,
 			ICorridorMapDescription<TNode> mapDescription,
 			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> corridorConfigurationSpaces,
 			int averageSize
-			) : base(configurationSpaces, averageSize)
+			) : base(stageOneConfigurationSpaces, averageSize, mapDescription, corridorConfigurationSpaces)
 		{
 			MapDescription = mapDescription;
 			CorridorConfigurationSpaces = corridorConfigurationSpaces;
@@ -209,7 +209,7 @@
 
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2()));
 				return;
 			}
 
@@ -217,7 +217,7 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
@@ -307,12 +307,12 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
 			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
+				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;

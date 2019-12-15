@@ -1,4 +1,7 @@
-﻿namespace MapGeneration.Core.LayoutOperations
+﻿using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Interfaces.Core.MapDescriptions;
+
+namespace MapGeneration.Core.LayoutOperations
 {
 	using System;
 	using System.Collections.Generic;
@@ -25,10 +28,9 @@
 		private readonly List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>> nodeConstraints = new List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
 		private readonly List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>> layoutConstraints = new List<ILayoutConstraint<TLayout, TNode, TLayoutEnergyData>>();
 
-		public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize) : base(configurationSpaces, averageSize)
-		{
-			/* empty */
-		}
+        public LayoutOperationsWithConstraints(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageTwoConfigurationSpaces) : base(stageOneConfigurationSpaces, averageSize, mapDescription, stageTwoConfigurationSpaces)
+        {
+        }
 
 		/// <summary>
 		/// Adds a constraint for nodes.
@@ -133,7 +135,7 @@
 			// The first node is set to have a random shape and [0,0] position
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2()));
 				return;
 			}
 
@@ -141,13 +143,13 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
+				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
 
 				if (intersection == null)
 					continue;
@@ -406,5 +408,198 @@
 			energyData.IsValid = valid;
 			return energyData;
 		}
+
+
+		/// <summary>
+		/// Tries to add corridors.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chain"></param>
+		/// <returns></returns>
+		public override bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+		{
+			if (AddCorridors(layout, chain))
+			{
+				UpdateLayout(layout);
+				return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Greedily adds corridors from a given chain to the layout.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="chain"></param>
+		/// <returns></returns>
+		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
+		{
+			var clone = layout.SmartClone();
+			var corridors = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 2).ToList();
+
+			foreach (var corridor in corridors)
+			{
+				if (!AddCorridorGreedily(clone, corridor))
+					return false;
+			}
+
+			foreach (var corridor in corridors)
+			{
+				clone.GetConfiguration(corridor, out var configuration);
+				layout.SetConfiguration(corridor, configuration);
+			}
+
+			return true;
+		}
+
+        /// <summary>
+        /// Greedily adds only non corridor nodes to the layout.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <param name="updateLayout"></param>
+        public override void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout)
+        {
+            var rooms = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1);
+
+            foreach (var room in rooms)
+            {
+                AddNodeGreedily(layout, room);
+            }
+
+            if (updateLayout)
+            {
+                UpdateLayout(layout);
+            }
+        }
+
+		/// <summary>
+		/// Adds corridor node greedily.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public bool AddCorridorGreedily(TLayout layout, TNode node)
+		{
+			var configurations = new List<TConfiguration>();
+			var neighbors = layout.Graph.GetNeighbours(node);
+
+			foreach (var neighbor in neighbors)
+			{
+				if (layout.GetConfiguration(neighbor, out var configuration))
+				{
+					configurations.Add(configuration);
+				}
+			}
+
+			if (configurations.Count == 0)
+			{
+				throw new InvalidOperationException();
+			}
+
+			var foundValid = false;
+			var bestShape = default(TShapeContainer);
+			var bestPosition = new IntVector2();
+
+			var shapes = StageTwoConfigurationSpaces.GetShapesForNode(node).ToList();
+			shapes.Shuffle(Random);
+
+			foreach (var shape in shapes)
+			{
+				var intersection = StageTwoConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
+
+				if (configurationsSatisfied != 2)
+					continue;
+
+				intersection.Shuffle(Random);
+
+				foreach (var intersectionLine in intersection)
+				{
+					const int maxPoints = 20;
+
+					if (intersectionLine.Length > maxPoints)
+					{
+						var mod = intersectionLine.Length / maxPoints - 1;
+
+						for (var i = 0; i < maxPoints; i++)
+						{
+							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
+
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+
+							if (energyData.IsValid)
+							{
+								bestShape = shape;
+								bestPosition = position;
+								foundValid = true;
+								break;
+							}
+
+							if (foundValid)
+							{
+								break;
+							}
+						}
+					}
+					else
+					{
+						var points = intersectionLine.GetPoints();
+						points.Shuffle(Random);
+
+						foreach (var position in points)
+						{
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+
+							if (energyData.IsValid)
+							{
+								bestShape = shape;
+								bestPosition = position;
+								foundValid = true;
+								break;
+							}
+
+							if (foundValid)
+							{
+								break;
+							}
+						}
+					}
+
+					if (foundValid)
+					{
+						break;
+					}
+				}
+			}
+
+			var newConfiguration = CreateConfiguration(bestShape, bestPosition);
+			layout.SetConfiguration(node, newConfiguration);
+
+			return foundValid;
+		}
+
+        /// <summary>
+        /// Perturbs non corridor rooms until a valid layout is found.
+        /// Then tries to use a greedy algorithm to lay out corridor rooms.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <param name="updateLayout"></param>
+        public override void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
+        {
+			// TODO: change
+            var nonCorridors = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1).ToList();
+
+            if (Random.NextDouble() < 0.4f)
+            {
+                PerturbShape(layout, nonCorridors, updateLayout);
+            }
+            else
+            {
+                var random = nonCorridors.GetRandom(Random);
+                PerturbPosition(layout, random, updateLayout);
+            }
+        }
 	}
 }

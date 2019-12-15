@@ -33,7 +33,7 @@ namespace Sandbox.Features
                 {
                     if (input.MapDescription.IsWithCorridors)
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets, false);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
                         layoutGenerator.SetLayoutValidityCheck(false);
 
