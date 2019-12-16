@@ -24,7 +24,7 @@
 		}
 
 		/// <inheritdoc />
-		public List<List<TNode>> GetChains(IGraph<TNode> graph)
+		public IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
 		{
             // Get all the faces from the stage one graph
 			var stageOneGraph = mapDescription.GetGraphWithoutCorrridors();
@@ -37,7 +37,8 @@
             // As soon as all the neighbors of a stage two room are used, add the stage two room to the current face
 			foreach (var face in faces)
 			{
-				face.ForEach(x => usedVertices.Add(x));
+				// TODO: weird ForEach
+				face.Nodes.ToList().ForEach(x => usedVertices.Add(x));
 
 				foreach (var stageTwoRoom in notUsedStageTwoRooms.ToList())
 				{
@@ -46,7 +47,7 @@
                     if (neighbors.TrueForAll(x => usedVertices.Contains(x)))
                     {
                         notUsedStageTwoRooms.Remove(stageTwoRoom);
-                        face.Add(stageTwoRoom);
+                        face.Nodes.Add(stageTwoRoom);
                     }
                 }
             }

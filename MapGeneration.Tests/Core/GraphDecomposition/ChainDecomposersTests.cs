@@ -3,8 +3,7 @@
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
-	using Interfaces.Core.ChainDecompositions;
+    using Interfaces.Core.ChainDecompositions;
 	using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 
@@ -42,7 +41,7 @@
 
 				var chains = chainDecomposition.GetChains(graph);
 
-				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x).Distinct()));
+				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x.Nodes).Distinct()));
 			}
 
 			{
@@ -59,7 +58,7 @@
 
 				var chains = chainDecomposition.GetChains(graph);
 
-				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x).Distinct()));
+				Assert.IsTrue(graph.Vertices.SequenceEqualWithoutOrder(chains.SelectMany(x => x.Nodes).Distinct()));
 			}
 		}
 

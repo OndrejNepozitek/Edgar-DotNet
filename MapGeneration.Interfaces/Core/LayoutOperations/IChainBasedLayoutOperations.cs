@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Interfaces.Core.LayoutOperations
+﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+
+namespace MapGeneration.Interfaces.Core.LayoutOperations
 {
 	using System.Collections.Generic;
 

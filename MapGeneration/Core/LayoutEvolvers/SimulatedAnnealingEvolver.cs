@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Core.LayoutEvolvers
+﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+
+namespace MapGeneration.Core.LayoutEvolvers
 {
 	using System;
 	using System.Collections.Generic;
@@ -27,20 +29,28 @@
 
 		protected IChainBasedLayoutOperations<TLayout, TNode> LayoutOperations;
 
-		public event Action<TLayout> OnPerturbed;
-		public event Action<TLayout> OnValid;
+		public event EventHandler<TLayout> OnPerturbed;
+		public event EventHandler<TLayout> OnValid;
 
 		protected int Cycles = 50;
 		protected int TrialsPerCycle = 100;
 
-		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations)
-		{
-			LayoutOperations = layoutOperations;
-		}
+        private readonly bool addNodesGreedilyBeforeEvolve;
+
+		public SimulatedAnnealingEvolver(IChainBasedLayoutOperations<TLayout, TNode> layoutOperations, bool addNodesGreedilyBeforeEvolve = false)
+        {
+            LayoutOperations = layoutOperations;
+            this.addNodesGreedilyBeforeEvolve = addNodesGreedilyBeforeEvolve;
+        }
 
 		/// <inheritdoc />
-		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IList<TNode> chain, int count)
+		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IChain<TNode> chain, int count)
 		{
+            if (addNodesGreedilyBeforeEvolve)
+            {
+                LayoutOperations.AddChain(initialLayout, chain.Nodes, true);
+            }
+
 			const double p0 = 0.2d;
 			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
@@ -87,12 +97,12 @@
 					if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
 						yield break;
 
-					var perturbedLayout = PerturbLayout(currentLayout, chain, out var energyDelta);
+					var perturbedLayout = PerturbLayout(currentLayout, chain.Nodes, out var energyDelta);
 
-					OnPerturbed?.Invoke(perturbedLayout);
+					OnPerturbed?.Invoke(this, perturbedLayout);
 
 					// TODO: can we check the energy instead?
-					if (LayoutOperations.IsLayoutValid(perturbedLayout, chain))
+					if (LayoutOperations.IsLayoutValid(perturbedLayout, chain.Nodes))
 					{
 						#region Random restarts
 						if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValid)
@@ -111,12 +121,12 @@
 						{
                             // TODO 2SG: should we clone before TryCompleteChain or should TryCompleteChain not change the layout?
                             var newLayout = perturbedLayout.SmartClone();
-                            var shouldContinue = LayoutOperations.TryCompleteChain(newLayout, chain);
+                            var shouldContinue = LayoutOperations.TryCompleteChain(newLayout, chain.Nodes);
 
                             if (shouldContinue)
 							{
 								layouts.Add(newLayout);
-								OnValid?.Invoke(newLayout);
+								OnValid?.Invoke(this, newLayout);
 
 								#region Random restarts
 								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
@@ -301,7 +311,7 @@
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;
-		}
+        }
 
 		public void SetCancellationToken(CancellationToken? cancellationToken)
 		{

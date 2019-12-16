@@ -37,7 +37,7 @@
 		private IChainDecomposition<TNode> chainDecomposition;
 		private ILayoutEvolver<TLayout, TNode> layoutEvolver;
 		private IChainBasedLayoutOperations<TLayout, TNode> layoutOperations;
-		private IGeneratorPlanner<TLayout> generatorPlanner;
+		private IGeneratorPlannerOld<TLayout> generatorPlanner;
 		private ILayoutConverter<TLayout, TOutputLayout> layoutConverter;
 
 		// Creators
@@ -65,7 +65,7 @@
 
 		private Func<
 			TMapDescription,
-			IGeneratorPlanner<TLayout>
+			IGeneratorPlannerOld<TLayout>
 		> generatorPlannerCreator;
 
 		private Func<
@@ -89,7 +89,7 @@
 		protected Random Random = new Random();
 		protected CancellationToken? CancellationToken;
 
-		private List<List<TNode>> chains;
+		private IList<IChain<TNode>> chains;
 		private TLayout initialLayout;
 		private GeneratorContext context;
 
@@ -186,7 +186,7 @@
 
 			layout = layout.SmartClone();
 
-			layoutOperations.AddChain(layout, chains[chainNumber], true);
+			layoutOperations.AddChain(layout, chains[chainNumber].Nodes, true);
 
 			return layout;
 		}
@@ -230,7 +230,7 @@
 			}
 		}
 
-		private void IterationsCounterHandler(TLayout layout)
+		private void IterationsCounterHandler(object sender, TLayout layout)
 		{
 			context.IterationsCount++;
 		}
@@ -240,12 +240,12 @@
 			OnValid?.Invoke(layoutConverter.Convert(layout, true));
 		}
 
-		private void PartialValidLayoutsHandler(TLayout layout)
+		private void PartialValidLayoutsHandler(object sender, TLayout layout)
 		{
 			OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
 		}
 
-		private void PerturbedLayoutsHandler(TLayout layout)
+		private void PerturbedLayoutsHandler(object sender, TLayout layout)
 		{
 			OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
 		}
@@ -286,7 +286,7 @@
 		/// Will be called on every call to GetLayouts().
 		/// </remarks>
 		/// <param name="creator"></param>
-		public void SetGeneratorPlannerCreator(Func<TMapDescription, IGeneratorPlanner<TLayout>> creator)
+		public void SetGeneratorPlannerCreator(Func<TMapDescription, IGeneratorPlannerOld<TLayout>> creator)
 		{
 			generatorPlannerCreator = creator;
 		}
@@ -354,7 +354,7 @@
 			LayoutValidityCheckEnabled = enable;
 		}
 
-		private void CheckLayoutValidity(TLayout layout)
+		private void CheckLayoutValidity(object sender, TLayout layout)
 		{
 			var copy = layout.SmartClone();
 

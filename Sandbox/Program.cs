@@ -28,12 +28,55 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            new TwoStageGeneration().Run();
-			//´var task = RunBenchmark();
+            // new TwoStageGeneration().Run();
+            CompareWithReference();
+			// var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
             // RunExample();
             // ConvertToXml();
+        }
+
+        public static void CompareWithReference()
+        {
+            var scale = new IntVector2(1, 1);
+            var offsets = new List<int>() { 2 };
+
+            // var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
+            var mapDescriptions = GetMapDescriptionsSet(scale, true, offsets);
+            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, false, offsets));
+
+            var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
+
+            var scenario = BenchmarkScenario.CreateForNodeType<int>(
+                "Basic",
+                input =>
+                {
+                    if (input.MapDescription.IsWithCorridors)
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, true, offsets);
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        // layoutGenerator.SetLayoutValidityCheck(false);
+
+                        return layoutGenerator;
+                    }
+                    else
+                    {
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, false);
+                        layoutGenerator.InjectRandomGenerator(new Random(0));
+                        // layoutGenerator.SetLayoutValidityCheck(false);
+
+                        return layoutGenerator;
+                    }
+                });
+
+            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
+
+            var resultSaver = new BenchmarkResultSaver();
+            // await resultSaver.SaveAndUpload(scenarioResult, "name", "group");
+            resultSaver.SaveResult(scenarioResult);
+
+            BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1576529214_Basic_Reference.json");
         }
 
 		/// <summary>
@@ -102,45 +145,45 @@ namespace Sandbox
         /// <summary>
         /// Runs a prepared benchmark.
         /// </summary>
-        public static async Task RunBenchmarkOld()
-		{
-            var scale = new IntVector2(1, 1);
-            var offsets = new List<int>() { 2 };
-            const bool enableCorridors = false;
+        //public static async Task RunBenchmarkOld()
+		//{
+  //          var scale = new IntVector2(1, 1);
+  //          var offsets = new List<int>() { 2 };
+  //          const bool enableCorridors = false;
 
-            //var mapDescriptions = GetMapDescriptionsSet(scale, enableCorridors, offsets);
-            var mapDescriptions = GetInputsForThesis(false);
+  //          //var mapDescriptions = GetMapDescriptionsSet(scale, enableCorridors, offsets);
+  //          var mapDescriptions = GetInputsForThesis(false);
 
-            var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-            // var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+  //          var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+  //          // var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
 
-            var benchmark = BenchmarkOld.CreateFor(layoutGenerator);
+  //          var benchmark = BenchmarkOld.CreateFor(layoutGenerator);
 
-            layoutGenerator.InjectRandomGenerator(new Random(0));
-            layoutGenerator.SetLayoutValidityCheck(false);
+  //          layoutGenerator.InjectRandomGenerator(new Random(0));
+  //          layoutGenerator.SetLayoutValidityCheck(false);
 
-            //layoutGenerator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
-            //// layoutGenerator.SetChainDecompositionCreator(mapDescription => new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>(), false));
-            // layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
-            //layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
-            //{
-            //	var evolver =
-            //		new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int,
-            //			Configuration<EnergyData>>(layoutOperations);
-            //	evolver.Configure(50, 500);
-            //	evolver.SetRandomRestarts(true, SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>>.RestartSuccessPlace.OnAccepted, false, 0.5f);
+  //          //layoutGenerator.SetChainDecompositionCreator(mapDescription => new OldChainDecomposition<int>(new GraphDecomposer<int>()));
+  //          //// layoutGenerator.SetChainDecompositionCreator(mapDescription => new BreadthFirstChainDecomposition<int>(new GraphDecomposer<int>(), false));
+  //          // layoutGenerator.SetGeneratorPlannerCreator(mapDescription => new SlowGeneratorPlanner<Layout<Configuration<EnergyData>, BasicEnergyData>>());
+  //          //layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) =>
+  //          //{
+  //          //	var evolver =
+  //          //		new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int,
+  //          //			Configuration<EnergyData>>(layoutOperations);
+  //          //	evolver.Configure(50, 500);
+  //          //	evolver.SetRandomRestarts(true, SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>, BasicEnergyData>, int, Configuration<EnergyData>>.RestartSuccessPlace.OnAccepted, false, 0.5f);
 
-            //	return evolver;
-            //});
+  //          //	return evolver;
+  //          //});
 
-            var scenario = BenchmarkScenarioOld.CreateScenarioFor(layoutGenerator);
-            scenario.SetRunsCount(2);
+  //          var scenario = BenchmarkScenarioOld.CreateScenarioFor(layoutGenerator);
+  //          scenario.SetRunsCount(2);
 
-            var setups = scenario.MakeSetupsGroup();
-            setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random(0)));
+  //          var setups = scenario.MakeSetupsGroup();
+  //          setups.AddSetup("Fixed generator", (generator) => generator.InjectRandomGenerator(new Random(0)));
 
-            benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100);
-        }
+  //          benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100);
+  //      }
 
         public static List<GeneratorInput<MapDescription<int>>> GetInputsForThesis(bool withCorridors)
 		{

@@ -7,14 +7,14 @@
 	/// <summary>
 	/// Basic generator planner that always picks an unfinished node on the deepest level of the tree.
 	/// </summary>
-	public class BasicGeneratorPlanner<TLayout> : GeneratorPlannerBase<TLayout>
+	public class BasicGeneratorPlannerOld<TLayout> : GeneratorPlannerBaseOld<TLayout>
 	{
 		private readonly bool clearTreeAfterComplete;
 
 		/// <summary>
 		/// </summary>
 		/// <param name="clearTreeAfterComplete">Whether the tree should be cleared after each complete layout that is generated.</param>
-		public BasicGeneratorPlanner(bool clearTreeAfterComplete = true)
+		public BasicGeneratorPlannerOld(bool clearTreeAfterComplete = true)
 		{
 			this.clearTreeAfterComplete = clearTreeAfterComplete;
 		}

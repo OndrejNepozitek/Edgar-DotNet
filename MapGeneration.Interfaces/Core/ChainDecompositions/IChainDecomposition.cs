@@ -9,6 +9,6 @@
 	/// <typeparam name="TNode"></typeparam>
 	public interface IChainDecomposition<TNode>
 	{
-		List<List<TNode>> GetChains(IGraph<TNode> graph);
+		IList<IChain<TNode>> GetChains(IGraph<TNode> graph);
 	}
 }
