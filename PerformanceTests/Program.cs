@@ -62,7 +62,7 @@ namespace PerformanceTests
                 {
                     if (input.MapDescription.IsWithCorridors)
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, offsets);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
                         layoutGenerator.SetLayoutValidityCheck(false);
 
