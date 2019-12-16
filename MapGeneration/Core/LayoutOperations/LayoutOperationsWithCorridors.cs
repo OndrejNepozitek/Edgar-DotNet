@@ -98,7 +98,7 @@
 			else
 			{
 				var random = nonCorridors.GetRandom(Random);
-				PerturbNonCorridorPosition(layout, random, updateLayout);
+                PerturbNonCorridorPosition(layout, random, updateLayout);
 			}
 		}
 

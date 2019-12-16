@@ -1,10 +1,11 @@
-﻿namespace MapGeneration.Utils
+﻿using MapGeneration.Core.Configurations.EnergyData;
+
+namespace MapGeneration.Utils
 {
 	using System.Collections.Generic;
 	using Core.ChainDecompositions;
 	using Core.Configurations;
-	using Core.Configurations.EnergyData;
-	using Core.ConfigurationSpaces;
+    using Core.ConfigurationSpaces;
 	using Core.Constraints;
 	using Core.Doors;
 	using Core.GeneratorPlanners;
@@ -27,27 +28,27 @@
 		/// </summary>
 		/// <typeparam name="TNode"></typeparam>
 		/// <returns></returns>
-		public static ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>, IMapLayout<TNode>> GetDefaultChainBasedGenerator<TNode>()
+		public static ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>> GetDefaultChainBasedGenerator<TNode>()
 		{
-			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>, IMapLayout<TNode>>();
+			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>>();
 
 			var chainDecomposition = new BreadthFirstChainDecomposition<int>();
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
-			var generatorPlanner = new BasicGeneratorPlanner<Layout<Configuration<EnergyData>>>();
+			var generatorPlanner = new BasicGeneratorPlanner<Layout<Configuration<CorridorsData>>>();
 
 			layoutGenerator.SetChainDecompositionCreator(mapDescription => new TwoStageChainDecomposition<int>(mapDescription, chainDecomposition));
-			layoutGenerator.SetConfigurationSpacesCreator(mapDescription => configurationSpacesGenerator.Generate<TNode, Configuration<EnergyData>>(mapDescription));
-			layoutGenerator.SetInitialLayoutCreator(mapDescription => new Layout<Configuration<EnergyData>>(mapDescription.GetGraph()));
+			layoutGenerator.SetConfigurationSpacesCreator(mapDescription => configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription));
+			layoutGenerator.SetInitialLayoutCreator(mapDescription => new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph()));
 			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => generatorPlanner);
-			layoutGenerator.SetLayoutConverterCreator((mapDescription, configurationSpaces) => new BasicLayoutConverter<Layout<Configuration<EnergyData>>, TNode, Configuration<EnergyData>>(mapDescription, configurationSpaces, configurationSpacesGenerator.LastIntAliasMapping));
-			layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) => new SimulatedAnnealingEvolver<Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>>(layoutOperations));
+			layoutGenerator.SetLayoutConverterCreator((mapDescription, configurationSpaces) => new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode, Configuration<CorridorsData>>(mapDescription, configurationSpaces, configurationSpacesGenerator.LastIntAliasMapping));
+			layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) => new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(layoutOperations));
 			layoutGenerator.SetLayoutOperationsCreator((mapDescription, configurationSpaces) =>
 			{
-				var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>, IntAlias<GridPolygon>, EnergyData>(configurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, null);
+				var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(configurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, null);
 
 				var averageSize = configurationSpaces.GetAverageSize();
 
-				layoutOperations.AddNodeConstraint(new BasicContraint<Layout<Configuration<EnergyData>>, int, Configuration<EnergyData>, EnergyData, IntAlias<GridPolygon>>(
+				layoutOperations.AddNodeConstraint(new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
 					new FastPolygonOverlap(), 
 					averageSize,
 					configurationSpaces
@@ -82,8 +83,8 @@
 			layoutGenerator.SetLayoutOperationsCreator((mapDescription, configurationSpaces) =>
 			{
 				var corridorConfigurationSpaces = configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, offsets);
-				//var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData, BasicEnergyData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces);
-				var layoutOperations = new LayoutOperationsWithCorridors<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(configurationSpaces, mapDescription, corridorConfigurationSpaces, configurationSpaces.GetAverageSize());
+				var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces);
+				//layoutOperations = new LayoutOperationsWithCorridors<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(configurationSpaces, mapDescription, corridorConfigurationSpaces, configurationSpaces.GetAverageSize());
 				var polygonOverlap = new FastPolygonOverlap();
 
 				var averageSize = configurationSpaces.GetAverageSize();

@@ -105,7 +105,7 @@ namespace MapGeneration.Core.LayoutOperations
 		public override void AddNodeGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
-			var neighbours = layout.Graph.GetNeighbours(node);
+			var neighbours = MapDescription.GetStageOneGraph().GetNeighbours(node);
 
 			foreach (var neighbour in neighbours)
 			{
@@ -407,7 +407,7 @@ namespace MapGeneration.Core.LayoutOperations
             }
         }
 
-		/// <summary>
+        /// <summary>
 		/// Adds corridor node greedily.
 		/// </summary>
 		/// <param name="layout"></param>
@@ -521,7 +521,7 @@ namespace MapGeneration.Core.LayoutOperations
         /// <param name="updateLayout"></param>
         public override void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
-			// TODO: change
+            // TODO: change
             var nonCorridors = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1).ToList();
 
             if (Random.NextDouble() < 0.4f)

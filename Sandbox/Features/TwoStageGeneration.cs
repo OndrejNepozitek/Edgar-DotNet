@@ -63,7 +63,7 @@ namespace Sandbox.Features
             Console.WriteLine();
             Console.WriteLine("Compare to reference result");
 
-            var referenceResultText = File.ReadAllText("BenchmarkResults/1573636758_TwoStage_Reference.json");
+            var referenceResultText = File.ReadAllText("BenchmarkResults/1576495794_TwoStage_Reference.json");
             var referenceResult = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(referenceResultText);
             var allEqual = true;
 
