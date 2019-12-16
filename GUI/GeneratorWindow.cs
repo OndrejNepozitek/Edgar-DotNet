@@ -104,7 +104,7 @@
 						if (settings.MapDescription.IsWithCorridors)
 						{
 							var defaultGenerator =
-								LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(settings.MapDescription.CorridorsOffsets);
+								LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescription.CorridorsOffsets);
 							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 							layoutGenerator = defaultGenerator;

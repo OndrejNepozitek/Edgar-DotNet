@@ -23,9 +23,9 @@
 			var overlapScale = Math.Min(scale.X, scale.Y);
 			var doorMode = new OverlapMode(1 * overlapScale, 0);
 
-			var squareRoom = new RoomDescription(GridPolygon.GetSquare(6).Scale(scale), doorMode);
-			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode);
-			var room1 = new RoomDescription(
+			var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode);
+			var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode);
+			var room1 = new RoomTemplate(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 6)
@@ -35,7 +35,7 @@
 					.AddPoint(6, 0)
 					.Build().Scale(scale)
 				, doorMode);
-			var room2 = new RoomDescription(
+			var room2 = new RoomTemplate(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 9)
@@ -45,7 +45,7 @@
 					.AddPoint(6, 0)
 					.Build().Scale(scale)
 				, doorMode);
-			var room3 = new RoomDescription(
+			var room3 = new RoomTemplate(
 				new GridPolygonBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 3)
@@ -80,7 +80,7 @@
 			foreach (var offset in offsets)
 			{
 				var width = offset;
-				var room = new RoomDescription(
+				var room = new RoomTemplate(
 					GridPolygon.GetRectangle(width, 1),
 					new SpecificPositionsMode(new List<OrthogonalLine>()
 					{

@@ -2,23 +2,18 @@
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core;
-	using Interfaces.Core.Layouts;
+    using Interfaces.Core.Layouts;
 	using Interfaces.Utils;
 
 	/// <inheritdoc cref="ILayout{TNode,TConfiguration}" />
 	/// <summary>
 	/// Basic layout implementation.
 	/// </summary>
-	public class Layout<TConfiguration, TLayoutEnergyData> : IEnergyLayout<int, TConfiguration, TLayoutEnergyData>, ISmartCloneable<Layout<TConfiguration, TLayoutEnergyData>>
+	public class Layout<TConfiguration> : ILayout<int, TConfiguration>, ISmartCloneable<Layout<TConfiguration>>
 		where TConfiguration : ISmartCloneable<TConfiguration>
-		where TLayoutEnergyData : ISmartCloneable<TLayoutEnergyData>
-	{
+    {
 		private readonly TConfiguration[] vertices;
 		private readonly bool[] hasValue;
-
-		/// <inheritdoc />
-		public TLayoutEnergyData EnergyData { get; set; }
 
 		/// <inheritdoc />
 		public IGraph<int> Graph { get; }
@@ -79,9 +74,9 @@
 		/// Graph is not smart cloned.
 		/// </summary>
 		/// <returns></returns>
-		public Layout<TConfiguration, TLayoutEnergyData> SmartClone()
+		public Layout<TConfiguration> SmartClone()
 		{
-			var layout = new Layout<TConfiguration, TLayoutEnergyData>(Graph);
+			var layout = new Layout<TConfiguration>(Graph);
 
 			for (var i = 0; i < vertices.Length; i++)
 			{
@@ -93,8 +88,6 @@
 					layout.hasValue[i] = true;
 				}
 			}
-
-			layout.EnergyData = EnergyData.SmartClone();
 
 			return layout;
 		}

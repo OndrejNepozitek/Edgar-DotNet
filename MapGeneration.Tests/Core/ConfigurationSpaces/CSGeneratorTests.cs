@@ -165,8 +165,8 @@
 		{
 			// This test cannot check if the generated configuration spaces are valid
 			var mapDescription = new MapDescription<int>();
-			var squareRoom = new RoomDescription(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
-			var rectangleRoom = new RoomDescription(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
+			var squareRoom = new RoomTemplate(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
+			var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
 
 			mapDescription.AddRoomShapes(squareRoom);
 			mapDescription.AddRoomShapes(rectangleRoom, probability: 0.5d);

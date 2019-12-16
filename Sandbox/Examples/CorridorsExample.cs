@@ -18,11 +18,11 @@
 			// Add room shapes
 			var doorMode = new OverlapMode(1, 1);
 
-			var squareRoom = new RoomDescription(
+			var squareRoom = new RoomTemplate(
 				GridPolygon.GetSquare(8),
 				doorMode
 			);
-			var rectangleRoom = new RoomDescription(
+			var rectangleRoom = new RoomTemplate(
 				GridPolygon.GetRectangle(6, 10),
 				doorMode
 			);
@@ -31,7 +31,7 @@
 			mapDescription.AddRoomShapes(rectangleRoom);
 
 			// Setup corridor shapes
-			var corridorRoom = new RoomDescription(
+			var corridorRoom = new RoomTemplate(
 				GridPolygon.GetSquare(1),
 				new SpecificPositionsMode(new List<OrthogonalLine>()
 				{

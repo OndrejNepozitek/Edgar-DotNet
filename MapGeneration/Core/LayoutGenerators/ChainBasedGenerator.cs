@@ -111,12 +111,7 @@
 
 		private readonly GraphUtils graphUtils = new GraphUtils();
 
-		public ChainBasedGenerator()
-		{
-			PrepareEnergyDataGetter();
-		}
-
-		public IList<TOutputLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
+        public IList<TOutputLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
 		{
 			var graph = mapDescription.GetGraph();
 
@@ -391,20 +386,7 @@
 			}
 		}
 
-		private void PrepareEnergyDataGetter()
-		{
-			var isEnergyLayout = typeof(TLayout).GetInterfaces().Any(x =>
-				x.IsGenericType &&
-				x.GetGenericTypeDefinition() == typeof(IEnergyLayout<,,>));
-
-			if (!isEnergyLayout)
-				return;
-
-			var propertyInfo = typeof(TLayout).GetProperty(nameof(IEnergyLayout<object, object, object>.EnergyData));
-			EnergyDataGetter = (layout) => propertyInfo.GetValue(layout);
-		}
-
-		/// <summary>
+        /// <summary>
 		/// Checks if a given object is IRandomInjectable and/or ICancellable
 		/// and tries to inject a random generator or a cancellation token.
 		/// </summary>

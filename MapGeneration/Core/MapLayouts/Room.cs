@@ -19,19 +19,19 @@
 
 		public IList<IDoorInfo<TNode>> Doors { get; set; }
 
-		public IRoomDescription RoomDescription { get; }
+		public IRoomTemplate RoomTemplate { get; }
 
 		public Transformation Transformation { get; }
 
 		public IList<Transformation> Transformations { get; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, IRoomDescription roomDescription, Transformation transformation, IList<Transformation> transformations)
+		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, IRoomTemplate roomTemplate, Transformation transformation, IList<Transformation> transformations)
 		{
 			Node = node;
 			Shape = shape;
 			Position = position;
 			IsCorridor = isCorridor;
-			RoomDescription = roomDescription;
+			RoomTemplate = roomTemplate;
 			Transformation = transformation;
 			Transformations = transformations;
 			Doors = null;

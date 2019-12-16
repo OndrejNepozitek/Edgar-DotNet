@@ -18,19 +18,19 @@
 			// Add room shapes
 			var doorMode = new OverlapMode(1, 1);
 
-			var squareRoomBig = new RoomDescription(
+			var squareRoomBig = new RoomTemplate(
 				GridPolygon.GetSquare(8),
 				doorMode
 			);
-			var squareRoomSmall = new RoomDescription(
+			var squareRoomSmall = new RoomTemplate(
 				GridPolygon.GetSquare(6),
 				doorMode
 			);
-			var rectangleRoomBig = new RoomDescription(
+			var rectangleRoomBig = new RoomTemplate(
 				GridPolygon.GetRectangle(8, 12),
 				doorMode
 			);
-			var rectangleRoomSmall = new RoomDescription(
+			var rectangleRoomSmall = new RoomTemplate(
 				GridPolygon.GetRectangle(6, 10),
 				doorMode
 			);

@@ -39,7 +39,7 @@
 		/// <summary>
 		/// Room description.
 		/// </summary>
-		IRoomDescription RoomDescription { get; }
+		IRoomTemplate RoomTemplate { get; }
 
 		/// <summary>
 		/// Chosen transformation of the room shape.

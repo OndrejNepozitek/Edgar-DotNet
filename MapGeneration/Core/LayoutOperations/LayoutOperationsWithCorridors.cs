@@ -9,8 +9,7 @@
 	using Interfaces.Core.Configuration;
 	using Interfaces.Core.Configuration.EnergyData;
 	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Core.LayoutOperations;
-	using Interfaces.Core.Layouts;
+    using Interfaces.Core.Layouts;
 	using Interfaces.Core.MapDescriptions;
 	using Interfaces.Utils;
 	using Utils;
@@ -18,24 +17,22 @@
 	/// <summary>
 	/// Layout operations for evolving layouts with corridors.
 	/// </summary>
-	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData> : 
-		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData, TLayoutEnergyData>,
-		ILayoutOperationsWithCorridors<TLayout, TNode>
-		where TLayout : IEnergyLayout<TNode, TConfiguration, TLayoutEnergyData>, ISmartCloneable<TLayout> 
+	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : 
+		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData>
+        where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout> 
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
-		where TLayoutEnergyData : IEnergyData, new()
-	{
+    {
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> CorridorConfigurationSpaces;
 		protected readonly ICorridorMapDescription<TNode> MapDescription;
 		protected readonly IGraph<TNode> GraphWithoutCorridors;
 
 		public LayoutOperationsWithCorridors(
-			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
+			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces,
 			ICorridorMapDescription<TNode> mapDescription,
 			IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> corridorConfigurationSpaces,
 			int averageSize
-			) : base(configurationSpaces, averageSize)
+			) : base(stageOneConfigurationSpaces, averageSize, mapDescription, corridorConfigurationSpaces)
 		{
 			MapDescription = mapDescription;
 			CorridorConfigurationSpaces = corridorConfigurationSpaces;
@@ -93,46 +90,42 @@
 			}
 
 			var nonCorridors = chain.Where(x => !MapDescription.IsCorridorRoom(x)).ToList();
-			var firstCorridor = chain.First(x => MapDescription.IsCorridorRoom(x));
 
-			if (layout.GetConfiguration(firstCorridor, out var _))
-			{
-				foreach (var corridor in chain.Where(x => MapDescription.IsCorridorRoom(x)))
-				{
-					layout.RemoveConfiguration(corridor);
-				}
-			}
-
-			if (Random.NextDouble() < 0.4f)
+            if (Random.NextDouble() < 0.4f)
 			{
 				PerturbShape(layout, nonCorridors, updateLayout);
 			}
 			else
 			{
 				var random = nonCorridors.GetRandom(Random);
-				PerturbNonCorridorPosition(layout, random, updateLayout);
+                PerturbNonCorridorPosition(layout, random, updateLayout);
 			}
 		}
 
-		/// <inheritdoc />
-		public bool AddCorridors(TLayout layout, IList<TNode> chain)
-		{
-			if (AddCorridorsInternal(layout, chain))
-			{
-				UpdateLayout(layout);
-				return true;
-			}
+        /// <summary>
+        /// Tries to add corridors.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public override bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+        {
+            if (AddCorridors(layout, chain))
+            {
+                UpdateLayout(layout);
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
+        /// <summary>
 		/// Greedily adds corridors from a given chain to the layout.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		private bool AddCorridorsInternal(TLayout layout, IEnumerable<TNode> chain)
+		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
 			var corridors = chain.Where(x => MapDescription.IsCorridorRoom(x)).ToList();
@@ -215,7 +208,7 @@
 
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2()));
 				return;
 			}
 
@@ -223,7 +216,7 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
@@ -313,12 +306,12 @@
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
 			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
+				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;

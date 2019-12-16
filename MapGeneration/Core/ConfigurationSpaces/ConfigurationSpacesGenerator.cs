@@ -71,7 +71,7 @@
 			// Handle universal shapes
 			foreach (var shape in mapDescription.GetRoomShapes())
 			{
-				var rotatedShapes = TransformPolygons(shape.RoomDescription, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
+				var rotatedShapes = TransformPolygons(shape.RoomTemplate, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				shapes.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -91,7 +91,7 @@
 				var shapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 				foreach (var shape in shapesForNode)
 				{
-					var rotatedShapes = TransformPolygons(shape.RoomDescription, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
+					var rotatedShapes = TransformPolygons(shape.RoomTemplate, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
 					var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 					shapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -104,7 +104,7 @@
 			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 			foreach (var shape in mapDescription.GetCorridorShapes())
 			{
-				var rotatedShapes = TransformPolygons(shape.RoomDescription, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
+				var rotatedShapes = TransformPolygons(shape.RoomTemplate, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
 
 				corridorShapesContainer.AddRange(rotatedShapes.Select(x => new ConfigurationSpaces<TConfiguration>.WeightedShape(x.Item1, probability)));
@@ -156,7 +156,7 @@
 				{
 					var otherRoomInfo = intAliasMapping[pair.Key];
 
-					if (roomInfo.RoomDescription == otherRoomInfo.RoomDescription 
+					if (roomInfo.RoomTemplate == otherRoomInfo.RoomTemplate 
 					    && roomInfo.Transformations.SequenceEqualWithoutOrder(otherRoomInfo.Transformations))
 					{
 						return pair.Value;
@@ -178,14 +178,14 @@
 		/// <remarks>
 		/// Groups room shapes that are equal after transformation.
 		/// </remarks>
-		/// <param name="roomDescription"></param>
+		/// <param name="roomTemplate"></param>
 		/// <param name="transformations"></param>
 		/// <returns></returns>
-		private List<RoomInfo> TransformPolygons(RoomDescription roomDescription, IEnumerable<Transformation> transformations)
+		private List<RoomInfo> TransformPolygons(RoomTemplate roomTemplate, IEnumerable<Transformation> transformations)
 		{
 			var result = new List<RoomInfo>();
-			var doorLines = doorHandler.GetDoorPositions(roomDescription.Shape, roomDescription.DoorsMode);
-			var shape = roomDescription.Shape;
+			var doorLines = doorHandler.GetDoorPositions(roomTemplate.Shape, roomTemplate.DoorsMode);
+			var shape = roomTemplate.Shape;
 
 			foreach (var transformation in transformations)
 			{
@@ -218,7 +218,7 @@
 				if (sameRoomShapeFound)
 					continue;
 
-				result.Add(new RoomInfo(roomDescription, transformedShape, transformation, transformedDoorLines));
+				result.Add(new RoomInfo(roomTemplate, transformedShape, transformation, transformedDoorLines));
 			}
 
 			return result;
@@ -429,7 +429,7 @@
 			/// <summary>
 			/// Room description.
 			/// </summary>
-			public RoomDescription RoomDescription { get; }
+			public RoomTemplate RoomTemplate { get; }
 
 			/// <summary>
 			/// Room shape after transformation.
@@ -446,16 +446,16 @@
 			/// </summary>
 			public List<IDoorLine> DoorLines { get; }
 
-			public RoomInfo(RoomDescription roomDescription, GridPolygon roomShape, List<Transformation> transformations, List<IDoorLine> doorLines)
+			public RoomInfo(RoomTemplate roomTemplate, GridPolygon roomShape, List<Transformation> transformations, List<IDoorLine> doorLines)
 			{
-				RoomDescription = roomDescription;
+				RoomTemplate = roomTemplate;
 				RoomShape = roomShape;
 				Transformations = transformations;
 				DoorLines = doorLines;
 			}
 
-			public RoomInfo(RoomDescription roomDescription, GridPolygon roomShape, Transformation transformation, List<IDoorLine> doorLines)
-				: this(roomDescription, roomShape, new List<Transformation>() { transformation }, doorLines)
+			public RoomInfo(RoomTemplate roomTemplate, GridPolygon roomShape, Transformation transformation, List<IDoorLine> doorLines)
+				: this(roomTemplate, roomShape, new List<Transformation>() { transformation }, doorLines)
 			{
 
 			}

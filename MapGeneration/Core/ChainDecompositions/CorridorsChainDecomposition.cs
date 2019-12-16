@@ -35,7 +35,7 @@
 			if (!mapDescription.IsWithCorridors)
 				throw new InvalidOperationException("Map description must be with corridors to use this decomposition.");
 
-			var graphWithoutCorridors = mapDescription.GetGraphWithoutCorrridors();
+            var graphWithoutCorridors = mapDescription.GetGraphWithoutCorrridors();
 			var faces = decomposition.GetChains(graphWithoutCorridors);
 
 			var usedVertices = new HashSet<TNode>();

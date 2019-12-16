@@ -28,9 +28,10 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            new SimulatedAnnealingParameters().Run();
-            // CompareWithReference();
-			// var task = RunBenchmark();
+            // new SimulatedAnnealingParameters().Run();
+            // new TwoStageGeneration().Run();
+            CompareWithReference();
+            // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
             // RunExample();
@@ -54,15 +55,15 @@ namespace Sandbox
                 {
                     if (input.MapDescription.IsWithCorridors)
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(offsets);
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, true, offsets);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
-                        layoutGenerator.SetLayoutValidityCheck(false);
+                        // layoutGenerator.SetLayoutValidityCheck(false);
 
                         return layoutGenerator;
                     }
                     else
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator<int>(input.MapDescription);
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, false);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
                         // layoutGenerator.SetLayoutValidityCheck(false);
 
@@ -76,7 +77,7 @@ namespace Sandbox
             // await resultSaver.SaveAndUpload(scenarioResult, "name", "group");
             resultSaver.SaveResult(scenarioResult);
 
-            BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1573999025_Basic_Reference.json");
+            BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1576529214_Basic_Reference.json");
         }
 
 		/// <summary>
@@ -238,30 +239,30 @@ namespace Sandbox
         {
             var inputs = new List<GeneratorInput<MapDescription<int>>>()
             {
-                //new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
-                //    .SetupWithGraph(GraphsDatabase.GetExample1())
-                //    .AddClassicRoomShapes(scale)
-                //    .AddCorridorRoomShapes(offsets, enableCorridors)),
-                //new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top)",
-                //    new MapDescription<int>()
-                //        .SetupWithGraph(GraphsDatabase.GetExample2())
-                //        .AddClassicRoomShapes(scale)
-                //        .AddCorridorRoomShapes(offsets, enableCorridors)),
-                //new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)",
-                //    new MapDescription<int>()
-                //        .SetupWithGraph(GraphsDatabase.GetExample3())
-                //        .AddClassicRoomShapes(scale)
-                //        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
+                    .SetupWithGraph(GraphsDatabase.GetExample1())
+                    .AddClassicRoomShapes(scale)
+                    .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample2())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample3())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
                 new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8)",
                     new MapDescription<int>()
                         .SetupWithGraph(GraphsDatabase.GetExample4())
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
-                //new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)",
-                //    new MapDescription<int>()
-                //        .SetupWithGraph(GraphsDatabase.GetExample5())
-                //        .AddClassicRoomShapes(scale)
-                //        .AddCorridorRoomShapes(offsets, enableCorridors)),
+                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)",
+                    new MapDescription<int>()
+                        .SetupWithGraph(GraphsDatabase.GetExample5())
+                        .AddClassicRoomShapes(scale)
+                        .AddCorridorRoomShapes(offsets, enableCorridors)),
             };
 
             if (enableCorridors)

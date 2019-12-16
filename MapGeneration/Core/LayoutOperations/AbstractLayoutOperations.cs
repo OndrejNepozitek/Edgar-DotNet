@@ -1,4 +1,7 @@
-﻿namespace MapGeneration.Core.LayoutOperations
+﻿using GeneralAlgorithms.DataStructures.Graphs;
+using MapGeneration.Interfaces.Core.MapDescriptions;
+
+namespace MapGeneration.Core.LayoutOperations
 {
 	using System;
 	using System.Collections.Generic;
@@ -20,22 +23,29 @@
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer>, ISmartCloneable<TConfiguration>
 	{
-		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageOneConfigurationSpaces;
+		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageTwoConfigurationSpaces;
 		protected Random Random;
 		protected float ShapePerturbChance = 0.4f;
 		protected float DifferenceFromAverageScale = 0.4f;
 		protected int AverageSize;
+        protected readonly IMapDescription<TNode> MapDescription;
+        protected readonly IGraph<TNode> StageOneGraph;
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize)
+		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageTwoConfigurationSpaces)
 		{
-			ConfigurationSpaces = configurationSpaces;
+			StageOneConfigurationSpaces = stageOneConfigurationSpaces;
 			AverageSize = averageSize;
-		}
+            MapDescription = mapDescription;
+            StageTwoConfigurationSpaces = stageTwoConfigurationSpaces;
+            StageOneGraph = mapDescription.GetStageOneGraph();
+        }
 
 		/// <inheritdoc />
 		public virtual void InjectRandomGenerator(Random random)
 		{
 			Random = random;
+			(StageOneConfigurationSpaces as IRandomInjectable)?.InjectRandomGenerator(random); // TODO: remove later
 		}
 
 		/// <inheritdoc />
@@ -51,13 +61,13 @@
 			layout.GetConfiguration(node, out var configuration);
 
 			// Return the current layout if a given node cannot be shape-perturbed
-			if (!ConfigurationSpaces.CanPerturbShape(node))
+			if (!StageOneConfigurationSpaces.CanPerturbShape(node))
 				return;
 
 			TShapeContainer shape;
 			do
 			{
-				shape = ConfigurationSpaces.GetRandomShape(node);
+				shape = StageOneConfigurationSpaces.GetRandomShape(node);
 			}
 			while (ReferenceEquals(shape, configuration.Shape));
 
@@ -76,7 +86,10 @@
 		/// <inheritdoc />
 		public virtual void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
-			var canBePerturbed = chain.Where(x => ConfigurationSpaces.CanPerturbShape(x)).ToList();
+			var canBePerturbed = chain
+                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle better
+                .Where(x => StageOneConfigurationSpaces.CanPerturbShape(x))
+                .ToList();
 
 			if (canBePerturbed.Count == 0)
 				return;
@@ -93,9 +106,9 @@
 		{
 			var configurations = new List<TConfiguration>();
 
-			foreach (var neighbour in layout.Graph.GetNeighbours(node))
+			foreach (var neighbor in StageOneGraph.GetNeighbours(node))
 			{
-				if (layout.GetConfiguration(neighbour, out var configuration))
+				if (layout.GetConfiguration(neighbor, out var configuration))
 				{
 					configurations.Add(configuration);
 				}
@@ -104,7 +117,7 @@
 			if (!layout.GetConfiguration(node, out var mainConfiguration))
 				throw new InvalidOperationException();
 
-			var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+			var newPosition = StageOneConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
 
 			// If zero configurations were satisfied, that means that the current shape was not compatible
 			// with any of its neighbours so we perturb shape instead.
@@ -130,7 +143,9 @@
 		public virtual void PerturbPosition(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
-			var canBePerturbed = chain.ToList();
+			var canBePerturbed = chain
+                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle
+                .ToList();
 
 			if (canBePerturbed.Count == 0)
 				return;
@@ -172,7 +187,16 @@
 			}
 		}
 
-		/// <inheritdoc />
+        /// <inheritdoc />
+        /// <remarks>
+        /// Do nothing. Implementers may override.
+        /// </remarks>
+        public virtual bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+        {
+            return true;
+        }
+
+        /// <inheritdoc />
 		public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2)
 		{
 			return AreDifferentEnough(layout1, layout2, layout1.Graph.Vertices.ToList());

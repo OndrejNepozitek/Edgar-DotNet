@@ -12,6 +12,14 @@
 		/// Gets the graph of rooms.
 		/// </summary>
 		/// <returns></returns>
-		IGraph<TNode> GetGraph(); 
-	}
+		IGraph<TNode> GetGraph();
+
+        /// <summary>
+        /// Gets the graph of stage-one rooms.
+        /// </summary>
+        /// <returns></returns>
+        IGraph<TNode> GetStageOneGraph();
+
+        IRoomDescription GetRoomDescription(TNode node);
+    }
 }

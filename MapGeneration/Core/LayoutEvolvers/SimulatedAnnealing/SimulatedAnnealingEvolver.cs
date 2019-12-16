@@ -157,18 +157,14 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 						// TODO: wouldn't it be too slow to compare againts all?
 						if (IsDifferentEnough(perturbedLayout, layouts))
 						{
-							var shouldContinue = true;
+                            // TODO 2SG: should we clone before TryCompleteChain or should TryCompleteChain not change the layout?
+                            var newLayout = perturbedLayout.SmartClone();
+                            var shouldContinue = LayoutOperations.TryCompleteChain(newLayout, chain.Nodes);
 
-							// TODO: should it be like this?
-							if (LayoutOperations is ILayoutOperationsWithCorridors<TLayout, TNode> layoutOperationsWithCorridors)
+                            if (shouldContinue)
 							{
-								shouldContinue = layoutOperationsWithCorridors.AddCorridors(perturbedLayout, chain.Nodes);
-							}
-
-							if (shouldContinue)
-							{
-								layouts.Add(perturbedLayout);
-								OnValid?.Invoke(this, perturbedLayout);
+								layouts.Add(newLayout);
+								OnValid?.Invoke(this, newLayout);
 
 								#region Random restarts
 								if (enableRandomRestarts && randomRestartsSuccessPlace == RestartSuccessPlace.OnValidAndDifferent)
@@ -191,7 +187,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
                                     ChainNumber = chain.Number,
                                 });
 
-                                yield return perturbedLayout;
+                                yield return newLayout;
 
                                 lastEventIterations = iterations;
 

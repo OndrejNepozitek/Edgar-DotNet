@@ -64,7 +64,7 @@ namespace Sandbox.Utils
 
                 if (withConsole)
                 {
-                    Console.WriteLine($"{inputResult.InputName} - equal: {runsEqual}, time average actual/ref {averageTime / 1000:##.00}s/{referenceAverageTime / 1000:##.00}s");
+                    Console.WriteLine($"{inputResult.InputName} - equal: {runsEqual}, time average {averageTime / 1000:##.00}s -> {referenceAverageTime / 1000:##.00}s");
                 }
                 
                 if (!runsEqual)

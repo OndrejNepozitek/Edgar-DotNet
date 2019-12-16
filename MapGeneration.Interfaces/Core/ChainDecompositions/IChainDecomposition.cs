@@ -4,7 +4,7 @@
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	/// <summary>
-	/// Represents an algorithm that can decompose graph into disjunt chains covering all vertices.
+	/// Represents an algorithm that can decompose graph into disjunct chains covering all vertices.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
 	public interface IChainDecomposition<TNode>
