@@ -44,15 +44,19 @@ namespace Sandbox.Features
         {
             var analyzers = new List<IPerformanceAnalyzer<GeneratorConfiguration, Individual>>()
             {
-                new ChainMergeAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                new ChainOrderAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                // new SAMaxIterationsAnalyzer<GeneratorConfiguration, GeneratorData>(),
+                //new ChainMergeAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
+                //new ChainOrderAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
+                new SAMaxIterationsAnalyzer<GeneratorConfiguration, GeneratorData>(),
             };
 
             //var mapDescription = new MapDescription<int>()
             //    .SetupWithGraph(GraphsDatabase.GetExample3())
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
+
+            //var input = new GeneratorInput<MapDescription<int>>("Example 3", new MapDescription<int>()
+            //    .SetupWithGraph(GraphsDatabase.GetExample3())
+            //    .AddClassicRoomShapes(new IntVector2(1, 1)));
 
             var settings = new JsonSerializerSettings()
             {
@@ -75,7 +79,7 @@ namespace Sandbox.Features
             {
                 MaxMutationsPerIndividual = 20,
             });
-            var chainDecomposition = new BreadthFirstChainDecomposition<int>();
+            var chainDecomposition = new TwoStageChainDecomposition<int>(input.MapDescription, new BreadthFirstChainDecomposition<int>());
             var chains = chainDecomposition.GetChains(input.MapDescription.GetGraph());
 
             if (input.MapDescription.IsWithCorridors)

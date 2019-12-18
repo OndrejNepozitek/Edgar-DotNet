@@ -28,9 +28,9 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            // new SimulatedAnnealingParameters().Run();
+            new SimulatedAnnealingParameters().Run();
             // new TwoStageGeneration().Run();
-            CompareWithReference();
+            // CompareWithReference();
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();

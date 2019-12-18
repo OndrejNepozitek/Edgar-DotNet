@@ -65,7 +65,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
                     var layoutGenerator = input.MapDescription.IsWithCorridors
                         ? GetGeneratorRunnerWithCorridors(individual, input, simulatedAnnealingArgsContainer)
-                        : GetGeneratorRunner(individual, input, simulatedAnnealingArgsContainer);
+                        : GetGeneratorRunner(individual, input, input.MapDescription.IsWithCorridors, simulatedAnnealingArgsContainer);
 
                     return new LambdaGeneratorRunner(() =>
                     {
@@ -83,7 +83,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     });
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<MapDescription<int>>>() { generatorInput }, 250, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<MapDescription<int>>>() { generatorInput }, 20, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
             });
@@ -125,7 +125,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             return individual;
         }
 
-        protected IBenchmarkableLayoutGenerator<MapDescription<int>, IMapLayout<int>> GetGeneratorRunner(Individual individual, GeneratorInput<MapDescription<int>> input, List<SimulatedAnnealingEventArgs> simulatedAnnealingArgsContainer)
+        protected IBenchmarkableLayoutGenerator<MapDescription<int>, IMapLayout<int>> GetGeneratorRunnerOld(Individual individual, GeneratorInput<MapDescription<int>> input, List<SimulatedAnnealingEventArgs> simulatedAnnealingArgsContainer)
         {
             var chains = individual.Configuration.Chains;
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<EnergyData>>, int>();
@@ -252,6 +252,79 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             };
             layoutGenerator.InjectRandomGenerator(new Random(0));
             // layoutGenerator.SetLayoutValidityCheck(false);
+
+            layoutEvolver.OnEvent += (sender, args) => { simulatedAnnealingArgsContainer.Add(args); };
+
+            return layoutGenerator;
+        }
+
+        private SimpleChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>>, IMapLayout<int>, int> GetGeneratorRunner(Individual individual, GeneratorInput<MapDescription<int>> input, bool withCorridors, List<SimulatedAnnealingEventArgs> simulatedAnnealingArgsContainer)
+        {
+            var chains = individual.Configuration.Chains;
+
+            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
+
+            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+                new PolygonOverlap(),
+                DoorHandler.DefaultHandler,
+                new OrthogonalLineIntersection(),
+                new GridPolygonUtils());
+            var configurationSpaces = configurationSpacesGenerator.Generate<int, Configuration<CorridorsData>>(input.MapDescription);
+            var corridorConfigurationSpaces = withCorridors ? configurationSpacesGenerator.Generate<int, Configuration<CorridorsData>>(input.MapDescription, input.MapDescription.CorridorsOffsets) : configurationSpaces;
+
+            var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), input.MapDescription, configurationSpaces);
+
+            var initialLayout = new Layout<Configuration<CorridorsData>>(input.MapDescription.GetGraph());
+            var layoutConverter =
+                new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, int,
+                    Configuration<CorridorsData>>(input.MapDescription, configurationSpaces,
+                    configurationSpacesGenerator.LastIntAliasMapping);
+
+            var averageSize = configurationSpaces.GetAverageSize();
+
+            layoutOperations.AddNodeConstraint(new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                new FastPolygonOverlap(),
+                averageSize,
+                configurationSpaces
+            ));
+
+            if (withCorridors)
+            {
+                layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    input.MapDescription,
+                    averageSize,
+                    corridorConfigurationSpaces
+                ));
+
+                if (!false) // TODO:
+                {
+                    var polygonOverlap = new FastPolygonOverlap();
+                    layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                        input.MapDescription,
+                        polygonOverlap
+                    ));
+                }
+            }
+
+            var layoutEvolver =
+                    new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int,
+                    Configuration<CorridorsData>>(layoutOperations, individual.Configuration.SimulatedAnnealingConfiguration, true);
+
+            var layoutGenerator = new SimpleChainBasedGenerator<MapDescription<int>, Layout<Configuration<CorridorsData>>, IMapLayout<int>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+
+            layoutGenerator.OnRandomInjected += (random) =>
+            {
+                ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
+                ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
+                ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
+                ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
+            };
+
+            layoutGenerator.OnCancellationTokenInjected += (token) =>
+            {
+                ((ICancellable)generatorPlanner).SetCancellationToken(token);
+                ((ICancellable)layoutEvolver).SetCancellationToken(token);
+            };
 
             layoutEvolver.OnEvent += (sender, args) => { simulatedAnnealingArgsContainer.Add(args); };
 
