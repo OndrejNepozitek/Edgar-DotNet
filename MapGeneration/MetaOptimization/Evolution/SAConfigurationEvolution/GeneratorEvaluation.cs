@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Benchmarks;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
@@ -13,13 +14,19 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 
         public GeneratorEvaluation(List<IGeneratorRun<AdditionalRunData>> generatorRuns)
         {
-            generatorData = generatorRuns.Select(AnalyzeRun).ToList();
+            generatorData = generatorRuns
+                .Where(x => x.IsSuccessful)
+                .Select(AnalyzeRun)
+                .ToList();
             generatorData.Sort((x1, x2) => x1.Iterations.CompareTo(x2.Iterations));
         }
 
         public GeneratorData GetAverageStatistics(DataSplit dataSplit)
         {
-            var data = generatorData.Skip((int)(generatorData.Count * dataSplit.Start)).Take((int)(generatorData.Count * (dataSplit.End - dataSplit.Start))).ToList();
+            var data = generatorData
+                .Skip(Math.Min(generatorData.Count - 1, (int)(generatorData.Count * dataSplit.Start)))
+                .Take(Math.Max(1, (int)(generatorData.Count * (dataSplit.End - dataSplit.Start))))
+                .ToList();
             var averageData = new GeneratorData();
 
             for (int i = 0; i < data[0].ChainsStats.Count; i++)

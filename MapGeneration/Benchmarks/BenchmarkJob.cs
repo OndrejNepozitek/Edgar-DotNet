@@ -45,6 +45,15 @@ namespace MapGeneration.Benchmarks
         {
             var successfulRuns = runs.Where(x => x.IsSuccessful).ToList();
 
+            if (successfulRuns.Count == 0)
+            {
+                return new BenchmarkJobResult()
+                {
+                    InputName = name,
+                    Runs = runs,
+                };
+            }
+
             return new BenchmarkJobResult()
             {
                 InputName = name,

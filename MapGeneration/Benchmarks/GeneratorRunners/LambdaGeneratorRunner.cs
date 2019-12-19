@@ -1,7 +1,7 @@
 ﻿using System;
 using MapGeneration.Interfaces.Benchmarks;
 
-namespace MapGeneration.Benchmarks
+namespace MapGeneration.Benchmarks.GeneratorRunners
 {
     public class LambdaGeneratorRunner : IGeneratorRunner
     {

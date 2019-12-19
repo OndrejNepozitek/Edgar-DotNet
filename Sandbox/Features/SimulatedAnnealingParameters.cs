@@ -19,6 +19,7 @@ using MapGeneration.Core.LayoutConverters;
 using MapGeneration.Core.LayoutEvolvers;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators;
+using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.Layouts;
 using MapGeneration.Core.MapDescriptions;
@@ -42,11 +43,11 @@ namespace Sandbox.Features
     {
         public void EvolveParameters()
         {
-            var analyzers = new List<IPerformanceAnalyzer<GeneratorConfiguration, Individual>>()
+            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
             {
-                //new ChainMergeAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                //new ChainOrderAnalyzer<GeneratorConfiguration, int, GeneratorData>(),
-                new SAMaxIterationsAnalyzer<GeneratorConfiguration, GeneratorData>(),
+                new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                new SAMaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
             };
 
             //var mapDescription = new MapDescription<int>()
@@ -54,9 +55,9 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            //var input = new GeneratorInput<MapDescription<int>>("Example 3", new MapDescription<int>()
-            //    .SetupWithGraph(GraphsDatabase.GetExample3())
-            //    .AddClassicRoomShapes(new IntVector2(1, 1)));
+            var input = new GeneratorInput<MapDescription<int>>("Example 3", new MapDescription<int>()
+                .SetupWithGraph(GraphsDatabase.GetExample3())
+                .AddClassicRoomShapes(new IntVector2(1, 1)));
 
             var settings = new JsonSerializerSettings()
             {
@@ -68,40 +69,19 @@ namespace Sandbox.Features
             //    "example1", 
             //    JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1.json"), settings)
             //);
-            var input = new GeneratorInput<MapDescription<int>>(
-                "example1_corridors",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1_corridors.json"), settings)
-            );
+            //var input = new GeneratorInput<MapDescription<int>>(
+            //    "example1_corridors",
+            //    JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1_corridors.json"), settings)
+            //);
 
-            input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
+            // input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
 
             var evolution = new SAConfigurationEvolution(input, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
             });
-            var chainDecomposition = new TwoStageChainDecomposition<int>(input.MapDescription, new BreadthFirstChainDecomposition<int>());
-            var chains = chainDecomposition.GetChains(input.MapDescription.GetGraph());
 
-            if (input.MapDescription.IsWithCorridors)
-            {
-                var corridorsDecompositions = new CorridorsChainDecomposition<int>(input.MapDescription, chainDecomposition);
-                chains = corridorsDecompositions.GetChains(input.MapDescription.GetGraph());
-            }
-
-            var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
-
-            // TODO: ugly
-            for (int i = 0; i < chains.Count; i++)
-            {
-                simulatedAnnealingConfigurations.Add(SimulatedAnnealingConfiguration.GetDefaultConfiguration());
-            }
-
-            var initialConfiguration = new GeneratorConfiguration()
-            {
-                Chains = chains.ToList(),
-                SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations),
-            };
-
+            var initialConfiguration = DungeonGeneratorConfiguration.GetDefaultConfiguration(input.MapDescription);
             evolution.Evolve(initialConfiguration);
         }
 

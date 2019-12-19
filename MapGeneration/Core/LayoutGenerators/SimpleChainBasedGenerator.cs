@@ -67,7 +67,9 @@ namespace MapGeneration.Core.LayoutGenerators
                 CancellationToken = null;
             }
 
-            return new List<TLayout>() { layout }.Select(x => layoutConverter.Convert(x, true)).ToList();
+            var convertedLayout = layout != null ? layoutConverter.Convert(layout, true) : default(TOutputLayout);
+
+            return new List<TOutputLayout>() {convertedLayout};
         }
 
         private void IterationsCounterHandler(object sender, TLayout layout)

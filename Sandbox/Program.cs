@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
+using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using Sandbox.Features;
 
 namespace Sandbox
@@ -49,32 +51,26 @@ namespace Sandbox
 
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 
-            var scenario = BenchmarkScenario.CreateForNodeType<int>(
-                "Basic",
+            var scenario = BenchmarkScenario.CreateCustomForNodeType<int>(
+                "CompareWithReference",
                 input =>
                 {
-                    if (input.MapDescription.IsWithCorridors)
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, true, offsets);
+                        var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
-                        // layoutGenerator.SetLayoutValidityCheck(false);
 
-                        return layoutGenerator;
-                    }
-                    else
-                    {
-                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator(input.MapDescription, false);
-                        layoutGenerator.InjectRandomGenerator(new Random(0));
-                        // layoutGenerator.SetLayoutValidityCheck(false);
+                        return new LambdaGeneratorRunner(() =>
+                        {
+                            var layouts = layoutGenerator.GenerateLayout();
 
-                        return layoutGenerator;
+                            return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                        });
                     }
                 });
 
             var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
 
             var resultSaver = new BenchmarkResultSaver();
-            // await resultSaver.SaveAndUpload(scenarioResult, "name", "group");
             resultSaver.SaveResult(scenarioResult);
 
             BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1576529214_Basic_Reference.json");

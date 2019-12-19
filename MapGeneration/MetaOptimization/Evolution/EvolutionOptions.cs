@@ -5,7 +5,7 @@
         /// <summary>
         /// Maximum number of suggestions applied to the initial configuration.
         /// </summary>
-        public int MaxGenerations { get; set; } = 3;
+        public int MaxGenerations { get; set; } = 4;
 
         /// <summary>
         /// Maximum number of individuals after each generation
@@ -26,5 +26,10 @@
         /// Whether to use the best suggestion from each analyzer even though it is not in the MaxSuggestionsPerStep top suggestions.
         /// </summary>
         public bool UseBestMutationFromEachAnalyzer { get; set; } = true;
+
+        /// <summary>
+        /// Whether to allow individuals with less than 100% success rate.
+        /// </summary>
+        public bool AllowNotPerfectSuccessRate { get; set; } = false;
     }
 }

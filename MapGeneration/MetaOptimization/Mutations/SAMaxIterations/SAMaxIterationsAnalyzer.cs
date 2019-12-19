@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
@@ -18,8 +19,12 @@ namespace MapGeneration.MetaOptimization.Mutations.SAMaxIterations
             var configuration = individual.Configuration;
             var data = individual.ConfigurationEvaluation;
 
-            mutations.Add(GetAggressiveStrategy(configuration, data));
-            mutations.Add(GetConservativeStrategy(configuration, data));
+            if (individual.Mutations.Count == 0 || individual.Mutations.Last().GetType() != typeof(SAMaxIterationsMutation<TConfiguration>))
+            {
+
+                mutations.Add(GetAggressiveStrategy(configuration, data));
+                mutations.Add(GetConservativeStrategy(configuration, data));
+            }
 
             return mutations;
         }

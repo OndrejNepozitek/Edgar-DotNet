@@ -1,15 +1,16 @@
 ﻿using System.Linq;
+using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.MetaOptimization.Mutations;
 
 namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 {
-    public class Individual : Individual<GeneratorConfiguration, IGeneratorEvaluation<GeneratorData>>
+    public class Individual : Individual<DungeonGeneratorConfiguration, IGeneratorEvaluation<GeneratorData>>
     {
-        public Individual(int id, Individual<GeneratorConfiguration, IGeneratorEvaluation<GeneratorData>> parent, IMutation<GeneratorConfiguration> mutation) : base(id, parent, mutation)
+        public Individual(int id, Individual<DungeonGeneratorConfiguration, IGeneratorEvaluation<GeneratorData>> parent, IMutation<DungeonGeneratorConfiguration> mutation) : base(id, parent, mutation)
         {
         }
 
-        public Individual(int id, GeneratorConfiguration configuration) : base(id, configuration)
+        public Individual(int id, DungeonGeneratorConfiguration configuration) : base(id, configuration)
         {
         }
     }

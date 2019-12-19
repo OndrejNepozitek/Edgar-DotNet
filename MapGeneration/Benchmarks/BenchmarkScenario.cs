@@ -1,4 +1,5 @@
 ﻿using System;
+using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
 using MapGeneration.Interfaces.Benchmarks;

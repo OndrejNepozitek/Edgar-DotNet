@@ -108,6 +108,12 @@ namespace MapGeneration.MetaOptimization.Evolution
         private Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population)
         {
             var individuals = new List<TIndividual>(population.Individuals);
+
+            if (!options.AllowNotPerfectSuccessRate)
+            {
+                individuals = individuals.Where(x => x.SuccessRate >= 1 - double.Epsilon).ToList();
+            }
+
             individuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
 
             var bestIndividuals = individuals.Take(options.MaxPopulationSize).ToList();

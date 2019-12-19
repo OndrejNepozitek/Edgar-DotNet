@@ -14,13 +14,18 @@ namespace MapGeneration.MetaOptimization.Evolution
 
         public List<IMutation<TConfiguration>> Mutations { get; }
 
+        public Individual<TConfiguration, TConfigurationEvaluation> Parent { get; }
+
         public double Fitness { get; set; }
-        
+
+        public double SuccessRate { get; set; }
+
         public Individual(int id, Individual<TConfiguration, TConfigurationEvaluation> parent, IMutation<TConfiguration> mutation)
         {
             Id = id;
             Configuration = mutation.Apply(parent.Configuration);
             Mutations = new List<IMutation<TConfiguration>>(parent.Mutations) {mutation};
+            Parent = parent;
         }
 
         public Individual(int id, TConfiguration configuration)

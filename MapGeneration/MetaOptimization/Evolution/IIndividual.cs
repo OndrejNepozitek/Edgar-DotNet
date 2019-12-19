@@ -7,5 +7,7 @@
         TConfiguration Configuration { get; }
 
         double Fitness { get; }
+
+        double SuccessRate { get; }
     }
 }
