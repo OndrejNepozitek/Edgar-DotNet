@@ -10,9 +10,9 @@
 
 	public class DifferentProbabilitiesExample : IExample
 	{
-		public MapDescription<int> GetMapDescription()
+		public MapDescriptionOld<int> GetMapDescription()
 		{
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 			mapDescription.SetupWithGraph(GraphsDatabase.GetExample5());
 
 			// Add room shapes

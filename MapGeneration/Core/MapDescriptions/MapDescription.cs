@@ -1,430 +1,182 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeneralAlgorithms.DataStructures.Common;
+using GeneralAlgorithms.DataStructures.Graphs;
+using MapGeneration.Interfaces.Core.MapDescriptions;
+using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
-	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core.MapDescriptions;
-
-	/// <summary>
-	/// Basic map description that supports corridors.
-	/// </summary>
-	/// <typeparam name="TNode"></typeparam>
-	public class MapDescription<TNode> : ICorridorMapDescription<int>
-	{
-		// TODO: handle better
-		[JsonProperty]
-		protected readonly List<RoomContainer> RoomShapes = new List<RoomContainer>();
+    public class MapDescription<TRoom> : IMapDescription<TRoom>
+    {
+        [JsonProperty]
+        private readonly Dictionary<TRoom, IRoomDescription> roomDescriptions = new Dictionary<TRoom, IRoomDescription>();
 
         [JsonProperty]
-		protected readonly List<RoomContainer> CorridorShapes = new List<RoomContainer>();
+        private readonly List<Passage> passages = new List<Passage>();
 
-        [JsonProperty]
-		protected readonly List<List<RoomContainer>> RoomShapesForNodes = new List<List<RoomContainer>>();
-
-        [JsonProperty]
-		protected readonly List<Tuple<TNode, TNode>> Passages = new List<Tuple<TNode, TNode>>();
-
-        [JsonProperty]
-		protected readonly Dictionary<TNode, int> Rooms = new Dictionary<TNode, int>();
-
-	    [JsonProperty]
-        protected IGraph<int> StageOneGraph;
-
-	    [JsonProperty]
-        protected IGraph<int> Graph;
-
-	    [JsonProperty]
-        protected List<IRoomDescription> RoomDescriptions;
-
-        [JsonProperty]
-        protected List<Transformation> DefaultTransformations;
-
-		protected bool IsLocked;
-
-        public MapDescription()
-		{
-			DefaultTransformations = TransformationHelper.GetAllTransforamtion().ToList();
-		}
-
-		/// <inheritdoc />
-        [JsonProperty]
-		public bool IsWithCorridors { get; protected set; }
-
-		/// <inheritdoc />
-		[JsonProperty]
-		public List<int> CorridorsOffsets { get; protected set; }
-
-		#region Room shapes
-
-		/// <summary>
-		/// Add shapes that will be used for nodes that do not have specific shapes assigned.
-		/// </summary>
-		/// <param name="shapes">Room shapes to add.</param>
-		/// <param name="transformations">Allowed transformation of the shapes.</param>
-		/// <param name="probability">The probability of choosing any of given shapes.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			shapes.ForEach(x => AddRoomShapes(x, transformations, probability, normalizeProbabilities));
-		}
-
-		/// <summary>
-		/// Add a shape that will be used for nodes that do not have specific shapes assigned.
-		/// </summary>
-		/// <param name="shape">Shape to add.</param>
-		/// <param name="transformations">Allowed transformation of the shape.</param>
-		/// <param name="probability">The probability of choosing a given shape.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			if (probability <= 0)
-				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
-
-			if (RoomShapes.Any(x => shape.Equals(x.RoomTemplate)))
-				throw new InvalidOperationException("Every RoomDescription can be added at most once");
-
-			if (transformations != null && transformations.Count == 0)
-				throw new ArgumentException("There must always be at least one transformation available (e.g. identity)");
-
-			var transformationsList = transformations == null ? null : new List<Transformation>(transformations);
-
-			RoomShapes.Add(new RoomContainer(shape, transformationsList, probability, normalizeProbabilities));
-		}
-
-		/// <summary>
-		/// Add a shape that will be used for corridor rooms.
-		/// </summary>
-		/// <param name="shape">Shape to add.</param>
-		/// <param name="transformations">Allowed transformation of the shape.</param>
-		/// <param name="probability">The probability of choosing a given shape.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddCorridorShapes(RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			if (probability <= 0)
-				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
-
-			if (RoomShapes.Any(x => shape.Equals(x.RoomTemplate)))
-				throw new InvalidOperationException("Every RoomDescription can be added at most once");
-
-			if (transformations != null && transformations.Count == 0)
-				throw new ArgumentException("There must always be at least one transformation available (e.g. identity)");
-
-			var transformationsList = transformations == null ? null : new List<Transformation>(transformations);
-
-			CorridorShapes.Add(new RoomContainer(shape, transformationsList, probability, normalizeProbabilities));
-		}
-
-		/// <summary>
-		/// Add shapes that will be used for corridor rooms.
-		/// </summary>
-		/// <param name="shapes">Room shapes to add.</param>
-		/// <param name="transformations">Allowed transformation of the shapes.</param>
-		/// <param name="probability">The probability of choosing any of given shapes.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddCorridorShapes(List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			shapes.ForEach(x => AddCorridorShapes(x, transformations, probability, normalizeProbabilities));
-		}
-
-		/// <summary>
-		/// Add shapes that will be used when choosing shapes for a given node.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="shapes">Room shapes to add.</param>
-		/// <param name="transformations">Allowed transformation of the shapes.</param>
-		/// <param name="probability">The probability of choosing any of given shapes.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(TNode node, List<RoomTemplate> shapes, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			shapes.ForEach(x => AddRoomShapes(node, x, transformations, probability, normalizeProbabilities));
-		}
-
-		/// <summary>
-		/// Add shape that will be used when choosing shapes for a given node.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="shape">Shape to add.</param>
-		/// <param name="transformations">Allowed transformation of the shape.</param>
-		/// <param name="probability">The probability of choosing a given shape.</param>
-		/// <param name="normalizeProbabilities">Whether probabilities should be normalized after rotating shapes.</param>
-		public virtual void AddRoomShapes(TNode node, RoomTemplate shape, ICollection<Transformation> transformations = null, double probability = 1, bool normalizeProbabilities = true)
-		{
-			ThrowIfLocked();
-
-			if (probability <= 0)
-				throw new ArgumentException("Probability should be greater than zero", nameof(probability));
-
-			if (!Rooms.TryGetValue(node, out var alias))
-				throw new InvalidOperationException("Room must be first added to add shapes");
-
-			var roomShapesForNode = RoomShapesForNodes[alias];
-
-			if (roomShapesForNode == null)
-			{
-				roomShapesForNode = new List<RoomContainer>();
-				RoomShapesForNodes[alias] = roomShapesForNode;
-			}
-
-			if (roomShapesForNode.Any(x => shape.Equals(x.RoomTemplate)))
-				throw new InvalidOperationException("Every RoomDescription can be added at most once");
-
-			if (transformations != null && transformations.Count == 0)
-				throw new ArgumentException("There must always be at least one transformation available (e.g. identity)");
-
-			var transformationsList = transformations == null ? null : new List<Transformation>(transformations);
-
-			roomShapesForNode.Add(new RoomContainer(shape, transformationsList, probability, normalizeProbabilities));
-		}
-
-		#endregion
-
-		#region Rooms and passages
-
-		/// <summary>
-		/// Adds a given node to the map description.
-		/// </summary>
-		/// <remarks>
-		/// Any room must be added with this method before assigning shapes to it.
-		/// </remarks>
-		/// <param name="node"></param>
-		public virtual void AddRoom(TNode node)
-		{
-			ThrowIfLocked();
-
-			if (Rooms.ContainsKey(node))
-				throw new InvalidOperationException("Given node was already added");
-
-			Rooms.Add(node, Rooms.Count);
-			RoomShapesForNodes.Add(null);
-		}
-
-		/// <summary>
-		/// Adds a passage to the map description.
-		/// </summary>
-		/// <remarks>
-		/// Both nodes must be already present in the map description when adding a passage.
-		/// </remarks>
-		/// <param name="node1"></param>
-		/// <param name="node2"></param>
-		public virtual void AddPassage(TNode node1, TNode node2)
-		{
-			ThrowIfLocked();
-
-			var passage = Tuple.Create(node1, node2);
-
-			if (Passages.Any(x => x.Equals(passage)))
-				throw new InvalidOperationException("Given passage was already added");
-
-			Passages.Add(passage);
-		}
-
-		#endregion
-
-		/// <inheritdoc />
-		public virtual IGraph<int> GetGraph()
+        public void AddRoom(TRoom room, IRoomDescription roomDescription)
         {
-            if (Graph == null)
+            if (roomDescription == null) throw new ArgumentNullException(nameof(roomDescription));
+
+            if (roomDescriptions.ContainsKey(room))
             {
-                SetupGraphs();
+                throw new ArgumentException($"Map description already contains node {room}", nameof(room));
             }
 
-            // TODO 2SG: this should be later removed
-            return IsWithCorridors ? Graph : StageOneGraph;
+            roomDescriptions.Add(room, roomDescription);
         }
 
-        public IGraph<int> GetStageOneGraph()
+        public void AddConnection(TRoom room1, TRoom room2)
         {
-            if (StageOneGraph == null)
+            var passage = new Passage(room1, room2);
+
+            if (!roomDescriptions.ContainsKey(room1))
             {
-                SetupGraphs();
+                throw new ArgumentException($"Map description does not contain room {room1}", nameof(room1));
             }
 
-            return StageOneGraph;
+            if (!roomDescriptions.ContainsKey(room2))
+            {
+                throw new ArgumentException($"Map description does not contain room {room2}", nameof(room2));
+            }
+
+            if (passages.Contains(passage))
+            {
+                throw new ArgumentException("Map description already contains given connection");
+            }
+
+            passages.Add(passage);
         }
 
-        public IRoomDescription GetRoomDescription(int node)
+
+
+        public IGraph<TRoom> GetGraph()
         {
-            if (Graph == null)
+            var graph = new UndirectedAdjacencyListGraph<TRoom>();
+
+            foreach (var room in roomDescriptions.Keys)
             {
-                SetupGraphs();
+                graph.AddVertex(room);
             }
 
-            return RoomDescriptions[node];
+            foreach (var passage in passages)
+            {
+                graph.AddEdge(passage.Room1, passage.Room2);
+            }
+
+            CheckIfValid(graph);
+
+            return graph;
         }
 
-        protected void SetupGraphs()
+        public IGraph<TRoom> GetStageOneGraph()
         {
-            IsLocked = true;
+            var graph = GetGraph();
+            var stageOneGraph = new UndirectedAdjacencyListGraph<TRoom>();
 
-            var vertices = Enumerable.Range(0, Rooms.Count);
-            var corridorCounter = Rooms.Count;
-
-            StageOneGraph = new UndirectedAdjacencyListGraph<int>();
-            Graph = new UndirectedAdjacencyListGraph<int>();
-            RoomDescriptions = new List<IRoomDescription>();
-
-            foreach (var vertex in vertices)
+            foreach (var room in graph.Vertices)
             {
-                Graph.AddVertex(vertex);
-                StageOneGraph.AddVertex(vertex);
-
-                RoomDescriptions.Add(new BasicRoomDescription());
+                if (roomDescriptions[room].Stage == 1)
+                {
+                    stageOneGraph.AddVertex(room);
+                }
             }
 
-            foreach (var passage in Passages)
+            foreach (var room in graph.Vertices)
             {
-                StageOneGraph.AddEdge(Rooms[passage.Item1], Rooms[passage.Item2]);
+                var roomDescription = roomDescriptions[room];
 
-                Graph.AddVertex(corridorCounter);
-                Graph.AddEdge(Rooms[passage.Item1], corridorCounter);
-                Graph.AddEdge(corridorCounter, Rooms[passage.Item2]);
-                corridorCounter++;
+                if (roomDescription.Stage == 2)
+                {
+                    var neighbors = graph.GetNeighbours(room).ToList();
+                    stageOneGraph.AddEdge(neighbors[0], neighbors[1]);
+                }
+            }
 
-                RoomDescriptions.Add(new CorridorRoomDescription());
+            return stageOneGraph;
+        }
+
+        public IRoomDescription GetRoomDescription(TRoom node)
+        {
+            return roomDescriptions[node];
+        }
+
+        private void CheckIfValid(IGraph<TRoom> graph)
+        {
+            foreach (var room in graph.Vertices)
+            {
+                var roomDescription = roomDescriptions[room];
+
+                if (roomDescription.Stage == 2)
+                {
+                    var neighbors = graph.GetNeighbours(room).ToList();
+
+                    if (neighbors.Count != 2)
+                    {
+                        throw new ArgumentException($"Each corridor must have exactly 2 neighbors but room {room} has {neighbors.Count} neighbors");
+                    }
+
+                    foreach (var neighbor in neighbors)
+                    {
+                        var neighborRoomDescription = roomDescriptions[neighbor];
+
+                        if (neighborRoomDescription.Stage == 2)
+                        {
+                            throw new ArgumentException($"Each corridor must be connected only to basic rooms but room {room} is connected to room {neighbor} which is a corridors");
+                        }
+                    }
+                }
             }
         }
 
-        /// <summary>
-		/// Sets whether the map description should be with corridors.
-		/// </summary>
-		/// <param name="enable">Whether corridors should be enabled.</param>
-		/// <param name="offsets">How far away should non-corridor neighbours be from each other.</param>
-		public virtual void SetWithCorridors(bool enable, List<int> offsets = null)
-		{
-			ThrowIfLocked();
-
-			if (enable && (offsets == null || offsets.Count == 0))
-				throw new ArgumentException("At least one offset must be set if corridors are enabled");
-
-			IsWithCorridors = enable;
-			CorridorsOffsets = offsets;
-		}
-
-		/// <inheritdoc />
-		public virtual bool IsCorridorRoom(int room)
-		{
-			return room >= Rooms.Count;
-		}
-
-		/// <inheritdoc />
-		public virtual IGraph<int> GetGraphWithoutCorrridors()
+        private class Passage
         {
-            return GetStageOneGraph();
+            public TRoom Room1 { get; }
+
+            public TRoom Room2 { get; }
+
+            public Passage(TRoom room1, TRoom room2)
+            {
+                Room1 = room1;
+                Room2 = room2;
+            }
+
+            #region Equals
+
+            private bool Equals(Passage other)
+            {
+                return (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room1) && EqualityComparer<TRoom>.Default.Equals(Room2, other.Room2)) || (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room2) && EqualityComparer<TRoom>.Default.Equals(Room2, other.Room1));
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != this.GetType()) return false;
+                return Equals((Passage)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (EqualityComparer<TRoom>.Default.GetHashCode(Room1) * 397) ^ EqualityComparer<TRoom>.Default.GetHashCode(Room2);
+                }
+            }
+
+            public static bool operator ==(Passage left, Passage right)
+            {
+                return Equals(left, right);
+            }
+
+            public static bool operator !=(Passage left, Passage right)
+            {
+                return !Equals(left, right);
+            }
+
+            #endregion
         }
-
-		/// <summary>
-		/// Sets default room transformations.
-		/// </summary>
-		/// <remarks>
-		/// These transformations are used if they are not overriden for individual nodes.
-		/// </remarks>
-		/// <param name="transformations"></param>
-		public virtual void SetDefaultTransformations(ICollection<Transformation> transformations)
-		{
-			if (transformations == null)
-				throw new ArgumentException("Default transformations must not be null");
-
-			if (transformations.Count == 0)
-				throw new ArgumentException("There must always be at least one transformation available (e.g. identity)");
-
-			DefaultTransformations = new List<Transformation>(transformations);
-		}
-
-		/// <summary>
-		/// Gets default room transformations.
-		/// </summary>
-		/// <returns></returns>
-		public virtual ReadOnlyCollection<Transformation> GetDefaultTransformations()
-		{
-			return DefaultTransformations.AsReadOnly();
-		}
-
-		/// <summary>
-		/// Gets room shapes for rooms without their own shapes.
-		/// </summary>
-		/// <returns></returns>
-		public virtual ReadOnlyCollection<RoomContainer> GetRoomShapes()
-		{
-			return RoomShapes.AsReadOnly();
-		}
-
-		/// <summary>
-		/// Gets room shapes for corridors.
-		/// </summary>
-		/// <returns></returns>
-		public virtual ReadOnlyCollection<RoomContainer> GetCorridorShapes()
-		{
-			return CorridorShapes.AsReadOnly();
-		}
-
-		/// <summary>
-		/// Gets room shapes for nodes.
-		/// </summary>
-		/// <remarks>
-		/// The collection is null for nodes that do not have their own shapes.
-		/// </remarks>
-		/// <returns></returns>
-		public virtual ReadOnlyCollection<ReadOnlyCollection<RoomContainer>> GetRoomShapesForNodes()
-		{
-			return RoomShapesForNodes.Select(x => x?.AsReadOnly()).ToList().AsReadOnly();
-		}
-
-		/// <summary>
-		/// Returns the mapping from original vertices to ints.
-		/// </summary>
-		/// <returns></returns>
-		public virtual TwoWayDictionary<TNode, int> GetRoomsMapping()
-		{
-			IsLocked = true;
-			var mapping = new TwoWayDictionary<TNode, int>();
-
-			foreach (var pair in Rooms)
-			{
-				mapping.Add(pair.Key, pair.Value);
-			}
-
-			return mapping;
-		}
-
-		protected virtual void ThrowIfLocked()
-		{
-			if (IsLocked)
-				throw new InvalidOperationException("MapDescription is locked");
-		}
-
-		public class RoomContainer
-		{
-			public RoomTemplate RoomTemplate { get; }
-
-			public double Probability { get; }
-
-			public bool NormalizeProbabilities { get; }
-
-			public List<Transformation> Transformations { get; }
-
-			public RoomContainer(RoomTemplate roomTemplate, List<Transformation> transformations, double probability, bool normalizeProbabilities)
-			{
-				RoomTemplate = roomTemplate;
-				Probability = probability;
-				NormalizeProbabilities = normalizeProbabilities;
-				Transformations = transformations;
-			}
-		}
-	}
+    }
 }

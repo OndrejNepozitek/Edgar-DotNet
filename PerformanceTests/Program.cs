@@ -106,31 +106,31 @@ namespace PerformanceTests
             });
         }
 
-        public static List<GeneratorInput<MapDescription<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
+        public static List<GeneratorInput<MapDescriptionOld<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
         {
-            var inputs = new List<GeneratorInput<MapDescription<int>>>()
+            var inputs = new List<GeneratorInput<MapDescriptionOld<int>>>()
             {
-                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", new MapDescription<int>()
+                new GeneratorInput<MapDescriptionOld<int>>("Example 1 (fig. 1)", new MapDescriptionOld<int>()
                     .SetupWithGraph(GraphsDatabase.GetExample1())
                     .AddClassicRoomShapes(scale)
                     .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top)",
-                    new MapDescription<int>()
+                new GeneratorInput<MapDescriptionOld<int>>("Example 2 (fig. 7 top)",
+                    new MapDescriptionOld<int>()
                         .SetupWithGraph(GraphsDatabase.GetExample2())
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)",
-                    new MapDescription<int>()
+                new GeneratorInput<MapDescriptionOld<int>>("Example 3 (fig. 7 bottom)",
+                    new MapDescriptionOld<int>()
                         .SetupWithGraph(GraphsDatabase.GetExample3())
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8)",
-                    new MapDescription<int>()
+                new GeneratorInput<MapDescriptionOld<int>>("Example 4 (fig. 8)",
+                    new MapDescriptionOld<int>()
                         .SetupWithGraph(GraphsDatabase.GetExample4())
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)",
-                    new MapDescription<int>()
+                new GeneratorInput<MapDescriptionOld<int>>("Example 5 (fig. 9)",
+                    new MapDescriptionOld<int>()
                         .SetupWithGraph(GraphsDatabase.GetExample5())
                         .AddClassicRoomShapes(scale)
                         .AddCorridorRoomShapes(offsets, enableCorridors)),

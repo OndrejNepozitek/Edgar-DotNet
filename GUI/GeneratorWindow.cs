@@ -101,10 +101,10 @@
 
 					if (layoutGenerator == null)
 					{
-						if (settings.MapDescription.IsWithCorridors)
+						if (settings.MapDescriptionOld.IsWithCorridors)
 						{
 							var defaultGenerator =
-								LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescription.CorridorsOffsets);
+								LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescriptionOld.CorridorsOffsets);
 							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
 							layoutGenerator = defaultGenerator;
@@ -185,7 +185,7 @@
 					};
 
 					generatedLayouts =
-						(List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescription, settings.NumberOfLayouts);
+						(List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescriptionOld, settings.NumberOfLayouts);
 
 					isRunning = false;
 					BeginInvoke((Action) (UpdateInfoPanel));

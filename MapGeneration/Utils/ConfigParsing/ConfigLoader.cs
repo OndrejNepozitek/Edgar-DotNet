@@ -72,7 +72,7 @@
 		/// </summary>
 		/// <param name="name">Name of the file in the maps folder</param>
 		/// <returns></returns>
-		public MapDescription<int> LoadMapDescriptionFromResources(string name)
+		public MapDescriptionOld<int> LoadMapDescriptionFromResources(string name)
 		{
 			using (var sr = new StreamReader($"{MapsPath}/{name}"))
 			{
@@ -85,10 +85,10 @@
 		/// </summary>
 		/// <param name="reader"></param>
 		/// <returns></returns>
-		public MapDescription<int> LoadMapDescription(TextReader reader)
+		public MapDescriptionOld<int> LoadMapDescription(TextReader reader)
 		{
 			var mapDescriptionModel = LoadMapDescriptionModel(reader);
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 			var roomDescriptionsSets = LoadRoomDescriptionsSetsFromResources();
 
 			if (mapDescriptionModel.CustomRoomDescriptionsSet != null)
@@ -108,7 +108,7 @@
 		/// </summary>
 		/// <param name="filename"></param>
 		/// <returns></returns>
-		public MapDescription<int> LoadMapDescription(string filename)
+		public MapDescriptionOld<int> LoadMapDescription(string filename)
 		{
 			using (var sr = new StreamReader(filename))
 			{
@@ -157,18 +157,18 @@
 			return models;
 		}
 
-		private void LoadPassagess(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel)
+		private void LoadPassagess(MapDescriptionOld<int> mapDescriptionOld, MapDescriptionModel mapDescriptionModel)
 		{
 			if (mapDescriptionModel.Passages == null)
 				return;
 
 			foreach (var passage in mapDescriptionModel.Passages)
 			{
-				mapDescription.AddPassage(passage.X, passage.Y);
+				mapDescriptionOld.AddPassage(passage.X, passage.Y);
 			}
 		}
 
-		private void LoadCorridors(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
+		private void LoadCorridors(MapDescriptionOld<int> mapDescriptionOld, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
 		{
 			if (mapDescriptionModel.Corridors == null)
 				return;
@@ -179,7 +179,7 @@
 			if (enable && (corridors.Offsets == null || corridors.Offsets.Count == 0))
 				throw new InvalidOperationException("There must be at least one offset if corridors are enabled");
 
-			mapDescription.SetWithCorridors(enable, corridors.Offsets);
+			mapDescriptionOld.SetWithCorridors(enable, corridors.Offsets);
 
 			if (enable && (corridors.CorridorShapes == null || corridors.CorridorShapes.Count == 0))
 				throw new InvalidOperationException("There must be at least one shape for corridors if they are enabled.");
@@ -187,11 +187,11 @@
 			foreach (var rooms in corridors.CorridorShapes)
 			{
 				var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-				mapDescription.AddCorridorShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+				mapDescriptionOld.AddCorridorShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 			}
 		}
 
-		private void LoadRooms(MapDescription<int> mapDescription, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
+		private void LoadRooms(MapDescriptionOld<int> mapDescriptionOld, MapDescriptionModel mapDescriptionModel, Dictionary<string, RoomDescriptionsSetModel> roomDescriptionsSets)
 		{
 			if (mapDescriptionModel.RoomsRange == null)
 				throw new InvalidOperationException("Rooms range must be defined");
@@ -201,7 +201,7 @@
 
 			for (var i = mapDescriptionModel.RoomsRange.From; i <= mapDescriptionModel.RoomsRange.To; i++)
 			{
-				mapDescription.AddRoom(i);
+				mapDescriptionOld.AddRoom(i);
 			}
 
 			if (mapDescriptionModel.Rooms != null)
@@ -218,7 +218,7 @@
 
 							foreach (var name in pair.Key)
 							{
-								mapDescription.AddRoomShapes(name, roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+								mapDescriptionOld.AddRoomShapes(name, roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 							}
 						}
 					}
@@ -230,7 +230,7 @@
 				foreach (var rooms in mapDescriptionModel.DefaultRoomShapes)
 				{
 					var roomShapes = GetRoomDescriptions(rooms, roomDescriptionsSets, mapDescriptionModel.CustomRoomDescriptionsSet, rooms.Scale);
-					mapDescription.AddRoomShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
+					mapDescriptionOld.AddRoomShapes(roomShapes, GetTransformations(rooms.Rotate), rooms.Probability ?? 1, rooms.NormalizeProbabilities ?? true);
 				}
 			}
 		}

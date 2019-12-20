@@ -31,7 +31,7 @@ namespace MapGeneration.Utils
 		/// </summary>
 		/// <typeparam name="TNode"></typeparam>
 		/// <returns></returns>
-        public static ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>> GetDefaultChainBasedGenerator<TNode>()
+        public static ChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>> GetDefaultChainBasedGenerator<TNode>()
         {
             return GetChainBasedGenerator<TNode>(false);
         }
@@ -41,10 +41,10 @@ namespace MapGeneration.Utils
         /// </summary>
         /// <typeparam name="TNode"></typeparam>
         /// <returns></returns>
-        public static SimpleChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int> GetSimpleChainBasedGenerator<TNode>(MapDescription<TNode> mapDescription, bool withCorridors, List<int> offsets = null, bool canTouch = false)
+        public static SimpleChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int> GetSimpleChainBasedGenerator<TNode>(MapDescriptionOld<TNode> mapDescriptionOld, bool withCorridors, List<int> offsets = null, bool canTouch = false)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescription, new BreadthFirstChainDecomposition<int>());
-            var chains = chainDecomposition.GetChains(mapDescription.GetGraph());
+            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescriptionOld, new BreadthFirstChainDecomposition<int>());
+            var chains = chainDecomposition.GetChains(mapDescriptionOld.GetGraph());
 
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
 
@@ -53,15 +53,15 @@ namespace MapGeneration.Utils
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
-            var configurationSpaces = configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription);
-            var corridorConfigurationSpaces = withCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, offsets) : configurationSpaces;
+            var configurationSpaces = configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescriptionOld);
+            var corridorConfigurationSpaces = withCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescriptionOld, offsets) : configurationSpaces;
 
-            var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces);
+            var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescriptionOld, configurationSpaces);
 
-            var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
+            var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescriptionOld.GetGraph());
             var layoutConverter =
                 new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode,
-                    Configuration<CorridorsData>>(mapDescription, configurationSpaces,
+                    Configuration<CorridorsData>>(mapDescriptionOld, configurationSpaces,
                     configurationSpacesGenerator.LastIntAliasMapping);
 
             var averageSize = configurationSpaces.GetAverageSize();
@@ -75,7 +75,7 @@ namespace MapGeneration.Utils
             if (withCorridors)
             {
                 layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                    mapDescription,
+                    mapDescriptionOld,
                     averageSize,
                     corridorConfigurationSpaces
                 ));
@@ -84,7 +84,7 @@ namespace MapGeneration.Utils
                 {
                     var polygonOverlap = new FastPolygonOverlap();
                     layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                        mapDescription,
+                        mapDescriptionOld,
                         polygonOverlap
                     ));
                 }
@@ -94,7 +94,7 @@ namespace MapGeneration.Utils
                     new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int,
                     Configuration<CorridorsData>>(layoutOperations, SimulatedAnnealingConfiguration.GetDefaultConfiguration(), true);
 
-            var layoutGenerator = new SimpleChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            var layoutGenerator = new SimpleChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             layoutGenerator.OnRandomInjected += (random) =>
             {
@@ -119,9 +119,9 @@ namespace MapGeneration.Utils
         /// <param name="offsets"></param>
         /// <param name="canTouch">Whether rooms can touch. Perfomance is decreased when set to false.</param>
         /// <returns></returns>
-        public static ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>> GetChainBasedGenerator<TNode>(bool withCorridors, List<int> offsets = null, bool canTouch = false)
+        public static ChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>> GetChainBasedGenerator<TNode>(bool withCorridors, List<int> offsets = null, bool canTouch = false)
         {
-			var layoutGenerator = new ChainBasedGenerator<MapDescription<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>>();
+			var layoutGenerator = new ChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>>();
 
 			var chainDecomposition = new BreadthFirstChainDecomposition<int>();
 			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());

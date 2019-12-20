@@ -16,7 +16,7 @@
 		private GeneratorWindow generatorWindow;
 		private readonly Random random = new Random();
 
-		private MapDescription<int> mapDescription;
+		private MapDescriptionOld<int> mapDescriptionOld;
 		private bool usingUploaded = false;
 
 		public MainSettings()
@@ -33,7 +33,7 @@
 
 		private void generateButton_Click(object sender, EventArgs e)
 		{
-			if (mapDescription == null)
+			if (mapDescriptionOld == null)
 			{
 				ShowSettingsError("Map description not chosen");
 				return;
@@ -41,7 +41,7 @@
 
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
 			{
-				MapDescription = mapDescription,
+				MapDescriptionOld = mapDescriptionOld,
 				RandomGeneratorSeed = useRandomSeedCheckbox.Checked ? random.Next() : (int) generatorSeedInput.Value,
 				NumberOfLayouts = (int) numberOfLayoutsInput.Value,
 
@@ -83,7 +83,7 @@
 				{
 					try
 					{
-						mapDescription = configLoader.LoadMapDescription(sr);
+						mapDescriptionOld = configLoader.LoadMapDescription(sr);
 					}
 					catch (Exception exception)
 					{
@@ -103,7 +103,7 @@
 
 			try
 			{
-				mapDescription = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
+				mapDescriptionOld = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
 			}
 			catch (Exception exception)
 			{
@@ -118,7 +118,7 @@
 		private void UpdateInfo()
 		{
 			descriptionNotChosen.Hide();
-			var graph = mapDescription.GetGraph();
+			var graph = mapDescriptionOld.GetGraph();
 
 			usedDescription.Text = usingUploaded ? $"Using uploaded map description file." : $"Using map description file from Resources.";
 			usedDescriptionRoomsCount.Text = $"Number of rooms: {graph.VerticesCount}";

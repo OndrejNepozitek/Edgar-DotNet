@@ -15,19 +15,19 @@
 			return (int)configurationSpaces.GetAllShapes().Select(x => x.Value.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
 		}
 
-		public static MapDescription<TNode> SetupWithGraph<TNode>(this MapDescription<TNode> mapDescription, IGraph<TNode> graph)
+		public static MapDescriptionOld<TNode> SetupWithGraph<TNode>(this MapDescriptionOld<TNode> mapDescriptionOld, IGraph<TNode> graph)
 		{
 			foreach (var vertex in graph.Vertices)
 			{
-				mapDescription.AddRoom(vertex);
+				mapDescriptionOld.AddRoom(vertex);
 			}
 
 			foreach (var edge in graph.Edges)
 			{
-				mapDescription.AddPassage(edge.From, edge.To);
+				mapDescriptionOld.AddPassage(edge.From, edge.To);
 			}
 
-			return mapDescription;
+			return mapDescriptionOld;
 		}
 	}
 }

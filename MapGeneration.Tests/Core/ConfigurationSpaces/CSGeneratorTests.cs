@@ -164,7 +164,7 @@
 		public void Generate_BasicTest()
 		{
 			// This test cannot check if the generated configuration spaces are valid
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 			var squareRoom = new RoomTemplate(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
 			var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
 
@@ -187,7 +187,7 @@
 		[Test]
 		public void Generate_NodeWithoutShape()
 		{
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 			mapDescription.AddRoom(0);
 
 			Assert.Throws<ArgumentException>(

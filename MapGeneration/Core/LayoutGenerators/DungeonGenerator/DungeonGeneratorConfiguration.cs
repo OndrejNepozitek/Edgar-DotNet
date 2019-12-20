@@ -16,10 +16,10 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public SimulatedAnnealingConfigurationProvider SimulatedAnnealingConfiguration { get; set; }
 
-        public static DungeonGeneratorConfiguration GetDefaultConfiguration<TNode>(MapDescription<TNode> mapDescription)
+        public static DungeonGeneratorConfiguration GetDefaultConfiguration<TNode>(MapDescriptionOld<TNode> mapDescriptionOld)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescription, new BreadthFirstChainDecomposition<int>());
-            var chains = chainDecomposition.GetChains(mapDescription.GetGraph());
+            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescriptionOld, new BreadthFirstChainDecomposition<int>());
+            var chains = chainDecomposition.GetChains(mapDescriptionOld.GetGraph());
 
             var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
 

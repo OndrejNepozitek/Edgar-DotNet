@@ -48,28 +48,28 @@
 		/// </summary>
 		/// <typeparam name="TNode"></typeparam>
 		/// <typeparam name="TConfiguration"></typeparam>
-		/// <param name="mapDescription"></param>
+		/// <param name="mapDescriptionOld"></param>
 		/// <param name="offsets"></param>
 		/// <returns></returns>
-		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription, List<int> offsets = null)
+		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescriptionOld<TNode> mapDescriptionOld, List<int> offsets = null)
 			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			if (mapDescription.IsWithCorridors && mapDescription.GetCorridorShapes().Count == 0)
-				throw new ArgumentException("The map description has corridors enabled but there are no shapes for them.", nameof(mapDescription));
+			if (mapDescriptionOld.IsWithCorridors && mapDescriptionOld.GetCorridorShapes().Count == 0)
+				throw new ArgumentException("The map description has corridors enabled but there are no shapes for them.", nameof(mapDescriptionOld));
 
-			var graph = mapDescription.GetGraph();
+			var graph = mapDescriptionOld.GetGraph();
 			var aliasCounter = 0;
 			var allShapes = new Dictionary<int, Tuple<IntAlias<GridPolygon>, List<IDoorLine>>>();
 			var shapes = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
 			var shapesForNodes = new Dictionary<int, List<ConfigurationSpaces<TConfiguration>.WeightedShape>>();
 			var intAliasMapping = new Dictionary<int, RoomInfo>();
-			var defaultTransformations = new List<Transformation>(mapDescription.GetDefaultTransformations());
+			var defaultTransformations = new List<Transformation>(mapDescriptionOld.GetDefaultTransformations());
 
 			// Handle universal shapes
-			foreach (var shape in mapDescription.GetRoomShapes())
+			foreach (var shape in mapDescriptionOld.GetRoomShapes())
 			{
 				var rotatedShapes = TransformPolygons(shape.RoomTemplate, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
@@ -78,9 +78,9 @@
 			}
 
 			// Handle shapes for nodes
-			foreach (var vertex in graph.Vertices.Where(x => !mapDescription.IsCorridorRoom(x)))
+			foreach (var vertex in graph.Vertices.Where(x => !mapDescriptionOld.IsCorridorRoom(x)))
 			{
-				var shapesForNode = mapDescription.GetRoomShapesForNodes()[vertex];
+				var shapesForNode = mapDescriptionOld.GetRoomShapesForNodes()[vertex];
 
 				if (shapesForNode == null)
 				{
@@ -102,7 +102,7 @@
 
 			// Corridor shapes
 			var corridorShapesContainer = new List<ConfigurationSpaces<TConfiguration>.WeightedShape>();
-			foreach (var shape in mapDescription.GetCorridorShapes())
+			foreach (var shape in mapDescriptionOld.GetCorridorShapes())
 			{
 				var rotatedShapes = TransformPolygons(shape.RoomTemplate, shape.Transformations ?? defaultTransformations).Select(CreateAlias).ToList();
 				var probability = shape.NormalizeProbabilities ? shape.Probability / rotatedShapes.Count : shape.Probability;
@@ -111,7 +111,7 @@
 			}
 
 			// Handle shapes for corridores
-			foreach (var vertex in graph.Vertices.Where(mapDescription.IsCorridorRoom))
+			foreach (var vertex in graph.Vertices.Where(mapDescriptionOld.IsCorridorRoom))
 			{
 				shapesForNodes.Add(vertex, corridorShapesContainer);
 			}
@@ -142,7 +142,7 @@
 
 			if (shapes.Count == 0 && graph.Vertices.Any(x => !shapesForNodes.ContainsKey(x) || shapesForNodes[x] == null || shapesForNodes[x].Count == 0))
 			{
-				throw new ArgumentException("There must be at least one shape for each node", nameof(mapDescription));
+				throw new ArgumentException("There must be at least one shape for each node", nameof(mapDescriptionOld));
 			}
 
 			LastIntAliasMapping = intAliasMapping;

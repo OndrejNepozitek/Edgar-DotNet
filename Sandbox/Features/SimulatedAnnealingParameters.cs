@@ -55,7 +55,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = new GeneratorInput<MapDescription<int>>("Example 3", new MapDescription<int>()
+            var input = new GeneratorInput<MapDescriptionOld<int>>("Example 3", new MapDescriptionOld<int>()
                 .SetupWithGraph(GraphsDatabase.GetExample3())
                 .AddClassicRoomShapes(new IntVector2(1, 1)));
 

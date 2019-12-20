@@ -21,9 +21,9 @@ namespace MapGeneration.Benchmarks
 
     public static class Benchmark
     {
-        public static Benchmark<MapDescription<TNode>, IMapLayout<TNode>> CreateForNodeType<TNode>()
+        public static Benchmark<MapDescriptionOld<TNode>, IMapLayout<TNode>> CreateForNodeType<TNode>()
         {
-            return new Benchmark<MapDescription<TNode>, IMapLayout<TNode>>();
+            return new Benchmark<MapDescriptionOld<TNode>, IMapLayout<TNode>>();
         }
     }
 }

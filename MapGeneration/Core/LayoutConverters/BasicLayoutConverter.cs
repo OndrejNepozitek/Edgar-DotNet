@@ -27,24 +27,24 @@
 		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
 	{
-		protected readonly MapDescription<TNode> MapDescription;
+		protected readonly MapDescriptionOld<TNode> MapDescriptionOld;
 		protected Random Random;
 		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
 		protected readonly Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> IntAliasMapping;
 
 		public BasicLayoutConverter(
-			MapDescription<TNode> mapDescription, 
+			MapDescriptionOld<TNode> mapDescriptionOld, 
 			IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
 			Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> intAliasMapping,
 			ICorridorNodesCreator<TNode> corridorNodesCreator = null
 		)
 		{
-			MapDescription = mapDescription;
+			MapDescriptionOld = mapDescriptionOld;
 			ConfigurationSpaces = configurationSpaces;
 			IntAliasMapping = intAliasMapping;
 
-			if (MapDescription.IsWithCorridors)
+			if (MapDescriptionOld.IsWithCorridors)
 			{
 				CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
 			}
@@ -56,11 +56,11 @@
 			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
-			var mapping = MapDescription.GetRoomsMapping();
+			var mapping = MapDescriptionOld.GetRoomsMapping();
 
-			if (MapDescription.IsWithCorridors)
+			if (MapDescriptionOld.IsWithCorridors)
 			{
-				CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
+				CorridorNodesCreator.AddCorridorsToMapping(MapDescriptionOld, mapping);
 			}
 			
 			foreach (var vertexAlias in layout.Graph.Vertices)
@@ -70,7 +70,7 @@
 					var vertex = mapping.GetByValue(vertexAlias);
 					var roomInfo = IntAliasMapping[configuration.ShapeContainer.Alias];
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.IsCorridorRoom(vertexAlias), roomInfo.RoomTemplate, roomInfo.Transformations.GetRandom(Random), roomInfo.Transformations);
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescriptionOld.IsCorridorRoom(vertexAlias), roomInfo.RoomTemplate, roomInfo.Transformations.GetRandom(Random), roomInfo.Transformations);
 					rooms.Add(room);
 
 					if (!addDoors)

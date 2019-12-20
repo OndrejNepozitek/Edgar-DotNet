@@ -18,19 +18,19 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 {
     public class SAConfigurationEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
     {
-        private readonly GeneratorInput<MapDescription<int>> generatorInput;
-        private readonly BenchmarkRunner<MapDescription<int>> benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
+        private readonly GeneratorInput<MapDescriptionOld<int>> generatorInput;
+        private readonly BenchmarkRunner<MapDescriptionOld<int>> benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
         private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
 
         public SAConfigurationEvolution(
-            GeneratorInput<MapDescription<int>> generatorInput,
+            GeneratorInput<MapDescriptionOld<int>> generatorInput,
             List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options)
             : base(analyzers, options, GetResultsDirectory(generatorInput))
         {
             this.generatorInput = generatorInput;
         }
 
-        private static string GetResultsDirectory(GeneratorInput<MapDescription<int>> generatorInput)
+        private static string GetResultsDirectory(GeneratorInput<MapDescriptionOld<int>> generatorInput)
         {
             return $"SAEvolutions/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{generatorInput.Name}/";
         }
@@ -89,7 +89,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<MapDescription<int>>>() { generatorInput }, 250, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<MapDescriptionOld<int>>>() { generatorInput }, 250, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
             });

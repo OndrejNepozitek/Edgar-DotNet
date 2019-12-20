@@ -68,9 +68,9 @@ namespace MapGeneration.Benchmarks
 
     public static class BenchmarkRunner
     {
-        public static BenchmarkRunner<MapDescription<TNode>> CreateForNodeType<TNode>()
+        public static BenchmarkRunner<MapDescriptionOld<TNode>> CreateForNodeType<TNode>()
         {
-            return new BenchmarkRunner<MapDescription<TNode>>();
+            return new BenchmarkRunner<MapDescriptionOld<TNode>>();
         }
     }
 }

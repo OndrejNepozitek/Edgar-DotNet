@@ -6,9 +6,9 @@
 
 	public class GeneratorSettings
 	{
-		public MapDescription<int> MapDescription { get; set; }
+		public MapDescriptionOld<int> MapDescriptionOld { get; set; }
 
-		public IObservableGenerator<MapDescription<int>, IMapLayout<int>> LayoutGenerator { get; set; }
+		public IObservableGenerator<MapDescriptionOld<int>, IMapLayout<int>> LayoutGenerator { get; set; }
 
 		public int NumberOfLayouts { get; set; } = 10;
 

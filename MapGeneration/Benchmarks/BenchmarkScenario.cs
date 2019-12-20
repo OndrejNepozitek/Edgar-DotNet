@@ -32,9 +32,9 @@ namespace MapGeneration.Benchmarks
 
     public static class BenchmarkScenario
     {
-        public static BenchmarkScenario<MapDescription<TNode>> CreateForNodeType<TNode>(string name, GeneratorFactory<MapDescription<TNode>, IMapLayout<TNode>> generatorFactory)
+        public static BenchmarkScenario<MapDescriptionOld<TNode>> CreateForNodeType<TNode>(string name, GeneratorFactory<MapDescriptionOld<TNode>, IMapLayout<TNode>> generatorFactory)
         {
-            return new BenchmarkScenario<MapDescription<TNode>>(name, input =>
+            return new BenchmarkScenario<MapDescriptionOld<TNode>>(name, input =>
             {
                 var layoutGenerator = generatorFactory(input);
 
@@ -47,9 +47,9 @@ namespace MapGeneration.Benchmarks
             });
         }
 
-        public static BenchmarkScenario<MapDescription<TNode>> CreateCustomForNodeType<TNode>(string name, GeneratorRunnerFactory<MapDescription<TNode>> generatorRunnerFactory)
+        public static BenchmarkScenario<MapDescriptionOld<TNode>> CreateCustomForNodeType<TNode>(string name, GeneratorRunnerFactory<MapDescriptionOld<TNode>> generatorRunnerFactory)
         {
-            return new BenchmarkScenario<MapDescription<TNode>>(name, generatorRunnerFactory);
+            return new BenchmarkScenario<MapDescriptionOld<TNode>>(name, generatorRunnerFactory);
         }
     }
 }

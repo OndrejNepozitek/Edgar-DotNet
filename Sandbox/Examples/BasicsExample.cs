@@ -6,9 +6,9 @@
 
 	public class BasicsExample : IExample
 	{
-		public MapDescription<int> GetMapDescription()
+		public MapDescriptionOld<int> GetMapDescription()
 		{
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 
 			// Add rooms ( - you would normally use a for cycle)
 			mapDescription.AddRoom(0);

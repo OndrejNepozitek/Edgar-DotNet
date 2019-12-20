@@ -14,10 +14,10 @@
 		/// Adds basic room shapes to a given map description.
 		/// </summary>
 		/// <typeparam name="TNode"></typeparam>
-		/// <param name="mapDescription"></param>
+		/// <param name="mapDescriptionOld"></param>
 		/// <param name="scale"></param>
 		/// <returns></returns>
-		public static MapDescription<TNode> AddClassicRoomShapes<TNode>(this MapDescription<TNode> mapDescription,
+		public static MapDescriptionOld<TNode> AddClassicRoomShapes<TNode>(this MapDescriptionOld<TNode> mapDescriptionOld,
 			IntVector2 scale)
 		{
 			var overlapScale = Math.Min(scale.X, scale.Y);
@@ -58,24 +58,24 @@
 					.Build().Scale(scale)
 				, doorMode);
 
-			mapDescription.AddRoomShapes(squareRoom, probability: 4);
-			mapDescription.AddRoomShapes(rectangleRoom, probability: 2);
-			mapDescription.AddRoomShapes(room1);
-			mapDescription.AddRoomShapes(room2);
-			mapDescription.AddRoomShapes(room3);
+			mapDescriptionOld.AddRoomShapes(squareRoom, probability: 4);
+			mapDescriptionOld.AddRoomShapes(rectangleRoom, probability: 2);
+			mapDescriptionOld.AddRoomShapes(room1);
+			mapDescriptionOld.AddRoomShapes(room2);
+			mapDescriptionOld.AddRoomShapes(room3);
 
-			return mapDescription;
+			return mapDescriptionOld;
 		}
 
 		/// <summary>
 		/// Adds basic corridor room shape to a given map description.
 		/// </summary>
 		/// <typeparam name="TNode"></typeparam>
-		/// <param name="mapDescription"></param>
+		/// <param name="mapDescriptionOld"></param>
 		/// <param name="offsets"></param>
 		/// <param name="enableCorridors"></param>
 		/// <returns></returns>
-		public static MapDescription<TNode> AddCorridorRoomShapes<TNode>(this MapDescription<TNode> mapDescription, List<int> offsets, bool enableCorridors = true)
+		public static MapDescriptionOld<TNode> AddCorridorRoomShapes<TNode>(this MapDescriptionOld<TNode> mapDescriptionOld, List<int> offsets, bool enableCorridors = true)
 		{
 			foreach (var offset in offsets)
 			{
@@ -89,15 +89,15 @@
 					})
 				);
 
-				mapDescription.AddCorridorShapes(room);
+				mapDescriptionOld.AddCorridorShapes(room);
 			}
 
 			if (enableCorridors)
 			{
-				mapDescription.SetWithCorridors(true, offsets);
+				mapDescriptionOld.SetWithCorridors(true, offsets);
 			}
 			
-			return mapDescription;
+			return mapDescriptionOld;
 		}
 	}
 }

@@ -10,9 +10,9 @@
 
 	public class DifferentShapesExample : IExample
 	{
-		public MapDescription<int> GetMapDescription()
+		public MapDescriptionOld<int> GetMapDescription()
 		{
-			var mapDescription = new MapDescription<int>();
+			var mapDescription = new MapDescriptionOld<int>();
 			mapDescription.SetupWithGraph(GraphsDatabase.GetExample2());
 
 			// Add room shapes
