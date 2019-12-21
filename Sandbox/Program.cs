@@ -46,8 +46,8 @@ namespace Sandbox
             var offsets = new List<int>() { 2 };
 
             // var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
-            var mapDescriptions = GetMapDescriptionsSet(scale, true, offsets);
-            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, false, offsets));
+            var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
+            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, true, offsets));
 
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 
@@ -56,7 +56,7 @@ namespace Sandbox
                 input =>
                 {
                     {
-                        var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
+                        var layoutGenerator = new DungeonGeneratorOld<int>(input.MapDescription);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
 
                         return new LambdaGeneratorRunner(() =>

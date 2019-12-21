@@ -19,12 +19,12 @@
 	[TestFixture]
 	public class CSGeneratorTests
 	{
-		private ConfigurationSpacesGenerator generator;
+		private ConfigurationSpacesGeneratorOld generatorOld;
 
 		[SetUp]
 		public void SetUp()
 		{
-			generator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler,
+			generatorOld = new ConfigurationSpacesGeneratorOld(new PolygonOverlap(), DoorHandler.DefaultHandler,
 				new OrthogonalLineIntersection(), new GridPolygonUtils());
 		}
 
@@ -34,7 +34,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 0));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 0));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -83,7 +83,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 1), p2, new OverlapMode(1, 1));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 1), p2, new OverlapMode(1, 1));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -124,7 +124,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generator.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 1));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 1));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -191,7 +191,7 @@
 			mapDescription.AddRoom(0);
 
 			Assert.Throws<ArgumentException>(
-				() => generator.Generate<int, IConfiguration<IntAlias<GridPolygon>>>(mapDescription));
+				() => generatorOld.Generate<int, IConfiguration<IntAlias<GridPolygon>>>(mapDescription));
 		}
 	}
 }

@@ -1,4 +1,7 @@
-﻿namespace MapGeneration.Core.MapDescriptions
+﻿using System.Collections.Generic;
+using GeneralAlgorithms.DataStructures.Common;
+
+namespace MapGeneration.Core.MapDescriptions
 {
 	using GeneralAlgorithms.DataStructures.Polygons;
 	using Interfaces.Core.Doors;
@@ -13,10 +16,19 @@
 
 		public IDoorMode DoorsMode { get; }
 
-		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode)
+        public List<Transformation> AllowedTransformations { get; }
+
+        public RoomTemplate(GridPolygon shape, IDoorMode doorsMode)
+        {
+            Shape = new GridPolygon(shape.GetPoints());
+            DoorsMode = doorsMode;
+        }
+
+		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations)
 		{
-			Shape = new GridPolygon(shape.GetPoints());
+			Shape = shape; // TODO: should I create a copy?
 			DoorsMode = doorsMode;
-		}
+            AllowedTransformations = allowedTransformations;
+        }
 	}
 }

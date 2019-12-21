@@ -14,10 +14,10 @@
     /// <typeparam name="TNode"></typeparam>
 	public class TwoStageChainDecomposition<TNode> : IChainDecomposition<TNode>
 	{
-		private readonly ICorridorMapDescription<TNode> mapDescription;
+		private readonly IMapDescription<TNode> mapDescription;
 		private readonly IChainDecomposition<TNode> decomposition;
 
-		public TwoStageChainDecomposition(ICorridorMapDescription<TNode> mapDescription, IChainDecomposition<TNode> decomposition)
+		public TwoStageChainDecomposition(IMapDescription<TNode> mapDescription, IChainDecomposition<TNode> decomposition)
 		{
 			this.mapDescription = mapDescription;
 			this.decomposition = decomposition;
@@ -27,7 +27,7 @@
 		public IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
 		{
             // Get all the faces from the stage one graph
-			var stageOneGraph = mapDescription.GetGraphWithoutCorrridors();
+			var stageOneGraph = mapDescription.GetStageOneGraph();
 			var faces = decomposition.GetChains(stageOneGraph);
 
 			var usedVertices = new HashSet<TNode>();

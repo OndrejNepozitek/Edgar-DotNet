@@ -128,5 +128,78 @@
 				return false;
 			}
 		}
-	}
+
+        public List<OrthogonalLine> RemoveIntersections(List<OrthogonalLine> lines)
+        {
+            var linesWithoutIntersections = new List<OrthogonalLine>();
+
+            foreach (var line in lines)
+            {
+                var intersection = GetIntersections(new List<OrthogonalLine>() { line }, linesWithoutIntersections);
+
+                if (intersection.Count == 0)
+                {
+                    linesWithoutIntersections.Add(line);
+                }
+                else
+                {
+                    linesWithoutIntersections.AddRange(PartitionByIntersection(line, intersection));
+                }
+            }
+
+            return linesWithoutIntersections;
+		}
+
+        public List<OrthogonalLine> PartitionByIntersection(OrthogonalLine line, IList<OrthogonalLine> intersection)
+        {
+            var result = new List<OrthogonalLine>();
+            var rotation = line.ComputeRotation();
+            var rotatedLine = line.Rotate(rotation, true);
+            var directionVector = rotatedLine.GetDirectionVector();
+            var rotatedIntersection = intersection.Select(x => x.Rotate(rotation, false).GetNormalized()).ToList();
+            rotatedIntersection.Sort((x1, x2) => x1.From.CompareTo(x2.From));
+
+            var lastPoint = rotatedLine.From - directionVector;
+
+            for (var i = 0; i < rotatedIntersection.Count; i++)
+            {
+                var intersectionLine = rotatedIntersection[i];
+
+                if (intersectionLine.From.X < rotatedLine.From.X || intersectionLine.From.X > rotatedLine.To.X)
+                {
+                    throw new ArgumentException("All intersection lines must lie on the line");
+                }
+
+                if (intersectionLine.From.Y != rotatedLine.From.Y || intersectionLine.To.Y != rotatedLine.From.Y)
+                {
+                    throw new ArgumentException("All intersection lines must lie on the line");
+                }
+
+                if (i + 1 < rotatedIntersection.Count)
+                {
+                    var nextLine = rotatedIntersection[i + 1];
+
+                    if (nextLine.From.X <= intersectionLine.To.X)
+                    {
+                        throw new ArgumentException("Intersections must not overlap");
+					}
+                }
+
+                if (intersectionLine.From != lastPoint && intersectionLine.From - directionVector != lastPoint)
+                {
+                    result.Add(new OrthogonalLine(lastPoint + directionVector,
+                        intersectionLine.From - directionVector));
+                }
+
+                lastPoint = intersectionLine.To;
+            }
+
+            if (rotatedLine.To != lastPoint && rotatedLine.To - directionVector != lastPoint)
+            {
+                result.Add(new OrthogonalLine(lastPoint + directionVector, rotatedLine.To));
+            }
+
+            return result.Select(x => x.Rotate(-rotation, false)).ToList();
+		}
+    }
 }

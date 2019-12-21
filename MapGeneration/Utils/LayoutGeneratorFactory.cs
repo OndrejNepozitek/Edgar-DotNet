@@ -48,7 +48,7 @@ namespace MapGeneration.Utils
 
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
 
-            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+            var configurationSpacesGenerator = new ConfigurationSpacesGeneratorOld(
                 new PolygonOverlap(),
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
@@ -124,7 +124,7 @@ namespace MapGeneration.Utils
 			var layoutGenerator = new ChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IMapLayout<TNode>>();
 
 			var chainDecomposition = new BreadthFirstChainDecomposition<int>();
-			var configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
+			var configurationSpacesGenerator = new ConfigurationSpacesGeneratorOld(new PolygonOverlap(), DoorHandler.DefaultHandler, new OrthogonalLineIntersection(), new GridPolygonUtils());
 
 			var generatorPlanner = new BasicGeneratorPlannerOld<Layout<Configuration<CorridorsData>>>();
 

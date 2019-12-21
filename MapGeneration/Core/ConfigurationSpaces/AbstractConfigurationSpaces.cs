@@ -61,7 +61,7 @@
 		/// <inheritdoc />
 		/// <remarks>
 		/// Tries possible combinations of given configurations until an intersection is found.
-		/// Throws when no intersecion was found.
+		/// Throws when no intersection was found.
 		/// </remarks>
 		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{

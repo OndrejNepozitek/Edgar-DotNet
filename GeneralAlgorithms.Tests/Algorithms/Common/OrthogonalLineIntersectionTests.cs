@@ -1,4 +1,6 @@
-﻿namespace GeneralAlgorithms.Tests.Algorithms.Common
+﻿using System;
+
+namespace GeneralAlgorithms.Tests.Algorithms.Common
 {
 	using System.Collections.Generic;
 	using System.Linq;
@@ -225,5 +227,192 @@
 
 			Assert.IsTrue(expected.SequenceEqualWithoutOrder(intersection.Select(x => x.GetNormalized())));
 		}
+
+		[Test]
+        public void PartitionByIntersection_NotIntersection_Throws()
+        {
+			var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+			var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(11, 0), new IntVector2(15, 0))
+			};
+
+            Assert.Throws<ArgumentException>(() => orthogonalLineIntersection.PartitionByIntersection(line, intersection));
+        }
+
+        [Test]
+        public void PartitionByIntersection_PerpendicularIntersection_Throws()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(5, -1), new IntVector2(5, 1))
+            };
+
+            Assert.Throws<ArgumentException>(() => orthogonalLineIntersection.PartitionByIntersection(line, intersection));
+        }
+
+        [Test]
+        public void PartitionByIntersection_OverlappingIntersections_Throws()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(4, 0), new IntVector2(6, 0)),
+                new OrthogonalLine(new IntVector2(5, 0), new IntVector2(7, 0)),
+            };
+
+            Assert.Throws<ArgumentException>(() => orthogonalLineIntersection.PartitionByIntersection(line, intersection));
+        }
+
+		[Test]
+        public void PartitionByIntersection_OnePointIntersection_ReturnsTwoLines()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(5, 0), new IntVector2(5, 0))
+            };
+			var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(4, 0)),
+                new OrthogonalLine(new IntVector2(6, 0), new IntVector2(10, 0)),
+            };
+
+			var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+        [Test]
+        public void PartitionByIntersection_TwoPointsIntersection_ReturnsThreeLines()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(5, 0), new IntVector2(5, 0)),
+                new OrthogonalLine(new IntVector2(7, 0), new IntVector2(7, 0)),
+            };
+            var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(4, 0)),
+                new OrthogonalLine(new IntVector2(6, 0), new IntVector2(6, 0)),
+                new OrthogonalLine(new IntVector2(8, 0), new IntVector2(10, 0)),
+            };
+
+            var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+        [Test]
+        public void PartitionByIntersection_TwoNeighboringPointsIntersection_ReturnsTwoLines()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(5, 0), new IntVector2(5, 0)),
+                new OrthogonalLine(new IntVector2(6, 0), new IntVector2(6, 0)),
+            };
+            var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(4, 0)),
+                new OrthogonalLine(new IntVector2(7, 0), new IntVector2(10, 0)),
+            };
+
+            var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+		[Test]
+        public void PartitionByIntersection_TwoPointsReversedIntersection_ReturnsThreeLines()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(7, 0), new IntVector2(7, 0)),
+				new OrthogonalLine(new IntVector2(5, 0), new IntVector2(5, 0)),
+            };
+            var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(4, 0)),
+                new OrthogonalLine(new IntVector2(6, 0), new IntVector2(6, 0)),
+                new OrthogonalLine(new IntVector2(8, 0), new IntVector2(10, 0)),
+            };
+
+            var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+        [Test]
+        public void PartitionByIntersection_TwoEndpointsIntersection_ReturnsOneLine()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0)),
+                new OrthogonalLine(new IntVector2(10, 0), new IntVector2(10, 0)),
+            };
+            var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(1, 0), new IntVector2(9, 0)),
+            };
+
+            var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+		[Test]
+        public void PartitionByIntersection_OneLineIntersection_ReturnsTwoLines()
+        {
+            var line = new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0));
+            var intersection = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(4, 0), new IntVector2(6, 0))
+            };
+            var expectedPartitions = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(3, 0)),
+                new OrthogonalLine(new IntVector2(7, 0), new IntVector2(10, 0)),
+            };
+
+            var partitions = orthogonalLineIntersection.PartitionByIntersection(line, intersection);
+
+            Assert.That(partitions, Is.EquivalentTo(expectedPartitions));
+        }
+
+		[Test]
+        public void RemoveIntersections_OneLine_ReturnsOneLine()
+        {
+            var lines = new List<OrthogonalLine>()
+            {
+				new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0))
+            };
+
+            var linesWithoutIntersections = orthogonalLineIntersection.RemoveIntersections(lines);
+
+			Assert.That(linesWithoutIntersections, Is.EquivalentTo(lines));
+        }
+
+        [Test]
+        public void RemoveIntersections_MultipleLines()
+        {
+            var lines = new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(10, 0)),
+                new OrthogonalLine(new IntVector2(0, 5), new IntVector2(10, 5)),
+                new OrthogonalLine(new IntVector2(2, -5), new IntVector2(2, 10)),
+                new OrthogonalLine(new IntVector2(7, -5), new IntVector2(7, 10)),
+            };
+
+            var linesWithoutIntersections = orthogonalLineIntersection.RemoveIntersections(lines);
+            var points = linesWithoutIntersections.SelectMany(x => x.GetPoints());
+            var expectedPoints = lines.SelectMany(x => x.GetPoints()).Distinct();
+
+            Assert.That(points, Is.EquivalentTo(expectedPoints));
+        }
 	}
 }

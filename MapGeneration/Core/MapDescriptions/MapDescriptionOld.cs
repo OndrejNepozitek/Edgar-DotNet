@@ -49,7 +49,7 @@ namespace MapGeneration.Core.MapDescriptions
 
         public MapDescriptionOld()
 		{
-			DefaultTransformations = TransformationHelper.GetAllTransforamtion().ToList();
+			DefaultTransformations = TransformationHelper.GetAllTransformations().ToList();
 		}
 
 		/// <inheritdoc />

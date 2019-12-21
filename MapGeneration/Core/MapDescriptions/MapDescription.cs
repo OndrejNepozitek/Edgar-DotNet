@@ -50,8 +50,6 @@ namespace MapGeneration.Core.MapDescriptions
             passages.Add(passage);
         }
 
-
-
         public IGraph<TRoom> GetGraph()
         {
             var graph = new UndirectedAdjacencyListGraph<TRoom>();

@@ -31,12 +31,12 @@
 		protected Random Random;
 		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
-		protected readonly Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> IntAliasMapping;
+		protected readonly Dictionary<int, RoomTemplateInstance> IntAliasMapping;
 
 		public BasicLayoutConverter(
 			MapDescriptionOld<TNode> mapDescriptionOld, 
 			IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
-			Dictionary<int, ConfigurationSpacesGenerator.RoomInfo> intAliasMapping,
+			Dictionary<int, RoomTemplateInstance> intAliasMapping,
 			ICorridorNodesCreator<TNode> corridorNodesCreator = null
 		)
 		{

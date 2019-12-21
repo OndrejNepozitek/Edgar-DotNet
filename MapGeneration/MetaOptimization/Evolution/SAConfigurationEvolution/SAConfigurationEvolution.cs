@@ -43,7 +43,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                 "SimulatedAnnealingParameters",
                 input =>
                 {
-                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration);
+                    var layoutGenerator = new DungeonGeneratorOld<int>(input.MapDescription, individual.Configuration);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>

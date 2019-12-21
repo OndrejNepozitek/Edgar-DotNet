@@ -5,7 +5,7 @@
 
 	public static class TransformationHelper
 	{
-		public static Transformation[] GetAllTransforamtion()
+		public static Transformation[] GetAllTransformations()
 		{
 			return (Transformation[]) Enum.GetValues(typeof(Transformation));
 		}

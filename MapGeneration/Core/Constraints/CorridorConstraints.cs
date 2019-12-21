@@ -28,15 +28,17 @@
 		private readonly ICorridorMapDescription<TNode> mapDescription;
 		private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
-		private readonly IGraph<TNode> graphWithoutCorridors;
+		private readonly IGraph<TNode> stageOneGraph;
+        private readonly IGraph<TNode> graph;
 
 		public CorridorConstraints(ICorridorMapDescription<TNode> mapDescription, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.mapDescription = mapDescription;
 			this.energySigma = 10 * averageSize; // TODO: should it be like this?
 			this.configurationSpaces = configurationSpaces;
-			graphWithoutCorridors = this.mapDescription.GetGraphWithoutCorrridors();
-		}
+			stageOneGraph = mapDescription.GetStageOneGraph();
+            graph = mapDescription.GetGraph();
+        }
 
 		/// <inheritdoc />
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
@@ -45,7 +47,7 @@
 				return true;
 
 			var distance = 0;
-			var neighbours = graphWithoutCorridors.GetNeighbours(node).ToList();
+			var neighbours = stageOneGraph.GetNeighbours(node).ToList();
 
 			foreach (var vertex in neighbours)
 			{
@@ -145,7 +147,7 @@
 
 		private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
 		{
-			return graphWithoutCorridors.HasEdge(node1, node2);
+			return stageOneGraph.HasEdge(node1, node2);
 		}
 	}
 }

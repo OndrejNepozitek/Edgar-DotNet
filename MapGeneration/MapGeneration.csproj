@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MetaOptimization\Visualizations\" />
+    <Folder Include="Utils\Statistics\" />
   </ItemGroup>
 </Project>

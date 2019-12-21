@@ -1,8 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Common
+﻿using GeneralAlgorithms.DataStructures.Common;
+
+namespace GeneralAlgorithms.Algorithms.Common
 {
 	using System.Collections.Generic;
 
-	public interface ILineIntersection<T>
+	public interface ILineIntersection<TLine>
 	{
 		/// <summary>
 		/// Get all intersections where one line is from the first set and the other one from the second one.
@@ -13,7 +15,7 @@
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		List<T> GetIntersections(List<T> lines1, List<T> lines2);
+		List<TLine> GetIntersections(List<TLine> lines1, List<TLine> lines2);
 
 		/// <summary>
 		/// Like GetIntersections() but only reports if there is an intersection.
@@ -21,7 +23,7 @@
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		bool DoIntersect(IEnumerable<T> lines1, List<T> lines2);
+		bool DoIntersect(IEnumerable<TLine> lines1, List<TLine> lines2);
 
 		/// <summary>
 		/// Gets intersection between two given lines.
@@ -30,6 +32,22 @@
 		/// <param name="line2"></param>
 		/// <param name="intersection"></param>
 		/// <returns>True if there is a non-empty intersection.</returns>
-		bool TryGetIntersection(T line1, T line2, out T intersection);
-	}
+		bool TryGetIntersection(TLine line1, TLine line2, out TLine intersection);
+
+        List<TLine> RemoveIntersections(List<TLine> lines);
+
+		/// <summary>
+		/// Returns a list of lines obtained by removing all the intersections from the original line.
+		/// </summary>
+		/// <remarks>
+		/// Intersection lines must lie on a given line
+		/// Intersection lines must not overlap
+		/// Intersection lines may be single points - lines with length 0
+		/// </remarks>
+		/// <param name="line">Line to be partitioned</param>
+		/// <param name="intersection"></param>
+		/// <returns></returns>
+		List<TLine> PartitionByIntersection(TLine line, IList<TLine> intersection);
+
+    }
 }
