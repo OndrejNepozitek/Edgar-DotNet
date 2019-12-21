@@ -73,15 +73,13 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 configurationSpaces
             ));
 
-            layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                mapDescriptionOld,
-                averageSize,
-                corridorConfigurationSpaces
-            ));
-
             if (mapDescriptionOld.IsWithCorridors)
             {
-
+                layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    mapDescriptionOld,
+                    averageSize,
+                    corridorConfigurationSpaces
+                ));
 
                 if (!false) // TODO:
                 {
