@@ -8,5 +8,6 @@ script:
   - dotnet build ./MapGeneration.Tests/MapGeneration.Tests.csproj
   - dotnet test ./GeneralAlgorithms.Tests/GeneralAlgorithms.Tests.csproj
   - dotnet test ./MapGeneration.Tests/MapGeneration.Tests.csproj
+  - dotnet test ./MapGeneration.IntegrationTests/MapGeneration.IntegrationTests.csproj
   - dotnet build --configuration Release ./PerformanceTests/PerformanceTests.csproj
   - dotnet ./PerformanceTests/bin/Release/netcoreapp2.2/PerformanceTests.dll --commit="$TRAVIS_COMMIT" --commitMessage="$TRAVIS_COMMIT_MESSAGE" --branch="$TRAVIS_BRANCH" --pullRequest="$TRAVIS_PULL_REQUEST" --buildNumber="$TRAVIS_BUILD_NUMBER" --url="$PERFORMANCE_TESTS_URL" --repeats="$PERFORMANCE_TESTS_REPEATS"
