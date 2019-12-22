@@ -9,7 +9,7 @@ using MapGeneration.Utils;
 namespace MapGeneration.Core.ConfigurationSpaces
 {
     public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
-        where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+        where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
     {
         protected List<IntAlias<GridPolygon>>[] ShapesForNodes;
         protected ConfigurationSpace[][] ConfigurationSpaces_;

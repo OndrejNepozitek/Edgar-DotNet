@@ -16,7 +16,7 @@
 	/// Abstract class for configuration spaces with common methods already implemented.
 	/// </summary>
 	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>, IRandomInjectable
-		where TConfiguration : IConfiguration<TShapeContainer>
+		where TConfiguration : IConfiguration<TShapeContainer, TNode>
 	{
 		protected Random Random;
 		protected ILineIntersection<OrthogonalLine> LineIntersection;

@@ -20,7 +20,7 @@
 	public class LayoutOperationsWithCorridors<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : 
 		LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData>
         where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout> 
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
+		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
     {
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> CorridorConfigurationSpaces;
@@ -208,7 +208,7 @@
 
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
 				return;
 			}
 
@@ -221,7 +221,7 @@
 
 			foreach (var shape in shapes)
 			{
-				var intersection = CorridorConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
+				var intersection = CorridorConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations);
 
 				if (intersection == null)
 					continue;
@@ -247,7 +247,7 @@
 						if (!tryAll && i % mod != 0 && i != intersectionLine.Length)
 							continue;
 
-						var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+						var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node)).Energy;
 
 						if (energy < bestEnergy)
 						{
@@ -274,7 +274,7 @@
 				}
 			}
 
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition);
+			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
@@ -311,7 +311,7 @@
 
 			foreach (var shape in shapes)
 			{
-				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
+				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;
@@ -330,7 +330,7 @@
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
-							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -353,7 +353,7 @@
 
 						foreach (var position in points)
 						{
-							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -377,7 +377,7 @@
 				}
 			}
 
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition);
+			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);
 
 			return foundValid;

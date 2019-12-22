@@ -29,7 +29,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
         }
 
         public ConfigurationSpaces<TConfiguration> Generate<TNode, TConfiguration>(MapDescription<TNode> mapDescription, List<int> offsets = null)
-            where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+            where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
         {
             throw new NotImplementedException();
         }

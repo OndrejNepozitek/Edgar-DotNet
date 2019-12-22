@@ -13,7 +13,7 @@
 	/// Basic implementation of an IEnergyConfiguration interface.
 	/// </summary>
 	/// <typeparam name="TEnergyData"></typeparam>
-	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>
+	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>
 	{
 		/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
@@ -31,24 +31,28 @@
 		/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
 		public bool IsValid => EnergyData.IsValid;
 
-		public Configuration()
+        public int Node { get; set; }
+
+        public Configuration()
 		{
 			/* empty */
 		}
 
-		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, TEnergyData energyData)
+		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, TEnergyData energyData, int node)
 		{
 			ShapeContainer = shape;
 			Position = position;
 			EnergyData = energyData;
-		}
+            Node = node;
+        }
 
 		public Configuration<TEnergyData> SmartClone()
 		{
 			return new Configuration<TEnergyData>(
 				ShapeContainer,
 				Position,
-				EnergyData.SmartClone()
+				EnergyData.SmartClone(),
+				Node
 			);
 		}
 

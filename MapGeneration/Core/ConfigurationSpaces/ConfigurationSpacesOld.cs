@@ -20,7 +20,7 @@
 	/// </remarks>
 	/// <typeparam name="TConfiguration"></typeparam>
 	public class ConfigurationSpacesOld<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
-		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 	{
 		protected List<WeightedShape> Shapes;
 		protected List<WeightedShape>[] ShapesForNodes;

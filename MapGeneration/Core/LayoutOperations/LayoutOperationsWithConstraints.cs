@@ -21,7 +21,7 @@ namespace MapGeneration.Core.LayoutOperations
 	/// </summary>
 	public class LayoutOperationsWithConstraints<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>, ISmartCloneable<TConfiguration>, new()
+		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
     {
 		private readonly List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>> nodeConstraints = new List<INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>>();
@@ -118,7 +118,7 @@ namespace MapGeneration.Core.LayoutOperations
 			// The first node is set to have a random shape and [0,0] position
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2()));
+				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
 				return;
 			}
 
@@ -132,7 +132,7 @@ namespace MapGeneration.Core.LayoutOperations
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations);
+				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations);
 
 				if (intersection == null)
 					continue;
@@ -154,7 +154,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
 
-							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -176,7 +176,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position)).Energy;
+							var energy = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -206,7 +206,7 @@ namespace MapGeneration.Core.LayoutOperations
 				throw new ArgumentException("No shape for the current room could be connected to its neighbours");
 			}
 
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition);
+			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
@@ -216,12 +216,13 @@ namespace MapGeneration.Core.LayoutOperations
 		/// <param name="shapeContainer"></param>
 		/// <param name="position"></param>
 		/// <returns></returns>
-		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position)
+		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position, TNode node)
 		{
 			var configuration = new TConfiguration
 			{
 				ShapeContainer = shapeContainer,
-				Position = position
+				Position = position,
+				Node = node,
 			};
 
 			return configuration;
@@ -440,7 +441,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 			foreach (var shape in shapes)
 			{
-				var intersection = StageTwoConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2()), configurations, out var configurationsSatisfied);
+				var intersection = StageTwoConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;
@@ -459,7 +460,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
-							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -482,7 +483,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position));
+							var energyData = NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -506,7 +507,7 @@ namespace MapGeneration.Core.LayoutOperations
 				}
 			}
 
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition);
+			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);
 
 			return foundValid;

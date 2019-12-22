@@ -68,7 +68,7 @@ namespace Sandbox
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
+            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 100);
 
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);

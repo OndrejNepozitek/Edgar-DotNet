@@ -25,7 +25,7 @@
 	/// <typeparam name="TConfiguration"></typeparam>
 	public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
 		where TLayout : ILayout<int, TConfiguration>
-		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 	{
 		protected readonly MapDescriptionOld<TNode> MapDescriptionOld;
 		protected Random Random;

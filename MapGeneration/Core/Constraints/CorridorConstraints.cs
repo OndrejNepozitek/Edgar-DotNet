@@ -22,7 +22,7 @@
 	/// </remarks>
 	public class CorridorConstraints<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TEnergyData>
+		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
 		where TEnergyData : ICorridorsData, new()
 	{
 		private readonly ICorridorMapDescription<TNode> mapDescription;

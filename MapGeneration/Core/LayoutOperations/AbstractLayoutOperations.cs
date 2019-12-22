@@ -21,7 +21,7 @@ namespace MapGeneration.Core.LayoutOperations
 	/// </summary>
 	public abstract class AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer> : IChainBasedLayoutOperations<TLayout, TNode>, IRandomInjectable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
-		where TConfiguration : IMutableConfiguration<TShapeContainer>, ISmartCloneable<TConfiguration>
+		where TConfiguration : IMutableConfiguration<TShapeContainer, TNode>, ISmartCloneable<TConfiguration>
 	{
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageOneConfigurationSpaces;
 		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageTwoConfigurationSpaces;

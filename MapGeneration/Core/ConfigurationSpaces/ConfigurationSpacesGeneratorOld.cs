@@ -52,7 +52,7 @@
 		/// <param name="offsets"></param>
 		/// <returns></returns>
 		public IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> Generate<TNode, TConfiguration>(MapDescriptionOld<TNode> mapDescriptionOld, List<int> offsets = null)
-			where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+			where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));

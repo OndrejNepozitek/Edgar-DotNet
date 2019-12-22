@@ -6,7 +6,7 @@
 	/// </summary>
 	/// <typeparam name="TShapeContainer"></typeparam>
 	/// <typeparam name="TEnergyData"></typeparam>
-	public interface IEnergyConfiguration<TShapeContainer, TEnergyData> : IMutableConfiguration<TShapeContainer>
+	public interface IEnergyConfiguration<TShapeContainer, TNode, TEnergyData> : IMutableConfiguration<TShapeContainer, TNode>
 	{
 		TEnergyData EnergyData { get; set; }
 	}

@@ -21,7 +21,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 	/// <typeparam name="TConfiguration"></typeparam>
 	public class SimulatedAnnealingEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
-		where TConfiguration : IConfiguration<IntAlias<GridPolygon>>
+		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, TNode>
 	{
 		protected Random Random;
 		protected CancellationToken? CancellationToken;

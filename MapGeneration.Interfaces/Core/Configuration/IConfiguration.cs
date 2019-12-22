@@ -7,7 +7,7 @@
 	/// Represents a configuration of a layout's node.
 	/// </summary>
 	/// <typeparam name="TShapeContainer">Type of the shape container.</typeparam>
-	public interface IConfiguration<out TShapeContainer>
+	public interface IConfiguration<out TShapeContainer, out TNode>
 	{
 		/// <summary>
 		/// Shape of the node.
@@ -28,5 +28,7 @@
 		/// Whether a node is valid or not.
 		/// </summary>
 		bool IsValid { get; }
+
+		TNode Node { get; }
 	}
 }
