@@ -191,7 +191,7 @@
 			mapDescription.AddRoom(0);
 
 			Assert.Throws<ArgumentException>(
-				() => generatorOld.Generate<int, IConfiguration<IntAlias<GridPolygon>>>(mapDescription));
+				() => generatorOld.Generate<int, IConfiguration<IntAlias<GridPolygon>, int>>(mapDescription));
 		}
 	}
 }
