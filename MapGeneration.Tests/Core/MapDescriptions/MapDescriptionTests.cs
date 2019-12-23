@@ -91,9 +91,13 @@ namespace MapGeneration.Tests.Core.MapDescriptions
             mapDescription.AddConnection(0, 3);
 
             var graph = mapDescription.GetGraph();
+            var stageOneGraph = mapDescription.GetStageOneGraph();
 
             Assert.That(graph.VerticesCount, Is.EqualTo(4));
             Assert.That(graph.Edges.Count(), Is.EqualTo(3));
+
+            Assert.That(stageOneGraph.VerticesCount, Is.EqualTo(4));
+            Assert.That(stageOneGraph.Edges.Count(), Is.EqualTo(3));
         }
 
         [Test]

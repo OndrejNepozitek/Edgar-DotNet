@@ -93,6 +93,17 @@ namespace MapGeneration.Core.MapDescriptions
                 }
             }
 
+            foreach (var edge in graph.Edges)
+            {
+                var roomDescription1 = roomDescriptions[edge.From];
+                var roomDescription2 = roomDescriptions[edge.To];
+
+                if (roomDescription1.Stage == 1 && roomDescription2.Stage == 1)
+                {
+                    stageOneGraph.AddEdge(edge.From, edge.To);
+                }
+            }
+
             return stageOneGraph;
         }
 

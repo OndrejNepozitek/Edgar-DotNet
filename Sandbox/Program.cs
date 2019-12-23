@@ -30,6 +30,7 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+            new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new TwoStageGeneration().Run();
             CompareWithReference();
@@ -38,6 +39,8 @@ namespace Sandbox
             // CompareOldAndNew();
             // RunExample();
             // ConvertToXml();
+
+            // Main();
         }
 
         public static void CompareWithReference()
@@ -47,7 +50,7 @@ namespace Sandbox
 
             // var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
             var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
-            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, true, offsets));
+            // mapDescriptions.AddRange(GetMapDescriptionsSet(scale, true, offsets));
 
             var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
 
@@ -68,7 +71,7 @@ namespace Sandbox
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 100);
+            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 500);
 
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);

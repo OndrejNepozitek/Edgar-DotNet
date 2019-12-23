@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.Configuration;
 using MapGeneration.Utils;
 
@@ -11,16 +13,18 @@ namespace MapGeneration.Core.ConfigurationSpaces
     public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
         where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
     {
-        protected List<IntAlias<GridPolygon>>[] ShapesForNodes;
+        protected List<WeightedShape>[] ShapesForNodes;
         protected ConfigurationSpace[][] ConfigurationSpaces_;
+        protected TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
 
         public ConfigurationSpaces(
-            List<IntAlias<GridPolygon>>[] shapesForNodes,
+            List<WeightedShape>[] shapesForNodes,
             ConfigurationSpace[][] configurationSpaces,
-            ILineIntersection<OrthogonalLine> lineIntersection) : base(lineIntersection)
+            ILineIntersection<OrthogonalLine> lineIntersection, TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping) : base(lineIntersection)
         {
             ShapesForNodes = shapesForNodes;
             ConfigurationSpaces_ = configurationSpaces;
+            IntAliasMapping = intAliasMapping;
         }
 
 		/// <inheritdoc />
@@ -55,7 +59,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		/// </summary>
 		public override IntAlias<GridPolygon> GetRandomShape(int node)
 		{
-			return ShapesForNodes[node].GetRandom(Random);
+			return ShapesForNodes[node].GetWeightedRandom(x => x.Weight, Random).Shape;
 		}
 
 		/// <inheritdoc />
@@ -68,7 +72,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		/// <inheritdoc />
 		public override IReadOnlyCollection<IntAlias<GridPolygon>> GetShapesForNode(int node)
 		{
-			return ShapesForNodes[node].AsReadOnly();
+			return ShapesForNodes[node].Select(x => x.Shape).ToList().AsReadOnly();
 		}
 
 		/// <inheritdoc />
@@ -83,13 +87,18 @@ namespace MapGeneration.Core.ConfigurationSpaces
 
 				foreach (var shape in shapes)
 				{
-					if (!usedShapes.Contains(shape.Alias))
+					if (!usedShapes.Contains(shape.Shape.Alias))
 					{
-						yield return shape;
-						usedShapes.Add(shape.Alias);
+						yield return shape.Shape;
+						usedShapes.Add(shape.Shape.Alias);
 					}
 				}
 			}
 		}
+
+        public TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> GetIntAliasMapping()
+        {
+            return IntAliasMapping;
+        }
     }
 }

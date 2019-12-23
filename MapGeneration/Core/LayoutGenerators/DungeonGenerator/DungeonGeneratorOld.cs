@@ -61,7 +61,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescriptionOld.GetGraph());
             var layoutConverter =
-                new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode,
+                new BasicLayoutConverterOld<Layout<Configuration<CorridorsData>>, TNode,
                     Configuration<CorridorsData>>(mapDescriptionOld, configurationSpaces,
                     configurationSpacesGenerator.LastIntAliasMapping);
 

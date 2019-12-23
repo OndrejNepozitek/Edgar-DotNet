@@ -6,13 +6,13 @@ namespace MapGeneration.Core.MapDescriptions
 {
     public class MapDescriptionMapping<TNode> : IMapDescription<int>
     {
-        private readonly MapDescription<TNode> mapDescription;
+        private readonly IMapDescription<TNode> mapDescription;
         private readonly TwoWayDictionary<TNode, int> nodeToIntMapping = new TwoWayDictionary<TNode, int>();
         private readonly IRoomDescription[] roomDescriptions;
         private readonly IGraph<int> mappedGraph = new UndirectedAdjacencyListGraph<int>();
         private readonly IGraph<int> mappedStageOneGraph = new UndirectedAdjacencyListGraph<int>();
 
-        public MapDescriptionMapping(MapDescription<TNode> mapDescription)
+        public MapDescriptionMapping(IMapDescription<TNode> mapDescription)
         {
             this.mapDescription = mapDescription;
             roomDescriptions = new IRoomDescription[mapDescription.GetGraph().VerticesCount];

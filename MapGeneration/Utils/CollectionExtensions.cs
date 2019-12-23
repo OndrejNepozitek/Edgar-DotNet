@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Utils
+﻿using GeneralAlgorithms.DataStructures.Common;
+
+namespace MapGeneration.Utils
 {
 	using System;
 	using System.Collections.Generic;
@@ -172,5 +174,29 @@
 				list[n] = value;
 			}
 		}
+
+        public static TwoWayDictionary<TElement, int> CreateIntMapping<TElement>(this IEnumerable<TElement> elements)
+        {
+			var mapping = new TwoWayDictionary<TElement, int>();
+
+            foreach (var element in elements)
+            {
+                mapping.Add(element, mapping.Count);
+            }
+
+            return mapping;
+        }
+
+        public static TwoWayDictionary<TKey, TValue> ToTwoWayDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        {
+            var twoWayDictionary = new TwoWayDictionary<TKey, TValue>();
+
+            foreach (var pair in dictionary)
+            {
+                twoWayDictionary.Add(pair.Key, pair.Value);
+            }
+
+            return twoWayDictionary;
+        }
 	}
 }

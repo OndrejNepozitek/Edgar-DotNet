@@ -1,46 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.LayoutConverters.CorridorNodesCreators;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.LayoutConverters;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapLayouts;
-using MapGeneration.Interfaces.Utils;
-using MapGeneration.Utils;
-
-namespace MapGeneration.Core.LayoutConverters
+﻿namespace MapGeneration.Core.LayoutConverters
 {
-    public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using ConfigurationSpaces;
+	using CorridorNodesCreators;
+	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Polygons;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.LayoutConverters;
+	using Interfaces.Core.Layouts;
+	using Interfaces.Core.MapLayouts;
+	using Interfaces.Utils;
+	using MapDescriptions;
+	using MapLayouts;
+	using Utils;
+
+	/// <summary>
+	/// Basic implementation of a layout converter.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
+	public class BasicLayoutConverterOld<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
 		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 	{
-		protected readonly MapDescriptionMapping<TNode> MapDescription;
+		protected readonly MapDescriptionOld<TNode> MapDescriptionOld;
 		protected Random Random;
 		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
 		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
-		protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
+		protected readonly Dictionary<int, RoomTemplateInstance> IntAliasMapping;
 
-		public BasicLayoutConverter(
-            MapDescriptionMapping<TNode> mapDescription, 
+		public BasicLayoutConverterOld(
+			MapDescriptionOld<TNode> mapDescriptionOld, 
 			IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
-			TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping
-        )
+			Dictionary<int, RoomTemplateInstance> intAliasMapping,
+			ICorridorNodesCreator<TNode> corridorNodesCreator = null
+		)
 		{
-			MapDescription = mapDescription;
+			MapDescriptionOld = mapDescriptionOld;
 			ConfigurationSpaces = configurationSpaces;
 			IntAliasMapping = intAliasMapping;
 
-			//if (MapDescription.IsWithCorridors)
-			//{
-			//	CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
-			//}
+			if (MapDescriptionOld.IsWithCorridors)
+			{
+				CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
+			}
 		}
 
 		/// <inheritdoc />
@@ -49,21 +56,21 @@ namespace MapGeneration.Core.LayoutConverters
 			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
-			var mapping = MapDescription.GetMapping();
+			var mapping = MapDescriptionOld.GetRoomsMapping();
 
-			//if (MapDescription.IsWithCorridors)
-			//{
-			//	CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
-			//}
+			if (MapDescriptionOld.IsWithCorridors)
+			{
+				CorridorNodesCreator.AddCorridorsToMapping(MapDescriptionOld, mapping);
+			}
 			
 			foreach (var vertexAlias in layout.Graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
 				{
 					var vertex = mapping.GetByValue(vertexAlias);
-					var roomTemplate = IntAliasMapping.GetByValue(configuration.ShapeContainer);
+					var roomInfo = IntAliasMapping[configuration.ShapeContainer.Alias];
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplate.RoomTemplate, roomTemplate.Transformations.GetRandom(Random), roomTemplate.Transformations);
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescriptionOld.IsCorridorRoom(vertexAlias), roomInfo.RoomTemplate, roomInfo.Transformations.GetRandom(Random), roomInfo.Transformations);
 					rooms.Add(room);
 
 					if (!addDoors)

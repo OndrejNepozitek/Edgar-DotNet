@@ -4,9 +4,12 @@ using System.Linq;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
+using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Core.Doors.DoorModes;
+using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using Sandbox.Utils;
@@ -17,19 +20,37 @@ namespace Sandbox.Features
     {
         public void Run()
         {
-            //var dummyInput = new GeneratorInput<MapDescription<int>>("Example 4", GetExample4());
-            //var benchmarkRunner = new BenchmarkRunner<MapDescription<int>>();
-            //var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces", input =>
-            //{
+            var inputs = new List<GeneratorInput<MapDescription<int>>>()
+            {
+                new GeneratorInput<MapDescription<int>>("Example 1", GetExample(GraphsDatabase.GetExample1())),
+                new GeneratorInput<MapDescription<int>>("Example 2", GetExample(GraphsDatabase.GetExample2())),
+                new GeneratorInput<MapDescription<int>>("Example 3", GetExample(GraphsDatabase.GetExample3())),
+                new GeneratorInput<MapDescription<int>>("Example 4", GetExample(GraphsDatabase.GetExample4())),
+                new GeneratorInput<MapDescription<int>>("Example 5", GetExample(GraphsDatabase.GetExample5())),
+            };
 
-            //});
+            var benchmarkRunner = new BenchmarkRunner<MapDescription<int>>();
+            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces", input =>
+            {
+                
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
+                layoutGenerator.InjectRandomGenerator(new Random(0));
+
+                return new LambdaGeneratorRunner(() =>
+                {
+                    var layouts = layoutGenerator.GenerateLayout();
+
+                    return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                });
+            });
+
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 500);
         }
 
-        private MapDescription<int> GetExample4()
+        private MapDescription<int> GetExample(IGraph<int> graph)
         {
             var mapDescription = new MapDescription<int>();
 
-            var graph = GraphsDatabase.GetExample4();
             var basicRoomTemplates = GetBasicRoomTemplates(new IntVector2(1, 1));
             var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
 

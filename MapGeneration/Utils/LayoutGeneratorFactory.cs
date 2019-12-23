@@ -60,7 +60,7 @@ namespace MapGeneration.Utils
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescriptionOld.GetGraph());
             var layoutConverter =
-                new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode,
+                new BasicLayoutConverterOld<Layout<Configuration<CorridorsData>>, TNode,
                     Configuration<CorridorsData>>(mapDescriptionOld, configurationSpaces,
                     configurationSpacesGenerator.LastIntAliasMapping);
 
@@ -133,7 +133,7 @@ namespace MapGeneration.Utils
 			layoutGenerator.SetConfigurationSpacesCreator(mapDescription => configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription));
 			layoutGenerator.SetInitialLayoutCreator(mapDescription => new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph()));
 			layoutGenerator.SetGeneratorPlannerCreator(mapDescription => generatorPlanner);
-			layoutGenerator.SetLayoutConverterCreator((mapDescription, configurationSpaces) => new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode, Configuration<CorridorsData>>(mapDescription, configurationSpaces, configurationSpacesGenerator.LastIntAliasMapping));
+			layoutGenerator.SetLayoutConverterCreator((mapDescription, configurationSpaces) => new BasicLayoutConverterOld<Layout<Configuration<CorridorsData>>, TNode, Configuration<CorridorsData>>(mapDescription, configurationSpaces, configurationSpacesGenerator.LastIntAliasMapping));
 			layoutGenerator.SetLayoutEvolverCreator((mapDescription, layoutOperations) => new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(layoutOperations));
 			layoutGenerator.SetLayoutOperationsCreator((mapDescription, configurationSpaces) =>
 			{
