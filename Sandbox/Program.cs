@@ -33,7 +33,7 @@ namespace Sandbox
             new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new TwoStageGeneration().Run();
-            CompareWithReference();
+            // CompareWithReference();
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();

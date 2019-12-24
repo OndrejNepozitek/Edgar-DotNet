@@ -116,7 +116,7 @@
 		/// <param name="mainConfiguration">Configuration with a shape that can be moved.</param>
 		/// <param name="configuration">Configuration with a shape that is fixed.</param>
 		/// <returns></returns>
-		protected abstract ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration);
+		public abstract ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration);
 
 		/// <inheritdoc />
 		public abstract ConfigurationSpace GetConfigurationSpace(TShapeContainer movingPolygon, TShapeContainer fixedPolygon);

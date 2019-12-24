@@ -66,7 +66,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsData>>(mapDescription);
+            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces2<Configuration<CorridorsData>>(mapDescription, new List<int>() { 1 }); // TODO: do not hardcode later
 
             //var corridorConfigurationSpaces = mapDescription.IsWithCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, mapDescription.CorridorsOffsets) : configurationSpaces;
             var corridorConfigurationSpaces = configurationSpaces;

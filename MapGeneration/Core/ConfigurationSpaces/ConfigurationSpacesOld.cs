@@ -59,7 +59,7 @@
 		}
 
 		/// <inheritdoc />
-		protected override ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration)
+		public override ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration)
 		{
 			return GetConfigurationSpace(mainConfiguration.ShapeContainer, configuration.ShapeContainer);
 		}

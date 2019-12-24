@@ -85,12 +85,19 @@
 		/// <returns></returns>
 		bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2);
 
-		/// <summary>
-		/// Gets a configuration space for two shapes.
-		/// </summary>
-		/// <param name="movingPolygon">A polygon that can be moved through the returned configuration space.</param>
-		/// <param name="fixedPolygon">A polygon that stays fixed.</param>
-		/// <returns></returns>
-		TConfigurationSpace GetConfigurationSpace(TShape movingPolygon, TShape fixedPolygon);
+		// TODO: remove later
+        /// <summary>
+        /// Gets a configuration space for two shapes.
+        /// </summary>
+        /// <param name="movingPolygon">A polygon that can be moved through the returned configuration space.</param>
+        /// <param name="fixedPolygon">A polygon that stays fixed.</param>
+        /// <returns></returns>
+        TConfigurationSpace GetConfigurationSpace(TShape movingPolygon, TShape fixedPolygon);
+
+        /// <summary>
+        /// Gets a configuration space for two configurations.
+        /// </summary>
+        /// <returns></returns>
+        TConfigurationSpace GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2);
 	}
 }

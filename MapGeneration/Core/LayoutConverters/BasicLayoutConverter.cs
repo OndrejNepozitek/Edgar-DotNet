@@ -112,7 +112,7 @@ namespace MapGeneration.Core.LayoutConverters
 		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
-				ConfigurationSpaces.GetConfigurationSpace(configuration2.ShapeContainer, configuration1.ShapeContainer))
+				ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 
