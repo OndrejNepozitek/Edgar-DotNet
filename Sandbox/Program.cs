@@ -33,7 +33,7 @@ namespace Sandbox
             new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new TwoStageGeneration().Run();
-            // CompareWithReference();
+            CompareWithReference();
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
@@ -71,7 +71,7 @@ namespace Sandbox
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 500);
+            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
 
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);

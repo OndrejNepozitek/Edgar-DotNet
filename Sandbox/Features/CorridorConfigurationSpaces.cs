@@ -31,7 +31,7 @@ namespace Sandbox.Features
             };
 
             var benchmarkRunner = new BenchmarkRunner<MapDescription<int>>();
-            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces_Reference", input =>
+            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 
                 var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);

@@ -10,7 +10,7 @@
 	public interface INodeConstraint<in TLayout, in TNode, in TConfiguration, TEnergyData>
 	{
 		/// <summary>
-		/// Compotues energy data for a given node.
+		/// Computes energy data for a given node.
 		/// </summary>
 		/// <param name="layout">Current layout.</param>
 		/// <param name="node">Node for which an energy data should be computed.</param>
@@ -43,7 +43,7 @@
 		/// Updates energy data of a perturbed node.
 		/// </summary>
 		/// <remarks>
-		/// The idea of this method is the same a of the overload above.
+		/// The idea of this method is the same as of the overload above.
 		/// </remarks>
 		/// <param name="oldLayout">Old layout.</param>
 		/// <param name="newLayout">New layout with all other configurations and energy data already updated.</param>

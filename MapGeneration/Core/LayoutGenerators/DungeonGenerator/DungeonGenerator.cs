@@ -19,6 +19,7 @@ using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.Layouts;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.ChainDecompositions;
+using MapGeneration.Interfaces.Core.Constraints;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapLayouts;
 using MapGeneration.Interfaces.Utils;
@@ -71,21 +72,9 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             //var corridorConfigurationSpaces = mapDescription.IsWithCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, mapDescription.CorridorsOffsets) : configurationSpaces;
             var corridorConfigurationSpaces = configurationSpaces;
 
-            var layoutOperations = new LayoutOperationsWithConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces);
-
-            var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
-            var layoutConverter =
-                new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode,
-                    Configuration<CorridorsData>>(mapDescription, configurationSpaces,
-                    configurationSpaces.GetIntAliasMapping());
-
             var averageSize = configurationSpaces.GetAverageSize();
 
-            layoutOperations.AddNodeConstraint(new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                new FastPolygonOverlap(),
-                averageSize,
-                configurationSpaces
-            ));
+            var constraints = new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData>>();
 
             //if (mapDescription.IsWithCorridors)
             //{
@@ -104,6 +93,22 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             //        ));
             //    }
             //}
+
+            constraints.Add(new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                new FastPolygonOverlap(),
+                averageSize,
+                configurationSpaces
+            ));
+
+            var constraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(constraints);
+
+            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces, constraintsEvaluator);
+
+            var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
+            var layoutConverter =
+                new BasicLayoutConverter<Layout<Configuration<CorridorsData>>, TNode,
+                    Configuration<CorridorsData>>(mapDescription, configurationSpaces,
+                    configurationSpaces.GetIntAliasMapping());
 
             var layoutEvolver =
                     new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int,
