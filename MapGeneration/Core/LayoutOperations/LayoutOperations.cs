@@ -83,7 +83,7 @@ namespace MapGeneration.Core.LayoutOperations
 				if (!layout.GetConfiguration(node, out var configuration))
 					continue;
 
-				var newEnergyData = constraintsEvaluator.NodeRunAllCompute(layout, node, configuration);
+				var newEnergyData = constraintsEvaluator.ComputeNodeEnergy(layout, configuration);
 				configuration.EnergyData = newEnergyData;
 				layout.SetConfiguration(node, configuration);
 			}
@@ -147,7 +147,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
 
-							var energy = constraintsEvaluator.NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node)).Energy;
+							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -169,7 +169,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energy = constraintsEvaluator.NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node)).Energy;
+							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -205,7 +205,30 @@ namespace MapGeneration.Core.LayoutOperations
 
         protected override void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
         {
-            constraintsEvaluator.UpdateLayout(layout, perturbedNode, configuration);
+            // Prepare new layout with temporary configuration to compute energies
+            var graph = layout.Graph;
+            var oldLayout = layout.SmartClone(); // TODO: is the clone needed?
+            oldLayout.GetConfiguration(perturbedNode, out var oldConfiguration);
+
+            // Update validity vectors and energies of vertices
+            foreach (var vertex in graph.Vertices)
+            {
+                if (vertex.Equals(perturbedNode))
+                    continue;
+
+                if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
+                    continue;
+
+                var vertexEnergyData = constraintsEvaluator.UpdateNodeEnergy(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
+
+                nodeConfiguration.EnergyData = vertexEnergyData;
+                layout.SetConfiguration(vertex, nodeConfiguration);
+            }
+
+            // Update energy and validity vector of the perturbed node
+            var newEnergyData = constraintsEvaluator.UpdateNodeEnergy(perturbedNode, oldLayout, layout);
+            configuration.EnergyData = newEnergyData;
+            layout.SetConfiguration(perturbedNode, configuration);
         }
 
         /// <summary>
@@ -226,9 +249,7 @@ namespace MapGeneration.Core.LayoutOperations
 			return configuration;
 		}
 
-		
-
-		/// <summary>
+        /// <summary>
 		/// Tries to add corridors.
 		/// </summary>
 		/// <param name="layout"></param>
@@ -344,7 +365,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
-							var energyData = constraintsEvaluator.NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
+							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -367,7 +388,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energyData = constraintsEvaluator.NodeComputeEnergyData(layout, node, CreateConfiguration(shape, position, node));
+							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{

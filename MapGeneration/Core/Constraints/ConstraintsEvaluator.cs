@@ -19,61 +19,20 @@ namespace MapGeneration.Core.Constraints
             this.constraints = constraints;
         }
 
-        public void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
-		{
-			// Prepare new layout with temporary configuration to compute energies
-			var graph = layout.Graph;
-			var oldLayout = layout.SmartClone(); // TODO: is the clone needed?
-			oldLayout.GetConfiguration(perturbedNode, out var oldConfiguration);
-
-			// Update validity vectors and energies of vertices
-			foreach (var vertex in graph.Vertices)
-			{
-				if (vertex.Equals(perturbedNode))
-					continue;
-
-				if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
-					continue;
-
-				var vertexEnergyData = NodeRunAllUpdate(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
-
-				nodeConfiguration.EnergyData = vertexEnergyData;
-				layout.SetConfiguration(vertex, nodeConfiguration);
-			}
-
-			// Update energy and validity vector of the perturbed node
-			var newEnergyData = NodeRunAllUpdate(perturbedNode, oldLayout, layout);
-			configuration.EnergyData = newEnergyData;
-			layout.SetConfiguration(perturbedNode, configuration);
-		}
-
-		/// <summary>
-		/// Computes energy data of a give node with a given configuration.
+        /// <summary>
+		/// Run all constraints to compute energy data for a given node and its configuration.
 		/// </summary>
 		/// <param name="layout"></param>
-		/// <param name="node"></param>
-		/// <param name="configuration"></param>
+        /// <param name="configuration"></param>
 		/// <returns></returns>
-		public TEnergyData NodeComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration)
-		{
-			return NodeRunAllCompute(layout, node, configuration);
-		}
-
-		/// <summary>
-		/// Run all constraints to compute energy data for a given node and configuration.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="node"></param>
-		/// <param name="configuration"></param>
-		/// <returns></returns>
-		public TEnergyData NodeRunAllCompute(TLayout layout, TNode node, TConfiguration configuration)
+		public TEnergyData ComputeNodeEnergy(TLayout layout, TConfiguration configuration)
 		{
 			var energyData = new TEnergyData();
 			var valid = true;
 
 			foreach (var constraint in constraints)
 			{
-				if (!constraint.ComputeEnergyData(layout, node, configuration, ref energyData))
+				if (!constraint.ComputeEnergyData(layout, configuration.Node, configuration, ref energyData))
 				{
 					valid = false;
 				}
@@ -84,7 +43,7 @@ namespace MapGeneration.Core.Constraints
 		}
 
 		/// <summary>
-		/// Computes updated energy data of a given node by running all constraints.
+		/// Computes updated energy data of a given node by computing all constraints.
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="perturbedNode"></param>
@@ -93,7 +52,7 @@ namespace MapGeneration.Core.Constraints
 		/// <param name="node"></param>
 		/// <param name="configuration"></param>
 		/// <returns></returns>
-		public TEnergyData NodeRunAllUpdate(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration)
+		public TEnergyData UpdateNodeEnergy(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration, TConfiguration newConfiguration, TNode node, TConfiguration configuration)
 		{
 			var energyData = new TEnergyData();
 			var valid = true;
@@ -117,7 +76,7 @@ namespace MapGeneration.Core.Constraints
 		/// <param name="oldLayout"></param>
 		/// <param name="newLayout"></param>
 		/// <returns></returns>
-		public TEnergyData NodeRunAllUpdate(TNode node, TLayout oldLayout, TLayout newLayout)
+		public TEnergyData UpdateNodeEnergy(TNode node, TLayout oldLayout, TLayout newLayout)
 		{
 			var energyData = new TEnergyData();
 			var valid = true;
