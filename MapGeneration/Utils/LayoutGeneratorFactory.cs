@@ -74,7 +74,7 @@ namespace MapGeneration.Utils
 
             if (withCorridors)
             {
-                layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                layoutOperations.AddNodeConstraint(new CorridorConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                     mapDescriptionOld,
                     averageSize,
                     corridorConfigurationSpaces
@@ -83,7 +83,7 @@ namespace MapGeneration.Utils
                 if (!canTouch)
                 {
                     var polygonOverlap = new FastPolygonOverlap();
-                    layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    layoutOperations.AddNodeConstraint(new TouchingConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                         mapDescriptionOld,
                         polygonOverlap
                     ));
@@ -152,7 +152,7 @@ namespace MapGeneration.Utils
 
                 if (withCorridors)
                 {
-                    layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    layoutOperations.AddNodeConstraint(new CorridorConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                         mapDescription,
                         averageSize,
                         corridorConfigurationSpaces
@@ -160,7 +160,7 @@ namespace MapGeneration.Utils
 
                     if (!canTouch)
                     {
-                        layoutOperations.AddNodeConstraint(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                        layoutOperations.AddNodeConstraint(new TouchingConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                             mapDescription,
                             polygonOverlap
                         ));

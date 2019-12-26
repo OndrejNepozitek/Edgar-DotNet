@@ -115,7 +115,6 @@ namespace MapGeneration.Core.ConfigurationSpaces
             var graph = mapDescription.GetGraph();
             var stageOneGraph = mapDescription.GetStageOneGraph();
             
-
             var roomDescriptions = graph
                 .Vertices
                 .ToDictionary(x => x, mapDescription.GetRoomDescription);
@@ -125,6 +124,11 @@ namespace MapGeneration.Core.ConfigurationSpaces
                 .Where(x => x.GetType() == typeof(BasicRoomDescription))
                 .Cast<BasicRoomDescription>()
                 .SelectMany(x => x.RoomTemplates)
+                .Union(roomDescriptions // TODO: handle better
+                    .Values
+                    .Where(x => x.GetType() == typeof(CorridorRoomDescription))
+                    .Cast<CorridorRoomDescription>()
+                    .SelectMany(x => x.RoomTemplates))
                 .Distinct()
                 .ToList();
 
@@ -138,7 +142,10 @@ namespace MapGeneration.Core.ConfigurationSpaces
             var roomTemplateInstancesCount = roomTemplateInstancesMapping.Count;
 
             var configurationSpaces = new ConfigurationSpaces2<TConfiguration>(lineIntersection,
-                roomTemplateInstancesCount, graph.VerticesCount, (configuration1, configuration2) => graph.HasEdge(configuration1.Node, configuration2.Node) ? 0 : 1);
+                roomTemplateInstancesCount, graph.VerticesCount, (configuration1, configuration2) =>
+                {
+                    return graph.HasEdge(configuration1.Node, configuration2.Node) ? 0 : 1;
+                });
 
             // Generate configuration spaces
             foreach (var shape1 in roomTemplateInstancesMapping.Keys)
@@ -165,6 +172,19 @@ namespace MapGeneration.Core.ConfigurationSpaces
                 if (roomDescription is BasicRoomDescription basicRoomDescription)
                 {
                     foreach (var roomTemplate in basicRoomDescription.RoomTemplates)
+                    {
+                        var instances = roomTemplateInstances[roomTemplate];
+
+                        foreach (var roomTemplateInstance in instances)
+                        {
+                            configurationSpaces.AddShapeForNode(vertex, roomTemplateInstance, 1d / instances.Count);
+                        }
+                    }
+                }
+                // TODO: keep it DRY
+                else if (roomDescription is CorridorRoomDescription corridorRoomDescription)
+                {
+                    foreach (var roomTemplate in corridorRoomDescription.RoomTemplates)
                     {
                         var instances = roomTemplateInstances[roomTemplate];
 

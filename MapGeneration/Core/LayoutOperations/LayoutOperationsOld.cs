@@ -20,18 +20,16 @@ namespace MapGeneration.Core.LayoutOperations
 	/// <summary>
 	/// Layout operations that compute energy based on given constraints.
 	/// </summary>
-	public class LayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
+	public class LayoutOperationsOld<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>, ISmartCloneable<TConfiguration>, new()
 		where TEnergyData : IEnergyData, new()
     {
-        private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator;
-        private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator;
+        private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> constraintsEvaluator;
 
-        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator) : base(stageOneConfigurationSpaces, averageSize, mapDescription, null)
+        public LayoutOperationsOld(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageTwoConfigurationSpaces, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> constraintsEvaluator) : base(stageOneConfigurationSpaces, averageSize, mapDescription, stageTwoConfigurationSpaces)
         {
-            this.stageOneConstraintsEvaluator = stageOneConstraintsEvaluator;
-            this.stageTwoConstraintsEvaluator = stageTwoConstraintsEvaluator;
+            this.constraintsEvaluator = constraintsEvaluator;
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace MapGeneration.Core.LayoutOperations
 				if (!layout.GetConfiguration(node, out var configuration))
 					continue;
 
-				var newEnergyData = stageOneConstraintsEvaluator.ComputeNodeEnergy(layout, configuration);
+				var newEnergyData = constraintsEvaluator.ComputeNodeEnergy(layout, configuration);
 				configuration.EnergyData = newEnergyData;
 				layout.SetConfiguration(node, configuration);
 			}
@@ -100,11 +98,11 @@ namespace MapGeneration.Core.LayoutOperations
 		public override void AddNodeGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
-			var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
+			var neighbours = MapDescription.GetStageOneGraph().GetNeighbours(node);
 
-			foreach (var neighbor in neighbors)
+			foreach (var neighbour in neighbours)
 			{
-				if (layout.GetConfiguration(neighbor, out var configuration))
+				if (layout.GetConfiguration(neighbour, out var configuration))
 				{
 					configurations.Add(configuration);
 				}
@@ -149,7 +147,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
 
-							var energy = stageOneConstraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
+							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -171,7 +169,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energy = stageOneConstraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
+							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
 
 							if (energy < bestEnergy)
 							{
@@ -221,14 +219,14 @@ namespace MapGeneration.Core.LayoutOperations
                 if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
                     continue;
 
-                var vertexEnergyData = stageOneConstraintsEvaluator.UpdateNodeEnergy(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
+                var vertexEnergyData = constraintsEvaluator.UpdateNodeEnergy(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
 
                 nodeConfiguration.EnergyData = vertexEnergyData;
                 layout.SetConfiguration(vertex, nodeConfiguration);
             }
 
             // Update energy and validity vector of the perturbed node
-            var newEnergyData = stageOneConstraintsEvaluator.UpdateNodeEnergy(perturbedNode, oldLayout, layout);
+            var newEnergyData = constraintsEvaluator.UpdateNodeEnergy(perturbedNode, oldLayout, layout);
             configuration.EnergyData = newEnergyData;
             layout.SetConfiguration(perturbedNode, configuration);
         }
@@ -343,12 +341,12 @@ namespace MapGeneration.Core.LayoutOperations
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = StageTwoConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
 			{
-				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
+				var intersection = StageTwoConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;
@@ -367,7 +365,7 @@ namespace MapGeneration.Core.LayoutOperations
 						{
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
 
-							var energyData = stageTwoConstraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
+							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{
@@ -390,7 +388,7 @@ namespace MapGeneration.Core.LayoutOperations
 
 						foreach (var position in points)
 						{
-							var energyData = stageTwoConstraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
+							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node));
 
 							if (energyData.IsValid)
 							{

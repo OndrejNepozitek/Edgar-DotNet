@@ -27,7 +27,8 @@ using MapGeneration.Utils;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
-    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable where TNode : IEquatable<TNode>
+    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable
+        where TNode : IEquatable<TNode>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
@@ -73,8 +74,43 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             var corridorConfigurationSpaces = configurationSpaces;
 
             var averageSize = configurationSpaces.GetAverageSize();
+            var polygonOverlap = new FastPolygonOverlap();
 
-            var constraints = new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData>>();
+            var stageOneConstraints =
+                new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    CorridorsData>>
+                {
+                    new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                        CorridorsData, IntAlias<GridPolygon>>(
+                        new FastPolygonOverlap(),
+                        averageSize,
+                        configurationSpaces
+                    ),
+                    new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                            mapDescription,
+                            averageSize,
+                            corridorConfigurationSpaces
+                        ),
+                    new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                                mapDescription,
+                                polygonOverlap
+                            ),
+                };
+            var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
+
+            var stageTwoConstraints =
+                new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    CorridorsData>>
+                {
+                    new BasicConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                        CorridorsData, IntAlias<GridPolygon>>(
+                        new FastPolygonOverlap(),
+                        averageSize,
+                        configurationSpaces,
+                        mapDescription.GetGraph()
+                    )
+                };
+            var stageTwoConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageTwoConstraints);
 
             //if (mapDescription.IsWithCorridors)
             //{
@@ -94,15 +130,10 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             //    }
             //}
 
-            constraints.Add(new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                new FastPolygonOverlap(),
-                averageSize,
-                configurationSpaces
-            ));
 
-            var constraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(constraints);
 
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, configurationSpaces, constraintsEvaluator);
+
+            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator);
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
             var layoutConverter =

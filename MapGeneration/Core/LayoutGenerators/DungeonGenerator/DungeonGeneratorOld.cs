@@ -71,7 +71,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             if (mapDescriptionOld.IsWithCorridors)
             {
-                constraints.Add(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                constraints.Add(new CorridorConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                     mapDescriptionOld,
                     averageSize,
                     corridorConfigurationSpaces
@@ -80,7 +80,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 if (!false) // TODO:
                 {
                     var polygonOverlap = new FastPolygonOverlap();
-                    constraints.Add(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    constraints.Add(new TouchingConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
                         mapDescriptionOld,
                         polygonOverlap
                     ));
@@ -89,7 +89,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             var constraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(constraints);
 
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescriptionOld, configurationSpaces, constraintsEvaluator);
+            var layoutOperations = new LayoutOperationsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescriptionOld, configurationSpaces, constraintsEvaluator);
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescriptionOld.GetGraph());
             var layoutConverter =

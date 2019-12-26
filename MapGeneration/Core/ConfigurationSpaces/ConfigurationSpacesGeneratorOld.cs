@@ -16,6 +16,7 @@
 	/// <summary>
 	/// Class that computes configuration spaces.
 	/// </summary>
+    [Obsolete]
 	public class ConfigurationSpacesGeneratorOld
 	{
 		private readonly IPolygonOverlap<GridPolygon> polygonOverlap;

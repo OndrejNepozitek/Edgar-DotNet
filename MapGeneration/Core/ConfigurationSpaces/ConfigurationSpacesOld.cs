@@ -19,6 +19,7 @@
 	/// - fast retrieval of configuration spaces thanks to IntAlias and nodes being ints
 	/// </remarks>
 	/// <typeparam name="TConfiguration"></typeparam>
+	[Obsolete]
 	public class ConfigurationSpacesOld<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 	{

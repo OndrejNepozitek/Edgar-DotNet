@@ -28,10 +28,15 @@ namespace Sandbox.Features
                 new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)", GetExample(GraphsDatabase.GetExample3())),
                 new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8)", GetExample(GraphsDatabase.GetExample4())),
                 new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)", GetExample(GraphsDatabase.GetExample5())),
+                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1) wc", GetExample(GraphsDatabase.GetExample1(), true)),
+                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top) wc", GetExample(GraphsDatabase.GetExample2(), true)),
+                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom) wc", GetExample(GraphsDatabase.GetExample3(), true)),
+                new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8) wc", GetExample(GraphsDatabase.GetExample4(), true)),
+                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9) wc", GetExample(GraphsDatabase.GetExample5(), true)),
             };
 
             var benchmarkRunner = new BenchmarkRunner<MapDescription<int>>();
-            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces", input =>
+            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces_Reference", input =>
             {
                 
                 var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
@@ -45,7 +50,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 10);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 500);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -67,7 +72,8 @@ namespace Sandbox.Features
                     {
                         new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
                         new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 1)),
-                    })
+                    }),
+                    TransformationHelper.GetAllTransformations().ToList()
                 )
             };
             var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplate);

@@ -1,31 +1,38 @@
-﻿using System;
-using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.Configuration.EnergyData;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-
-namespace MapGeneration.Core.Constraints
+﻿namespace MapGeneration.Core.Constraints
 {
-    public class CorridorConstraints
-    <TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	using System;
+	using System.Linq;
+	using ConfigurationSpaces;
+	using GeneralAlgorithms.DataStructures.Common;
+	using GeneralAlgorithms.DataStructures.Graphs;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
+	using Interfaces.Core.MapDescriptions;
+
+	/// <summary>
+	/// Constraint made for map descriptions with corridors.
+	/// </summary>
+	/// <remarks>
+	/// It ensures that neighbours in the original graph without corridors are exactly a specified
+	/// offset away from each other. It is then really easy to use a hungry algorithm to connect
+	/// rooms by corridors. Valid positions are check with modified configurations spaces.
+	/// </remarks>
+	[Obsolete]
+	public class CorridorConstraintsOld<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
 		where TEnergyData : ICorridorsData, new()
 	{
-		private readonly IMapDescription<TNode> mapDescription;
+		private readonly ICorridorMapDescription<TNode> mapDescription;
 		private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private readonly IGraph<TNode> stageOneGraph;
         private readonly IGraph<TNode> graph;
 
-		public CorridorConstraints(IMapDescription<TNode> mapDescription, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public CorridorConstraintsOld(ICorridorMapDescription<TNode> mapDescription, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.mapDescription = mapDescription;
 			this.energySigma = 10 * averageSize; // TODO: should it be like this?
@@ -37,7 +44,7 @@ namespace MapGeneration.Core.Constraints
 		/// <inheritdoc />
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			var distance = 0;
@@ -49,10 +56,6 @@ namespace MapGeneration.Core.Constraints
 					continue;
 
 				if (!layout.GetConfiguration(vertex, out var c))
-					continue;
-
-				// TODO: why wasn't this here?
-				if (!AreNeighboursWithoutCorridors(vertex, node))
 					continue;
 
 				if (!configurationSpaces.HaveValidPosition(configuration, c))
@@ -73,7 +76,7 @@ namespace MapGeneration.Core.Constraints
 		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-            if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			// MoveDistance should not be recomputed as it is used only when two nodes are neighbours which is not the case here
@@ -98,7 +101,7 @@ namespace MapGeneration.Core.Constraints
 		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
-            if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
@@ -112,7 +115,7 @@ namespace MapGeneration.Core.Constraints
 				if (!oldLayout.GetConfiguration(vertex, out var nodeConfiguration))
 					continue;
 
-                newLayout.GetConfiguration(vertex, out var newNodeConfiguration);
+				newLayout.GetConfiguration(vertex, out var newNodeConfiguration);
 				newDistance += newNodeConfiguration.EnergyData.CorridorDistance - nodeConfiguration.EnergyData.CorridorDistance;
 			}
 
@@ -145,7 +148,7 @@ namespace MapGeneration.Core.Constraints
 
 		private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
 		{
-			return stageOneGraph.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
+			return stageOneGraph.HasEdge(node1, node2);
 		}
 	}
 }

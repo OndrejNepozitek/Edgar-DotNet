@@ -1,4 +1,6 @@
-﻿namespace GUI
+﻿using MapGeneration.Interfaces.Core.MapDescriptions;
+
+namespace GUI
 {
 	using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Interfaces.Core.LayoutGenerator;
@@ -6,7 +8,7 @@
 
 	public class GeneratorSettings
 	{
-		public MapDescriptionOld<int> MapDescriptionOld { get; set; }
+		public IMapDescription<int> MapDescriptionOld { get; set; }
 
 		public IObservableGenerator<MapDescriptionOld<int>, IMapLayout<int>> LayoutGenerator { get; set; }
 

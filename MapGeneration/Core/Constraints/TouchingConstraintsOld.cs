@@ -1,37 +1,37 @@
-﻿using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.Configuration.EnergyData;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-
-namespace MapGeneration.Core.Constraints
+﻿namespace MapGeneration.Core.Constraints
 {
-    public class TouchingConstraints
-    <TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
+	using GeneralAlgorithms.Algorithms.Polygons;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
+	using Interfaces.Core.MapDescriptions;
+
+	/// <summary>
+	/// Ensures that rooms that are not neighbours do not touch.
+	/// </summary>
+	/// <remarks>
+	/// This contraint makes sense only when working with corridors.
+	/// Resulting layouts are more visually pleasing.
+	/// </remarks>
+	public class TouchingConstraintsOld<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
 		where TEnergyData : ICorridorsData, new()
 	{
-		private readonly IMapDescription<TNode> mapDescription;
+		private readonly ICorridorMapDescription<TNode> mapDescription;
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
-        private readonly IGraph<TNode> stageOneGraph;
-        private readonly IGraph<TNode> graph;
 
-		public TouchingConstraints(IMapDescription<TNode> mapDescription, IPolygonOverlap<TShapeContainer> polygonOverlap)
+		public TouchingConstraintsOld(ICorridorMapDescription<TNode> mapDescription, IPolygonOverlap<TShapeContainer> polygonOverlap)
 		{
 			this.mapDescription = mapDescription;
 			this.polygonOverlap = polygonOverlap;
-            stageOneGraph = mapDescription.GetStageOneGraph();
-            graph = mapDescription.GetGraph();
 		}
 
 		/// <inheritdoc />
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			var numberOfTouching = 0;
@@ -44,7 +44,7 @@ namespace MapGeneration.Core.Constraints
 				if (!layout.GetConfiguration(vertex, out var c))
 					continue;
 
-				if (!AreNeighboursWithoutCorridors(node, vertex))
+				if (mapDescription.IsCorridorRoom(vertex))
 					continue;
 
 				if (DoTouch(configuration, c))
@@ -63,13 +63,13 @@ namespace MapGeneration.Core.Constraints
 		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription) || mapDescription.GetRoomDescription(perturbedNode).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(perturbedNode) || mapDescription.IsCorridorRoom(node))
 				return true;
 
 			var isTouchingOld = 0;
 			var isTouchingNew = 0;
 
-			if (AreNeighboursWithoutCorridors(perturbedNode, node))
+			if (!AreNeighbours(layout, perturbedNode, node))
 			{
 				isTouchingOld += DoTouch(configuration, oldConfiguration) ? 1 : 0;
 				isTouchingNew += DoTouch(configuration, newConfiguration) ? 1 : 0;
@@ -86,7 +86,7 @@ namespace MapGeneration.Core.Constraints
 		/// <inheritdoc />
 		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.IsCorridorRoom(node))
 				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
@@ -116,9 +116,9 @@ namespace MapGeneration.Core.Constraints
 			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 0);
 		}
 
-        private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
-        {
-            return stageOneGraph.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
-        }
+		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)
+		{
+			return layout.Graph.HasEdge(node1, node2);
+		}
 	}
 }
