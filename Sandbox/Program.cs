@@ -30,7 +30,7 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            CompareWithReference();
+            // CompareWithReference();
             new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new TwoStageGeneration().Run();
@@ -85,35 +85,35 @@ namespace Sandbox
 		/// </summary>
 		public static void RunExample()
 		{
-			var configLoader = new ConfigLoader();
-			var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-			// var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(new List<int>() {1});
-			layoutGenerator.InjectRandomGenerator(new Random(0));
+			//var configLoader = new ConfigLoader();
+			//var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+			//// var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(new List<int>() {1});
+			//layoutGenerator.InjectRandomGenerator(new Random(0));
 
-			// var mapDescription = new BasicsExample().GetMapDescription();
-			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_basicDescription.yml");
+			//// var mapDescription = new BasicsExample().GetMapDescription();
+			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_basicDescription.yml");
 
-			// var mapDescription = new DifferentShapesExample().GetMapDescription();
-			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentShapes.yml");
+			//// var mapDescription = new DifferentShapesExample().GetMapDescription();
+			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentShapes.yml");
 
-			// var mapDescription = new DIfferentProbabilitiesExample().GetMapDescription();
-			var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentProbabilities.yml");
+			//// var mapDescription = new DIfferentProbabilitiesExample().GetMapDescription();
+			//var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentProbabilities.yml");
 
-			// var mapDescription = new CorridorsExample().GetMapDescription();
-			// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_corridors.yml");
+			//// var mapDescription = new CorridorsExample().GetMapDescription();
+			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_corridors.yml");
 
-			var settings = new GeneratorSettings
-			{
-				MapDescriptionOld = mapDescription,
-				LayoutGenerator = layoutGenerator,
+			//var settings = new GeneratorSettings
+			//{
+			//	MapDescriptionOld = mapDescription,
+			//	LayoutGenerator = layoutGenerator,
 
-				NumberOfLayouts = 10,
+			//	NumberOfLayouts = 10,
 
-				ShowPartialValidLayouts = false,
-				ShowPartialValidLayoutsTime = 500,
-			};
+			//	ShowPartialValidLayouts = false,
+			//	ShowPartialValidLayoutsTime = 500,
+			//};
 
-			Application.Run(new GeneratorWindow(settings));
+			//Application.Run(new GeneratorWindow(settings));
 		}
 
         /// <summary>
@@ -121,26 +121,26 @@ namespace Sandbox
         /// </summary>
         public static async Task RunBenchmark()
         {
-            //var mapDescriptions = GetMapDescriptionsSet(scale, enableCorridors, offsets);
-            var mapDescriptions = GetInputsForThesis(false);
-            var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
+            ////var mapDescriptions = GetMapDescriptionsSet(scale, enableCorridors, offsets);
+            //var mapDescriptions = GetInputsForThesis(false);
+            //var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
             
-            var scenario = BenchmarkScenario.CreateForNodeType<int>(
-                "Test", 
-                input =>
-                {
-                    var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-                    layoutGenerator.InjectRandomGenerator(new Random(0));
-                    layoutGenerator.SetLayoutValidityCheck(false);
+            //var scenario = BenchmarkScenario.CreateForNodeType<int>(
+            //    "Test", 
+            //    input =>
+            //    {
+            //        var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+            //        layoutGenerator.InjectRandomGenerator(new Random(0));
+            //        layoutGenerator.SetLayoutValidityCheck(false);
 
-                    return layoutGenerator;
-                });
+            //        return layoutGenerator;
+            //    });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
+            //var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 10);
 
-            var resultSaver = new BenchmarkResultSaver();
-            // await resultSaver.SaveAndUpload(scenarioResult, "name", "group");
-            resultSaver.SaveResult(scenarioResult);
+            //var resultSaver = new BenchmarkResultSaver();
+            //// await resultSaver.SaveAndUpload(scenarioResult, "name", "group");
+            //resultSaver.SaveResult(scenarioResult);
         }
 
         /// <summary>

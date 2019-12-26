@@ -2,15 +2,14 @@
 
 namespace GUI
 {
-	using MapGeneration.Core.MapDescriptions;
-	using MapGeneration.Interfaces.Core.LayoutGenerator;
+    using MapGeneration.Interfaces.Core.LayoutGenerator;
 	using MapGeneration.Interfaces.Core.MapLayouts;
 
 	public class GeneratorSettings
 	{
 		public IMapDescription<int> MapDescriptionOld { get; set; }
 
-		public IObservableGenerator<MapDescriptionOld<int>, IMapLayout<int>> LayoutGenerator { get; set; }
+		public IObservableGenerator<IMapLayout<int>> LayoutGenerator { get; set; }
 
 		public int NumberOfLayouts { get; set; } = 10;
 

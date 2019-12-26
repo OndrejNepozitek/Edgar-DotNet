@@ -44,7 +44,10 @@ namespace MapGeneration.Core.Constraints
 				if (!layout.GetConfiguration(vertex, out var c))
 					continue;
 
-				if (!AreNeighboursWithoutCorridors(node, vertex))
+                if (mapDescription.GetRoomDescription(vertex).GetType() == typeof(CorridorRoomDescription))
+                    continue;
+
+				if (AreNeighbours(node, vertex))
 					continue;
 
 				if (DoTouch(configuration, c))
@@ -69,7 +72,7 @@ namespace MapGeneration.Core.Constraints
 			var isTouchingOld = 0;
 			var isTouchingNew = 0;
 
-			if (AreNeighboursWithoutCorridors(perturbedNode, node))
+			if (!AreNeighbours(perturbedNode, node))
 			{
 				isTouchingOld += DoTouch(configuration, oldConfiguration) ? 1 : 0;
 				isTouchingNew += DoTouch(configuration, newConfiguration) ? 1 : 0;
@@ -115,6 +118,11 @@ namespace MapGeneration.Core.Constraints
 		{
 			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 0);
 		}
+
+        private bool AreNeighbours(TNode node1, TNode node2)
+        {
+            return graph.HasEdge(node1, node2);
+        }
 
         private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
         {

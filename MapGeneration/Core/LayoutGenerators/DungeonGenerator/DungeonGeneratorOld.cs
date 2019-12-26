@@ -124,9 +124,9 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public IMapLayout<TNode> GenerateLayout()
         {
-            var layouts = generator.GetLayouts(mapDescriptionOld, 1);
+            var layout = generator.GenerateLayout();
 
-            return layouts.Count != 0 ? layouts[0] : null;
+            return layout;
         }
 
         public void InjectRandomGenerator(Random random)

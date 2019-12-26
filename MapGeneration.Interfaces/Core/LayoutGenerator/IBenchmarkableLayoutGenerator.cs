@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Represents layout generators that can be benchmarked.
 	/// </summary>
-	public interface IBenchmarkableLayoutGenerator<in TMapDescription, TLayout> : ILayoutGenerator<TMapDescription, TLayout>
+	public interface IBenchmarkableLayoutGenerator<out TLayout> : ILayoutGenerator<TLayout>
 	{
 		/// <summary>
 		/// Number of milliseconds until a first layout is generated.

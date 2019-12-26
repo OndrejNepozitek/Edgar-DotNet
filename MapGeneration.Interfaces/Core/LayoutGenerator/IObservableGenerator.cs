@@ -7,7 +7,7 @@
 	/// <summary>
 	/// Layout generators that can be observed for example from GUI.
 	/// </summary>
-	public interface IObservableGenerator<in TMapDescription, TLayout> : ILayoutGenerator<TMapDescription, TLayout>
+	public interface IObservableGenerator<out TLayout> : ILayoutGenerator<TLayout>
 	{
 		/// <summary>
 		/// Invoked whenever a layout is perturbed.

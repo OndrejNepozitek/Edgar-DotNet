@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
+using GUI;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
@@ -19,8 +21,33 @@ namespace Sandbox.Features
 {
     public class CorridorConfigurationSpaces
     {
+        private void ShowVisualization()
+        {
+            var input = new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom) wc",
+                GetExample(GraphsDatabase.GetExample3(), true, true));
+
+            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
+            layoutGenerator.InjectRandomGenerator(new Random(0));
+
+            var settings = new GeneratorSettings
+            {
+                LayoutGenerator = layoutGenerator,
+
+                NumberOfLayouts = 10,
+
+                ShowPartialValidLayouts = false,
+                ShowPartialValidLayoutsTime = 500,
+
+                ShowFinalLayouts = true,
+            };
+
+            Application.Run(new GeneratorWindow(settings));
+        }
+
         public void Run()
         {
+            ShowVisualization();
+
             var inputs = new List<GeneratorInput<MapDescription<int>>>()
             {
                 new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", GetExample(GraphsDatabase.GetExample1())),
@@ -57,7 +84,7 @@ namespace Sandbox.Features
             Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577179644_CorridorConfigurationSpaces_Reference.json");
         }
 
-        private MapDescription<int> GetExample(IGraph<int> graph, bool withCorridors = false)
+        private MapDescription<int> GetExample(IGraph<int> graph, bool withCorridors = false, bool withRandomCorridors = false)
         {
             var mapDescription = new MapDescription<int>();
 
@@ -84,10 +111,11 @@ namespace Sandbox.Features
             }
 
             var counter = graph.VerticesCount;
+            var random = new Random(0);
 
             foreach (var connection in graph.Edges)
             {
-                if (withCorridors)
+                if (withCorridors && (!withRandomCorridors || random.NextDouble() < 0.5))
                 {
                     mapDescription.AddRoom(counter, corridorRoomDescription);
                     mapDescription.AddConnection(connection.From, counter);

@@ -10,7 +10,7 @@ namespace MapGeneration.Benchmarks
 {
     public delegate IGeneratorRunner GeneratorRunnerFactory<TMapDescription>(GeneratorInput<TMapDescription> input);
 
-    public delegate IBenchmarkableLayoutGenerator<TMapDescription, TLayout> GeneratorFactory<TMapDescription, TLayout>(GeneratorInput<TMapDescription> input);
+    public delegate IBenchmarkableLayoutGenerator<TLayout> GeneratorFactory<TMapDescription, TLayout>(GeneratorInput<TMapDescription> input);
 
     public class BenchmarkScenario<TMapDescription> : IBenchmarkScenario<GeneratorInput<TMapDescription>>
     {
@@ -40,9 +40,9 @@ namespace MapGeneration.Benchmarks
 
                 return new LambdaGeneratorRunner(() =>
                 {
-                    var layouts = layoutGenerator.GetLayouts(input.MapDescription, 1);
+                    var layout = layoutGenerator.GenerateLayout();
 
-                    return new GeneratorRun(layouts.Count == 1, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                    return new GeneratorRun(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
                 });
             });
         }

@@ -20,6 +20,7 @@ using MapGeneration.Core.Layouts;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.ChainDecompositions;
 using MapGeneration.Interfaces.Core.Constraints;
+using MapGeneration.Interfaces.Core.LayoutGenerator;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapLayouts;
 using MapGeneration.Interfaces.Utils;
@@ -27,7 +28,7 @@ using MapGeneration.Utils;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
-    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable
+    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<IMapLayout<TNode>>
         where TNode : IEquatable<TNode>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
@@ -162,13 +163,16 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             };
             
             layoutEvolver.OnEvent += (sender, args) => OnSimulatedAnnealingEvent?.Invoke(sender, args);
+            layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
+            layoutEvolver.OnValid += (sender, layout) => OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
+            generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
         }
 
         public IMapLayout<TNode> GenerateLayout()
         {
-            var layouts = generator.GetLayouts(mapDescription, 1);
+            var layout = generator.GenerateLayout();
 
-            return layouts.Count != 0 ? layouts[0] : null;
+            return layout;
         }
 
         public void InjectRandomGenerator(Random random)
@@ -180,5 +184,9 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
             generator.SetCancellationToken(cancellationToken);
         }
+
+        public event Action<IMapLayout<TNode>> OnPerturbed;
+        public event Action<IMapLayout<TNode>> OnPartialValid;
+        public event Action<IMapLayout<TNode>> OnValid;
     }
 }

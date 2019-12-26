@@ -101,21 +101,22 @@
 
 					if (layoutGenerator == null)
 					{
-						if (settings.MapDescriptionOld.IsWithCorridors)
-						{
-							var defaultGenerator =
-								LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescriptionOld.CorridorsOffsets);
-							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+						throw new NotImplementedException();
+						//if (settings.MapDescriptionOld.IsWithCorridors)
+						//{
+						//	var defaultGenerator =
+						//		LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescriptionOld.CorridorsOffsets);
+						//	defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
-							layoutGenerator = defaultGenerator;
-						}
-						else
-						{
-							var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-							defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+						//	layoutGenerator = defaultGenerator;
+						//}
+						//else
+						//{
+						//	var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+						//	defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
 
-							layoutGenerator = defaultGenerator;
-						}
+						//	layoutGenerator = defaultGenerator;
+						//}
 					}
 
 					// Set cancellation token
@@ -184,8 +185,12 @@
 						infoStopwatch.Restart();
 					};
 
-					generatedLayouts =
-						(List<IMapLayout<int>>) layoutGenerator.GetLayouts(settings.MapDescriptionOld, settings.NumberOfLayouts);
+					generatedLayouts = new List<IMapLayout<int>>() { };
+
+                    for (int i = 0; i < settings.NumberOfLayouts; i++)
+                    {
+                        generatedLayouts.Add(layoutGenerator.GenerateLayout());
+                    }
 
 					isRunning = false;
 					BeginInvoke((Action) (UpdateInfoPanel));

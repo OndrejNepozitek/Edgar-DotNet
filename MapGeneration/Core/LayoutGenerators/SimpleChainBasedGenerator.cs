@@ -12,7 +12,7 @@ using MapGeneration.Interfaces.Utils;
 
 namespace MapGeneration.Core.LayoutGenerators
 {
-    public class SimpleChainBasedGenerator<TMapDescription, TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TMapDescription, TOutputLayout>, IRandomInjectable, ICancellable
+    public class SimpleChainBasedGenerator<TMapDescription, TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TOutputLayout>, IRandomInjectable, ICancellable
     {
         private readonly TLayout initialLayout;
         private readonly IGeneratorPlanner<TLayout, TNode> generatorPlanner;
@@ -35,11 +35,8 @@ namespace MapGeneration.Core.LayoutGenerators
             this.layoutConverter = layoutConverter;
         }
 
-        public IList<TOutputLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts)
+        public TOutputLayout GenerateLayout()
         {
-            if (numberOfLayouts != 1) 
-                throw new InvalidOperationException();
-
             IterationsCount = 0;
             layoutEvolver.OnPerturbed += IterationsCounterHandler;
 
@@ -69,7 +66,7 @@ namespace MapGeneration.Core.LayoutGenerators
 
             var convertedLayout = layout != null ? layoutConverter.Convert(layout, true) : default(TOutputLayout);
 
-            return new List<TOutputLayout>() {convertedLayout};
+            return convertedLayout;
         }
 
         private void IterationsCounterHandler(object sender, TLayout layout)

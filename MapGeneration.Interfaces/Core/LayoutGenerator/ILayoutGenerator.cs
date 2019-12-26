@@ -5,16 +5,13 @@
     /// <summary>
 	/// Interface for all layout generators.
 	/// </summary>
-	/// <typeparam name="TMapDescription">Type of the map description</typeparam>
-	/// <typeparam name="TLayout">Type of the layout that is returned</typeparam>
-	public interface ILayoutGenerator<in TMapDescription, TLayout>
+    /// <typeparam name="TLayout">Type of the layout that is generated</typeparam>
+	public interface ILayoutGenerator<out TLayout>
 	{
 		/// <summary>
-		/// Tries to generate a given number of layouts.
+		/// Generates a layout.
 		/// </summary>
-		/// <param name="mapDescription">Map description for which layouts are generated.</param>
-		/// <param name="numberOfLayouts">How many layouts should be generated.</param>
-		/// <returns></returns>
-		IList<TLayout> GetLayouts(TMapDescription mapDescription, int numberOfLayouts);
+        /// <returns></returns>
+		TLayout GenerateLayout();
 	}
 }
