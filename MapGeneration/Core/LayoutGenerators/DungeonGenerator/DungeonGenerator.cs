@@ -69,7 +69,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces2<Configuration<CorridorsData>>(mapDescription, new List<int>() { 1 }); // TODO: do not hardcode later
+            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces2<Configuration<CorridorsData>>(mapDescription, new List<int>() { 2 }); // TODO: do not hardcode later
 
             //var corridorConfigurationSpaces = mapDescription.IsWithCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, mapDescription.CorridorsOffsets) : configurationSpaces;
             var corridorConfigurationSpaces = configurationSpaces;
@@ -92,10 +92,10 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                             averageSize,
                             corridorConfigurationSpaces
                         ),
-                    new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                                mapDescription,
-                                polygonOverlap
-                            ),
+                    //new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    //            mapDescription,
+                    //            polygonOverlap
+                    //        ),
                 };
             var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
 

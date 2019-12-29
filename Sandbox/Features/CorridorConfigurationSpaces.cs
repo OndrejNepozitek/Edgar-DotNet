@@ -46,7 +46,7 @@ namespace Sandbox.Features
 
         public void Run()
         {
-            ShowVisualization();
+            // ShowVisualization();
 
             var inputs = new List<GeneratorInput<MapDescription<int>>>()
             {
@@ -77,7 +77,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 500);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 1000);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -94,11 +94,11 @@ namespace Sandbox.Features
             var corridorRoomTemplate = new List<IRoomTemplate>()
             {
                 new RoomTemplate(
-                    GridPolygon.GetRectangle(1, 1),
+                    GridPolygon.GetRectangle(2, 1),
                     new SpecificPositionsMode(new List<OrthogonalLine>()
                     {
                         new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
-                        new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 1)),
+                        new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 1)),
                     }),
                     TransformationHelper.GetAllTransformations().ToList()
                 )

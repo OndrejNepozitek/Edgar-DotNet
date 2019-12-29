@@ -77,14 +77,14 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                     corridorConfigurationSpaces
                 ));
 
-                if (!false) // TODO:
-                {
-                    var polygonOverlap = new FastPolygonOverlap();
-                    constraints.Add(new TouchingConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                        mapDescriptionOld,
-                        polygonOverlap
-                    ));
-                }
+                //if (!false) // TODO:
+                //{
+                //    var polygonOverlap = new FastPolygonOverlap();
+                //    constraints.Add(new TouchingConstraintsOld<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                //        mapDescriptionOld,
+                //        polygonOverlap
+                //    ));
+                //}
             }
 
             var constraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(constraints);
