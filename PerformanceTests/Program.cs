@@ -62,17 +62,15 @@ namespace PerformanceTests
                 {
                     if (input.MapDescription.IsWithCorridors)
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, offsets);
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator<int>(input.MapDescription, true, offsets);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
-                        layoutGenerator.SetLayoutValidityCheck(false);
 
                         return layoutGenerator;
                     }
                     else
                     {
-                        var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
+                        var layoutGenerator = LayoutGeneratorFactory.GetSimpleChainBasedGenerator<int>(input.MapDescription, false);
                         layoutGenerator.InjectRandomGenerator(new Random(0));
-                        layoutGenerator.SetLayoutValidityCheck(false);
 
                         return layoutGenerator;
                     }
