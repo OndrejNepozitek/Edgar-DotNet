@@ -81,7 +81,7 @@ namespace Sandbox.Features
                 MaxMutationsPerIndividual = 20,
             });
 
-            var initialConfiguration = DungeonGeneratorConfiguration.GetDefaultConfiguration(input.MapDescription);
+            var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
             evolution.Evolve(initialConfiguration);
         }
 

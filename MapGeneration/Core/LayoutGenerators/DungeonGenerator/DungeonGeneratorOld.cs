@@ -36,7 +36,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         public DungeonGeneratorOld(MapDescriptionOld<TNode> mapDescriptionOld, DungeonGeneratorConfiguration configuration = null)
         {
             this.mapDescriptionOld = mapDescriptionOld;
-            this.configuration = configuration ?? DungeonGeneratorConfiguration.GetDefaultConfiguration(mapDescriptionOld);
+            this.configuration = configuration ?? new DungeonGeneratorConfiguration(mapDescriptionOld);
             SetupGenerator();
         }
 

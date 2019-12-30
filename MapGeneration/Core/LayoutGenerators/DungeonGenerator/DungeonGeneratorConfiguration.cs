@@ -3,38 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.ChainDecompositions;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
     public class DungeonGeneratorConfiguration<TNode> : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<DungeonGeneratorConfiguration<TNode>> where TNode : IEquatable<TNode>
     {
+        /// <summary>
+        /// Whether non-neighboring rooms may touch (share walls) or not.
+        /// The setting is applied only to non-neighboring rooms because all neighbors
+        /// share walls as they must be connected by doors.
+        /// It is recommended to allow touching rooms if the dungeon is without corridors.
+        /// </summary>
+        public bool RoomsCanTouch { get; set; } = true;
+
+        /// <summary>
+        /// Decomposition of the input graph into disjunct subgraphs.
+        /// </summary>
         public List<IChain<TNode>> Chains { get; set; }
 
+        /// <summary>
+        /// Simulated annealing configuration.
+        /// </summary>
         public SimulatedAnnealingConfigurationProvider SimulatedAnnealingConfiguration { get; set; }
 
-        public static DungeonGeneratorConfiguration<TNode> GetDefaultConfiguration(IMapDescription<TNode> mapDescription)
+        public DungeonGeneratorConfiguration(IMapDescription<TNode> mapDescription)
         {
             var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>());
-            var chains = chainDecomposition.GetChains(mapDescription.GetGraph());
+            Chains = chainDecomposition.GetChains(mapDescription.GetGraph()).ToList();
 
             var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
-
-            for (int i = 0; i < chains.Count; i++)
+            for (int i = 0; i < Chains.Count; i++)
             {
                 simulatedAnnealingConfigurations.Add(LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
             }
+            SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations);
+        }
 
-            return new DungeonGeneratorConfiguration<TNode>()
-            {
-                Chains = chains.ToList(),
-                SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations),
-            };
+        protected DungeonGeneratorConfiguration()
+        {
+            /* empty */
         }
 
         public DungeonGeneratorConfiguration<TNode> SmartClone()
@@ -44,6 +55,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 // TODO: ugly
                 Chains = Chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).Cast<IChain<TNode>>().ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
+                RoomsCanTouch = RoomsCanTouch,
             };
         }
 
@@ -98,23 +110,12 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
     // TODO: remove later
     public class DungeonGeneratorConfiguration : DungeonGeneratorConfiguration<int>, ISmartCloneable<DungeonGeneratorConfiguration>
     {
-        public static DungeonGeneratorConfiguration GetDefaultConfiguration<TNode>(MapDescriptionOld<TNode> mapDescriptionOld)
+        public DungeonGeneratorConfiguration(IMapDescription<int> mapDescription) : base(mapDescription)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescriptionOld, new BreadthFirstChainDecomposition<int>());
-            var chains = chainDecomposition.GetChains(mapDescriptionOld.GetGraph());
+        }
 
-            var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
-
-            for (int i = 0; i < chains.Count; i++)
-            {
-                simulatedAnnealingConfigurations.Add(LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
-            }
-
-            return new DungeonGeneratorConfiguration()
-            {
-                Chains = chains.ToList(),
-                SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations),
-            };
+        public DungeonGeneratorConfiguration()
+        {
         }
 
         public new DungeonGeneratorConfiguration SmartClone()
@@ -124,6 +125,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 // TODO: ugly
                 Chains = Chains.Select(x => new Chain<int>(x.Nodes.ToList(), x.Number)).Cast<IChain<int>>().ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
+                RoomsCanTouch = RoomsCanTouch,
             };
         }
     }

@@ -15,6 +15,7 @@ using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Utils;
 using Sandbox.Utils;
 
 namespace Sandbox.Features
@@ -48,25 +49,21 @@ namespace Sandbox.Features
         {
             // ShowVisualization();
 
-            var inputs = new List<GeneratorInput<MapDescription<int>>>()
-            {
-                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1)", GetExample(GraphsDatabase.GetExample1())),
-                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top)", GetExample(GraphsDatabase.GetExample2())),
-                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom)", GetExample(GraphsDatabase.GetExample3())),
-                new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8)", GetExample(GraphsDatabase.GetExample4())),
-                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9)", GetExample(GraphsDatabase.GetExample5())),
-                new GeneratorInput<MapDescription<int>>("Example 1 (fig. 1) wc", GetExample(GraphsDatabase.GetExample1(), true)),
-                new GeneratorInput<MapDescription<int>>("Example 2 (fig. 7 top) wc", GetExample(GraphsDatabase.GetExample2(), true)),
-                new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom) wc", GetExample(GraphsDatabase.GetExample3(), true)),
-                new GeneratorInput<MapDescription<int>>("Example 4 (fig. 8) wc", GetExample(GraphsDatabase.GetExample4(), true)),
-                new GeneratorInput<MapDescription<int>>("Example 5 (fig. 9) wc", GetExample(GraphsDatabase.GetExample5(), true)),
-            };
+            var inputs = new List<DungeonGeneratorInput<int>>();
+            inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
+            inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true));
+            inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
 
-            var benchmarkRunner = new BenchmarkRunner<MapDescription<int>>();
-            var benchmarkScenario = new BenchmarkScenario<MapDescription<int>>("CorridorConfigurationSpaces_Reference", input =>
+            if (true)
             {
-                
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
+                inputs.Sort((x1, x2) => string.Compare(x1.Name, x2.Name, StringComparison.Ordinal));
+            }
+
+            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
+            {
+                var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>
@@ -77,11 +74,11 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 1000);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 10);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577179644_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577703636_CorridorConfigurationSpaces_Reference.json");
         }
 
         private MapDescription<int> GetExample(IGraph<int> graph, bool withCorridors = false, bool withRandomCorridors = false)
@@ -131,7 +128,7 @@ namespace Sandbox.Features
             return mapDescription;
         }
 
-        private List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
+        private static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new OverlapMode(1 * overlapScale, 0);
@@ -180,6 +177,151 @@ namespace Sandbox.Features
                 room2,
                 room3,
             };
+        }
+
+        private static List<IRoomTemplate> GetCorridorRoomTemplates(List<int> offsets)
+        {
+            if (offsets == null)
+            {
+                return null;
+            }
+
+            var roomTemplates = new List<IRoomTemplate>();
+            var transformations = TransformationHelper.GetAllTransformations().ToList();
+
+            foreach (var offset in offsets)
+            {
+                var width = offset;
+                var roomTemplate = new RoomTemplate(
+                    GridPolygon.GetRectangle(width, 1),
+                    new SpecificPositionsMode(new List<OrthogonalLine>()
+                    {
+                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
+                        new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),
+                    }),
+                    transformations
+                );
+
+                roomTemplates.Add(roomTemplate);
+            }
+
+            return roomTemplates;
+        }
+
+        private static MapDescription<int> GetBasicMapDescription(IGraph<int> graph,
+            BasicRoomDescription basicRoomDescription, CorridorRoomDescription corridorRoomDescription = null,
+            bool withCorridors = false)
+        {
+            var mapDescription = new MapDescription<int>();
+
+            foreach (var room in graph.Vertices)
+            {
+                mapDescription.AddRoom(room, basicRoomDescription);
+            }
+
+            var counter = graph.VerticesCount;
+
+            foreach (var connection in graph.Edges)
+            {
+                if (withCorridors)
+                {
+                    mapDescription.AddRoom(counter, corridorRoomDescription);
+                    mapDescription.AddConnection(connection.From, counter);
+                    mapDescription.AddConnection(connection.To, counter);
+                    counter++;
+                }
+                else
+                {
+                    mapDescription.AddConnection(connection.From, connection.To);
+                }
+            }
+
+            return mapDescription;
+        }
+
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch)
+        {
+            var basicRoomTemplates = GetBasicRoomTemplates(scale);
+            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
+
+            var corridorRoomTemplates = GetCorridorRoomTemplates(offsets);
+            var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
+
+            var inputs = new List<DungeonGeneratorInput<int>>();
+
+            {
+                var mapDescription = GetBasicMapDescription(GraphsDatabase.GetExample1(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration
+                ));
+            }
+
+            {
+                var mapDescription = GetBasicMapDescription(GraphsDatabase.GetExample2(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration
+                ));
+            }
+
+            {
+                var mapDescription = GetBasicMapDescription(GraphsDatabase.GetExample3(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration
+                ));
+            }
+
+            {
+                var mapDescription = GetBasicMapDescription(GraphsDatabase.GetExample4(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration
+                ));
+            }
+
+            {
+                var mapDescription = GetBasicMapDescription(GraphsDatabase.GetExample5(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration
+                ));
+            }
+
+            return inputs;
+        }
+
+        private static string GetInputName(string name, IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch)
+        {
+            var inputName = name;
+
+            if (scale != new IntVector2(1, 1))
+            {
+                inputName += $" scale ({scale.X},{scale.Y})";
+            }
+
+            if (withCorridors)
+            {
+                inputName += $" wc ({string.Join(",", offsets)})";
+            }
+
+            if (!canTouch)
+            {
+                inputName += $" nt";
+            }
+
+            return inputName;
         }
 	}
 }

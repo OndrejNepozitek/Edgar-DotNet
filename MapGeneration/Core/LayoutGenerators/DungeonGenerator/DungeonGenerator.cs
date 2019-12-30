@@ -42,7 +42,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
             this.mapDescriptionOriginal = mapDescription;
             this.mapDescription = new MapDescriptionMapping<TNode>(mapDescription);
-            this.configuration = configuration ?? DungeonGeneratorConfiguration<TNode>.GetDefaultConfiguration(mapDescription);
+            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>(mapDescription);
             SetupGenerator();
         }
 
@@ -92,11 +92,16 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                             averageSize,
                             corridorConfigurationSpaces
                         ),
-                    //new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
-                    //            mapDescription,
-                    //            polygonOverlap
-                    //        ),
                 };
+
+            if (!configuration.RoomsCanTouch)
+            {
+                stageOneConstraints.Add(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
+                    mapDescription,
+                    polygonOverlap
+                ));
+            }
+
             var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
 
             var stageTwoConstraints =
