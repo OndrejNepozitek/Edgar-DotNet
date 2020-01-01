@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MapGeneration.Benchmarks;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Interfaces.Core.MapDescriptions;
@@ -9,9 +10,13 @@ namespace Sandbox.Utils
     {
         public DungeonGeneratorConfiguration<TNode> Configuration { get; set; }
 
-        public DungeonGeneratorInput(string name, IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration) : base(name, mapDescription)
+        // TODO: remove later
+        public List<int> Offsets { get; set; }
+
+        public DungeonGeneratorInput(string name, IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration, List<int> offsets) : base(name, mapDescription)
         {
             Configuration = configuration;
+            Offsets = offsets;
         }
     }
 }

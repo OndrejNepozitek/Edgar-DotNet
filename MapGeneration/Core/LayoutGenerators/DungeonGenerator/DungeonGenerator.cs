@@ -35,14 +35,16 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
         private SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int> generator;
+        private readonly List<int> offsets;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
 
-        public DungeonGenerator(IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration = null)
+        public DungeonGenerator(IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration = null, List<int> offsets = null)
         {
             this.mapDescriptionOriginal = mapDescription;
             this.mapDescription = new MapDescriptionMapping<TNode>(mapDescription);
             this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>(mapDescription);
+            this.offsets = offsets;
             SetupGenerator();
         }
 
@@ -69,7 +71,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces2<Configuration<CorridorsData>>(mapDescription, new List<int>() { 2 }); // TODO: do not hardcode later
+            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces2<Configuration<CorridorsData>>(mapDescription, offsets); // TODO: do not hardcode later
 
             //var corridorConfigurationSpaces = mapDescription.IsWithCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, mapDescription.CorridorsOffsets) : configurationSpaces;
             var corridorConfigurationSpaces = configurationSpaces;

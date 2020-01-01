@@ -55,8 +55,14 @@ namespace Sandbox.Utils
 
             foreach (var inputResult in scenarioResult.InputResults)
             {
-                var referenceInputResult =
-                    referenceResult.InputResults.Single(x => x.InputName == inputResult.InputName);
+                var referenceInputResult = referenceResult.InputResults.SingleOrDefault(x => x.InputName == inputResult.InputName);
+
+                if (referenceInputResult == null)
+                {
+                    Console.WriteLine($"{inputResult.InputName} - equal: not found");
+                    continue;
+                }
+
                 var runsEqual = RunsEqual(inputResult.Runs.Cast<IGeneratorRun>().ToList(), referenceInputResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
 
                 var averageTime = inputResult.Runs.Average(x => x.Time);

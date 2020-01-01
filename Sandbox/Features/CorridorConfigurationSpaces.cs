@@ -24,10 +24,9 @@ namespace Sandbox.Features
     {
         private void ShowVisualization()
         {
-            var input = new GeneratorInput<MapDescription<int>>("Example 3 (fig. 7 bottom) wc",
-                GetExample(GraphsDatabase.GetExample3(), true, true));
+            var input = GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() {2, 4, 6}, false)[2];
 
-            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription);
+            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration, input.Offsets);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             var settings = new GeneratorSettings
@@ -53,6 +52,10 @@ namespace Sandbox.Features
             inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
             inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true));
             inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
 
             if (true)
             {
@@ -63,7 +66,7 @@ namespace Sandbox.Features
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>
@@ -74,7 +77,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 10);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 150);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -255,7 +258,8 @@ namespace Sandbox.Features
                 inputs.Add(new DungeonGeneratorInput<int>(
                     GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
-                    configuration
+                    configuration,
+                    offsets
                 ));
             }
 
@@ -265,7 +269,8 @@ namespace Sandbox.Features
                 inputs.Add(new DungeonGeneratorInput<int>(
                     GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
-                    configuration
+                    configuration,
+                    offsets
                 ));
             }
 
@@ -275,7 +280,8 @@ namespace Sandbox.Features
                 inputs.Add(new DungeonGeneratorInput<int>(
                     GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
-                    configuration
+                    configuration,
+                    offsets
                 ));
             }
 
@@ -285,7 +291,8 @@ namespace Sandbox.Features
                 inputs.Add(new DungeonGeneratorInput<int>(
                     GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
-                    configuration
+                    configuration,
+                    offsets
                 ));
             }
 
@@ -295,7 +302,8 @@ namespace Sandbox.Features
                 inputs.Add(new DungeonGeneratorInput<int>(
                     GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
-                    configuration
+                    configuration,
+                    offsets
                 ));
             }
 
