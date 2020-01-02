@@ -114,7 +114,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
         }
 
-        public DungeonGeneratorConfiguration()
+        private DungeonGeneratorConfiguration()
         {
         }
 

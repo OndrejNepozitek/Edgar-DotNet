@@ -55,9 +55,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = new GeneratorInput<MapDescriptionOld<int>>("Example 3", new MapDescriptionOld<int>()
-                .SetupWithGraph(GraphsDatabase.GetExample3())
-                .AddClassicRoomShapes(new IntVector2(1, 1)));
+            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true)[4];
 
             var settings = new JsonSerializerSettings()
             {

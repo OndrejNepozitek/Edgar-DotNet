@@ -10,27 +10,31 @@ using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
+using MapGeneration.Utils.Statistics;
 
 namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 {
     public class SAConfigurationEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
     {
-        private readonly GeneratorInput<MapDescriptionOld<int>> generatorInput;
-        private readonly BenchmarkRunner<MapDescriptionOld<int>> benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
+        private readonly GeneratorInput<IMapDescription<int>> generatorInput;
+
+        private readonly BenchmarkRunner<IMapDescription<int>> benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
         private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
+        private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
 
         public SAConfigurationEvolution(
-            GeneratorInput<MapDescriptionOld<int>> generatorInput,
+            GeneratorInput<IMapDescription<int>> generatorInput,
             List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options)
             : base(analyzers, options, GetResultsDirectory(generatorInput))
         {
             this.generatorInput = generatorInput;
         }
 
-        private static string GetResultsDirectory(GeneratorInput<MapDescriptionOld<int>> generatorInput)
+        private static string GetResultsDirectory(GeneratorInput<IMapDescription<int>> generatorInput)
         {
             return $"SAEvolutions/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{generatorInput.Name}/";
         }
@@ -39,11 +43,10 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
         {
             Logger.Write($"Evaluating individual {individual}");
 
-            var scenario = BenchmarkScenario.CreateCustomForNodeType<int>(
-                "SimulatedAnnealingParameters",
+            var scenario = new BenchmarkScenario<IMapDescription<int>>("SimulatedAnnealingParameters",
                 input =>
                 {
-                    var layoutGenerator = new DungeonGeneratorOld<int>(input.MapDescription, individual.Configuration);
+                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
@@ -89,7 +92,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<MapDescriptionOld<int>>>() { generatorInput }, 250, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, 500, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
             });
@@ -105,7 +108,13 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             individual.Fitness = generatorRuns.Average(x => x.Iterations);
             individual.SuccessRate = generatorRuns.Count(x => x.IsSuccessful) / (double)generatorRuns.Count;
 
-            Logger.WriteLine($" - fitness {individual.Fitness}, success rate {individual.SuccessRate * 100:F}%");
+            var layouts = generatorRuns
+                .Where(x => x.IsSuccessful)
+                .Select(x => x.AdditionalData.GeneratedLayout)
+                .ToList();
+            var roomTemplatesEntropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(generatorInput.MapDescription, layouts);
+
+            Logger.WriteLine($" - fitness {individual.Fitness}, entropy {roomTemplatesEntropy:F}, success rate {individual.SuccessRate * 100:F}%");
 
             Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
 
