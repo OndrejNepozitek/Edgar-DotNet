@@ -5,5 +5,6 @@
         LayoutGenerated = 0,
         RandomRestart = 1,
         OutOfIterations = 2,
+        StageTwoFailure = 3,
     }
 }

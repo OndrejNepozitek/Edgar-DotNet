@@ -2,7 +2,7 @@
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Interfaces.Core.MapLayouts;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class AdditionalRunData
     {

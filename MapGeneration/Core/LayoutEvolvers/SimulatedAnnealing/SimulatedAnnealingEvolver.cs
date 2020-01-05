@@ -214,6 +214,18 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 									yield break;
 								}
 							}
+                            else
+                            {
+                                OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                                {
+                                    Type = SimulatedAnnealingEventType.StageTwoFailure,
+                                    IterationsSinceLastEvent = iterations - lastEventIterations,
+                                    IterationsTotal = iterations,
+                                    LayoutsGenerated = layouts.Count,
+                                    ChainNumber = chain.Number,
+									ResetsIterationsSinceLastEvent = false,
+                                });
+                            }
 						}
 					}
 

@@ -8,35 +8,38 @@ using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Benchmarks;
 using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Interfaces.Core.MapLayouts;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
 using MapGeneration.Utils.Statistics;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
-    public class SAConfigurationEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
+    public class DungeonGeneratorEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
     {
         private readonly GeneratorInput<IMapDescription<int>> generatorInput;
 
         private readonly BenchmarkRunner<IMapDescription<int>> benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
         private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
         private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
+        private readonly LayoutsClustering<IMapLayout<int>> layoutsClustering = new LayoutsClustering<IMapLayout<int>>();
+        private readonly List<int> corridorOffsets;
 
-        public SAConfigurationEvolution(
+        public DungeonGeneratorEvolution(
             GeneratorInput<IMapDescription<int>> generatorInput,
-            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options)
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options, List<int> corridorOffsets)
             : base(analyzers, options, GetResultsDirectory(generatorInput))
         {
             this.generatorInput = generatorInput;
+            this.corridorOffsets = corridorOffsets;
         }
 
         private static string GetResultsDirectory(GeneratorInput<IMapDescription<int>> generatorInput)
         {
-            return $"SAEvolutions/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{generatorInput.Name}/";
+            return $"DungeonGeneratorEvolutions/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{generatorInput.Name}/";
         }
 
         protected override Individual EvaluateIndividual(Individual individual)
@@ -46,7 +49,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             var scenario = new BenchmarkScenario<IMapDescription<int>>("SimulatedAnnealingParameters",
                 input =>
                 {
-                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration);
+                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration, corridorOffsets);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
@@ -58,12 +61,15 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
 
                         void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                         {
-                            iterations += eventArgs.IterationsSinceLastEvent;
-                            simulatedAnnealingArgsContainer.Add(eventArgs);
-
-                            if (individual.Parent != null && iterations > 10 * individual.Parent.Fitness)
+                            if (eventArgs.ResetsIterationsSinceLastEvent)
                             {
-                                cts.Cancel();
+                                iterations += eventArgs.IterationsSinceLastEvent;
+                                simulatedAnnealingArgsContainer.Add(eventArgs);
+
+                                if (individual.Parent != null && iterations > 10 * individual.Parent.Fitness)
+                                {
+                                    cts.Cancel();
+                                }
                             }
                         }
 
@@ -92,7 +98,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, 500, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, 300, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
             });
@@ -112,9 +118,13 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                 .Where(x => x.IsSuccessful)
                 .Select(x => x.AdditionalData.GeneratedLayout)
                 .ToList();
-            var roomTemplatesEntropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(generatorInput.MapDescription, layouts);
 
-            Logger.WriteLine($" - fitness {individual.Fitness}, entropy {roomTemplatesEntropy:F}, success rate {individual.SuccessRate * 100:F}%");
+            var roomTemplatesEntropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(generatorInput.MapDescription, layouts);
+            var averageRoomTemplateSize = LayoutsDistance.GetAverageRoomTemplateSize(generatorInput.MapDescription);
+            var positionOnlyClusters = layoutsClustering.GetClusters(layouts, LayoutsDistance.PositionOnlyDistance, averageRoomTemplateSize);
+            var positionAndShapeClusters = layoutsClustering.GetClusters(layouts, (x1, x2) => LayoutsDistance.PositionAndShapeDistance(x1, x2, averageRoomTemplateSize), averageRoomTemplateSize);
+
+            Logger.WriteLine($" - fitness {individual.Fitness:F}, success rate {individual.SuccessRate * 100:F}%, entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}");
 
             Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
 
@@ -138,8 +148,11 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             using (var file =
                 new StreamWriter($@"{ResultsDirectory}{individual.Id}_visualization.txt"))
             {
-                var dataVisualization = new ChainStatsVisualization<GeneratorData>();
-                dataVisualization.Visualize(generatorEvaluation, file);
+                if (generatorRuns.Any(x => x.IsSuccessful))
+                {
+                    var dataVisualization = new ChainStatsVisualization<GeneratorData>();
+                    dataVisualization.Visualize(generatorEvaluation, file);
+                }
             }
 
             return individual;

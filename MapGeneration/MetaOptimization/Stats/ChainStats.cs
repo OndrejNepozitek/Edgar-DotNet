@@ -15,5 +15,7 @@
         public double MaxIterationsOnSuccess { get; set; }
 
         public double AverageIterationsOnSuccess { get; set; }
+
+        public double StageTwoFailures { get; set; }
     }
 }

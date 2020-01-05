@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Benchmarks;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Interfaces.Benchmarks;
 using MapGeneration.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class GeneratorEvaluation : IGeneratorEvaluation<GeneratorData>
     {
@@ -40,6 +39,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                     Iterations = data.Average(x => x.ChainsStats[i].Iterations),
                     MaxIterationsOnSuccess = data.Max(x => x.ChainsStats[i].MaxIterationsOnSuccess),
                     AverageIterationsOnSuccess = data.Average(x => x.ChainsStats[i].AverageIterationsOnSuccess),
+                    StageTwoFailures = data.Average(x => x.ChainsStats[i].StageTwoFailures),
                 });
             }
 
@@ -89,6 +89,8 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
             var averageIterationsOnSuccess = simulatedAnnealingEvents
                 .Where(x => x.ChainNumber == chainNumber && x.Type == SimulatedAnnealingEventType.LayoutGenerated)
                 .Average(x => x.IterationsSinceLastEvent);
+            var stageTwoFailures = simulatedAnnealingEvents
+                .Count(x => x.ChainNumber == chainNumber && x.Type == SimulatedAnnealingEventType.StageTwoFailure);
 
             return new ChainStats()
             {
@@ -99,6 +101,7 @@ namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
                 Iterations = numberOfIterations,
                 MaxIterationsOnSuccess = maxIterationsOnSuccess,
                 AverageIterationsOnSuccess = averageIterationsOnSuccess,
+                StageTwoFailures = stageTwoFailures,
             };
         }
 

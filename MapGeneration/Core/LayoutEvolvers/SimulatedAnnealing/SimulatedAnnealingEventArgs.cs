@@ -15,5 +15,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
         public int LayoutsGenerated { get; set; }
 
         public int ChainNumber { get; set; }
+
+        public bool ResetsIterationsSinceLastEvent { get; set; } = true;
     }
 }

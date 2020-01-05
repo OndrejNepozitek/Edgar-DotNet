@@ -6,7 +6,7 @@ using MapGeneration.Interfaces.Core.ChainDecompositions;
 using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     // TODO: maybe make properties private setter so that all have to be provided
     public class GeneratorConfiguration : IChainDecompositionConfiguration<int>, ISimulatedAnnealingConfiguration, ISmartCloneable<GeneratorConfiguration>

@@ -14,6 +14,7 @@ namespace MapGeneration.Utils.Statistics
             return mapDescription
                 .GetGraph()
                 .Vertices
+                .Where(x => mapDescription.GetRoomDescription(x).RoomTemplates.Count > 1)
                 .Select(x => ComputeRoomTemplatesEntropy(mapDescription, layouts, x, normalize))
                 .Average();
         }

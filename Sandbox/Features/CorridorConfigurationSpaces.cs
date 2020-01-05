@@ -77,7 +77,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 150);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 20);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -174,7 +174,7 @@ namespace Sandbox.Features
 
             return new List<IRoomTemplate>()
             {
-                squareRoom, 
+                squareRoom,
                 rectangleRoom,
                 room1,
                 room2,

@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+﻿using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.MetaOptimization.Mutations;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class Individual : Individual<DungeonGeneratorConfiguration, IGeneratorEvaluation<GeneratorData>>
     {

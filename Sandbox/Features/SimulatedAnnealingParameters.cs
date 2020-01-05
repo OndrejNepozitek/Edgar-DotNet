@@ -27,7 +27,7 @@ using MapGeneration.Interfaces.Core.ChainDecompositions;
 using MapGeneration.Interfaces.Core.MapLayouts;
 using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution;
+using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Mutations.ChainMerge;
 using MapGeneration.MetaOptimization.Mutations.ChainOrder;
@@ -55,7 +55,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true)[4];
+            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true)[4];
 
             var settings = new JsonSerializerSettings()
             {
@@ -74,10 +74,10 @@ namespace Sandbox.Features
 
             // input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
 
-            var evolution = new SAConfigurationEvolution(input, analyzers, new EvolutionOptions()
+            var evolution = new DungeonGeneratorEvolution(input, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
-            });
+            }, input.Offsets);
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
             evolution.Evolve(initialConfiguration);

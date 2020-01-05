@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MapGeneration.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Evolution.SAConfigurationEvolution
+namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class GeneratorData : IChainsStats, IBasicStats
     {
