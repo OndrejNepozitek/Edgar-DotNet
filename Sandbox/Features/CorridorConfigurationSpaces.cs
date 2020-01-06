@@ -84,53 +84,6 @@ namespace Sandbox.Features
             Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577703636_CorridorConfigurationSpaces_Reference.json");
         }
 
-        private MapDescription<int> GetExample(IGraph<int> graph, bool withCorridors = false, bool withRandomCorridors = false)
-        {
-            var mapDescription = new MapDescription<int>();
-
-            var basicRoomTemplates = GetBasicRoomTemplates(new IntVector2(1, 1));
-            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
-
-            var corridorRoomTemplate = new List<IRoomTemplate>()
-            {
-                new RoomTemplate(
-                    GridPolygon.GetRectangle(2, 1),
-                    new SpecificPositionsMode(new List<OrthogonalLine>()
-                    {
-                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
-                        new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 1)),
-                    }),
-                    TransformationHelper.GetAllTransformations().ToList()
-                )
-            };
-            var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplate);
-
-            foreach (var room in graph.Vertices)
-            {
-                mapDescription.AddRoom(room, basicRoomDescription);
-            }
-
-            var counter = graph.VerticesCount;
-            var random = new Random(0);
-
-            foreach (var connection in graph.Edges)
-            {
-                if (withCorridors && (!withRandomCorridors || random.NextDouble() < 0.5))
-                {
-                    mapDescription.AddRoom(counter, corridorRoomDescription);
-                    mapDescription.AddConnection(connection.From, counter);
-                    mapDescription.AddConnection(connection.To, counter);
-                    counter++;
-                }
-                else
-                {
-                    mapDescription.AddConnection(connection.From, connection.To);
-                }
-            }
-
-            return mapDescription;
-        }
-
         private static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);

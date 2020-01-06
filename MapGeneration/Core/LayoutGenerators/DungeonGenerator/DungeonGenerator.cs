@@ -39,6 +39,9 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
 
+        // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
+        private event Action<Layout<Configuration<CorridorsData>>> OnPerturbedInternal;
+
         public DungeonGenerator(IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration = null, List<int> offsets = null)
         {
             this.mapDescriptionOriginal = mapDescription;
@@ -171,6 +174,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             
             layoutEvolver.OnEvent += (sender, args) => OnSimulatedAnnealingEvent?.Invoke(sender, args);
             layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
+            layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbedInternal?.Invoke(layout);
             layoutEvolver.OnValid += (sender, layout) => OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
             generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
         }
@@ -179,19 +183,19 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
             var earlyStoppingHandler = GetEarlyStoppingHandler(DateTime.Now);
 
-            OnPerturbed += earlyStoppingHandler;
+            OnPerturbedInternal += earlyStoppingHandler;
             var layout = generator.GenerateLayout();
-            OnPerturbed -= earlyStoppingHandler;
+            OnPerturbedInternal -= earlyStoppingHandler;
 
             return layout;
         }
 
-        private Action<IMapLayout<TNode>> GetEarlyStoppingHandler(DateTime generatorStarted)
+        private Action<Layout<Configuration<CorridorsData>>> GetEarlyStoppingHandler(DateTime generatorStarted)
         {
             var iterations = 0;
             var cts = new CancellationTokenSource();
 
-            if (configuration.EarlyStopIfIterationsExceeded.HasValue || configuration.EarlyStopIfTimeExceeded.HasValue)
+            if (IsEarlyStoppingEnabled())
             {
                 generator.SetCancellationToken(cts.Token);
             }
@@ -210,6 +214,12 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                     cts.Cancel();
                 }
             };
+        }
+
+        private bool IsEarlyStoppingEnabled()
+        {
+            return configuration.EarlyStopIfIterationsExceeded.HasValue ||
+                   configuration.EarlyStopIfTimeExceeded.HasValue;
         }
 
         public void InjectRandomGenerator(Random random)
