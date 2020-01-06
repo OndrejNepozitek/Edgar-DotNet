@@ -12,7 +12,7 @@ namespace MapGeneration.MetaOptimization.Evolution
         where TIndividual : IIndividual<TConfiguration>
     {
         private readonly List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers;
-        private readonly EvolutionOptions options;
+        protected readonly EvolutionOptions Options;
         private int nextId;
         protected readonly Logger Logger;
         protected readonly string ResultsDirectory;
@@ -20,7 +20,7 @@ namespace MapGeneration.MetaOptimization.Evolution
         protected ConfigurationEvolution(List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers, EvolutionOptions options, string resultsDirectory)
         {
             this.analyzers = analyzers;
-            this.options = options;
+            this.Options = options;
             ResultsDirectory = resultsDirectory;
             Directory.CreateDirectory(resultsDirectory);
             Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler($"{resultsDirectory}/log.txt"));
@@ -39,7 +39,7 @@ namespace MapGeneration.MetaOptimization.Evolution
             EvaluatePopulation(initialPopulation);
 
             // Evolve configurations
-            for (var i = 0; i < options.MaxGenerations; i++)
+            for (var i = 0; i < Options.MaxGenerations; i++)
             {
                 Logger.WriteLine($"============ Generation {i + 1} ============");
 
@@ -91,7 +91,7 @@ namespace MapGeneration.MetaOptimization.Evolution
                     usedMutations++;
 
                     // Break the cycle if we already have enough mutations
-                    if (usedMutations >= options.MaxMutationsPerIndividual)
+                    if (usedMutations >= Options.MaxMutationsPerIndividual)
                     {
                         break;
                     }
@@ -109,14 +109,14 @@ namespace MapGeneration.MetaOptimization.Evolution
         {
             var individuals = new List<TIndividual>(population.Individuals);
 
-            if (!options.AllowNotPerfectSuccessRate)
+            if (!Options.AllowNotPerfectSuccessRate)
             {
                 individuals = individuals.Where(x => x.SuccessRate >= 1 - double.Epsilon).ToList();
             }
 
             individuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
 
-            var bestIndividuals = individuals.Take(options.MaxPopulationSize).ToList();
+            var bestIndividuals = individuals.Take(Options.MaxPopulationSize).ToList();
 
             return new Population<TIndividual>(bestIndividuals);
         }

@@ -177,9 +177,39 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public IMapLayout<TNode> GenerateLayout()
         {
+            var earlyStoppingHandler = GetEarlyStoppingHandler(DateTime.Now);
+
+            OnPerturbed += earlyStoppingHandler;
             var layout = generator.GenerateLayout();
+            OnPerturbed -= earlyStoppingHandler;
 
             return layout;
+        }
+
+        private Action<IMapLayout<TNode>> GetEarlyStoppingHandler(DateTime generatorStarted)
+        {
+            var iterations = 0;
+            var cts = new CancellationTokenSource();
+
+            if (configuration.EarlyStopIfIterationsExceeded.HasValue || configuration.EarlyStopIfTimeExceeded.HasValue)
+            {
+                generator.SetCancellationToken(cts.Token);
+            }
+
+            return layout =>
+            {
+                iterations++;
+
+                if (configuration.EarlyStopIfIterationsExceeded.HasValue && iterations > configuration.EarlyStopIfIterationsExceeded)
+                {
+                    cts.Cancel();
+                }
+
+                if (configuration.EarlyStopIfTimeExceeded.HasValue && iterations % 100 == 0 && DateTime.Now - generatorStarted > configuration.EarlyStopIfTimeExceeded)
+                {
+                    cts.Cancel();
+                }
+            };
         }
 
         public void InjectRandomGenerator(Random random)
@@ -189,6 +219,11 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public void SetCancellationToken(CancellationToken? cancellationToken)
         {
+            if (configuration.EarlyStopIfIterationsExceeded.HasValue || configuration.EarlyStopIfTimeExceeded.HasValue)
+            {
+                throw new InvalidOperationException("Cannot use cancellation token when early stopping enabled");
+            }
+
             generator.SetCancellationToken(cancellationToken);
         }
 

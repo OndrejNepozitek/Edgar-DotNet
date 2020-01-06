@@ -55,7 +55,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true)[4];
+            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), false, new List<int>() { 2 }, true)[4];
 
             var settings = new JsonSerializerSettings()
             {
@@ -77,6 +77,7 @@ namespace Sandbox.Features
             var evolution = new DungeonGeneratorEvolution(input, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
+                EvaluationIterations = 250,
             }, input.Offsets);
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);

@@ -49,28 +49,25 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var scenario = new BenchmarkScenario<IMapDescription<int>>("SimulatedAnnealingParameters",
                 input =>
                 {
+                    // Setup early stopping
+                    if (individual.Parent != null)
+                    {
+                        individual.Configuration.EarlyStopIfIterationsExceeded = 10 * (int) individual.Parent.Fitness;
+                    }
+                    else
+                    {
+                        individual.Configuration.EarlyStopIfIterationsExceeded = null;
+                    }
+
                     var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration, corridorOffsets);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
                     {
                         var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
-                        var iterations = 0;
-                        var cts = new CancellationTokenSource();
-                        layoutGenerator.SetCancellationToken(cts.Token);
-
                         void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                         {
-                            if (eventArgs.ResetsIterationsSinceLastEvent)
-                            {
-                                iterations += eventArgs.IterationsSinceLastEvent;
-                                simulatedAnnealingArgsContainer.Add(eventArgs);
-
-                                if (individual.Parent != null && iterations > 10 * individual.Parent.Fitness)
-                                {
-                                    cts.Cancel();
-                                }
-                            }
+                            simulatedAnnealingArgsContainer.Add(eventArgs);
                         }
 
                         layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
@@ -98,7 +95,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, 300, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, Options.EvaluationIterations, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
             });
@@ -124,7 +121,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var positionOnlyClusters = layoutsClustering.GetClusters(layouts, LayoutsDistance.PositionOnlyDistance, averageRoomTemplateSize);
             var positionAndShapeClusters = layoutsClustering.GetClusters(layouts, (x1, x2) => LayoutsDistance.PositionAndShapeDistance(x1, x2, averageRoomTemplateSize), averageRoomTemplateSize);
 
-            Logger.WriteLine($" - fitness {individual.Fitness:F}, success rate {individual.SuccessRate * 100:F}%, entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}");
+            Logger.WriteLine($" - fitness {individual.Fitness:F}, entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}, success rate {individual.SuccessRate * 100:F}%");
 
             Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
 

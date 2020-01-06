@@ -20,6 +20,10 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         /// </summary>
         public bool RoomsCanTouch { get; set; } = true;
 
+        public int? EarlyStopIfIterationsExceeded { get; set; }
+
+        public TimeSpan? EarlyStopIfTimeExceeded { get; set; }
+
         /// <summary>
         /// Decomposition of the input graph into disjunct subgraphs.
         /// </summary>

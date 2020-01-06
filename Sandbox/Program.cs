@@ -31,8 +31,8 @@ namespace Sandbox
 			Application.SetCompatibleTextRenderingDefault(false);
 
             // CompareWithReference();
-            new CorridorConfigurationSpaces().Run();
-            // new SimulatedAnnealingParameters().Run();
+            // new CorridorConfigurationSpaces().Run();
+            new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
             // new TwoStageGeneration().Run();
             

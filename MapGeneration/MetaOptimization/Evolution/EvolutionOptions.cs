@@ -31,5 +31,10 @@
         /// Whether to allow individuals with less than 100% success rate.
         /// </summary>
         public bool AllowNotPerfectSuccessRate { get; set; } = false;
+
+        /// <summary>
+        /// For how many iterations to evaluate each individual.
+        /// </summary>
+        public int EvaluationIterations { get; set; } = 500;
     }
 }
