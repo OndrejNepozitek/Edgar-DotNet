@@ -32,6 +32,7 @@ using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Mutations.ChainMerge;
 using MapGeneration.MetaOptimization.Mutations.ChainOrder;
 using MapGeneration.MetaOptimization.Mutations.SAMaxIterations;
+using MapGeneration.MetaOptimization.Mutations.SAMaxStageTwoFailures;
 using MapGeneration.Utils;
 using MapGeneration.Utils.PerformanceAnalysis;
 using Newtonsoft.Json;
@@ -45,8 +46,9 @@ namespace Sandbox.Features
         {
             var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
             {
-                new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                new SAMaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
                 new SAMaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
             };
 
@@ -55,7 +57,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), false, new List<int>() { 2 }, true)[4];
+            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false)[3];
 
             var settings = new JsonSerializerSettings()
             {

@@ -10,7 +10,7 @@ namespace MapGeneration.MetaOptimization.Visualizations
         where TGeneratorStats : IChainsStats, IBasicStats
     {
         private const int ColumnSize = -11;
-        private const int FirstColumnSize = -25;
+        private const int FirstColumnSize = -30;
         private List<NamedData> splits;
         private TextWriter writer;
 
@@ -40,7 +40,8 @@ namespace MapGeneration.MetaOptimization.Visualizations
                 PrintRow("attempts on success", x => x.ChainsStats[chainNumber].AttemptsOnSuccess);
                 PrintRow("failed runs", x => x.ChainsStats[chainNumber].FailedRuns);
                 PrintRow("random restarts", x => x.ChainsStats[chainNumber].RandomRestarts);
-                PrintRow("stage two failures", x => x.ChainsStats[chainNumber].StageTwoFailures);
+                PrintRow("avg s2 failures on success", x => x.ChainsStats[chainNumber].AverageStageTwoFailuresOnSuccess);
+                PrintRow("max s2 failures on success", x => x.ChainsStats[chainNumber].MaxStageTwoFailuresOnSuccess);
                 PrintRow("out of iterations", x => x.ChainsStats[chainNumber].OutOfIterations);
                 PrintRow("max iterations on success", x => x.ChainsStats[chainNumber].MaxIterationsOnSuccess);
                 PrintRow("avg iterations on success", x => x.ChainsStats[chainNumber].AverageIterationsOnSuccess);

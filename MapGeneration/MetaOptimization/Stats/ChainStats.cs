@@ -16,6 +16,8 @@
 
         public double AverageIterationsOnSuccess { get; set; }
 
-        public double StageTwoFailures { get; set; }
+        public double AverageStageTwoFailuresOnSuccess { get; set; }
+
+        public double MaxStageTwoFailuresOnSuccess { get; set; }
     }
 }

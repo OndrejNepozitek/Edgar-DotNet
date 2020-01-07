@@ -7,9 +7,9 @@ using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Mutations.SAMaxIterations
+namespace MapGeneration.MetaOptimization.Mutations.SAMaxStageTwoFailures
 {
-    public class SAMaxIterationsAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+    public class SAMaxStageTwoFailuresAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
         where TGeneratorStats : IChainsStats
     {
@@ -19,7 +19,7 @@ namespace MapGeneration.MetaOptimization.Mutations.SAMaxIterations
             var configuration = individual.Configuration;
             var data = individual.ConfigurationEvaluation;
 
-            if (individual.Mutations.Count == 0 || individual.Mutations.Last().GetType() != typeof(SAMaxIterationsMutation<TConfiguration>))
+            if (individual.Mutations.Count == 0 || individual.Mutations.Last().GetType() != typeof(SAMaxStageTwoFailuresMutation<TConfiguration>))
             {
 
                 mutations.Add(GetAggressiveStrategy(configuration, data));
@@ -38,17 +38,17 @@ namespace MapGeneration.MetaOptimization.Mutations.SAMaxIterations
             for (int i = 0; i < averageAll.ChainsStats.Count; i++)
             {
                 var oldConfiguration = oldConfigurations[i];
-                var maxIterationsOnSuccess = averageAll.ChainsStats[i].MaxIterationsOnSuccess;
+                var maxStageTwoFailuresOnSuccess = Math.Max(5, 0.5 * averageAll.ChainsStats[i].MaxStageTwoFailuresOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
-                    oldConfiguration.TrialsPerCycle, (int) maxIterationsOnSuccess, oldConfiguration.MaxStageTwoFailures);
+                    oldConfiguration.TrialsPerCycle, oldConfiguration.MaxIterationsWithoutSuccess, (int) maxStageTwoFailuresOnSuccess);
                 newConfigurations.Add(newConfiguration);
             }
 
-            return new SAMaxIterationsMutation<TConfiguration>(
+            return new SAMaxStageTwoFailuresMutation<TConfiguration>(
                 5, 
                 new SimulatedAnnealingConfigurationProvider(newConfigurations),
-                SAMaxIterationsStrategy.Conservative
+                SAMaxStageTwoFailuresStrategy.Conservative
             );
         }
 
@@ -61,17 +61,18 @@ namespace MapGeneration.MetaOptimization.Mutations.SAMaxIterations
             for (int i = 0; i < worst10Percent.ChainsStats.Count; i++)
             {
                 var oldConfiguration = oldConfigurations[i];
-                var averageIterationsOnSuccess = Math.Max(150, 1.5 * worst10Percent.ChainsStats[i].AverageIterationsOnSuccess);
+                var averageStageTwoFailuresOnSuccess = Math.Max(10, 2 * worst10Percent.ChainsStats[i].AverageStageTwoFailuresOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
-                    oldConfiguration.TrialsPerCycle, (int)averageIterationsOnSuccess, oldConfiguration.MaxStageTwoFailures);
+                    oldConfiguration.TrialsPerCycle, oldConfiguration.MaxIterationsWithoutSuccess,
+                    (int) averageStageTwoFailuresOnSuccess);
                 newConfigurations.Add(newConfiguration);
             }
 
-            return new SAMaxIterationsMutation<TConfiguration>(
+            return new SAMaxStageTwoFailuresMutation<TConfiguration>(
                 5,
                 new SimulatedAnnealingConfigurationProvider(newConfigurations),
-                SAMaxIterationsStrategy.Aggressive
+                SAMaxStageTwoFailuresStrategy.Aggressive
             );
         }
     }

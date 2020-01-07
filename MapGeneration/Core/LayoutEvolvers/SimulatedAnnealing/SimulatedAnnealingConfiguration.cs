@@ -10,28 +10,31 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 
         public int MaxIterationsWithoutSuccess { get; }
 
-        public SimulatedAnnealingConfiguration(int cycles, int trialsPerCycle, int maxIterationsWithoutSuccess)
+        public int MaxStageTwoFailures { get; }
+
+        public SimulatedAnnealingConfiguration(int cycles, int trialsPerCycle, int maxIterationsWithoutSuccess, int maxStageTwoFailures)
         {
             Cycles = cycles;
             TrialsPerCycle = trialsPerCycle;
             MaxIterationsWithoutSuccess = maxIterationsWithoutSuccess;
+            MaxStageTwoFailures = maxStageTwoFailures;
         }
 
         public static SimulatedAnnealingConfiguration GetDefaultConfiguration()
         {
-            return new SimulatedAnnealingConfiguration(50, 100, 10000);
+            return new SimulatedAnnealingConfiguration(50, 100, 10000, 10000);
         }
 
         public SimulatedAnnealingConfiguration SmartClone()
         {
-            return new SimulatedAnnealingConfiguration(Cycles, TrialsPerCycle, MaxIterationsWithoutSuccess);
+            return new SimulatedAnnealingConfiguration(Cycles, TrialsPerCycle, MaxIterationsWithoutSuccess, MaxStageTwoFailures);
         }
 
         #region Equals
 
         protected bool Equals(SimulatedAnnealingConfiguration other)
         {
-            return Cycles == other.Cycles && TrialsPerCycle == other.TrialsPerCycle && MaxIterationsWithoutSuccess == other.MaxIterationsWithoutSuccess;
+            return Cycles == other.Cycles && TrialsPerCycle == other.TrialsPerCycle && MaxIterationsWithoutSuccess == other.MaxIterationsWithoutSuccess && MaxStageTwoFailures == other.MaxStageTwoFailures;
         }
 
         public override bool Equals(object obj)

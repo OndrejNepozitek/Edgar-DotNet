@@ -72,7 +72,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 var chain = Chains[i];
                 var configuration = SimulatedAnnealingConfiguration.GetConfiguration(i);
                 result +=
-                    $"\n  Chain {i} [{string.Join(",", chain.Nodes)}] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess}";
+                    $"\n  Chain {i} [{string.Join(",", chain.Nodes)}] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess} ms2f {configuration.MaxStageTwoFailures}";
             }
 
             return result;

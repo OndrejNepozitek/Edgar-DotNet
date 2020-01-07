@@ -96,9 +96,12 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 			#endregion
 
 			var numberOfFailures = 0;
+            var stageTwoFailures = 0;
 
             var iterations = 0;
             var lastEventIterations = 0;
+
+            var shouldStop = false;
 
             for (var i = 0; i < configuration.Cycles; i++)
 			{
@@ -129,10 +132,21 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
                     break;
                 }
 
+                if (shouldStop)
+                {
+                    break;
+                }
+
 				for (var j = 0; j < configuration.TrialsPerCycle; j++)
 				{
 					if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
 						yield break;
+
+                    if (stageTwoFailures > configuration.MaxStageTwoFailures)
+                    {
+                        shouldStop = true;
+                        break;
+                    }
 
                     iterations++;
 					var perturbedLayout = PerturbLayout(currentLayout, chain.Nodes, out var energyDelta);
@@ -190,6 +204,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
                                 yield return newLayout;
 
                                 lastEventIterations = iterations;
+                                stageTwoFailures = 0;
 
                                 #region Debug output
 
@@ -216,6 +231,8 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 							}
                             else
                             {
+                                stageTwoFailures++;
+
                                 OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
                                 {
                                     Type = SimulatedAnnealingEventType.StageTwoFailure,

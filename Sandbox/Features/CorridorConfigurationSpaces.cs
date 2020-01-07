@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using GeneralAlgorithms.Algorithms.Common;
@@ -12,9 +13,14 @@ using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.Doors.DoorModes;
+using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Interfaces.Benchmarks;
 using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using MapGeneration.MetaOptimization.Stats;
+using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
 using Sandbox.Utils;
 
@@ -24,7 +30,7 @@ namespace Sandbox.Features
     {
         private void ShowVisualization()
         {
-            var input = GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() {2, 4, 6}, false)[2];
+            var input = GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() {2, 4, 6}, false)[4];
 
             var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration, input.Offsets);
             layoutGenerator.InjectRandomGenerator(new Random(0));
@@ -38,6 +44,9 @@ namespace Sandbox.Features
                 ShowPartialValidLayouts = false,
                 ShowPartialValidLayoutsTime = 500,
 
+                ShowPerturbedLayouts = true,
+                ShowPerturbedLayoutsTime = 1000,
+
                 ShowFinalLayouts = true,
             };
 
@@ -46,7 +55,8 @@ namespace Sandbox.Features
 
         public void Run()
         {
-            // ShowVisualization();
+            //ShowVisualization();
+            //return;
 
             var inputs = new List<DungeonGeneratorInput<int>>();
             inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
@@ -69,17 +79,52 @@ namespace Sandbox.Features
                 var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
+                //return new LambdaGeneratorRunner(() =>
+                //{
+                //    var layouts = layoutGenerator.GenerateLayout();
+
+                //    return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                //});
                 return new LambdaGeneratorRunner(() =>
                 {
-                    var layouts = layoutGenerator.GenerateLayout();
+                    var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+                    void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
+                    {
+                        simulatedAnnealingArgsContainer.Add(eventArgs);
+                    }
 
-                    return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                    layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
+                    var layout = layoutGenerator.GenerateLayout();
+                    layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
+
+                    var additionalData = new AdditionalRunData()
+                    {
+                        SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
+                        GeneratedLayout = layout,
+                    };
+
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+
+                    return generatorRun;
                 });
             });
 
             var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 20);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
+
+            var directory = $"CorridorConfigurationSpaces/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}";
+            Directory.CreateDirectory(directory);
+
+            var dataVisualization = new ChainStatsVisualization<GeneratorData>();
+            foreach (var inputResult in scenarioResult.InputResults)
+            {
+                using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
+                {
+                    var generatorEvaluation = new GeneratorEvaluation(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData>>().ToList()); // TODO: ugly
+                    dataVisualization.Visualize(generatorEvaluation, file);
+                }
+            }
 
             Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577703636_CorridorConfigurationSpaces_Reference.json");
         }

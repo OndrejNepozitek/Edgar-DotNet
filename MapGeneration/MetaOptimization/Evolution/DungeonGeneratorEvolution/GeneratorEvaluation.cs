@@ -39,7 +39,8 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     Iterations = data.Average(x => x.ChainsStats[i].Iterations),
                     MaxIterationsOnSuccess = data.Max(x => x.ChainsStats[i].MaxIterationsOnSuccess),
                     AverageIterationsOnSuccess = data.Average(x => x.ChainsStats[i].AverageIterationsOnSuccess),
-                    StageTwoFailures = data.Average(x => x.ChainsStats[i].StageTwoFailures),
+                    AverageStageTwoFailuresOnSuccess = data.Average(x => x.ChainsStats[i].AverageStageTwoFailuresOnSuccess),
+                    MaxStageTwoFailuresOnSuccess = data.Max(x => x.ChainsStats[i].MaxStageTwoFailuresOnSuccess),
                 });
             }
 
@@ -81,6 +82,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 .Count(x => x.Type == SimulatedAnnealingEventType.OutOfIterations && x.ChainNumber == chainNumber);
             var failedRuns = outOfIterations + randomRestarts;
             var numberOfIterations = simulatedAnnealingEvents
+                .Where(x => x.ResetsIterationsSinceLastEvent)
                 .Where(x => x.ChainNumber == chainNumber)
                 .Sum(x => x.IterationsSinceLastEvent);
             var maxIterationsOnSuccess = simulatedAnnealingEvents
@@ -89,8 +91,12 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var averageIterationsOnSuccess = simulatedAnnealingEvents
                 .Where(x => x.ChainNumber == chainNumber && x.Type == SimulatedAnnealingEventType.LayoutGenerated)
                 .Average(x => x.IterationsSinceLastEvent);
-            var stageTwoFailures = simulatedAnnealingEvents
-                .Count(x => x.ChainNumber == chainNumber && x.Type == SimulatedAnnealingEventType.StageTwoFailure);
+
+            var stageTwoFailuresBeforeSuccess = GetStageTwoFailuresBeforeSuccess(chainNumber, simulatedAnnealingEvents);
+            var averageStageTwoFailuresOnSuccess = stageTwoFailuresBeforeSuccess
+                .Average(x => x.Count);
+            var maxStageTwoFailuresOnSuccess = stageTwoFailuresBeforeSuccess
+                .Max(x => x.Count);
 
             return new ChainStats()
             {
@@ -101,8 +107,35 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 Iterations = numberOfIterations,
                 MaxIterationsOnSuccess = maxIterationsOnSuccess,
                 AverageIterationsOnSuccess = averageIterationsOnSuccess,
-                StageTwoFailures = stageTwoFailures,
+                AverageStageTwoFailuresOnSuccess = averageStageTwoFailuresOnSuccess,
+                MaxStageTwoFailuresOnSuccess = maxStageTwoFailuresOnSuccess,
             };
+        }
+
+        private List<List<SimulatedAnnealingEventArgs>> GetStageTwoFailuresBeforeSuccess(int chainNumber, List<SimulatedAnnealingEventArgs> simulatedAnnealingEvents)
+        {
+            var result = new List<List<SimulatedAnnealingEventArgs>>();
+
+            var stageTwoFailures = new List<SimulatedAnnealingEventArgs>();
+            foreach (var simulatedAnnealingEvent in simulatedAnnealingEvents)
+            {
+                if (simulatedAnnealingEvent.Type == SimulatedAnnealingEventType.LayoutGenerated)
+                {
+                    result.Add(stageTwoFailures);
+                    stageTwoFailures = new List<SimulatedAnnealingEventArgs>();
+                } else if (simulatedAnnealingEvent.ChainNumber != chainNumber && stageTwoFailures.Count != 0)
+                {
+                    stageTwoFailures = new List<SimulatedAnnealingEventArgs>();
+                }
+
+                if (simulatedAnnealingEvent.ChainNumber == chainNumber &&
+                    simulatedAnnealingEvent.Type == SimulatedAnnealingEventType.StageTwoFailure)
+                {
+                    stageTwoFailures.Add(simulatedAnnealingEvent);
+                }
+            }
+
+            return result;
         }
 
         private class AdditionalData

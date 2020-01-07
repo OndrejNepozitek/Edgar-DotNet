@@ -52,7 +52,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     // Setup early stopping
                     if (individual.Parent != null)
                     {
-                        individual.Configuration.EarlyStopIfIterationsExceeded = 10 * (int) individual.Parent.Fitness;
+                        individual.Configuration.EarlyStopIfIterationsExceeded = 25 * (int) individual.Parent.Fitness;
                     }
                     else
                     {
