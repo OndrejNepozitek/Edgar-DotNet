@@ -29,87 +29,8 @@ namespace MapGeneration.Core.ConfigurationSpaces
             this.lineIntersection = lineIntersection;
             this.polygonUtils = polygonUtils;
         }
-
-        public ConfigurationSpaces<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
-            where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
-        {
-            var graph = mapDescription.GetGraph();
-            var stageOneGraph = mapDescription.GetStageOneGraph();
-
-            var roomDescriptions = graph
-                .Vertices
-                .ToDictionary(x => x, mapDescription.GetRoomDescription);
-
-            var corridorRoomDescriptions = roomDescriptions
-                .Values
-                .Where(x => x.GetType() == typeof(CorridorRoomDescription))
-                .Cast<CorridorRoomDescription>()
-                .ToList();
-            //var corridorRoomDescriptionsMapping = corridorRoomDescriptions.CreateIntMapping();
-            //var nodesToConfigurationSpaceIdMapping = GetNodesToConfigurationSpaceIdMapping(mapDescription, corridorRoomDescriptionsMapping);
-
-            var roomTemplates = roomDescriptions
-                .Values
-                .Where(x => x.GetType() == typeof(BasicRoomDescription))
-                .Cast<BasicRoomDescription>()
-                .SelectMany(x => x.RoomTemplates)
-                .Distinct()
-                .ToList();
-
-            var roomTemplateInstances = roomTemplates
-                .ToDictionary(x => x, GetRoomTemplateInstances);
-
-            var roomTemplateInstancesMapping = roomTemplateInstances
-                .SelectMany(x => x.Value)
-                .CreateIntMapping();
-
-            var roomTemplateInstancesCount = roomTemplateInstancesMapping.Count;
-
-            // Generate configuration spaces
-            var configurationSpaces = new ConfigurationSpace[roomTemplateInstancesCount][];
-            for (var i = 0; i < roomTemplateInstancesMapping.Count; i++)
-            {
-                var shape1 = roomTemplateInstancesMapping.GetByValue(i);
-                configurationSpaces[i] = new ConfigurationSpace[roomTemplateInstancesCount];
-
-                for (var j = 0; j < roomTemplateInstancesCount; j++)
-                {
-                    var shape2 = roomTemplateInstancesMapping.GetByValue(j);
-
-                    configurationSpaces[i][j] = GetConfigurationSpace(shape1, shape2, offsets);
-                }
-            }
-
-            // Prepare shapes for individual nodes
-            var intAliases = roomTemplateInstancesMapping
-                .Keys
-                .ToDictionary(x => x, x => new IntAlias<GridPolygon>(roomTemplateInstancesMapping[x], x.RoomShape))
-                .ToTwoWayDictionary();
-            var shapesForNodes = new List<WeightedShape>[graph.VerticesCount];
-
-            foreach (var vertex in graph.Vertices)
-            {
-                shapesForNodes[vertex] = new List<WeightedShape>();
-                var roomDescription = mapDescription.GetRoomDescription(vertex);
-
-                if (roomDescription is BasicRoomDescription basicRoomDescription)
-                {
-                    foreach (var roomTemplate in basicRoomDescription.RoomTemplates)
-                    {
-                        var instances = roomTemplateInstances[roomTemplate];
-
-                        foreach (var roomTemplateInstance in instances)
-                        {
-                            shapesForNodes[vertex].Add(new WeightedShape(intAliases[roomTemplateInstance], 1d / instances.Count));
-                        }
-                    }
-                }
-            }
-
-            return new ConfigurationSpaces<TConfiguration>(shapesForNodes, configurationSpaces, lineIntersection, intAliases);
-        }
-
-        public ConfigurationSpaces2<TConfiguration> GetConfigurationSpaces2<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
+        
+        public ConfigurationSpaces2<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
             where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
         {
             var graph = mapDescription.GetGraph();
@@ -169,29 +90,13 @@ namespace MapGeneration.Core.ConfigurationSpaces
             {
                 var roomDescription = mapDescription.GetRoomDescription(vertex);
 
-                if (roomDescription is BasicRoomDescription basicRoomDescription)
+                foreach (var roomTemplate in roomDescription.RoomTemplates)
                 {
-                    foreach (var roomTemplate in basicRoomDescription.RoomTemplates)
-                    {
-                        var instances = roomTemplateInstances[roomTemplate];
+                    var instances = roomTemplateInstances[roomTemplate];
 
-                        foreach (var roomTemplateInstance in instances)
-                        {
-                            configurationSpaces.AddShapeForNode(vertex, roomTemplateInstance, 1d / instances.Count);
-                        }
-                    }
-                }
-                // TODO: keep it DRY
-                else if (roomDescription is CorridorRoomDescription corridorRoomDescription)
-                {
-                    foreach (var roomTemplate in corridorRoomDescription.RoomTemplates)
+                    foreach (var roomTemplateInstance in instances)
                     {
-                        var instances = roomTemplateInstances[roomTemplate];
-
-                        foreach (var roomTemplateInstance in instances)
-                        {
-                            configurationSpaces.AddShapeForNode(vertex, roomTemplateInstance, 1d / instances.Count);
-                        }
+                        configurationSpaces.AddShapeForNode(vertex, roomTemplateInstance, 1d / instances.Count);
                     }
                 }
             }
@@ -199,16 +104,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             return configurationSpaces;
         }
 
-        //private int[][] GetNodesToConfigurationSpaceIdMapping(IMapDescription<int> mapDescription, TwoWayDictionary<CorridorRoomDescription, int> corridorRoomDescriptionMapping)
-        //{
-        //    var graph = mapDescription.GetGraph();
-        //    var stageOneGraph = mapDescription.GetStageOneGraph();
-
-        //    // Initialize mapping array
-        //    var mapping = new int[graph.VerticesCount][];
-        //}
-        
-		private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed, List<int> offsets = null)
+        private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed, List<int> offsets = null)
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
