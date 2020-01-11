@@ -42,14 +42,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             
             var roomTemplates = roomDescriptions
                 .Values
-                .Where(x => x.GetType() == typeof(BasicRoomDescription))
-                .Cast<BasicRoomDescription>()
                 .SelectMany(x => x.RoomTemplates)
-                .Union(roomDescriptions // TODO: handle better
-                    .Values
-                    .Where(x => x.GetType() == typeof(CorridorRoomDescription))
-                    .Cast<CorridorRoomDescription>()
-                    .SelectMany(x => x.RoomTemplates))
                 .Distinct()
                 .ToList();
 
@@ -62,10 +55,34 @@ namespace MapGeneration.Core.ConfigurationSpaces
 
             var roomTemplateInstancesCount = roomTemplateInstancesMapping.Count;
 
+            var corridorRoomDescriptionsMapping = roomDescriptions
+                .Values
+                .Where(x => x.GetType() == typeof(CorridorRoomDescription))
+                .Cast<CorridorRoomDescription>()
+                .Distinct()
+                .CreateIntMapping();
+
+            var corridorRoomTemplateInstances = corridorRoomDescriptionsMapping
+                .Keys
+                .ToDictionary(
+                    x => x,
+                    x => x.RoomTemplates.SelectMany(y => roomTemplateInstances[y]).ToList());
+
+            var nodesToCorridorMapping = GetNodesToCorridorMapping(mapDescription)
+                .ToDictionary(
+                    x => x.Key,
+                    x => corridorRoomDescriptionsMapping[x.Value] + 1
+                );
+
             var configurationSpaces = new ConfigurationSpaces2<TConfiguration>(lineIntersection,
                 roomTemplateInstancesCount, graph.VerticesCount, (configuration1, configuration2) =>
                 {
-                    return graph.HasEdge(configuration1.Node, configuration2.Node) ? 0 : 1;
+                    if (nodesToCorridorMapping.TryGetValue(new Tuple<int, int>(configuration1.Node, configuration2.Node), out var corridor))
+                    {
+                        return corridor;
+                    }
+
+                    return 0;
                 });
 
             // Generate configuration spaces
@@ -73,14 +90,23 @@ namespace MapGeneration.Core.ConfigurationSpaces
             {
                 foreach (var shape2 in roomTemplateInstancesMapping.Keys)
                 {
-                    var configurationSpacesList = new List<ConfigurationSpace>();
+                    var configurationSpacesList = new ConfigurationSpace[corridorRoomDescriptionsMapping.Count + 1];
 
-                    configurationSpacesList.Add(GetConfigurationSpace(shape1, shape2));
+                    configurationSpacesList[0] = GetConfigurationSpace(shape1, shape2);
 
-                    if (offsets != null)
+                    foreach (var pair in corridorRoomDescriptionsMapping)
                     {
-                        configurationSpacesList.Add(GetConfigurationSpace(shape1, shape2, offsets));
+                        var roomDescription = pair.Key;
+                        var intAlias = pair.Value;
+
+                        configurationSpacesList[intAlias + 1] = GetConfigurationSpaceOverCorridors(shape1, shape2,
+                            corridorRoomTemplateInstances[roomDescription]);
                     }
+
+                    //if (offsets != null)
+                    //{
+                    //    configurationSpacesList.Add(GetConfigurationSpace(shape1, shape2, offsets));
+                    //}
                     
                     configurationSpaces.AddConfigurationSpace(shape1, shape2, configurationSpacesList.ToArray());
                 }
@@ -102,6 +128,104 @@ namespace MapGeneration.Core.ConfigurationSpaces
             }
 
             return configurationSpaces;
+        }
+
+        public Dictionary<Tuple<int, int>, CorridorRoomDescription> GetNodesToCorridorMapping(IMapDescription<int> mapDescription)
+        {
+            var mapping = new Dictionary<Tuple<int, int>, CorridorRoomDescription>();
+
+            var graph = mapDescription.GetGraph();
+
+            foreach (var room in graph.Vertices)
+            {
+                var roomDescription = mapDescription.GetRoomDescription(room);
+
+                if (roomDescription is CorridorRoomDescription corridorRoomDescription)
+                {
+                    var neighbors = graph.GetNeighbours(room).ToList();
+                    mapping.Add(new Tuple<int, int>(neighbors[0], neighbors[1]), corridorRoomDescription);
+                    mapping.Add(new Tuple<int, int>(neighbors[1], neighbors[0]), corridorRoomDescription);
+                }
+            }
+
+            return mapping;
+        }
+
+        public ConfigurationSpace GetConfigurationSpaceOverCorridors(RoomTemplateInstance roomTemplateInstance, RoomTemplateInstance fixedRoomTemplateInstance, List<RoomTemplateInstance> corridors)
+        {
+            var configurationSpaceLines = new List<OrthogonalLine>();
+
+            foreach (var corridor in corridors)
+            {
+                var corridorConfigurationSpace = GetConfigurationSpaceOverCorridor(
+                    roomTemplateInstance.RoomShape, roomTemplateInstance.DoorLines,
+                    fixedRoomTemplateInstance.RoomShape, fixedRoomTemplateInstance.DoorLines,
+                    corridor.RoomShape, corridor.DoorLines);
+
+                configurationSpaceLines.AddRange(corridorConfigurationSpace.Lines);
+            }
+
+            configurationSpaceLines = lineIntersection.RemoveIntersections(configurationSpaceLines);
+
+            return new ConfigurationSpace()
+            {
+                Lines = configurationSpaceLines,
+            };
+        }
+
+        public ConfigurationSpace GetConfigurationSpaceOverCorridor(GridPolygon polygon, IDoorMode doorsMode,
+            GridPolygon fixedPolygon, IDoorMode fixedDoorsMode, GridPolygon corridor,
+            IDoorMode corridorDoorsMode)
+        {
+            var doorLines = doorHandler.GetDoorPositions(polygon, doorsMode);
+            var doorLinesFixed = doorHandler.GetDoorPositions(fixedPolygon, fixedDoorsMode);
+            var doorLinesCorridor = doorHandler.GetDoorPositions(corridor, corridorDoorsMode);
+
+            return GetConfigurationSpaceOverCorridor(polygon, doorLines, fixedPolygon, doorLinesFixed, corridor,
+                doorLinesCorridor);
+        }
+
+        public ConfigurationSpace GetConfigurationSpaceOverCorridor(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedPolygon, List<IDoorLine> fixedDoorLines, GridPolygon corridor, List<IDoorLine> corridorDoorLines)
+        {
+            var fixedAndCorridorConfigurationSpace = GetConfigurationSpace(corridor, corridorDoorLines, fixedPolygon, fixedDoorLines);
+            var newCorridorDoorLines = new List<IDoorLine>();
+            corridorDoorLines = DoorUtils.MergeDoorLines(corridorDoorLines);
+                
+            foreach (var corridorPositionLine in fixedAndCorridorConfigurationSpace.Lines)
+            {
+                foreach (var corridorDoorLine in corridorDoorLines)
+                {
+                    var rotation = corridorDoorLine.Line.ComputeRotation();
+                    var rotatedLine = corridorDoorLine.Line.Rotate(rotation);
+                    var rotatedCorridorLine = corridorPositionLine.Rotate(rotation).GetNormalized();
+
+                    if (rotatedCorridorLine.GetDirection() == OrthogonalLine.Direction.Right)
+                    {
+                        var correctPositionLine = (rotatedCorridorLine + rotatedLine.From);
+                        var correctLengthLine = new OrthogonalLine(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector());
+                        var correctRotationLine = correctLengthLine.Rotate(-rotation);
+
+                        // TODO: problem with corridors overlapping
+                        newCorridorDoorLines.Add(new DoorLine(correctRotationLine, corridorDoorLine.Length));
+                    } else if (rotatedCorridorLine.GetDirection() == OrthogonalLine.Direction.Top)
+                    {
+                        foreach (var corridorPosition in rotatedCorridorLine.GetPoints())
+                        {
+                            var transformedDoorLine = rotatedLine + corridorPosition;
+                            var newDoorLine = transformedDoorLine.Rotate(-rotation);
+
+                            // TODO: problem with corridors overlapping
+                            // TODO: problem with too many small lines instead of bigger lines
+                            newCorridorDoorLines.Add(new DoorLine(newDoorLine, corridorDoorLine.Length));
+                        }
+                    }
+                }
+            }
+
+            var configurationSpace = GetConfigurationSpace(polygon, doorLines, fixedPolygon, newCorridorDoorLines);
+            configurationSpace.ReverseDoors = null;
+
+            return configurationSpace;
         }
 
         private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed, List<int> offsets = null)

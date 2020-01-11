@@ -68,9 +68,12 @@ namespace Sandbox.Utils
                 var averageTime = inputResult.Runs.Average(x => x.Time);
                 var referenceAverageTime = referenceInputResult.Runs.Average(x => x.Time);
 
+                var averageIterations = inputResult.Runs.Average(x => x.Iterations) / 1000;
+                var referenceAverageIterations = referenceInputResult.Runs.Average(x => x.Iterations) / 1000;
+
                 if (withConsole)
                 {
-                    Console.WriteLine($"{inputResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s");
+                    Console.WriteLine($"{inputResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s, iterations average {referenceAverageIterations:F}k -> {averageIterations:F}k");
                 }
                 
                 if (!runsEqual)

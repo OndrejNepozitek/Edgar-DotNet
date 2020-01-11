@@ -53,8 +53,35 @@ namespace Sandbox.Features
             Application.Run(new GeneratorWindow(settings));
         }
 
+        private void ShowDifferentCorridorTypes()
+        {
+            var mapDescription = GetMapDescriptionWithDifferentCorridors(GraphsDatabase.GetExample5());
+            var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = true };
+
+
+            var layoutGenerator = new DungeonGenerator<int>(mapDescription, configuration, null);
+            layoutGenerator.InjectRandomGenerator(new Random(0));
+
+            var settings = new GeneratorSettings
+            {
+                LayoutGenerator = layoutGenerator,
+
+                NumberOfLayouts = 10,
+
+                ShowPartialValidLayouts = false,
+                ShowPartialValidLayoutsTime = 500,
+
+                ShowFinalLayouts = true,
+            };
+
+            Application.Run(new GeneratorWindow(settings));
+        }
+
         public void Run()
         {
+            //ShowDifferentCorridorTypes();
+            //return;
+
             //ShowVisualization();
             //return;
 
@@ -100,7 +127,7 @@ namespace Sandbox.Features
                     var additionalData = new AdditionalRunData()
                     {
                         SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                        GeneratedLayout = layout,
+                        // GeneratedLayout = layout,
                     };
 
                     var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
@@ -126,7 +153,7 @@ namespace Sandbox.Features
                 }
             }
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1577703636_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1578736411_CorridorConfigurationSpaces_Reference.json");
         }
 
         private static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
@@ -207,6 +234,37 @@ namespace Sandbox.Features
             }
 
             return roomTemplates;
+        }
+
+        private MapDescription<int> GetMapDescriptionWithDifferentCorridors(IGraph<int> graph)
+        {
+            var basicRoomTemplates = GetBasicRoomTemplates(new IntVector2(1, 1));
+            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
+
+            var corridorRoomTemplates1 = GetCorridorRoomTemplates(new List<int>() { 2 });
+            var corridorRoomDescription1 = new CorridorRoomDescription(corridorRoomTemplates1);
+
+            var corridorRoomTemplates2 = GetCorridorRoomTemplates(new List<int>() { 4 });
+            var corridorRoomDescription2 = new CorridorRoomDescription(corridorRoomTemplates2);
+
+            var mapDescription = new MapDescription<int>();
+
+            foreach (var room in graph.Vertices)
+            {
+                mapDescription.AddRoom(room, basicRoomDescription);
+            }
+
+            var counter = graph.VerticesCount;
+
+            foreach (var connection in graph.Edges)
+            {
+                mapDescription.AddRoom(counter, connection.From % 2 == 0 && connection.To % 2 == 0 ? corridorRoomDescription1 : corridorRoomDescription2);
+                mapDescription.AddConnection(connection.From, counter);
+                mapDescription.AddConnection(connection.To, counter);
+                counter++;
+            }
+
+            return mapDescription;
         }
 
         private static MapDescription<int> GetBasicMapDescription(IGraph<int> graph,
