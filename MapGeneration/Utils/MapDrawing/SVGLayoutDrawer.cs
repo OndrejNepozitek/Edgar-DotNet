@@ -35,7 +35,7 @@
 			var ratio = GetWidthHeightRatio(layout);
 			var height = forceSquare ? width : (int) (width / ratio);
 
-			data.AppendLine($"<svg width=\"{width}\" height=\"{height}\" xmlns=\"http://www.w3.org/2000/svg\">");
+			data.AppendLine($"<svg viewBox=\"0 0 {width} {height}\" xmlns=\"http://www.w3.org/2000/svg\">");
 
 			DrawLayout(layout, width, height, showRoomNames, fixedFontSize, 0.1f);
 
