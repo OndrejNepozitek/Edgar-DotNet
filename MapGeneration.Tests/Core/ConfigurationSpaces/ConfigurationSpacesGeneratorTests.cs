@@ -286,6 +286,70 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         }
 
         [Test]
+        public void GetConfigurationSpaceOverCorridor_SquareRoomSquareCorridorLengthZero()
+        {
+            var transformations = TransformationHelper.GetAllTransformations().ToList();
+
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new OverlapMode(0, 0), transformations);
+            var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
+
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)),
+                new OrthogonalLine(new IntVector2(1, 2), new IntVector2(1, 2)),
+            }), transformations);
+            var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
+            
+            var expectedLines = new List<OrthogonalLine>() {
+                new OrthogonalLine(new IntVector2(-7, -5), new IntVector2(-7, 5)),
+                new OrthogonalLine(new IntVector2(7, -5), new IntVector2(7, 5)),
+                new OrthogonalLine(new IntVector2(-5, 7), new IntVector2(5, 7)),
+                new OrthogonalLine(new IntVector2(-5, -7), new IntVector2(5, -7)),
+            };
+
+            var expectedPoints = expectedLines
+                .SelectMany(x => x.GetPoints())
+                .Distinct()
+                .ToList();
+
+            var configurationSpace = generator.GetConfigurationSpaceOverCorridors(basicRoomTemplateInstance,
+                basicRoomTemplateInstance, corridorRoomTemplateInstances);
+
+            Assert.That(configurationSpace.Lines.SelectMany(x => x.GetPoints()), Is.EquivalentTo(expectedPoints));
+        }
+
+        [Test]
+        public void GetConfigurationSpaceOverCorridor_DegeneratedLines()
+        {
+            var transformations = TransformationHelper.GetAllTransformations().ToList();
+
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetRectangle(5, 4), new OverlapMode(0, 2), new List<Transformation>() { Transformation.Identity });
+            var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
+
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            {
+                new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)),
+                new OrthogonalLine(new IntVector2(1, 2), new IntVector2(1, 2)),
+            }), new List<Transformation>() { Transformation.Rotate90 });
+            var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
+            
+            var expectedLines = new List<OrthogonalLine>() {
+                new OrthogonalLine(new IntVector2(-7, 0), new IntVector2(-7, 0)),
+                new OrthogonalLine(new IntVector2(7, 0), new IntVector2(7, 0)),
+            };
+
+            var expectedPoints = expectedLines
+                .SelectMany(x => x.GetPoints())
+                .Distinct()
+                .ToList();
+
+            var configurationSpace = generator.GetConfigurationSpaceOverCorridors(basicRoomTemplateInstance,
+                basicRoomTemplateInstance, corridorRoomTemplateInstances);
+
+            Assert.That(configurationSpace.Lines.SelectMany(x => x.GetPoints()), Is.EquivalentTo(expectedPoints));
+        }
+
+        [Test]
         public void GetConfigurationSpaceOverCorridor_SquareRoomSquareCorridor()
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();

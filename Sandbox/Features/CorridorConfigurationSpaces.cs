@@ -23,6 +23,7 @@ using MapGeneration.MetaOptimization.Stats;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
 using MapGeneration.Utils.MapDrawing;
+using Newtonsoft.Json;
 using Sandbox.Utils;
 
 namespace Sandbox.Features
@@ -140,7 +141,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 100);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 20);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 

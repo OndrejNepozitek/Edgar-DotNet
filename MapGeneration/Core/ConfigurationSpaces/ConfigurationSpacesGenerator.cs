@@ -202,7 +202,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
                     if (rotatedCorridorLine.GetDirection() == OrthogonalLine.Direction.Right)
                     {
                         var correctPositionLine = (rotatedCorridorLine + rotatedLine.From);
-                        var correctLengthLine = new OrthogonalLine(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector());
+                        var correctLengthLine = new OrthogonalLine(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector(), rotatedCorridorLine.GetDirection());
                         var correctRotationLine = correctLengthLine.Rotate(-rotation);
 
                         // TODO: problem with corridors overlapping

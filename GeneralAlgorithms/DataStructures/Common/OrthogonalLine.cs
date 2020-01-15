@@ -311,7 +311,12 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <returns></returns>
 		public OrthogonalLine GetNormalized()
 		{
-			return From < To ? new OrthogonalLine(From, To) : new OrthogonalLine(To, From);
+            if (From == To)
+            {
+                return this;
+            }
+
+			return From < To ? this : new OrthogonalLine(To, From);
 		}
 
 		/// <summary>

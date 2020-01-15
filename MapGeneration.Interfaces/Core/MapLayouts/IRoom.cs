@@ -37,9 +37,14 @@
 		IList<IDoorInfo<TNode>> Doors { get; }
 
 		/// <summary>
-		/// Room description.
+		/// Room template.
 		/// </summary>
 		IRoomTemplate RoomTemplate { get; }
+
+        /// <summary>
+        /// Room description.
+        /// </summary>
+		IRoomDescription RoomDescription { get; }
 
 		/// <summary>
 		/// Chosen transformation of the room shape.

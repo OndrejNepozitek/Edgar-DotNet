@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGeneration.Interfaces.Core.MapDescriptions;
+using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -9,6 +10,7 @@ namespace MapGeneration.Core.MapDescriptions
 
         public List<IRoomTemplate> RoomTemplates { get; }
 
+        [JsonConstructor]
         public CorridorRoomDescription(List<IRoomTemplate> roomTemplates)
         {
             RoomTemplates = roomTemplates;

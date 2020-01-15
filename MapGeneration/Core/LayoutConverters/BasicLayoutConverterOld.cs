@@ -70,7 +70,7 @@
 					var vertex = mapping.GetByValue(vertexAlias);
 					var roomInfo = IntAliasMapping[configuration.ShapeContainer.Alias];
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescriptionOld.IsCorridorRoom(vertexAlias), roomInfo.RoomTemplate, roomInfo.Transformations.GetRandom(Random), roomInfo.Transformations);
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescriptionOld.IsCorridorRoom(vertexAlias), roomInfo.RoomTemplate, MapDescriptionOld.GetRoomDescription(vertexAlias), roomInfo.Transformations.GetRandom(Random), roomInfo.Transformations);
 					rooms.Add(room);
 
 					if (!addDoors)

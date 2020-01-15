@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
+using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -24,6 +25,7 @@ namespace MapGeneration.Core.MapDescriptions
             DoorsMode = doorsMode;
         }
 
+		[JsonConstructor]
 		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations)
 		{
 			Shape = shape; // TODO: should I create a copy?

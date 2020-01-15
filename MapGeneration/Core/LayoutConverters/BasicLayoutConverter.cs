@@ -63,7 +63,7 @@ namespace MapGeneration.Core.LayoutConverters
 					var vertex = mapping.GetByValue(vertexAlias);
 					var roomTemplate = IntAliasMapping.GetByValue(configuration.ShapeContainer);
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplate.RoomTemplate, roomTemplate.Transformations.GetRandom(Random), roomTemplate.Transformations);
+					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplate.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), roomTemplate.Transformations.GetRandom(Random), roomTemplate.Transformations);
 					rooms.Add(room);
 
 					if (!addDoors)
