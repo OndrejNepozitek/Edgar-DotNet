@@ -100,7 +100,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 WithConsoleOutput = false,
             });
             var generatorRuns = scenarioResult
-                .InputResults
+                .BenchmarkResults
                 .First()
                 .Runs
                 .Cast<IGeneratorRun<AdditionalRunData>>()

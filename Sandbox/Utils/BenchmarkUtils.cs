@@ -53,27 +53,27 @@ namespace Sandbox.Utils
 
             var allEqual = true;
 
-            foreach (var inputResult in scenarioResult.InputResults)
+            foreach (var benchmarkResult in scenarioResult.BenchmarkResults)
             {
-                var referenceInputResult = referenceResult.InputResults.SingleOrDefault(x => x.InputName == inputResult.InputName);
+                var referenceBenchmarkResult = referenceResult.BenchmarkResults.SingleOrDefault(x => x.InputName == benchmarkResult.InputName);
 
-                if (referenceInputResult == null)
+                if (referenceBenchmarkResult == null)
                 {
-                    Console.WriteLine($"{inputResult.InputName} - equal: not found");
+                    Console.WriteLine($"{benchmarkResult.InputName} - equal: not found");
                     continue;
                 }
 
-                var runsEqual = RunsEqual(inputResult.Runs.Cast<IGeneratorRun>().ToList(), referenceInputResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
+                var runsEqual = RunsEqual(benchmarkResult.Runs.Cast<IGeneratorRun>().ToList(), referenceBenchmarkResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
 
-                var averageTime = inputResult.Runs.Average(x => x.Time);
-                var referenceAverageTime = referenceInputResult.Runs.Average(x => x.Time);
+                var averageTime = benchmarkResult.Runs.Average(x => x.Time);
+                var referenceAverageTime = referenceBenchmarkResult.Runs.Average(x => x.Time);
 
-                var averageIterations = inputResult.Runs.Average(x => x.Iterations) / 1000;
-                var referenceAverageIterations = referenceInputResult.Runs.Average(x => x.Iterations) / 1000;
+                var averageIterations = benchmarkResult.Runs.Average(x => x.Iterations) / 1000;
+                var referenceAverageIterations = referenceBenchmarkResult.Runs.Average(x => x.Iterations) / 1000;
 
                 if (withConsole)
                 {
-                    Console.WriteLine($"{inputResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s, iterations average {referenceAverageIterations:F}k -> {averageIterations:F}k");
+                    Console.WriteLine($"{benchmarkResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s, iterations average {referenceAverageIterations:F}k -> {averageIterations:F}k");
                 }
                 
                 if (!runsEqual)

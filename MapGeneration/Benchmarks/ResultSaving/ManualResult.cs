@@ -5,7 +5,7 @@ namespace MapGeneration.Benchmarks.ResultSaving
 {
     public class ManualResult
     {
-        public List<BenchmarkScenarioResult.InputResult> InputResults { get; set; }
+        public List<BenchmarkResult> InputResults { get; set; }
 
         public string Name { get; set; }
 
@@ -16,7 +16,7 @@ namespace MapGeneration.Benchmarks.ResultSaving
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
             if (manualInfo == null) throw new ArgumentNullException(nameof(manualInfo));
 
-            InputResults = scenarioResult.InputResults;
+            InputResults = scenarioResult.BenchmarkResults;
             Name = manualInfo.Name ?? scenarioResult.Name ?? throw new ArgumentNullException(nameof(Name));
             Group = manualInfo.Group ?? throw new ArgumentNullException(nameof(Group));
         }

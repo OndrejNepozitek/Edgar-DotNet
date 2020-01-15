@@ -5,7 +5,7 @@ namespace MapGeneration.Benchmarks.ResultSaving
 {
     internal class CommitResult
     {
-        public List<BenchmarkScenarioResult.InputResult> InputResults { get; set; }
+        public List<BenchmarkResult> InputResults { get; set; }
 
         public string Commit { get; set; }
 
@@ -22,7 +22,7 @@ namespace MapGeneration.Benchmarks.ResultSaving
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
             if (commitInfo == null) throw new ArgumentNullException(nameof(commitInfo));
 
-            InputResults = scenarioResult.InputResults;
+            InputResults = scenarioResult.BenchmarkResults;
             Commit = commitInfo.Commit;
             CommitMessage = commitInfo.CommitMessage;
             Branch = commitInfo.Branch;

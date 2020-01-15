@@ -10,29 +10,29 @@ namespace MapGeneration.Benchmarks
 {
     public class BenchmarkRunner<TMapDescription>
     {
-        public BenchmarkResult Run(
-            IBenchmark<GeneratorInput<TMapDescription>> benchmark,
-            IList<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)
-        {
-            if (benchmark == null) throw new ArgumentNullException(nameof(benchmark));
-            if (inputs == null) throw new ArgumentNullException(nameof(inputs));
-            if (repeats <= 0) throw new ArgumentOutOfRangeException(nameof(repeats));
+        //public BenchmarkResult Run(
+        //    IBenchmark<GeneratorInput<TMapDescription>> benchmark,
+        //    IList<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)
+        //{
+        //    if (benchmark == null) throw new ArgumentNullException(nameof(benchmark));
+        //    if (inputs == null) throw new ArgumentNullException(nameof(inputs));
+        //    if (repeats <= 0) throw new ArgumentOutOfRangeException(nameof(repeats));
 
-            if (options == null)
-            {
-                options = new BenchmarkOptions();
-            }
+        //    if (options == null)
+        //    {
+        //        options = new BenchmarkOptions();
+        //    }
 
-            var scenarioResults = new List<BenchmarkScenarioResult>();
+        //    var scenarioResults = new List<BenchmarkScenarioResult>();
 
-            foreach (var scenario in benchmark.GetScenarios())
-            {
-                var scenarioResult = Run(scenario, inputs, repeats, options);
-                scenarioResults.Add(scenarioResult);
-            }
+        //    foreach (var scenario in benchmark.GetScenarios())
+        //    {
+        //        var scenarioResult = Run(scenario, inputs, repeats, options);
+        //        scenarioResults.Add(scenarioResult);
+        //    }
 
-            return new BenchmarkResult(scenarioResults);
-        }
+        //    return new BenchmarkResult(scenarioResults);
+        //}
 
         public BenchmarkScenarioResult Run(
             IBenchmarkScenario<GeneratorInput<TMapDescription>> scenario,
@@ -62,7 +62,7 @@ namespace MapGeneration.Benchmarks
             var benchmarkJobResults = benchmark.Run(benchmarkJobs.ToArray(), scenario.Name);
 
             return new BenchmarkScenarioResult(scenario.Name,
-                benchmarkJobResults.Select(x => new BenchmarkScenarioResult.InputResult(x.InputName, x.Runs.ToList())).ToList());
+                benchmarkJobResults.Select(x => new BenchmarkResult(x.InputName, x.Runs.ToList())).ToList());
         }
     }
 

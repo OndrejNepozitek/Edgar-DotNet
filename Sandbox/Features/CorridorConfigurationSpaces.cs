@@ -22,6 +22,7 @@ using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Stats;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
+using MapGeneration.Utils.MapDrawing;
 using Sandbox.Utils;
 
 namespace Sandbox.Features
@@ -99,6 +100,8 @@ namespace Sandbox.Features
                 inputs.Sort((x1, x2) => string.Compare(x1.Name, x2.Name, StringComparison.Ordinal));
             }
 
+            var layoutDrawer = new SVGLayoutDrawer<int>();
+
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
@@ -127,6 +130,7 @@ namespace Sandbox.Features
                     var additionalData = new AdditionalRunData()
                     {
                         SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
+                        GeneratedLayoutSvg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true),
                         // GeneratedLayout = layout,
                     };
 
@@ -136,7 +140,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 20);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 100);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -144,7 +148,7 @@ namespace Sandbox.Features
             Directory.CreateDirectory(directory);
 
             var dataVisualization = new ChainStatsVisualization<GeneratorData>();
-            foreach (var inputResult in scenarioResult.InputResults)
+            foreach (var inputResult in scenarioResult.BenchmarkResults)
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {
