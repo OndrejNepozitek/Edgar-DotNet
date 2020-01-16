@@ -5,17 +5,20 @@ using System.Linq;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.Utils.Logging;
 using MapGeneration.Utils.Logging.Handlers;
+using MapGeneration.Utils.Statistics;
 
 namespace MapGeneration.MetaOptimization.Evolution
 {
-    public abstract class ConfigurationEvolution<TConfiguration, TIndividual> : IConfigurationEvolution<TConfiguration>
+    public abstract class ConfigurationEvolution<TConfiguration, TIndividual>
         where TIndividual : IIndividual<TConfiguration>
     {
         private readonly List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers;
-        protected readonly EvolutionOptions Options;
         private int nextId;
+
+        protected readonly EvolutionOptions Options;
         protected readonly Logger Logger;
         protected readonly string ResultsDirectory;
+        protected TIndividual InitialIndividual;
 
         protected ConfigurationEvolution(List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers, EvolutionOptions options, string resultsDirectory)
         {
@@ -23,18 +26,31 @@ namespace MapGeneration.MetaOptimization.Evolution
             this.Options = options;
             ResultsDirectory = resultsDirectory;
             Directory.CreateDirectory(resultsDirectory);
-            Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler($"{resultsDirectory}/log.txt"));
+
+            // TODO: make better
+            var loggerHandlers = new List<ILoggerHandler>()
+            {
+                new FileLoggerHandler($"{resultsDirectory}/log.txt")
+            };
+
+            if (options.WithConsoleOutput)
+            {
+                loggerHandlers.Add(new ConsoleLoggerHandler());
+            }
+
+            Logger = new Logger(loggerHandlers.ToArray());
         }
 
-        public TConfiguration Evolve(TConfiguration initialConfiguration)
+        public EvolutionResult Evolve(TConfiguration initialConfiguration)
         {
             nextId = 0;
             var populations = new List<Population<TIndividual>>();
 
             // Setup initial population
             Logger.WriteLine($"============ Generation 0 ============");
+            InitialIndividual = CreateInitialIndividual(GetNextId(), initialConfiguration);
             var initialPopulation = new Population<TIndividual>();
-            initialPopulation.Individuals.Add(CreateInitialIndividual(GetNextId(), initialConfiguration));
+            initialPopulation.Individuals.Add(InitialIndividual);
             populations.Add(initialPopulation);
             EvaluatePopulation(initialPopulation);
 
@@ -55,7 +71,16 @@ namespace MapGeneration.MetaOptimization.Evolution
             var allIndividuals = populations.SelectMany(x => x.Individuals).ToList();
             allIndividuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
 
-            return allIndividuals[0].Configuration;
+            var bestIndividual = allIndividuals[0];
+            var fitnessDifference =
+                StatisticsUtils.DifferenceToReference(bestIndividual, InitialIndividual, x => x.Fitness);
+
+            Logger.WriteLine($">>>> Best individual <<<<");
+            Logger.WriteLine($"Individual {bestIndividual.Id}");
+            Logger.WriteLine($"Configuration: {bestIndividual.Configuration}");
+            Logger.WriteLine($"Fitness: {bestIndividual.Fitness:F}, {fitnessDifference:F}% difference");
+            
+            return new EvolutionResult(bestIndividual.Configuration, allIndividuals);
         }
 
         public Population<TIndividual> ComputeNextGeneration(Population<TIndividual> parentPopulation)
@@ -154,5 +179,18 @@ namespace MapGeneration.MetaOptimization.Evolution
         protected abstract TIndividual CreateInitialIndividual(int id, TConfiguration configuration);
 
         protected abstract TIndividual CreateIndividual(int id, TIndividual parent, IMutation<TConfiguration> mutation);
+
+        public class EvolutionResult
+        {
+            public TConfiguration BestConfiguration { get; }
+
+            public List<TIndividual> AllIndividuals { get; }
+
+            public EvolutionResult(TConfiguration bestConfiguration, List<TIndividual> allIndividuals)
+            {
+                BestConfiguration = bestConfiguration;
+                AllIndividuals = allIndividuals;
+            }
+        }
     }
 }

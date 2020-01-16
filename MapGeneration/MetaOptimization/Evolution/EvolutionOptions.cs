@@ -36,5 +36,7 @@
         /// For how many iterations to evaluate each individual.
         /// </summary>
         public int EvaluationIterations { get; set; } = 500;
+
+        public bool WithConsoleOutput { get; set; } = true;
     }
 }

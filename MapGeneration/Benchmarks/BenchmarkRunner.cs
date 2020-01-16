@@ -50,8 +50,13 @@ namespace MapGeneration.Benchmarks
             var benchmarkJobs = new List<BenchmarkJob>();
             var benchmark = new BenchmarkUtils.Benchmark<BenchmarkJob, BenchmarkJobResult>();
             benchmark.SetConsoleOutput(options.WithConsoleOutput, options.WithConsolePreview);
-            benchmark.AddFileOutput();
 
+            // TODO: this should be more configurable
+            if (options.WithFileOutput)
+            {
+                benchmark.AddFileOutput();
+            }
+            
             foreach (var input in inputs)
             {
                 var runner = scenario.GetRunnerFor(input);

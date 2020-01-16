@@ -44,7 +44,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 
         protected override Individual EvaluateIndividual(Individual individual)
         {
-            Logger.Write($"Evaluating individual {individual}");
+            Logger.WriteLine($"Evaluating individual {individual}");
 
             var scenario = new BenchmarkScenario<IMapDescription<int>>("SimulatedAnnealingParameters",
                 input =>
@@ -98,6 +98,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, Options.EvaluationIterations, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
+                WithFileOutput = false,
             });
             var generatorRuns = scenarioResult
                 .BenchmarkResults
@@ -121,7 +122,19 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var positionOnlyClusters = layoutsClustering.GetClusters(layouts, LayoutsDistance.PositionOnlyDistance, averageRoomTemplateSize);
             var positionAndShapeClusters = layoutsClustering.GetClusters(layouts, (x1, x2) => LayoutsDistance.PositionAndShapeDistance(x1, x2, averageRoomTemplateSize), averageRoomTemplateSize);
 
-            Logger.WriteLine($" - fitness {individual.Fitness:F}, entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}, success rate {individual.SuccessRate * 100:F}%");
+            var summary = "";
+
+            var fitnessDifferenceParent = individual.Parent != null ? 
+                StatisticsUtils.DifferenceToReference(individual, individual.Parent, x => x.Fitness) : 0;
+            var fitnessDifferenceTotal =
+                StatisticsUtils.DifferenceToReference(individual, InitialIndividual, x => x.Fitness);
+
+            summary += $"  fitness {individual.Fitness:F}, {(fitnessDifferenceParent > 0 ? "+" : "")}{fitnessDifferenceParent:F}%, {(fitnessDifferenceTotal > 0 ? "+" : "")}{fitnessDifferenceTotal:F}% total  \n";
+            summary += $"  entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count} \n";
+            summary += $"  success rate {individual.SuccessRate * 100:F}%\n";
+
+
+            Logger.WriteLine(summary);
 
             Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
 
@@ -132,7 +145,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 if (generatorRun.IsSuccessful)
                 {
                     var layout = generatorRun.AdditionalData.GeneratedLayout;
-                    var svg = layoutDrawer.DrawLayout(layout, 800);
+                    var svg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true);
                     File.WriteAllText($"{ResultsDirectory}/{individual.Id}/{i}.svg", svg);
                     generatorRun.AdditionalData.GeneratedLayout = null;
                     generatorRun.AdditionalData.GeneratedLayoutSvg = svg;
@@ -145,6 +158,8 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             using (var file =
                 new StreamWriter($@"{ResultsDirectory}{individual.Id}_visualization.txt"))
             {
+                file.WriteLine(summary);
+
                 if (generatorRuns.Any(x => x.IsSuccessful))
                 {
                     var dataVisualization = new ChainStatsVisualization<GeneratorData>();

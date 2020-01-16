@@ -19,9 +19,9 @@ namespace MapGeneration.MetaOptimization.Mutations.SAMaxStageTwoFailures
             var configuration = individual.Configuration;
             var data = individual.ConfigurationEvaluation;
 
-            if (individual.Mutations.Count == 0 || individual.Mutations.Last().GetType() != typeof(SAMaxStageTwoFailuresMutation<TConfiguration>))
+            // Do not apply this mutation multiple times
+            if (individual.Mutations.All(x => x.GetType() != typeof(SAMaxStageTwoFailuresMutation<TConfiguration>)))
             {
-
                 mutations.Add(GetAggressiveStrategy(configuration, data));
                 mutations.Add(GetConservativeStrategy(configuration, data));
             }
