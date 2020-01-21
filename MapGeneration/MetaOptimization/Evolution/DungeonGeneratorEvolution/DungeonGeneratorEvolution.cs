@@ -20,21 +20,19 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class DungeonGeneratorEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
     {
-        private readonly GeneratorInput<IMapDescription<int>> generatorInput;
+        private readonly IMapDescription<int> mapDescription;
 
         private readonly BenchmarkRunner<IMapDescription<int>> benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
         private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
         private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
         private readonly LayoutsClustering<IMapLayout<int>> layoutsClustering = new LayoutsClustering<IMapLayout<int>>();
-        private readonly List<int> corridorOffsets;
 
         public DungeonGeneratorEvolution(
-            GeneratorInput<IMapDescription<int>> generatorInput,
-            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options, List<int> corridorOffsets)
-            : base(analyzers, options, GetResultsDirectory(generatorInput))
+            IMapDescription<int> mapDescription,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options, string resultsDirectory)
+            : base(analyzers, options, resultsDirectory)
         {
-            this.generatorInput = generatorInput;
-            this.corridorOffsets = corridorOffsets;
+            this.mapDescription = mapDescription;
         }
 
         private static string GetResultsDirectory(GeneratorInput<IMapDescription<int>> generatorInput)
@@ -52,14 +50,14 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     // Setup early stopping
                     if (individual.Parent != null)
                     {
-                        individual.Configuration.EarlyStopIfIterationsExceeded = 25 * (int) individual.Parent.Fitness;
+                        individual.Configuration.EarlyStopIfIterationsExceeded = 50 * (int) individual.Parent.Fitness;
                     }
                     else
                     {
                         individual.Configuration.EarlyStopIfIterationsExceeded = null;
                     }
 
-                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration, corridorOffsets);
+                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration, null);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
@@ -95,7 +93,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { generatorInput }, Options.EvaluationIterations, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { new GeneratorInput<IMapDescription<int>>("DungeonGeneratorEvolution", mapDescription) }, Options.EvaluationIterations, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
                 WithFileOutput = false,
@@ -117,10 +115,12 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 .Select(x => x.AdditionalData.GeneratedLayout)
                 .ToList();
 
-            var roomTemplatesEntropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(generatorInput.MapDescription, layouts);
-            var averageRoomTemplateSize = LayoutsDistance.GetAverageRoomTemplateSize(generatorInput.MapDescription);
-            var positionOnlyClusters = layoutsClustering.GetClusters(layouts, LayoutsDistance.PositionOnlyDistance, averageRoomTemplateSize);
-            var positionAndShapeClusters = layoutsClustering.GetClusters(layouts, (x1, x2) => LayoutsDistance.PositionAndShapeDistance(x1, x2, averageRoomTemplateSize), averageRoomTemplateSize);
+            var layoutsForClustering = layouts.Take(Math.Min(layouts.Count, 250)).ToList();
+
+            var roomTemplatesEntropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(mapDescription, layouts);
+            var averageRoomTemplateSize = LayoutsDistance.GetAverageRoomTemplateSize(mapDescription);
+            var positionOnlyClusters = layoutsClustering.GetClusters(layoutsForClustering, LayoutsDistance.PositionOnlyDistance, averageRoomTemplateSize);
+            var positionAndShapeClusters = layoutsClustering.GetClusters(layoutsForClustering, (x1, x2) => LayoutsDistance.PositionAndShapeDistance(x1, x2, averageRoomTemplateSize), averageRoomTemplateSize);
 
             var summary = "";
 
@@ -136,7 +136,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 
             Logger.WriteLine(summary);
 
-            Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
+            // Directory.CreateDirectory($"{ResultsDirectory}/{individual.Id}");
 
             for (int i = 0; i < generatorRuns.Count; i++)
             {
@@ -146,7 +146,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 {
                     var layout = generatorRun.AdditionalData.GeneratedLayout;
                     var svg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true);
-                    File.WriteAllText($"{ResultsDirectory}/{individual.Id}/{i}.svg", svg);
+                    // File.WriteAllText($"{ResultsDirectory}/{individual.Id}/{i}.svg", svg);
                     generatorRun.AdditionalData.GeneratedLayout = null;
                     generatorRun.AdditionalData.GeneratedLayoutSvg = svg;
                 }
@@ -156,7 +156,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             resultSaver.SaveResult(scenarioResult, $"{individual.Id}_benchmarkResults", ResultsDirectory, withDatetime: false);
 
             using (var file =
-                new StreamWriter($@"{ResultsDirectory}{individual.Id}_visualization.txt"))
+                new StreamWriter(Path.Combine(ResultsDirectory, $"{individual.Id}_visualization.txt")))
             {
                 file.WriteLine(summary);
 

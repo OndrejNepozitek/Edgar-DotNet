@@ -31,8 +31,8 @@ using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Mutations.ChainMerge;
 using MapGeneration.MetaOptimization.Mutations.ChainOrder;
-using MapGeneration.MetaOptimization.Mutations.SAMaxIterations;
-using MapGeneration.MetaOptimization.Mutations.SAMaxStageTwoFailures;
+using MapGeneration.MetaOptimization.Mutations.MaxIterations;
+using MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures;
 using MapGeneration.Utils;
 using MapGeneration.Utils.PerformanceAnalysis;
 using Newtonsoft.Json;
@@ -46,10 +46,10 @@ namespace Sandbox.Features
         {
             var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
             {
-                new SAMaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                //new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
                 //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
                 //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                new SAMaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
             };
 
             //var mapDescription = new MapDescription<int>()
@@ -57,7 +57,7 @@ namespace Sandbox.Features
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
             //    // .AddCorridorRoomShapes(new List<int>() { 2 }, true);
 
-            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false)[2];
+            // var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false)[2];
 
             var settings = new JsonSerializerSettings()
             {
@@ -65,10 +65,10 @@ namespace Sandbox.Features
                 TypeNameHandling = TypeNameHandling.All,
             };
 
-            //var input = new GeneratorInput<MapDescription<int>>(
-            //    "example1", 
-            //    JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1.json"), settings)
-            //);
+            var input = new GeneratorInput<MapDescription<int>>(
+                "EnterTheGungeon",
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/enterTheGungeon.json"), settings)
+            );
             //var input = new GeneratorInput<MapDescription<int>>(
             //    "example1_corridors",
             //    JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/example1_corridors.json"), settings)
@@ -76,11 +76,11 @@ namespace Sandbox.Features
 
             // input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
 
-            var evolution = new DungeonGeneratorEvolution(input, analyzers, new EvolutionOptions()
+            var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = 250,
-            }, input.Offsets);
+            }, Path.Combine("DungeonGeneratorEvolutions", FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
             evolution.Evolve(initialConfiguration);

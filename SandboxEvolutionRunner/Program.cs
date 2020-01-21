@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -16,16 +17,21 @@ using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Mutations;
-using MapGeneration.MetaOptimization.Mutations.SAMaxIterations;
-using MapGeneration.MetaOptimization.Mutations.SAMaxStageTwoFailures;
+using MapGeneration.MetaOptimization.Mutations.ChainMerge;
+using MapGeneration.MetaOptimization.Mutations.ChainOrder;
+using MapGeneration.MetaOptimization.Mutations.MaxIterations;
+using MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures;
 using MapGeneration.Utils;
 using MapGeneration.Utils.MapDrawing;
+using MapGeneration.Utils.Statistics;
 using Sandbox.Utils;
 
 namespace SandboxEvolutionRunner
 {
     internal class Program
     {
+        public static string Directory;
+
         public class Options
         {
             [Option("inputs", Required = false)]
@@ -33,6 +39,9 @@ namespace SandboxEvolutionRunner
 
             [Option("corridorOffsets", Required = false)]
             public IEnumerable<int> CorridorOffsets { get; set; }
+
+            [Option("mutations", Required = false)]
+            public IEnumerable<string> Mutations { get; set; } = null;
 
             [Option("canTouch")] 
             public bool CanTouch { get; set; } = false;
@@ -45,6 +54,9 @@ namespace SandboxEvolutionRunner
 
             [Option("maxThreads")] 
             public int MaxThreads { get; set; } = 10;
+
+            [Option("name")] 
+            public string Name { get; set; } = "evolution";
 
             public IntVector2 Scale { get; set; } = new IntVector2(1, 1);
         }
@@ -59,7 +71,10 @@ namespace SandboxEvolutionRunner
 
         public static void Run(Options options)
         {
-            var graphs = new Dictionary<string, Tuple<string, IGraph<int>>>()
+            // TODO: make better
+            Directory = FileNamesHelper.PrefixWithTimestamp(options.Name);
+
+            var allGraphs = new Dictionary<string, Tuple<string, IGraph<int>>>()
             {
                 { "1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1()) },
                 { "2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2()) },
@@ -68,42 +83,75 @@ namespace SandboxEvolutionRunner
                 { "5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5()) },
             };
 
-            var inputNames = options.Inputs.Count() != 0 ? options.Inputs.ToList() : graphs.Keys.ToList();
+            var allAnalyzers = new Dictionary<string, IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
+            {
+                { "MaxStageTwoFailures", new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>() } ,
+                { "MaxIterations", new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>() } ,
+                { "ChainMerge", new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>() } ,
+                { "ChainOrder", new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>() } ,
+            };
+
+            // Select graphs
+            var graphs =
+                options.Inputs.Count() != 0 
+                    ? options
+                        .Inputs
+                        .Select(x => allGraphs[x])
+                        .ToList()
+                    : allGraphs.Values.ToList();
+
+            // Select analyzers
+            var analyzers =
+                options.Mutations.Count() != 0
+                    ? options
+                        .Mutations
+                        .Select(x => allAnalyzers[x])
+                        .ToList()
+                    : allAnalyzers.Values.ToList();
+
             var inputs = new List<Input>();
 
-            foreach (var inputId in inputNames)
+            foreach (var input in graphs)
             {
-                var corridorOffsets = options.CorridorOffsets.ToList();
-                var input = graphs[inputId];
-                var name = MapDescriptionUtils.GetInputName(input.Item1, options.Scale, corridorOffsets.Count != 0,
-                    corridorOffsets, options.CanTouch);
-                var graph = input.Item2;
+                var corridorOffsets = new List<int>();
 
-                var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(options.Scale);
-                var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
-
-                var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets);
-                var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
-
-                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(graph, basicRoomDescription,
-                    corridorRoomDescription, corridorOffsets.Count != 0);
-
-                inputs.Add(new Input()
+                foreach (var corridorOffset in options.CorridorOffsets)
                 {
-                    Name = name,
-                    Graph = graph,
-                    CanTouch = options.CanTouch,
-                    Corridors = corridorOffsets,
-                    MapDescription = mapDescription,
-                });
+                    corridorOffsets.Add(corridorOffset);
+
+                    var name = MapDescriptionUtils.GetInputName(input.Item1, options.Scale, corridorOffsets.Count != 0,
+                        corridorOffsets, options.CanTouch);
+                    var graph = input.Item2;
+
+                    var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(options.Scale);
+                    var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
+
+                    var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets);
+                    var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
+
+                    var mapDescription = MapDescriptionUtils.GetBasicMapDescription(graph, basicRoomDescription,
+                        corridorRoomDescription, corridorOffsets.Count != 0);
+
+                    inputs.Add(new Input()
+                    {
+                        Name = name,
+                        Graph = graph,
+                        CanTouch = options.CanTouch,
+                        Corridors = corridorOffsets.ToList(),
+                        MapDescription = mapDescription,
+                    });
+                }
             }
 
-            Parallel.ForEach(inputs, new ParallelOptions { MaxDegreeOfParallelism = 2 }, input =>
+            Parallel.ForEach(inputs, new ParallelOptions { MaxDegreeOfParallelism = options.MaxThreads }, input =>
             {
                 Console.WriteLine($"Started {input.Name}");
-                RunEvolution(input, options);
+                RunEvolution(input, options, analyzers);
                 Console.WriteLine($"Ended {input.Name}");
             });
+
+            Console.WriteLine();
+            AnalyzeMutations(inputs);
 
             var inputsNewConfigurations = inputs.Select(x =>
                 new DungeonGeneratorInput<int>(x.Name, x.MapDescription, x.NewConfiguration, null));
@@ -111,15 +159,80 @@ namespace SandboxEvolutionRunner
                 new DungeonGeneratorInput<int>(x.Name, x.MapDescription, new DungeonGeneratorConfiguration(x.MapDescription), null));
 
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
-            var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", GetGeneratorRunnerFactory);
+
+            var benchmarkScenarioNew = new BenchmarkScenario<IMapDescription<int>>("NewConfigurations", GetGeneratorRunnerFactory);
+            var benchmarkScenarioOld = new BenchmarkScenario<IMapDescription<int>>("OldConfigurations", GetGeneratorRunnerFactory);
 
             var resultSaver = new BenchmarkResultSaver();
 
-            var scenarioResultNew = benchmarkRunner.Run(benchmarkScenario, inputsNewConfigurations, options.FinalEvaluationIterations);
+            var scenarioResultNew = benchmarkRunner.Run(benchmarkScenarioNew, inputsNewConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
+            {
+                WithConsolePreview = false,
+            });
             resultSaver.SaveResult(scenarioResultNew);
 
-            var scenarioResultOld = benchmarkRunner.Run(benchmarkScenario, inputsOldConfigurations, options.FinalEvaluationIterations);
+            var scenarioResultOld = benchmarkRunner.Run(benchmarkScenarioOld, inputsOldConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
+            {
+                WithConsolePreview = false,
+            });
             resultSaver.SaveResult(scenarioResultOld);
+        }
+
+        public static void AnalyzeMutations(List<Input> inputs)
+        {
+            var stats = new Dictionary<IMutation<DungeonGeneratorConfiguration>, List<MutationStats>>();
+
+            foreach (var input in inputs)
+            {
+                var mutatedIndividuals = input.Individuals.Where(x => x.Mutations.Count != 0).ToList();
+                mutatedIndividuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
+
+                for (var i = 0; i < mutatedIndividuals.Count; i++)
+                {
+                    var individual = mutatedIndividuals[i];
+                    var mutation =  individual.Mutations.Last();
+                    var difference = StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
+
+                    if (!stats.ContainsKey(mutation))
+                    {
+                        stats[mutation] = new List<MutationStats>();
+                    }
+
+                    stats[mutation].Add(new MutationStats()
+                    {
+                        Difference = difference,
+                        Input = input.Name,
+                        Order = i + 1,
+                    });
+                }
+            }
+
+            foreach (var pair in stats)
+            {
+                var mutation = pair.Key;
+                var mutationStats = pair.Value;
+
+                Console.WriteLine(mutation);
+
+                foreach (var mutationStat in mutationStats)
+                {
+                    Console.WriteLine($"{mutationStat.Input}, diff {mutationStat.Difference:F}%, order {mutationStat.Order}");
+                }
+
+                Console.WriteLine($"Average difference {mutationStats.Average(x => x.Difference):F}");
+                Console.WriteLine($"Average order {mutationStats.Average(x => x.Order):F}");
+
+                Console.WriteLine();
+            }
+        }
+
+        public class MutationStats
+        {
+            public string Input { get; set; }
+
+            public int Order { get; set; }
+
+            public double Difference { get; set; }
         }
 
         public static IGeneratorRunner GetGeneratorRunnerFactory(
@@ -156,26 +269,21 @@ namespace SandboxEvolutionRunner
             });
         }
 
-        public static void RunEvolution(Input input, Options options)
+        public static void RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers)
         {
-            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
-            {
-                new SAMaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-                //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                new SAMaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-            };
-
-            var evolution = new DungeonGeneratorEvolution(new GeneratorInput<IMapDescription<int>>(input.Name, input.MapDescription), analyzers, new EvolutionOptions()
+            var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = options.EvolutionIterations,
                 WithConsoleOutput = false,
-            }, null);
+                AllowWorseThanInitial = true,
+                AllowRepeatingConfigurations = true,
+            }, Path.Combine("DungeonGeneratorEvolutions", Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
             var result = evolution.Evolve(initialConfiguration);
             input.NewConfiguration = result.BestConfiguration;
+            input.Individuals = result.AllIndividuals;
         }
 
         public class Input
@@ -191,6 +299,8 @@ namespace SandboxEvolutionRunner
             public MapDescription<int> MapDescription { get; set; }
 
             public DungeonGeneratorConfiguration NewConfiguration { get; set; }
+
+            public List<Individual> Individuals { get; set; }
         }
 
         public class DungeonGeneratorInput<TNode> : GeneratorInput<IMapDescription<TNode>> where TNode : IEquatable<TNode>

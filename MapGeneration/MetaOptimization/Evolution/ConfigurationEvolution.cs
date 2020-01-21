@@ -103,7 +103,7 @@ namespace MapGeneration.MetaOptimization.Evolution
                     Logger.WriteLine($"Mutation: {mutation}");
                     Logger.WriteLine($"Configuration: {individual.Configuration}");
 
-                    if (offspringPopulation.Individuals.Any(x => x.Configuration.Equals(individual.Configuration)))
+                    if (!Options.AllowRepeatingConfigurations && offspringPopulation.Individuals.Any(x => x.Configuration.Equals(individual.Configuration)))
                     {
                         Logger.WriteLine($"Not used - configuration already encountered");
                     }
@@ -137,6 +137,11 @@ namespace MapGeneration.MetaOptimization.Evolution
             if (!Options.AllowNotPerfectSuccessRate)
             {
                 individuals = individuals.Where(x => x.SuccessRate >= 1 - double.Epsilon).ToList();
+            }
+
+            if (!Options.AllowWorseThanInitial)
+            {
+                individuals = individuals.Where(x => x.Fitness < InitialIndividual.Fitness).ToList();
             }
 
             individuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));

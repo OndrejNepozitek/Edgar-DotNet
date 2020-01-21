@@ -1,0 +1,1629 @@
+{
+  "$id": "1",
+  "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1[[System.Int32, mscorlib]], MapGeneration",
+  "roomDescriptions": {
+    "$id": "2",
+    "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[MapGeneration.Interfaces.Core.MapDescriptions.IRoomDescription, MapGeneration.Interfaces]], mscorlib",
+    "0": {
+      "$id": "3",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "4",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$id": "5",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "6",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "7",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "8",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -10,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "9",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 11,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "10",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 11,
+                    "Y": -8
+                  },
+                  {
+                    "$id": "11",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -10,
+                    "Y": -8
+                  }
+                ]
+              },
+              "hash": 4679585,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "12",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -10,
+                  "Y": -8
+                },
+                "B": {
+                  "$id": "13",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 11,
+                  "Y": 3
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 0,
+                  "Y": -2
+                },
+                "Area": 231,
+                "Width": 21,
+                "Height": 11
+              }
+            },
+            "DoorsMode": {
+              "$id": "14",
+              "$type": "MapGeneration.Core.Doors.DoorModes.OverlapMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 3
+            },
+            "AllowedTransformations": {
+              "$id": "15",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "16",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "17",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "18",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "19",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -10,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "20",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 8,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "21",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 8,
+                    "Y": -11
+                  },
+                  {
+                    "$id": "22",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -10,
+                    "Y": -11
+                  }
+                ]
+              },
+              "hash": 4677857,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "23",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -10,
+                  "Y": -11
+                },
+                "B": {
+                  "$id": "24",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 8,
+                  "Y": 3
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": -4
+                },
+                "Area": 252,
+                "Width": 18,
+                "Height": 14
+              }
+            },
+            "DoorsMode": {
+              "$id": "25",
+              "$type": "MapGeneration.Core.Doors.DoorModes.OverlapMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 3
+            },
+            "AllowedTransformations": {
+              "$id": "26",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "1": {
+      "$id": "27",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "28",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "2": {
+      "$id": "29",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "30",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "3": {
+      "$id": "31",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "32",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$id": "33",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "34",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "35",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "36",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "37",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "38",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "39",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              },
+              "hash": 4818833,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "40",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": -9
+                },
+                "B": {
+                  "$id": "41",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 17,
+                  "Y": 7
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 7,
+                  "Y": -1
+                },
+                "Area": 320,
+                "Width": 20,
+                "Height": 16
+              }
+            },
+            "DoorsMode": {
+              "$id": "42",
+              "$type": "MapGeneration.Core.Doors.DoorModes.OverlapMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "43",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "4": {
+      "$id": "44",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "45",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "5": {
+      "$id": "46",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "47",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$id": "48",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "49",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "50",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "51",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "52",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "53",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 9
+                  },
+                  {
+                    "$id": "54",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 9
+                  },
+                  {
+                    "$id": "55",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "56",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 8,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "57",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 8,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "58",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "59",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 7,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "60",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "61",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "62",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 1340602569,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "63",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -4,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "64",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 8,
+                  "Y": 9
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 2,
+                  "Y": 3
+                },
+                "Area": 132,
+                "Width": 12,
+                "Height": 11
+              }
+            },
+            "DoorsMode": {
+              "$id": "65",
+              "$type": "MapGeneration.Core.Doors.DoorModes.OverlapMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "66",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "6": {
+      "$id": "67",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "68",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "7": {
+      "$id": "69",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "70",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "8": {
+      "$id": "71",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "72",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$id": "73",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "74",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "75",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "76",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "77",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 12,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "78",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 12,
+                    "Y": -5
+                  },
+                  {
+                    "$id": "79",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -3,
+                    "Y": -5
+                  }
+                ]
+              },
+              "hash": 4816169,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "80",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": -5
+                },
+                "B": {
+                  "$id": "81",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 12,
+                  "Y": 7
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 4,
+                  "Y": 1
+                },
+                "Area": 180,
+                "Width": 15,
+                "Height": 12
+              }
+            },
+            "DoorsMode": {
+              "$id": "82",
+              "$type": "MapGeneration.Core.Doors.DoorModes.OverlapMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "83",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "9": {
+      "$id": "84",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "85",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "10": {
+      "$id": "86",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "87",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "33"
+          }
+        ]
+      }
+    },
+    "11": {
+      "$id": "88",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "89",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "12": {
+      "$id": "90",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "91",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "13": {
+      "$id": "92",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "93",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "48"
+          }
+        ]
+      }
+    },
+    "14": {
+      "$id": "94",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "95",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "16"
+          }
+        ]
+      }
+    },
+    "15": {
+      "$id": "96",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "97",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$ref": "5"
+          }
+        ]
+      }
+    },
+    "16": {
+      "$id": "98",
+      "$type": "MapGeneration.Core.MapDescriptions.CorridorRoomDescription, MapGeneration",
+      "Stage": 2,
+      "RoomTemplates": {
+        "$id": "99",
+        "$type": "System.Collections.Generic.List`1[[MapGeneration.Interfaces.Core.MapDescriptions.IRoomTemplate, MapGeneration.Interfaces]], mscorlib",
+        "$values": [
+          {
+            "$id": "100",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "101",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "102",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "103",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -5,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "104",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "105",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "106",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -5,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 4721273,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "107",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -5,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "108",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 2
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 0
+                },
+                "Area": 12,
+                "Width": 4,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "109",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "110",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "111",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "112",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -5,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "113",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -5,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "114",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "115",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "116",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "117",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "118",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "119",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "120",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "121",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -7,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "122",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "123",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "124",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -7,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 4696937,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "125",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -7,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "126",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 2
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -4,
+                  "Y": 0
+                },
+                "Area": 18,
+                "Width": 6,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "127",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "128",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "129",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "130",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -7,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "131",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -7,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "132",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "133",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "134",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -1,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "135",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "136",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "137",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "138",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "139",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "140",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "141",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "142",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 0
+                  }
+                ]
+              },
+              "hash": 4758857,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "143",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -4,
+                  "Y": 0
+                },
+                "B": {
+                  "$id": "144",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 4
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -2,
+                  "Y": 2
+                },
+                "Area": 12,
+                "Width": 3,
+                "Height": 4
+              }
+            },
+            "DoorsMode": {
+              "$id": "145",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "146",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "147",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "148",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "149",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 4
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "150",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "151",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "152",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "153",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "154",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "155",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "156",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "157",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "158",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "159",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "160",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 0
+                  }
+                ]
+              },
+              "hash": 4784249,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "161",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -4,
+                  "Y": 0
+                },
+                "B": {
+                  "$id": "162",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 6
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -2,
+                  "Y": 3
+                },
+                "Area": 18,
+                "Width": 3,
+                "Height": 6
+              }
+            },
+            "DoorsMode": {
+              "$id": "163",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "164",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "165",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "166",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 6
+                    },
+                    "To": {
+                      "$id": "167",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 6
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "168",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "169",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "170",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "171",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "172",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "173",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "174",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "175",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "176",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "177",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -1,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "178",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -4,
+                    "Y": 0
+                  }
+                ]
+              },
+              "hash": 4809641,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "179",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -4,
+                  "Y": 0
+                },
+                "B": {
+                  "$id": "180",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -1,
+                  "Y": 8
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -2,
+                  "Y": 4
+                },
+                "Area": 24,
+                "Width": 3,
+                "Height": 8
+              }
+            },
+            "DoorsMode": {
+              "$id": "181",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "182",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "183",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "184",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 8
+                    },
+                    "To": {
+                      "$id": "185",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 8
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "186",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "187",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -3,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "188",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -2,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "189",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          },
+          {
+            "$id": "190",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "191",
+              "$type": "GeneralAlgorithms.DataStructures.Polygons.GridPolygon, GeneralAlgorithms",
+              "points": {
+                "$id": "192",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "193",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -7,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "194",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "195",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": 1,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "196",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                    "X": -7,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 4698041,
+              "BoundingRectangle": {
+                "$type": "GeneralAlgorithms.DataStructures.Polygons.GridRectangle, GeneralAlgorithms",
+                "A": {
+                  "$id": "197",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -7,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "198",
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": 1,
+                  "Y": 2
+                },
+                "Center": {
+                  "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                  "X": -3,
+                  "Y": 0
+                },
+                "Area": 24,
+                "Width": 8,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "199",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SpecificPositionsMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "200",
+                "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms]], mscorlib",
+                "$values": [
+                  {
+                    "$id": "201",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "202",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 1,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "203",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": 1,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "204",
+                    "$type": "GeneralAlgorithms.DataStructures.Common.OrthogonalLine, GeneralAlgorithms",
+                    "From": {
+                      "$id": "205",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -7,
+                      "Y": 1
+                    },
+                    "To": {
+                      "$id": "206",
+                      "$type": "GeneralAlgorithms.DataStructures.Common.IntVector2, GeneralAlgorithms",
+                      "X": -7,
+                      "Y": 0
+                    },
+                    "direction": 4,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "207",
+              "$type": "System.Collections.Generic.List`1[[GeneralAlgorithms.DataStructures.Common.Transformation, GeneralAlgorithms]], mscorlib",
+              "$values": [
+                0
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "17": {
+      "$ref": "98"
+    },
+    "18": {
+      "$ref": "98"
+    },
+    "19": {
+      "$ref": "98"
+    },
+    "20": {
+      "$ref": "98"
+    },
+    "21": {
+      "$ref": "98"
+    },
+    "22": {
+      "$ref": "98"
+    },
+    "23": {
+      "$ref": "98"
+    },
+    "24": {
+      "$ref": "98"
+    },
+    "25": {
+      "$ref": "98"
+    },
+    "26": {
+      "$ref": "98"
+    },
+    "27": {
+      "$ref": "98"
+    },
+    "28": {
+      "$ref": "98"
+    },
+    "29": {
+      "$ref": "98"
+    },
+    "30": {
+      "$ref": "98"
+    },
+    "31": {
+      "$ref": "98"
+    },
+    "32": {
+      "$ref": "98"
+    }
+  },
+  "passages": {
+    "$id": "208",
+    "$type": "System.Collections.Generic.List`1[[MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration]], mscorlib",
+    "$values": [
+      {
+        "$id": "209",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 1,
+        "Room2": 16
+      },
+      {
+        "$id": "210",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 0,
+        "Room2": 16
+      },
+      {
+        "$id": "211",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 0,
+        "Room2": 17
+      },
+      {
+        "$id": "212",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 2,
+        "Room2": 17
+      },
+      {
+        "$id": "213",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 2,
+        "Room2": 18
+      },
+      {
+        "$id": "214",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 3,
+        "Room2": 18
+      },
+      {
+        "$id": "215",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 3,
+        "Room2": 19
+      },
+      {
+        "$id": "216",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 4,
+        "Room2": 19
+      },
+      {
+        "$id": "217",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 4,
+        "Room2": 20
+      },
+      {
+        "$id": "218",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 5,
+        "Room2": 20
+      },
+      {
+        "$id": "219",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 5,
+        "Room2": 21
+      },
+      {
+        "$id": "220",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 0,
+        "Room2": 21
+      },
+      {
+        "$id": "221",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 3,
+        "Room2": 22
+      },
+      {
+        "$id": "222",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 6,
+        "Room2": 22
+      },
+      {
+        "$id": "223",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 6,
+        "Room2": 23
+      },
+      {
+        "$id": "224",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 7,
+        "Room2": 23
+      },
+      {
+        "$id": "225",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 7,
+        "Room2": 24
+      },
+      {
+        "$id": "226",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 8,
+        "Room2": 24
+      },
+      {
+        "$id": "227",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 8,
+        "Room2": 25
+      },
+      {
+        "$id": "228",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 9,
+        "Room2": 25
+      },
+      {
+        "$id": "229",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 10,
+        "Room2": 26
+      },
+      {
+        "$id": "230",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 11,
+        "Room2": 26
+      },
+      {
+        "$id": "231",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 11,
+        "Room2": 27
+      },
+      {
+        "$id": "232",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 12,
+        "Room2": 27
+      },
+      {
+        "$id": "233",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 12,
+        "Room2": 28
+      },
+      {
+        "$id": "234",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 13,
+        "Room2": 28
+      },
+      {
+        "$id": "235",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 13,
+        "Room2": 29
+      },
+      {
+        "$id": "236",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 10,
+        "Room2": 29
+      },
+      {
+        "$id": "237",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 6,
+        "Room2": 30
+      },
+      {
+        "$id": "238",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 10,
+        "Room2": 30
+      },
+      {
+        "$id": "239",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 10,
+        "Room2": 31
+      },
+      {
+        "$id": "240",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 14,
+        "Room2": 31
+      },
+      {
+        "$id": "241",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 14,
+        "Room2": 32
+      },
+      {
+        "$id": "242",
+        "$type": "MapGeneration.Core.MapDescriptions.MapDescription`1+Passage[[System.Int32, mscorlib]], MapGeneration",
+        "Room1": 15,
+        "Room2": 32
+      }
+    ]
+  }
+}

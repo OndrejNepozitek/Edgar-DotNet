@@ -37,6 +37,19 @@
         /// </summary>
         public int EvaluationIterations { get; set; } = 500;
 
+        /// <summary>
+        /// Whether to allow individuals that are worse than the initial individual.
+        /// </summary>
+        public bool AllowWorseThanInitial { get; set; } = false;
+
+        /// <summary>
+        /// Whether to output results to console.
+        /// </summary>
         public bool WithConsoleOutput { get; set; } = true;
+
+        /// <summary>
+        /// Whether to discard configurations that were already evaluated.
+        /// </summary>
+        public bool AllowRepeatingConfigurations { get; set; } = false;
     }
 }
