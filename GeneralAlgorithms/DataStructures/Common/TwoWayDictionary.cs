@@ -33,7 +33,7 @@
 		public TValue this[TKey key]
 		{
 			get => keyValueDict[key];
-			set => keyValueDict[key] = value;
+            set => Add(key, value);
 		}
 
 		/// <inheritdoc />
