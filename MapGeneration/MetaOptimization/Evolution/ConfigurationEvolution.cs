@@ -52,6 +52,9 @@ namespace MapGeneration.MetaOptimization.Evolution
             var initialPopulation = new Population<TIndividual>();
             initialPopulation.Individuals.Add(InitialIndividual);
             populations.Add(initialPopulation);
+
+            Logger.WriteLine($"Initial configuration: {InitialIndividual.Configuration}");
+            Logger.WriteLine();
             EvaluatePopulation(initialPopulation);
 
             // Evolve configurations

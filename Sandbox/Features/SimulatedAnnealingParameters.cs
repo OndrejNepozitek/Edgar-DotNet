@@ -29,8 +29,10 @@ using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Mutations;
+using MapGeneration.MetaOptimization.Mutations.ChainDecomposition;
 using MapGeneration.MetaOptimization.Mutations.ChainMerge;
 using MapGeneration.MetaOptimization.Mutations.ChainOrder;
+using MapGeneration.MetaOptimization.Mutations.MaxBranching;
 using MapGeneration.MetaOptimization.Mutations.MaxIterations;
 using MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures;
 using MapGeneration.Utils;
@@ -44,13 +46,7 @@ namespace Sandbox.Features
     {
         public void EvolveParameters()
         {
-            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
-            {
-                //new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-                //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-            };
+
 
             //var mapDescription = new MapDescription<int>()
             //    .SetupWithGraph(GraphsDatabase.GetExample3())
@@ -67,7 +63,7 @@ namespace Sandbox.Features
 
             var input = new GeneratorInput<MapDescription<int>>(
                 "EnterTheGungeon",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/enterTheGungeon.json"), settings)
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/gungeon_2_4.json"), settings)
             );
             //var input = new GeneratorInput<MapDescription<int>>(
             //    "example1_corridors",
@@ -76,10 +72,20 @@ namespace Sandbox.Features
 
             // input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
 
+            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
+            {
+                //new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
+                //new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                //new MaxBranchingAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(input.MapDescription),
+            };
+
             var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
-                EvaluationIterations = 250,
+                EvaluationIterations = 150,
             }, Path.Combine("DungeonGeneratorEvolutions", FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);

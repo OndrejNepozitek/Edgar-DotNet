@@ -67,7 +67,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 .Cast<IChain<int>>()
                 .ToList();
 
-            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
+            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration.SimulatedAnnealingMaxBranching);
 
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
                 new PolygonOverlap(),
