@@ -29,7 +29,6 @@ using MapGeneration.Utils;
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
     public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<IMapLayout<TNode>>
-        where TNode : IEquatable<TNode>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;

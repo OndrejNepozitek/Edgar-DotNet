@@ -141,7 +141,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 20);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 5);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResult(scenarioResult);
 
@@ -158,7 +158,7 @@ namespace Sandbox.Features
                 }
             }
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1578736411_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1580072563_CorridorConfigurationSpaces_Reference.json");
         }
 
         private static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)

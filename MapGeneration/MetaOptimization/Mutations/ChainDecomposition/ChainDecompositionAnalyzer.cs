@@ -45,7 +45,7 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
         private IMutation<TConfiguration> GetMutation(int priority, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             var chains =
-                new TwoStageChainDecomposition<TNode>(mapDescription, new BetterBreadthFirstChainDecomposition<TNode>(maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy))
+                new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy))
                     .GetChains(mapDescription.GetGraph()).ToList();
 
             return new ChainDecompositionMutation<TConfiguration, TNode>(priority, chains, maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy);

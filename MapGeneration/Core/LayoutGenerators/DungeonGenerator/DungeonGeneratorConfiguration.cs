@@ -10,7 +10,7 @@ using MapGeneration.MetaOptimization.Configurations;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
-    public class DungeonGeneratorConfiguration<TNode> : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<DungeonGeneratorConfiguration<TNode>> where TNode : IEquatable<TNode>
+    public class DungeonGeneratorConfiguration<TNode> : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<DungeonGeneratorConfiguration<TNode>>
     {
         /// <summary>
         /// Whether non-neighboring rooms may touch (share walls) or not.
@@ -38,7 +38,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public DungeonGeneratorConfiguration(IMapDescription<TNode> mapDescription)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>());
+            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(8, true, true, TreeComponentStrategy.BreadthFirst));
             Chains = chainDecomposition.GetChains(mapDescription.GetGraph()).ToList();
 
             var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();

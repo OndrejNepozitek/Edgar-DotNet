@@ -33,7 +33,7 @@ namespace MapGeneration.Utils
         /// <returns></returns>
         public static SimpleChainBasedGenerator<MapDescriptionOld<TNode>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int> GetSimpleChainBasedGenerator<TNode>(MapDescriptionOld<TNode> mapDescriptionOld, bool withCorridors, List<int> offsets = null, bool canTouch = false)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescriptionOld, new BreadthFirstChainDecomposition<int>());
+            var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescriptionOld, new BreadthFirstChainDecompositionOld<int>());
             var chains = chainDecomposition.GetChains(mapDescriptionOld.GetGraph());
 
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
