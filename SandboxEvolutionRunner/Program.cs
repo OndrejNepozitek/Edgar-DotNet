@@ -359,7 +359,10 @@ namespace SandboxEvolutionRunner
                 AllowRepeatingConfigurations = !options.Eval,
             }, Path.Combine(Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
-            var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
+            var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription)
+            {
+                RoomsCanTouch = options.CanTouch,
+            };
             var result = evolution.Evolve(initialConfiguration);
 
             return new Result()
