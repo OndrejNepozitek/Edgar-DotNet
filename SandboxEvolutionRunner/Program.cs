@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,6 +57,9 @@ namespace SandboxEvolutionRunner
 
             [Option("canTouch")] 
             public bool CanTouch { get; set; } = false;
+
+            [Option("eval")] 
+            public bool Eval { get; set; } = false;
 
             [Option("evolutionIterations")] 
             public int EvolutionIterations { get; set; } = 250;
@@ -194,11 +198,10 @@ namespace SandboxEvolutionRunner
                 });
             }
 
-            var results = new Result[inputs.Count];
-            Parallel.For(0, inputs.Count, new ParallelOptions { MaxDegreeOfParallelism = options.MaxThreads }, (int i) =>
+            var resultsDict = new Dictionary<Input, Result>();
+            var partitioner = Partitioner.Create(inputs, EnumerablePartitionerOptions.NoBuffering);
+            Parallel.ForEach(partitioner, new ParallelOptions { MaxDegreeOfParallelism = options.MaxThreads }, input =>
             {
-                var input = inputs[i];
-
                 lock (Logger)
                 {
                     Logger.WriteLine($"Started {input.Name}");
@@ -212,11 +215,13 @@ namespace SandboxEvolutionRunner
                 }
                 
 
-                lock (results)
+                lock (resultsDict)
                 {
-                    results[i] = result;
+                    resultsDict[input] = result;
                 }
             });
+
+            var results = inputs.Select(x => resultsDict[x]).ToList();
 
             Logger.WriteLine();
             AnalyzeMutations(results.ToList());
@@ -237,13 +242,13 @@ namespace SandboxEvolutionRunner
             {
                 WithConsolePreview = false,
             });
-            resultSaver.SaveResult(scenarioResultNew);
+            resultSaver.SaveResult(scenarioResultNew, directory: Directory);
 
             var scenarioResultOld = benchmarkRunner.Run(benchmarkScenarioOld, inputsOldConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
             {
                 WithConsolePreview = false,
             });
-            resultSaver.SaveResult(scenarioResultOld);
+            resultSaver.SaveResult(scenarioResultOld, directory: Directory);
         }
 
         public static void AnalyzeMutations(List<Result> results)
@@ -253,25 +258,30 @@ namespace SandboxEvolutionRunner
             foreach (var result in results)
             {
                 var mutatedIndividuals = result.Individuals.Where(x => x.Mutations.Count != 0).ToList();
-                mutatedIndividuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
+                var mutatedIndividualsGroups = mutatedIndividuals.GroupBy(x => x.Fitness).ToList();
+                mutatedIndividualsGroups.Sort((x1, x2) => x1.Key.CompareTo(x2.Key));
 
-                for (var i = 0; i < mutatedIndividuals.Count; i++)
+                for (var i = 0; i < mutatedIndividualsGroups.Count; i++)
                 {
-                    var individual = mutatedIndividuals[i];
-                    var mutation =  individual.Mutations.Last();
-                    var difference = StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
+                    var group = mutatedIndividualsGroups[i];
 
-                    if (!stats.ContainsKey(mutation))
+                    foreach (var individual in group)
                     {
-                        stats[mutation] = new List<MutationStats>();
+                        var mutation =  individual.Mutations.Last();
+                        var difference = StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
+
+                        if (!stats.ContainsKey(mutation))
+                        {
+                            stats[mutation] = new List<MutationStats>();
+                        }
+
+                        stats[mutation].Add(new MutationStats()
+                        {
+                            Difference = difference,
+                            Input = result.Input.Name,
+                            Order = i + 1,
+                        });
                     }
-
-                    stats[mutation].Add(new MutationStats()
-                    {
-                        Difference = difference,
-                        Input = result.Input.Name,
-                        Order = i + 1,
-                    });
                 }
             }
 
@@ -341,11 +351,12 @@ namespace SandboxEvolutionRunner
         {
             var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
             {
+                MaxPopulationSize = options.Eval ? 2 : 20,
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = options.EvolutionIterations,
                 WithConsoleOutput = false,
-                AllowWorseThanInitial = true,
-                AllowRepeatingConfigurations = true,
+                AllowWorseThanInitial =  !options.Eval,
+                AllowRepeatingConfigurations = !options.Eval,
             }, Path.Combine(Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);

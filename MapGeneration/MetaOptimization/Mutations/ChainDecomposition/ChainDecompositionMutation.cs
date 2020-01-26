@@ -13,7 +13,7 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
     {
         public int Priority { get; }
 
-        public bool UseDfsTrees { get; }
+        public TreeComponentStrategy TreeComponentStrategy { get; }
 
         public int MaxTreeSize { get; }
 
@@ -23,15 +23,16 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
 
         public List<IChain<TNode>> Chains { get; }
         
-        public ChainDecompositionMutation(int priority, List<IChain<TNode>> chains, bool useDfsTrees, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices)
+        public ChainDecompositionMutation(int priority, List<IChain<TNode>> chains, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             Priority = priority;
             Chains = chains;
-            UseDfsTrees = useDfsTrees;
             MaxTreeSize = maxTreeSize;
             MergeSmallChains = mergeSmallChains;
             StartTreeWithMultipleVertices = startTreeWithMultipleVertices;
+            TreeComponentStrategy = treeComponentStrategy;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var newConfigurations = new List<SimulatedAnnealingConfiguration>();
@@ -48,14 +49,14 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
 
         public override string ToString()
         {
-            return $"ChainDecomposition, priority {Priority}, MaxTreeSize {MaxTreeSize}, MergeSmallChains {MergeSmallChains}, stwmv {StartTreeWithMultipleVertices}";
+            return $"ChainDecomposition, priority {Priority}, TreeStrategy {TreeComponentStrategy} MaxTreeSize {MaxTreeSize}, MergeSmallChains {MergeSmallChains}, stwmv {StartTreeWithMultipleVertices}";
         }
 
         #region Equals
 
         protected bool Equals(ChainDecompositionMutation<TConfiguration, TNode> other)
         {
-            return UseDfsTrees == other.UseDfsTrees && MaxTreeSize == other.MaxTreeSize && MergeSmallChains == other.MergeSmallChains && StartTreeWithMultipleVertices == other.StartTreeWithMultipleVertices;
+            return TreeComponentStrategy == other.TreeComponentStrategy && MaxTreeSize == other.MaxTreeSize && MergeSmallChains == other.MergeSmallChains && StartTreeWithMultipleVertices == other.StartTreeWithMultipleVertices;
         }
 
         public override bool Equals(object obj)
@@ -70,7 +71,7 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
         {
             unchecked
             {
-                var hashCode = UseDfsTrees.GetHashCode();
+                var hashCode = (int) TreeComponentStrategy;
                 hashCode = (hashCode * 397) ^ MaxTreeSize;
                 hashCode = (hashCode * 397) ^ MergeSmallChains.GetHashCode();
                 hashCode = (hashCode * 397) ^ StartTreeWithMultipleVertices.GetHashCode();

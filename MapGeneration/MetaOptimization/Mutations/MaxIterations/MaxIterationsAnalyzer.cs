@@ -22,19 +22,20 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             // Do not apply this mutation multiple times
             if (individual.Mutations.All(x => x.GetType() != typeof(MaxIterationsMutation<TConfiguration>)))
             {
-                mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1.5));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 100, 1.5));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 50, 1.5));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 150, 2));
-                mutations.Add(GetConservativeStrategy(configuration, data, 0, 0.5));
-                mutations.Add(GetConservativeStrategy(configuration, data, 0, 1));
+                mutations.Add(GetAggressiveStrategy(configuration, data, 50, 1.5, 5));
+                mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1, 4));
+
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1.5));
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 100, 1.5));
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 150, 2));
+                //mutations.Add(GetConservativeStrategy(configuration, data, 0, 0.5));
+                //mutations.Add(GetConservativeStrategy(configuration, data, 0, 1));
             }
 
             return mutations;
         }
 
-        private IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier)
+        private IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var averageAll = data.GetAverageStatistics(new DataSplit(0, 1));
             var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
@@ -51,7 +52,7 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             }
 
             return new MaxIterationsMutation<TConfiguration>(
-                5, 
+                priority, 
                 new SimulatedAnnealingConfigurationProvider(newConfigurations),
                 MaxIterationsStrategy.Conservative,
                 minValue,
@@ -59,7 +60,7 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             );
         }
 
-        private IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier)
+        private IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var worst10Percent = data.GetAverageStatistics(new DataSplit(0.9, 1));
             var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
@@ -76,7 +77,7 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             }
 
             return new MaxIterationsMutation<TConfiguration>(
-                5,
+                priority,
                 new SimulatedAnnealingConfigurationProvider(newConfigurations),
                 MaxIterationsStrategy.Aggressive,
                 minValue,

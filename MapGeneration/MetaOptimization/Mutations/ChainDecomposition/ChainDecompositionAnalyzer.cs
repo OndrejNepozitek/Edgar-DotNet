@@ -29,23 +29,26 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
             // Do not apply this mutation multiple times
             if (individual.Mutations.All(x => x.GetType() != typeof(ChainDecompositionMutation<TConfiguration, TNode>)))
             {
-                mutations.Add(GetMutation(6, true, true));
-                mutations.Add(GetMutation(8, true, true));
-                mutations.Add(GetMutation(10, true, true));
-                mutations.Add(GetMutation(8, false, true));
-                mutations.Add(GetMutation(8, true, false));
+                mutations.Add(GetMutation(5, 8, true, true, TreeComponentStrategy.BreadthFirst));
+                mutations.Add(GetMutation(4, 8, false, true, TreeComponentStrategy.BreadthFirst));
+
+                //mutations.Add(GetMutation(8, true, true, TreeComponentStrategy.DepthFirst));
+                //mutations.Add(GetMutation(15, true, true, TreeComponentStrategy.DepthFirst));
+                //mutations.Add(GetMutation(10, true, true, TreeComponentStrategy.BreadthFirst));
+                //mutations.Add(GetMutation(15, true, true, TreeComponentStrategy.BreadthFirst));
+                //mutations.Add(GetMutation(8, true, false, TreeComponentStrategy.BreadthFirst));
             }
 
             return mutations;
         }
 
-        private IMutation<TConfiguration> GetMutation(int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices)
+        private IMutation<TConfiguration> GetMutation(int priority, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             var chains =
-                new TwoStageChainDecomposition<TNode>(mapDescription, new BetterBreadthFirstChainDecomposition<TNode>(maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices))
+                new TwoStageChainDecomposition<TNode>(mapDescription, new BetterBreadthFirstChainDecomposition<TNode>(maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy))
                     .GetChains(mapDescription.GetGraph()).ToList();
 
-            return new ChainDecompositionMutation<TConfiguration, TNode>(5, chains, true, maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices);
+            return new ChainDecompositionMutation<TConfiguration, TNode>(priority, chains, maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy);
         }
     }
 }

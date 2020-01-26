@@ -45,12 +45,14 @@ namespace MapGeneration.MetaOptimization.Evolution
         {
             nextId = 0;
             var populations = new List<Population<TIndividual>>();
+            var allIndividuals = new List<TIndividual>();
 
             // Setup initial population
             Logger.WriteLine($"============ Generation 0 ============");
             InitialIndividual = CreateInitialIndividual(GetNextId(), initialConfiguration);
             var initialPopulation = new Population<TIndividual>();
             initialPopulation.Individuals.Add(InitialIndividual);
+            allIndividuals.Add(InitialIndividual);
             populations.Add(initialPopulation);
 
             Logger.WriteLine($"Initial configuration: {InitialIndividual.Configuration}");
@@ -64,14 +66,15 @@ namespace MapGeneration.MetaOptimization.Evolution
 
                 var parentPopulation = populations.Last();
                 var offspring = ComputeNextGeneration(parentPopulation);
+                var bestIndividuals = SelectBestIndividuals(offspring);
 
-                populations.Add(offspring);
+                populations.Add(bestIndividuals);
+                allIndividuals.AddRange(offspring.Individuals);
 
                 Logger.WriteLine();
             }
 
             // Find the best individual
-            var allIndividuals = populations.SelectMany(x => x.Individuals).ToList();
             allIndividuals.Sort((x1, x2) => x1.Fitness.CompareTo(x2.Fitness));
 
             var bestIndividual = allIndividuals[0];
@@ -128,9 +131,7 @@ namespace MapGeneration.MetaOptimization.Evolution
 
             EvaluatePopulation(offspringPopulation);
 
-            var bestIndividuals = SelectBestIndividuals(offspringPopulation);
-
-            return bestIndividuals;
+            return offspringPopulation;
         }
 
         private Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population)

@@ -21,13 +21,15 @@ namespace MapGeneration.Core.ChainDecompositions
         private readonly int maxTreeSize;
         private readonly bool mergeSmallChains;
         private readonly bool startTreeWithMultipleVertices;
+        private readonly TreeComponentStrategy treeComponentStrategy;
         private readonly Logger logger;
 
-		public BetterBreadthFirstChainDecomposition(int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, Logger logger = null)
+		public BetterBreadthFirstChainDecomposition(int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy, Logger logger = null)
         {
             this.maxTreeSize = maxTreeSize;
             this.mergeSmallChains = mergeSmallChains;
             this.startTreeWithMultipleVertices = startTreeWithMultipleVertices;
+            this.treeComponentStrategy = treeComponentStrategy;
             this.logger = logger ?? new Logger();
         }
 
@@ -184,15 +186,18 @@ namespace MapGeneration.Core.ChainDecompositions
 
             var biggestTree = treeComponents[0];
 
-            if (biggestTree.Nodes.Count < maxTreeSize)
+            if (mergeSmallChains)
             {
-                for (var i = 1; i < treeComponents.Count; i++)
+                if (biggestTree.Nodes.Count < maxTreeSize)
                 {
-                    var component = treeComponents[i];
-
-                    if (component.Nodes.Count + biggestTree.Nodes.Count <= maxTreeSize)
+                    for (var i = 1; i < treeComponents.Count; i++)
                     {
-                        biggestTree.Nodes.AddRange(component.Nodes);
+                        var component = treeComponents[i];
+
+                        if (component.Nodes.Count + biggestTree.Nodes.Count <= maxTreeSize)
+                        {
+                            biggestTree.Nodes.AddRange(component.Nodes);
+                        }
                     }
                 }
             }
@@ -205,15 +210,25 @@ namespace MapGeneration.Core.ChainDecompositions
 
         private GraphComponent GetTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
         {
-            return GetDfsTreeComponent(decomposition, startingNodes);
+            switch (treeComponentStrategy)
+            {
+                case TreeComponentStrategy.BreadthFirst:
+                    return GetBfsTreeComponent(decomposition, startingNodes);
+
+                case TreeComponentStrategy.DepthFirst:
+                    return GetDfsTreeComponent(decomposition, startingNodes);
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private GraphComponent GetTreeComponent(PartialDecomposition decomposition, TNode startingNode)
         {
-            return GetDfsTreeComponent(decomposition, new List<TNode>() { startingNode });
+            return GetTreeComponent(decomposition, new List<TNode>() { startingNode });
         }
 
-        private GraphComponent GetDfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
+        private GraphComponent GetBfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
         {
             var nodes = new List<TNode>();
             var queue = new Queue<TNode>();
@@ -241,6 +256,56 @@ namespace MapGeneration.Core.ChainDecompositions
                     {
                         nodes.Add(neighbor);
                         queue.Enqueue(neighbor);
+
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return new GraphComponent()
+            {
+                Nodes = nodes,
+                IsFromFace = false,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
+
+        private GraphComponent GetDfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
+        {
+            var nodes = new List<TNode>();
+            var stack = new Stack<TNode>();
+
+            nodes.AddRange(startingNodes);
+            foreach (var startingNode in startingNodes)
+            {
+                stack.Push(startingNode);
+            }
+
+            while (stack.Count != 0 && nodes.Count < maxTreeSize)
+            {
+                var node = stack.Pop();
+
+                if (decomposition.GetRemainingFaces().Any(x => x.Contains(node)))
+                {
+                    continue;
+                }
+
+                var neighbors = Graph.GetNeighbours(node);
+
+                foreach (var neighbor in neighbors)
+                {
+                    if (!nodes.Contains(neighbor) && !decomposition.IsCovered(neighbor))
+                    {
+                        nodes.Add(neighbor);
+                        stack.Push(neighbor);
+
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
                     }
                 }
             }

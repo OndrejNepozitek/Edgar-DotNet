@@ -22,13 +22,14 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures
             // Do not apply this mutation multiple times
             if (individual.Mutations.All(x => x.GetType() != typeof(MaxStageTwoFailuresMutation<TConfiguration>)))
             {
-                mutations.Add(GetAggressiveStrategy(configuration, data, 5, 2));
                 mutations.Add(GetAggressiveStrategy(configuration, data, 10, 2));
                 mutations.Add(GetAggressiveStrategy(configuration, data, 20, 2));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 10, 1));
-                mutations.Add(GetAggressiveStrategy(configuration, data, 10, 3));
-                mutations.Add(GetConservativeStrategy(configuration, data, 5, 0.5));
-                mutations.Add(GetConservativeStrategy(configuration, data, 10, 0.5));
+
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 5, 2));
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 10, 1));
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 10, 3));
+                //mutations.Add(GetConservativeStrategy(configuration, data, 5, 0.5));
+                //mutations.Add(GetConservativeStrategy(configuration, data, 10, 0.5));
             }
 
             return mutations;

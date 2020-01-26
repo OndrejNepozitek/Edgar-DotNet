@@ -21,8 +21,8 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxBranching
             // Do not apply this mutation multiple times
             if (individual.Mutations.All(x => x.GetType() != typeof(MaxBranchingMutation<TConfiguration>)))
             {
-                mutations.Add(new MaxBranchingMutation<TConfiguration>(5, 4));
-                mutations.Add(new MaxBranchingMutation<TConfiguration>(5, 3));
+                // mutations.Add(new MaxBranchingMutation<TConfiguration>(5, 4));
+                // mutations.Add(new MaxBranchingMutation<TConfiguration>(5, 3));
                 mutations.Add(new MaxBranchingMutation<TConfiguration>(5, 2));
             }
 
