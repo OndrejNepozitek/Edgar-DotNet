@@ -65,7 +65,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 				throw new ArgumentException("The line is not orthogonal");
 			}
 
-			if (from != to && direction != GetDirection(from, to))
+			if (from != to && direction != Direction.Undefined && direction != GetDirection(from, to))
 			{
 				throw new InvalidOperationException("Given direction is wrong");
 			}

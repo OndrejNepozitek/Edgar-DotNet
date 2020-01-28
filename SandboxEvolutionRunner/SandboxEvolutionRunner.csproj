@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.7.82" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MapGeneration\MapGeneration.csproj" />
+  </ItemGroup>
+
+  <Target Name="CopyResources" AfterTargets="Build">
+    <ItemGroup>
+      <GeneratorResources Include="..\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="false" />
+  </Target>
+</Project>

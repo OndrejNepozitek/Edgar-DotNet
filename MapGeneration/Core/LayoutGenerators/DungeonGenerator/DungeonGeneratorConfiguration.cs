@@ -10,7 +10,7 @@ using MapGeneration.MetaOptimization.Configurations;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
-    public class DungeonGeneratorConfiguration<TNode> : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<DungeonGeneratorConfiguration<TNode>> where TNode : IEquatable<TNode>
+    public class DungeonGeneratorConfiguration<TNode> : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<DungeonGeneratorConfiguration<TNode>>
     {
         /// <summary>
         /// Whether non-neighboring rooms may touch (share walls) or not.
@@ -34,9 +34,11 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         /// </summary>
         public SimulatedAnnealingConfigurationProvider SimulatedAnnealingConfiguration { get; set; }
 
+        public int SimulatedAnnealingMaxBranching { get; set; } = 5;
+
         public DungeonGeneratorConfiguration(IMapDescription<TNode> mapDescription)
         {
-            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>());
+            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(8, true, true, TreeComponentStrategy.BreadthFirst));
             Chains = chainDecomposition.GetChains(mapDescription.GetGraph()).ToList();
 
             var simulatedAnnealingConfigurations = new List<SimulatedAnnealingConfiguration>();
@@ -60,12 +62,15 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 Chains = Chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).Cast<IChain<TNode>>().ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
                 RoomsCanTouch = RoomsCanTouch,
+                SimulatedAnnealingMaxBranching = SimulatedAnnealingMaxBranching,
             };
         }
 
         public override string ToString()
         {
             var result = "";
+
+            result += $"\n  Max branching {SimulatedAnnealingMaxBranching}";
 
             for (int i = 0; i < Chains.Count; i++)
             {
@@ -82,7 +87,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         protected bool Equals(DungeonGeneratorConfiguration<TNode> other)
         {
-            return Chains.SequenceEqual(other.Chains) && SimulatedAnnealingConfiguration.Equals(other.SimulatedAnnealingConfiguration);
+            return Chains.SequenceEqual(other.Chains) && SimulatedAnnealingConfiguration.Equals(other.SimulatedAnnealingConfiguration) && SimulatedAnnealingMaxBranching == other.SimulatedAnnealingMaxBranching;
         }
 
         public override bool Equals(object obj)

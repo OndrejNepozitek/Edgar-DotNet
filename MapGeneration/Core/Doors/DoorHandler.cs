@@ -21,6 +21,8 @@
 
 		private static DoorHandler _defaultHandler;
 
+		private static object lockObject = new object();
+
 		/// <summary>
 		/// Instance of a default door handler. Currently supports OverlapMode and SpecificPositionsMode.
 		/// </summary>
@@ -28,15 +30,18 @@
 		{
 			get
 			{
-				if (_defaultHandler != null)
-					return _defaultHandler;
+                lock (lockObject)
+                {
+                    if (_defaultHandler != null)
+                        return _defaultHandler;
 
-				_defaultHandler = new DoorHandler();
-				_defaultHandler.RegisterHandler(typeof(OverlapMode), new OverlapModeHandler());
-				_defaultHandler.RegisterHandler(typeof(SpecificPositionsMode), new SpecificPositionsModeHandler());
+                    _defaultHandler = new DoorHandler();
+                    _defaultHandler.RegisterHandler(typeof(OverlapMode), new OverlapModeHandler());
+                    _defaultHandler.RegisterHandler(typeof(SpecificPositionsMode), new SpecificPositionsModeHandler());
 
-				return _defaultHandler;
-			}
+                    return _defaultHandler;
+                }
+            }
 		}
 
 		/// <inheritdoc />

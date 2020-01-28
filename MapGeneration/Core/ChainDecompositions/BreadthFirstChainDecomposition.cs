@@ -1,4 +1,5 @@
 ﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+using MapGeneration.Utils.Logging;
 
 namespace MapGeneration.Core.ChainDecompositions
 {
@@ -15,14 +16,21 @@ namespace MapGeneration.Core.ChainDecompositions
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
-		where TNode : IEquatable<TNode>
-	{
-		private readonly bool groupSoloVertices;
+    {
+        private readonly int maxTreeSize;
+        private readonly bool mergeSmallChains;
+        private readonly bool startTreeWithMultipleVertices;
+        private readonly TreeComponentStrategy treeComponentStrategy;
+        private readonly Logger logger;
 
-		public BreadthFirstChainDecomposition(bool groupSoloVertices = true)
-		{
-			this.groupSoloVertices = groupSoloVertices;
-		}
+		public BreadthFirstChainDecomposition(int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy, Logger logger = null)
+        {
+            this.maxTreeSize = maxTreeSize;
+            this.mergeSmallChains = mergeSmallChains;
+            this.startTreeWithMultipleVertices = startTreeWithMultipleVertices;
+            this.treeComponentStrategy = treeComponentStrategy;
+            this.logger = logger ?? new Logger();
+        }
 
 		/// <inheritdoc />
 		public override IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
@@ -35,329 +43,417 @@ namespace MapGeneration.Core.ChainDecompositions
 				Faces.RemoveAt(Faces.MaxBy(x => x.Count));
 			}
 
-			var chains = new List<IChain<TNode>>();
+			var decomposition = new PartialDecomposition(Faces);
+            decomposition = GetFirstComponent(decomposition);
 
-			if (Faces.Count != 0)
-			{
-				chains.Add(new Chain<TNode>(GetFirstCycle(Faces), chains.Count));
-			}
+            while (decomposition.GetAllCoveredVertices().Count != Graph.VerticesCount)
+            {
+                decomposition = ExtendDecomposition(decomposition);
+            }
 
-			// Process cycles
-			while (Faces.Count != 0)
-			{
-				var chain = GetNextCycle();
 
-				if (chain == null)
-				{
-					chain = GetNextPath();
-				}
+            var chains = decomposition.GetFinalDecomposition();
+            logger.WriteLine("Final decomposition:");
+            foreach (var chain in chains)
+            {
+                logger.WriteLine($"[{string.Join(",", chain.Nodes)}]");
+            }
 
-				// Must not happen. There must always be a cycle or a path while we have at least one face available.
-				if (chain == null)
-					throw new InvalidOperationException();
+            return chains;
+        }
 
-				chains.Add(new Chain<TNode>(chain, chains.Count));
-			}
+        private PartialDecomposition GetFirstComponent(PartialDecomposition decomposition)
+        {
+            var faces = decomposition.GetRemainingFaces();
+            if (Faces.Count != 0)
+            {
+                var smallestFaceIndex = faces.MinBy(x => x.Count);
+                var smallestFace = faces[smallestFaceIndex];
+                var cycleComponent =  new GraphComponent()
+                {
+                    Nodes = smallestFace,
+                    IsFromFace = true,
+                    MinimumNeighborChainNumber = 0,
+                };
 
-			// Add remaining nodes
-			while (Graph.Vertices.Any(x => !IsCovered(x)))
-			{
-				var chain = GetNextPath();
+                logger.WriteLine("Starting with cycle");
+                logger.WriteLine(cycleComponent);
 
-				// Must not happen. There must always be a path while there are vertices that are not covered. (The graph must be connected)
-				if (chain == null)
-					throw new InvalidOperationException();
+                return decomposition.AddChain(cycleComponent.Nodes);
+            }
 
-				chains.Add(new Chain<TNode>(chain, chains.Count));
-			}
+            var startingNode = Graph.Vertices.First(x => Graph.GetNeighbours(x).Count() == 1);
+            var treeComponent = GetTreeComponent(decomposition, startingNode);
 
-			return chains;
-		}
+            logger.WriteLine("Starting with tree");
+            logger.WriteLine(treeComponent);
 
-		/// <summary>
-		/// Tries to find a face that neighbours with covered vertices in the smallest depth.
-		/// Chooses the smallest one if there are multiple in the same depth.
-		/// </summary>
-		/// <returns></returns>
-		private List<TNode> GetNextCycle()
-		{
-			var bestFaceIndex = -1;
-			var bestFaceSize = int.MaxValue;
-			var bestFaceDepth = int.MaxValue;
+            return decomposition.AddChain(treeComponent.Nodes);
+        }
 
-			for (var i = 0; i < Faces.Count; i++)
-			{
-				var face = Faces[i];
+        private PartialDecomposition ExtendDecomposition(PartialDecomposition decomposition)
+        {
+            var remainingFace = decomposition.GetRemainingFaces();
+            var blacklist = new List<TNode>();
+            var components = new List<GraphComponent>();
 
-				// Check nodes in the face and also all neighbouring nodes
-				var nodesToCheck = face.Concat(face.SelectMany(x => Graph.GetNeighbours(x))).Where(IsCovered).ToList();
+            foreach (var node in decomposition.GetAllCoveredVertices())
+            {
+                var neighbors = Graph.GetNeighbours(node);
+                var notCoveredNeighbors = neighbors.Where(x => !decomposition.IsCovered(x));
+                var treeStartingNodes = new List<TNode>();
 
-				// If nodesToCheck is empty, it does not neighbour with any covered node and therefore we skip it
-				if (nodesToCheck.Count == 0)
-					continue;
+                foreach (var neighbor in notCoveredNeighbors)
+                {
+                    if (blacklist.Contains(neighbor))
+                    {
+                        continue;
+                    }
 
-				var minDepth = nodesToCheck.Min(GetDepth);
-				var size = face.Count(x => !IsCovered(x));
+                    var foundFace = false;
+                    foreach (var face in remainingFace)
+                    {
+                        if (!face.Contains(neighbor))
+                        {
+                            continue;
+                        }
 
-				if (minDepth < bestFaceDepth || (minDepth == bestFaceDepth && size < bestFaceSize))
-				{
-					bestFaceIndex = i;
-					bestFaceSize = size;
-					bestFaceDepth = minDepth;
-				}
-			}
+                        var cycleComponent = GetCycleComponent(decomposition, face);
+                        components.Add(cycleComponent);
+                        blacklist.AddRange(cycleComponent.Nodes);
+                        foundFace = true;
 
-			// Return null if no face was found. That means that we must now consider paths and then come back to cycles.
-			if (bestFaceIndex == -1)
-				return null;
+                        break;
+                    }
 
-			var nextFace = Faces[bestFaceIndex].Where(x => !IsCovered(x)).ToList();
-			Faces.RemoveAt(bestFaceIndex);
+                    if (foundFace)
+                    {
+                        continue;
+                    }
 
-			// This must not happen as all faces with all nodes covered must be already removed
-			if (nextFace.Count == 0)
-				throw new InvalidOperationException();
+                    treeStartingNodes.Add(neighbor);
+                }
 
-			var chain = new List<TNode>();
-			var counter = ChainsCounter;
+                if (treeStartingNodes.Count != 0)
+                {
+                    if (startTreeWithMultipleVertices)
+                    {
+                        var treeComponent = GetTreeComponent(decomposition, treeStartingNodes);
+                        components.Add(treeComponent);
+                        blacklist.AddRange(treeComponent.Nodes);
+                    }
+                    else
+                    {
+                        foreach (var startingNode in treeStartingNodes)
+                        {
+                            var treeComponent = GetTreeComponent(decomposition, startingNode);
+                            components.Add(treeComponent);
+                            blacklist.AddRange(treeComponent.Nodes);
+                        }
+                    }
+                }
+            }
 
-			// Find a vertex that neighbours with a covered node
-			var firstVertexIndex = -1;
-			for (var i = 0; i < nextFace.Count; i++)
-			{
-				var vertex = nextFace[i];
+            logger.WriteLine();
+            logger.WriteLine("Extending decomposition");
+            logger.WriteLine("Candidates:");
 
-				if (Graph.GetNeighbours(vertex).Any(IsCovered))
-				{
-					firstVertexIndex = i;
-					break;
-				}
-			}
+            foreach (var component in components)
+            {
+                logger.WriteLine(component);
+            }
 
-			// This must not happen as we considered only faces that neighbour with already covered vertices
-			if (firstVertexIndex == -1)
-				throw new InvalidOperationException();
+            logger.WriteLine();
 
-			// Use the first vertex
-			SetDepth(nextFace[firstVertexIndex], counter++);
-			chain.Add(nextFace[firstVertexIndex]);
-			nextFace.RemoveAt(firstVertexIndex);
+            var cycleComponents = components.Where(x => x.IsFromFace).ToList();
+            if (cycleComponents.Count != 0)
+            {
+                var smallestCycleIndex = cycleComponents.MinBy(x => x.Nodes.Count);
+                var smallestCycle = cycleComponents[smallestCycleIndex];
 
-			// Add vertices starting with the ones that neighbour with nodes on the highest depths
-			while (nextFace.Count != 0)
-			{
-				var nextVertexIndex = nextFace.MinBy(SmallestCoveredNeighbourDepth);
-				var nextVertex = nextFace[nextVertexIndex];
+                logger.WriteLine("Adding smallest cycle component");
+                logger.WriteLine(smallestCycle);
 
-				SetDepth(nextVertex, counter++);
-				chain.Add(nextVertex);
-				nextFace.Remove(nextVertex);
-			}
+                return decomposition.AddChain(smallestCycle.Nodes);
+            }
 
-			// Fix depths
-			foreach (var node in chain)
-			{
-				SetDepth(node, ChainsCounter);
-			}
+            var treeComponents = components
+                .Where(x => !x.IsFromFace)
+                .OrderBy(x => x.MinimumNeighborChainNumber)
+                .ThenByDescending(x => x.Nodes.Count)
+                .ToList();
 
-			ChainsCounter++;
-			RemoveCoveredNodes(Faces);
+            var biggestTree = treeComponents[0];
 
-			return chain;
-		}
+            if (mergeSmallChains)
+            {
+                if (biggestTree.Nodes.Count < maxTreeSize)
+                {
+                    for (var i = 1; i < treeComponents.Count; i++)
+                    {
+                        var component = treeComponents[i];
 
-		/// <summary>
-		/// Gets a path that is conencted to already discovered vertices.
-		/// </summary>
-		/// <remarks>
-		/// It tries to minimize the number of chains with only a single node.
-		/// </remarks>
-		/// <returns></returns>
-		private List<TNode> GetNextPath()
-		{
-			var firstVertex = default(TNode);
-			var firstDepth = int.MaxValue;
-			var foundFirst = false;
+                        if (component.Nodes.Count + biggestTree.Nodes.Count <= maxTreeSize)
+                        {
+                            biggestTree.Nodes.AddRange(component.Nodes);
+                        }
+                    }
+                }
+            }
 
-			// Save a node that is the covered neighbour of the firstVertex
-			var hasOrigin = false;
-			var origin = default(TNode);
+            logger.WriteLine("Adding biggest oldest tree component");
+            logger.WriteLine(biggestTree);
 
-			// Check if there is at least one covered node
-			if (Graph.Vertices.Any(IsCovered))
-			{
-				foreach (var node in Graph.Vertices.Where(x => !IsCovered(x)))
-				{
-					var coveredNeighbours = Graph.GetNeighbours(node).Where(IsCovered).ToList();
+            return decomposition.AddChain(biggestTree.Nodes);
+        }
 
-					if (coveredNeighbours.Count == 0)
-						continue;
+        private GraphComponent GetTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
+        {
+            switch (treeComponentStrategy)
+            {
+                case TreeComponentStrategy.BreadthFirst:
+                    return GetBfsTreeComponent(decomposition, startingNodes);
 
-					var minDepthIndex = coveredNeighbours.MinBy(GetDepth);
-					var minDepth = GetDepth(coveredNeighbours[minDepthIndex]);
+                case TreeComponentStrategy.DepthFirst:
+                    return GetDfsTreeComponent(decomposition, startingNodes);
 
-					if (minDepth < firstDepth)
-					{
-						firstVertex = node;
-						firstDepth = minDepthIndex;
-						foundFirst = true;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
 
-						hasOrigin = true;
-						origin = coveredNeighbours[minDepthIndex];
-					}
-				}
-			}
-			else
-			{
-				// If there are no covered nodes, find a one that is a leaf
-				firstVertex = Graph.Vertices.First(x => Graph.GetNeighbours(x).Count() == 1);
-				foundFirst = true;
-			}
+        private GraphComponent GetTreeComponent(PartialDecomposition decomposition, TNode startingNode)
+        {
+            return GetTreeComponent(decomposition, new List<TNode>() { startingNode });
+        }
 
-			// Must not happen
-			if (!foundFirst)
-				throw new InvalidOperationException();
+        private GraphComponent GetBfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
+        {
+            var nodes = new List<TNode>();
+            var queue = new Queue<TNode>();
 
-			var chain = new List<TNode>();
-			chain.Add(firstVertex);
-			SetDepth(firstVertex, ChainsCounter);
+            nodes.AddRange(startingNodes);
+            foreach (var startingNode in startingNodes)
+            {
+                queue.Enqueue(startingNode);
+            }
 
-			var nodeInFaces = false;
+            while (queue.Count != 0 && nodes.Count < maxTreeSize)
+            {
+                var node = queue.Dequeue();
 
-			// Check if we have an origin vertex and if the first vertex has any uncovered neighbour.
-			// If it does not have any uncovered neighbour, it will normally form a chain of the lenght 1.
-			// We want to prevent it and check if the origin node has any neighbour with the same characteristics.
-			if (groupSoloVertices && hasOrigin && UncoveredNeighboursCount(firstVertex) == 0)
-			{
-				var soloNeighbours = GetSoloNeighbours(origin, out nodeInFaces);
+                if (decomposition.GetRemainingFaces().Any(x => x.Contains(node)))
+                {
+                    continue;
+                }
 
-				foreach (var neighbour in soloNeighbours)
-				{
-					chain.Add(neighbour);
-					SetDepth(neighbour, ChainsCounter);
-				}
-			}
+                var neighbors = Graph.GetNeighbours(node);
 
-			while (true)
-			{
-				var lastNode = chain[chain.Count - 1];
-				var neighbours = Graph.GetNeighbours(lastNode).Where(x => !IsCovered(x)).ToList();
+                foreach (var neighbor in neighbors)
+                {
+                    if (!nodes.Contains(neighbor) && !decomposition.IsCovered(neighbor))
+                    {
+                        nodes.Add(neighbor);
+                        queue.Enqueue(neighbor);
 
-				// Break if there are not neigbours
-				if (neighbours.Count == 0)
-					break;
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
 
-				if (groupSoloVertices)
-				{
-					var soloNeighbours = GetSoloNeighbours(lastNode, out var nodeInFacesLocal);
+            return new GraphComponent()
+            {
+                Nodes = nodes,
+                IsFromFace = false,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
 
-					if (nodeInFacesLocal)
-					{
-						nodeInFaces = true;
-					}
+        private GraphComponent GetDfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
+        {
+            var nodes = new List<TNode>();
+            var stack = new Stack<TNode>();
 
-					// Add solo neighbours as above.
-					// Break if we found at least one.
-					if (soloNeighbours.Count != 0)
-					{
-						foreach (var neighbour in soloNeighbours)
-						{
-							chain.Add(neighbour);
-							SetDepth(neighbour, ChainsCounter);
-						}
+            nodes.AddRange(startingNodes);
+            foreach (var startingNode in startingNodes)
+            {
+                stack.Push(startingNode);
+            }
 
-						break;
-					}
-				}
+            while (stack.Count != 0 && nodes.Count < maxTreeSize)
+            {
+                var node = stack.Pop();
 
-				var nextNode = neighbours[0];
-				if (Faces.Any(x => x.Contains(nextNode)))
-				{
-					nodeInFaces = true;
-				}
+                if (decomposition.GetRemainingFaces().Any(x => x.Contains(node)))
+                {
+                    continue;
+                }
 
-				chain.Add(nextNode);
-				SetDepth(nextNode, ChainsCounter);
+                var neighbors = Graph.GetNeighbours(node);
 
-				// Break if we found a node that is contained in a face.
-				// We do not want this path to continue with that face.
-				if (nodeInFaces)
-					break;
-			}
+                foreach (var neighbor in neighbors)
+                {
+                    if (!nodes.Contains(neighbor) && !decomposition.IsCovered(neighbor))
+                    {
+                        nodes.Add(neighbor);
+                        stack.Push(neighbor);
 
-			ChainsCounter++;
-			return chain;
-		}
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
 
-		/// <summary>
-		/// Gets neighbours that do not have any uncovered neighbours and are not contained in any face.
-		/// </summary>
-		/// <param name="node"></param>
-		/// <param name="nodeInFaces">Whether we found a node that is contained in a face.</param>
-		/// <returns></returns>
-		private List<TNode> GetSoloNeighbours(TNode node, out bool nodeInFaces)
-		{
-			var soloNeighbours = new List<TNode>();
-			nodeInFaces = false;
+            return new GraphComponent()
+            {
+                Nodes = nodes,
+                IsFromFace = false,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
 
-			foreach (var neighbour in Graph.GetNeighbours(node).Where(x => !IsCovered(x)))
-			{
-				if (UncoveredNeighboursCount(neighbour) == 0)
-				{
-					if (Faces.Any(x => x.Contains(neighbour)))
-					{
-						nodeInFaces = true;
-						continue;
-					}
+        private int GetMinimumNeighborChainNumber(PartialDecomposition decomposition, List<TNode> nodes)
+        {
+            var coveredNeighbors = nodes
+                .SelectMany(Graph.GetNeighbours)
+                .Where(decomposition.IsCovered)
+                .ToList();
 
-					soloNeighbours.Add(neighbour);
-				}
-			}
+            if (coveredNeighbors.Count != 0)
+            {
+                return coveredNeighbors.Min(decomposition.GetChainNumber);
+            }
 
-			return soloNeighbours;
-		}
+            return -1;
+        }
 
-		/// <summary>
-		/// Gets the first cycle.
-		/// </summary>
-		/// <param name="faces"></param>
-		/// <returns></returns>
-		private List<TNode> GetFirstCycle(List<List<TNode>> faces)
-		{
-			if (faces.Count == 0)
-				throw new ArgumentException();
+        private GraphComponent GetCycleComponent(PartialDecomposition decomposition, List<TNode> face)
+        {
+            var nodes = new List<TNode>();
+            var notCoveredNodes = face.Where(x => !decomposition.IsCovered(x)).ToList();
+            var nodeOrder = new Dictionary<TNode, int>();
 
-			var smallestIndex = faces.MinBy(x => x.Count);
-			var smallestFace = faces[smallestIndex];
+            while (notCoveredNodes.Count != 0)
+            {
+                var nodeIndex = notCoveredNodes
+                    .MinBy(
+                        x => Graph
+                            .GetNeighbours(x)
+                            .Min(y =>
+                                decomposition.IsCovered(y) 
+                                    ? -1 
+                                    : nodeOrder.ContainsKey(y) ? nodeOrder[y] : int.MaxValue));
 
-			foreach (var node in smallestFace)
-			{
-				SetDepth(node, ChainsCounter);
-			}
+                nodeOrder[notCoveredNodes[nodeIndex]] = nodeOrder.Count;
+                nodes.Add(notCoveredNodes[nodeIndex]);
+                notCoveredNodes.RemoveAt(nodeIndex);
+            }
 
-			ChainsCounter++;
-			faces.RemoveAt(smallestIndex);
-			RemoveCoveredNodes(faces);
+            return new GraphComponent()
+            {
+                Nodes = nodes,
+                IsFromFace = true,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
 
-			return smallestFace;
-		}
+        private class GraphComponent
+        {
+            public List<TNode> Nodes { get; set; }
 
-		/// <summary>
-		/// Removes all faces that have all nodes already covered.
-		/// </summary>
-		/// <param name="faces"></param>
-		private void RemoveCoveredNodes(List<List<TNode>> faces)
-		{
-			// Loops are reversed because removing elements changes index
-			for (var i = faces.Count - 1; i >= 0; i--)
-			{
-				var face = faces[i];
+            public bool IsFromFace { get; set; }
 
-				if (face.TrueForAll(IsCovered))
-				{
-					faces.RemoveAt(i);
-				}
-			}
-		}
-	}
+            public int MinimumNeighborChainNumber { get; set; }
+
+            public override string ToString()
+            {
+                return $"{(IsFromFace ? "cycle" : "tree")} {MinimumNeighborChainNumber} [{string.Join(",", Nodes)}]";
+            }
+        }
+
+        private class PartialDecomposition
+        {
+            private readonly Dictionary<TNode, int> coveredVertices;
+            private readonly List<List<TNode>> remainingFaces;
+            private readonly List<List<TNode>> chains;
+
+            public int NumberOfChains => coveredVertices.Count == 0 ? 0 : coveredVertices.Values.Max() + 1;
+
+            public PartialDecomposition(List<List<TNode>> faces)
+            {
+                this.remainingFaces = faces;
+                coveredVertices = new Dictionary<TNode, int>();
+                chains = new List<List<TNode>>();
+            }
+
+            private PartialDecomposition(PartialDecomposition oldDecomposition, List<TNode> chain)
+            {
+                coveredVertices = new Dictionary<TNode, int>(oldDecomposition.coveredVertices);
+
+				// Cover chain
+                var numberOfChains = oldDecomposition.NumberOfChains;
+                foreach (var node in chain)
+                {
+                    coveredVertices[node] = numberOfChains;
+                }
+
+				// Remove covered faces
+                remainingFaces = oldDecomposition
+                    .remainingFaces
+                    .Where(face => face.Any(node => !coveredVertices.ContainsKey(node)))
+                    .ToList();
+
+                chains = oldDecomposition.chains.Select(x => x.ToList()).ToList();
+                chains.Add(chain);
+            }
+
+            public PartialDecomposition AddChain(List<TNode> chain)
+            {
+				return new PartialDecomposition(this, chain);
+            }
+
+			public List<TNode> GetAllCoveredVertices()
+            {
+                return coveredVertices.Keys.ToList();
+            }
+
+            public bool IsCovered(TNode node)
+            {
+                return coveredVertices.ContainsKey(node);
+            }
+
+            public int GetChainNumber(TNode node)
+            {
+                if (coveredVertices.ContainsKey(node))
+                {
+                    return coveredVertices[node];
+                }
+
+                return -1;
+            }
+
+            public List<List<TNode>> GetRemainingFaces()
+            {
+                return remainingFaces.Select(x => x.ToList()).ToList();
+            }
+
+            public List<IChain<TNode>> GetFinalDecomposition()
+            {
+                var chains = new List<IChain<TNode>>();
+
+                for (var i = 0; i < this.chains.Count; i++)
+                {
+                    var chain = this.chains[i];
+                    chains.Add(new Chain<TNode>(chain, i));
+                }
+
+                return chains;
+            }
+        }
+    }
 }

@@ -28,6 +28,11 @@ namespace MapGeneration.Utils.Logging
             Write(text + Environment.NewLine);
         }
 
+        public void WriteLine(object o)
+        {
+            Write(o.ToString() + Environment.NewLine);
+        }
+
         public void Write(string text)
         {
             foreach (var loggerHandler in loggerHandlers)

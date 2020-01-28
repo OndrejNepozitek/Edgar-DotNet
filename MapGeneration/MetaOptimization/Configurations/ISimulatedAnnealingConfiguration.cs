@@ -5,5 +5,7 @@ namespace MapGeneration.MetaOptimization.Configurations
     public interface ISimulatedAnnealingConfiguration
     {
         SimulatedAnnealingConfigurationProvider SimulatedAnnealingConfiguration { get; set; }
+
+        int SimulatedAnnealingMaxBranching { get; set; }
     }
 }

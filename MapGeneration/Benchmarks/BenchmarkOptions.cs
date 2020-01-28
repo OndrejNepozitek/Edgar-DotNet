@@ -2,8 +2,10 @@
 {
     public class BenchmarkOptions
     {
-        public bool WithConsoleOutput = true;
+        public bool WithConsoleOutput { get; set; } = true;
 
-        public bool WithConsolePreview = true;
+        public bool WithConsolePreview { get; set; } = true;
+
+        public bool WithFileOutput { get; set; } = true;
     }
 }

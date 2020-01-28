@@ -19,7 +19,7 @@ namespace MapGeneration.Benchmarks.ResultSaving
             var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
             // TODO: ugly? How to pass directory
             Directory.CreateDirectory(directory);
-            File.WriteAllText($"{directory}{datetime}{name ?? scenarioResult.Name ?? string.Empty}.json", json);
+            File.WriteAllText(Path.Combine(directory, $"{datetime}{name ?? scenarioResult.Name ?? string.Empty}.json"), json);
         }
 
         public async Task UploadCommitResult(BenchmarkScenarioResult scenarioResult, UploadConfig config, CommitInfo commitInfo)

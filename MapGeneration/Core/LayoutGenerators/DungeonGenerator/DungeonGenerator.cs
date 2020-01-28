@@ -29,7 +29,6 @@ using MapGeneration.Utils;
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
     public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<IMapLayout<TNode>>
-        where TNode : IEquatable<TNode>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
@@ -67,7 +66,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 .Cast<IChain<int>>()
                 .ToList();
 
-            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>();
+            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration.SimulatedAnnealingMaxBranching);
 
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
                 new PolygonOverlap(),

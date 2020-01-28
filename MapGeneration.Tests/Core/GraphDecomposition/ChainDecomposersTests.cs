@@ -67,7 +67,7 @@
 		{
 			protected override void CreateConcrete()
 			{
-				chainDecomposition = new BreadthFirstChainDecomposition<int>();
+				chainDecomposition = new BreadthFirstChainDecompositionOld<int>();
 			}
 		}
 	}

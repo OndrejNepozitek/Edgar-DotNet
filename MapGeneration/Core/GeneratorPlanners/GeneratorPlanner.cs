@@ -27,13 +27,18 @@ namespace MapGeneration.Core.GeneratorPlanners
 		private TLayout initialLayout;
 		private List<NodeRow> rows;
         private int nextId;
-        private int numberOfLayoutsFromOneInstance = 5;
+        private readonly int numberOfLayoutsFromOneInstance;
         private ILayoutEvolver<TLayout, TNode> layoutEvolver;
         private IList<IChain<TNode>> chains;
 
         protected CancellationToken? CancellationToken;
 
 		public event Action<TLayout> OnLayoutGenerated;
+
+        public GeneratorPlanner(int maximumBranching = 5)
+        {
+            numberOfLayoutsFromOneInstance = maximumBranching;
+        }
 
         public TLayout Generate(TLayout initialLayout, IList<IChain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver)
         {
