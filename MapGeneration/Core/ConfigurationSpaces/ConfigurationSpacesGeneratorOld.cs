@@ -237,7 +237,7 @@
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
 
 			// One list for every direction
-			var lines = new List<IDoorLine>[4];
+			var lines = new List<IDoorLine>[5];
 
 			// Init array
 			for (var i = 0; i < lines.Length; i++)

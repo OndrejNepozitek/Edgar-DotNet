@@ -240,7 +240,8 @@ namespace MapGeneration.Core.ConfigurationSpaces
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
 
 			// One list for every direction
-			var lines = new List<IDoorLine>[4];
+            // TODO: maybe use dictionary instead of array?
+			var lines = new List<IDoorLine>[5];
 
 			// Init array
 			for (var i = 0; i < lines.Length; i++)

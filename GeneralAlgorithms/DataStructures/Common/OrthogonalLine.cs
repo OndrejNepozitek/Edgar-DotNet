@@ -54,25 +54,25 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// </remarks>
 		/// <param name="from"></param>
 		/// <param name="to"></param>
-		/// <param name="direction"></param>
+		/// <param name="degeneratedDirection"></param>
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
         // TODO: remove
         [JsonConstructor]
-		public OrthogonalLine(IntVector2 from, IntVector2 to, Direction direction)
+		public OrthogonalLine(IntVector2 from, IntVector2 to, Direction degeneratedDirection)
 		{
 			if (from.X != to.X && from.Y != to.Y)
 			{
 				throw new ArgumentException("The line is not orthogonal");
 			}
 
-			if (from != to && direction != Direction.Undefined && direction != GetDirection(from, to))
+			if (from != to && degeneratedDirection != Direction.Undefined && degeneratedDirection != GetDirection(from, to))
 			{
 				throw new InvalidOperationException("Given direction is wrong");
 			}
 
 			From = from;
 			To = to;
-			degeneratedDirection = direction;
+			this.degeneratedDirection = degeneratedDirection;
 		}
 
 		/// <summary>
@@ -505,7 +505,11 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// </summary>
 		public enum Direction
 		{
-			Top, Right, Bottom, Left, Undefined
+            Undefined = 0,
+			Top = 1,
+            Right = 2,
+            Bottom = 3,
+            Left = 4, 
 		}
 	}
 }

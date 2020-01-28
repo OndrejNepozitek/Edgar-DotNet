@@ -63,7 +63,7 @@ namespace Sandbox.Features
 
             var input = new GeneratorInput<MapDescription<int>>(
                 "EnterTheGungeon",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/gungeon_2_4.json"), settings)
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/exportedMapDescription.json"), settings)
             );
             //var input = new GeneratorInput<MapDescription<int>>(
             //    "example1_corridors",
