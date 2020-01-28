@@ -76,7 +76,7 @@ namespace Sandbox
             var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 250);
 
             var resultSaver = new BenchmarkResultSaver();
-            resultSaver.SaveResult(scenarioResult);
+            resultSaver.SaveResultDefaultLocation(scenarioResult);
 
             BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1576777328_Basic_Reference.json");
         }

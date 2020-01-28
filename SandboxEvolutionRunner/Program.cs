@@ -242,13 +242,13 @@ namespace SandboxEvolutionRunner
             {
                 WithConsolePreview = false,
             });
-            resultSaver.SaveResult(scenarioResultNew, directory: Directory);
+            resultSaver.SaveResultDefaultLocation(scenarioResultNew, directory: Directory);
 
             var scenarioResultOld = benchmarkRunner.Run(benchmarkScenarioOld, inputsOldConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
             {
                 WithConsolePreview = false,
             });
-            resultSaver.SaveResult(scenarioResultOld, directory: Directory);
+            resultSaver.SaveResultDefaultLocation(scenarioResultOld, directory: Directory);
         }
 
         public static void AnalyzeMutations(List<Result> results)

@@ -153,7 +153,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             }
 
             var resultSaver = new BenchmarkResultSaver();
-            resultSaver.SaveResult(scenarioResult, $"{individual.Id}_benchmarkResults", ResultsDirectory, withDatetime: false);
+            resultSaver.SaveResultDefaultLocation(scenarioResult, $"{individual.Id}_benchmarkResults", ResultsDirectory, withDatetime: false);
 
             using (var file =
                 new StreamWriter(Path.Combine(ResultsDirectory, $"{individual.Id}_visualization.txt")))

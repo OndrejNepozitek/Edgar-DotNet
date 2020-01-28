@@ -143,7 +143,7 @@ namespace Sandbox.Features
 
             var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 5);
             var resultSaver = new BenchmarkResultSaver();
-            resultSaver.SaveResult(scenarioResult);
+            resultSaver.SaveResultDefaultLocation(scenarioResult);
 
             var directory = $"CorridorConfigurationSpaces/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}";
             Directory.CreateDirectory(directory);

@@ -9,17 +9,27 @@ namespace MapGeneration.Benchmarks.ResultSaving
 {
     public class BenchmarkResultSaver
     {
-        public void SaveResult(BenchmarkScenarioResult scenarioResult, string name = null, string directory = "BenchmarkResults/", bool withDatetime = true)
+        public void SaveResultDefaultLocation(BenchmarkScenarioResult scenarioResult, string name = null, string directory = "BenchmarkResults/", bool withDatetime = true)
+        {
+            // TODO: ugly?
+            var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
+            var path = Path.Combine(directory, $"{datetime}{name ?? scenarioResult.Name ?? string.Empty}.json");
+            SaveResult(scenarioResult, path);
+        }
+
+        public void SaveResult(BenchmarkScenarioResult scenarioResult, string path)
         {
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
 
             var json = JsonConvert.SerializeObject(scenarioResult, Formatting.Indented);
+            var directory = Path.GetDirectoryName(path);
 
-            // TODO: ugly?
-            var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
-            // TODO: ugly? How to pass directory
-            Directory.CreateDirectory(directory);
-            File.WriteAllText(Path.Combine(directory, $"{datetime}{name ?? scenarioResult.Name ?? string.Empty}.json"), json);
+            if (directory != null)
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.WriteAllText(path, json);
         }
 
         public async Task UploadCommitResult(BenchmarkScenarioResult scenarioResult, UploadConfig config, CommitInfo commitInfo)

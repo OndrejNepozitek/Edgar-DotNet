@@ -18,7 +18,7 @@ namespace Sandbox.Utils
             if (name == null) throw new ArgumentNullException(nameof(name));
             if (group == null) throw new ArgumentNullException(nameof(group));
 
-            resultSaver.SaveResult(scenarioResult, $"{group}_{name}");
+            resultSaver.SaveResultDefaultLocation(scenarioResult, $"{group}_{name}");
 
             var uploadConfig = GetDefaultUploadConfig();
             await resultSaver.UploadManualResult(scenarioResult, uploadConfig, new ManualInfo()
