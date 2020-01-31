@@ -6,25 +6,34 @@ using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Utils;
 
 namespace MapGeneration.Core.ConfigurationSpaces
 {
     public class ConfigurationSpaces<TConfiguration> : AbstractConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration>
         where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
     {
-        protected List<WeightedShape>[] ShapesForNodes;
-        protected ConfigurationSpace[][] ConfigurationSpaces_;
-        protected TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
+        private readonly Func<TConfiguration, TConfiguration, int> configurationSpaceSelector;
+        protected List<List<WeightedShape>> ShapesForNodes;
+        protected ConfigurationSpace[][][] ConfigurationSpaces_;
+        protected TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping = new TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>>();
 
         public ConfigurationSpaces(
-            List<WeightedShape>[] shapesForNodes,
-            ConfigurationSpace[][] configurationSpaces,
-            ILineIntersection<OrthogonalLine> lineIntersection, TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping) : base(lineIntersection)
+            ILineIntersection<OrthogonalLine> lineIntersection, int roomTemplateInstancesCount, int nodesCount, Func<TConfiguration, TConfiguration, int> configurationSpaceSelector) : base(lineIntersection)
         {
-            ShapesForNodes = shapesForNodes;
-            ConfigurationSpaces_ = configurationSpaces;
-            IntAliasMapping = intAliasMapping;
+            this.configurationSpaceSelector = configurationSpaceSelector;
+            // Init configuration spaces array
+			ConfigurationSpaces_ = new ConfigurationSpace[roomTemplateInstancesCount][][];
+            for (var i = 0; i < roomTemplateInstancesCount; i++)
+            {
+                ConfigurationSpaces_[i] = new ConfigurationSpace[roomTemplateInstancesCount][];
+            }
+
+			// Init shapes for node lists
+			ShapesForNodes = new List<List<WeightedShape>>(nodesCount);
+            for (var i = 0; i < nodesCount; i++)
+            {
+                ShapesForNodes.Add(new List<WeightedShape>());
+            }
         }
 
 		/// <inheritdoc />
@@ -35,7 +44,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 
 			foreach (var configuration in configurations)
 			{
-				spaces.Add(Tuple.Create(configuration, chosenSpaces[configuration.ShapeContainer.Alias]));
+				spaces.Add(Tuple.Create(configuration, chosenSpaces[configuration.ShapeContainer.Alias][configurationSpaceSelector(mainConfiguration, configuration)]));
 			}
 
 			return spaces;
@@ -44,13 +53,14 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		/// <inheritdoc />
 		public override ConfigurationSpace GetConfigurationSpace(TConfiguration mainConfiguration, TConfiguration configuration)
 		{
-			return GetConfigurationSpace(mainConfiguration.ShapeContainer, configuration.ShapeContainer);
+            return ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias][configuration.ShapeContainer.Alias][configurationSpaceSelector(mainConfiguration, configuration)];
 		}
 
 		/// <inheritdoc />
 		public override ConfigurationSpace GetConfigurationSpace(IntAlias<GridPolygon> movingPolygon, IntAlias<GridPolygon> fixedPolygon)
 		{
-			return ConfigurationSpaces_[movingPolygon.Alias][fixedPolygon.Alias];
+			throw new InvalidOperationException();
+			return ConfigurationSpaces_[movingPolygon.Alias][fixedPolygon.Alias][0]; // TODO: is this ok?
 		}
 
 		/// <inheritdoc />
@@ -99,6 +109,35 @@ namespace MapGeneration.Core.ConfigurationSpaces
         public TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> GetIntAliasMapping()
         {
             return IntAliasMapping;
+        }
+
+        public void AddConfigurationSpace(RoomTemplateInstance roomTemplateInstance1, RoomTemplateInstance roomTemplateInstance2, ConfigurationSpace[] configurationSpace)
+        {
+            var alias1 = GetRoomTemplateInstanceAlias(roomTemplateInstance1);
+            var alias2 = GetRoomTemplateInstanceAlias(roomTemplateInstance2);
+
+            ConfigurationSpaces_[alias1.Alias][alias2.Alias] = configurationSpace;
+        }
+
+        public void AddShapeForNode(int node, RoomTemplateInstance roomTemplateInstance, double probability)
+        {
+            var alias = GetRoomTemplateInstanceAlias(roomTemplateInstance);
+
+            ShapesForNodes[node].Add(new WeightedShape(alias, probability));
+        }
+
+        private IntAlias<GridPolygon> GetRoomTemplateInstanceAlias(RoomTemplateInstance roomTemplateInstance)
+        {
+            if (IntAliasMapping.TryGetValue(roomTemplateInstance, out var alias))
+            {
+                return alias;
+            }
+
+			var newAlias = new IntAlias<GridPolygon>(IntAliasMapping.Count, roomTemplateInstance.RoomShape); 
+
+			IntAliasMapping.Add(roomTemplateInstance, newAlias);
+
+            return newAlias;
         }
     }
 }

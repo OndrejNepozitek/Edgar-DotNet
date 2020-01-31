@@ -70,12 +70,4 @@ namespace MapGeneration.Benchmarks
                 benchmarkJobResults.Select(x => new BenchmarkResult(x.InputName, x.Runs.ToList())).ToList());
         }
     }
-
-    public static class BenchmarkRunner
-    {
-        public static BenchmarkRunner<MapDescriptionOld<TNode>> CreateForNodeType<TNode>()
-        {
-            return new BenchmarkRunner<MapDescriptionOld<TNode>>();
-        }
-    }
 }

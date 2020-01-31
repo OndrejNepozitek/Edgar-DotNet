@@ -1,26 +1,25 @@
-﻿using System;
-using System.Linq;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.Configuration.EnergyData;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.Layouts;
-
-namespace MapGeneration.Core.Constraints
+﻿namespace MapGeneration.Core.Constraints
 {
-    /// <summary>
-    /// Basic constraint that checks if no polygons overlap and if neighboring
-    /// nodes are connected by doors.
-    /// </summary>
-    /// <typeparam name="TLayout"></typeparam>
-    /// <typeparam name="TNode"></typeparam>
-    /// <typeparam name="TConfiguration"></typeparam>
-    /// <typeparam name="TEnergyData"></typeparam>
-    /// <typeparam name="TShapeContainer"></typeparam>
+    using System;
+	using System.Linq;
+	using ConfigurationSpaces;
+	using GeneralAlgorithms.Algorithms.Polygons;
+	using GeneralAlgorithms.DataStructures.Common;
+	using Interfaces.Core.Configuration;
+	using Interfaces.Core.Configuration.EnergyData;
+	using Interfaces.Core.ConfigurationSpaces;
+	using Interfaces.Core.Constraints;
+	using Interfaces.Core.Layouts;
+
+	/// <summary>
+	/// Basic constraint that checks if no polygons overlap and if neighboring
+	/// nodes are connected by doors.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
+	/// <typeparam name="TEnergyData"></typeparam>
+	/// <typeparam name="TShapeContainer"></typeparam>
     public class BasicConstraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
 		where TLayout : ILayout<TNode, TConfiguration>
 		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
@@ -29,23 +28,21 @@ namespace MapGeneration.Core.Constraints
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
 		private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
-        private readonly IGraph<TNode> graphOfNeighbors;
 
-        public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, IGraph<TNode> graphOfNeighbors)
+		public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.polygonOverlap = polygonOverlap;
 			energySigma = 10 * averageSize;
 			this.configurationSpaces = configurationSpaces;
-            this.graphOfNeighbors = graphOfNeighbors;
-        }
+		}
 
 		/// <inheritdoc />
-		/// <returns>True if there is no overlap and all neighbors are connected by doors.</returns>
+		/// <returns>True if there is no overlap and all neighbours are connected by doors.</returns>
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			var overlap = 0;
 			var distance = 0;
-			var neighbors = graphOfNeighbors.GetNeighbours(node).ToList();
+			var neighbours = layout.Graph.GetNeighbours(node).ToList();
 
 			foreach (var vertex in layout.Graph.Vertices)
 			{
@@ -61,7 +58,7 @@ namespace MapGeneration.Core.Constraints
 				{
 					overlap += area;
 				}
-				else if (neighbors.Contains(vertex))
+				else if (neighbours.Contains(vertex))
 				{
 					if (!configurationSpaces.HaveValidPosition(configuration, c))
 					{
@@ -94,7 +91,7 @@ namespace MapGeneration.Core.Constraints
 
 			// MoveDistance should not be recomputed as it is used only when two nodes are neighbours which is not the case here
 			var distanceTotal = configuration.EnergyData.MoveDistance;
-			if (AreNeighbors(layout, perturbedNode, node))
+			if (AreNeighbours(layout, perturbedNode, node))
 			{
 				// Distance is taken into account only when there is no overlap
 				var distanceOld = overlapOld == 0 && !configurationSpaces.HaveValidPosition(oldConfiguration, configuration) ? ComputeDistance(configuration, oldConfiguration) : 0;
@@ -136,6 +133,7 @@ namespace MapGeneration.Core.Constraints
 				newDistance += newNodeConfiguration.EnergyData.MoveDistance - nodeConfiguration.EnergyData.MoveDistance;
 			}
 
+
 			var newEnergy = ComputeEnergy(newOverlap, newDistance);
 
 			energyData.MoveDistance = newDistance;
@@ -168,9 +166,9 @@ namespace MapGeneration.Core.Constraints
 			return (float)(Math.Pow(Math.E, overlap / (energySigma * 625)) * Math.Pow(Math.E, distance / (energySigma * 50)) - 1);
 		}
 
-		private bool AreNeighbors(TLayout layout, TNode node1, TNode node2)
+		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)
 		{
-			return graphOfNeighbors.HasEdge(node1, node2);
+			return layout.Graph.HasEdge(node1, node2);
 		}
 	}
 }

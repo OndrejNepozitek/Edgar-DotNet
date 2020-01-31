@@ -30,7 +30,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             this.polygonUtils = polygonUtils;
         }
         
-        public ConfigurationSpaces2<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
+        public ConfigurationSpaces<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
             where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
         {
             var graph = mapDescription.GetGraph();
@@ -74,7 +74,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
                     x => corridorRoomDescriptionsMapping[x.Value] + 1
                 );
 
-            var configurationSpaces = new ConfigurationSpaces2<TConfiguration>(lineIntersection,
+            var configurationSpaces = new ConfigurationSpaces<TConfiguration>(lineIntersection,
                 roomTemplateInstancesCount, graph.VerticesCount, (configuration1, configuration2) =>
                 {
                     if (nodesToCorridorMapping.TryGetValue(new Tuple<int, int>(configuration1.Node, configuration2.Node), out var corridor))

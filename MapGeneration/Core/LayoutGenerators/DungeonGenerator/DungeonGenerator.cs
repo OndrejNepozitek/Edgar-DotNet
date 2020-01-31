@@ -85,7 +85,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
                     CorridorsData>>
                 {
-                    new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    new BasicConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
                         CorridorsData, IntAlias<GridPolygon>>(
                         new FastPolygonOverlap(),
                         averageSize,
@@ -108,19 +108,6 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
 
-            var stageTwoConstraints =
-                new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
-                    CorridorsData>>
-                {
-                    new BasicConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
-                        CorridorsData, IntAlias<GridPolygon>>(
-                        new FastPolygonOverlap(),
-                        averageSize,
-                        configurationSpaces,
-                        mapDescription.GetGraph()
-                    )
-                };
-            var stageTwoConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageTwoConstraints);
 
             //if (mapDescription.IsWithCorridors)
             //{

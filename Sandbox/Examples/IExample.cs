@@ -4,6 +4,6 @@
 
 	public interface IExample
 	{
-		MapDescriptionOld<int> GetMapDescription();
+		MapDescription<int> GetMapDescription();
 	}
 }
