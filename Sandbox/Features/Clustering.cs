@@ -16,7 +16,7 @@ namespace Sandbox.Features
     {
         public void Run()
         {
-            var input = CorridorConfigurationSpaces.GetMapDescriptionsSet(1 * new IntVector2(1, 1), false, new List<int>() { 2, 4 }, true)[1];
+            var input = Program.GetMapDescriptionsSet(1 * new IntVector2(1, 1), false, new List<int>() { 2, 4 }, true)[1];
             var mapDescription = input.MapDescription;
             var averageSize = GetAverageRoomTemplateSize(mapDescription);
 

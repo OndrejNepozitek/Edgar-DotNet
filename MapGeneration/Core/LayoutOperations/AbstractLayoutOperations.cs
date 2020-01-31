@@ -23,21 +23,19 @@ namespace MapGeneration.Core.LayoutOperations
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer, TNode>, ISmartCloneable<TConfiguration>
 	{
-		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageOneConfigurationSpaces;
-		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> StageTwoConfigurationSpaces;
-		protected Random Random;
+		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+        protected Random Random;
 		protected float ShapePerturbChance = 0.4f;
 		protected float DifferenceFromAverageScale = 0.4f;
 		protected int AverageSize;
         protected readonly IMapDescription<TNode> MapDescription;
         protected readonly IGraph<TNode> StageOneGraph;
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageTwoConfigurationSpaces)
+		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription)
 		{
-			StageOneConfigurationSpaces = stageOneConfigurationSpaces;
+			ConfigurationSpaces = configurationSpaces;
 			AverageSize = averageSize;
             MapDescription = mapDescription;
-            StageTwoConfigurationSpaces = stageTwoConfigurationSpaces;
             StageOneGraph = mapDescription.GetStageOneGraph();
         }
 
@@ -45,7 +43,7 @@ namespace MapGeneration.Core.LayoutOperations
 		public virtual void InjectRandomGenerator(Random random)
 		{
 			Random = random;
-			(StageOneConfigurationSpaces as IRandomInjectable)?.InjectRandomGenerator(random); // TODO: remove later
+			(ConfigurationSpaces as IRandomInjectable)?.InjectRandomGenerator(random); // TODO: remove later
 		}
 
 		/// <inheritdoc />
@@ -61,13 +59,13 @@ namespace MapGeneration.Core.LayoutOperations
 			layout.GetConfiguration(node, out var configuration);
 
 			// Return the current layout if a given node cannot be shape-perturbed
-			if (!StageOneConfigurationSpaces.CanPerturbShape(node))
+			if (!ConfigurationSpaces.CanPerturbShape(node))
 				return;
 
 			TShapeContainer shape;
 			do
 			{
-				shape = StageOneConfigurationSpaces.GetRandomShape(node);
+				shape = ConfigurationSpaces.GetRandomShape(node);
 			}
 			while (ReferenceEquals(shape, configuration.Shape));
 
@@ -88,7 +86,7 @@ namespace MapGeneration.Core.LayoutOperations
 		{
 			var canBePerturbed = chain
                 .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle better
-                .Where(x => StageOneConfigurationSpaces.CanPerturbShape(x))
+                .Where(x => ConfigurationSpaces.CanPerturbShape(x))
                 .ToList();
 
 			if (canBePerturbed.Count == 0)
@@ -117,7 +115,7 @@ namespace MapGeneration.Core.LayoutOperations
 			if (!layout.GetConfiguration(node, out var mainConfiguration))
 				throw new InvalidOperationException();
 
-			var newPosition = StageOneConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+			var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
 
 			// If zero configurations were satisfied, that means that the current shape was not compatible
 			// with any of its neighbours so we perturb shape instead.

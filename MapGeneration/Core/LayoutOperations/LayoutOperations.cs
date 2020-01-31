@@ -28,7 +28,7 @@ namespace MapGeneration.Core.LayoutOperations
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator;
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator;
 
-        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> stageOneConfigurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator) : base(stageOneConfigurationSpaces, averageSize, mapDescription, null)
+        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator) : base(configurationSpaces, averageSize, mapDescription)
         {
             this.stageOneConstraintsEvaluator = stageOneConstraintsEvaluator;
             this.stageTwoConstraintsEvaluator = stageTwoConstraintsEvaluator;
@@ -113,7 +113,7 @@ namespace MapGeneration.Core.LayoutOperations
 			// The first node is set to have a random shape and [0,0] position
 			if (configurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(StageOneConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
+				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
 				return;
 			}
 
@@ -121,13 +121,13 @@ namespace MapGeneration.Core.LayoutOperations
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations);
+				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations);
 
 				if (intersection == null)
 					continue;
@@ -343,12 +343,12 @@ namespace MapGeneration.Core.LayoutOperations
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = StageOneConfigurationSpaces.GetShapesForNode(node).ToList();
+			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
 			{
-				var intersection = StageOneConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
+				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;

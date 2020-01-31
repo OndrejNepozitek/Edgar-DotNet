@@ -25,6 +25,7 @@
     <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\LayoutConverters\CorridorNodesCreators\" />
     <Folder Include="MetaOptimization\Visualizations\" />
   </ItemGroup>
 </Project>

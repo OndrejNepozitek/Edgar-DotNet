@@ -1,22 +1,28 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
+using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using MapGeneration.MetaOptimization.Visualizations;
+using MapGeneration.Utils.MapDrawing;
 using Sandbox.Features;
 
 namespace Sandbox
 {
 	using System;
 	using System.Collections.Generic;
-	using System.IO;
     using System.Windows.Forms;
     using GeneralAlgorithms.DataStructures.Common;
 	using GUI;
-	using MapGeneration.Benchmarks;
     using MapGeneration.Core.MapDescriptions;
 	using MapGeneration.Utils;
-	using MapGeneration.Utils.ConfigParsing;
-	using Utils;
+    using Utils;
 
 	internal static class Program
 	{
@@ -30,8 +36,8 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            // CompareWithReference();
-            new CorridorConfigurationSpaces().Run();
+            CompareWithReference();
+            // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
             // new TwoStageGeneration().Run();
@@ -47,41 +53,81 @@ namespace Sandbox
 
         public static void CompareWithReference()
         {
-            var scale = new IntVector2(1, 1);
-            var offsets = new List<int>() { 2 };
+            var inputs = new List<DungeonGeneratorInput<int>>();
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4 }, false));
+            //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
 
-            // var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
-            var mapDescriptions = GetMapDescriptionsSet(scale, false, offsets);
-            mapDescriptions.AddRange(GetMapDescriptionsSet(scale, true, offsets));
+            if (true)
+            {
+                inputs.Sort((x1, x2) => string.Compare(x1.Name, x2.Name, StringComparison.Ordinal));
+            }
 
-            var benchmarkRunner = BenchmarkRunner.CreateForNodeType<int>();
+            var layoutDrawer = new SVGLayoutDrawer<int>();
 
-            var scenario = BenchmarkScenario.CreateCustomForNodeType<int>(
-                "Basic",
-                input =>
+            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
+            {
+                var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+                layoutGenerator.InjectRandomGenerator(new Random(0));
+
+                //return new LambdaGeneratorRunner(() =>
+                //{
+                //    var layouts = layoutGenerator.GenerateLayout();
+
+                //    return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
+                //});
+                return new LambdaGeneratorRunner(() =>
                 {
+                    var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+                    void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
-                        var layoutGenerator = new DungeonGeneratorOld<int>(input.MapDescription);
-                        layoutGenerator.InjectRandomGenerator(new Random(0));
-
-                        return new LambdaGeneratorRunner(() =>
-                        {
-                            var layouts = layoutGenerator.GenerateLayout();
-
-                            return new GeneratorRun(layouts != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
-                        });
+                        simulatedAnnealingArgsContainer.Add(eventArgs);
                     }
+
+                    layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
+                    var layout = layoutGenerator.GenerateLayout();
+                    layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
+
+                    var additionalData = new AdditionalRunData()
+                    {
+                        SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
+                        GeneratedLayoutSvg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true),
+                        // GeneratedLayout = layout,
+                    };
+
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+
+                    return generatorRun;
                 });
+            });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, mapDescriptions, 250);
-
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 5);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResultDefaultLocation(scenarioResult);
 
-            BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1576777328_Basic_Reference.json");
+            var directory = $"CorridorConfigurationSpaces/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}";
+            Directory.CreateDirectory(directory);
+
+            var dataVisualization = new ChainStatsVisualization<GeneratorData>();
+            foreach (var inputResult in scenarioResult.BenchmarkResults)
+            {
+                using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
+                {
+                    var generatorEvaluation = new GeneratorEvaluation(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData>>().ToList()); // TODO: ugly
+                    dataVisualization.Visualize(generatorEvaluation, file);
+                }
+            }
+
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1580072563_CorridorConfigurationSpaces_Reference.json");
         }
 
-		/// <summary>
+        /// <summary>
 		/// Runs one of the example presented in the Tutorial.
 		/// </summary>
 		public static void RunExample()
@@ -187,88 +233,118 @@ namespace Sandbox
   //          benchmark.Execute(layoutGenerator, scenario, mapDescriptions, 100);
   //      }
 
-        public static List<GeneratorInput<MapDescriptionOld<int>>> GetInputsForThesis(bool withCorridors)
-		{
-			var path = "Resources/Maps/Thesis/";
-			List<string> files;
+  //      public static List<GeneratorInput<MapDescriptionOld<int>>> GetInputsForThesis(bool withCorridors)
+		//{
+		//	var path = "Resources/Maps/Thesis/";
+		//	List<string> files;
 
-			if (withCorridors)
-			{
-				files = new List<string>()
-				{
-					"backtracking_corridors",
-					"generating_one_layout_corridors",
-					"example1_corridors",
-					"example2_corridors",
-					"example3_corridors",
-					"game1_corridors",
-					"game2_corridors",
-				};
-			}
-			else
-			{
-				files = new List<string>()
-				{
-					"backtracking_advanced",
-					"generating_one_layout_advanced",
-					"example1_advanced",
-					"example2_advanced",
-					"example3_advanced",
-					"game1_basic",
-					"game2_basic",
-				};
-			}
+		//	if (withCorridors)
+		//	{
+		//		files = new List<string>()
+		//		{
+		//			"backtracking_corridors",
+		//			"generating_one_layout_corridors",
+		//			"example1_corridors",
+		//			"example2_corridors",
+		//			"example3_corridors",
+		//			"game1_corridors",
+		//			"game2_corridors",
+		//		};
+		//	}
+		//	else
+		//	{
+		//		files = new List<string>()
+		//		{
+		//			"backtracking_advanced",
+		//			"generating_one_layout_advanced",
+		//			"example1_advanced",
+		//			"example2_advanced",
+		//			"example3_advanced",
+		//			"game1_basic",
+		//			"game2_basic",
+		//		};
+		//	}
 
-			var inputs = new List<GeneratorInput<MapDescriptionOld<int>>>();
-			var configLoader = new ConfigLoader();
+		//	var inputs = new List<GeneratorInput<MapDescriptionOld<int>>>();
+		//	var configLoader = new ConfigLoader();
 
-			foreach (var file in files)
-			{
-				var filename = $"{path}{file}.yml";
+		//	foreach (var file in files)
+		//	{
+		//		var filename = $"{path}{file}.yml";
 
-				using (var sr = new StreamReader(filename))
-				{
-					var mapDescription = configLoader.LoadMapDescription(sr);
-					inputs.Add(new GeneratorInput<MapDescriptionOld<int>>(file, mapDescription));
-				}
-			}
+		//		using (var sr = new StreamReader(filename))
+		//		{
+		//			var mapDescription = configLoader.LoadMapDescription(sr);
+		//			inputs.Add(new GeneratorInput<MapDescriptionOld<int>>(file, mapDescription));
+		//		}
+		//	}
 
-			return inputs;
-		}
+		//	return inputs;
+		//}
 
-        public static List<GeneratorInput<MapDescriptionOld<int>>> GetMapDescriptionsSet(IntVector2 scale, bool enableCorridors, List<int> offsets = null)
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch)
         {
-            var inputs = new List<GeneratorInput<MapDescriptionOld<int>>>()
-            {
-                new GeneratorInput<MapDescriptionOld<int>>("Example 1 (fig. 1)", new MapDescriptionOld<int>()
-                    .SetupWithGraph(GraphsDatabase.GetExample1())
-                    .AddClassicRoomShapes(scale)
-                    .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescriptionOld<int>>("Example 2 (fig. 7 top)",
-                    new MapDescriptionOld<int>()
-                        .SetupWithGraph(GraphsDatabase.GetExample2())
-                        .AddClassicRoomShapes(scale)
-                        .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescriptionOld<int>>("Example 3 (fig. 7 bottom)",
-                    new MapDescriptionOld<int>()
-                        .SetupWithGraph(GraphsDatabase.GetExample3())
-                        .AddClassicRoomShapes(scale)
-                        .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescriptionOld<int>>("Example 4 (fig. 8)",
-                    new MapDescriptionOld<int>()
-                        .SetupWithGraph(GraphsDatabase.GetExample4())
-                        .AddClassicRoomShapes(scale)
-                        .AddCorridorRoomShapes(offsets, enableCorridors)),
-                new GeneratorInput<MapDescriptionOld<int>>("Example 5 (fig. 9)",
-                    new MapDescriptionOld<int>()
-                        .SetupWithGraph(GraphsDatabase.GetExample5())
-                        .AddClassicRoomShapes(scale)
-                        .AddCorridorRoomShapes(offsets, enableCorridors)),
-            };
+            var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(scale);
+            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
 
-            if (enableCorridors)
+            var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(offsets);
+            var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
+
+            var inputs = new List<DungeonGeneratorInput<int>>();
+
             {
-                inputs.ForEach(x => x.Name += " wc");
+                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample1(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    MapDescriptionUtils.GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration,
+                    offsets
+                ));
+            }
+
+            {
+                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample2(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    MapDescriptionUtils.GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration,
+                    offsets
+                ));
+            }
+
+            {
+                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample3(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    MapDescriptionUtils.GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration,
+                    offsets
+                ));
+            }
+
+            {
+                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample4(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    MapDescriptionUtils.GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration,
+                    offsets
+                ));
+            }
+
+            {
+                var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample5(), basicRoomDescription, corridorRoomDescription, withCorridors);
+                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                inputs.Add(new DungeonGeneratorInput<int>(
+                    MapDescriptionUtils.GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch),
+                    mapDescription,
+                    configuration,
+                    offsets
+                ));
             }
 
             return inputs;

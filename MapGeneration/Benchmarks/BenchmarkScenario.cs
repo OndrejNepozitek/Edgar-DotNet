@@ -29,27 +29,4 @@ namespace MapGeneration.Benchmarks
             return generatorRunnerFactory(input);
         }
     }
-
-    public static class BenchmarkScenario
-    {
-        public static BenchmarkScenario<MapDescriptionOld<TNode>> CreateForNodeType<TNode>(string name, GeneratorFactory<MapDescriptionOld<TNode>, IMapLayout<TNode>> generatorFactory)
-        {
-            return new BenchmarkScenario<MapDescriptionOld<TNode>>(name, input =>
-            {
-                var layoutGenerator = generatorFactory(input);
-
-                return new LambdaGeneratorRunner(() =>
-                {
-                    var layout = layoutGenerator.GenerateLayout();
-
-                    return new GeneratorRun(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount);
-                });
-            });
-        }
-
-        public static BenchmarkScenario<MapDescriptionOld<TNode>> CreateCustomForNodeType<TNode>(string name, GeneratorRunnerFactory<MapDescriptionOld<TNode>> generatorRunnerFactory)
-        {
-            return new BenchmarkScenario<MapDescriptionOld<TNode>>(name, generatorRunnerFactory);
-        }
-    }
 }

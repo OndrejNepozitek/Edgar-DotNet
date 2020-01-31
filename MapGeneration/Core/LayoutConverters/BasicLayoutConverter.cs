@@ -4,7 +4,6 @@ using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.LayoutConverters.CorridorNodesCreators;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
 using MapGeneration.Interfaces.Core.Configuration;
@@ -24,8 +23,7 @@ namespace MapGeneration.Core.LayoutConverters
 		protected readonly MapDescriptionMapping<TNode> MapDescription;
 		protected Random Random;
 		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
-		protected readonly ICorridorNodesCreator<TNode> CorridorNodesCreator;
-		protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
+        protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
 
 		public BasicLayoutConverter(
             MapDescriptionMapping<TNode> mapDescription, 
