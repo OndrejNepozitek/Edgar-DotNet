@@ -311,7 +311,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 
 			var energy = LayoutOperations.GetEnergy(newLayout);
 
-			LayoutOperations.PerturbLayout(newLayout, chain, true);
+            LayoutOperations.PerturbLayout(newLayout, chain, true);
 
 			var newEnergy = LayoutOperations.GetEnergy(newLayout);
 			energyDelta = newEnergy - energy;

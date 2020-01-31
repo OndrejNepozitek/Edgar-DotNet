@@ -62,8 +62,8 @@ namespace Sandbox.Features
             };
 
             var input = new GeneratorInput<MapDescription<int>>(
-                "EnterTheGungeon",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/exportedMapDescription.json"), settings)
+                "DeadCells",
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/deadCells.json"), settings)
             );
             //var input = new GeneratorInput<MapDescription<int>>(
             //    "example1_corridors",
@@ -77,15 +77,15 @@ namespace Sandbox.Features
                 //new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
                 //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
                 //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                //new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-                //new MaxBranchingAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-                new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(input.MapDescription),
+                new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                new MaxBranchingAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                //new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(input.MapDescription),
             };
 
             var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
-                EvaluationIterations = 150,
+                EvaluationIterations = 75,
             }, Path.Combine("DungeonGeneratorEvolutions", FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
