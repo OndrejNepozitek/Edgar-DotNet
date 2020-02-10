@@ -6,7 +6,7 @@ This project is a library for procedural generation of 2D layouts based on a gra
 
 To produce a game level, the algorithm takes a set of polygonal building blocks and a level connectivity graph (the level topology) as an input. Nodes in the graph represent rooms, and edges define connectivities between them. The graph has to be planar. The goal of the algorithm is to assign a room shape and a position to each node in the graph in a way that no two room shapes intersect and every pair of neighbouring room shapes can be connected by doors.
 
-## See the documentation [here](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/introduction.html)
+## See the documentation [here](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/introduction)
 
 ## Features
 - Any planar connected graph can be used as an input
