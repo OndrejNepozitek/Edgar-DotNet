@@ -1,0 +1,58 @@
+{
+  "version-1.0.6/someSidebar": [
+    {
+      "type": "category",
+      "label": "Introduction",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.6/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/installation"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.6/guides"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/basicMapDescription"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/differentShapesMapDescription"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/differentProbabilitiesMapDescription"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/corridorsMapDescription"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Misc",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-1.0.6/gui"
+        },
+        {
+          "type": "doc",
+          "id": "version-1.0.6/configFormat"
+        }
+      ]
+    }
+  ]
+}

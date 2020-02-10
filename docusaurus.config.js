@@ -2,7 +2,7 @@ module.exports = {
   title: "Procedural level generator",
   tagline:
     "Library for procedural generation of 2D levels based on a graph of room connections.",
-  url: "https://ondrejnepozitek.github.io/",
+  url: "https://ondrejnepozitek.github.io",
   baseUrl: "/ProceduralLevelGenerator/",
   favicon: "img/favicon.ico",
   organizationName: "OndrejNepozitek", // Usually your GitHub org/user name.
