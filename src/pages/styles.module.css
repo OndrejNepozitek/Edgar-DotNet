@@ -35,9 +35,11 @@
 }
 
 .getStarted {
-  color: white !important;
+  color: var(--ifm-color-primary) !important;
+  border-color: var(--ifm-color-primary) !important;
 }
 
 .getStarted:hover {
-  color: var(--ifm-color-primary) !important;
+  color: white !important;
+  background-color: var(--ifm-color-primary) !important;
 }
