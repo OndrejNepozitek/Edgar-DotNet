@@ -9,7 +9,7 @@ module.exports = {
   projectName: "ProceduralLevelGenerator", // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: "Procedural layout generator",
+      title: "Procedural level generator",
       links: [
         { to: "docs/introduction", label: "Docs", position: "right" },
         {
