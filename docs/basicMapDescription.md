@@ -4,12 +4,15 @@ title: Basics
 sidebar_label: Basics
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Gallery, GalleryImage } from "@theme/Gallery";
+
 In this tutorial, we will create a basic map description with 4 rooms that have rectangular shapes. The process has 2 steps - specifying the graph and assigning shapes to rooms.
 
 ## Graph
 First, we must create the underlying graph of rooms. Every vertex in the graph represents one room in the final layout. And every edge represents a connection of two rooms by doors. To make things simple, we will use a 4-cycle in this tutorial:
 
-![alt-text](assets/basics/graph.svg)
+<img alt="Graph" src={useBaseUrl('img/basics/graph.svg')} />;
 
 Let's create the graph:
 
@@ -120,19 +123,11 @@ The map description is now ready to be used in a layout generator. You can find 
 
 ## Results
 
-<div class="results">
-  <a href="/ProceduralLevelGenerator/docs/assets/basics/0.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/basics/0.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/basics/1.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/basics/1.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/basics/2.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/basics/2.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/basics/3.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/basics/3.jpg" alt="result">
-  </a>
-</div>
+<Gallery cols={2}>
+  <GalleryImage src="img/basics/0.jpg" />
+  <GalleryImage src="img/basics/1.jpg" />
+  <GalleryImage src="img/basics/2.jpg" />
+  <GalleryImage src="img/basics/3.jpg" />
+</Gallery>
 
 **Note:** Click on images to see them in a full size.

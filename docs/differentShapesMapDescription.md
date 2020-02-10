@@ -4,12 +4,15 @@ title: Different shapes
 sidebar_label: Different shapes
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Gallery, GalleryImage } from "@theme/Gallery";
+
 User can easily specify that some rooms should have different shapes from the others. It can be useful for example when you want to set a special rooms shape for your boss room or any other rooms with a special meaning.
 
 ## Setup
 In this tutorial, we will use a graph with 9 vertices codenamed *Example2*:
 
-![alt-text](assets/graphs/example2.svg)
+<img alt="Graph" src={useBaseUrl('img/graphs/example2.svg')} />;
 
 We will use basic default shapes for rooms - a square and a rectangle - as they are not important for this tutorial.
 
@@ -82,19 +85,11 @@ The map description is now ready to be used in a layout generator. You can find 
 
 ## Results
 
-<div class="results">
-  <a href="/ProceduralLevelGenerator/docs/assets/differentShapes/0.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentShapes/0.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentShapes/1.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentShapes/1.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentShapes/2.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentShapes/2.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentShapes/3.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentShapes/3.jpg" alt="result">
-  </a>
-</div>
+<Gallery cols={2}>
+  <GalleryImage src="img/differentShapes/0.jpg" />
+  <GalleryImage src="img/differentShapes/1.jpg" />
+  <GalleryImage src="img/differentShapes/2.jpg" />
+  <GalleryImage src="img/differentShapes/3.jpg" />
+</Gallery>
 
 **Note:** Click on images to see them in a full size.

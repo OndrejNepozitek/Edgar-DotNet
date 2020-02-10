@@ -4,6 +4,9 @@ title: Corridors
 sidebar_label: Corridors
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Gallery, GalleryImage } from "@theme/Gallery";
+
 There are currently 2 layout generators implemented. The first one generates layouts where neighbouring rooms are connected by doors. The second one, on the other hand, connects neighbouring rooms by corridors.
 
 In this tutorial, we will look into how to use the latter one.
@@ -11,7 +14,7 @@ In this tutorial, we will look into how to use the latter one.
 ## Setup
 In this tutorial, we will use a graph with 17 vertices codenamed *Example1*:
 
-![alt-text](assets/graphs/example1.svg)
+<img alt="Graph" src={useBaseUrl('img/graphs/example1.svg')} />;
 
 We will use basic default shapes for rooms - a square and a rectangle - as they are not important for this tutorial.
 
@@ -97,19 +100,12 @@ Don't forget to use the appropriate layout generator if using the C# api.
 
 ## Results
 
-<div class="results">
-  <a href="/ProceduralLevelGenerator/docs/assets/corridors/0.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/corridors/0.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/corridors/1.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/corridors/1.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/corridors/2.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/corridors/2.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/corridors/3.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/corridors/3.jpg" alt="result">
-  </a>
-</div>
+<Gallery cols={2}>
+  <GalleryImage src="img/corridors/0.jpg" />
+  <GalleryImage src="img/corridors/1.jpg" />
+  <GalleryImage src="img/corridors/2.jpg" />
+  <GalleryImage src="img/corridors/3.jpg" />
+</Gallery>
+
 
 **Note:** Click on images to see them in a full size.

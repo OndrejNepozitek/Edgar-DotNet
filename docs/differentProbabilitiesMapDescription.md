@@ -4,13 +4,16 @@ title: Different probabilities
 sidebar_label: Different probabilities
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import { Gallery, GalleryImage } from "@theme/Gallery";
+
 In this tutorial, we will describe how to control the appearence of generated layouts by setting probabilities of choosing individual room shapes.
 
 ## Setup
 
 In this tutorial, we will use a graph with 15 vertices codenamed *Example5*:
 
-![alt-text](assets/graphs/example5.svg)
+<img alt="Graph" src={useBaseUrl('img/graphs/example5.svg')} />;
 
 ## Room shapes
 We will define 2 square and 2 rectangle room shapes for this tutorial.
@@ -108,20 +111,12 @@ The map description is now ready to be used in a layout generator. You can find 
 
 ## Results
 
-<div class="results">
-  <a href="/ProceduralLevelGenerator/docs/assets/differentProbabilities/0.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentProbabilities/0.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentProbabilities/1.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentProbabilities/1.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentProbabilities/2.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentProbabilities/2.jpg" alt="result">
-  </a>
-  <a href="/ProceduralLevelGenerator/docs/assets/differentProbabilities/3.jpg" target="_blank">
-    <img src="/ProceduralLevelGenerator/docs/assets/differentProbabilities/3.jpg" alt="result">
-  </a>
-</div>
+<Gallery cols={2}>
+  <GalleryImage src="img/differentProbabilities/0.jpg" />
+  <GalleryImage src="img/differentProbabilities/1.jpg" />
+  <GalleryImage src="img/differentProbabilities/2.jpg" />
+  <GalleryImage src="img/differentProbabilities/3.jpg" />
+</Gallery>
 
 **Note:** Click on images to see them in a full size.
 

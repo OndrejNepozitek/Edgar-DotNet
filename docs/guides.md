@@ -20,6 +20,7 @@ The hardest thing is to create an instance of the layout generator. After includ
 To make things easier, there is a `LayoutGeneratorFactory` class with 2 static methods. Using this class, you can easily get a ready-to-be-used instance of the layout generator.
 
 ```csharp
+int x = 10;
 var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
 // var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(/* parameters */);
 ```
