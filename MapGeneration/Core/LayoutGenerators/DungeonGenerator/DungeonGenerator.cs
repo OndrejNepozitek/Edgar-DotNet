@@ -130,7 +130,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
 
 
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator);
+            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator, configuration.RoomShapesRepeatingConfig);
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
             var layoutConverter =

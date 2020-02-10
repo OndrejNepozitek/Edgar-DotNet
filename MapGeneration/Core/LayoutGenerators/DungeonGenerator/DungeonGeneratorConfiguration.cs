@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Interfaces.Core.ChainDecompositions;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.Interfaces.Utils;
@@ -36,6 +37,8 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public int SimulatedAnnealingMaxBranching { get; set; } = 5;
 
+        public RoomShapesRepeatingConfig RoomShapesRepeatingConfig { get; set; }
+
         public DungeonGeneratorConfiguration(IMapDescription<TNode> mapDescription)
         {
             var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(8, true, true, TreeComponentStrategy.BreadthFirst));
@@ -47,6 +50,12 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 simulatedAnnealingConfigurations.Add(LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
             }
             SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations);
+
+            RoomShapesRepeatingConfig = new RoomShapesRepeatingConfig()
+            {
+                Type = RoomShapesRepeating.Any,
+                ThrowIfNotSatisfied = false,
+            };
         }
 
         protected DungeonGeneratorConfiguration()

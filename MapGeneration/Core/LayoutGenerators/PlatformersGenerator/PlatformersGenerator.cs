@@ -82,7 +82,7 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
                 new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
                     CorridorsData>>
                 {
-                    new BasicContraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    new BasicConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
                         CorridorsData, IntAlias<GridPolygon>>(
                         new FastPolygonOverlap(),
                         averageSize,
@@ -105,20 +105,6 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
 
             var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
 
-            var stageTwoConstraints =
-                new List<INodeConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
-                    CorridorsData>>
-                {
-                    new BasicConstraint<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
-                        CorridorsData, IntAlias<GridPolygon>>(
-                        new FastPolygonOverlap(),
-                        averageSize,
-                        configurationSpaces,
-                        mapDescription.GetGraph()
-                    )
-                };
-            var stageTwoConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageTwoConstraints);
-
             //if (mapDescription.IsWithCorridors)
             //{
             //    layoutOperations.AddNodeConstraint(new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<GridPolygon>>(
@@ -140,7 +126,7 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
 
 
 
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator);
+            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator, configuration.RoomShapesRepeatingConfig);
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
             var layoutConverter =

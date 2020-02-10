@@ -8,6 +8,7 @@ using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.LayoutGenerators.PlatformersGenerator;
+using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
@@ -40,7 +41,15 @@ namespace Sandbox.Features
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("Platformers", input =>
             {
-                var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription);
+                var configuration = new DungeonGeneratorConfiguration(input.MapDescription)
+                {
+                    RoomShapesRepeatingConfig = new RoomShapesRepeatingConfig()
+                    {
+                        Type = RoomShapesRepeating.NoNeighborsRepeats,
+                        ThrowIfNotSatisfied = true,
+                    }
+                };
+                var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 //return new LambdaGeneratorRunner(() =>

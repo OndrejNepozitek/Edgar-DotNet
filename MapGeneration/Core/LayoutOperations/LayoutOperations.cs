@@ -28,7 +28,7 @@ namespace MapGeneration.Core.LayoutOperations
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator;
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator;
 
-        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator) : base(configurationSpaces, averageSize, mapDescription)
+        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator, RoomShapesRepeatingConfig roomShapesRepeatingConfig) : base(configurationSpaces, averageSize, mapDescription, roomShapesRepeatingConfig)
         {
             this.stageOneConstraintsEvaluator = stageOneConstraintsEvaluator;
             this.stageTwoConstraintsEvaluator = stageTwoConstraintsEvaluator;
@@ -99,19 +99,19 @@ namespace MapGeneration.Core.LayoutOperations
 		/// <param name="node"></param>
 		public override void AddNodeGreedily(TLayout layout, TNode node)
 		{
-			var configurations = new List<TConfiguration>();
+			var neighborsConfigurations = new List<TConfiguration>();
 			var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
 
 			foreach (var neighbor in neighbors)
 			{
 				if (layout.GetConfiguration(neighbor, out var configuration))
 				{
-					configurations.Add(configuration);
+					neighborsConfigurations.Add(configuration);
 				}
 			}
 
 			// The first node is set to have a random shape and [0,0] position
-			if (configurations.Count == 0)
+			if (neighborsConfigurations.Count == 0)
 			{
 				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
 				return;
@@ -121,15 +121,43 @@ namespace MapGeneration.Core.LayoutOperations
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+            var shapes = GetPossibleShapesForNode(layout, node, RoomShapesRepeatingConfig.Type);
+
+			// TODO: make better
+            if (shapes.Count == 0 && RoomShapesRepeatingConfig.Type != RoomShapesRepeating.Any)
+            {
+                if (RoomShapesRepeatingConfig.ThrowIfNotSatisfied)
+                {
+					throw new ArgumentException($"It was not possible to choose a room shape that is different from others. Current mode is set to {RoomShapesRepeatingConfig.Type}");
+                }
+                else
+                {
+					// Try at least not repeating neighbors
+                    if (RoomShapesRepeatingConfig.Type == RoomShapesRepeating.NoRepeats)
+                    {
+                        GetPossibleShapesForNode(layout, node, RoomShapesRepeating.NoNeighborsRepeats);
+                    }
+
+                    if (shapes.Count == 0)
+                    {
+                        shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+                    }
+                }
+            }
+
+            if (shapes.Count == 0)
+            {
+                throw new ArgumentException();
+            }
+
 			shapes.Shuffle(Random);
 
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations);
+                var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations);
 
-				if (intersection == null)
+                if (intersection == null)
 					continue;
 
 				intersection.Shuffle(Random);

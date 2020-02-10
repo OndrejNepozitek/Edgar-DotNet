@@ -30,12 +30,14 @@ namespace MapGeneration.Core.LayoutOperations
 		protected int AverageSize;
         protected readonly IMapDescription<TNode> MapDescription;
         protected readonly IGraph<TNode> StageOneGraph;
+        protected readonly RoomShapesRepeatingConfig RoomShapesRepeatingConfig;
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription)
+		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, RoomShapesRepeatingConfig roomShapesRepeatingConfig)
 		{
 			ConfigurationSpaces = configurationSpaces;
 			AverageSize = averageSize;
             MapDescription = mapDescription;
+            RoomShapesRepeatingConfig = roomShapesRepeatingConfig;
             StageOneGraph = mapDescription.GetStageOneGraph();
         }
 
@@ -63,11 +65,21 @@ namespace MapGeneration.Core.LayoutOperations
 				return;
 
 			TShapeContainer shape;
-			do
-			{
-				shape = ConfigurationSpaces.GetRandomShape(node);
-			}
-			while (ReferenceEquals(shape, configuration.Shape));
+
+            if (RoomShapesRepeatingConfig.Type == RoomShapesRepeating.Any)
+            {
+                do
+                {
+                    shape = ConfigurationSpaces.GetRandomShape(node);
+                }
+                while (ReferenceEquals(shape, configuration.Shape));
+            }
+            else
+            {
+                var possibleShapes = GetPossibleShapesForNode(layout, node, RoomShapesRepeatingConfig.Type);
+                possibleShapes.Remove(configuration.ShapeContainer);
+                shape = possibleShapes.GetRandom(Random);
+            }
 
 			var newConfiguration = configuration.SmartClone();
 			newConfiguration.ShapeContainer = shape;
@@ -80,6 +92,48 @@ namespace MapGeneration.Core.LayoutOperations
 
 			layout.SetConfiguration(node, newConfiguration);
 		}
+
+        protected List<TShapeContainer> GetPossibleShapesForNode(TLayout layout, TNode node, RoomShapesRepeating roomShapesRepeating)
+        {
+            var shapesForNode = ConfigurationSpaces.GetShapesForNode(node);
+
+            switch (roomShapesRepeating)
+            {
+                case RoomShapesRepeating.Any:
+                {
+                    return shapesForNode.ToList();
+                }
+
+                case RoomShapesRepeating.NoNeighborsRepeats:
+                {
+                    var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
+                    var neighborsShapes = new List<TShapeContainer>();
+                    foreach (var neighbor in neighbors)
+                    {
+                        if (layout.GetConfiguration(neighbor, out var configuration))
+                        {
+                            neighborsShapes.Add(configuration.ShapeContainer);
+                        }
+                    }
+
+                    return shapesForNode.Except(neighborsShapes).ToList();
+                }
+
+                case RoomShapesRepeating.NoRepeats:
+                {
+                    var allUsedShapes = layout
+                        .GetAllConfigurations()
+                        .Where(x => !x.Node.Equals(node))
+                        .Select(x => x.ShapeContainer)
+                        .ToList();
+
+                    return shapesForNode.Except(allUsedShapes).ToList();
+                }
+
+				default:
+					throw new ArgumentOutOfRangeException();
+            }
+        }
 
 		/// <inheritdoc />
 		public virtual void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
