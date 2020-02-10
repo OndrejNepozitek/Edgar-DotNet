@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, {useState, useCallback} from 'react';
-import classnames from 'classnames';
+import React, { useState, useCallback } from "react";
+import classnames from "classnames";
 
-import Link from '@docusaurus/Link';
+import Link from "@docusaurus/Link";
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 const MOBILE_TOGGLE_SIZE = 24;
 
-function DocSidebarItem({item, onItemClick, collapsible}) {
-  const {items, href, label, type} = item;
+function DocSidebarItem({ item, level, onItemClick, collapsible }) {
+  const { items, href, label, type } = item;
   const [collapsed, setCollapsed] = useState(item.collapsed);
   const [prevCollapsedProp, setPreviousCollapsedProp] = useState(null);
 
@@ -33,21 +33,49 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
   });
 
   switch (type) {
-    case 'category':
-      return (
-        items.length > 0 && (
+    case "category":
+      if (items.length == 0) {
+        return false;
+      }
+
+      if (level == 1) {
+        return (
           <li
-            className={classnames('menu__list-item', {
-              'menu__list-item--collapsed': false,
+            className={classnames("menu__list-item", {
+              "menu__list-item--collapsed": false
             })}
-            key={label}>
+            key={label}
+          >
+            <div className="title">{label}</div>
+            <ul className="menu__list">
+              {items.map(childItem => (
+                <DocSidebarItem
+                  key={childItem.label}
+                  item={childItem}
+                  onItemClick={onItemClick}
+                  collapsible={collapsible}
+                  level={level + 1}
+                />
+              ))}
+            </ul>
+          </li>
+        );
+      } else {
+        return (
+          <li
+            className={classnames("menu__list-item", {
+              "menu__list-item--collapsed": false
+            })}
+            key={label}
+          >
             <a
-              className={classnames('menu__link', {
-                'menu__link--sublist': collapsible,
-                'menu__link--active': collapsible && !item.collapsed,
+              className={classnames("menu__link", {
+                "menu__link--sublist": collapsible,
+                "menu__link--active": collapsible && !item.collapsed
               })}
               href="#!"
-              onClick={collapsible ? handleItemClick : undefined}>
+              onClick={collapsible ? handleItemClick : undefined}
+            >
               {label}
             </a>
             <ul className="menu__list">
@@ -57,14 +85,15 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
                   item={childItem}
                   onItemClick={onItemClick}
                   collapsible={collapsible}
+                  level={level + 1}
                 />
               ))}
             </ul>
           </li>
-        )
-      );
+        );
+      }
 
-    case 'link':
+    case "link":
     default:
       return (
         <li className="menu__list-item" key={label}>
@@ -73,7 +102,8 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
             className="menu__link"
             exact
             to={href}
-            onClick={onItemClick}>
+            onClick={onItemClick}
+          >
             {label}
           </Link>
         </li>
@@ -84,9 +114,9 @@ function DocSidebarItem({item, onItemClick, collapsible}) {
 // Calculate the category collapsing state when a page navigation occurs.
 // We want to automatically expand the categories which contains the current page.
 function mutateSidebarCollapsingState(item, location) {
-  const {items, href, type} = item;
+  const { items, href, type } = item;
   switch (type) {
-    case 'category': {
+    case "category": {
       const anyChildItemsActive =
         items
           .map(childItem => mutateSidebarCollapsingState(childItem, location))
@@ -96,9 +126,9 @@ function mutateSidebarCollapsingState(item, location) {
       return anyChildItemsActive;
     }
 
-    case 'link':
+    case "link":
     default:
-      return href === location.pathname.replace(/\/$/, '');
+      return href === location.pathname.replace(/\/$/, "");
   }
 }
 
@@ -109,7 +139,7 @@ function DocSidebar(props) {
     docsSidebars,
     location,
     sidebar: currentSidebar,
-    sidebarCollapsible,
+    sidebarCollapsible
   } = props;
 
   if (!currentSidebar) {
@@ -120,35 +150,38 @@ function DocSidebar(props) {
 
   if (!sidebarData) {
     throw new Error(
-      `Cannot find the sidebar "${currentSidebar}" in the sidebar config!`,
+      `Cannot find the sidebar "${currentSidebar}" in the sidebar config!`
     );
   }
 
   if (sidebarCollapsible) {
     sidebarData.forEach(sidebarItem =>
-      mutateSidebarCollapsingState(sidebarItem, location),
+      mutateSidebarCollapsingState(sidebarItem, location)
     );
   }
 
   return (
     <div className={styles.sidebar}>
       <div
-        className={classnames('menu', 'menu--responsive', {
-          'menu--show': showResponsiveSidebar,
-        })}>
+        className={classnames("menu", "menu--responsive", {
+          "menu--show": showResponsiveSidebar
+        })}
+      >
         <button
-          aria-label={showResponsiveSidebar ? 'Close Menu' : 'Open Menu'}
+          aria-label={showResponsiveSidebar ? "Close Menu" : "Open Menu"}
           className="button button--secondary button--sm menu__button"
           type="button"
           onClick={() => {
             setShowResponsiveSidebar(!showResponsiveSidebar);
-          }}>
+          }}
+        >
           {showResponsiveSidebar ? (
             <span
               className={classnames(
                 styles.sidebarMenuIcon,
-                styles.sidebarMenuCloseIcon,
-              )}>
+                styles.sidebarMenuCloseIcon
+              )}
+            >
               &times;
             </span>
           ) : (
@@ -159,7 +192,8 @@ function DocSidebar(props) {
               width={MOBILE_TOGGLE_SIZE}
               viewBox="0 0 32 32"
               role="img"
-              focusable="false">
+              focusable="false"
+            >
               <title>Menu</title>
               <path
                 stroke="currentColor"
@@ -180,6 +214,7 @@ function DocSidebar(props) {
                 setShowResponsiveSidebar(false);
               }}
               collapsible={false}
+              level={1}
             />
           ))}
         </ul>

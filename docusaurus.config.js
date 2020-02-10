@@ -11,6 +11,7 @@ module.exports = {
     navbar: {
       title: "Procedural level generator",
       links: [
+        { to: "versions", label: "v1.0.6", position: "left" },
         { to: "docs/introduction", label: "Docs", position: "right" },
         {
           href: "https://github.com/OndrejNepozitek/ProceduralLevelGenerator/",

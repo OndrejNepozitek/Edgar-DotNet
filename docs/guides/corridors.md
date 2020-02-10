@@ -1,5 +1,4 @@
 ---
-id: corridorsMapDescription
 title: Corridors
 sidebar_label: Corridors
 ---
@@ -100,7 +99,7 @@ Don't forget to use the appropriate layout generator if using the C# api.
 
 ## Results
 
-<Gallery cols={2}>
+<Gallery cols={4}>
   <GalleryImage src="img/corridors/0.jpg" />
   <GalleryImage src="img/corridors/1.jpg" />
   <GalleryImage src="img/corridors/2.jpg" />

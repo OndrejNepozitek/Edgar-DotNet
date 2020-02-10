@@ -17,7 +17,7 @@ const Image = props => (
 );
 
 export const Gallery = props => (
-  <div style={{ fontSize: "0px" }}>
+  <div style={{ fontSize: "0px", margin: "20px 0" }}>
     {React.Children.map(props.children, child =>
       React.cloneElement(child, { cols: props.cols || 4 })
     )}
