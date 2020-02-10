@@ -105,6 +105,3 @@ Don't forget to use the appropriate layout generator if using the C# api.
   <GalleryImage src="img/corridors/2.jpg" />
   <GalleryImage src="img/corridors/3.jpg" />
 </Gallery>
-
-
-**Note:** Click on images to see them in a full size.

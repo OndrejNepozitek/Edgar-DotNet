@@ -23,7 +23,7 @@ module.exports = {
     {
       type: "category",
       label: "Guides",
-      items: ["guides/introduction", "guides/basics", "guides/different-room-descriptions", "guides/corridors", "guides/export"]
+      items: ["guides/introduction", "guides/basics", "guides/different-room-descriptions", "guides/corridors", "guides/export", "guides/performance-guidelines"]
     },
     {
       type: "category",

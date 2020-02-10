@@ -77,4 +77,4 @@ And the map description is ready to be used.
   <GalleryImage src="img/differentShapes/3.jpg" />
 </Gallery>
 
-**Note:** Click on images to see them in a full size.
+> **Note:** You can find the full C# source code [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/master/Sandbox/Examples/DifferentRoomDescriptionsExample.cs).
