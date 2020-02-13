@@ -169,7 +169,12 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 			return hash;
 		}
 
-		/// <summary>
+        public override string ToString()
+        {
+            return $"Polygon: ({string.Join(",", points.Select(x => x.ToStringShort()))})";
+        }
+
+        /// <summary>
 		/// Computes a polygon that has all points moved by a given position.
 		/// </summary>
 		/// <param name="polygon"></param>

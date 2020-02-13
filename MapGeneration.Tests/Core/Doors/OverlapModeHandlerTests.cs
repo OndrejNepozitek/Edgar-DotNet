@@ -13,20 +13,20 @@
 	[TestFixture]
 	public class OverlapModeHandlerTests
 	{
-		private OverlapModeHandler overlapModeHandler;
+		private SimpleModeHandler simpleModeHandler;
 
 		[SetUp]
 		public void SetUp()
 		{
-			overlapModeHandler = new OverlapModeHandler();
+			simpleModeHandler = new SimpleModeHandler();
 		}
 
 		[Test]
 		public void Rectangle_NoOverlap()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new OverlapMode(1, 0);
-			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
+			var mode = new SimpleDoorMode(1, 0);
+			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
 			var expectedPositions = new List<IDoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 4)), 1),
@@ -42,8 +42,8 @@
 		public void Rectangle_OneOverlap()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new OverlapMode(1, 1);
-			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
+			var mode = new SimpleDoorMode(1, 1);
+			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
 			var expectedPositions = new List<IDoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 3)), 1),
@@ -59,8 +59,8 @@
 		public void Rectangle_TwoOverlap()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new OverlapMode(1, 2);
-			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
+			var mode = new SimpleDoorMode(1, 2);
+			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
 			var expectedPositions = new List<IDoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 2), new IntVector2(0, 2), OrthogonalLine.Direction.Top), 1),
@@ -74,8 +74,8 @@
 		public void Rectangle_LengthTwo()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new OverlapMode(2, 0);
-			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
+			var mode = new SimpleDoorMode(2, 0);
+			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
 			var expectedPositions = new List<IDoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 3)), 2),
@@ -91,8 +91,8 @@
 		public void Rectangle_LengthZero()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new OverlapMode(0, 0);
-			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
+			var mode = new SimpleDoorMode(0, 0);
+			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
 			var expectedPositions = new List<IDoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 5)), 0),

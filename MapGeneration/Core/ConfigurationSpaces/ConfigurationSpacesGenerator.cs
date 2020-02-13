@@ -30,11 +30,10 @@ namespace MapGeneration.Core.ConfigurationSpaces
             this.polygonUtils = polygonUtils;
         }
         
-        public ConfigurationSpaces<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription, List<int> offsets = null)
+        public ConfigurationSpaces<TConfiguration> GetConfigurationSpaces<TConfiguration>(IMapDescription<int> mapDescription)
             where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
         {
             var graph = mapDescription.GetGraph();
-            var stageOneGraph = mapDescription.GetStageOneGraph();
             
             var roomDescriptions = graph
                 .Vertices
@@ -103,11 +102,6 @@ namespace MapGeneration.Core.ConfigurationSpaces
                             corridorRoomTemplateInstances[roomDescription]);
                     }
 
-                    //if (offsets != null)
-                    //{
-                    //    configurationSpacesList.Add(GetConfigurationSpace(shape1, shape2, offsets));
-                    //}
-                    
                     configurationSpaces.AddConfigurationSpace(shape1, shape2, configurationSpacesList.ToArray());
                 }
             }

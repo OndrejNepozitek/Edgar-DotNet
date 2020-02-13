@@ -9,11 +9,11 @@
 	/// <summary>
 	/// Mode that holds all the door positions.
 	/// </summary>
-	public class SpecificPositionsMode : IDoorMode
+	public class ManualDoorMode : IDoorMode
 	{
-		public List<OrthogonalLine> DoorPositions { get; private set; }
+		public List<OrthogonalLine> DoorPositions { get; }
 
-		public SpecificPositionsMode(List<OrthogonalLine> doorPositions)
+		public ManualDoorMode(List<OrthogonalLine> doorPositions)
 		{
 			if (doorPositions.Distinct().Count() != doorPositions.Count)
 				throw new ArgumentException("All door positions must be unique");
@@ -24,7 +24,7 @@
 		/// <summary>
 		/// For YAML deserialization.
 		/// </summary>
-		private SpecificPositionsMode()
+		private ManualDoorMode()
 		{
 			/* empty */
 		}

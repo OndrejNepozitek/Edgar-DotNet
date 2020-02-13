@@ -283,7 +283,7 @@
 
 		public override string ToString()
 		{
-			return $"IntVector2 ({X}, {Y})";
+			return $"IntVector2({X}, {Y})";
 		}
 
 		[Pure]

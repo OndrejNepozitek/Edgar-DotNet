@@ -11,6 +11,7 @@ using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
+using Sandbox.Examples;
 using Sandbox.Features;
 
 namespace Sandbox
@@ -36,7 +37,7 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            CompareWithReference();
+            // CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
@@ -45,7 +46,7 @@ namespace Sandbox
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
-            // RunExample();
+            RunExample();
             // ConvertToXml();
 
             // Main();
@@ -132,15 +133,11 @@ namespace Sandbox
 		/// </summary>
 		public static void RunExample()
 		{
-			//var configLoader = new ConfigLoader();
-			//var layoutGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-			//// var layoutGenerator = LayoutGeneratorFactory.GetChainBasedGeneratorWithCorridors<int>(new List<int>() {1});
-			//layoutGenerator.InjectRandomGenerator(new Random(0));
+            // var mapDescription = new BasicsExample().GetMapDescription();
+            // var mapDescription = new DifferentRoomDescriptionsExample().GetMapDescription();
+            var mapDescription = new CorridorsExample().GetMapDescription();
 
-			//// var mapDescription = new BasicsExample().GetMapDescription();
-			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_basicDescription.yml");
-
-			//// var mapDescription = new DifferentShapesExample().GetMapDescription();
+            //// var mapDescription = new DifferentShapesExample().GetMapDescription();
 			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_differentShapes.yml");
 
 			//// var mapDescription = new DIfferentProbabilitiesExample().GetMapDescription();
@@ -149,19 +146,25 @@ namespace Sandbox
 			//// var mapDescription = new CorridorsExample().GetMapDescription();
 			//// var mapDescription = configLoader.LoadMapDescription("Resources/Maps/tutorial_corridors.yml");
 
-			//var settings = new GeneratorSettings
-			//{
-			//	MapDescriptionOld = mapDescription,
-			//	LayoutGenerator = layoutGenerator,
+            var generator = new DungeonGenerator<int>(mapDescription, new DungeonGeneratorConfiguration(mapDescription)
+            {
+                RoomsCanTouch = false,
+            });
+            generator.InjectRandomGenerator(new Random(0));
 
-			//	NumberOfLayouts = 10,
+            var settings = new GeneratorSettings
+            {
+                MapDescriptionOld = mapDescription,
+                LayoutGenerator = generator,
 
-			//	ShowPartialValidLayouts = false,
-			//	ShowPartialValidLayoutsTime = 500,
-			//};
+                NumberOfLayouts = 10,
 
-			//Application.Run(new GeneratorWindow(settings));
-		}
+                ShowPartialValidLayouts = false,
+                ShowPartialValidLayoutsTime = 500,
+            };
+
+            Application.Run(new GeneratorWindow(settings));
+        }
 
         /// <summary>
         /// Runs a prepared benchmark.

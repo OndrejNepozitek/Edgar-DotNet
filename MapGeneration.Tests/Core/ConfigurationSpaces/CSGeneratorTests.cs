@@ -34,7 +34,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 0));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new SimpleDoorMode(1, 0), p2, new SimpleDoorMode(1, 0));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -83,7 +83,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 1), p2, new OverlapMode(1, 1));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new SimpleDoorMode(1, 1), p2, new SimpleDoorMode(1, 1));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -124,7 +124,7 @@
 			var p1 = GridPolygon.GetSquare(3);
 			var p2 = GridPolygon.GetSquare(5);
 
-			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new OverlapMode(1, 0), p2, new OverlapMode(1, 1));
+			var configurationSpace = generatorOld.GetConfigurationSpace(p1, new SimpleDoorMode(1, 0), p2, new SimpleDoorMode(1, 1));
 			var expectedPoints = new List<IntVector2>();
 			var actualPoints = configurationSpace.Lines.Select(x => x.GetPoints()).SelectMany(x => x).ToList();
 
@@ -165,8 +165,8 @@
 		{
 			// This test cannot check if the generated configuration spaces are valid
 			var mapDescription = new MapDescriptionOld<int>();
-			var squareRoom = new RoomTemplate(GridPolygon.GetSquare(3), new OverlapMode(1, 0));
-			var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(4, 5), new OverlapMode(1, 1));
+			var squareRoom = new RoomTemplate(GridPolygon.GetSquare(3), new SimpleDoorMode(1, 0));
+			var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(4, 5), new SimpleDoorMode(1, 1));
 
 			mapDescription.AddRoomShapes(squareRoom);
 			mapDescription.AddRoomShapes(rectangleRoom, probability: 0.5d);

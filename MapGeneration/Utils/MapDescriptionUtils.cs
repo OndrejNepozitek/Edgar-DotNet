@@ -17,7 +17,7 @@ namespace MapGeneration.Utils
         public static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
-            var doorMode = new OverlapMode(1 * overlapScale, 0);
+            var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
             var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode, transformations);
@@ -80,7 +80,7 @@ namespace MapGeneration.Utils
                 var width = offset;
                 var roomTemplate = new RoomTemplate(
                     GridPolygon.GetRectangle(width, 1),
-                    new SpecificPositionsMode(new List<OrthogonalLine>()
+                    new ManualDoorMode(new List<OrthogonalLine>()
                     {
                         new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
                         new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),

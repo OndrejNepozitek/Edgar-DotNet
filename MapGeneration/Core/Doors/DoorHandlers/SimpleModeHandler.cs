@@ -7,14 +7,14 @@
 	using Interfaces.Core.Doors;
 
 	/// <summary>
-	/// Generates door positions for <see cref="OverlapMode"/>.
+	/// Generates door positions for <see cref="SimpleDoorMode"/>.
 	/// </summary>
-	public class OverlapModeHandler : IDoorHandler
+	public class SimpleModeHandler : IDoorHandler
 	{
 		/// <inheritdoc />
 		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
 		{
-			if (!(doorModeRaw is OverlapMode doorMode)) 
+			if (!(doorModeRaw is SimpleDoorMode doorMode)) 
 				throw new InvalidOperationException("Invalid door mode supplied");
 
 			var lines = new List<IDoorLine>();

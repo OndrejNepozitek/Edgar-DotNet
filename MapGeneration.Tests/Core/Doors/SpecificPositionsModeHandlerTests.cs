@@ -13,19 +13,19 @@
 	[TestFixture]
 	public class SpecificPositionsModeHandlerTests
 	{
-		private SpecificPositionsModeHandler overlapModeHandler;
+		private ManualDoorModeHandler overlapModeHandler;
 
 		[SetUp]
 		public void SetUp()
 		{
-			overlapModeHandler = new SpecificPositionsModeHandler();
+			overlapModeHandler = new ManualDoorModeHandler();
 		}
 
 		[Test]
 		public void Rectangle_LengthZeroCorners()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new SpecificPositionsMode(new List<OrthogonalLine>()
+			var mode = new ManualDoorMode(new List<OrthogonalLine>()
 			{
 				new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0)),
 				new OrthogonalLine(new IntVector2(0, 5), new IntVector2(0, 5)),
@@ -53,7 +53,7 @@
 		public void Rectangle_LengthZeroInside()
 		{
 			var polygon = GridPolygon.GetRectangle(3, 5);
-			var mode = new SpecificPositionsMode(new List<OrthogonalLine>()
+			var mode = new ManualDoorMode(new List<OrthogonalLine>()
 			{
 				new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 1)),
 				new OrthogonalLine(new IntVector2(1, 5), new IntVector2(1, 5)),

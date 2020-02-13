@@ -23,6 +23,7 @@ namespace MapGeneration.Core.MapDescriptions
         {
             Shape = new GridPolygon(shape.GetPoints());
             DoorsMode = doorsMode;
+            AllowedTransformations = new List<Transformation>() { Transformation.Identity };
         }
 
 		[JsonConstructor]

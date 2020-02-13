@@ -28,9 +28,9 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
         public void GetRoomTemplatesDistribution_BasicTest()
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
-            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(2), new OverlapMode(1, 0), transformations);
-            var roomTemplate2 = new RoomTemplate(GridPolygon.GetSquare(4), new OverlapMode(1, 0), transformations);
-            var roomTemplate3 = new RoomTemplate(GridPolygon.GetSquare(6), new OverlapMode(1, 0), transformations);
+            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(2), new SimpleDoorMode(1, 0), transformations);
+            var roomTemplate2 = new RoomTemplate(GridPolygon.GetSquare(4), new SimpleDoorMode(1, 0), transformations);
+            var roomTemplate3 = new RoomTemplate(GridPolygon.GetSquare(6), new SimpleDoorMode(1, 0), transformations);
 
             var data = new List<IRoomTemplate>()
             {
@@ -59,8 +59,8 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
         public void ComputeAverageRoomTemplatesEntropy_BasicTest()
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
-            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new OverlapMode(1, 0), transformations);
-            var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new OverlapMode(1, 0), transformations);
+            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 0), transformations);
+            var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new SimpleDoorMode(1, 0), transformations);
 
             var roomDescription1 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1, roomTemplate2 });
 
