@@ -34,12 +34,7 @@ namespace MapGeneration.Core.LayoutConverters
 			MapDescription = mapDescription;
 			ConfigurationSpaces = configurationSpaces;
 			IntAliasMapping = intAliasMapping;
-
-			//if (MapDescription.IsWithCorridors)
-			//{
-			//	CorridorNodesCreator = corridorNodesCreator ?? CorridorNodesCreatorFactory.Default.GetCreator<TNode>();
-			//}
-		}
+        }
 
 		/// <inheritdoc />
 		public IMapLayout<TNode> Convert(TLayout layout, bool addDoors)
@@ -49,19 +44,22 @@ namespace MapGeneration.Core.LayoutConverters
 
 			var mapping = MapDescription.GetMapping();
 
-			//if (MapDescription.IsWithCorridors)
-			//{
-			//	CorridorNodesCreator.AddCorridorsToMapping(MapDescription, mapping);
-			//}
-			
-			foreach (var vertexAlias in layout.Graph.Vertices)
+            foreach (var vertexAlias in layout.Graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
 				{
 					var vertex = mapping.GetByValue(vertexAlias);
-					var roomTemplate = IntAliasMapping.GetByValue(configuration.ShapeContainer);
+					var roomTemplateInstance = IntAliasMapping.GetByValue(configuration.ShapeContainer);
 
-					var room = new Room<TNode>(vertex, configuration.Shape, configuration.Position, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplate.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), roomTemplate.Transformations.GetRandom(Random), roomTemplate.Transformations);
+					// Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
+					// TODO: maybe make a unit/integration test?
+                    var transformation = roomTemplateInstance.Transformations.GetRandom(Random);
+                    var shape = configuration.Shape;
+                    var originalShape = roomTemplateInstance.RoomTemplate.Shape;
+                    var transformedShape = originalShape.Transform(transformation);
+                    var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
+
+                    var room = new Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), transformation, roomTemplateInstance.Transformations);
 					rooms.Add(room);
 
 					if (!addDoors)
