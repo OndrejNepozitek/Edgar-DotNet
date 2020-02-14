@@ -19,6 +19,7 @@
 	[TestFixture]
 	public class CSGeneratorTests
 	{
+
 		//private ConfigurationSpacesGeneratorOld generatorOld;
 
 		//[SetUp]
@@ -193,5 +194,5 @@
 		//	Assert.Throws<ArgumentException>(
 		//		() => generatorOld.Generate<int, IConfiguration<IntAlias<GridPolygon>, int>>(mapDescription));
 		//}
-	}
+    }
 }

@@ -500,6 +500,11 @@ namespace GeneralAlgorithms.DataStructures.Common
 			return $"IntLine: {From.ToStringShort()} -> {To.ToStringShort()} ({GetDirection()})";
 		}
 
+        public string ToStringShort()
+        {
+            return $"{From.ToStringShort()} -> {To.ToStringShort()}";
+        }
+
 		/// <summary>
 		/// Enum that holds a direction of an orthogonal line.
 		/// </summary>

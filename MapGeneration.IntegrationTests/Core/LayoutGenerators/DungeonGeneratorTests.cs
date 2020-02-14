@@ -18,8 +18,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
         [Test]
         public void SimpleMapDescriptionTest()
         {
-            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new OverlapMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
-            var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new OverlapMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
+            var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
+            var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
 
             var roomDescription1 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1 });
             var roomDescription2 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate2 });
@@ -77,7 +77,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
                 new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
             };
 
-            var roomTemplate = new RoomTemplate(roomShape, new SpecificPositionsMode(doorPositions), TransformationHelper.GetAllTransformations().ToList());
+            var roomTemplate = new RoomTemplate(roomShape, new ManualDoorMode(doorPositions), TransformationHelper.GetAllTransformations().ToList());
             var roomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate });
 
             var mapDescription = new MapDescription<int>();

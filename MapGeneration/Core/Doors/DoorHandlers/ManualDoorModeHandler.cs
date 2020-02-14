@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Core.Doors.DoorHandlers
+﻿using System.ComponentModel;
+
+namespace MapGeneration.Core.Doors.DoorHandlers
 {
 	using System;
 	using System.Collections.Generic;
@@ -9,26 +11,26 @@
 	using Interfaces.Core.Doors;
 
 	/// <summary>
-	/// Generates door positions for <see cref="SpecificPositionsMode"/>.
+	/// Generates door positions for <see cref="ManualDoorMode"/>.
 	/// </summary>
-	public class SpecificPositionsModeHandler : IDoorHandler
+	public class ManualDoorModeHandler : IDoorHandler
 	{
 		/// <inheritdoc />
 		/// <remarks>
 		/// Checks if all positions are contained on one of polygon's sides.
 		/// Changes direction if needed.
 		/// </remarks>
-		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorModeRaw)
+		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
 		{
-			if (!(doorModeRaw is SpecificPositionsMode doorMode))
+			if (!(doorMode is ManualDoorMode manualDoorMode))
 				throw new InvalidOperationException("Invalid door mode supplied");
 
-			if (doorMode.DoorPositions.Distinct().Count() != doorMode.DoorPositions.Count)
+			if (manualDoorMode.DoorPositions.Distinct().Count() != manualDoorMode.DoorPositions.Count)
 				throw new ArgumentException("All door positions must be unique");
 
 			var doors = new List<IDoorLine>();
 
-			foreach (var doorPosition in doorMode.DoorPositions)
+			foreach (var doorPosition in manualDoorMode.DoorPositions)
 			{
 				doors.AddRange(GetDoorLine(polygon, doorPosition));
 			}
@@ -52,8 +54,10 @@
 				yield return new DoorLine(new OrthogonalLine(from, from, side.GetDirection()), doorPosition.Length);
 			}
 
-			if (found == false)
-				throw new InvalidOperationException("Given door position is not on any side of the polygon");
-		}
+            if (found == false)
+            {
+				throw new ArgumentException($"The door line {doorPosition.ToStringShort()} is not on the outline of the polygon {polygon}. Make sure that all the door lines of a manual door mode are on the outline of the polygon.");
+            }
+        }
 	}
 }

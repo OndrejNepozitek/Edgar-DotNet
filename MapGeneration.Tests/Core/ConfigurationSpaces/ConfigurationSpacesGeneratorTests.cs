@@ -33,7 +33,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareIdentity_ReturnsOneInstance()
         {
             var roomShape = GridPolygon.GetSquare(10);
-            var doorsMode = new OverlapMode(1, 0);
+            var doorsMode = new SimpleDoorMode(1, 0);
             var transformations = new List<Transformation>() { Transformation.Identity };
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -51,7 +51,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var roomShapeNormalized = GridPolygon.GetSquare(10);
             var roomShape = roomShapeNormalized + new IntVector2(5, 5);
 
-            var doorsMode = new OverlapMode(1, 0);
+            var doorsMode = new SimpleDoorMode(1, 0);
             var transformations = new List<Transformation>() { Transformation.Identity };
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -67,7 +67,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareAllTransformations_ReturnsOneInstance()
         {
             var roomShape = GridPolygon.GetSquare(10);
-            var doorsMode = new OverlapMode(1, 0);
+            var doorsMode = new SimpleDoorMode(1, 0);
             var transformations = ((Transformation[]) Enum.GetValues(typeof(Transformation))).ToList();
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -83,7 +83,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareAllRotationsOneDoor_ReturnsFourInstance()
         {
             var roomShape = GridPolygon.GetSquare(10);
-            var doorsMode = new SpecificPositionsMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0))});
+            var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0))});
             var transformations = new List<Transformation>() { Transformation.Identity, Transformation.Rotate90, Transformation.Rotate180, Transformation.Rotate270 };
 
             var expectedDoorPositions = new Dictionary<Transformation, IDoorLine>()
@@ -116,7 +116,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareAllTransformationsOneDoor_ReturnsFourInstance()
         {
             var roomShape = GridPolygon.GetSquare(10);
-            var doorsMode = new SpecificPositionsMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)) });
+            var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)) });
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
             var expectedDoorPositions = new Dictionary<Transformation, IDoorLine>()
@@ -155,7 +155,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var roomShape = GridPolygon.GetRectangle(5, 10);
 
-            var doorsMode = new OverlapMode(1, 0);
+            var doorsMode = new SimpleDoorMode(1, 0);
             var transformations = new List<Transformation>() { Transformation.Identity, Transformation.Rotate90, Transformation.Rotate180, Transformation.Rotate270 };
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -180,10 +180,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetConfigurationSpaceOverCorridor_SquareRoomVerticalCorridor()
         {
             var roomShape = GridPolygon.GetSquare(5);
-            var roomDoorsMode = new OverlapMode(1, 0);
+            var roomDoorsMode = new SimpleDoorMode(1, 0);
 
             var corridor = GridPolygon.GetRectangle(1, 2);
-            var corridorDoorsMode = new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(1, 0), new IntVector2(0, 0)),
                 new OrthogonalLine(new IntVector2(0, 2), new IntVector2(1, 2)),
@@ -204,10 +204,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetConfigurationSpaceOverCorridor_SquareRoomHorizontalCorridor()
         {
             var roomShape = GridPolygon.GetSquare(5);
-            var roomDoorsMode = new OverlapMode(1, 0);
+            var roomDoorsMode = new SimpleDoorMode(1, 0);
 
             var corridor = GridPolygon.GetRectangle(2, 1);
-            var corridorDoorsMode = new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 0)),
                 new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 1)),
@@ -229,7 +229,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetConfigurationSpaceOverCorridor_RoomShapesThatCannotBeCorrectlyConnected()
         {
             var roomShape1 = GridPolygon.GetSquare(5);
-            var roomDoorsMode1 = new OverlapMode(1, 0);
+            var roomDoorsMode1 = new SimpleDoorMode(1, 0);
 
             var roomShape2 = new GridPolygonBuilder()
                 .AddPoint(0, 1)
@@ -239,13 +239,13 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
                 .AddPoint(1, 0)
                 .AddPoint(1, 1)
                 .Build();
-            var roomDoorsMode2 = new SpecificPositionsMode(new List<OrthogonalLine>()
+            var roomDoorsMode2 = new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(1, 1), new IntVector2(0, 1)),
             });
 
             var corridor = GridPolygon.GetSquare(2);
-            var corridorDoorsMode = new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
                 new OrthogonalLine(new IntVector2(0, 2), new IntVector2(1, 2)),
@@ -262,10 +262,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new OverlapMode(1, 0), transformations);
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetRectangle(2, 1), new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetRectangle(2, 1), new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 0)),
                 new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 1)),
@@ -290,10 +290,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new OverlapMode(0, 0), transformations);
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new SimpleDoorMode(0, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)),
                 new OrthogonalLine(new IntVector2(1, 2), new IntVector2(1, 2)),
@@ -323,10 +323,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetRectangle(5, 4), new OverlapMode(0, 2), new List<Transformation>() { Transformation.Identity });
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetRectangle(5, 4), new SimpleDoorMode(0, 2), new List<Transformation>() { Transformation.Identity });
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)),
                 new OrthogonalLine(new IntVector2(1, 2), new IntVector2(1, 2)),
@@ -354,10 +354,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new OverlapMode(1, 0), transformations);
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
                 new OrthogonalLine(new IntVector2(1, 0), new IntVector2(2, 0)),
@@ -389,10 +389,10 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         {
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new OverlapMode(1, 0), transformations);
+            var basicRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(GridPolygon.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
                 new OrthogonalLine(new IntVector2(1, 0), new IntVector2(2, 0)),
@@ -425,7 +425,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetConfigurationSpaceOverCorridor_SquareRoomLShapedCorridor()
         {
             var roomShape = GridPolygon.GetSquare(5);
-            var roomDoorsMode = new OverlapMode(1, 0);
+            var roomDoorsMode = new SimpleDoorMode(1, 0);
 
             var corridor = new GridPolygonBuilder()
                 .AddPoint(0, 1)
@@ -436,7 +436,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
                 .AddPoint(1, 1)
                 .Build();
 
-            var corridorDoorsMode = new SpecificPositionsMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
             {
                 new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 2)),
                 new OrthogonalLine(new IntVector2(2, 0), new IntVector2(1, 0)),
