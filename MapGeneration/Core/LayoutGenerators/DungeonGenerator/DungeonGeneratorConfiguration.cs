@@ -37,7 +37,9 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
         public int SimulatedAnnealingMaxBranching { get; set; } = 5;
 
-        public RoomShapesRepeatingConfig RoomShapesRepeatingConfig { get; set; }
+        public RepeatMode? RepeatModeOverride { get; set; }
+
+        public bool ThrowIfRepeatModeNotSatisfied { get; set; } = false;
 
         public DungeonGeneratorConfiguration(IMapDescription<TNode> mapDescription)
         {
@@ -50,12 +52,6 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 simulatedAnnealingConfigurations.Add(LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
             }
             SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(simulatedAnnealingConfigurations);
-
-            RoomShapesRepeatingConfig = new RoomShapesRepeatingConfig()
-            {
-                Type = RoomShapesRepeating.Any,
-                ThrowIfNotSatisfied = false,
-            };
         }
 
         protected DungeonGeneratorConfiguration()

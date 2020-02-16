@@ -37,7 +37,7 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            // CompareWithReference();
+            CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
@@ -47,7 +47,7 @@ namespace Sandbox
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
-            RunExample();
+            // RunExample();
             // ConvertToXml();
 
             // Main();
@@ -109,7 +109,7 @@ namespace Sandbox
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 5);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 10);
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResultDefaultLocation(scenarioResult);
 
@@ -126,7 +126,7 @@ namespace Sandbox
                 }
             }
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1580072563_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1581884301_CorridorConfigurationSpaces_Reference.json");
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Sandbox
 		//	return inputs;
 		//}
 
-        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch)
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null)
         {
             var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(scale);
             var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
@@ -298,7 +298,11 @@ namespace Sandbox
 
             {
                 var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample1(), basicRoomDescription, corridorRoomDescription, withCorridors);
-                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                var configuration = new DungeonGeneratorConfiguration(mapDescription)
+                {
+                    RoomsCanTouch = canTouch,
+                    RepeatModeOverride = repeatModeOverride
+                };
                 inputs.Add(new DungeonGeneratorInput<int>(
                     MapDescriptionUtils.GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
@@ -309,7 +313,11 @@ namespace Sandbox
 
             {
                 var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample2(), basicRoomDescription, corridorRoomDescription, withCorridors);
-                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                var configuration = new DungeonGeneratorConfiguration(mapDescription)
+                {
+                    RoomsCanTouch = canTouch,
+                    RepeatModeOverride = repeatModeOverride
+                };
                 inputs.Add(new DungeonGeneratorInput<int>(
                     MapDescriptionUtils.GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
@@ -320,7 +328,11 @@ namespace Sandbox
 
             {
                 var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample3(), basicRoomDescription, corridorRoomDescription, withCorridors);
-                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                var configuration = new DungeonGeneratorConfiguration(mapDescription)
+                {
+                    RoomsCanTouch = canTouch,
+                    RepeatModeOverride = repeatModeOverride
+                };
                 inputs.Add(new DungeonGeneratorInput<int>(
                     MapDescriptionUtils.GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
@@ -331,7 +343,11 @@ namespace Sandbox
 
             {
                 var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample4(), basicRoomDescription, corridorRoomDescription, withCorridors);
-                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                var configuration = new DungeonGeneratorConfiguration(mapDescription)
+                {
+                    RoomsCanTouch = canTouch, 
+                    RepeatModeOverride = repeatModeOverride
+                };
                 inputs.Add(new DungeonGeneratorInput<int>(
                     MapDescriptionUtils.GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch),
                     mapDescription,
@@ -342,7 +358,11 @@ namespace Sandbox
 
             {
                 var mapDescription = MapDescriptionUtils.GetBasicMapDescription(GraphsDatabase.GetExample5(), basicRoomDescription, corridorRoomDescription, withCorridors);
-                var configuration = new DungeonGeneratorConfiguration(mapDescription) { RoomsCanTouch = canTouch };
+                var configuration = new DungeonGeneratorConfiguration(mapDescription)
+                {
+                    RoomsCanTouch = canTouch,
+                    RepeatModeOverride = repeatModeOverride
+                };
                 inputs.Add(new DungeonGeneratorInput<int>(
                     MapDescriptionUtils.GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch),
                     mapDescription,

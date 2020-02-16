@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
-using Newtonsoft.Json;
+using MapGeneration.Core.LayoutOperations;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -19,19 +19,14 @@ namespace MapGeneration.Core.MapDescriptions
 
         public List<Transformation> AllowedTransformations { get; }
 
-        public RoomTemplate(GridPolygon shape, IDoorMode doorsMode)
-        {
-            Shape = new GridPolygon(shape.GetPoints());
-            DoorsMode = doorsMode;
-            AllowedTransformations = new List<Transformation>() { Transformation.Identity };
-        }
+		public RepeatMode RepeatMode { get; }
 
-		[JsonConstructor]
-		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations)
+		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations = null, RepeatMode repeatMode = RepeatMode.AllowRepeat)
 		{
-			Shape = shape; // TODO: should I create a copy?
+			Shape = shape;
 			DoorsMode = doorsMode;
-            AllowedTransformations = allowedTransformations;
+            AllowedTransformations = allowedTransformations ?? new List<Transformation>() { Transformation.Identity };
+            RepeatMode = repeatMode;
         }
 	}
 }

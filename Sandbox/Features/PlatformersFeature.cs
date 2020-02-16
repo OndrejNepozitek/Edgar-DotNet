@@ -43,11 +43,8 @@ namespace Sandbox.Features
             {
                 var configuration = new DungeonGeneratorConfiguration(input.MapDescription)
                 {
-                    RoomShapesRepeatingConfig = new RoomShapesRepeatingConfig()
-                    {
-                        Type = RoomShapesRepeating.NoNeighborsRepeats,
-                        ThrowIfNotSatisfied = true,
-                    }
+                    RepeatModeOverride = RepeatMode.NoImmediate,
+                    ThrowIfRepeatModeNotSatisfied = true,
                 };
                 var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));

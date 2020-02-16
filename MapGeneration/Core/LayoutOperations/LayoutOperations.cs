@@ -1,5 +1,6 @@
 ﻿using MapGeneration.Core.Constraints;
 using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Interfaces.Core.LayoutOperations;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 
 namespace MapGeneration.Core.LayoutOperations
@@ -27,11 +28,24 @@ namespace MapGeneration.Core.LayoutOperations
     {
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator;
         private readonly ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator;
+        private readonly bool throwIfRepeatModeNotSatisfied;
 
-        public LayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator, ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator, RoomShapesRepeatingConfig roomShapesRepeatingConfig) : base(configurationSpaces, averageSize, mapDescription, roomShapesRepeatingConfig)
+        public LayoutOperations(
+            IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
+            int averageSize,
+            IMapDescription<TNode> mapDescription,
+            ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator,
+            ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageTwoConstraintsEvaluator,
+            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied)
+            : base(
+            configurationSpaces,
+            averageSize,
+            mapDescription,
+            roomShapesHandler)
         {
             this.stageOneConstraintsEvaluator = stageOneConstraintsEvaluator;
             this.stageTwoConstraintsEvaluator = stageTwoConstraintsEvaluator;
+            this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
         }
 
         /// <summary>
@@ -121,33 +135,18 @@ namespace MapGeneration.Core.LayoutOperations
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-            var shapes = GetPossibleShapesForNode(layout, node, RoomShapesRepeatingConfig.Type);
+            var shapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
 
-			// TODO: make better
-            if (shapes.Count == 0 && RoomShapesRepeatingConfig.Type != RoomShapesRepeating.Any)
+			if (shapes.Count == 0)
             {
-                if (RoomShapesRepeatingConfig.ThrowIfNotSatisfied)
+                if (throwIfRepeatModeNotSatisfied)
                 {
-					throw new ArgumentException($"It was not possible to choose a room shape that is different from others. Current mode is set to {RoomShapesRepeatingConfig.Type}");
+					throw new InvalidOperationException($"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements. Moreover, the {nameof(throwIfRepeatModeNotSatisfied)} option is set to true which means that the algorithm did not attempt to find at least some room templates even though not all conditions were satisfied. Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
                 }
                 else
                 {
-					// Try at least not repeating neighbors
-                    if (RoomShapesRepeatingConfig.Type == RoomShapesRepeating.NoRepeats)
-                    {
-                        GetPossibleShapesForNode(layout, node, RoomShapesRepeating.NoNeighborsRepeats);
-                    }
-
-                    if (shapes.Count == 0)
-                    {
-                        shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
-                    }
+                    throw new InvalidOperationException($"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements.  Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
                 }
-            }
-
-            if (shapes.Count == 0)
-            {
-                throw new ArgumentException();
             }
 
 			shapes.Shuffle(Random);
