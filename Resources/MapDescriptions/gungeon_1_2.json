@@ -1,0 +1,2396 @@
+{
+  "$id": "1",
+  "roomDescriptions": {
+    "$id": "2",
+    "0": {
+      "$id": "3",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "4",
+        "$values": [
+          {
+            "$id": "5",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "6",
+              "points": {
+                "$id": "7",
+                "$values": [
+                  {
+                    "$id": "8",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "9",
+                    "X": 12,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "10",
+                    "X": 12,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "11",
+                    "X": 1,
+                    "Y": -6
+                  }
+                ]
+              },
+              "hash": 4839425,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "12",
+                  "X": 1,
+                  "Y": -6
+                },
+                "B": {
+                  "$id": "13",
+                  "X": 12,
+                  "Y": 5
+                },
+                "Center": {
+                  "X": 6,
+                  "Y": 0
+                },
+                "Area": 121,
+                "Width": 11,
+                "Height": 11
+              }
+            },
+            "DoorsMode": {
+              "$id": "14",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "15",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "1": {
+      "$id": "16",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "17",
+        "$values": [
+          {
+            "$id": "18",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "19",
+              "points": {
+                "$id": "20",
+                "$values": [
+                  {
+                    "$id": "21",
+                    "X": -10,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "22",
+                    "X": 5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "23",
+                    "X": 5,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "24",
+                    "X": -10,
+                    "Y": -13
+                  }
+                ]
+              },
+              "hash": 4701545,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "25",
+                  "X": -10,
+                  "Y": -13
+                },
+                "B": {
+                  "$id": "26",
+                  "X": 5,
+                  "Y": 5
+                },
+                "Center": {
+                  "X": -2,
+                  "Y": -4
+                },
+                "Area": 270,
+                "Width": 15,
+                "Height": 18
+              }
+            },
+            "DoorsMode": {
+              "$id": "27",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "28",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "29",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "30",
+              "points": {
+                "$id": "31",
+                "$values": [
+                  {
+                    "$id": "32",
+                    "X": -10,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "33",
+                    "X": 5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "34",
+                    "X": 5,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "35",
+                    "X": -10,
+                    "Y": -13
+                  }
+                ]
+              },
+              "hash": 4701545,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "36",
+                  "X": -10,
+                  "Y": -13
+                },
+                "B": {
+                  "$id": "37",
+                  "X": 5,
+                  "Y": 5
+                },
+                "Center": {
+                  "X": -2,
+                  "Y": -4
+                },
+                "Area": 270,
+                "Width": 15,
+                "Height": 18
+              }
+            },
+            "DoorsMode": {
+              "$id": "38",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "39",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "40",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "41",
+              "points": {
+                "$id": "42",
+                "$values": [
+                  {
+                    "$id": "43",
+                    "X": -12,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "44",
+                    "X": 3,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "45",
+                    "X": 3,
+                    "Y": -14
+                  },
+                  {
+                    "$id": "46",
+                    "X": -12,
+                    "Y": -14
+                  }
+                ]
+              },
+              "hash": 4599905,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "47",
+                  "X": -12,
+                  "Y": -14
+                },
+                "B": {
+                  "$id": "48",
+                  "X": 3,
+                  "Y": -1
+                },
+                "Center": {
+                  "X": -4,
+                  "Y": -7
+                },
+                "Area": 195,
+                "Width": 15,
+                "Height": 13
+              }
+            },
+            "DoorsMode": {
+              "$id": "49",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "50",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "51",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "52",
+              "points": {
+                "$id": "53",
+                "$values": [
+                  {
+                    "$id": "54",
+                    "X": -11,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "55",
+                    "X": -5,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "56",
+                    "X": -5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "57",
+                    "X": -3,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "58",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "59",
+                    "X": 2,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "60",
+                    "X": 2,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "61",
+                    "X": 4,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "62",
+                    "X": 4,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "63",
+                    "X": 10,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "64",
+                    "X": 10,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "65",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "66",
+                    "X": 4,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "67",
+                    "X": 2,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "68",
+                    "X": 2,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "69",
+                    "X": -3,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "70",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "71",
+                    "X": -5,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "72",
+                    "X": -5,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "73",
+                    "X": -11,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": -915411295,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "74",
+                  "X": -11,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "75",
+                  "X": 10,
+                  "Y": 6
+                },
+                "Center": {
+                  "X": 0,
+                  "Y": 2
+                },
+                "Area": 147,
+                "Width": 21,
+                "Height": 7
+              }
+            },
+            "DoorsMode": {
+              "$id": "76",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "77",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "78",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "79",
+              "points": {
+                "$id": "80",
+                "$values": [
+                  {
+                    "$id": "81",
+                    "X": -39,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "82",
+                    "X": -37,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "83",
+                    "X": -37,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "84",
+                    "X": -39,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "85",
+                    "X": -39,
+                    "Y": 15
+                  },
+                  {
+                    "$id": "86",
+                    "X": -26,
+                    "Y": 15
+                  },
+                  {
+                    "$id": "87",
+                    "X": -26,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "88",
+                    "X": -28,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "89",
+                    "X": -28,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "90",
+                    "X": -26,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "91",
+                    "X": -26,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "92",
+                    "X": -39,
+                    "Y": -4
+                  }
+                ]
+              },
+              "hash": 595528753,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "93",
+                  "X": -39,
+                  "Y": -4
+                },
+                "B": {
+                  "$id": "94",
+                  "X": -26,
+                  "Y": 15
+                },
+                "Center": {
+                  "X": -32,
+                  "Y": 5
+                },
+                "Area": 247,
+                "Width": 13,
+                "Height": 19
+              }
+            },
+            "DoorsMode": {
+              "$id": "95",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "96",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "97",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "98",
+              "points": {
+                "$id": "99",
+                "$values": [
+                  {
+                    "$id": "100",
+                    "X": -14,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "101",
+                    "X": 0,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "102",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "103",
+                    "X": -14,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "104",
+                    "X": -14,
+                    "Y": 12
+                  },
+                  {
+                    "$id": "105",
+                    "X": 8,
+                    "Y": 12
+                  },
+                  {
+                    "$id": "106",
+                    "X": 8,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "107",
+                    "X": -6,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "108",
+                    "X": -6,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "109",
+                    "X": 8,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "110",
+                    "X": 8,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "111",
+                    "X": -14,
+                    "Y": -13
+                  }
+                ]
+              },
+              "hash": 1775894553,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "112",
+                  "X": -14,
+                  "Y": -13
+                },
+                "B": {
+                  "$id": "113",
+                  "X": 8,
+                  "Y": 12
+                },
+                "Center": {
+                  "X": -3,
+                  "Y": 0
+                },
+                "Area": 550,
+                "Width": 22,
+                "Height": 25
+              }
+            },
+            "DoorsMode": {
+              "$id": "114",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "115",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "2": {
+      "$id": "116",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "117",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "3": {
+      "$id": "118",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "119",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "4": {
+      "$id": "120",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "121",
+        "$values": [
+          {
+            "$id": "122",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "123",
+              "points": {
+                "$id": "124",
+                "$values": [
+                  {
+                    "$id": "125",
+                    "X": -8,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "126",
+                    "X": -7,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "127",
+                    "X": -7,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "128",
+                    "X": 3,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "129",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "130",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "131",
+                    "X": 4,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "132",
+                    "X": 3,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "133",
+                    "X": 3,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "134",
+                    "X": -7,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "135",
+                    "X": -7,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "136",
+                    "X": -8,
+                    "Y": -3
+                  }
+                ]
+              },
+              "hash": -727652175,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "137",
+                  "X": -8,
+                  "Y": -4
+                },
+                "B": {
+                  "$id": "138",
+                  "X": 4,
+                  "Y": 8
+                },
+                "Center": {
+                  "X": -2,
+                  "Y": 2
+                },
+                "Area": 144,
+                "Width": 12,
+                "Height": 12
+              }
+            },
+            "DoorsMode": {
+              "$id": "139",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "140",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "5": {
+      "$id": "141",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "142",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "6": {
+      "$id": "143",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "144",
+        "$values": [
+          {
+            "$ref": "122"
+          }
+        ]
+      }
+    },
+    "7": {
+      "$id": "145",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "146",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "8": {
+      "$id": "147",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "148",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "9": {
+      "$id": "149",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "150",
+        "$values": [
+          {
+            "$id": "151",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "152",
+              "points": {
+                "$id": "153",
+                "$values": [
+                  {
+                    "$id": "154",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "155",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "156",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "157",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              },
+              "hash": 4818833,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "158",
+                  "X": -3,
+                  "Y": -9
+                },
+                "B": {
+                  "$id": "159",
+                  "X": 17,
+                  "Y": 7
+                },
+                "Center": {
+                  "X": 7,
+                  "Y": -1
+                },
+                "Area": 320,
+                "Width": 20,
+                "Height": 16
+              }
+            },
+            "DoorsMode": {
+              "$id": "160",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "161",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "162",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "163",
+              "points": {
+                "$id": "164",
+                "$values": [
+                  {
+                    "$id": "165",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "166",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "167",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "168",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              },
+              "hash": 4818833,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "169",
+                  "X": -3,
+                  "Y": -9
+                },
+                "B": {
+                  "$id": "170",
+                  "X": 17,
+                  "Y": 7
+                },
+                "Center": {
+                  "X": 7,
+                  "Y": -1
+                },
+                "Area": 320,
+                "Width": 20,
+                "Height": 16
+              }
+            },
+            "DoorsMode": {
+              "$id": "171",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "172",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "173",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "174",
+              "points": {
+                "$id": "175",
+                "$values": [
+                  {
+                    "$id": "176",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "177",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "178",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "179",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              },
+              "hash": 4818833,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "180",
+                  "X": -3,
+                  "Y": -9
+                },
+                "B": {
+                  "$id": "181",
+                  "X": 17,
+                  "Y": 7
+                },
+                "Center": {
+                  "X": 7,
+                  "Y": -1
+                },
+                "Area": 320,
+                "Width": 20,
+                "Height": 16
+              }
+            },
+            "DoorsMode": {
+              "$id": "182",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "183",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "10": {
+      "$id": "184",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "185",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "11": {
+      "$id": "186",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "187",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "12": {
+      "$id": "188",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "189",
+        "$values": [
+          {
+            "$ref": "122"
+          }
+        ]
+      }
+    },
+    "13": {
+      "$id": "190",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "191",
+        "$values": [
+          {
+            "$ref": "18"
+          },
+          {
+            "$ref": "29"
+          },
+          {
+            "$ref": "40"
+          },
+          {
+            "$ref": "51"
+          },
+          {
+            "$ref": "78"
+          },
+          {
+            "$ref": "97"
+          }
+        ]
+      }
+    },
+    "14": {
+      "$id": "192",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "193",
+        "$values": [
+          {
+            "$id": "194",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "195",
+              "points": {
+                "$id": "196",
+                "$values": [
+                  {
+                    "$id": "197",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "198",
+                    "X": 4,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "199",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "200",
+                    "X": -3,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 4773761,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "201",
+                  "X": -3,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "202",
+                  "X": 4,
+                  "Y": 4
+                },
+                "Center": {
+                  "X": 0,
+                  "Y": 1
+                },
+                "Area": 35,
+                "Width": 7,
+                "Height": 5
+              }
+            },
+            "DoorsMode": {
+              "$id": "203",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "204",
+                "$values": [
+                  {
+                    "$id": "205",
+                    "From": {
+                      "$id": "206",
+                      "X": 4,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "207",
+                      "X": 4,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "208",
+                    "From": {
+                      "$id": "209",
+                      "X": -3,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "210",
+                      "X": -3,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "211",
+                    "From": {
+                      "$id": "212",
+                      "X": 0,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "213",
+                      "X": 1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "214",
+                    "From": {
+                      "$id": "215",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "To": {
+                      "$id": "216",
+                      "X": 1,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "217",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "15": {
+      "$id": "218",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "219",
+        "$values": [
+          {
+            "$id": "220",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "221",
+              "points": {
+                "$id": "222",
+                "$values": [
+                  {
+                    "$id": "223",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "224",
+                    "X": 14,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "225",
+                    "X": 14,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "226",
+                    "X": -3,
+                    "Y": -6
+                  }
+                ]
+              },
+              "hash": 4804553,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "227",
+                  "X": -3,
+                  "Y": -6
+                },
+                "B": {
+                  "$id": "228",
+                  "X": 14,
+                  "Y": 6
+                },
+                "Center": {
+                  "X": 5,
+                  "Y": 0
+                },
+                "Area": 204,
+                "Width": 17,
+                "Height": 12
+              }
+            },
+            "DoorsMode": {
+              "$id": "229",
+              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "DoorLength": 1,
+              "CornerDistance": 3
+            },
+            "AllowedTransformations": {
+              "$id": "230",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "16": {
+      "$id": "231",
+      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "232",
+        "$values": [
+          {
+            "$id": "233",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "234",
+              "points": {
+                "$id": "235",
+                "$values": [
+                  {
+                    "$id": "236",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "237",
+                    "X": 4,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "238",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "239",
+                    "X": -3,
+                    "Y": -1
+                  }
+                ]
+              },
+              "hash": 4773761,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "240",
+                  "X": -3,
+                  "Y": -1
+                },
+                "B": {
+                  "$id": "241",
+                  "X": 4,
+                  "Y": 4
+                },
+                "Center": {
+                  "X": 0,
+                  "Y": 1
+                },
+                "Area": 35,
+                "Width": 7,
+                "Height": 5
+              }
+            },
+            "DoorsMode": {
+              "$id": "242",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "243",
+                "$values": [
+                  {
+                    "$id": "244",
+                    "From": {
+                      "$id": "245",
+                      "X": 4,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "246",
+                      "X": 4,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "247",
+                    "From": {
+                      "$id": "248",
+                      "X": -3,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "249",
+                      "X": -3,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "250",
+                    "From": {
+                      "$id": "251",
+                      "X": 0,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "252",
+                      "X": 1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "253",
+                    "From": {
+                      "$id": "254",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "To": {
+                      "$id": "255",
+                      "X": 1,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "256",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "17": {
+      "$id": "257",
+      "$type": "MapGeneration.Core.MapDescriptions.CorridorRoomDescription, MapGeneration",
+      "Stage": 2,
+      "RoomTemplates": {
+        "$id": "258",
+        "$values": [
+          {
+            "$id": "259",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "260",
+              "points": {
+                "$id": "261",
+                "$values": [
+                  {
+                    "$id": "262",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "263",
+                    "X": 0,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "264",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "265",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4721273,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "266",
+                  "X": -4,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "267",
+                  "X": 0,
+                  "Y": 1
+                },
+                "Center": {
+                  "X": -2,
+                  "Y": 0
+                },
+                "Area": 12,
+                "Width": 4,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "268",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "269",
+                "$values": [
+                  {
+                    "$id": "270",
+                    "From": {
+                      "$id": "271",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "272",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "273",
+                    "From": {
+                      "$id": "274",
+                      "X": 0,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "275",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "276",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "277",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "278",
+              "points": {
+                "$id": "279",
+                "$values": [
+                  {
+                    "$id": "280",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "281",
+                    "X": 2,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "282",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "283",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4722377,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "284",
+                  "X": -4,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "285",
+                  "X": 2,
+                  "Y": 1
+                },
+                "Center": {
+                  "X": -1,
+                  "Y": 0
+                },
+                "Area": 18,
+                "Width": 6,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "286",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "287",
+                "$values": [
+                  {
+                    "$id": "288",
+                    "From": {
+                      "$id": "289",
+                      "X": 2,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "290",
+                      "X": 2,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "291",
+                    "From": {
+                      "$id": "292",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "293",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "294",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "295",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "296",
+              "points": {
+                "$id": "297",
+                "$values": [
+                  {
+                    "$id": "298",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "299",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "300",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "301",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4723481,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "302",
+                  "X": -4,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "303",
+                  "X": 4,
+                  "Y": 1
+                },
+                "Center": {
+                  "X": 0,
+                  "Y": 0
+                },
+                "Area": 24,
+                "Width": 8,
+                "Height": 3
+              }
+            },
+            "DoorsMode": {
+              "$id": "304",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "305",
+                "$values": [
+                  {
+                    "$id": "306",
+                    "From": {
+                      "$id": "307",
+                      "X": 4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "308",
+                      "X": 4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "309",
+                    "From": {
+                      "$id": "310",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "311",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "312",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "313",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "314",
+              "points": {
+                "$id": "315",
+                "$values": [
+                  {
+                    "$id": "316",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "317",
+                    "X": 0,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "318",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "319",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4746137,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "320",
+                  "X": -3,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "321",
+                  "X": 0,
+                  "Y": 2
+                },
+                "Center": {
+                  "X": -1,
+                  "Y": 0
+                },
+                "Area": 12,
+                "Width": 3,
+                "Height": 4
+              }
+            },
+            "DoorsMode": {
+              "$id": "322",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "323",
+                "$values": [
+                  {
+                    "$id": "324",
+                    "From": {
+                      "$id": "325",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "326",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "327",
+                    "From": {
+                      "$id": "328",
+                      "X": -2,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "329",
+                      "X": -1,
+                      "Y": 2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "330",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "331",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "332",
+              "points": {
+                "$id": "333",
+                "$values": [
+                  {
+                    "$id": "334",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "335",
+                    "X": 0,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "336",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "337",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4771529,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "338",
+                  "X": -3,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "339",
+                  "X": 0,
+                  "Y": 4
+                },
+                "Center": {
+                  "X": -1,
+                  "Y": 1
+                },
+                "Area": 18,
+                "Width": 3,
+                "Height": 6
+              }
+            },
+            "DoorsMode": {
+              "$id": "340",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "341",
+                "$values": [
+                  {
+                    "$id": "342",
+                    "From": {
+                      "$id": "343",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "344",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "345",
+                    "From": {
+                      "$id": "346",
+                      "X": -2,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "347",
+                      "X": -1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "348",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          },
+          {
+            "$id": "349",
+            "$type": "MapGeneration.Core.MapDescriptions.RoomTemplate, MapGeneration",
+            "Shape": {
+              "$id": "350",
+              "points": {
+                "$id": "351",
+                "$values": [
+                  {
+                    "$id": "352",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "353",
+                    "X": 0,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "354",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "355",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              },
+              "hash": 4796921,
+              "BoundingRectangle": {
+                "A": {
+                  "$id": "356",
+                  "X": -3,
+                  "Y": -2
+                },
+                "B": {
+                  "$id": "357",
+                  "X": 0,
+                  "Y": 6
+                },
+                "Center": {
+                  "X": -1,
+                  "Y": 2
+                },
+                "Area": 24,
+                "Width": 3,
+                "Height": 8
+              }
+            },
+            "DoorsMode": {
+              "$id": "358",
+              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "DoorPositions": {
+                "$id": "359",
+                "$values": [
+                  {
+                    "$id": "360",
+                    "From": {
+                      "$id": "361",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "362",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "363",
+                    "From": {
+                      "$id": "364",
+                      "X": -2,
+                      "Y": 6
+                    },
+                    "To": {
+                      "$id": "365",
+                      "X": -1,
+                      "Y": 6
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "366",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0
+          }
+        ]
+      }
+    },
+    "18": {
+      "$ref": "257"
+    },
+    "19": {
+      "$ref": "257"
+    },
+    "20": {
+      "$ref": "257"
+    },
+    "21": {
+      "$ref": "257"
+    },
+    "22": {
+      "$ref": "257"
+    },
+    "23": {
+      "$ref": "257"
+    },
+    "24": {
+      "$ref": "257"
+    },
+    "25": {
+      "$ref": "257"
+    },
+    "26": {
+      "$ref": "257"
+    },
+    "27": {
+      "$ref": "257"
+    },
+    "28": {
+      "$ref": "257"
+    },
+    "29": {
+      "$ref": "257"
+    },
+    "30": {
+      "$ref": "257"
+    },
+    "31": {
+      "$ref": "257"
+    },
+    "32": {
+      "$ref": "257"
+    },
+    "33": {
+      "$ref": "257"
+    },
+    "34": {
+      "$ref": "257"
+    }
+  },
+  "passages": {
+    "$id": "367",
+    "$values": [
+      {
+        "$id": "368",
+        "Room1": 0,
+        "Room2": 17
+      },
+      {
+        "$id": "369",
+        "Room1": 1,
+        "Room2": 17
+      },
+      {
+        "$id": "370",
+        "Room1": 1,
+        "Room2": 18
+      },
+      {
+        "$id": "371",
+        "Room1": 2,
+        "Room2": 18
+      },
+      {
+        "$id": "372",
+        "Room1": 2,
+        "Room2": 19
+      },
+      {
+        "$id": "373",
+        "Room1": 2,
+        "Room2": 24
+      },
+      {
+        "$id": "374",
+        "Room1": 3,
+        "Room2": 19
+      },
+      {
+        "$id": "375",
+        "Room1": 3,
+        "Room2": 20
+      },
+      {
+        "$id": "376",
+        "Room1": 3,
+        "Room2": 23
+      },
+      {
+        "$id": "377",
+        "Room1": 4,
+        "Room2": 20
+      },
+      {
+        "$id": "378",
+        "Room1": 4,
+        "Room2": 21
+      },
+      {
+        "$id": "379",
+        "Room1": 5,
+        "Room2": 21
+      },
+      {
+        "$id": "380",
+        "Room1": 5,
+        "Room2": 22
+      },
+      {
+        "$id": "381",
+        "Room1": 6,
+        "Room2": 22
+      },
+      {
+        "$id": "382",
+        "Room1": 6,
+        "Room2": 23
+      },
+      {
+        "$id": "383",
+        "Room1": 7,
+        "Room2": 24
+      },
+      {
+        "$id": "384",
+        "Room1": 7,
+        "Room2": 25
+      },
+      {
+        "$id": "385",
+        "Room1": 8,
+        "Room2": 25
+      },
+      {
+        "$id": "386",
+        "Room1": 8,
+        "Room2": 26
+      },
+      {
+        "$id": "387",
+        "Room1": 8,
+        "Room2": 31
+      },
+      {
+        "$id": "388",
+        "Room1": 9,
+        "Room2": 26
+      },
+      {
+        "$id": "389",
+        "Room1": 9,
+        "Room2": 27
+      },
+      {
+        "$id": "390",
+        "Room1": 9,
+        "Room2": 30
+      },
+      {
+        "$id": "391",
+        "Room1": 10,
+        "Room2": 27
+      },
+      {
+        "$id": "392",
+        "Room1": 10,
+        "Room2": 28
+      },
+      {
+        "$id": "393",
+        "Room1": 11,
+        "Room2": 28
+      },
+      {
+        "$id": "394",
+        "Room1": 11,
+        "Room2": 29
+      },
+      {
+        "$id": "395",
+        "Room1": 12,
+        "Room2": 29
+      },
+      {
+        "$id": "396",
+        "Room1": 12,
+        "Room2": 30
+      },
+      {
+        "$id": "397",
+        "Room1": 13,
+        "Room2": 31
+      },
+      {
+        "$id": "398",
+        "Room1": 13,
+        "Room2": 32
+      },
+      {
+        "$id": "399",
+        "Room1": 14,
+        "Room2": 32
+      },
+      {
+        "$id": "400",
+        "Room1": 14,
+        "Room2": 33
+      },
+      {
+        "$id": "401",
+        "Room1": 15,
+        "Room2": 33
+      },
+      {
+        "$id": "402",
+        "Room1": 15,
+        "Room2": 34
+      },
+      {
+        "$id": "403",
+        "Room1": 16,
+        "Room2": 34
+      }
+    ]
+  }
+}

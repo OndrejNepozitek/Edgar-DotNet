@@ -23,6 +23,7 @@ using MapGeneration.MetaOptimization.Stats;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
 using MapGeneration.Utils.MapDrawing;
+using MapGeneration.Utils.Statistics;
 using Newtonsoft.Json;
 using Sandbox.Utils;
 
@@ -108,7 +109,7 @@ namespace Sandbox.Features
                     {
                         SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
                         GeneratedLayoutSvg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true),
-                        // GeneratedLayout = layout,
+                        GeneratedLayout = layout,
                     };
 
                     var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);

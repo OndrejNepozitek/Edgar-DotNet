@@ -21,6 +21,14 @@ namespace MapGeneration.Utils.Statistics
 
         public double ComputeRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<IMapLayout<TNode>> layouts, TNode node, bool normalize = true)
         {
+            var distribution = GetRoomTemplatesDistribution(mapDescription, layouts, node);
+            var entropy = ComputeEntropy(distribution, normalize);
+
+            return entropy;
+        }
+
+        public Dictionary<IRoomTemplate, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<IMapLayout<TNode>> layouts, TNode node)
+        {
             var roomDescription = mapDescription.GetRoomDescription(node);
             var availableRoomTemplates = roomDescription.RoomTemplates;
             var data = layouts
@@ -28,10 +36,7 @@ namespace MapGeneration.Utils.Statistics
                 .Select(x => x.RoomTemplate)
                 .ToList();
 
-            var distribution = GetRoomTemplatesDistribution(data, availableRoomTemplates);
-            var entropy = ComputeEntropy(distribution, normalize);
-
-            return entropy;
+            return GetRoomTemplatesDistribution(data, availableRoomTemplates);
         }
 
         public Dictionary<IRoomTemplate, double> GetRoomTemplatesDistribution(List<IRoomTemplate> data, List<IRoomTemplate> availableRoomTemplates)

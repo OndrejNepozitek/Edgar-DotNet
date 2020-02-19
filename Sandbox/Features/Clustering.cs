@@ -3,18 +3,241 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
+using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.ResultSaving;
+using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Interfaces.Benchmarks;
 using MapGeneration.Interfaces.Core.MapDescriptions;
 using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
 using MapGeneration.Utils.MapDrawing;
 using MapGeneration.Utils.Statistics;
+using Newtonsoft.Json;
+using Sandbox.Utils;
 
 namespace Sandbox.Features
 {
     public class Clustering
     {
         public void Run()
+        {
+            var rectangularRoomTemplates = MapDescriptionUtils.GetRectangularRoomTemplates(new IntVector2(1, 1));
+            var basicRoomDescription = new BasicRoomDescription(rectangularRoomTemplates);
+
+            var inputs = new List<DungeonGeneratorInput<int>>();
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true, basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
+
+            inputs.Add(LoadInput("gungeon_1_1")); 
+            inputs.Add(LoadInput("gungeon_1_1", true));
+            inputs.Add(LoadInput("gungeon_1_2"));
+            inputs.Add(LoadInput("gungeon_1_2", true));
+            inputs.Add(LoadInput("gungeon_2_1"));
+            inputs.Add(LoadInput("gungeon_2_1", true));
+            inputs.Add(LoadInput("gungeon_2_2"));
+            inputs.Add(LoadInput("gungeon_2_2", true));
+
+            if (true)
+            {
+                inputs.Sort((x1, x2) => string.Compare(x1.Name, x2.Name, StringComparison.Ordinal));
+            }
+
+            inputs = inputs.Where(x => !x.Name.StartsWith("Example 4")).ToList();
+
+            var layoutDrawer = new SVGLayoutDrawer<int>();
+
+            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
+            {
+                var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+                layoutGenerator.InjectRandomGenerator(new Random(0));
+
+                return new LambdaGeneratorRunner(() =>
+                {
+                    var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+                    void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
+                    {
+                        simulatedAnnealingArgsContainer.Add(eventArgs);
+                    }
+
+                    layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
+                    var layout = layoutGenerator.GenerateLayout();
+                    layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
+
+                    var additionalData = new AdditionalRunData()
+                    {
+                        SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
+                        GeneratedLayoutSvg = layoutDrawer.DrawLayout(layout, 800, forceSquare: true),
+                        GeneratedLayout = layout,
+                    };
+
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+
+                    return generatorRun;
+                });
+            });
+
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 250);
+
+            // Clusters
+            for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
+            {
+                var benchmarkResult = scenarioResult.BenchmarkResults[i];
+                var layoutsClustering = new LayoutsClustering<int>();
+                var input = inputs[i];
+                var mapDescription = input.MapDescription;
+
+                var layouts = benchmarkResult
+                    .Runs
+                    .Cast<IGeneratorRun<AdditionalRunData>>()
+                    .Select(x => x.AdditionalData.GeneratedLayout)
+                    .ToList();
+
+                var layoutsForClustering = layouts.Take(Math.Min(layouts.Count, 500)).ToList();
+                var layoutsMapping = layoutsForClustering.CreateIntMapping();
+
+
+                var averageRoomTemplateSize = LayoutsDistance.GetAverageRoomTemplateSize(mapDescription);
+                var positionOnlyClusters = layoutsClustering.GetClusters(layoutsMapping.Values.ToList(),
+                    (x1, x2) => LayoutsDistance.PositionOnlyDistance(layoutsMapping.GetByValue(x1), layoutsMapping.GetByValue(x2)), averageRoomTemplateSize);
+                var positionAndShapeClusters = layoutsClustering.GetClusters(layoutsMapping.Values.ToList(),
+                    (x1, x2) => LayoutsDistance.PositionAndShapeDistance(layoutsMapping.GetByValue(x1), layoutsMapping.GetByValue(x2), averageRoomTemplateSize),
+                    averageRoomTemplateSize);
+
+                Console.WriteLine($"{input.Name} {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}");
+
+                benchmarkResult.AdditionalData["Clusters"] = new
+                {
+                    PositionOnlyClusters = positionOnlyClusters,
+                    PositionAndShapeClusters = positionAndShapeClusters,
+                };
+            }
+
+            // Entropy
+            for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
+            {
+                var benchmarkResult = scenarioResult.BenchmarkResults[i];
+                var input = inputs[i];
+                var mapDescription = input.MapDescription;
+
+                var layouts = benchmarkResult
+                    .Runs
+                    .Cast<IGeneratorRun<AdditionalRunData>>()
+                    .Select(x => x.AdditionalData.GeneratedLayout)
+                    .ToList();
+
+                var rooms = mapDescription.GetStageOneGraph().Vertices.ToList();
+                var roomTemplates = rooms
+                    .SelectMany(x => mapDescription.GetRoomDescription(x).RoomTemplates)
+                    .Distinct()
+                    .ToList();
+                var roomTemplatesMapping = roomTemplates.CreateIntMapping();
+                var entropyCalculator = new EntropyCalculator();
+
+
+                benchmarkResult.AdditionalData["Entropy"] = new
+                {
+                    RoomTemplates = roomTemplatesMapping.Values.Select(x => x.ToString()),
+                    Entropy = entropyCalculator.ComputeAverageRoomTemplatesEntropy(mapDescription, layouts),
+                    Distributions = rooms.Select(room =>
+                    {
+                        var distribution =
+                            entropyCalculator.GetRoomTemplatesDistribution(mapDescription, layouts, room);
+
+                        return new
+                        {
+                            Room = room.ToString(),
+                            EntropyScore = entropyCalculator.ComputeEntropy(distribution, true),
+                            Entropy = entropyCalculator.ComputeEntropy(distribution, false),
+                            RoomTemplatesDistribution = roomTemplatesMapping.Keys.Select(x => distribution.ContainsKey(x) ? (double?) distribution[x] : null),
+                        };
+                    })
+                };
+            }
+
+            var resultSaver = new BenchmarkResultSaver();
+            resultSaver.SaveResultDefaultLocation(scenarioResult);
+
+            var directory = $"CorridorConfigurationSpaces/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}";
+            Directory.CreateDirectory(directory);
+
+            var dataVisualization = new ChainStatsVisualization<GeneratorData>();
+            foreach (var inputResult in scenarioResult.BenchmarkResults)
+            {
+                using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
+                {
+                    var generatorEvaluation = new GeneratorEvaluation(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData>>().ToList()); // TODO: ugly
+                    dataVisualization.Visualize(generatorEvaluation, file);
+                }
+            }
+
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1581884301_CorridorConfigurationSpaces_Reference.json");
+        }
+
+        private DungeonGeneratorInput<int> LoadInput(string name, bool transform = false)
+        {
+            var mapDescription = LoadMapDescription(name);
+
+            if (transform)
+            {
+                var mapDescriptionNew = new MapDescription<int>();
+                var roomTemplates = mapDescription.GetStageOneGraph().Vertices
+                    .SelectMany(x => mapDescription.GetRoomDescription(x).RoomTemplates).Distinct();
+                var newRoomDescription = new BasicRoomDescription(roomTemplates.ToList());
+
+                foreach (var vertex in mapDescription.GetGraph().Vertices)
+                {
+                    var roomDescription = mapDescription.GetRoomDescription(vertex);
+
+                    if (roomDescription is CorridorRoomDescription)
+                    {
+                        mapDescriptionNew.AddRoom(vertex, roomDescription);
+                    }
+                    else
+                    {
+                        mapDescriptionNew.AddRoom(vertex, newRoomDescription);
+                    }
+                }
+
+                foreach (var edge in mapDescription.GetGraph().Edges)
+                {
+                    mapDescriptionNew.AddConnection(edge.From, edge.To);
+                }
+
+                mapDescription = mapDescriptionNew;
+                name += "_transformed";
+            }
+
+            return new DungeonGeneratorInput<int>(name, mapDescription, new DungeonGeneratorConfiguration<int>(mapDescription)
+            {
+                RepeatModeOverride = RepeatMode.NoRepeat,
+            }, null);
+        }
+
+        private MapDescription<int> LoadMapDescription(string name)
+        {
+            var settings = new JsonSerializerSettings()
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                TypeNameHandling = TypeNameHandling.All,
+            };
+
+            var input = new GeneratorInput<MapDescription<int>>(
+                "EnterTheGungeon",
+                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings)
+            );
+
+            return input.MapDescription;
+        }
+
+        private void RunOld()
         {
             var input = Program.GetMapDescriptionsSet(1 * new IntVector2(1, 1), false, new List<int>() { 2, 4 }, true)[1];
             var mapDescription = input.MapDescription;

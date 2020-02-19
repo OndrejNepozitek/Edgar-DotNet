@@ -11,6 +11,8 @@ namespace MapGeneration.Benchmarks
 
         public IList<IGeneratorRun> Runs { get; }
 
+        public Dictionary<string, object> AdditionalData { get; } = new Dictionary<string, object>();
+
         public BenchmarkResult(string inputName, IList<IGeneratorRun> runs)
         {
             InputName = inputName;

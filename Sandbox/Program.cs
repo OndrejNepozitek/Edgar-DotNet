@@ -37,12 +37,12 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            CompareWithReference();
+            // CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
-            // new Clustering().Run();
+            new Clustering().Run();
             // new TwoStageGeneration().Run();
-            new PlatformersFeature().Run();
+            // new PlatformersFeature().Run();
             
             // var task = RunBenchmark();
             // task.Wait();
@@ -286,10 +286,10 @@ namespace Sandbox
 		//	return inputs;
 		//}
 
-        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null)
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null, BasicRoomDescription basicRoomDescription = null, string suffix = null)
         {
             var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(scale);
-            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
+            basicRoomDescription = basicRoomDescription ?? new BasicRoomDescription(basicRoomTemplates);
 
             var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(offsets);
             var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
@@ -304,7 +304,7 @@ namespace Sandbox
                     RepeatModeOverride = repeatModeOverride
                 };
                 inputs.Add(new DungeonGeneratorInput<int>(
-                    MapDescriptionUtils.GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch),
+                    MapDescriptionUtils.GetInputName("Example 1 (fig. 1)", scale, withCorridors, offsets, canTouch, suffix),
                     mapDescription,
                     configuration,
                     offsets
@@ -319,7 +319,7 @@ namespace Sandbox
                     RepeatModeOverride = repeatModeOverride
                 };
                 inputs.Add(new DungeonGeneratorInput<int>(
-                    MapDescriptionUtils.GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch),
+                    MapDescriptionUtils.GetInputName("Example 2 (fig. 7 top)", scale, withCorridors, offsets, canTouch, suffix),
                     mapDescription,
                     configuration,
                     offsets
@@ -334,7 +334,7 @@ namespace Sandbox
                     RepeatModeOverride = repeatModeOverride
                 };
                 inputs.Add(new DungeonGeneratorInput<int>(
-                    MapDescriptionUtils.GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch),
+                    MapDescriptionUtils.GetInputName("Example 3 (fig. 7 bottom)", scale, withCorridors, offsets, canTouch, suffix),
                     mapDescription,
                     configuration,
                     offsets
@@ -349,7 +349,7 @@ namespace Sandbox
                     RepeatModeOverride = repeatModeOverride
                 };
                 inputs.Add(new DungeonGeneratorInput<int>(
-                    MapDescriptionUtils.GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch),
+                    MapDescriptionUtils.GetInputName("Example 4 (fig. 8)", scale, withCorridors, offsets, canTouch, suffix),
                     mapDescription,
                     configuration,
                     offsets
@@ -364,7 +364,7 @@ namespace Sandbox
                     RepeatModeOverride = repeatModeOverride
                 };
                 inputs.Add(new DungeonGeneratorInput<int>(
-                    MapDescriptionUtils.GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch),
+                    MapDescriptionUtils.GetInputName("Example 5 (fig. 9)", scale, withCorridors, offsets, canTouch, suffix),
                     mapDescription,
                     configuration,
                     offsets

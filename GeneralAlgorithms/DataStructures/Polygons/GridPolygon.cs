@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace GeneralAlgorithms.DataStructures.Polygons
 {
@@ -27,11 +28,10 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		[JsonProperty]
 		private readonly List<IntVector2> points;
 
-        [JsonProperty]
 		private readonly int hash;
 
 		// TODO: maybe should be struct rather than a class
-        [JsonProperty]
+        [JsonIgnore]
 		public GridRectangle BoundingRectangle { get; }
 
 		/// <summary>
@@ -43,19 +43,13 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		{
 			this.points = new List<IntVector2>(points);
 
-			CheckIntegrity();
+            CheckIntegrity();
 
-			hash = ComputeHash();
-			BoundingRectangle = GetBoundingRectabgle();
+            hash = ComputeHash();
+            BoundingRectangle = GetBoundingRectabgle();
 		}
 
-		// TODO: handle better
-		[JsonConstructor]
-        private GridPolygon()
-        {
-        }
-
-		private void CheckIntegrity()
+        private void CheckIntegrity()
 		{
 			// Each polygon must have at least 4 vertices
 			if (points.Count < 4)

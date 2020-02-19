@@ -14,7 +14,7 @@ namespace MapGeneration.Utils
 {
     public static class MapDescriptionUtils
     {
-        public static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
+        public static List<IRoomTemplate> GetRectangularRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
@@ -22,6 +22,20 @@ namespace MapGeneration.Utils
 
             var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode, transformations);
             var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode, transformations);
+
+            return new List<IRoomTemplate>()
+            {
+                squareRoom,
+                rectangleRoom,
+            };
+        }
+
+        public static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
+        {
+            var overlapScale = Math.Min(scale.X, scale.Y);
+            var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
+            var transformations = TransformationHelper.GetAllTransformations().ToList();
+
             var room1 = new RoomTemplate(
                 new GridPolygonBuilder()
                     .AddPoint(0, 0)
@@ -55,10 +69,8 @@ namespace MapGeneration.Utils
                     .Build().Scale(scale)
                 , doorMode, transformations);
 
-            return new List<IRoomTemplate>()
+            return new List<IRoomTemplate>(GetRectangularRoomTemplates(scale))
             {
-                squareRoom,
-                rectangleRoom,
                 room1,
                 room2,
                 room3,
@@ -125,7 +137,7 @@ namespace MapGeneration.Utils
             return mapDescription;
         }
 
-        public static string GetInputName(string name, IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch)
+        public static string GetInputName(string name, IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, string suffix = null)
         {
             var inputName = name;
 
@@ -142,6 +154,11 @@ namespace MapGeneration.Utils
             if (!canTouch)
             {
                 inputName += $" nt";
+            }
+
+            if (!string.IsNullOrEmpty(suffix))
+            {
+                inputName += $" {suffix}";
             }
 
             return inputName;
