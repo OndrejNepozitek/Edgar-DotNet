@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.2.109
+dotnet: 2.2.207
 script:
   - dotnet build ./GeneralAlgorithms/GeneralAlgorithms.csproj
   - dotnet build ./MapGeneration/MapGeneration.csproj
