@@ -1,6 +1,6 @@
 ﻿using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {

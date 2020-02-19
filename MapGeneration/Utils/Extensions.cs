@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Utils
+﻿using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+
+namespace MapGeneration.Utils
 {
 	using System.Linq;
 	using Core;
@@ -6,9 +8,8 @@
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.ConfigurationSpaces;
 
-	public static class Extensions
+    public static class Extensions
 	{
 		public static int GetAverageSize<TNode, TConfiguration, TConfigurationSpace>(this IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, TConfigurationSpace> configurationSpaces) 
 		{

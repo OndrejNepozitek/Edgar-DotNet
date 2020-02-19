@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Benchmarks.Interfaces;
 
 namespace MapGeneration.Benchmarks.GeneratorRunners
 {

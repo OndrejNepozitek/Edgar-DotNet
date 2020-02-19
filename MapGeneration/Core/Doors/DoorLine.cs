@@ -1,16 +1,23 @@
-﻿namespace MapGeneration.Core.Doors
+﻿using MapGeneration.Core.Doors.Interfaces;
+
+namespace MapGeneration.Core.Doors
 {
 	using System;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.Doors;
 
-	/// <inheritdoc cref="IDoorLine" />
-	public struct DoorLine : IDoorLine, IEquatable<DoorLine>
+    /// <summary>
+    /// Represents a door line.
+    /// </summary>
+	public struct DoorLine : IEquatable<DoorLine>
 	{
-		/// <inheritdoc />
+        /// <summary>
+        /// Set of points where doors can start. 
+        /// </summary>
 		public OrthogonalLine Line { get; }
 
-		/// <inheritdoc />
+        /// <summary>
+        /// Length of doors.
+        /// </summary>
 		public int Length { get; }
 
 		public DoorLine(OrthogonalLine line, int length)

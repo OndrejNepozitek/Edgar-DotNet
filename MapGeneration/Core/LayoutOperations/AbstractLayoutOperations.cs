@@ -1,5 +1,10 @@
 ﻿using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.LayoutOperations.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutOperations
 {
@@ -8,12 +13,7 @@ namespace MapGeneration.Core.LayoutOperations
 	using System.Linq;
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Core.LayoutOperations;
-	using Interfaces.Core.Layouts;
-	using Interfaces.Utils;
-	using Utils;
+    using Utils;
 
 	/// <inheritdoc cref="IChainBasedLayoutOperations{TLayout,TNode}" />
 	/// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Benchmarks.Interfaces;
 using Newtonsoft.Json;
 
 namespace MapGeneration.Benchmarks

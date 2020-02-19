@@ -1,7 +1,12 @@
-﻿using MapGeneration.Core.Constraints;
+﻿using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.Constraints;
+using MapGeneration.Core.LayoutOperations.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.LayoutOperations;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutOperations
 {
@@ -10,13 +15,7 @@ namespace MapGeneration.Core.LayoutOperations
 	using System.Linq;
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.Configuration.EnergyData;
-	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Core.Constraints;
-	using Interfaces.Core.Layouts;
-	using Interfaces.Utils;
-	using Utils;
+    using Utils;
 
 	/// <summary>
 	/// Layout operations that compute energy based on given constraints.

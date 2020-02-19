@@ -8,13 +8,13 @@ using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Utils
 {
     public static class MapDescriptionUtils
     {
-        public static List<IRoomTemplate> GetRectangularRoomTemplates(IntVector2 scale)
+        public static List<RoomTemplate> GetRectangularRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
@@ -23,14 +23,14 @@ namespace MapGeneration.Utils
             var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode, transformations);
             var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode, transformations);
 
-            return new List<IRoomTemplate>()
+            return new List<RoomTemplate>()
             {
                 squareRoom,
                 rectangleRoom,
             };
         }
 
-        public static List<IRoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
+        public static List<RoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
@@ -69,7 +69,7 @@ namespace MapGeneration.Utils
                     .Build().Scale(scale)
                 , doorMode, transformations);
 
-            return new List<IRoomTemplate>(GetRectangularRoomTemplates(scale))
+            return new List<RoomTemplate>(GetRectangularRoomTemplates(scale))
             {
                 room1,
                 room2,
@@ -77,14 +77,14 @@ namespace MapGeneration.Utils
             };
         }
 
-        public static List<IRoomTemplate> GetCorridorRoomTemplates(List<int> offsets)
+        public static List<RoomTemplate> GetCorridorRoomTemplates(List<int> offsets)
         {
             if (offsets == null)
             {
                 return null;
             }
 
-            var roomTemplates = new List<IRoomTemplate>();
+            var roomTemplates = new List<RoomTemplate>();
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
             foreach (var offset in offsets)

@@ -1,9 +1,8 @@
-﻿namespace MapGeneration.Core.Configurations.EnergyData
-{
-	using Interfaces.Core;
-	using Interfaces.Core.Configuration.EnergyData;
-	using Interfaces.Utils;
+﻿using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Utils.Interfaces;
 
+namespace MapGeneration.Core.Configurations.EnergyData
+{
 	/// <inheritdoc cref="ICorridorsData" />
 	/// <summary>
 	/// Basic implementation of an IEnergyDataCorridors interface.

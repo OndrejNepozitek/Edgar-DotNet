@@ -1,4 +1,4 @@
-﻿using MapGeneration.Interfaces.Utils;
+﻿using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {

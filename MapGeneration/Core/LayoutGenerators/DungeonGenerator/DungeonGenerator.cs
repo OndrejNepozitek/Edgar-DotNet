@@ -8,33 +8,33 @@ using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.Core.Configurations;
 using MapGeneration.Core.Configurations.EnergyData;
 using MapGeneration.Core.ConfigurationSpaces;
 using MapGeneration.Core.Constraints;
+using MapGeneration.Core.Constraints.Interfaces;
 using MapGeneration.Core.Doors;
 using MapGeneration.Core.GeneratorPlanners;
 using MapGeneration.Core.LayoutConverters;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+using MapGeneration.Core.LayoutGenerators.Interfaces;
 using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.Layouts;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.LayoutGenerator;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Core.MapLayouts;
 using MapGeneration.Utils;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
-    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<IMapLayout<TNode>>
+    public class DungeonGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<MapLayout<TNode>>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
-        private SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int> generator;
+        private SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
         private readonly List<int> offsets;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
@@ -64,7 +64,6 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             // TODO: handle better
             var chains = chainsGeneric
                 .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number))
-                .Cast<IChain<int>>()
                 .ToList();
 
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration.SimulatedAnnealingMaxBranching);
@@ -147,7 +146,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                     new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsData>>, int,
                     Configuration<CorridorsData>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
 
-            generator = new SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, IMapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator = new SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             generator.OnRandomInjected += (random) =>
             {
@@ -170,7 +169,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
         }
 
-        public IMapLayout<TNode> GenerateLayout()
+        public MapLayout<TNode> GenerateLayout()
         {
             var earlyStoppingHandler = GetEarlyStoppingHandler(DateTime.Now);
 
@@ -228,8 +227,8 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             generator.SetCancellationToken(cancellationToken);
         }
 
-        public event Action<IMapLayout<TNode>> OnPerturbed;
-        public event Action<IMapLayout<TNode>> OnPartialValid;
-        public event Action<IMapLayout<TNode>> OnValid;
+        public event Action<MapLayout<TNode>> OnPerturbed;
+        public event Action<MapLayout<TNode>> OnPartialValid;
+        public event Action<MapLayout<TNode>> OnValid;
     }
 }

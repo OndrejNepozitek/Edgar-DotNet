@@ -4,14 +4,14 @@ using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.ConfigurationSpaces;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.LayoutOperations.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.LayoutOperations;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutOperations
 {
@@ -135,9 +135,9 @@ namespace MapGeneration.Core.LayoutOperations
         {
             public List<IntAlias<GridPolygon>> Aliases { get; }
 
-            public IRoomTemplate RoomTemplate { get; }
+            public RoomTemplate RoomTemplate { get; }
 
-            public RoomTemplateInfo(List<IntAlias<GridPolygon>> aliases, IRoomTemplate roomTemplate)
+            public RoomTemplateInfo(List<IntAlias<GridPolygon>> aliases, RoomTemplate roomTemplate)
             {
                 Aliases = aliases;
                 RoomTemplate = roomTemplate;

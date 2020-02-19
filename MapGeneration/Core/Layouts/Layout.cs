@@ -1,11 +1,12 @@
-﻿namespace MapGeneration.Core.Layouts
+﻿using MapGeneration.Core.Layouts.Interfaces;
+using MapGeneration.Utils.Interfaces;
+
+namespace MapGeneration.Core.Layouts
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Graphs;
-    using Interfaces.Core.Layouts;
-	using Interfaces.Utils;
 
-	/// <inheritdoc cref="ILayout{TNode,TConfiguration}" />
+    /// <inheritdoc cref="ILayout{TNode,TConfiguration}" />
 	/// <summary>
 	/// Basic layout implementation.
 	/// </summary>

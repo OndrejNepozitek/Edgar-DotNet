@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Interfaces.Core.MapLayouts;
 
 namespace MapGeneration.Utils.Statistics
 {

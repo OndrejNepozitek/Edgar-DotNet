@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MapGeneration.Benchmarks;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace Sandbox.Utils
 {

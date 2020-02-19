@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Stats;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.ChainOrder
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.MetaOptimization.Configurations;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.ChainOrder
 {
@@ -23,7 +23,7 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainOrder
         {
             var counter = 0;
             var copy = configuration.SmartClone();
-            var newChains = new List<IChain<TNode>>
+            var newChains = new List<Chain<TNode>>
             {
                 new Chain<TNode>(copy.Chains[FirstChainNumber].Nodes, counter++)
             };

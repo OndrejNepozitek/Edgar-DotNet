@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Stats;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
 {

@@ -5,7 +5,8 @@ using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Utils;
 using Sandbox.Utils;
 
 namespace Sandbox.Examples
@@ -26,7 +27,7 @@ namespace Sandbox.Examples
                 new SimpleDoorMode(1, 1)
             );
 
-            var bossRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { bossRoom });
+            var bossRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { bossRoom });
 
             // Create basic room templates and room description
             var doorMode = new SimpleDoorMode(1, 1);
@@ -42,7 +43,7 @@ namespace Sandbox.Examples
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );
 
-            var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
 
 			// Create map description
             var mapDescription = new MapDescription<int>();

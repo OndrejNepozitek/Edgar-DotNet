@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
 
 namespace MapGeneration.Core.ChainDecompositions
 {
-    public class Chain<TNode> : IChain<TNode>
+    public class Chain<TNode>
     {
         public List<TNode> Nodes { get; }
 

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.LayoutEvolvers;
-using MapGeneration.Interfaces.Core.LayoutOperations;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.LayoutEvolvers.Interfaces;
+using MapGeneration.Core.LayoutOperations.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
@@ -63,7 +64,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
         }
 
 		/// <inheritdoc />
-		public IEnumerable<TLayout> Evolve(TLayout initialLayout, IChain<TNode> chain, int count)
+		public IEnumerable<TLayout> Evolve(TLayout initialLayout, Chain<TNode> chain, int count)
 		{
             if (addNodesGreedilyBeforeEvolve)
             {

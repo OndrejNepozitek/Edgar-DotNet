@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BenchmarkUtils.Enums;
+using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.MapLayouts;
 
 namespace MapGeneration.Benchmarks
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using MapGeneration.Benchmarks;
-using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Benchmarks.Interfaces;
 
 namespace MapGeneration.Utils.PerformanceAnalysis
 {

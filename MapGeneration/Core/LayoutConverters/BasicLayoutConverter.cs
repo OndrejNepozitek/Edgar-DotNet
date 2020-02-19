@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.ConfigurationSpaces;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.LayoutConverters.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.LayoutConverters;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapLayouts;
-using MapGeneration.Interfaces.Utils;
 using MapGeneration.Utils;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutConverters
 {
-    public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, IMapLayout<TNode>>, IRandomInjectable
+    public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, MapLayout<TNode>>, IRandomInjectable
 		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
 	{
@@ -37,9 +36,9 @@ namespace MapGeneration.Core.LayoutConverters
         }
 
 		/// <inheritdoc />
-		public IMapLayout<TNode> Convert(TLayout layout, bool addDoors)
+		public MapLayout<TNode> Convert(TLayout layout, bool addDoors)
 		{
-			var rooms = new List<IRoom<TNode>>();
+			var rooms = new List<Room<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
 			var mapping = MapDescription.GetMapping();
@@ -65,7 +64,7 @@ namespace MapGeneration.Core.LayoutConverters
 					if (!addDoors)
 						continue;
 
-					var doors = new List<IDoorInfo<TNode>>();
+					var doors = new List<DoorInfo<TNode>>();
 					room.Doors = doors;
 
 					roomsDict[vertex] = room;

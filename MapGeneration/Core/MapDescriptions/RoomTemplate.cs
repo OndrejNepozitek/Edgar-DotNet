@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
+using MapGeneration.Core.Doors.Interfaces;
 using MapGeneration.Core.LayoutOperations;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Doors;
-	using Interfaces.Core.MapDescriptions;
 
-	/// <summary>
+    /// <summary>
 	/// Description of a room.
 	/// </summary>
-	public class RoomTemplate : IRoomTemplate
+	public class RoomTemplate
 	{
 		public GridPolygon Shape { get; }
 

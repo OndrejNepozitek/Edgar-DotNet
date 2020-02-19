@@ -1,12 +1,12 @@
-﻿namespace MapGeneration.Core.Configurations
+﻿using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Utils.Interfaces;
+
+namespace MapGeneration.Core.Configurations
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.Configuration.EnergyData;
-	using Interfaces.Utils;
 
 	/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
 	/// <summary>

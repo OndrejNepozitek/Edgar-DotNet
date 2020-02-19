@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.MetaOptimization.Evolution;
 using MapGeneration.MetaOptimization.Stats;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures
 {

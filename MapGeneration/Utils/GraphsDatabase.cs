@@ -1,9 +1,9 @@
-﻿namespace Sandbox.Utils
-{
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Graphs;
+﻿using GeneralAlgorithms.Algorithms.Common;
+using GeneralAlgorithms.DataStructures.Graphs;
 
-	public class GraphsDatabase
+namespace MapGeneration.Utils
+{
+    public class GraphsDatabase
 	{
 		/// <remarks>
 		/// Figure 1 graph from the original paper.

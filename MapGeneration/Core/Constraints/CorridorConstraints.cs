@@ -2,14 +2,14 @@
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
+using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces.EnergyData;
 using MapGeneration.Core.ConfigurationSpaces;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.Constraints.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.Configuration.EnergyData;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.Constraints
 {

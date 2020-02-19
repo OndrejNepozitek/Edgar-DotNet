@@ -1,4 +1,6 @@
-﻿namespace MapGeneration.Utils.MapDrawing
+﻿using MapGeneration.Core.MapLayouts;
+
+namespace MapGeneration.Utils.MapDrawing
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,9 +9,8 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.MapLayouts;
 
-	/// <inheritdoc />
+    /// <inheritdoc />
 	/// <summary>
 	/// Class to draw a layout as an SVG.
 	/// </summary>
@@ -27,7 +28,7 @@
 		/// <param name="showRoomNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <returns></returns>
-		public string DrawLayout(IMapLayout<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false)
+		public string DrawLayout(MapLayout<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false)
 		{
 			if (width <= 0)
 				throw new ArgumentException("Width must be greater than zero.", nameof(width));
@@ -47,7 +48,7 @@
 			return svgData;
 		}
 
-		private float GetWidthHeightRatio(IMapLayout<TNode> layout)
+		private float GetWidthHeightRatio(MapLayout<TNode> layout)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();

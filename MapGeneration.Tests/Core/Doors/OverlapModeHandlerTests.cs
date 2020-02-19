@@ -1,11 +1,12 @@
-﻿namespace MapGeneration.Tests.Core.Doors
+﻿using MapGeneration.Core.Doors.Interfaces;
+
+namespace MapGeneration.Tests.Core.Doors
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Doors;
-	using MapGeneration.Core.Doors;
+    using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorHandlers;
 	using MapGeneration.Core.Doors.DoorModes;
 	using NUnit.Framework;
@@ -27,7 +28,7 @@
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new SimpleDoorMode(1, 0);
 			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 4)), 1),
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 5), new IntVector2(2, 5)), 1),
@@ -44,7 +45,7 @@
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new SimpleDoorMode(1, 1);
 			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 3)), 1),
 				new DoorLine(new OrthogonalLine(new IntVector2(1, 5), new IntVector2(1, 5), OrthogonalLine.Direction.Right), 1),
@@ -61,7 +62,7 @@
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new SimpleDoorMode(1, 2);
 			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 2), new IntVector2(0, 2), OrthogonalLine.Direction.Top), 1),
 				new DoorLine(new OrthogonalLine(new IntVector2(3, 3), new IntVector2(3, 3), OrthogonalLine.Direction.Bottom), 1),
@@ -76,7 +77,7 @@
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new SimpleDoorMode(2, 0);
 			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 3)), 2),
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 5), new IntVector2(1, 5)), 2),
@@ -93,7 +94,7 @@
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new SimpleDoorMode(0, 0);
 			var doorPositions = simpleModeHandler.GetDoorPositions(polygon, mode);
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 5)), 0),
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 5), new IntVector2(3, 5)), 0),

@@ -5,12 +5,11 @@ using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Doors;
+using MapGeneration.Core.Doors.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.ConfigurationSpaces;
-using MapGeneration.Interfaces.Core.Doors;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
 
 namespace MapGeneration.Core.ConfigurationSpaces
@@ -179,10 +178,10 @@ namespace MapGeneration.Core.ConfigurationSpaces
                 doorLinesCorridor);
         }
 
-        public ConfigurationSpace GetConfigurationSpaceOverCorridor(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedPolygon, List<IDoorLine> fixedDoorLines, GridPolygon corridor, List<IDoorLine> corridorDoorLines)
+        public ConfigurationSpace GetConfigurationSpaceOverCorridor(GridPolygon polygon, List<DoorLine> doorLines, GridPolygon fixedPolygon, List<DoorLine> fixedDoorLines, GridPolygon corridor, List<DoorLine> corridorDoorLines)
         {
             var fixedAndCorridorConfigurationSpace = GetConfigurationSpace(corridor, corridorDoorLines, fixedPolygon, fixedDoorLines);
-            var newCorridorDoorLines = new List<IDoorLine>();
+            var newCorridorDoorLines = new List<DoorLine>();
             corridorDoorLines = DoorUtils.MergeDoorLines(corridorDoorLines);
                 
             foreach (var corridorPositionLine in fixedAndCorridorConfigurationSpace.Lines)
@@ -222,7 +221,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             return configurationSpace;
         }
 
-        private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<IDoorLine> doorLines, GridPolygon fixedCenter, List<IDoorLine> doorLinesFixed, List<int> offsets = null)
+        private ConfigurationSpace GetConfigurationSpace(GridPolygon polygon, List<DoorLine> doorLines, GridPolygon fixedCenter, List<DoorLine> doorLinesFixed, List<int> offsets = null)
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
@@ -235,12 +234,12 @@ namespace MapGeneration.Core.ConfigurationSpaces
 
 			// One list for every direction
             // TODO: maybe use dictionary instead of array?
-			var lines = new List<IDoorLine>[5];
+			var lines = new List<DoorLine>[5];
 
 			// Init array
 			for (var i = 0; i < lines.Length; i++)
 			{
-				lines[i] = new List<IDoorLine>();
+				lines[i] = new List<DoorLine>();
 			}
 
 			// Populate lists with lines
@@ -368,7 +367,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             return nonOverlapping;
         }
 
-        public List<RoomTemplateInstance> GetRoomTemplateInstances(IRoomTemplate roomTemplate)
+        public List<RoomTemplateInstance> GetRoomTemplateInstances(RoomTemplate roomTemplate)
         {
             var result = new List<RoomTemplateInstance>();
             var doorLines = doorHandler.GetDoorPositions(roomTemplate.Shape, roomTemplate.DoorsMode);
@@ -385,7 +384,6 @@ namespace MapGeneration.Core.ConfigurationSpaces
                 var transformedDoorLines = doorLines
                     .Select(x => DoorUtils.TransformDoorLine(x, transformation))
                     .Select(x => new DoorLine(x.Line + (-1 * smallestPoint), x.Length))
-                    .Cast<IDoorLine>()
                     .ToList();
 
                 // Check if we already have the same room shape (together with door lines)

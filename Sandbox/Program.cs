@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
@@ -37,10 +37,10 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            // CompareWithReference();
+            CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
-            new Clustering().Run();
+            // new Clustering().Run();
             // new TwoStageGeneration().Run();
             // new PlatformersFeature().Run();
             

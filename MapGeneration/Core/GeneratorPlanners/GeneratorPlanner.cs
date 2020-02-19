@@ -1,16 +1,17 @@
 ﻿using System.Linq;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.LayoutEvolvers;
+using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
+using MapGeneration.Core.GeneratorPlanners.Interfaces;
+using MapGeneration.Core.LayoutEvolvers.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.GeneratorPlanners
 {
 	using System;
 	using System.Collections.Generic;
     using System.Threading;
-    using Interfaces.Core.GeneratorPlanners;
-    using Interfaces.Utils;
 
-	/// <summary>
+    /// <summary>
 	/// Class that builds a tree of nodes where each node represent a layout that can be
 	/// used as an initial layout to generate more layouts until a full layout is generated.
 	/// </summary>
@@ -29,7 +30,7 @@ namespace MapGeneration.Core.GeneratorPlanners
         private int nextId;
         private readonly int numberOfLayoutsFromOneInstance;
         private ILayoutEvolver<TLayout, TNode> layoutEvolver;
-        private IList<IChain<TNode>> chains;
+        private List<Chain<TNode>> chains;
 
         protected CancellationToken? CancellationToken;
 
@@ -40,7 +41,7 @@ namespace MapGeneration.Core.GeneratorPlanners
             numberOfLayoutsFromOneInstance = maximumBranching;
         }
 
-        public TLayout Generate(TLayout initialLayout, IList<IChain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver)
+        public TLayout Generate(TLayout initialLayout, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver)
         {
             // Initialization
             this.initialLayout = initialLayout;

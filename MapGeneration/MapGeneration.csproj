@@ -27,7 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
-    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MetaOptimization\Visualizations\" />

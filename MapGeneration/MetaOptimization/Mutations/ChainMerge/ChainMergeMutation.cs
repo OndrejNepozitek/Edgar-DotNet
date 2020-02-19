@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.MetaOptimization.Configurations;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.ChainMerge
 {
@@ -29,7 +29,6 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainMerge
             copy.Chains = copy.Chains
                 .Where(x => x.Number != SecondChainNumber)
                 .Select(x => new Chain<TNode>(x.Nodes, counter++))
-                .Cast<IChain<TNode>>()
                 .ToList();
             return copy;
         }

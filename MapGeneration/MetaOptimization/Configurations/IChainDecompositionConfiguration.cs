@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions;
 
 namespace MapGeneration.MetaOptimization.Configurations
 {
     public interface IChainDecompositionConfiguration<TNode>
     {
-        List<IChain<TNode>> Chains { get; set; }
+        List<Chain<TNode>> Chains { get; set; }
     }
 }

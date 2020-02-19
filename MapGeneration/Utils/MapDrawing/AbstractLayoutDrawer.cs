@@ -1,13 +1,14 @@
-﻿namespace MapGeneration.Utils.MapDrawing
+﻿using MapGeneration.Core.MapLayouts;
+
+namespace MapGeneration.Utils.MapDrawing
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.MapLayouts;
 
-	/// <summary>
+    /// <summary>
 	/// Class that should help with drawing layouts to different outputs.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
@@ -22,7 +23,7 @@
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="borderSize"></param>
-		protected void DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
+		protected void DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
@@ -49,7 +50,7 @@
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
-		protected void DrawLayout(IMapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames, int? fixedFontSize = null)
+		protected void DrawLayout(MapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames, int? fixedFontSize = null)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
@@ -161,7 +162,7 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<IDoorInfo<TNode>> doorLines)
+		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<DoorInfo<TNode>> doorLines)
 		{
 			var outline = new List<Tuple<IntVector2, bool>>();
 
@@ -173,7 +174,7 @@
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<IDoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+					new Tuple<DoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
 				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
 				foreach (var pair in doorDistances)

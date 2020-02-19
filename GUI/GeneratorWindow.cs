@@ -1,4 +1,7 @@
-﻿namespace GUI
+﻿using MapGeneration.Core.MapLayouts;
+using MapGeneration.Utils.Interfaces;
+
+namespace GUI
 {
 	using System;
 	using System.Collections.Generic;
@@ -11,13 +14,10 @@
 	using System.Windows.Forms;
 	using GeneralAlgorithms.DataStructures.Common;
 	using MapDrawing;
-	using MapGeneration.Interfaces.Core.MapLayouts;
-	using MapGeneration.Interfaces.Utils;
-	using MapGeneration.Utils;
+    using MapGeneration.Utils;
 	using MapGeneration.Utils.MapDrawing;
-	using MapGeneration.Utils.Serialization;
 
-	/// <summary>
+    /// <summary>
 	/// Window that shows progress of the layout generator. 
 	/// </summary>
 	public partial class GeneratorWindow : Form
@@ -27,7 +27,6 @@
 		private readonly WFLayoutDrawer<int> wfLayoutDrawer = new WFLayoutDrawer<int>();
 		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
 		private readonly OldMapDrawer<int> oldMapDrawer = new OldMapDrawer<int>();
-		private readonly JsonSerializer<int> jsonSerializer = new JsonSerializer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -37,9 +36,9 @@
 		private int iterationsCount;
 		private readonly Stopwatch infoStopwatch = new Stopwatch();
 
-		private IMapLayout<int> layoutToDraw;
-		private IMapLayout<int> firstChainToDraw;
-		private List<IMapLayout<int>> generatedLayouts;
+		private MapLayout<int> layoutToDraw;
+		private MapLayout<int> firstChainToDraw;
+		private List<MapLayout<int>> generatedLayouts;
 		private int slideshowIndex;
 		private int slideshowTaskId;
 
@@ -185,7 +184,7 @@
 						infoStopwatch.Restart();
 					};
 
-					generatedLayouts = new List<IMapLayout<int>>() { };
+					generatedLayouts = new List<MapLayout<int>>() { };
 
                     for (int i = 0; i < settings.NumberOfLayouts; i++)
                     {
@@ -487,7 +486,9 @@
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						jsonSerializer.Serialize(layoutToDraw, sw);
+						// TODO: serialize with JSON
+						throw new NotImplementedException();
+						// jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}
@@ -505,7 +506,9 @@
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						jsonSerializer.Serialize(generatedLayouts, sw);
+                        // TODO: serialize with JSON
+                        throw new NotImplementedException();
+                        // jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}

@@ -15,15 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.Tests", "MapG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{93F99DE4-5100-4B25-8602-C636C62768E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.Interfaces", "MapGeneration.Interfaces\MapGeneration.Interfaces.csproj", "{3FB264C8-FE50-44E9-80E2-E9C6941460F3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{6609983F-B790-4E65-A329-832AFE28BA77}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{9D61AC5D-3924-435E-94FC-14062AAC3937}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.IntegrationTests", "MapGeneration.IntegrationTests\MapGeneration.IntegrationTests.csproj", "{3FF2AF2C-22E7-482D-AB26-D222AB16CAE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxEvolutionRunner", "SandboxEvolutionRunner\SandboxEvolutionRunner.csproj", "{EF1747AE-47A4-4EDA-B3E1-8259F902A231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxEvolutionRunner", "SandboxEvolutionRunner\SandboxEvolutionRunner.csproj", "{EF1747AE-47A4-4EDA-B3E1-8259F902A231}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,18 +93,6 @@ Global
 		{93F99DE4-5100-4B25-8602-C636C62768E7}.Release|x64.Build.0 = Release|Any CPU
 		{93F99DE4-5100-4B25-8602-C636C62768E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{93F99DE4-5100-4B25-8602-C636C62768E7}.Release|x86.Build.0 = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x64.Build.0 = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Debug|x86.Build.0 = Debug|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x64.ActiveCfg = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x64.Build.0 = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x86.ActiveCfg = Release|Any CPU
-		{3FB264C8-FE50-44E9-80E2-E9C6941460F3}.Release|x86.Build.0 = Release|Any CPU
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6609983F-B790-4E65-A329-832AFE28BA77}.Debug|x64.ActiveCfg = Debug|Any CPU

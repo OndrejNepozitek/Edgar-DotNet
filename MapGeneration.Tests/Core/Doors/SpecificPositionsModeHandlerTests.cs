@@ -1,11 +1,12 @@
-﻿namespace MapGeneration.Tests.Core.Doors
+﻿using MapGeneration.Core.Doors.Interfaces;
+
+namespace MapGeneration.Tests.Core.Doors
 {
 	using System.Collections.Generic;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Doors;
-	using MapGeneration.Core.Doors;
+    using MapGeneration.Core.Doors;
 	using MapGeneration.Core.Doors.DoorHandlers;
 	using MapGeneration.Core.Doors.DoorModes;
 	using NUnit.Framework;
@@ -34,7 +35,7 @@
 			});
 			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
 
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0), OrthogonalLine.Direction.Left), 0),
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0), OrthogonalLine.Direction.Top), 0),
@@ -62,7 +63,7 @@
 			});
 			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
 
-			var expectedPositions = new List<IDoorLine>()
+			var expectedPositions = new List<DoorLine>()
 			{
 				new DoorLine(new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 1), OrthogonalLine.Direction.Top), 0),
 				new DoorLine(new OrthogonalLine(new IntVector2(1, 5), new IntVector2(1, 5), OrthogonalLine.Direction.Right), 0),

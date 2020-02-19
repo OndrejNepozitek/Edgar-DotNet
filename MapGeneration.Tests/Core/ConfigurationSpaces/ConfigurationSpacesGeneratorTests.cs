@@ -8,8 +8,8 @@ using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.ConfigurationSpaces;
 using MapGeneration.Core.Doors;
 using MapGeneration.Core.Doors.DoorModes;
+using MapGeneration.Core.Doors.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Doors;
 using NUnit.Framework;
 
 namespace MapGeneration.Tests.Core.ConfigurationSpaces
@@ -86,7 +86,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0))});
             var transformations = new List<Transformation>() { Transformation.Identity, Transformation.Rotate90, Transformation.Rotate180, Transformation.Rotate270 };
 
-            var expectedDoorPositions = new Dictionary<Transformation, IDoorLine>()
+            var expectedDoorPositions = new Dictionary<Transformation, DoorLine>()
             {
                 { Transformation.Identity, new DoorLine(new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)), 1) },
                 { Transformation.Rotate90, new DoorLine(new OrthogonalLine(new IntVector2(0, 9), new IntVector2(0, 9)), 1) },
@@ -119,7 +119,7 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)) });
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var expectedDoorPositions = new Dictionary<Transformation, IDoorLine>()
+            var expectedDoorPositions = new Dictionary<Transformation, DoorLine>()
             {
                 { Transformation.Identity, new DoorLine(new OrthogonalLine(new IntVector2(1, 0), new IntVector2(1, 0)), 1) },
                 { Transformation.Rotate90, new DoorLine(new OrthogonalLine(new IntVector2(0, 9), new IntVector2(0, 9)), 1) },

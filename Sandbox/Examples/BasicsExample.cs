@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace Sandbox.Examples
 {
@@ -34,7 +34,7 @@ namespace Sandbox.Examples
             );
 
             // Create room description
-            var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
 
             // Create map description
             var mapDescription = new MapDescription<int>();

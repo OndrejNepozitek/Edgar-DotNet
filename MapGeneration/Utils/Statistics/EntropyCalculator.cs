@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Core.MapLayouts;
 
 namespace MapGeneration.Utils.Statistics
 {
     public class EntropyCalculator
     {
-        public double ComputeAverageRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<IMapLayout<TNode>> layouts, bool normalize = true)
+        public double ComputeAverageRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, bool normalize = true)
         {
             return mapDescription
                 .GetGraph()
@@ -19,7 +19,7 @@ namespace MapGeneration.Utils.Statistics
                 .Average();
         }
 
-        public double ComputeRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<IMapLayout<TNode>> layouts, TNode node, bool normalize = true)
+        public double ComputeRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node, bool normalize = true)
         {
             var distribution = GetRoomTemplatesDistribution(mapDescription, layouts, node);
             var entropy = ComputeEntropy(distribution, normalize);
@@ -27,7 +27,7 @@ namespace MapGeneration.Utils.Statistics
             return entropy;
         }
 
-        public Dictionary<IRoomTemplate, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<IMapLayout<TNode>> layouts, TNode node)
+        public Dictionary<RoomTemplate, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node)
         {
             var roomDescription = mapDescription.GetRoomDescription(node);
             var availableRoomTemplates = roomDescription.RoomTemplates;
@@ -39,9 +39,9 @@ namespace MapGeneration.Utils.Statistics
             return GetRoomTemplatesDistribution(data, availableRoomTemplates);
         }
 
-        public Dictionary<IRoomTemplate, double> GetRoomTemplatesDistribution(List<IRoomTemplate> data, List<IRoomTemplate> availableRoomTemplates)
+        public Dictionary<RoomTemplate, double> GetRoomTemplatesDistribution(List<RoomTemplate> data, List<RoomTemplate> availableRoomTemplates)
         {
-            var counts = new Dictionary<IRoomTemplate, int>();
+            var counts = new Dictionary<RoomTemplate, int>();
 
             foreach (var roomTemplate in availableRoomTemplates)
             {

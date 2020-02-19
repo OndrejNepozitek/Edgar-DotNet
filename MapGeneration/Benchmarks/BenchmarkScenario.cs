@@ -1,10 +1,9 @@
 ﻿using System;
 using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.Interfaces;
+using MapGeneration.Core.LayoutGenerators.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
-using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.LayoutGenerator;
-using MapGeneration.Interfaces.Core.MapLayouts;
 
 namespace MapGeneration.Benchmarks
 {

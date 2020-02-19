@@ -9,7 +9,7 @@ using MapGeneration.Core.ConfigurationSpaces;
 using MapGeneration.Core.Doors;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using NUnit.Framework;
 
 namespace MapGeneration.IntegrationTests.Core.ConfigurationSpaces
@@ -35,8 +35,8 @@ namespace MapGeneration.IntegrationTests.Core.ConfigurationSpaces
             var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
             var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
 
-            var roomDescription1 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1 });
-            var roomDescription2 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1, roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
+            var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
 
             var mapDescription = new MapDescription<int>();
             mapDescription.AddRoom(0, roomDescription1);

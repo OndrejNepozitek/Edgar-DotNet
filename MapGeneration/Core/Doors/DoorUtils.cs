@@ -1,29 +1,30 @@
-﻿namespace MapGeneration.Core.Doors
+﻿using MapGeneration.Core.Doors.Interfaces;
+
+namespace MapGeneration.Core.Doors
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.Doors;
 
-	public static class DoorUtils
+    public static class DoorUtils
 	{
 		/// <summary>
 		/// Merges all door lines that are directly next to each other and have the same length.
 		/// </summary>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		public static List<IDoorLine> MergeDoorLines(IEnumerable<IDoorLine> doorLines)
+		public static List<DoorLine> MergeDoorLines(IEnumerable<DoorLine> doorLines)
 		{
 			var doorLinesByDirection = doorLines.GroupBy(x => x.Line.GetDirection());
-			var result = new List<IDoorLine>();
+			var result = new List<DoorLine>();
 
 			foreach (var grouping in doorLinesByDirection)
 			{
 				if (grouping.Key == OrthogonalLine.Direction.Undefined)
 					throw new ArgumentException("There must be no door lines with undefined direction");
 
-				var sameDirectionDoorLines = new LinkedList<IDoorLine>(grouping);
+				var sameDirectionDoorLines = new LinkedList<DoorLine>(grouping);
 
 				while (sameDirectionDoorLines.Count != 0)
 				{
@@ -78,7 +79,7 @@
 		/// <param name="doorLine"></param>
 		/// <param name="transformation"></param>
 		/// <returns></returns>
-		public static IDoorLine TransformDoorLine(IDoorLine doorLine, Transformation transformation)
+		public static DoorLine TransformDoorLine(DoorLine doorLine, Transformation transformation)
 		{
 			var doorPosition = doorLine.Line;
 

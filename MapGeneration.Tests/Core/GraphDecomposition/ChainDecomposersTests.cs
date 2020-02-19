@@ -1,10 +1,11 @@
-﻿namespace MapGeneration.Tests.Core.GraphDecomposition
+﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+
+namespace MapGeneration.Tests.Core.GraphDecomposition
 {
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Common;
 	using GeneralAlgorithms.DataStructures.Graphs;
-    using Interfaces.Core.ChainDecompositions;
-	using MapGeneration.Core.ChainDecompositions;
+    using MapGeneration.Core.ChainDecompositions;
 	using NUnit.Framework;
 
 	public abstract class ChainDecomposersTests

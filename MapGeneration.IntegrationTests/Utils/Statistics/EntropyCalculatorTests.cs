@@ -6,8 +6,7 @@ using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.Core.MapLayouts;
 using MapGeneration.Utils.Statistics;
 using NUnit.Framework;
 
@@ -32,7 +31,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             var roomTemplate2 = new RoomTemplate(GridPolygon.GetSquare(4), new SimpleDoorMode(1, 0), transformations);
             var roomTemplate3 = new RoomTemplate(GridPolygon.GetSquare(6), new SimpleDoorMode(1, 0), transformations);
 
-            var data = new List<IRoomTemplate>()
+            var data = new List<RoomTemplate>()
             {
                 roomTemplate1,
                 roomTemplate3,
@@ -40,7 +39,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
                 roomTemplate1
             };
 
-            var availableRoomTemplates = new List<IRoomTemplate>()
+            var availableRoomTemplates = new List<RoomTemplate>()
             {
                 roomTemplate1,
                 roomTemplate2,
@@ -62,7 +61,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 0), transformations);
             var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new SimpleDoorMode(1, 0), transformations);
 
-            var roomDescription1 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1, roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
 
             var mapDescription = new MapDescription<int>();
             mapDescription.AddRoom(0, roomDescription1);
@@ -73,7 +72,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             var dungeonGenerator = new DungeonGenerator<int>(mapDescription, configuration);
             dungeonGenerator.InjectRandomGenerator(new Random(0));
 
-            var layouts = new List<IMapLayout<int>>();
+            var layouts = new List<MapLayout<int>>();
 
             for (int i = 0; i < 10; i++)
             {

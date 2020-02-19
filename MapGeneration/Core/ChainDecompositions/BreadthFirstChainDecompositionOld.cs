@@ -1,4 +1,4 @@
-﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
 
 namespace MapGeneration.Core.ChainDecompositions
 {
@@ -24,7 +24,7 @@ namespace MapGeneration.Core.ChainDecompositions
 		}
 
 		/// <inheritdoc />
-		public override IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
+		public override List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			Initialize(graph);
 
@@ -34,7 +34,7 @@ namespace MapGeneration.Core.ChainDecompositions
 				Faces.RemoveAt(Faces.MaxBy(x => x.Count));
 			}
 
-			var chains = new List<IChain<TNode>>();
+			var chains = new List<Chain<TNode>>();
 
 			if (Faces.Count != 0)
 			{

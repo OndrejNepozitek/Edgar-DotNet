@@ -1,4 +1,4 @@
-﻿using MapGeneration.Interfaces.Core.MapDescriptions;
+﻿using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.LayoutOperations
 {

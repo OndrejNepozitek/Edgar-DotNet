@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Interfaces.Core.Doors;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.Doors;
+using MapGeneration.Core.Doors.Interfaces;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -11,7 +12,7 @@ namespace MapGeneration.Core.MapDescriptions
         /// <summary>
         /// Room description.
         /// </summary>
-        public IRoomTemplate RoomTemplate { get; }
+        public RoomTemplate RoomTemplate { get; }
 
         /// <summary>
         /// Room shape after transformation.
@@ -21,14 +22,14 @@ namespace MapGeneration.Core.MapDescriptions
         /// <summary>
         /// Door lines.
         /// </summary>
-        public List<IDoorLine> DoorLines { get; }
+        public List<DoorLine> DoorLines { get; }
 
         /// <summary>
         /// All transformations that led to this room shape.
         /// </summary>
         public List<Transformation> Transformations { get; }
 
-        public RoomTemplateInstance(IRoomTemplate roomTemplate, GridPolygon roomShape, List<Transformation> transformations, List<IDoorLine> doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, GridPolygon roomShape, List<Transformation> transformations, List<DoorLine> doorLines)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;
@@ -36,7 +37,7 @@ namespace MapGeneration.Core.MapDescriptions
             DoorLines = doorLines;
         }
 
-        public RoomTemplateInstance(IRoomTemplate roomTemplate, GridPolygon roomShape, Transformation transformation, List<IDoorLine> doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, GridPolygon roomShape, Transformation transformation, List<DoorLine> doorLines)
             : this(roomTemplate, roomShape, new List<Transformation>() { transformation }, doorLines)
         {
 

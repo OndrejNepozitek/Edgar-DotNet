@@ -1,13 +1,14 @@
-﻿namespace MapGeneration.Core.ChainDecompositions
+﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+
+namespace MapGeneration.Core.ChainDecompositions
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.Algorithms.Graphs;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core.ChainDecompositions;
 
-	/// <inheritdoc />
+    /// <inheritdoc />
 	/// <summary>
 	/// Base class for chain decomposer with some utility functions.
 	/// </summary>
@@ -21,7 +22,7 @@
 
 
 		/// <inheritdoc />
-		public abstract IList<IChain<TNode>> GetChains(IGraph<TNode> graph);
+		public abstract List<Chain<TNode>> GetChains(IGraph<TNode> graph);
 
 		/// <summary>
 		/// Setups graph and gets faces.

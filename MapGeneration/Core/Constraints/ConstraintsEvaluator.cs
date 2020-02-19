@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Interfaces.Core.Configuration;
-using MapGeneration.Interfaces.Core.Configuration.EnergyData;
-using MapGeneration.Interfaces.Core.Constraints;
-using MapGeneration.Interfaces.Core.Layouts;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Core.Constraints.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.Constraints
 {

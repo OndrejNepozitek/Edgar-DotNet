@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
 {
@@ -21,9 +21,9 @@ namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
 
         public bool StartTreeWithMultipleVertices { get; }
 
-        public List<IChain<TNode>> Chains { get; }
+        public List<Chain<TNode>> Chains { get; }
         
-        public ChainDecompositionMutation(int priority, List<IChain<TNode>> chains, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
+        public ChainDecompositionMutation(int priority, List<Chain<TNode>> chains, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             Priority = priority;
             Chains = chains;

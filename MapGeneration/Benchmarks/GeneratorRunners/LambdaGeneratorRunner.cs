@@ -1,5 +1,5 @@
 ﻿using System;
-using MapGeneration.Interfaces.Benchmarks;
+using MapGeneration.Benchmarks.Interfaces;
 
 namespace MapGeneration.Benchmarks.GeneratorRunners
 {

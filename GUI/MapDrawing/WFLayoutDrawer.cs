@@ -1,4 +1,6 @@
-﻿namespace GUI.MapDrawing
+﻿using MapGeneration.Core.MapLayouts;
+
+namespace GUI.MapDrawing
 {
 	using System;
 	using System.Collections.Generic;
@@ -8,8 +10,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Interfaces.Core.MapLayouts;
-	using MapGeneration.Utils.MapDrawing;
+    using MapGeneration.Utils.MapDrawing;
 
 	/// <inheritdoc />
 	/// <summary>
@@ -30,7 +31,7 @@
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="width"></param>
-		public Bitmap DrawLayout(IMapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, IntVector2? offset = null)
+		public Bitmap DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, IntVector2? offset = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);

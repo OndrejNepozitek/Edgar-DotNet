@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions
@@ -8,10 +8,10 @@ namespace MapGeneration.Core.MapDescriptions
     {
         public int Stage => 2;
 
-        public List<IRoomTemplate> RoomTemplates { get; }
+        public List<RoomTemplate> RoomTemplates { get; }
 
         [JsonConstructor]
-        public CorridorRoomDescription(List<IRoomTemplate> roomTemplates)
+        public CorridorRoomDescription(List<RoomTemplate> roomTemplates)
         {
             RoomTemplates = roomTemplates;
         }

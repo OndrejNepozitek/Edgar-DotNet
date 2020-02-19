@@ -70,7 +70,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
     <ProjectReference Include="..\GUI\GUI.csproj" />
-    <ProjectReference Include="..\MapGeneration.Interfaces\MapGeneration.Interfaces.csproj" />
     <ProjectReference Include="..\MapGeneration\MapGeneration.csproj" />
   </ItemGroup>
 </Project>

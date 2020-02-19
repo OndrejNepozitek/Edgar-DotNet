@@ -2,14 +2,14 @@
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Core.MapLayouts;
 
 namespace MapGeneration.Utils.Statistics
 {
     public static class LayoutsDistance
     {
-        public static double PositionOnlyDistance<TNode>(IMapLayout<TNode> layout1, IMapLayout<TNode> layout2)
+        public static double PositionOnlyDistance<TNode>(MapLayout<TNode> layout1, MapLayout<TNode> layout2)
         {
             var nodeToRoom1 = layout1.Rooms.Where(x => !x.IsCorridor).ToDictionary(x => x.Node, x => x.Shape + x.Position);
             var nodeToRoom2 = layout2.Rooms.Where(x => !x.IsCorridor).ToDictionary(x => x.Node, x => x.Shape + x.Position);
@@ -31,7 +31,7 @@ namespace MapGeneration.Utils.Statistics
             return distances.Average();
         }
 
-        public static double PositionAndShapeDistance<TNode>(IMapLayout<TNode> layout1, IMapLayout<TNode> layout2, double differentShapePenalty)
+        public static double PositionAndShapeDistance<TNode>(MapLayout<TNode> layout1, MapLayout<TNode> layout2, double differentShapePenalty)
         {
             var nodeToRoomShape1 = layout1.Rooms.Where(x => !x.IsCorridor).ToDictionary(x => x.Node, x => (x.Shape, x.RoomTemplate));
             var nodeToRoomShape2 = layout2.Rooms.Where(x => !x.IsCorridor).ToDictionary(x => x.Node, x => (x.Shape, x.RoomTemplate));

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.GeneratorPlanners;
-using MapGeneration.Interfaces.Core.LayoutConverters;
-using MapGeneration.Interfaces.Core.LayoutEvolvers;
-using MapGeneration.Interfaces.Core.LayoutGenerator;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
+using MapGeneration.Core.GeneratorPlanners.Interfaces;
+using MapGeneration.Core.LayoutConverters.Interfaces;
+using MapGeneration.Core.LayoutEvolvers.Interfaces;
+using MapGeneration.Core.LayoutGenerators.Interfaces;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutGenerators
 {
@@ -16,7 +17,7 @@ namespace MapGeneration.Core.LayoutGenerators
     {
         private readonly TLayout initialLayout;
         private readonly IGeneratorPlanner<TLayout, TNode> generatorPlanner;
-        private readonly IList<IChain<TNode>> chains;
+        private readonly List<Chain<TNode>> chains;
         private readonly ILayoutEvolver<TLayout, TNode> layoutEvolver;
         private readonly ILayoutConverter<TLayout, TOutputLayout> layoutConverter;
 
@@ -26,7 +27,7 @@ namespace MapGeneration.Core.LayoutGenerators
         public event Action<Random> OnRandomInjected; 
         public event Action<CancellationToken> OnCancellationTokenInjected; 
 
-        public SimpleChainBasedGenerator(TLayout initialLayout, IGeneratorPlanner<TLayout, TNode> generatorPlanner, IList<IChain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver, ILayoutConverter<TLayout, TOutputLayout> layoutConverter)
+        public SimpleChainBasedGenerator(TLayout initialLayout, IGeneratorPlanner<TLayout, TNode> generatorPlanner, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver, ILayoutConverter<TLayout, TOutputLayout> layoutConverter)
         {
             this.initialLayout = initialLayout;
             this.generatorPlanner = generatorPlanner;

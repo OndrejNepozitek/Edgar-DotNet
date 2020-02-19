@@ -7,8 +7,7 @@
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Configuration;
-	using MapGeneration.Core;
+    using MapGeneration.Core;
 	using MapGeneration.Core.Configurations;
 	using MapGeneration.Core.ConfigurationSpaces;
 	using MapGeneration.Core.Doors;

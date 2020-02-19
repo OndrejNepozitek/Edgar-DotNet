@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
+using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutOperations;
-using MapGeneration.Interfaces.Core.ChainDecompositions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Utils;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Configurations;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 {
@@ -28,7 +28,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         /// <summary>
         /// Decomposition of the input graph into disjunct subgraphs.
         /// </summary>
-        public List<IChain<TNode>> Chains { get; set; }
+        public List<Chain<TNode>> Chains { get; set; }
 
         /// <summary>
         /// Simulated annealing configuration.
@@ -64,7 +64,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             return new DungeonGeneratorConfiguration<TNode>()
             {
                 // TODO: ugly
-                Chains = Chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).Cast<IChain<TNode>>().ToList(),
+                Chains = Chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
                 RoomsCanTouch = RoomsCanTouch,
                 SimulatedAnnealingMaxBranching = SimulatedAnnealingMaxBranching,
@@ -137,7 +137,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
             return new DungeonGeneratorConfiguration()
             {
                 // TODO: ugly
-                Chains = Chains.Select(x => new Chain<int>(x.Nodes.ToList(), x.Number)).Cast<IChain<int>>().ToList(),
+                Chains = Chains.Select(x => new Chain<int>(x.Nodes.ToList(), x.Number)).ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
                 RoomsCanTouch = RoomsCanTouch,
             };

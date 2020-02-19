@@ -1,14 +1,16 @@
 ﻿namespace MapGeneration.Core.MapLayouts
 {
 	using System.Collections.Generic;
-	using Interfaces.Core.MapLayouts;
 
-	/// <inheritdoc />
-	public class MapLayout<TNode> : IMapLayout<TNode>
+    /// <summary>
+    /// Represents a complete layout of a map. 
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
+	public class MapLayout<TNode>
 	{
-		public IEnumerable<IRoom<TNode>> Rooms { get; }
+		public List<Room<TNode>> Rooms { get; }
 
-		public MapLayout(IEnumerable<IRoom<TNode>> rooms)
+		public MapLayout(List<Room<TNode>> rooms)
 		{
 			Rooms = rooms;
 		}

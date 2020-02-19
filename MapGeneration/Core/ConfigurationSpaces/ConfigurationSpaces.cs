@@ -4,8 +4,8 @@ using System.Linq;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.Configuration;
 
 namespace MapGeneration.Core.ConfigurationSpaces
 {

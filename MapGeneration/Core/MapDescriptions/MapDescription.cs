@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions

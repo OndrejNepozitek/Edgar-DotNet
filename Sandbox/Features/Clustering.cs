@@ -5,13 +5,13 @@ using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Core.MapLayouts;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils;
@@ -248,7 +248,7 @@ namespace Sandbox.Features
             var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration, input.Offsets);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
-            var layouts = new List<IMapLayout<int>>();
+            var layouts = new List<MapLayout<int>>();
 
             while (layouts.Count < 5000)
             {
@@ -276,12 +276,12 @@ namespace Sandbox.Features
             return averageSize;
         }
 
-        private void SaveGraphviz(List<IMapLayout<int>> layouts, double minClusteringDistance)
+        private void SaveGraphviz(List<MapLayout<int>> layouts, double minClusteringDistance)
         {
             var directory = $"Clusters/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}/";
             Directory.CreateDirectory(directory);
 
-            var layoutClustering = new LayoutsClustering<IMapLayout<int>>();
+            var layoutClustering = new LayoutsClustering<MapLayout<int>>();
             var clusters = layoutClustering.GetClusters(layouts, GetDistance, minClusteringDistance);
 
             var output = "";
@@ -365,7 +365,7 @@ namespace Sandbox.Features
             File.WriteAllText($"{directory}graphviz.txt", output);
         }
 
-        private double GetDistance(IMapLayout<int> layout1, IMapLayout<int> layout2)
+        private double GetDistance(MapLayout<int> layout1, MapLayout<int> layout2)
         {
             var nodeToRoom1 = layout1.Rooms.ToDictionary(x => x.Node, x => x.Shape + x.Position);
             var nodeToRoom2 = layout2.Rooms.ToDictionary(x => x.Node, x => x.Shape + x.Position);

@@ -1,17 +1,16 @@
-﻿namespace MapGeneration.Core.ConfigurationSpaces
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Utils;
-	using Utils;
+﻿using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Utils.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeneralAlgorithms.Algorithms.Common;
+using GeneralAlgorithms.DataStructures.Common;
+using MapGeneration.Utils;
 
-	/// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
+namespace MapGeneration.Core.ConfigurationSpaces
+{
+    /// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
 	/// <summary>
 	/// Abstract class for configuration spaces with common methods already implemented.
 	/// </summary>

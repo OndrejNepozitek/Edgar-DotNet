@@ -1,10 +1,12 @@
 ﻿namespace MapGeneration.Core.MapLayouts
 {
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.MapLayouts;
 
-	/// <inheritdoc />
-	public class DoorInfo<TNode> : IDoorInfo<TNode>
+    /// <summary>
+    /// Represents door information.
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
+	public class DoorInfo<TNode>
 	{
 		public TNode Node { get; }
 

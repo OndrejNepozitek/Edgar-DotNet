@@ -1,13 +1,14 @@
-﻿namespace MapGeneration.Core.Doors
+﻿using MapGeneration.Core.Doors.Interfaces;
+
+namespace MapGeneration.Core.Doors
 {
 	using System;
 	using System.Collections.Generic;
 	using DoorHandlers;
 	using DoorModes;
 	using GeneralAlgorithms.DataStructures.Polygons;
-	using Interfaces.Core.Doors;
 
-	/// <inheritdoc />
+    /// <inheritdoc />
 	/// <summary>
 	/// Door handler to be used in a context where multiple door modes are used.
 	/// </summary>
@@ -51,7 +52,7 @@
 		/// <param name="polygon"></param>
 		/// <param name="doorMode"></param>
 		/// <returns></returns>
-		public List<IDoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
+		public List<DoorLine> GetDoorPositions(GridPolygon polygon, IDoorMode doorMode)
 		{
 			if (handlers.TryGetValue(doorMode.GetType(), out var handler))
 			{

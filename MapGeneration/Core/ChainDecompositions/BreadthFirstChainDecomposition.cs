@@ -1,4 +1,4 @@
-﻿using MapGeneration.Interfaces.Core.ChainDecompositions;
+﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
 using MapGeneration.Utils.Logging;
 
 namespace MapGeneration.Core.ChainDecompositions
@@ -33,7 +33,7 @@ namespace MapGeneration.Core.ChainDecompositions
         }
 
 		/// <inheritdoc />
-		public override IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
+		public override List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			Initialize(graph);
 
@@ -442,9 +442,9 @@ namespace MapGeneration.Core.ChainDecompositions
                 return remainingFaces.Select(x => x.ToList()).ToList();
             }
 
-            public List<IChain<TNode>> GetFinalDecomposition()
+            public List<Chain<TNode>> GetFinalDecomposition()
             {
-                var chains = new List<IChain<TNode>>();
+                var chains = new List<Chain<TNode>>();
 
                 for (var i = 0; i < this.chains.Count; i++)
                 {

@@ -1,11 +1,12 @@
-﻿namespace MapGeneration.Core.ChainDecompositions
+﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+
+namespace MapGeneration.Core.ChainDecompositions
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using GeneralAlgorithms.DataStructures.Graphs;
-	using Interfaces.Core.ChainDecompositions;
-	using Interfaces.Core.MapDescriptions;
 
 	/// <inheritdoc />
 	/// <summary>
@@ -30,7 +31,7 @@
 		}
 
 		/// <inheritdoc />
-		public IList<IChain<TNode>> GetChains(IGraph<TNode> graph)
+		public List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{
 			if (!mapDescription.IsWithCorridors)
 				throw new InvalidOperationException("Map description must be with corridors to use this decomposition.");

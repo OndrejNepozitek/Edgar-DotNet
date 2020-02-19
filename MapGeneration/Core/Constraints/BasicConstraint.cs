@@ -1,17 +1,18 @@
-﻿namespace MapGeneration.Core.Constraints
+﻿using MapGeneration.Core.Configurations.Interfaces;
+using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using MapGeneration.Core.Constraints.Interfaces;
+using MapGeneration.Core.Layouts.Interfaces;
+
+namespace MapGeneration.Core.Constraints
 {
     using System;
 	using System.Linq;
 	using ConfigurationSpaces;
 	using GeneralAlgorithms.Algorithms.Polygons;
 	using GeneralAlgorithms.DataStructures.Common;
-	using Interfaces.Core.Configuration;
-	using Interfaces.Core.Configuration.EnergyData;
-	using Interfaces.Core.ConfigurationSpaces;
-	using Interfaces.Core.Constraints;
-	using Interfaces.Core.Layouts;
 
-	/// <summary>
+    /// <summary>
 	/// Basic constraint that checks if no polygons overlap and if neighboring
 	/// nodes are connected by doors.
 	/// </summary>

@@ -10,7 +10,7 @@ using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.LayoutGenerators.PlatformersGenerator;
 using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.Utils.MapDrawing;
 using Newtonsoft.Json;

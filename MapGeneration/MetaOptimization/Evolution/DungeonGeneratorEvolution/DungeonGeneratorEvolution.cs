@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Interfaces.Benchmarks;
-using MapGeneration.Interfaces.Core.MapDescriptions;
-using MapGeneration.Interfaces.Core.MapLayouts;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.Core.MapLayouts;
 using MapGeneration.MetaOptimization.Mutations;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
@@ -25,7 +25,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
         private readonly BenchmarkRunner<IMapDescription<int>> benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
         private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
         private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
-        private readonly LayoutsClustering<IMapLayout<int>> layoutsClustering = new LayoutsClustering<IMapLayout<int>>();
+        private readonly LayoutsClustering<MapLayout<int>> layoutsClustering = new LayoutsClustering<MapLayout<int>>();
 
         public DungeonGeneratorEvolution(
             IMapDescription<int> mapDescription,

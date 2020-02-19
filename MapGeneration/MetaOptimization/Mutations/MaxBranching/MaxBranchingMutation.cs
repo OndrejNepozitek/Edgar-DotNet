@@ -1,7 +1,7 @@
 ﻿using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Interfaces.Utils;
 using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.MetaOptimization.Mutations.MaxIterations;
+using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.MetaOptimization.Mutations.MaxBranching
 {
