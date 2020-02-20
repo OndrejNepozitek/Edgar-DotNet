@@ -8,10 +8,19 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
     public class SimulatedAnnealingConfigurationProvider : ISmartCloneable<SimulatedAnnealingConfigurationProvider>
     {
         private readonly List<SimulatedAnnealingConfiguration> configurationsForChains;
+        private readonly SimulatedAnnealingConfiguration fixedConfiguration;
+        private readonly bool useFixedConfiguration;
 
         public SimulatedAnnealingConfigurationProvider(List<SimulatedAnnealingConfiguration> configurationsForChains)
         {
-            this.configurationsForChains = configurationsForChains;
+            this.configurationsForChains = configurationsForChains ?? throw new ArgumentNullException(nameof(configurationsForChains));
+            useFixedConfiguration = false;
+        }
+
+        public SimulatedAnnealingConfigurationProvider(SimulatedAnnealingConfiguration fixedConfiguration)
+        {
+            this.fixedConfiguration = fixedConfiguration ?? throw new ArgumentNullException(nameof(fixedConfiguration));
+            useFixedConfiguration = true;
         }
 
         public SimulatedAnnealingConfiguration GetConfiguration(int chainNumber)
@@ -19,6 +28,11 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
             if (chainNumber < 0)
             {
                 throw new ArgumentException($"{nameof(chainNumber)} must not be negative", nameof(chainNumber));
+            }
+
+            if (useFixedConfiguration)
+            {
+                return fixedConfiguration;
             }
 
             if (chainNumber >= configurationsForChains.Count)

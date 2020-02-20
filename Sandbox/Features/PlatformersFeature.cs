@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.AdditionalData;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.ResultSaving;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
@@ -41,7 +42,7 @@ namespace Sandbox.Features
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("Platformers", input =>
             {
-                var configuration = new DungeonGeneratorConfiguration(input.MapDescription)
+                var configuration = new DungeonGeneratorConfiguration<int>()
                 {
                     RepeatModeOverride = RepeatMode.NoImmediate,
                     ThrowIfRepeatModeNotSatisfied = true,

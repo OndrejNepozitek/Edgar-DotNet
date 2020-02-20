@@ -46,7 +46,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
             this.mapDescriptionOriginal = mapDescription;
             this.mapDescription = new MapDescriptionMapping<TNode>(mapDescription);
-            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>(mapDescription);
+            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>();
             this.offsets = offsets;
             SetupGenerator();
         }
@@ -60,6 +60,12 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         {
             var mapping = mapDescription.GetMapping();
             var chainsGeneric = configuration.Chains;
+
+            if (chainsGeneric == null)
+            {
+                var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescriptionOriginal, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                chainsGeneric = chainDecomposition.GetChains(mapDescriptionOriginal.GetGraph());
+            }
 
             // TODO: handle better
             var chains = chainsGeneric

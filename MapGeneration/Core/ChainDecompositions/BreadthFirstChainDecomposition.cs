@@ -32,6 +32,11 @@ namespace MapGeneration.Core.ChainDecompositions
             this.logger = logger ?? new Logger();
         }
 
+        public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null)
+            : this(configuration.MaxTreeSize, configuration.MergeSmallChains, configuration.StartTreeWithMultipleVertices, configuration.TreeComponentStrategy, logger)
+        {
+        }
+
 		/// <inheritdoc />
 		public override List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{

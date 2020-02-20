@@ -6,6 +6,7 @@ using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.AdditionalData;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
@@ -185,7 +186,7 @@ namespace Sandbox.Features
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {
-                    var generatorEvaluation = new GeneratorEvaluation(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData>>().ToList()); // TODO: ugly
+                    var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
                     dataVisualization.Visualize(generatorEvaluation, file);
                 }
             }
@@ -227,7 +228,7 @@ namespace Sandbox.Features
                 name += "_transformed";
             }
 
-            return new DungeonGeneratorInput<int>(name, mapDescription, new DungeonGeneratorConfiguration<int>(mapDescription)
+            return new DungeonGeneratorInput<int>(name, mapDescription, new DungeonGeneratorConfiguration<int>()
             {
                 RepeatModeOverride = RepeatMode.NoRepeat,
             }, null);

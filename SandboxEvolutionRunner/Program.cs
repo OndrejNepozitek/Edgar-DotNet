@@ -8,6 +8,7 @@ using CommandLine;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.AdditionalData;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;

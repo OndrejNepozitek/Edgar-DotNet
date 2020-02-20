@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Benchmarks.Interfaces;
+using MapGeneration.Core.LayoutEvolvers.Interfaces;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.MetaOptimization.Stats;
 
 namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
-    public class GeneratorEvaluation : IGeneratorEvaluation<GeneratorData>
+    public class GeneratorEvaluation<TRunData> : IGeneratorEvaluation<GeneratorData>
+        where TRunData : ISimulatedAnnealingData
     {
         private readonly List<GeneratorData> generatorData;
 
-        public GeneratorEvaluation(List<IGeneratorRun<AdditionalRunData>> generatorRuns)
+        public GeneratorEvaluation(List<IGeneratorRun<TRunData>> generatorRuns)
         {
             generatorData = generatorRuns
                 .Where(x => x.IsSuccessful)
@@ -50,7 +52,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             return averageData;
         }
 
-        private GeneratorData AnalyzeRun(IGeneratorRun<AdditionalRunData> run)
+        private GeneratorData AnalyzeRun(IGeneratorRun<TRunData> run)
         {
             var generatorData = new GeneratorData()
             {

@@ -68,8 +68,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             mapDescription.AddRoom(1, roomDescription1);
             mapDescription.AddConnection(0, 1);
 
-            var configuration = new DungeonGeneratorConfiguration(mapDescription);
-            var dungeonGenerator = new DungeonGenerator<int>(mapDescription, configuration);
+            var dungeonGenerator = new DungeonGenerator<int>(mapDescription);
             dungeonGenerator.InjectRandomGenerator(new Random(0));
 
             var layouts = new List<MapLayout<int>>();

@@ -32,6 +32,7 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
     public class PlatformersGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<MapLayout<TNode>>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
+        private readonly IMapDescription<TNode> mapDescriptionOriginal;
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
         private SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
 
@@ -43,7 +44,8 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
         public PlatformersGenerator(IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration = null)
         {
             this.mapDescription = new MapDescriptionMapping<TNode>(mapDescription);
-            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>(mapDescription);
+            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>();
+            this.mapDescriptionOriginal = mapDescription;
             SetupGenerator();
         }
 
@@ -56,6 +58,12 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
         {
             var mapping = mapDescription.GetMapping();
             var chainsGeneric = configuration.Chains;
+
+            if (chainsGeneric == null)
+            {
+                var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescriptionOriginal, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                chainsGeneric = chainDecomposition.GetChains(mapDescriptionOriginal.GetGraph());
+            }
 
             var chains = chainsGeneric
                 .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number))

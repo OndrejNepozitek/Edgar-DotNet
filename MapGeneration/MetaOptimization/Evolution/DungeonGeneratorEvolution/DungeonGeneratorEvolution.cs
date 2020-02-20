@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.AdditionalData;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
@@ -18,18 +19,18 @@ using MapGeneration.Utils.Statistics;
 
 namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
-    public class DungeonGeneratorEvolution : ConfigurationEvolution<DungeonGeneratorConfiguration, Individual>
+    public class DungeonGeneratorEvolution<TNode> : ConfigurationEvolution<DungeonGeneratorConfiguration<TNode>, Individual<TNode>>
     {
-        private readonly IMapDescription<int> mapDescription;
+        private readonly IMapDescription<TNode> mapDescription;
 
-        private readonly BenchmarkRunner<IMapDescription<int>> benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
-        private readonly SVGLayoutDrawer<int> layoutDrawer = new SVGLayoutDrawer<int>();
+        private readonly BenchmarkRunner<IMapDescription<TNode>> benchmarkRunner = new BenchmarkRunner<IMapDescription<TNode>>();
+        private readonly SVGLayoutDrawer<TNode> layoutDrawer = new SVGLayoutDrawer<TNode>();
         private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
-        private readonly LayoutsClustering<MapLayout<int>> layoutsClustering = new LayoutsClustering<MapLayout<int>>();
+        private readonly LayoutsClustering<MapLayout<TNode>> layoutsClustering = new LayoutsClustering<MapLayout<TNode>>();
 
         public DungeonGeneratorEvolution(
-            IMapDescription<int> mapDescription,
-            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers, EvolutionOptions options, string resultsDirectory)
+            IMapDescription<TNode> mapDescription,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<TNode>, Individual<TNode>>> analyzers, EvolutionOptions options, string resultsDirectory)
             : base(analyzers, options, resultsDirectory)
         {
             this.mapDescription = mapDescription;
@@ -40,11 +41,11 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             return $"DungeonGeneratorEvolutions/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}_{generatorInput.Name}/";
         }
 
-        protected override Individual EvaluateIndividual(Individual individual)
+        protected override Individual<TNode> EvaluateIndividual(Individual<TNode> individual)
         {
             Logger.WriteLine($"Evaluating individual {individual}");
 
-            var scenario = new BenchmarkScenario<IMapDescription<int>>("SimulatedAnnealingParameters",
+            var scenario = new BenchmarkScenario<IMapDescription<TNode>>("SimulatedAnnealingParameters",
                 input =>
                 {
                     // Setup early stopping
@@ -57,7 +58,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                         individual.Configuration.EarlyStopIfIterationsExceeded = null;
                     }
 
-                    var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, individual.Configuration, null);
+                    var layoutGenerator = new DungeonGenerator<TNode>(input.MapDescription, individual.Configuration, null);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
@@ -72,13 +73,12 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                         var layout = layoutGenerator.GenerateLayout();
                         layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
 
-                        var additionalData = new AdditionalRunData()
+                        var additionalData = new AdditionalRunData<TNode>()
                         {
-                            SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
                             GeneratedLayout = layout,
                         };
 
-                        var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                        var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
 
                         return generatorRun;
                     });
@@ -93,7 +93,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     }
                 });
 
-            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<int>>>() { new GeneratorInput<IMapDescription<int>>("DungeonGeneratorEvolution", mapDescription) }, Options.EvaluationIterations, new BenchmarkOptions()
+            var scenarioResult = benchmarkRunner.Run(scenario, new List<GeneratorInput<IMapDescription<TNode>>>() { new GeneratorInput<IMapDescription<TNode>>("DungeonGeneratorEvolution", mapDescription) }, Options.EvaluationIterations, new BenchmarkOptions()
             {
                 WithConsoleOutput = false,
                 WithFileOutput = false,
@@ -102,10 +102,10 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                 .BenchmarkResults
                 .First()
                 .Runs
-                .Cast<IGeneratorRun<AdditionalRunData>>()
+                .Cast<IGeneratorRun<AdditionalRunData<TNode>>>()
                 .ToList();
 
-            var generatorEvaluation = new GeneratorEvaluation(generatorRuns); // TODO: ugly
+            var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<TNode>>(generatorRuns); // TODO: ugly
             individual.ConfigurationEvaluation = generatorEvaluation;
             individual.Fitness = generatorRuns.Average(x => x.Iterations);
             individual.SuccessRate = generatorRuns.Count(x => x.IsSuccessful) / (double)generatorRuns.Count;
@@ -170,14 +170,14 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             return individual;
         }
 
-        protected override Individual CreateInitialIndividual(int id, DungeonGeneratorConfiguration configuration)
+        protected override Individual<TNode> CreateInitialIndividual(int id, DungeonGeneratorConfiguration<TNode> configuration)
         {
-            return new Individual(id, configuration);
+            return new Individual<TNode>(id, configuration);
         }
 
-        protected override Individual CreateIndividual(int id, Individual parent, IMutation<DungeonGeneratorConfiguration> mutation)
+        protected override Individual<TNode> CreateIndividual(int id, Individual<TNode> parent, IMutation<DungeonGeneratorConfiguration<TNode>> mutation)
         {
-            return new Individual(id, parent, mutation);
+            return new Individual<TNode>(id, parent, mutation);
         }
     }
 }

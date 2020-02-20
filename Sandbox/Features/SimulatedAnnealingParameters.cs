@@ -69,23 +69,23 @@ namespace Sandbox.Features
 
             // input.MapDescription.SetDefaultTransformations(new List<Transformation>() { Transformation.Identity }); // TODO: fix later, wrong deserialization
 
-            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>()
+            var analyzers = new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>()
             {
                 //new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
                 //new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
                 //new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(),
-                new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
-                new MaxBranchingAnalyzer<DungeonGeneratorConfiguration, GeneratorData>(),
+                new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>(),
+                new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>(),
                 //new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(input.MapDescription),
             };
 
-            var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
+            var evolution = new DungeonGeneratorEvolution<int>(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = 75,
             }, Path.Combine("DungeonGeneratorEvolutions", FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
-            var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription);
+            var initialConfiguration = new DungeonGeneratorConfiguration<int>();
             evolution.Evolve(initialConfiguration);
         }
 

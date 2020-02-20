@@ -10,6 +10,7 @@ using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
 using GUI;
 using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.AdditionalData;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
@@ -130,7 +131,7 @@ namespace Sandbox.Features
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {
-                    var generatorEvaluation = new GeneratorEvaluation(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData>>().ToList()); // TODO: ugly
+                    var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
                     dataVisualization.Visualize(generatorEvaluation, file);
                 }
             }
