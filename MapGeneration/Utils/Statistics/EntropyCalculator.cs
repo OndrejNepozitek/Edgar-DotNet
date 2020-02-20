@@ -51,21 +51,21 @@ namespace MapGeneration.Utils.Statistics
                 .Select(x => x.RoomTemplateInstance)
                 .ToList();
 
-            return GetRoomTemplatesDistribution(data, availableRoomTemplateInstances);
+            return GetProbabilityDistribution(data, availableRoomTemplateInstances);
         }
 
-        public Dictionary<RoomTemplateInstance, double> GetRoomTemplatesDistribution(List<RoomTemplateInstance> data, List<RoomTemplateInstance> availableRoomTemplates)
+        public Dictionary<TElement, double> GetProbabilityDistribution<TElement>(List<TElement> data, List<TElement> allElements)
         {
-            var counts = new Dictionary<RoomTemplateInstance, int>();
+            var counts = new Dictionary<TElement, int>();
 
-            foreach (var roomTemplate in availableRoomTemplates)
+            foreach (var element in allElements)
             {
-                counts.Add(roomTemplate, 0);
+                counts.Add(element, 0);
             }
 
-            foreach (var roomTemplate in data)
+            foreach (var element in data)
             {
-                counts[roomTemplate] += 1;
+                counts[element] += 1;
             }
 
             return counts

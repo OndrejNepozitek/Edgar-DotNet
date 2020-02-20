@@ -46,7 +46,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
                 roomTemplate3,
             };
 
-            var distribution = entropyCalculator.GetRoomTemplatesDistribution(data, availableRoomTemplates);
+            var distribution = entropyCalculator.GetProbabilityDistribution(data, availableRoomTemplates);
 
             Assert.That(distribution.Count, Is.EqualTo(3));
             Assert.That(distribution[roomTemplate1], Is.EqualTo(3/4d));
