@@ -76,6 +76,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                         var additionalData = new AdditionalRunData<TNode>()
                         {
                             GeneratedLayout = layout,
+                            SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
                         };
 
                         var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);

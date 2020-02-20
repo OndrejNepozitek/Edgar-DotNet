@@ -8,8 +8,8 @@ namespace SandboxEvolutionRunner.Evolution
     {
         public Input Input { get; set; }
 
-        public DungeonGeneratorConfiguration NewConfiguration { get; set; }
+        public DungeonGeneratorConfiguration<int> NewConfiguration { get; set; }
 
-        public List<Individual> Individuals { get; set; }
+        public List<Individual<int>> Individuals { get; set; }
     }
 }

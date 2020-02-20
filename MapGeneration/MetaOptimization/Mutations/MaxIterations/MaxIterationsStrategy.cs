@@ -4,5 +4,6 @@
     {
         Aggressive,
         Conservative,
+        Fixed,
     }
 }

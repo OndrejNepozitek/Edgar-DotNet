@@ -38,12 +38,11 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures
         private IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier)
         {
             var averageAll = data.GetAverageStatistics(new DataSplit(0, 1));
-            var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
             var newConfigurations = new List<SimulatedAnnealingConfiguration>();
 
             for (int i = 0; i < averageAll.ChainsStats.Count; i++)
             {
-                var oldConfiguration = oldConfigurations[i];
+                var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
                 var maxStageTwoFailuresOnSuccess = Math.Max(minValue, multiplier * averageAll.ChainsStats[i].MaxStageTwoFailuresOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
@@ -63,12 +62,11 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures
         private IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier)
         {
             var worst10Percent = data.GetAverageStatistics(new DataSplit(0.9, 1));
-            var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
             var newConfigurations = new List<SimulatedAnnealingConfiguration>();
 
             for (int i = 0; i < worst10Percent.ChainsStats.Count; i++)
             {
-                var oldConfiguration = oldConfigurations[i];
+                var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
                 var averageStageTwoFailuresOnSuccess = Math.Max(minValue, multiplier * worst10Percent.ChainsStats[i].AverageStageTwoFailuresOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,

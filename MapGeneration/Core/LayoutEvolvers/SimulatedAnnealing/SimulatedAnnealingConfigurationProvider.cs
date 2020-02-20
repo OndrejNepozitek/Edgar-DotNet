@@ -45,11 +45,17 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 
         public List<SimulatedAnnealingConfiguration> GetAllConfigurations()
         {
-            return configurationsForChains.ToList();
+            // TODO: is this the best possible way?
+            return configurationsForChains != null ? configurationsForChains.ToList() : new List<SimulatedAnnealingConfiguration>() { fixedConfiguration };
         }
 
         public SimulatedAnnealingConfigurationProvider SmartClone()
         {
+            if (useFixedConfiguration)
+            {
+                return new SimulatedAnnealingConfigurationProvider(fixedConfiguration);
+            }
+
             return new SimulatedAnnealingConfigurationProvider(configurationsForChains.Select(x => x.SmartClone()).ToList());
         }
 

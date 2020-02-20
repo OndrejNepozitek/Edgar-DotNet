@@ -22,9 +22,18 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             // Do not apply this mutation multiple times
             if (individual.Mutations.All(x => x.GetType() != typeof(MaxIterationsMutation<TConfiguration>)))
             {
+                mutations.Add(GetFixedStrategy(configuration, data, 100));
+                mutations.Add(GetFixedStrategy(configuration, data, 250));
+                mutations.Add(GetFixedStrategy(configuration, data, 400));
+                mutations.Add(GetFixedStrategy(configuration, data, 600));
+                mutations.Add(GetFixedStrategy(configuration, data, 1000));
+
                 mutations.Add(GetAggressiveStrategy(configuration, data, 50, 1.5, 5));
                 mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1, 4));
 
+                // All tried mutation are below
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 50, 1.5, 5));
+                //mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1, 4));
                 //mutations.Add(GetAggressiveStrategy(configuration, data, 150, 1.5));
                 //mutations.Add(GetAggressiveStrategy(configuration, data, 100, 1.5));
                 //mutations.Add(GetAggressiveStrategy(configuration, data, 150, 2));
@@ -35,6 +44,20 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
             return mutations;
         }
 
+        private IMutation<TConfiguration> GetFixedStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, int numberOfIterations)
+        {
+            var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(0);
+            var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles, oldConfiguration.TrialsPerCycle, numberOfIterations, oldConfiguration.MaxStageTwoFailures);
+
+            return new MaxIterationsMutation<TConfiguration>(
+                5, 
+                new SimulatedAnnealingConfigurationProvider(newConfiguration),
+                MaxIterationsStrategy.Fixed,
+                numberOfIterations,
+                numberOfIterations
+            );
+        }
+
         private IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var averageAll = data.GetAverageStatistics(new DataSplit(0, 1));
@@ -43,7 +66,7 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
 
             for (int i = 0; i < averageAll.ChainsStats.Count; i++)
             {
-                var oldConfiguration = oldConfigurations[i];
+                var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
                 var maxIterationsOnSuccess = Math.Max(minValue, multiplier * averageAll.ChainsStats[i].MaxIterationsOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
@@ -63,12 +86,11 @@ namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
         private IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var worst10Percent = data.GetAverageStatistics(new DataSplit(0.9, 1));
-            var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
             var newConfigurations = new List<SimulatedAnnealingConfiguration>();
 
             for (int i = 0; i < worst10Percent.ChainsStats.Count; i++)
             {
-                var oldConfiguration = oldConfigurations[i];
+                var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
                 var averageIterationsOnSuccess = Math.Max(minValue, multiplier * worst10Percent.ChainsStats[i].AverageIterationsOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,

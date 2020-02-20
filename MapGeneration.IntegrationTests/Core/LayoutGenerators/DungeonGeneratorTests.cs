@@ -42,7 +42,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
         public void EarlyStoppingWhenTimeExceededTest()
         {
             var mapDescription = GetImpossibleMapDescription();
-            var dungeonGenerator = new DungeonGenerator<int>(mapDescription, new DungeonGeneratorConfiguration(mapDescription)
+            var dungeonGenerator = new DungeonGenerator<int>(mapDescription, new DungeonGeneratorConfiguration<int>()
             {
                 EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(3)
             });
@@ -55,7 +55,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
         public void EarlyStoppingWhenIterationsExceededTest()
         {
             var mapDescription = GetImpossibleMapDescription();
-            var dungeonGenerator = new DungeonGenerator<int>(mapDescription, new DungeonGeneratorConfiguration(mapDescription)
+            var dungeonGenerator = new DungeonGenerator<int>(mapDescription, new DungeonGeneratorConfiguration<int>()
             {
                 EarlyStopIfIterationsExceeded = 5000,
             });

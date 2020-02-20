@@ -122,17 +122,17 @@ namespace SandboxEvolutionRunner
                 { "gungeon_1_2", Tuple.Create("Gungeon 1_2", LoadMapDescription("gungeon_1_2")) },
                 { "gungeon_2_1", Tuple.Create("Gungeon 2_1", LoadMapDescription("gungeon_2_1")) },
                 { "gungeon_2_2", Tuple.Create("Gungeon 2_2", LoadMapDescription("gungeon_2_2")) },
-                { "gungeon_2_4", Tuple.Create("Gungeon 2_4", LoadMapDescription("gungeon_2_4")) },
+                // { "gungeon_2_4", Tuple.Create("Gungeon 2_4", LoadMapDescription("gungeon_2_4")) },
             };
 
-            var allAnalyzers = new Dictionary<string, Func<MapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>>>()
+            var allAnalyzers = new Dictionary<string, Func<MapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
             {
-                { "MaxStageTwoFailures", (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration, GeneratorData>() } ,
-                { "MaxIterations", (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration, GeneratorData>() } ,
-                { "ChainMerge", (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>() } ,
-                { "ChainOrder", (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>() } ,
-                { "MaxBranching", (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration, GeneratorData>() } ,
-                { "ChainDecomposition", (mapDescription) => new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration, int, GeneratorData>(mapDescription) } ,
+                { "MaxStageTwoFailures", (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
+                { "MaxIterations", (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
+                { "ChainMerge", (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
+                { "ChainOrder", (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
+                { "MaxBranching", (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
+                { "ChainDecomposition", (mapDescription) => new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>(mapDescription) } ,
             };
 
             // Select graphs
@@ -229,7 +229,7 @@ namespace SandboxEvolutionRunner
             var inputsNewConfigurations = results.Select(x =>
                 new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.NewConfiguration, null));
             var inputsOldConfigurations = results.Select(x =>
-                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, new DungeonGeneratorConfiguration(x.Input.MapDescription), null));
+                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, new DungeonGeneratorConfiguration<int>(), null));
 
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
 
@@ -253,7 +253,7 @@ namespace SandboxEvolutionRunner
 
         public static void AnalyzeMutations(List<Result> results)
         {
-            var stats = new Dictionary<IMutation<DungeonGeneratorConfiguration>, List<MutationStats>>();
+            var stats = new Dictionary<IMutation<DungeonGeneratorConfiguration<int>>, List<MutationStats>>();
 
             foreach (var result in results)
             {
@@ -347,9 +347,9 @@ namespace SandboxEvolutionRunner
             });
         }
 
-        public static Result RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration, Individual>> analyzers)
+        public static Result RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
         {
-            var evolution = new DungeonGeneratorEvolution(input.MapDescription, analyzers, new EvolutionOptions()
+            var evolution = new DungeonGeneratorEvolution<int>(input.MapDescription, analyzers, new EvolutionOptions()
             {
                 MaxPopulationSize = options.Eval ? 2 : 20,
                 MaxMutationsPerIndividual = 20,
@@ -359,7 +359,7 @@ namespace SandboxEvolutionRunner
                 AllowRepeatingConfigurations = !options.Eval,
             }, Path.Combine(Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
-            var initialConfiguration = new DungeonGeneratorConfiguration(input.MapDescription)
+            var initialConfiguration = new DungeonGeneratorConfiguration<int>()
             {
                 RoomsCanTouch = options.CanTouch,
             };
@@ -385,9 +385,9 @@ namespace SandboxEvolutionRunner
 
             public MapDescription<int> MapDescription { get; set; }
 
-            public DungeonGeneratorConfiguration NewConfiguration { get; set; }
+            public DungeonGeneratorConfiguration<int> NewConfiguration { get; set; }
 
-            public List<Individual> Individuals { get; set; }
+            public List<Individual<int>> Individuals { get; set; }
         }
 
         public class DungeonGeneratorInput<TNode> : GeneratorInput<IMapDescription<TNode>> where TNode : IEquatable<TNode>

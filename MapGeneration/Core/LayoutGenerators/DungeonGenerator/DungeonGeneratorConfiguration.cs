@@ -102,7 +102,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                 RepeatModeOverride = RepeatMode.NoImmediate,
                 ThrowIfRepeatModeNotSatisfied = ThrowIfRepeatModeNotSatisfied,
                 ChainDecompositionConfiguration = ChainDecompositionConfiguration.SmartClone(),
-                Chains = Chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).ToList(),
+                Chains = Chains?.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).ToList(),
                 SimulatedAnnealingConfiguration = SimulatedAnnealingConfiguration.SmartClone(),
                 SimulatedAnnealingMaxBranching = SimulatedAnnealingMaxBranching,
             };
@@ -114,13 +114,27 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             result += $"\n  Max branching {SimulatedAnnealingMaxBranching}";
 
-            for (int i = 0; i < Chains.Count; i++)
+            if (Chains != null)
             {
-                var chain = Chains[i];
-                var configuration = SimulatedAnnealingConfiguration.GetConfiguration(i);
-                result +=
-                    $"\n  Chain {i} [{string.Join(",", chain.Nodes)}] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess} ms2f {configuration.MaxStageTwoFailures}";
+                for (int i = 0; i < Chains.Count; i++)
+                {
+                    var chain = Chains[i];
+                    var configuration = SimulatedAnnealingConfiguration.GetConfiguration(i);
+                    result +=
+                        $"\n  Chain {i} [{string.Join(",", chain.Nodes)}] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess} ms2f {configuration.MaxStageTwoFailures}";
+                }
+            } else if (SimulatedAnnealingConfiguration != null)
+            {
+                var list = SimulatedAnnealingConfiguration.GetAllConfigurations();
+
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var configuration = list[i];
+                    result +=
+                        $"\n  Chain {i} [] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess} ms2f {configuration.MaxStageTwoFailures}";
+                }
             }
+
 
             return result;
         }
