@@ -151,7 +151,7 @@ namespace Sandbox.Features
                     .Distinct()
                     .SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x))
                     .ToList();
-                var roomTemplatesMapping = roomTemplateInstances.CreateIntMapping();
+                var roomTemplatesMapping = roomTemplateInstances.ToDictionary(x => x, x => x.Transformations.Contains(Transformation.Identity) ? x.RoomTemplate.Name : $"{x.RoomTemplate.Name} {x.Transformations[0]}");
                 var entropyCalculator = new EntropyCalculator();
 
 
@@ -181,15 +181,15 @@ namespace Sandbox.Features
             var directory = $"CorridorConfigurationSpaces/{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}";
             Directory.CreateDirectory(directory);
 
-            var dataVisualization = new ChainStatsVisualization<GeneratorData>();
-            foreach (var inputResult in scenarioResult.BenchmarkResults)
-            {
-                using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
-                {
-                    var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
-                    dataVisualization.Visualize(generatorEvaluation, file);
-                }
-            }
+            //var dataVisualization = new ChainStatsVisualization<GeneratorData>();
+            //foreach (var inputResult in scenarioResult.BenchmarkResults)
+            //{
+            //    using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
+            //    {
+            //        var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
+            //        dataVisualization.Visualize(generatorEvaluation, file);
+            //    }
+            //}
 
             Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1581884301_CorridorConfigurationSpaces_Reference.json");
         }

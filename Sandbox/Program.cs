@@ -12,6 +12,7 @@ using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.MetaOptimization.Visualizations;
 using MapGeneration.Utils.MapDrawing;
 using Sandbox.Examples;
+using Sandbox.Features;
 
 namespace Sandbox
 {
@@ -36,10 +37,10 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            CompareWithReference();
+            // CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
-            // new Clustering().Run();
+            new Clustering().Run();
             // new TwoStageGeneration().Run();
             // new PlatformersFeature().Run();
             

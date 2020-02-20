@@ -20,8 +20,8 @@ namespace MapGeneration.Utils
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
             var transformations = TransformationHelper.GetAllTransformations().ToList();
 
-            var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode, transformations);
-            var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode, transformations);
+            var squareRoom = new RoomTemplate(GridPolygon.GetSquare(6).Scale(scale), doorMode, transformations, name: "Square");
+            var rectangleRoom = new RoomTemplate(GridPolygon.GetRectangle(6, 9).Scale(scale), doorMode, transformations, name: "Rectangle");
 
             return new List<RoomTemplate>()
             {
@@ -45,7 +45,7 @@ namespace MapGeneration.Utils
                     .AddPoint(6, 3)
                     .AddPoint(6, 0)
                     .Build().Scale(scale)
-                , doorMode, transformations);
+                , doorMode, transformations, name: "L-shape");
             var room2 = new RoomTemplate(
                 new GridPolygonBuilder()
                     .AddPoint(0, 0)
@@ -55,7 +55,7 @@ namespace MapGeneration.Utils
                     .AddPoint(6, 3)
                     .AddPoint(6, 0)
                     .Build().Scale(scale)
-                , doorMode, transformations);
+                , doorMode, transformations, name: "L-shape long");
             var room3 = new RoomTemplate(
                 new GridPolygonBuilder()
                     .AddPoint(0, 0)
@@ -67,7 +67,7 @@ namespace MapGeneration.Utils
                     .AddPoint(9, 3)
                     .AddPoint(9, 0)
                     .Build().Scale(scale)
-                , doorMode, transformations);
+                , doorMode, transformations, name: "T-shape");
 
             return new List<RoomTemplate>(GetRectangularRoomTemplates(scale))
             {

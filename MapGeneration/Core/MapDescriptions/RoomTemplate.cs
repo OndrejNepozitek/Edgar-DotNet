@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
@@ -21,14 +20,15 @@ namespace MapGeneration.Core.MapDescriptions
 
 		public RepeatMode RepeatMode { get; }
 
+		public string Name { get; }
 
-
-		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations = null, RepeatMode repeatMode = RepeatMode.AllowRepeat)
+		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations = null, RepeatMode repeatMode = RepeatMode.AllowRepeat, string name = null)
 		{
 			Shape = shape;
 			DoorsMode = doorsMode;
             AllowedTransformations = allowedTransformations ?? new List<Transformation>() { Transformation.Identity };
             RepeatMode = repeatMode;
+            Name = name ?? "Room template";
         }
 	}
 }
