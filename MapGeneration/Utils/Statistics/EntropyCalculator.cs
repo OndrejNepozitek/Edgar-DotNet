@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeneralAlgorithms.Algorithms.Common;
+using GeneralAlgorithms.Algorithms.Polygons;
+using MapGeneration.Core.ConfigurationSpaces;
+using MapGeneration.Core.Doors;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Core.MapLayouts;
@@ -9,6 +13,17 @@ namespace MapGeneration.Utils.Statistics
 {
     public class EntropyCalculator
     {
+        private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
+
+        public EntropyCalculator()
+        {
+            configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+                new PolygonOverlap(),
+                DoorHandler.DefaultHandler,
+                new OrthogonalLineIntersection(),
+                new GridPolygonUtils());
+        }
+
         public double ComputeAverageRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, bool normalize = true)
         {
             return mapDescription
@@ -27,21 +42,21 @@ namespace MapGeneration.Utils.Statistics
             return entropy;
         }
 
-        public Dictionary<RoomTemplate, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node)
+        public Dictionary<RoomTemplateInstance, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node)
         {
             var roomDescription = mapDescription.GetRoomDescription(node);
-            var availableRoomTemplates = roomDescription.RoomTemplates;
+            var availableRoomTemplateInstances = roomDescription.RoomTemplates.SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x)).ToList();
             var data = layouts
                 .Select(x => x.Rooms.Single(y => y.Node.Equals(node)))
-                .Select(x => x.RoomTemplate)
+                .Select(x => x.RoomTemplateInstance)
                 .ToList();
 
-            return GetRoomTemplatesDistribution(data, availableRoomTemplates);
+            return GetRoomTemplatesDistribution(data, availableRoomTemplateInstances);
         }
 
-        public Dictionary<RoomTemplate, double> GetRoomTemplatesDistribution(List<RoomTemplate> data, List<RoomTemplate> availableRoomTemplates)
+        public Dictionary<RoomTemplateInstance, double> GetRoomTemplatesDistribution(List<RoomTemplateInstance> data, List<RoomTemplateInstance> availableRoomTemplates)
         {
-            var counts = new Dictionary<RoomTemplate, int>();
+            var counts = new Dictionary<RoomTemplateInstance, int>();
 
             foreach (var roomTemplate in availableRoomTemplates)
             {

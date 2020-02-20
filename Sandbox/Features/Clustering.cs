@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GeneralAlgorithms.Algorithms.Common;
+using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Benchmarks.ResultSaving;
+using MapGeneration.Core.ConfigurationSpaces;
+using MapGeneration.Core.Doors;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
@@ -34,7 +38,7 @@ namespace Sandbox.Features
             inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true, basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
             inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
 
-            inputs.Add(LoadInput("gungeon_1_1")); 
+            inputs.Add(LoadInput("gungeon_1_1"));
             inputs.Add(LoadInput("gungeon_1_1", true));
             inputs.Add(LoadInput("gungeon_1_2"));
             inputs.Add(LoadInput("gungeon_1_2", true));
@@ -84,7 +88,7 @@ namespace Sandbox.Features
                 });
             });
 
-            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 250);
+            var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 100);
 
             // Clusters
             for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
@@ -120,6 +124,13 @@ namespace Sandbox.Features
                 };
             }
 
+            // TODO: maybe create a factory method for cs generator?
+            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+                new PolygonOverlap(),
+                DoorHandler.DefaultHandler,
+                new OrthogonalLineIntersection(),
+                new GridPolygonUtils());
+
             // Entropy
             for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
             {
@@ -134,11 +145,12 @@ namespace Sandbox.Features
                     .ToList();
 
                 var rooms = mapDescription.GetStageOneGraph().Vertices.ToList();
-                var roomTemplates = rooms
+                var roomTemplateInstances = rooms
                     .SelectMany(x => mapDescription.GetRoomDescription(x).RoomTemplates)
                     .Distinct()
+                    .SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x))
                     .ToList();
-                var roomTemplatesMapping = roomTemplates.CreateIntMapping();
+                var roomTemplatesMapping = roomTemplateInstances.CreateIntMapping();
                 var entropyCalculator = new EntropyCalculator();
 
 

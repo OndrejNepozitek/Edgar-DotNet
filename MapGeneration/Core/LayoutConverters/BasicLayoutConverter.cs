@@ -58,7 +58,7 @@ namespace MapGeneration.Core.LayoutConverters
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
 
-                    var room = new Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), transformation, roomTemplateInstance.Transformations);
+                    var room = new Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
 					rooms.Add(room);
 
 					if (!addDoors)

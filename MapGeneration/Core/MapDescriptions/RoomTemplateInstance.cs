@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors;
-using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -42,5 +41,42 @@ namespace MapGeneration.Core.MapDescriptions
         {
 
         }
+
+        #region Equals
+
+        protected bool Equals(RoomTemplateInstance other)
+        {
+            return Equals(RoomTemplate, other.RoomTemplate) && Equals(RoomShape, other.RoomShape) && DoorLines.SequenceEqual(other.DoorLines) && Transformations.SequenceEqual(other.Transformations);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RoomTemplateInstance) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (RoomTemplate != null ? RoomTemplate.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RoomShape != null ? RoomShape.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(RoomTemplateInstance left, RoomTemplateInstance right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(RoomTemplateInstance left, RoomTemplateInstance right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion
     }
 }

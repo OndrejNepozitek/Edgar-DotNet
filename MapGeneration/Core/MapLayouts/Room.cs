@@ -12,25 +12,57 @@ namespace MapGeneration.Core.MapLayouts
     /// <typeparam name="TNode"></typeparam>
 	public class Room<TNode>
 	{
-		public TNode Node { get; }
+        /// <summary>
+        /// Corresponding input graph node.
+        /// </summary>
+        public TNode Node { get; }
 
-		public GridPolygon Shape { get; }
+        /// <summary>
+        /// Shape of the room.
+        /// </summary>
+        public GridPolygon Shape { get; }
 
-		public IntVector2 Position { get; }
+        /// <summary>
+        /// Position of the room.
+        /// </summary>
+        public IntVector2 Position { get; }
+        
+        /// <summary>
+        /// Room template used for this room.
+        /// </summary>
+        public RoomTemplate RoomTemplate { get; }
 
-		public bool IsCorridor { get; }
+        /// <summary>
+        /// Room template instance used for this room.
+        /// </summary>
+        public RoomTemplateInstance RoomTemplateInstance { get; }
 
-		public List<DoorInfo<TNode>> Doors { get; set; }
+        /// <summary>
+        /// Whether it is a corridor room or not.
+        /// </summary>
+        public bool IsCorridor { get; }
 
-		public RoomTemplate RoomTemplate { get; }
+        /// <summary>
+        /// Information about connections to neighbours.
+        /// </summary>
+        public List<DoorInfo<TNode>> Doors { get; set; }
 
+        /// <summary>
+        /// Room description.
+        /// </summary>
         public IRoomDescription RoomDescription { get; }
 
+        /// <summary>
+        /// Chosen transformation of the room shape.
+        /// </summary>
         public Transformation Transformation { get; }
 
-		public List<Transformation> Transformations { get; }
+        /// <summary>
+        /// All possible transformations of the room description.
+        /// </summary>
+        public IList<Transformation> Transformations { get; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, Transformation transformation, List<Transformation> transformations)
+		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstance roomTemplateInstance)
 		{
 			Node = node;
 			Shape = shape;
@@ -39,8 +71,8 @@ namespace MapGeneration.Core.MapLayouts
 			RoomTemplate = roomTemplate;
 			Transformation = transformation;
 			Transformations = transformations;
+            RoomTemplateInstance = roomTemplateInstance;
             RoomDescription = roomDescription;
-            Doors = null;
-		}
+        }
 	}
 }

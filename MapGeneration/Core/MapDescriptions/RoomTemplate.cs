@@ -21,6 +21,8 @@ namespace MapGeneration.Core.MapDescriptions
 
 		public RepeatMode RepeatMode { get; }
 
+
+
 		public RoomTemplate(GridPolygon shape, IDoorMode doorsMode, List<Transformation> allowedTransformations = null, RepeatMode repeatMode = RepeatMode.AllowRepeat)
 		{
 			Shape = shape;
