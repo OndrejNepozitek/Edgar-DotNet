@@ -60,8 +60,10 @@ namespace MapGeneration.Benchmarks
                 SuccessRate = successfulRuns.Count / (double)runs.Count * 100,
                 TimeAverage = successfulRuns.Select(x => x.Time).Average(),
                 TimeMedian = successfulRuns.Select(x => x.Time).GetMedian(),
+                TimeMax = successfulRuns.Select(x => x.Time).Max(),
                 IterationsAverage = successfulRuns.Select(x => x.Iterations).Average(),
                 IterationsMedian = successfulRuns.Select(x => x.Iterations).GetMedian(),
+                IterationsMax = successfulRuns.Select(x => x.Iterations).Max(),
                 Runs = runs,
             };
         }

@@ -165,9 +165,10 @@ namespace SandboxEvolutionRunner
                 {
                     var corridorOffsets = corridorOffset.Split(",").Select(x => int.Parse(x)).ToList();
                     var withCorridors = corridorOffsets[0] != 0;
+                    var canTouch = options.CanTouch || !withCorridors;
 
                     var name = MapDescriptionUtils.GetInputName(graphPair.Item1, options.Scale, withCorridors,
-                        corridorOffsets, options.CanTouch);
+                        corridorOffsets, canTouch);
                     var graph = graphPair.Item2;
 
                     var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(options.Scale);
@@ -183,6 +184,10 @@ namespace SandboxEvolutionRunner
                     {
                         Name = name,
                         MapDescription = mapDescription,
+                        Configuration = new DungeonGeneratorConfiguration<int>()
+                        {
+                            RoomsCanTouch = canTouch,
+                        }
                     });
                 }
             }
@@ -195,6 +200,10 @@ namespace SandboxEvolutionRunner
                 {
                     Name = mapDescription.Item1,
                     MapDescription = mapDescription.Item2,
+                    Configuration = new DungeonGeneratorConfiguration<int>()
+                    {
+                        RoomsCanTouch = options.CanTouch,
+                    }
                 });
             }
 
@@ -229,7 +238,7 @@ namespace SandboxEvolutionRunner
             var inputsNewConfigurations = results.Select(x =>
                 new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.NewConfiguration, null));
             var inputsOldConfigurations = results.Select(x =>
-                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, new DungeonGeneratorConfiguration<int>(), null));
+                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration, null));
 
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
 
@@ -359,11 +368,7 @@ namespace SandboxEvolutionRunner
                 AllowRepeatingConfigurations = !options.Eval,
             }, Path.Combine(Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
-            var initialConfiguration = new DungeonGeneratorConfiguration<int>()
-            {
-                RoomsCanTouch = options.CanTouch,
-            };
-            var result = evolution.Evolve(initialConfiguration);
+            var result = evolution.Evolve(input.Configuration);
 
             return new Result()
             {
