@@ -377,24 +377,7 @@ namespace SandboxEvolutionRunner
                 Individuals = result.AllIndividuals,
             };
         }
-
-        public class InputOld
-        {
-            public string Name { get; set; }
-
-            public IGraph<int> Graph { get; set; }
-
-            public List<int> Corridors { get; set; }
-
-            public bool CanTouch { get; set; }
-
-            public MapDescription<int> MapDescription { get; set; }
-
-            public DungeonGeneratorConfiguration<int> NewConfiguration { get; set; }
-
-            public List<Individual<int>> Individuals { get; set; }
-        }
-
+        
         public class DungeonGeneratorInput<TNode> : GeneratorInput<IMapDescription<TNode>> where TNode : IEquatable<TNode>
         {
             public DungeonGeneratorConfiguration<TNode> Configuration { get; set; }
