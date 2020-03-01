@@ -28,7 +28,7 @@
 		{
 			var benchmarkJobs = new List<BenchmarkJob<TMapDescription, TLayout>>();
 			var benchmark = new BenchmarkUtils.Benchmark<BenchmarkJob<TMapDescription, TLayout>, BenchmarkResult>();
-			benchmark.SetConsoleOutput(true);
+			benchmark.SetConsoleOutput(true, true);
 			benchmark.AddFileOutput(namingConvention: NamingConvention.FixedName, filename: filename);
 
 			foreach (var mapDescriptionInfo in mapDescriptions)

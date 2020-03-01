@@ -87,9 +87,14 @@
 				from.Next = to;
 				to.Prev = from;
 			}
+
+			var horizontalTree = new RangeTree<int, Segment>();
+			foreach (var segment in horizontalSegments)
+				horizontalTree.Add(segment.Range.X, segment.Range.Y, segment);
 			
-			var horizontalTree = new RangeTree<int, Segment>(horizontalSegments, new SegmentComparer());
-			var verticalTree = new RangeTree<int, Segment>(verticalSegments, new SegmentComparer());
+			var verticalTree = new RangeTree<int, Segment>();
+			foreach (var segment in verticalSegments)
+				verticalTree.Add(segment.Range.X, segment.Range.Y, segment);
 
 			//Find horizontal and vertical diagonals
 			var horizontalDiagonals = GetDiagonals(vertices, verticalTree, false);
@@ -180,8 +185,13 @@
 				}
 			}
 
-			var leftTree = new RangeTree<int, Segment>(leftSegments, new SegmentComparer());
-			var rightTree = new RangeTree<int, Segment>(rightSegments, new SegmentComparer());
+			var leftTree = new RangeTree<int, Segment>();
+			foreach (var segment in leftSegments)
+				leftTree.Add(segment.Range.X, segment.Range.Y, segment);
+
+			var rightTree = new RangeTree<int, Segment>();
+			foreach (var segment in rightSegments)
+				rightTree.Add(segment.Range.X, segment.Range.Y, segment);
 
 			var i = 0;
 			while (i < vertices.Count)
@@ -258,9 +268,13 @@
 				}
 
 				tree.Remove(closestSegment);
-				tree.Add(new Segment(closestSegment.From, splitA, false));
-				tree.Add(new Segment(splitB, closestSegment.To, false));
 
+				var segmentSplitA = new Segment(closestSegment.From, splitA, false);
+				tree.Add(segmentSplitA.Range.X, segmentSplitA.Range.Y, segmentSplitA);
+				
+				var segmentSplitB = new Segment(splitB, closestSegment.To, false);
+				tree.Add(segmentSplitB.Range.X, segmentSplitB.Range.Y, segmentSplitB);
+				
 				vertices.Add(splitA);
 				vertices.Add(splitB);
 
@@ -548,7 +562,9 @@
 				return new List<Tuple<Segment, Segment>>();
 			}
 
-			var horizontalTree = new RangeTree<int, Segment>(horizontalDiagonals, new SegmentComparer());
+			var horizontalTree = new RangeTree<int, Segment>();
+			foreach (var segment in horizontalDiagonals)
+				horizontalTree.Add(segment.Range.X, segment.Range.Y, segment);
 			var crosssings = new List<Tuple<Segment, Segment>>();
 
 			foreach (var v in verticalDiagonals)
@@ -596,14 +612,14 @@
 			}
 		}
 
-		private class Segment : IRangeProvider<int>
+		private class Segment
 		{
 			public readonly Vertex From;
 			public readonly Vertex To;
 			public readonly bool Horizontal;
 			public int Number;
 
-			public Range<int> Range { get; }
+			public IntVector2 Range { get; }
 
 			public Segment(Vertex from, Vertex to, bool horizontal)
 			{
@@ -613,11 +629,11 @@
 
 				if (horizontal)
 				{
-					Range = new Range<int>(Math.Min(from.Point.X, to.Point.X), Math.Max(from.Point.X, to.Point.X));
+					Range = new IntVector2(Math.Min(from.Point.X, to.Point.X), Math.Max(from.Point.X, to.Point.X));
 				}
 				else
 				{
-					Range = new Range<int>(Math.Min(from.Point.Y, to.Point.Y), Math.Max(from.Point.Y, to.Point.Y));
+					Range = new IntVector2(Math.Min(from.Point.Y, to.Point.Y), Math.Max(from.Point.Y, to.Point.Y));
 				}
 			}
 
