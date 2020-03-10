@@ -12,6 +12,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
         [JsonIgnore]
         public MapLayout<TNode> GeneratedLayout { get; set; }
 
+        [JsonIgnore]
         public List<SimulatedAnnealingEventArgs> SimulatedAnnealingEventArgs { get; set; }
 
         public string GeneratedLayoutSvg { get; set; }

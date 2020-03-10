@@ -47,7 +47,9 @@ namespace MapGeneration.Benchmarks
             }
 
             var benchmarkJobs = new List<BenchmarkJob>();
-            var benchmark = new BenchmarkUtils.Benchmark<BenchmarkJob, BenchmarkJobResult>();
+            var benchmark = options.MultiThreaded 
+                ? new BenchmarkUtils.MultiThreadedBenchmark<BenchmarkJob, BenchmarkJobResult>(options.MaxDegreeOfParallelism)
+                : new BenchmarkUtils.Benchmark<BenchmarkJob, BenchmarkJobResult>();
             benchmark.SetConsoleOutput(options.WithConsoleOutput, options.WithConsolePreview);
 
             // TODO: this should be more configurable

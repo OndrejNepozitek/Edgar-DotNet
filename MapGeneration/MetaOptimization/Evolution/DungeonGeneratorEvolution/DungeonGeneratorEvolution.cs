@@ -51,11 +51,12 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                     // Setup early stopping
                     if (individual.Parent != null)
                     {
-                        individual.Configuration.EarlyStopIfIterationsExceeded = 50 * (int) individual.Parent.Fitness;
+                        individual.Configuration.EarlyStopIfIterationsExceeded = Math.Min(50 * (int) individual.Parent.Iterations, InitialIndividual.Configuration.EarlyStopIfIterationsExceeded ?? int.MaxValue);
                     }
                     else
                     {
-                        individual.Configuration.EarlyStopIfIterationsExceeded = null;
+                        // TODO: how to do this?
+                        // individual.Configuration.EarlyStopIfIterationsExceeded = null;
                     }
 
                     var layoutGenerator = new DungeonGenerator<TNode>(input.MapDescription, individual.Configuration, null);
@@ -86,7 +87,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 
                     if (individual.Parent != null)
                     {
-                        return new EarlyStoppingGeneratorRunner(generatorRunner, individual.Parent.Fitness, (successful, time, iterations) => new GeneratorRun<AdditionalRunData>(successful, time, iterations, null));
+                        return new EarlyStoppingGeneratorRunner(generatorRunner, individual.Parent.Iterations, (successful, time, iterations) => new GeneratorRun<AdditionalRunData<TNode>>(successful, time, iterations, null));
                     }
                     else
                     {
@@ -108,7 +109,11 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
 
             var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<TNode>>(generatorRuns); // TODO: ugly
             individual.ConfigurationEvaluation = generatorEvaluation;
-            individual.Fitness = generatorRuns.Average(x => x.Iterations);
+
+            individual.Iterations = generatorRuns.Average(x => x.Iterations);
+            individual.Time = generatorRuns.Average(x => x.Time);
+            individual.Fitness = Options.FitnessType == FitnessType.Iterations ? individual.Iterations : individual.Time;
+
             individual.SuccessRate = generatorRuns.Count(x => x.IsSuccessful) / (double)generatorRuns.Count;
 
             var layouts = generatorRuns
@@ -130,7 +135,19 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
             var fitnessDifferenceTotal =
                 StatisticsUtils.DifferenceToReference(individual, InitialIndividual, x => x.Fitness);
 
+            var iterationsDifferenceParent = individual.Parent != null ? 
+                StatisticsUtils.DifferenceToReference(individual, individual.Parent, x => x.Iterations) : 0;
+            var iterationsDifferenceTotal =
+                StatisticsUtils.DifferenceToReference(individual, InitialIndividual, x => x.Iterations);
+
+            var timeDifferenceParent = individual.Parent != null ? 
+                StatisticsUtils.DifferenceToReference(individual, individual.Parent, x => x.Time) : 0;
+            var timeDifferenceTotal =
+                StatisticsUtils.DifferenceToReference(individual, InitialIndividual, x => x.Time);
+
             summary += $"  fitness {individual.Fitness:F}, {(fitnessDifferenceParent > 0 ? "+" : "")}{fitnessDifferenceParent:F}%, {(fitnessDifferenceTotal > 0 ? "+" : "")}{fitnessDifferenceTotal:F}% total  \n";
+            summary += $"  iterations {individual.Iterations:F}, {(iterationsDifferenceParent > 0 ? "+" : "")}{iterationsDifferenceParent:F}%, {(iterationsDifferenceTotal > 0 ? "+" : "")}{iterationsDifferenceTotal:F}% total  \n";
+            summary += $"  time {individual.Time:F}, {(timeDifferenceParent > 0 ? "+" : "")}{timeDifferenceParent:F}%, {(timeDifferenceTotal > 0 ? "+" : "")}{timeDifferenceTotal:F}% total  \n";
             summary += $"  entropy {roomTemplatesEntropy:F}, clusters {positionOnlyClusters.Count}/{positionAndShapeClusters.Count} \n";
             summary += $"  success rate {individual.SuccessRate * 100:F}%\n";
 

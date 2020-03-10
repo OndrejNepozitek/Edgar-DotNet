@@ -51,5 +51,10 @@
         /// Whether to discard configurations that were already evaluated.
         /// </summary>
         public bool AllowRepeatingConfigurations { get; set; } = false;
+
+        /// <summary>
+        /// What should be the fitness that should be optimized.
+        /// </summary>
+        public FitnessType FitnessType { get; set; } = FitnessType.Iterations;
     }
 }

@@ -21,7 +21,7 @@
     <None Remove="Core\LayoutConverters\CorridorNodesCreators\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkUtils" Version="1.2.1" />
+    <PackageReference Include="BenchmarkUtils" Version="1.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="YamlDotNet" Version="5.3.0" />
   </ItemGroup>

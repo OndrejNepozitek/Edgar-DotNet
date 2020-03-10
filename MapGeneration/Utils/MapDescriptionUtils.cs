@@ -107,7 +107,7 @@ namespace MapGeneration.Utils
         }
 
         public static MapDescription<int> GetBasicMapDescription(IGraph<int> graph,
-            BasicRoomDescription basicRoomDescription, CorridorRoomDescription corridorRoomDescription = null,
+            IRoomDescription basicRoomDescription, IRoomDescription corridorRoomDescription = null,
             bool withCorridors = false)
         {
             var mapDescription = new MapDescription<int>();

@@ -4,14 +4,20 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
     public class SimulatedAnnealingConfiguration : ISmartCloneable<SimulatedAnnealingConfiguration>
     {
-        public int Cycles { get; }
+        public int Cycles { get; set; } = 50;
 
-        public int TrialsPerCycle { get; }
+        public int TrialsPerCycle { get; set; } = 100;
 
-        public int MaxIterationsWithoutSuccess { get; }
+        public int MaxIterationsWithoutSuccess { get; set; } = 10000;
 
-        public int MaxStageTwoFailures { get; }
+        public int MaxStageTwoFailures { get; set; } = 10000;
 
+        public SimulatedAnnealingConfiguration()
+        {
+
+        }
+
+        // TODO: maybe remove?
         public SimulatedAnnealingConfiguration(int cycles, int trialsPerCycle, int maxIterationsWithoutSuccess, int maxStageTwoFailures)
         {
             Cycles = cycles;
@@ -20,6 +26,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
             MaxStageTwoFailures = maxStageTwoFailures;
         }
 
+        // TODO: maybe remove?
         public static SimulatedAnnealingConfiguration GetDefaultConfiguration()
         {
             return new SimulatedAnnealingConfiguration(50, 100, 10000, 10000);

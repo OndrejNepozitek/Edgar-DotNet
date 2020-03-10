@@ -18,6 +18,10 @@ namespace MapGeneration.MetaOptimization.Evolution
 
         public double Fitness { get; set; }
 
+        public double Iterations { get; set; }
+
+        public double Time { get; set; }
+
         public double SuccessRate { get; set; }
 
         public Individual(int id, Individual<TConfiguration, TConfigurationEvaluation> parent, IMutation<TConfiguration> mutation)

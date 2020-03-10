@@ -32,6 +32,8 @@ using MapGeneration.Utils.MapDrawing;
 using MapGeneration.Utils.Statistics;
 using Newtonsoft.Json;
 using SandboxEvolutionRunner.Evolution;
+using SandboxEvolutionRunner.Scenarios;
+using SandboxEvolutionRunner.Utils;
 
 namespace SandboxEvolutionRunner
 {
@@ -41,47 +43,44 @@ namespace SandboxEvolutionRunner
 
         public static Logger Logger;
 
-        public class Options
-        {
-            [Option("graphs", Required = false)]
-            public IEnumerable<string> Graphs { get; set; } = null;
-
-            [Option("mapDescriptions", Required = false)]
-            public IEnumerable<string> MapDescriptions { get; set; } = null;
-
-            [Option("corridorOffsets", Required = false)]
-            public IEnumerable<string> CorridorOffsets { get; set; }
-
-            [Option("mutations", Required = false)]
-            public IEnumerable<string> Mutations { get; set; } = null;
-
-            [Option("canTouch")] 
-            public bool CanTouch { get; set; } = false;
-
-            [Option("eval")] 
-            public bool Eval { get; set; } = false;
-
-            [Option("evolutionIterations")] 
-            public int EvolutionIterations { get; set; } = 250;
-
-            [Option("finalEvaluationIterations")] 
-            public int FinalEvaluationIterations { get; set; } = 250;
-
-            [Option("maxThreads")] 
-            public int MaxThreads { get; set; } = 10;
-
-            [Option("name")] 
-            public string Name { get; set; } = "evolution";
-
-            public IntVector2 Scale { get; set; } = new IntVector2(1, 1);
-        }
-
         public static void Main(string[] args)
         {
             Parser
                 .Default
                 .ParseArguments<Options>(args)
                 .WithParsed(Run);
+        }
+
+        public static void Run(Options options)
+        {
+            var scenarios = new Dictionary<string, Scenario>()
+            {
+                { "Evolution", new EvolutionScenario() },
+                { "BasicRoomsInsteadOfCorridors", new BasicRoomsInsteadOfCorridorsScenario() },
+                { "FixedMaxIterations", new FixedMaxIterations() },
+                { "FixedMaxIterations50vs100", new FixedMaxIterations50vs100() },
+                { "FixedMaxIterationsEvolution", new FixedMaxIterationsEvolutionScenario() },
+                { "ChainDecomposition", new ChainDecompositionScenario() },
+                { "MaxBranching", new MaxBranchingScenario() },
+                { "OldAndNew", new OldAndNewScenario() },
+            };
+
+            if (options.Name == null)
+            {
+                options.Name = $"{options.Scenario}";
+
+                if (options.FitnessType != FitnessType.Iterations)
+                {
+                    options.Name += $"_{options.FitnessType}";
+                }
+
+                options.Name += options.GraphSets.Count() != 0 ? $"_{string.Join("_", options.GraphSets)}" : string.Empty;
+                options.Name += options.Graphs.Count() != 0 ? $"_graphs_{string.Join("_", options.Graphs)}" : string.Empty;
+                options.Name += options.MapDescriptions.Count() != 0 ? $"_{string.Join("_", options.MapDescriptions)}" : string.Empty;
+            }
+
+            var scenario = scenarios[options.Scenario];
+            scenario.Run(options);
         }
 
         public static MapDescription<int> LoadMapDescription(string name)
@@ -100,7 +99,7 @@ namespace SandboxEvolutionRunner
             return input.MapDescription;
         }
 
-        public static void Run(Options options)
+        public static void RunOld(Options options)
         {
             // TODO: make better
             Directory = Path.Combine("DungeonGeneratorEvolutions", FileNamesHelper.PrefixWithTimestamp(options.Name));
@@ -125,7 +124,7 @@ namespace SandboxEvolutionRunner
                 // { "gungeon_2_4", Tuple.Create("Gungeon 2_4", LoadMapDescription("gungeon_2_4")) },
             };
 
-            var allAnalyzers = new Dictionary<string, Func<MapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
+            var allAnalyzers = new Dictionary<string, Func<IMapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
             {
                 { "MaxStageTwoFailures", (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
                 { "MaxIterations", (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
@@ -236,9 +235,9 @@ namespace SandboxEvolutionRunner
             AnalyzeMutations(results.ToList());
 
             var inputsNewConfigurations = results.Select(x =>
-                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.NewConfiguration, null));
+                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.NewConfiguration));
             var inputsOldConfigurations = results.Select(x =>
-                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration, null));
+                new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration));
 
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
 
@@ -328,7 +327,7 @@ namespace SandboxEvolutionRunner
             var layoutDrawer = new SVGLayoutDrawer<int>();
 
             var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             return new LambdaGeneratorRunner(() =>
@@ -378,18 +377,6 @@ namespace SandboxEvolutionRunner
             };
         }
         
-        public class DungeonGeneratorInput<TNode> : GeneratorInput<IMapDescription<TNode>> where TNode : IEquatable<TNode>
-        {
-            public DungeonGeneratorConfiguration<TNode> Configuration { get; set; }
 
-            // TODO: remove later
-            public List<int> Offsets { get; set; }
-
-            public DungeonGeneratorInput(string name, IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration, List<int> offsets) : base(name, mapDescription)
-            {
-                Configuration = configuration;
-                Offsets = offsets;
-            }
-        }
     }
 }

@@ -48,6 +48,13 @@ namespace Sandbox.Features
             inputs.Add(LoadInput("gungeon_2_2"));
             inputs.Add(LoadInput("gungeon_2_2", true));
 
+            foreach (var input in inputs)
+            {
+                var mapDescription = input.MapDescription;
+                var graph = mapDescription.GetStageOneGraph();
+                Console.WriteLine($"{input.Name} {graph.VerticesCount} {graph.Edges.Count()}");
+            }
+
             if (true)
             {
                 inputs.Sort((x1, x2) => string.Compare(x1.Name, x2.Name, StringComparison.Ordinal));

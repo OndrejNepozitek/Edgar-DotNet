@@ -1,5 +1,6 @@
 ﻿using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace SandboxEvolutionRunner.Evolution
 {
@@ -7,7 +8,7 @@ namespace SandboxEvolutionRunner.Evolution
     {
         public string Name { get; set; }
 
-        public MapDescription<int> MapDescription { get; set; }
+        public IMapDescription<int> MapDescription { get; set; }
 
         public DungeonGeneratorConfiguration<int> Configuration { get; set; }
     }
