@@ -12,6 +12,8 @@ namespace MapGeneration.Core.ChainDecompositions
 
         public TreeComponentStrategy TreeComponentStrategy { get; set; } = TreeComponentStrategy.BreadthFirst;
 
+        public bool PreferSmallCycles { get; set; } = true;
+
         public ChainDecompositionConfiguration SmartClone()
         {
             return new ChainDecompositionConfiguration()
@@ -20,6 +22,7 @@ namespace MapGeneration.Core.ChainDecompositions
                 MergeSmallChains = MergeSmallChains,
                 StartTreeWithMultipleVertices = StartTreeWithMultipleVertices,
                 TreeComponentStrategy = TreeComponentStrategy,
+                PreferSmallCycles = PreferSmallCycles,
             };
         }
     }

@@ -20,6 +20,7 @@ namespace MapGeneration.Core.ChainDecompositions
         private readonly int maxTreeSize;
         private readonly bool mergeSmallChains;
         private readonly bool startTreeWithMultipleVertices;
+        private readonly bool preferSmallCycles;
         private readonly TreeComponentStrategy treeComponentStrategy;
         private readonly Logger logger;
 
@@ -33,8 +34,13 @@ namespace MapGeneration.Core.ChainDecompositions
         }
 
         public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null)
-            : this(configuration.MaxTreeSize, configuration.MergeSmallChains, configuration.StartTreeWithMultipleVertices, configuration.TreeComponentStrategy, logger)
         {
+            this.maxTreeSize = configuration.MaxTreeSize;
+            this.mergeSmallChains = configuration.MergeSmallChains;
+            this.startTreeWithMultipleVertices = configuration.StartTreeWithMultipleVertices;
+            this.treeComponentStrategy = configuration.TreeComponentStrategy;
+            this.preferSmallCycles = configuration.PreferSmallCycles;
+            this.logger = logger ?? new Logger();
         }
 
 		/// <inheritdoc />
@@ -56,7 +62,6 @@ namespace MapGeneration.Core.ChainDecompositions
                 decomposition = ExtendDecomposition(decomposition);
             }
 
-
             var chains = decomposition.GetFinalDecomposition();
             logger.WriteLine("Final decomposition:");
             foreach (var chain in chains)
@@ -72,11 +77,22 @@ namespace MapGeneration.Core.ChainDecompositions
             var faces = decomposition.GetRemainingFaces();
             if (Faces.Count != 0)
             {
-                var smallestFaceIndex = faces.MinBy(x => x.Count);
-                var smallestFace = faces[smallestFaceIndex];
+                List<TNode> firstFace;
+
+                if (preferSmallCycles)
+                {
+                    var smallestFaceIndex = faces.MinBy(x => x.Count);
+                    firstFace = faces[smallestFaceIndex];
+                }
+                else
+                {
+                    var largestFaceIndex = faces.MaxBy(x => x.Count);
+                    firstFace = faces[largestFaceIndex];
+                }
+
                 var cycleComponent =  new GraphComponent()
                 {
-                    Nodes = smallestFace,
+                    Nodes = firstFace,
                     IsFromFace = true,
                     MinimumNeighborChainNumber = 0,
                 };
@@ -173,13 +189,13 @@ namespace MapGeneration.Core.ChainDecompositions
             var cycleComponents = components.Where(x => x.IsFromFace).ToList();
             if (cycleComponents.Count != 0)
             {
-                var smallestCycleIndex = cycleComponents.MinBy(x => x.Nodes.Count);
-                var smallestCycle = cycleComponents[smallestCycleIndex];
+                var nextCycleIndex = preferSmallCycles ? cycleComponents.MinBy(x => x.Nodes.Count) : cycleComponents.MaxBy(x => x.Nodes.Count);
+                var nextCycle = cycleComponents[nextCycleIndex];
 
                 logger.WriteLine("Adding smallest cycle component");
-                logger.WriteLine(smallestCycle);
+                logger.WriteLine(nextCycle);
 
-                return decomposition.AddChain(smallestCycle.Nodes);
+                return decomposition.AddChain(nextCycle.Nodes);
             }
 
             var treeComponents = components

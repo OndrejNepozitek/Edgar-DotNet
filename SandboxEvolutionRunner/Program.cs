@@ -63,6 +63,8 @@ namespace SandboxEvolutionRunner
                 { "ChainDecomposition", new ChainDecompositionScenario() },
                 { "MaxBranching", new MaxBranchingScenario() },
                 { "OldAndNew", new OldAndNewScenario() },
+                { "CycleClustersTest", new CycleClustersTest() },
+                { "ChainDecompositionNew", new ChainDecompositionNew() },
             };
 
             if (options.Name == null)
