@@ -53,6 +53,11 @@
         public bool AllowRepeatingConfigurations { get; set; } = false;
 
         /// <summary>
+        /// Whether to choose also from the previous generation when choosing the best individuals for the next generation.
+        /// </summary>
+        public bool AddPreviousGenerationWhenComputingNext { get; set; }
+
+        /// <summary>
         /// What should be the fitness that should be optimized.
         /// </summary>
         public FitnessType FitnessType { get; set; } = FitnessType.Iterations;

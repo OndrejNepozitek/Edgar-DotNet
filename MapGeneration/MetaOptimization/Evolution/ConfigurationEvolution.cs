@@ -12,17 +12,19 @@ namespace MapGeneration.MetaOptimization.Evolution
     public abstract class ConfigurationEvolution<TConfiguration, TIndividual>
         where TIndividual : IIndividual<TConfiguration>
     {
-        private readonly List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers;
         private int nextId;
 
         protected readonly EvolutionOptions Options;
         protected readonly Logger Logger;
         protected readonly string ResultsDirectory;
         protected TIndividual InitialIndividual;
+        protected readonly List<IPerformanceAnalyzer<TConfiguration, TIndividual>> Analyzers;
+
+        protected event Action OnEvolutionStarted;
 
         protected ConfigurationEvolution(List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers, EvolutionOptions options, string resultsDirectory)
         {
-            this.analyzers = analyzers;
+            this.Analyzers = analyzers;
             this.Options = options;
             ResultsDirectory = resultsDirectory;
             Directory.CreateDirectory(resultsDirectory);
@@ -47,6 +49,8 @@ namespace MapGeneration.MetaOptimization.Evolution
             var populations = new List<Population<TIndividual>>();
             var allIndividuals = new List<TIndividual>();
 
+            OnEvolutionStarted?.Invoke();
+
             // Setup initial population
             Logger.WriteLine($"============ Generation 0 ============");
             InitialIndividual = CreateInitialIndividual(GetNextId(), initialConfiguration);
@@ -66,7 +70,7 @@ namespace MapGeneration.MetaOptimization.Evolution
 
                 var parentPopulation = populations.Last();
                 var offspring = ComputeNextGeneration(parentPopulation);
-                var bestIndividuals = SelectBestIndividuals(offspring);
+                var bestIndividuals = SelectBestIndividuals(offspring, parentPopulation);
 
                 populations.Add(bestIndividuals);
                 allIndividuals.AddRange(offspring.Individuals);
@@ -134,9 +138,14 @@ namespace MapGeneration.MetaOptimization.Evolution
             return offspringPopulation;
         }
 
-        private Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population)
+        protected virtual Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population, Population<TIndividual> previousPopulation)
         {
             var individuals = new List<TIndividual>(population.Individuals);
+
+            if (Options.AddPreviousGenerationWhenComputingNext)
+            {
+                individuals.AddRange(previousPopulation.Individuals);
+            }
 
             if (!Options.AllowNotPerfectSuccessRate)
             {
@@ -155,11 +164,11 @@ namespace MapGeneration.MetaOptimization.Evolution
             return new Population<TIndividual>(bestIndividuals);
         }
 
-        private List<IMutation<TConfiguration>> GetMutations(TIndividual individual)
+        protected virtual List<IMutation<TConfiguration>> GetMutations(TIndividual individual)
         {
             var mutations = new List<IMutation<TConfiguration>>();
 
-            foreach (var analyzer in analyzers)
+            foreach (var analyzer in Analyzers)
             {
                 mutations.AddRange(analyzer.ProposeMutations(individual));
             }

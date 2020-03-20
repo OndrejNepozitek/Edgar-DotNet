@@ -65,6 +65,7 @@ namespace SandboxEvolutionRunner
                 { "OldAndNew", new OldAndNewScenario() },
                 { "CycleClustersTest", new CycleClustersTest() },
                 { "ChainDecompositionNew", new ChainDecompositionNew() },
+                { "SimpleEvolution", new SimpleEvolutionScenario() },
             };
 
             if (options.Name == null)
