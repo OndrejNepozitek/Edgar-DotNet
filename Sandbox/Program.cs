@@ -37,8 +37,8 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            new RandomGraphs().Run();
-            // CompareWithReference();
+            // new RandomGraphs().Run();
+            CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
@@ -156,7 +156,7 @@ namespace Sandbox
 
             var settings = new GeneratorSettings
             {
-                MapDescriptionOld = mapDescription,
+                MapDescription = mapDescription,
                 LayoutGenerator = generator,
 
                 NumberOfLayouts = 10,

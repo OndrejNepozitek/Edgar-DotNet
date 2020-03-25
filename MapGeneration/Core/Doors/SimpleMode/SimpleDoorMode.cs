@@ -1,4 +1,5 @@
 ﻿using MapGeneration.Core.Doors.Interfaces;
+using YamlDotNet.Serialization;
 
 namespace MapGeneration.Core.Doors.DoorModes
 {
@@ -13,12 +14,12 @@ namespace MapGeneration.Core.Doors.DoorModes
 		/// <summary>
 		/// Length of doors.
 		/// </summary>
-		public int DoorLength { get; }
+        public int DoorLength { get; }
 
 		/// <summary>
 		/// How far from the corners must the door be.
 		/// </summary>
-		public int CornerDistance { get; }
+        public int CornerDistance { get; }
 
 		public SimpleDoorMode(int doorLength, int cornerDistance)
 		{

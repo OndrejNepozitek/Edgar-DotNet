@@ -6,7 +6,7 @@ namespace GUI
 {
     public class GeneratorSettings
 	{
-		public IMapDescription<int> MapDescriptionOld { get; set; }
+		public IMapDescription<int> MapDescription { get; set; }
 
 		public IObservableGenerator<MapLayout<int>> LayoutGenerator { get; set; }
 
