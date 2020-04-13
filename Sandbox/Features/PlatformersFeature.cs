@@ -33,9 +33,13 @@ namespace Sandbox.Features
             };
 
             inputs.Add(new GeneratorInput<IMapDescription<int>>(
-                "DeadCells",
+                "DeadCells Ramparts",
                 JsonConvert.DeserializeObject<MapDescription<int>>(
-                    File.ReadAllText("Resources/MapDescriptions/deadCellsNew.json"), settings)));
+                    File.ReadAllText("Resources/MapDescriptions/deadCells_ramparts.json"), settings)));
+            inputs.Add(new GeneratorInput<IMapDescription<int>>(
+                "DeadCells Underground",
+                JsonConvert.DeserializeObject<MapDescription<int>>(
+                    File.ReadAllText("Resources/MapDescriptions/deadCells_underground.json"), settings)));
 
             var layoutDrawer = new SVGLayoutDrawer<int>();
 
@@ -46,7 +50,12 @@ namespace Sandbox.Features
                 {
                     RepeatModeOverride = RepeatMode.NoImmediate,
                     ThrowIfRepeatModeNotSatisfied = true,
+                    SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
+                    {
+                        HandleTreesGreedily = true,
+                    })
                 };
+                // var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
                 var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 

@@ -77,7 +77,7 @@ namespace MapGeneration.Utils
             };
         }
 
-        public static List<RoomTemplate> GetCorridorRoomTemplates(List<int> offsets)
+        public static List<RoomTemplate> GetCorridorRoomTemplates(List<int> offsets, int width = 1)
         {
             if (offsets == null)
             {
@@ -89,13 +89,13 @@ namespace MapGeneration.Utils
 
             foreach (var offset in offsets)
             {
-                var width = offset;
+                var length = offset;
                 var roomTemplate = new RoomTemplate(
-                    GridPolygon.GetRectangle(width, 1),
+                    GridPolygon.GetRectangle(length, width),
                     new ManualDoorMode(new List<OrthogonalLine>()
                     {
-                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
-                        new OrthogonalLine(new IntVector2(width, 0), new IntVector2(width, 1)),
+                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, width)),
+                        new OrthogonalLine(new IntVector2(length, 0), new IntVector2(length, width)),
                     }),
                     transformations
                 );

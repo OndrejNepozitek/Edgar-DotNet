@@ -174,8 +174,7 @@ namespace SandboxEvolutionRunner.Scenarios
 
         protected override void Run()
         {
-            var graphs = GetGraphs();
-            var mapDescriptions = GetMapDescriptions(graphs);
+            var mapDescriptions = GetMapDescriptions();
             var inputs = GetInputs(mapDescriptions);
             var results = RunEvolution(inputs);
 

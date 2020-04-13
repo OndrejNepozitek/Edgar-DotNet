@@ -50,7 +50,7 @@ namespace MapGeneration.Core.LayoutOperations.Interfaces
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <param name="updateLayout">Whether energies should be updated.</param>
-		void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout);
+		void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount);
 
         /// <summary>
         /// Tries to complete a given chain.

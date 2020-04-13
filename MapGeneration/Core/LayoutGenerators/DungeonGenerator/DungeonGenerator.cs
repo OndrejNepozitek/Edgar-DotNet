@@ -69,7 +69,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             // TODO: handle better
             var chains = chainsGeneric
-                .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number))
+                .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number){ IsFromFace = x.IsFromFace})
                 .ToList();
 
             var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration.SimulatedAnnealingMaxBranching);

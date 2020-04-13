@@ -51,7 +51,7 @@
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="node"></param>
-		void AddNodeGreedily(TLayout layout, TNode node);
+		void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount);
 
 		/// <summary>
 		/// Checks if given layouts are different enough.

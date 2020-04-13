@@ -45,6 +45,7 @@ namespace MapGeneration.Core.ChainDecompositions
 			while (Faces.Count != 0)
 			{
 				var chain = GetNextCycle();
+                var isFromCycle = chain != null;
 
 				if (chain == null)
 				{
@@ -55,7 +56,10 @@ namespace MapGeneration.Core.ChainDecompositions
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(new Chain<TNode>(chain, chains.Count));
+				chains.Add(new Chain<TNode>(chain, chains.Count)
+                {
+					IsFromFace = isFromCycle,
+                });
 			}
 
 			// Add remaining nodes
@@ -67,7 +71,10 @@ namespace MapGeneration.Core.ChainDecompositions
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(new Chain<TNode>(chain, chains.Count));
+				chains.Add(new Chain<TNode>(chain, chains.Count)
+                {
+					IsFromFace = false,
+                });
 			}
 
 			return chains;

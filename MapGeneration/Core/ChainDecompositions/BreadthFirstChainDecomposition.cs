@@ -100,7 +100,7 @@ namespace MapGeneration.Core.ChainDecompositions
                 logger.WriteLine("Starting with cycle");
                 logger.WriteLine(cycleComponent);
 
-                return decomposition.AddChain(cycleComponent.Nodes);
+                return decomposition.AddChain(cycleComponent.Nodes, true);
             }
 
             var startingNode = Graph.Vertices.First(x => Graph.GetNeighbours(x).Count() == 1);
@@ -109,7 +109,7 @@ namespace MapGeneration.Core.ChainDecompositions
             logger.WriteLine("Starting with tree");
             logger.WriteLine(treeComponent);
 
-            return decomposition.AddChain(treeComponent.Nodes);
+            return decomposition.AddChain(treeComponent.Nodes, false);
         }
 
         private PartialDecomposition ExtendDecomposition(PartialDecomposition decomposition)
@@ -195,7 +195,7 @@ namespace MapGeneration.Core.ChainDecompositions
                 logger.WriteLine("Adding smallest cycle component");
                 logger.WriteLine(nextCycle);
 
-                return decomposition.AddChain(nextCycle.Nodes);
+                return decomposition.AddChain(nextCycle.Nodes, true);
             }
 
             var treeComponents = components
@@ -225,7 +225,7 @@ namespace MapGeneration.Core.ChainDecompositions
             logger.WriteLine("Adding biggest oldest tree component");
             logger.WriteLine(biggestTree);
 
-            return decomposition.AddChain(biggestTree.Nodes);
+            return decomposition.AddChain(biggestTree.Nodes, false);
         }
 
         private GraphComponent GetTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
@@ -401,7 +401,7 @@ namespace MapGeneration.Core.ChainDecompositions
         {
             private readonly Dictionary<TNode, int> coveredVertices;
             private readonly List<List<TNode>> remainingFaces;
-            private readonly List<List<TNode>> chains;
+            private readonly List<Chain<TNode>> chains;
 
             public int NumberOfChains => coveredVertices.Count == 0 ? 0 : coveredVertices.Values.Max() + 1;
 
@@ -409,10 +409,10 @@ namespace MapGeneration.Core.ChainDecompositions
             {
                 this.remainingFaces = faces;
                 coveredVertices = new Dictionary<TNode, int>();
-                chains = new List<List<TNode>>();
+                chains = new List<Chain<TNode>>();
             }
 
-            private PartialDecomposition(PartialDecomposition oldDecomposition, List<TNode> chain)
+            private PartialDecomposition(PartialDecomposition oldDecomposition, List<TNode> chain, bool isFromFace)
             {
                 coveredVertices = new Dictionary<TNode, int>(oldDecomposition.coveredVertices);
 
@@ -429,13 +429,16 @@ namespace MapGeneration.Core.ChainDecompositions
                     .Where(face => face.Any(node => !coveredVertices.ContainsKey(node)))
                     .ToList();
 
-                chains = oldDecomposition.chains.Select(x => x.ToList()).ToList();
-                chains.Add(chain);
+                chains = oldDecomposition.chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number){ IsFromFace = x.IsFromFace}).ToList();
+                chains.Add(new Chain<TNode>(chain, chains.Count)
+                {
+                    IsFromFace = isFromFace,
+                });
             }
 
-            public PartialDecomposition AddChain(List<TNode> chain)
+            public PartialDecomposition AddChain(List<TNode> chain, bool isFromFace)
             {
-				return new PartialDecomposition(this, chain);
+				return new PartialDecomposition(this, chain, isFromFace);
             }
 
 			public List<TNode> GetAllCoveredVertices()
@@ -465,14 +468,6 @@ namespace MapGeneration.Core.ChainDecompositions
 
             public List<Chain<TNode>> GetFinalDecomposition()
             {
-                var chains = new List<Chain<TNode>>();
-
-                for (var i = 0; i < this.chains.Count; i++)
-                {
-                    var chain = this.chains[i];
-                    chains.Add(new Chain<TNode>(chain, i));
-                }
-
                 return chains;
             }
         }

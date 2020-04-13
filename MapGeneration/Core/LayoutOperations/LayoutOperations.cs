@@ -110,8 +110,9 @@ namespace MapGeneration.Core.LayoutOperations
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="node"></param>
-		public override void AddNodeGreedily(TLayout layout, TNode node)
-		{
+		public override void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount)
+        {
+            iterationsCount = 0;
 			var neighborsConfigurations = new List<TConfiguration>();
 			var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
 
@@ -127,6 +128,7 @@ namespace MapGeneration.Core.LayoutOperations
 			if (neighborsConfigurations.Count == 0)
 			{
 				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
+                iterationsCount++;
 				return;
 			}
 
@@ -163,7 +165,7 @@ namespace MapGeneration.Core.LayoutOperations
 				// Try all lines from the maximum intersection
 				foreach (var intersectionLine in intersection)
 				{
-					// Limit the number of points to 20.
+                    // Limit the number of points to 20.
 					// It is very slow to try all the positions if rooms are big.
 					const int maxPoints = 20;
 
@@ -172,7 +174,9 @@ namespace MapGeneration.Core.LayoutOperations
 						var mod = intersectionLine.Length / maxPoints - 1;
 
 						for (var i = 0; i < maxPoints; i++)
-						{
+                        {
+                            iterationsCount++;
+
 							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
 
 							var energy = stageOneConstraintsEvaluator.ComputeNodeEnergy(layout, CreateConfiguration(shape, position, node)).Energy;
@@ -191,8 +195,10 @@ namespace MapGeneration.Core.LayoutOperations
 						}
 					}
 					else
-					{
-						var points = intersectionLine.GetPoints();
+                    {
+                        iterationsCount++;
+
+                        var points = intersectionLine.GetPoints();
 						points.Shuffle(Random);
 
 						foreach (var position in points)
@@ -326,13 +332,15 @@ namespace MapGeneration.Core.LayoutOperations
         /// <param name="layout"></param>
         /// <param name="chain"></param>
         /// <param name="updateLayout"></param>
-        public override void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout)
+        public override void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount)
         {
+            iterationsCount = 0;
             var rooms = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1);
 
             foreach (var room in rooms)
             {
-                AddNodeGreedily(layout, room);
+                AddNodeGreedily(layout, room, out var addNodeIterations);
+                iterationsCount += addNodeIterations;
             }
 
             if (updateLayout)

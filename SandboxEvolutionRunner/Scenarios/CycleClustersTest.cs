@@ -15,7 +15,7 @@ namespace SandboxEvolutionRunner.Scenarios
     {
         protected override void Run()
         {
-            var graphs = GetGraphs();
+            var graphs = MapDescriptionLoader.GetGraphs();
             var cycleClustersAnalyzer = new CycleClustersAnalyzer<int>();
             var nodesInsideCycleAnalyzer = new NodesInsideCycleAnalyzer<int>();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
@@ -10,7 +11,19 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class OldAndNewScenario : Scenario
     {
-        private DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
+        private DungeonGeneratorConfiguration<int> GetChainsAndMaxIterationsAndTreesConfiguration(NamedMapDescription namedMapDescription)
+        {
+            var configuration = GetBasicConfiguration(namedMapDescription);
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
+            {
+                MaxIterationsWithoutSuccess = 100,
+                HandleTreesGreedily = true,
+            });
+
+            return configuration;
+        }
+
+        private DungeonGeneratorConfiguration<int> GetChainsAndMaxIterationsConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
@@ -21,7 +34,7 @@ namespace SandboxEvolutionRunner.Scenarios
             return configuration;
         }
 
-        private DungeonGeneratorConfiguration<int> GetChainsOnlyConfiguration(NamedMapDescription namedMapDescription)
+        private DungeonGeneratorConfiguration<int> GetChainsConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
 
@@ -47,9 +60,25 @@ namespace SandboxEvolutionRunner.Scenarios
         {
             var mapDescriptions = GetMapDescriptions();
 
-            RunBenchmark(mapDescriptions, GetNewConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration");
-            RunBenchmark(mapDescriptions, GetChainsOnlyConfiguration, Options.FinalEvaluationIterations, "Chains");
-            RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
+            if (Options.AsyncBenchmark)
+            {
+                var tasks = new Task[]
+                {
+                    RunBenchmarkAsync(mapDescriptions, GetChainsAndMaxIterationsAndTreesConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIterationAndTrees"),
+                    RunBenchmarkAsync(mapDescriptions, GetChainsAndMaxIterationsConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration"),
+                    RunBenchmarkAsync(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "Chains"),
+                    RunBenchmarkAsync(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old"),
+                };
+
+                Task.WaitAll(tasks);
+            }
+            else
+            {
+                RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsAndTreesConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIterationAndTrees");
+                RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration");
+                RunBenchmark(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "Chains");
+                RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
+            }
         }
     }
 }

@@ -66,6 +66,11 @@ namespace SandboxEvolutionRunner
                 { "CycleClustersTest", new CycleClustersTest() },
                 { "ChainDecompositionNew", new ChainDecompositionNew() },
                 { "SimpleEvolution", new SimpleEvolutionScenario() },
+                { "HandleTreesGreedily", new HandleTreesGreedily() },
+                { "ClusterTest", new ClusterTest() },
+                { "OneImprovementEnabled", new OneImprovementEnabled() },
+                { "OneImprovementDisabled", new OneImprovementDisabled() },
+                { "DifferentRoomTemplates", new DifferentRoomTemplates() },
             };
 
             if (options.Name == null)
@@ -80,6 +85,7 @@ namespace SandboxEvolutionRunner
                 options.Name += options.GraphSets.Count() != 0 ? $"_{string.Join("_", options.GraphSets)}" : string.Empty;
                 options.Name += options.Graphs.Count() != 0 ? $"_graphs_{string.Join("_", options.Graphs)}" : string.Empty;
                 options.Name += options.MapDescriptions.Count() != 0 ? $"_{string.Join("_", options.MapDescriptions)}" : string.Empty;
+                options.Name += options.AsyncBenchmark ? "_async" : string.Empty;
             }
 
             var scenario = scenarios[options.Scenario];

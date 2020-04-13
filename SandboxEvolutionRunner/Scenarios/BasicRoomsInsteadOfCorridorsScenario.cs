@@ -12,20 +12,6 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class BasicRoomsInsteadOfCorridorsScenario : Scenario
     {
-        private RoomDescriptionMode mode;
-
-        protected override IRoomDescription GetCorridorRoomDescription(List<int> corridorOffsets)
-        {
-            var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets);
-
-            if (mode == RoomDescriptionMode.Basic)
-            {
-                return new BasicRoomDescription(corridorRoomTemplates);
-            }
-
-            return new CorridorRoomDescription(corridorRoomTemplates);;
-        }
-
         private DungeonGeneratorInput<int> GetInput(NamedMapDescription namedMapDescription)
         {
             return new DungeonGeneratorInput<int>(namedMapDescription.Name, namedMapDescription.MapDescription, new DungeonGeneratorConfiguration<int>()
@@ -47,18 +33,27 @@ namespace SandboxEvolutionRunner.Scenarios
                 throw new ArgumentException("There must not be custom map descriptions");
             }
 
-            mode = RoomDescriptionMode.Corridor;
             var mapDescriptionsNormal = GetMapDescriptions();
-            mode = RoomDescriptionMode.Basic;
-            var mapDescriptionsDifferent = GetMapDescriptions();
+
+            var customLoader = new BasicRoomsInsteadOfCorridorsLoader(Options);
+            var mapDescriptionsDifferent = customLoader.GetMapDescriptions();
 
             RunBenchmark(mapDescriptionsNormal.Select(GetInput), Options.FinalEvaluationIterations, "NormalMapDescriptions");
             RunBenchmark(mapDescriptionsDifferent.Select(GetInput), Options.FinalEvaluationIterations, "DifferentMapDescriptions");
         }
 
-        public enum RoomDescriptionMode
+        public class BasicRoomsInsteadOfCorridorsLoader : MapDescriptionLoader
         {
-            Corridor, Basic
+            public BasicRoomsInsteadOfCorridorsLoader(Options options) : base(options)
+            {
+            }
+
+            protected override IRoomDescription GetCorridorRoomDescription(List<int> corridorOffsets, int width = 1)
+            {
+                var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets);
+
+                return new BasicRoomDescription(corridorRoomTemplates);
+            }
         }
     }
 }

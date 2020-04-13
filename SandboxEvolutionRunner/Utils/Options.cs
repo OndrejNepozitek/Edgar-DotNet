@@ -52,8 +52,14 @@ namespace SandboxEvolutionRunner.Utils
         [Option("earlyStopIterations")] 
         public int? EarlyStopIterations { get; set; } = null;
 
+        [Option("earlyStopTime")] 
+        public int? EarlyStopTime { get; set; } = null;
+
         [Option("fitnessType")] 
         public FitnessType FitnessType { get; set; } = FitnessType.Iterations;
+
+        [Option("asyncBenchmark")]
+        public bool AsyncBenchmark { get; set; } = false;
 
         public IntVector2 Scale { get; set; } = new IntVector2(1, 1);
     }

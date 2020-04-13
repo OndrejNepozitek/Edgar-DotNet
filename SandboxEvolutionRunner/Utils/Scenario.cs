@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
@@ -27,142 +28,16 @@ namespace SandboxEvolutionRunner.Utils
         protected string DirectoryFullPath;
         protected string Directory;
         protected Logger Logger;
-
-        protected virtual List<NamedGraph> GetGraphs()
-        {
-            var allGraphs = new Dictionary<string, Tuple<string, IGraph<int>>>()
-            {
-                { "1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1()) },
-                { "2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2()) },
-                { "3", Tuple.Create("Example 3 (fig. 7 bottom)", GraphsDatabase.GetExample3()) },
-                { "4", Tuple.Create("Example 4 (fig. 8)", GraphsDatabase.GetExample4()) },
-                { "5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5()) },
-            };
-
-            var graphs = Options
-                .Graphs
-                .Select(x => new NamedGraph(allGraphs[x].Item2, allGraphs[x].Item1))
-                .ToList();
-
-            foreach (var graphSet in Options.GraphSets)
-            {
-                graphs.AddRange(GetGraphSet(graphSet, Options.GraphSetCount));
-            }
-
-            return graphs;
-        }
-
-        protected virtual List<NamedGraph> GetGraphSet(string name, int count)
-        {
-            var graphs = new List<NamedGraph>();
-
-            for (int i = 0; i < count; i++)
-            {
-                var filename = $"Resources/RandomGraphs/{name}/{i}.txt";
-                var lines = File.ReadAllLines(filename);
-
-                var graph = new UndirectedAdjacencyListGraph<int>();
-
-                // Add vertices
-                var verticesCount = int.Parse(lines[0]);
-                for (var vertex = 0; vertex < verticesCount; vertex++)
-                {
-                    graph.AddVertex(vertex);
-                }
-
-                // Add edges
-                for (var j = 1; j < lines.Length; j++)
-                {
-                    var line = lines[j];
-                    var edge = line.Split(' ').Select(int.Parse).ToList();
-                    graph.AddEdge(edge[0], edge[1]);
-                }
-
-                graphs.Add(new NamedGraph(graph, $"{name} {i}"));
-            }
-
-            return graphs;
-        }
-
-        protected virtual List<NamedMapDescription> GetMapDescriptions(List<NamedGraph> namedGraphs = null)
-        {
-            namedGraphs = namedGraphs ?? GetGraphs();
-            var mapDescriptions = new List<NamedMapDescription>();
-
-            foreach (var namedGraph in namedGraphs)
-            {
-                mapDescriptions.AddRange(GetMapDescriptions(namedGraph));
-            }
-
-            foreach (var mapDescriptionName in Options.MapDescriptions)
-            {
-                mapDescriptions.Add(GetMapDescription(mapDescriptionName));
-            }
-
-            return mapDescriptions;
-        }
-
-        protected virtual List<NamedMapDescription> GetMapDescriptions(NamedGraph namedGraph)
-        {
-            var mapDescriptions = new List<NamedMapDescription>();
-
-            foreach (var corridorOffsets in GetCorridorOffsets())
-            {
-                mapDescriptions.AddRange(GetMapDescriptions(namedGraph, corridorOffsets));
-            }
-
-            return mapDescriptions;
-        }
+        protected MapDescriptionLoader MapDescriptionLoader;
 
         protected virtual List<List<int>> GetCorridorOffsets()
         {
             return Options.CorridorOffsets.Select(x => x.Split(",").Select(int.Parse).ToList()).ToList();
         }
 
-        protected virtual List<NamedMapDescription> GetMapDescriptions(NamedGraph namedGraph, List<int> corridorOffsets)
+        public virtual List<NamedMapDescription> GetMapDescriptions(List<NamedGraph> namedGraphs = null)
         {
-            var withCorridors = corridorOffsets[0] != 0;
-            var canTouch = Options.CanTouch || !withCorridors;
-            var basicRoomDescription = GetBasicRoomDescription();
-            var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets) : null;
-            var mapDescription = MapDescriptionUtils.GetBasicMapDescription(namedGraph.Graph, basicRoomDescription, corridorRoomDescription, withCorridors);
-            var name = MapDescriptionUtils.GetInputName(namedGraph.Name, Options.Scale, withCorridors, corridorOffsets, canTouch);
-
-            return new List<NamedMapDescription>()
-            {
-                new NamedMapDescription(mapDescription, name, withCorridors)
-            };
-        }
-
-        protected virtual NamedMapDescription GetMapDescription(string name)
-        {
-            var settings = new JsonSerializerSettings()
-            {
-                PreserveReferencesHandling = PreserveReferencesHandling.All,
-                TypeNameHandling = TypeNameHandling.All,
-            };
-
-            var mapDescription =
-                JsonConvert.DeserializeObject<MapDescription<int>>(
-                    File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings);
-
-            return new NamedMapDescription(mapDescription, name, mapDescription.GetGraph().VerticesCount != mapDescription.GetStageOneGraph().VerticesCount);
-        }
-
-        protected virtual IRoomDescription GetBasicRoomDescription()
-        {
-            var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(Options.Scale);
-            var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
-
-            return basicRoomDescription;
-        }
-
-        protected virtual IRoomDescription GetCorridorRoomDescription(List<int> corridorOffsets)
-        {
-            var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets);
-            var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
-
-            return corridorRoomDescription;
+            return MapDescriptionLoader.GetMapDescriptions(namedGraphs);
         }
 
         protected virtual void RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
@@ -177,8 +52,23 @@ namespace SandboxEvolutionRunner.Utils
                 WithConsolePreview = Options.WithConsolePreview,
                 MultiThreaded = Options.MaxThreads > 1,
                 MaxDegreeOfParallelism = Options.MaxThreads,
+                WithFileOutput = false,
             });
             resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath, name: $"{Directory}_{name}", withDatetime: false);
+        }
+
+        protected virtual Task RunBenchmarkAsync(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
+        {
+            var task = new Task(() => { RunBenchmark(inputs, iterations, name); }, TaskCreationOptions.LongRunning);
+            task.Start();
+
+            return task;
+            return Task.Run(() => { RunBenchmark(inputs, iterations, name); });
+        }
+
+        protected virtual Task RunBenchmarkAsync(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
+        {
+            return RunBenchmarkAsync(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
         }
 
         protected virtual void RunBenchmark(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
@@ -192,6 +82,7 @@ namespace SandboxEvolutionRunner.Utils
             {
                 RoomsCanTouch = Options.CanTouch || !namedMapDescription.IsWithCorridors,
                 EarlyStopIfIterationsExceeded = Options.EarlyStopIterations,
+                EarlyStopIfTimeExceeded = Options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(Options.EarlyStopTime.Value) : default(TimeSpan?), 
             };
         }
 
@@ -240,6 +131,7 @@ namespace SandboxEvolutionRunner.Utils
             DirectoryFullPath = Path.Combine("DungeonGeneratorEvolutions", Directory);
             System.IO.Directory.CreateDirectory(DirectoryFullPath);
             Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
+            MapDescriptionLoader = new MapDescriptionLoader(options);
 
             Run();
         }

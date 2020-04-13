@@ -37,13 +37,14 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-            new RandomGraphs().Run();
+            // new RandomGraphs().Run();
             // CompareWithReference();
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
             // new Clustering().Run();
             // new TwoStageGeneration().Run();
             // new PlatformersFeature().Run();
+            new ThesisPlots().Run();
             
             // var task = RunBenchmark();
             // task.Wait();

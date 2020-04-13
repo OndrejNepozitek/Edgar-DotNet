@@ -35,6 +35,14 @@ namespace Sandbox.Utils
             return new UploadConfig(url);
         }
 
+        public static BenchmarkScenarioResult LoadBenchmarkScenarioResult(string path)
+        {
+            var resultText = File.ReadAllText(path);
+            var result = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(resultText);
+
+            return result;
+        }
+
         public static bool IsEqualToReference(BenchmarkScenarioResult scenarioResult, string referencePath, bool withConsole = true)
         {
             var referenceResultText = File.ReadAllText(referencePath);

@@ -66,14 +66,90 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 		/// <inheritdoc />
 		public IEnumerable<TLayout> Evolve(TLayout initialLayout, Chain<TNode> chain, int count)
 		{
-            if (addNodesGreedilyBeforeEvolve)
-            {
-                LayoutOperations.AddChain(initialLayout, chain.Nodes, true);
-            }
-
             var configuration = GetConfiguration(chain.Number);
 
-			const double p0 = 0.2d;
+			if (!chain.IsFromFace && configuration.HandleTreesGreedily)
+			{
+				var iters = 0;
+				var lastEventIters = 0;
+
+				for (int i = 0; i < 2; i++)
+				{
+                    for (int k = 0; k < 1; k++)
+                    {
+                        if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
+                            yield break;
+
+                        var copy = initialLayout.SmartClone();
+                        LayoutOperations.AddChain(copy, chain.Nodes, true, out var addChainIterationsCount);
+
+                        // iters += chain.Nodes.Count;
+                        iters += addChainIterationsCount;
+
+						// TODO: improve
+						//for (int j = 0; j < addChainIterationsCount; j++)
+						//{
+						//	OnPerturbed?.Invoke(this, copy);
+						//}
+
+						// An event must be sent in order for the early stopping handler to work
+                        OnPerturbed?.Invoke(this, copy);
+
+                        if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
+                            yield break;
+
+						if (LayoutOperations.IsLayoutValid(copy) && LayoutOperations.TryCompleteChain(copy, chain.Nodes))
+                        {
+                            OnPerturbed?.Invoke(this, copy);
+
+                            if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
+                                yield break;
+
+                            OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                            {
+                                Type = SimulatedAnnealingEventType.LayoutGenerated,
+                                IterationsSinceLastEvent = iters - lastEventIters,
+                                IterationsTotal = iters,
+                                LayoutsGenerated = -1,
+                                ChainNumber = chain.Number,
+                            });
+
+                            lastEventIters = iters;
+
+                            yield return copy;
+                            break;
+                        }
+                        else
+                        {
+                            OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                            {
+                                Type = SimulatedAnnealingEventType.OutOfIterations,
+                                IterationsSinceLastEvent = iters - lastEventIters,
+                                IterationsTotal = iters,
+                                LayoutsGenerated = -1,
+                                ChainNumber = chain.Number,
+                            });
+
+                            lastEventIters = iters;
+                        }
+                    }
+                }
+
+				yield break;
+			}
+
+			if (addNodesGreedilyBeforeEvolve)
+            {
+                LayoutOperations.AddChain(initialLayout, chain.Nodes, true, out var addChainIterationsCount);
+
+				// TODO: improve
+				//for (int j = 0; j < addChainIterationsCount; j++)
+				//{
+				//	OnPerturbed?.Invoke(this, initialLayout);
+				//}
+			}
+
+            const double p0 = 0.2d;
 			const double p1 = 0.01d;
 			var t0 = -1d / Math.Log(p0);
 			var t1 = -1d / Math.Log(p1);

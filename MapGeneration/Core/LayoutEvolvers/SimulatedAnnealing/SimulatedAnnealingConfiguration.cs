@@ -12,6 +12,8 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 
         public int MaxStageTwoFailures { get; set; } = 10000;
 
+        public bool HandleTreesGreedily { get; set; } = false;
+
         public SimulatedAnnealingConfiguration()
         {
 

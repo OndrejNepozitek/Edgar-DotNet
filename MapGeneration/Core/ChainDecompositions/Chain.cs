@@ -9,6 +9,8 @@ namespace MapGeneration.Core.ChainDecompositions
 
         public int Number { get; }
 
+        public bool IsFromFace { get; set; }
+
         public Chain(List<TNode> nodes, int number)
         {
             Nodes = nodes;

@@ -177,12 +177,15 @@ namespace MapGeneration.Core.LayoutOperations
 		/// <summary>
 		/// Adds a given chain by greedily adding nodes one by one.
 		/// </summary>
-		public virtual void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout)
-		{
+		public virtual void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount)
+        {
+            iterationsCount = 0;
+
 			foreach (var node in chain)
 			{
-				AddNodeGreedily(layout, node);
-			}
+				AddNodeGreedily(layout, node, out var addNodeIterations);
+                iterationsCount += addNodeIterations;
+            }
 
 			if (updateLayout)
 			{
@@ -242,7 +245,7 @@ namespace MapGeneration.Core.LayoutOperations
 		public abstract void UpdateLayout(TLayout layout);
 
 		/// <inheritdoc />
-		public abstract void AddNodeGreedily(TLayout layout, TNode node);
+		public abstract void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount);
 
 		/// <summary>
 		/// Updates energies after perturbing a given node.

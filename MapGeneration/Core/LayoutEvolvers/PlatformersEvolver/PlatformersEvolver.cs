@@ -31,12 +31,12 @@ namespace MapGeneration.Core.LayoutEvolvers.PlatformersEvolver
 
         public IEnumerable<TLayout> Evolve(TLayout initialLayout, Chain<TNode> chain, int count)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < count; i++)
             {
                 var copy = initialLayout.SmartClone();
-                layoutOperations.AddChain(copy, chain.Nodes, true);
+                layoutOperations.AddChain(copy, chain.Nodes, true, out var iterationsCount);
 
-                foreach (var chainNode in chain.Nodes)
+                foreach (var _ in chain.Nodes)
                 {
                     OnPerturbed?.Invoke(this, copy);
                 }
