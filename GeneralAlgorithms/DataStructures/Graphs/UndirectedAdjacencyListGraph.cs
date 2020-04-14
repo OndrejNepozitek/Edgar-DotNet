@@ -1,4 +1,6 @@
-﻿namespace GeneralAlgorithms.DataStructures.Graphs
+﻿using System.Linq;
+
+namespace GeneralAlgorithms.DataStructures.Graphs
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,6 +24,19 @@
 		public int VerticesCount => adjacencyLists.Count;
 
 		private readonly Dictionary<T, List<T>> adjacencyLists = new Dictionary<T, List<T>>();
+
+		public UndirectedAdjacencyListGraph() {}
+
+		// TODO: how to handle properly?
+        public UndirectedAdjacencyListGraph(UndirectedAdjacencyListGraph<T> graph)
+        {
+			adjacencyLists = new Dictionary<T, List<T>>();
+
+            foreach (var pair in graph.adjacencyLists)
+            {
+                adjacencyLists[pair.Key] = pair.Value.ToList();
+            }
+        }
 
 		/// <inheritdoc />
 		public void AddVertex(T vertex)

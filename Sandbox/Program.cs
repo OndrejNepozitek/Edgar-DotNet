@@ -44,7 +44,8 @@ namespace Sandbox
             // new Clustering().Run();
             // new TwoStageGeneration().Run();
             // new PlatformersFeature().Run();
-            new ThesisPlots().Run();
+            //new ThesisPlots().Run();
+            new SimpleApi().Run();
             
             // var task = RunBenchmark();
             // task.Wait();

@@ -92,7 +92,7 @@ namespace GUI
 			var ct = cancellationTokenSource.Token;
 			task = Task.Run(() =>
 			{
-				try
+				//try
 				{
 					dumpFolder = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
 					dumpCount = 0;
@@ -195,10 +195,10 @@ namespace GUI
 					BeginInvoke((Action) (UpdateInfoPanel));
 					BeginInvoke((Action) (OnFinished));
 				}
-				catch (Exception e)
-				{
-					ShowExceptionAndClose(e);
-				}
+				//catch (Exception e)
+    //            {
+    //                ShowExceptionAndClose(e);
+				//}
 			}, ct);
 		}
 
@@ -304,7 +304,7 @@ namespace GUI
 			var maxx = points.Max(x => x.X);
 			var maxy = points.Max(x => x.Y);
 
-			fixedScale = (float)fixedPositionsAndScaleValue.Value / 100 * wfLayoutDrawer.GetScale(minx, miny, maxx, maxy, mainPictureBox.Width, mainPictureBox.Height);
+			fixedScale = (float)fixedPositionsAndScaleValue.Value / 100 * wfLayoutDrawer.GetScale(minx, miny, maxx, maxy, mainPictureBox.Width, mainPictureBox.Height) / 10;
 			fixedOffset = wfLayoutDrawer.GetOffset(minx, miny, maxx, maxy, mainPictureBox.Width, mainPictureBox.Height, fixedScale);
 		}
 
