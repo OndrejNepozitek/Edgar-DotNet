@@ -135,9 +135,9 @@ namespace MapGeneration.Core.LayoutOperations
         {
             public List<IntAlias<GridPolygon>> Aliases { get; }
 
-            public RoomTemplate RoomTemplate { get; }
+            public IRoomTemplate RoomTemplate { get; }
 
-            public RoomTemplateInfo(List<IntAlias<GridPolygon>> aliases, RoomTemplate roomTemplate)
+            public RoomTemplateInfo(List<IntAlias<GridPolygon>> aliases, IRoomTemplate roomTemplate)
             {
                 Aliases = aliases;
                 RoomTemplate = roomTemplate;

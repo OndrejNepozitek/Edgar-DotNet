@@ -367,7 +367,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
             return nonOverlapping;
         }
 
-        public List<RoomTemplateInstance> GetRoomTemplateInstances(RoomTemplate roomTemplate)
+        public List<RoomTemplateInstance> GetRoomTemplateInstances(IRoomTemplate roomTemplate)
         {
             var result = new List<RoomTemplateInstance>();
             var doorLines = doorHandler.GetDoorPositions(roomTemplate.Shape, roomTemplate.DoorsMode);

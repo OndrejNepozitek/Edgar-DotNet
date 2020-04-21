@@ -3,6 +3,7 @@ using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {
@@ -11,7 +12,7 @@ namespace MapGeneration.Core.MapDescriptions
         /// <summary>
         /// Room description.
         /// </summary>
-        public RoomTemplate RoomTemplate { get; }
+        public IRoomTemplate RoomTemplate { get; }
 
         /// <summary>
         /// Room shape after transformation.
@@ -28,7 +29,7 @@ namespace MapGeneration.Core.MapDescriptions
         /// </summary>
         public List<Transformation> Transformations { get; }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, GridPolygon roomShape, List<Transformation> transformations, List<DoorLine> doorLines)
+        public RoomTemplateInstance(IRoomTemplate roomTemplate, GridPolygon roomShape, List<Transformation> transformations, List<DoorLine> doorLines)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;
@@ -36,7 +37,7 @@ namespace MapGeneration.Core.MapDescriptions
             DoorLines = doorLines;
         }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, GridPolygon roomShape, Transformation transformation, List<DoorLine> doorLines)
+        public RoomTemplateInstance(IRoomTemplate roomTemplate, GridPolygon roomShape, Transformation transformation, List<DoorLine> doorLines)
             : this(roomTemplate, roomShape, new List<Transformation>() { transformation }, doorLines)
         {
 

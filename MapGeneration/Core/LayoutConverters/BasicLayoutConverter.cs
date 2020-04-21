@@ -10,6 +10,7 @@ using MapGeneration.Core.LayoutConverters.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
+using MapGeneration.Core.MapLayouts.Interfaces;
 using MapGeneration.Utils;
 using MapGeneration.Utils.Interfaces;
 
@@ -38,7 +39,7 @@ namespace MapGeneration.Core.LayoutConverters
 		/// <inheritdoc />
 		public MapLayout<TNode> Convert(TLayout layout, bool addDoors)
 		{
-			var rooms = new List<Room<TNode>>();
+			var rooms = new List<IRoom<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
 			var mapping = MapDescription.GetMapping();

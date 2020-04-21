@@ -8,10 +8,10 @@ namespace MapGeneration.Core.MapDescriptions
     {
         public int Stage => 1;
 
-        public List<RoomTemplate> RoomTemplates { get; }
+        public List<IRoomTemplate> RoomTemplates { get; }
 
         [JsonConstructor]
-        public BasicRoomDescription(List<RoomTemplate> roomTemplates)
+        public BasicRoomDescription(List<IRoomTemplate> roomTemplates)
         {
             RoomTemplates = roomTemplates;
         }

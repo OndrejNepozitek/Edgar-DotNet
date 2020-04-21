@@ -34,7 +34,7 @@ namespace Sandbox.Examples
             );
 
             // Create room description
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
 
             // Create map description
             var mapDescription = new MapDescription<int>();

@@ -6,6 +6,7 @@ using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Core.MapLayouts;
 using MapGeneration.Utils.Statistics;
 using NUnit.Framework;
@@ -61,7 +62,7 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             var roomTemplate1 = new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 0), transformations);
             var roomTemplate2 = new RoomTemplate(GridPolygon.GetRectangle(5, 10), new SimpleDoorMode(1, 0), transformations);
 
-            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<IRoomTemplate>() { roomTemplate1, roomTemplate2 });
 
             var mapDescription = new MapDescription<int>();
             mapDescription.AddRoom(0, roomDescription1);

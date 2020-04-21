@@ -32,7 +32,7 @@ namespace Sandbox.Examples
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );
 
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
             
 			// Basic corridor shape
 			var corridorRoom1x2 = new RoomTemplate(
@@ -45,7 +45,7 @@ namespace Sandbox.Examples
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90 }
 			);
 
-            var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() { corridorRoom1x2 });
+            var corridorRoomDescription = new CorridorRoomDescription(new List<IRoomTemplate>() { corridorRoom1x2 });
 
             // Add longer corridor
             if (false)

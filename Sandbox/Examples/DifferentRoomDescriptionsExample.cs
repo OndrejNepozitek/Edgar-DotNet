@@ -27,7 +27,7 @@ namespace Sandbox.Examples
                 new SimpleDoorMode(1, 1)
             );
 
-            var bossRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { bossRoom });
+            var bossRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { bossRoom });
 
             // Create basic room templates and room description
             var doorMode = new SimpleDoorMode(1, 1);
@@ -43,7 +43,7 @@ namespace Sandbox.Examples
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );
 
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
 
 			// Create map description
             var mapDescription = new MapDescription<int>();

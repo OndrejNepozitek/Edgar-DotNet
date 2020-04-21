@@ -153,7 +153,7 @@ namespace SandboxEvolutionRunner.Scenarios
 
             private IRoomDescription GetBasicRoomDescription(IGraph<int> graph, int vertex)
             {
-                var roomTemplates = new List<RoomTemplate>();
+                var roomTemplates = new List<IRoomTemplate>();
 
                 switch (mode)
                 {

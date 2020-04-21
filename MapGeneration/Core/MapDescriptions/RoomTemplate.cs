@@ -10,7 +10,7 @@ namespace MapGeneration.Core.MapDescriptions
     /// <summary>
 	/// Description of a room.
 	/// </summary>
-	public class RoomTemplate
+	public class RoomTemplate : IRoomTemplate
 	{
 		public GridPolygon Shape { get; }
 

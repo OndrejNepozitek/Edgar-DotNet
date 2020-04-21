@@ -6,6 +6,6 @@ namespace MapGeneration.Core.MapDescriptions.Interfaces
     {
         int Stage { get; }
 
-        List<RoomTemplate> RoomTemplates { get; }
+        List<IRoomTemplate> RoomTemplates { get; }
     }
 }
