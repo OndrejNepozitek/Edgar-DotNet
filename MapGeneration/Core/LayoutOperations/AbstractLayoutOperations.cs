@@ -23,7 +23,7 @@ namespace MapGeneration.Core.LayoutOperations
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IMutableConfiguration<TShapeContainer, TNode>, ISmartCloneable<TConfiguration>
 	{
-		protected readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+		protected readonly ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
         protected Random Random;
 		protected float ShapePerturbChance = 0.4f;
 		protected float DifferenceFromAverageScale = 0.4f;
@@ -32,7 +32,7 @@ namespace MapGeneration.Core.LayoutOperations
         protected readonly IGraph<TNode> StageOneGraph;
         protected readonly IRoomShapesHandler<TLayout, TNode, TShapeContainer> RoomShapesHandler;
 
-		protected AbstractLayoutOperations(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler)
+		protected AbstractLayoutOperations(ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler)
 		{
 			ConfigurationSpaces = configurationSpaces;
 			AverageSize = averageSize;

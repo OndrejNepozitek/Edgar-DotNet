@@ -10,11 +10,11 @@ using MapGeneration.Utils;
 
 namespace MapGeneration.Core.ConfigurationSpaces
 {
-    /// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
+    /// <inheritdoc cref="ILegacyConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
 	/// <summary>
 	/// Abstract class for configuration spaces with common methods already implemented.
 	/// </summary>
-	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>, IRandomInjectable
+	public abstract class AbstractConfigurationSpaces<TNode, TShapeContainer, TConfiguration> : ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace>, IRandomInjectable
 		where TConfiguration : IConfiguration<TShapeContainer, TNode>
 	{
 		protected Random Random;
@@ -32,13 +32,13 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		}
 
 		/// <inheritdoc />
-		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
+		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, List<TConfiguration> configurations)
 		{
 			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var _);
 		}
 
 		/// <inheritdoc />
-		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, List<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations, out configurationsSatisfied);
 
@@ -52,7 +52,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		}
 
 		/// <inheritdoc />
-		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
+		public List<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, List<TConfiguration> configurations)
 		{
 			return GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
 		}
@@ -62,7 +62,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		/// Tries possible combinations of given configurations until an intersection is found.
 		/// Throws when no intersection was found.
 		/// </remarks>
-		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		public List<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, List<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var spaces = GetConfigurationSpaces(mainConfiguration, configurations);
 			spaces.Shuffle(Random);
@@ -107,9 +107,15 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		/// <param name="mainConfiguration">Plays a role of a shape that can be moved.</param>
 		/// <param name="configurations">Fixed configurations.</param>
 		/// <returns></returns>
-		protected abstract IList<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+		protected abstract List<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, List<TConfiguration> configurations);
 
-		/// <summary>
+        public List<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, List<TConfiguration> configurations, int minimumSatisfiedConfigurations,
+            out int configurationsSatisfied)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
 		/// Gets a configuration space for given two configurations.
 		/// </summary>
 		/// <param name="mainConfiguration">Configuration with a shape that can be moved.</param>

@@ -166,6 +166,13 @@ namespace MapGeneration.Core.ConfigurationSpaces
             };
         }
 
+        public ConfigurationSpace GetConfigurationSpaceOverCorridor(RoomTemplateInstance roomTemplateInstance, RoomTemplateInstance fixedRoomTemplateInstance, RoomTemplateInstance corridorRoomTemplateInstance)
+        {
+            return GetConfigurationSpaceOverCorridor(roomTemplateInstance.RoomShape, roomTemplateInstance.DoorLines,
+                fixedRoomTemplateInstance.RoomShape, fixedRoomTemplateInstance.DoorLines,
+                corridorRoomTemplateInstance.RoomShape, corridorRoomTemplateInstance.DoorLines);
+        }
+
         public ConfigurationSpace GetConfigurationSpaceOverCorridor(GridPolygon polygon, IDoorMode doorsMode,
             GridPolygon fixedPolygon, IDoorMode fixedDoorsMode, GridPolygon corridor,
             IDoorMode corridorDoorsMode)

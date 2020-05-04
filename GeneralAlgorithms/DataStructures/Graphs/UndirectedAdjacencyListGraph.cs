@@ -47,6 +47,11 @@ namespace GeneralAlgorithms.DataStructures.Graphs
 			adjacencyLists[vertex] = new List<T>();
 		}
 
+        public bool HasVertex(T vertex)
+        {
+            return adjacencyLists.ContainsKey(vertex);
+        }
+
 		/// <inheritdoc />
 		public void AddEdge(T from, T to)
 		{

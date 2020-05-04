@@ -21,12 +21,12 @@ namespace MapGeneration.Core.LayoutConverters
 	{
 		protected readonly MapDescriptionMapping<TNode> MapDescription;
 		protected Random Random;
-		protected readonly IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+		protected readonly ILegacyConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
         protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
 
 		public BasicLayoutConverter(
             MapDescriptionMapping<TNode> mapDescription, 
-			IConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
+			ILegacyConfigurationSpaces<int, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, 
 			TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping
         )
 		{

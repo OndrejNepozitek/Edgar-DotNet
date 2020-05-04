@@ -37,7 +37,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
         }
 
 		/// <inheritdoc />
-		protected override IList<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
+		protected override List<Tuple<TConfiguration, ConfigurationSpace>> GetConfigurationSpaces(TConfiguration mainConfiguration, List<TConfiguration> configurations)
 		{
 			var spaces = new List<Tuple<TConfiguration, ConfigurationSpace>>();
 			var chosenSpaces = ConfigurationSpaces_[mainConfiguration.ShapeContainer.Alias];

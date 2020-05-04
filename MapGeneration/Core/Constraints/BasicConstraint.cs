@@ -28,9 +28,9 @@ namespace MapGeneration.Core.Constraints
 	{
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
 		private readonly float energySigma;
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
+		private readonly ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 
-		public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.polygonOverlap = polygonOverlap;
 			energySigma = 10 * averageSize;

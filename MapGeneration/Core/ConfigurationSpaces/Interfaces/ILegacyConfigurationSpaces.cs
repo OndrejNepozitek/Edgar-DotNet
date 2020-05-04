@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralAlgorithms.DataStructures.Common;
+using MapGeneration.Simplified.ConfigurationSpaces;
 
 namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 {
@@ -10,8 +11,27 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 	/// <typeparam name="TShape"></typeparam>
 	/// <typeparam name="TConfiguration"></typeparam>
 	/// <typeparam name="TConfigurationSpace"></typeparam>
-	public interface IConfigurationSpaces<in TNode, TShape, TConfiguration, out TConfigurationSpace>
+	public interface ILegacyConfigurationSpaces<in TNode, TShape, TConfiguration, out TConfigurationSpace> : IConfigurationSpaces<TConfiguration, TConfigurationSpace>
 	{
+        /// <summary>
+        /// Gets a maximum intersection of configuration spaces of given
+        /// configurations with respect to the main configuration.
+        /// </summary>
+        /// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
+        /// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
+        /// <returns></returns>
+        List<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, List<TConfiguration> configurations);
+
+        /// <summary>
+        /// Gets a maximum intersection of configuration spaces of given
+        /// configurations with respect to the main configuration.
+        /// </summary>
+        /// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
+        /// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
+        /// <param name="configurationsSatisfied">How many of given configurations were satisfied.</param>
+        /// <returns></returns>
+        List<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, List<TConfiguration> configurations, out int configurationsSatisfied);
+
 		/// <summary>
 		/// Gets a random point in the maximum intersection of configuration spaces
 		/// of given configurations with respect to the main configuration.
@@ -19,7 +39,7 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 		/// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
 		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
 		/// <returns></returns>
-		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, List<TConfiguration> configurations);
 
 		/// <summary>
 		/// Gets a random point in the maximum intersection of configuration spaces
@@ -29,28 +49,9 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
 		/// <param name="configurationsSatisfied">How many of given configurations were satisfied.</param>
 		/// <returns></returns>
-		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
+		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, List<TConfiguration> configurations, out int configurationsSatisfied);
 
-		/// <summary>
-		/// Gets a maximum intersection of configuration spaces of given
-		/// configurations with respect to the main configuration.
-		/// </summary>
-		/// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
-		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
-		/// <returns></returns>
-		IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
-
-		/// <summary>
-		/// Gets a maximum intersection of configuration spaces of given
-		/// configurations with respect to the main configuration.
-		/// </summary>
-		/// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
-		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
-		/// <param name="configurationsSatisfied">How many of given configurations were satisfied.</param>
-		/// <returns></returns>
-		IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
-
-		/// <summary>
+        /// <summary>
 		/// Gets a random shape for a given node.
 		/// </summary>
 		/// <param name="node"></param>
@@ -77,15 +78,7 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 		/// <returns></returns>
 		IEnumerable<TShape> GetAllShapes();
 
-		/// <summary>
-		/// Checks if two configurations are valid with respect to each other.
-		/// </summary>
-		/// <param name="configuration1"></param>
-		/// <param name="configuration2"></param>
-		/// <returns></returns>
-		bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2);
-
-		// TODO: remove later
+        // TODO: remove later
         /// <summary>
         /// Gets a configuration space for two shapes.
         /// </summary>
@@ -93,11 +86,5 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
         /// <param name="fixedPolygon">A polygon that stays fixed.</param>
         /// <returns></returns>
         TConfigurationSpace GetConfigurationSpace(TShape movingPolygon, TShape fixedPolygon);
-
-        /// <summary>
-        /// Gets a configuration space for two configurations.
-        /// </summary>
-        /// <returns></returns>
-        TConfigurationSpace GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2);
-	}
+    }
 }

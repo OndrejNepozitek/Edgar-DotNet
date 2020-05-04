@@ -30,7 +30,7 @@ namespace MapGeneration.Core.LayoutOperations
         private readonly bool throwIfRepeatModeNotSatisfied;
 
         public LayoutOperations(
-            IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
+            ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
             int averageSize,
             IMapDescription<TNode> mapDescription,
             ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> stageOneConstraintsEvaluator,

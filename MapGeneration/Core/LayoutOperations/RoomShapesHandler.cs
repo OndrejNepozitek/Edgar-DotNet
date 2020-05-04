@@ -25,7 +25,7 @@ namespace MapGeneration.Core.LayoutOperations
         where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
         where TConfiguration : IConfiguration<IntAlias<GridPolygon>, TNode>, ISmartCloneable<TConfiguration>, new()
     {
-        private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
+        private readonly ILegacyConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping;
         private readonly IMapDescription<TNode> mapDescription;
         private readonly IGraph<TNode> stageOneGraph;
@@ -33,7 +33,7 @@ namespace MapGeneration.Core.LayoutOperations
         private RoomTemplateInfo[] roomTemplateInstanceInfo;
 
         public RoomShapesHandler(
-            IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces,
+            ILegacyConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces,
             TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping,
             IMapDescription<TNode> mapDescription,
             RepeatMode? repeatModeOverride = null)

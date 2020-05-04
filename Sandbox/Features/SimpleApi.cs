@@ -18,7 +18,7 @@ namespace Sandbox.Features
             {
                 LayoutGenerator = generator,
 
-                NumberOfLayouts = 10,
+                NumberOfLayouts = 100,
 
                 ShowPartialValidLayouts = true,
                 ShowPartialValidLayoutsTime = 50,
@@ -31,7 +31,7 @@ namespace Sandbox.Features
                 ShowRoomNames = false,
                 // UseOldPaperStyle = true,
                 FixedPositionsAndScale = true,
-                FixedPositionsAndScaleValue = 40,
+                FixedPositionsAndScaleValue = 15,
             };
 
             Application.Run(new GeneratorWindow(settings));

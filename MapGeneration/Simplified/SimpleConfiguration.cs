@@ -6,36 +6,22 @@ using MapGeneration.Core.MapDescriptions;
 
 namespace MapGeneration.Simplified
 {
-    public class SimpleConfiguration<TRoom> : IEnergyConfiguration<RoomTemplateInstance, TRoom, CorridorsData>
+    public class SimpleConfiguration<TRoom> : IConfiguration<RoomTemplateInstance, TRoom>
     {
-        public TRoom Room { get; set; }
+        public TRoom Room { get; }
 
-        public IntVector2 Position { get; set; }
+        public IntVector2 Position { get; }
         
-        public RoomTemplateInstance RoomTemplateInstance { get; set; }
-
-        public CorridorsData EnergyData { get; set; }
+        public RoomTemplateInstance RoomTemplateInstance { get; }
 
         // TODO: handle better
         #region IConfiguration interface
         
         GridPolygon IConfiguration<RoomTemplateInstance, TRoom>.Shape => RoomTemplateInstance.RoomShape;
 
-        RoomTemplateInstance IConfiguration<RoomTemplateInstance, TRoom>.ShapeContainer => RoomTemplateInstance;
+        RoomTemplateInstance IShapeConfiguration<RoomTemplateInstance>.ShapeContainer => RoomTemplateInstance;
 
         TRoom IConfiguration<RoomTemplateInstance, TRoom>.Node => Room;
-
-        RoomTemplateInstance IMutableConfiguration<RoomTemplateInstance, TRoom>.ShapeContainer
-        {
-            get => RoomTemplateInstance;
-            set => RoomTemplateInstance = value;
-        }
-
-        TRoom IMutableConfiguration<RoomTemplateInstance, TRoom>.Node
-        {
-            get => Room;
-            set => Room = value;
-        }
 
         #endregion
 

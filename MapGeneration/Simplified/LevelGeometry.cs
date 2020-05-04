@@ -9,6 +9,8 @@ using MapGeneration.Core.ConfigurationSpaces;
 using MapGeneration.Core.Doors;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
+using MapGeneration.Simplified.ConfigurationSpaces;
+using MapGeneration.Utils;
 using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Simplified
@@ -17,8 +19,8 @@ namespace MapGeneration.Simplified
     {
         private readonly CachedPolygonOverlap polygonOverlap;
         private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
-        private readonly LazyConfigurationSpaces<TRoom> configurationSpaces;
-        private readonly SimpleLayoutConverter<SimpleLayout<TRoom>, TRoom, SimpleConfiguration<TRoom>> layoutConverter;
+        private readonly LazyConfigurationSpaces configurationSpaces;
+        private readonly SimpleLayoutConverter<TRoom> layoutConverter;
         private Random random;
 
         public LevelGeometry()
@@ -32,8 +34,8 @@ namespace MapGeneration.Simplified
                 lineIntersection,
                 new GridPolygonUtils()
                 );
-            configurationSpaces = new LazyConfigurationSpaces<TRoom>(lineIntersection, configurationSpacesGenerator);
-            layoutConverter = new SimpleLayoutConverter<SimpleLayout<TRoom>, TRoom, SimpleConfiguration<TRoom>>(configurationSpaces);
+            configurationSpaces = new LazyConfigurationSpaces(lineIntersection, configurationSpacesGenerator);
+            layoutConverter = new SimpleLayoutConverter<TRoom>(configurationSpaces);
         }
 
         // TODO: should this be here?
@@ -68,9 +70,9 @@ namespace MapGeneration.Simplified
                     continue;
                 }
 
-                if (layout.Graph.HasEdge(room, otherRoom))
+                if (layout.GraphWithCorridors.HasEdge(room, otherRoom))
                 {
-                    if (!configurationSpaces.HaveValidPosition(configuration, otherConfiguration))
+                    if (!configurationSpaces.HaveValidPosition(GetConfiguration(configuration), GetConfiguration(otherConfiguration)))
                     {
                         return false;
                     }
@@ -78,6 +80,13 @@ namespace MapGeneration.Simplified
                 else
                 {
                     if (DoRoomsOverlap(configuration, otherConfiguration))
+                    {
+                        return false;
+                    }
+
+                    // TODO: very ugly
+                    if (polygonOverlap.DoTouch(configuration.RoomTemplateInstance.RoomShape, configuration.Position,
+                        otherConfiguration.RoomTemplateInstance.RoomShape, otherConfiguration.Position))
                     {
                         return false;
                     }
@@ -103,20 +112,39 @@ namespace MapGeneration.Simplified
             return configurationSpacesGenerator.GetRoomTemplateInstances(roomTemplate);
         }
 
-        public List<OrthogonalLine> GetAvailableRoomPositions(RoomTemplateInstance roomTemplateInstance,
-            List<SimpleConfiguration<TRoom>> neighborConfigurations)
+        public List<OrthogonalLine> GetConnectionPositions(RoomTemplateInstance roomTemplateInstance, List<SimpleConfiguration<TRoom>> neighborConfigurations)
         {
             return configurationSpaces.GetMaximumIntersection(
-                new SimpleConfiguration<TRoom>(default, new IntVector2(), roomTemplateInstance),
-                neighborConfigurations
-            ).ToList();
+                GetConfiguration(new SimpleConfiguration<TRoom>(default, new IntVector2(), roomTemplateInstance)),
+                neighborConfigurations.Select(x => GetConfiguration(x)).ToList(),
+                neighborConfigurations.Count,
+                out _
+            ) ?? new List<OrthogonalLine>();
         }
+
+        public List<OrthogonalLine> GetConnectionPositions(RoomTemplateInstance roomTemplateInstance, List<ConnectionTarget<TRoom>> neighborConfigurations)
+        {
+            return configurationSpaces.GetMaximumIntersection(
+                GetConfiguration(new SimpleConfiguration<TRoom>(default, new IntVector2(), roomTemplateInstance)),
+                neighborConfigurations.Select(x => GetConfiguration(x.Configuration, x.Corridors)).ToList(),
+                neighborConfigurations.Count,
+                out _
+            ) ?? new List<OrthogonalLine>();
+        }
+
+       
 
         public void InjectRandomGenerator(Random random)
         {
             this.random = random;
             configurationSpaces.InjectRandomGenerator(random);
             layoutConverter.InjectRandomGenerator(random);
+        }
+
+        // TODO: how to handle this?
+        private LazyConfigurationSpaces.Configuration GetConfiguration(SimpleConfiguration<TRoom> configuration, List<RoomTemplateInstance> corridors = null)
+        {
+            return new LazyConfigurationSpaces.Configuration(configuration.Position, configuration.RoomTemplateInstance, corridors);
         }
     }
 }

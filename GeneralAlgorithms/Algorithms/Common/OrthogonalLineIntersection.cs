@@ -136,7 +136,7 @@
             foreach (var line in lines)
             {
                 var intersection = GetIntersections(new List<OrthogonalLine>() { line }, linesWithoutIntersections);
-
+				
                 if (intersection.Count == 0)
                 {
                     linesWithoutIntersections.Add(line);
@@ -188,7 +188,7 @@
                 if (intersectionLine.From != lastPoint && intersectionLine.From - directionVector != lastPoint)
                 {
                     result.Add(new OrthogonalLine(lastPoint + directionVector,
-                        intersectionLine.From - directionVector));
+                        intersectionLine.From - directionVector, rotatedLine.GetDirection()));
                 }
 
                 lastPoint = intersectionLine.To;
@@ -196,10 +196,10 @@
 
             if (rotatedLine.To != lastPoint && rotatedLine.To - directionVector != lastPoint)
             {
-                result.Add(new OrthogonalLine(lastPoint + directionVector, rotatedLine.To));
+                result.Add(new OrthogonalLine(lastPoint + directionVector, rotatedLine.To, rotatedLine.GetDirection()));
             }
 
-            return result.Select(x => x.Rotate(-rotation, false)).ToList();
+            return result.Select(x => x.Rotate(-rotation, true)).ToList();
 		}
     }
 }

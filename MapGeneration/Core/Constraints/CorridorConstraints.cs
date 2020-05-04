@@ -21,11 +21,11 @@ namespace MapGeneration.Core.Constraints
 	{
 		private readonly IMapDescription<TNode> mapDescription;
 		private readonly float energySigma;
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
+		private readonly ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 		private readonly IGraph<TNode> stageOneGraph;
         private readonly IGraph<TNode> graph;
 
-		public CorridorConstraints(IMapDescription<TNode> mapDescription, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public CorridorConstraints(IMapDescription<TNode> mapDescription, float averageSize, ILegacyConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
 		{
 			this.mapDescription = mapDescription;
 			this.energySigma = 10 * averageSize; // TODO: should it be like this?

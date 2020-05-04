@@ -2,49 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
 using MapGeneration.Core.LayoutConverters.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapLayouts;
+using MapGeneration.Simplified.ConfigurationSpaces;
 using MapGeneration.Utils;
 using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Simplified
 {
-    public class SimpleLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, MapLayout<TNode>>, IRandomInjectable
-		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IConfiguration<RoomTemplateInstance, TNode>
-	{
+    public class SimpleLayoutConverter<TNode> : ILayoutConverter<SimpleLayout<TNode>, MapLayout<TNode>>, IRandomInjectable
+    {
         protected Random Random;
-		protected readonly IConfigurationSpaces<TNode, RoomTemplateInstance, TConfiguration, ConfigurationSpace> ConfigurationSpaces;
+		protected readonly LazyConfigurationSpaces ConfigurationSpaces;
 
         public SimpleLayoutConverter(
-            IConfigurationSpaces<TNode, RoomTemplateInstance, TConfiguration, ConfigurationSpace> configurationSpaces
+            LazyConfigurationSpaces configurationSpaces
         )
 		{
             ConfigurationSpaces = configurationSpaces;
         }
 
 		/// <inheritdoc />
-		public MapLayout<TNode> Convert(TLayout layout, bool addDoors)
+		public MapLayout<TNode> Convert(SimpleLayout<TNode> layout, bool addDoors)
 		{
 			var rooms = new List<Room<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 			
-            foreach (var vertex in layout.Graph.Vertices)
+			// TODO: very ugly that the semantics of Graph are different in classic layout and SimpleLayout (corridors vs without corridors)
+            foreach (var vertex in layout.GraphWithCorridors.Vertices)
 			{
 				if (layout.GetConfiguration(vertex, out var configuration))
                 {
-                    var roomTemplateInstance = configuration.ShapeContainer;
+					// TODO: ugly
+                    var roomTemplateInstance = ((IShapeConfiguration<RoomTemplateInstance>) configuration).ShapeContainer;
 
 					// Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
 					// TODO: maybe make a unit/integration test?
                     var transformation = roomTemplateInstance.Transformations.GetRandom(Random);
-                    var shape = configuration.Shape;
+                    var shape = roomTemplateInstance.RoomShape;
                     var originalShape = roomTemplateInstance.RoomTemplate.Shape;
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
@@ -66,11 +65,11 @@ namespace MapGeneration.Simplified
 			{
 				var generatedDoors = new HashSet<Tuple<TNode, TNode>>();
 
-				foreach (var vertex in layout.Graph.Vertices)
+				foreach (var vertex in layout.GraphWithCorridors.Vertices)
 				{
                     if (layout.GetConfiguration(vertex, out var configuration))
 					{
-						var neighbours = layout.Graph.GetNeighbours(vertex);
+						var neighbours = layout.GraphWithCorridors.GetNeighbours(vertex);
 
 						foreach (var neighbor in neighbours)
 						{
@@ -91,10 +90,14 @@ namespace MapGeneration.Simplified
 			return new MapLayout<TNode>(rooms);
 		}
 
-		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
+		private List<OrthogonalLine> GetDoors(SimpleConfiguration<TNode> configuration1, SimpleConfiguration<TNode> configuration2)
 		{
+			// TODO: ugly
+			var movingRoomConfiguration = new LazyConfigurationSpaces.Configuration(configuration2.Position, ((IShapeConfiguration<RoomTemplateInstance>) configuration2).ShapeContainer, null);
+			var fixedRoomConfiguration = new LazyConfigurationSpaces.Configuration(configuration1.Position, ((IShapeConfiguration<RoomTemplateInstance>) configuration1).ShapeContainer, null);
+
 			return GetDoors(configuration2.Position - configuration1.Position,
-				ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1))
+				ConfigurationSpaces.GetConfigurationSpace(movingRoomConfiguration, fixedRoomConfiguration))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 
