@@ -1,4 +1,8 @@
-﻿namespace GUI
+﻿using System.Linq;
+using MapGeneration.Core.MapDescriptions;
+using MapGeneration.Utils.ConfigParsing;
+
+namespace GUI
 {
 	using System;
 	using System.IO;
@@ -11,6 +15,8 @@
 	{
         private GeneratorWindow generatorWindow;
 		private readonly Random random = new Random();
+		private readonly ConfigLoader configLoader = new ConfigLoader();
+        private MapDescription<int> mapDescription;
 
 		private bool usingUploaded = false;
 
@@ -22,22 +28,24 @@
 
 		private void InitializeForm()
 		{
-			//var mapDescriptionFiles = configLoader.GetSavedMapDescriptionsNames();
-			//mapDescriptionFiles.ForEach(x => loadedMapDescriptionsComboBox.Items.Add(x));
+			var mapDescriptionFiles = configLoader.GetSavedMapDescriptionsNames();
+			mapDescriptionFiles.ForEach(x => loadedMapDescriptionsComboBox.Items.Add(x));
 		}
 
 		private void generateButton_Click(object sender, EventArgs e)
 		{
-			//if (mapDescriptionOld == null)
-			//{
-			//	ShowSettingsError("Map description not chosen");
-			//	return;
-			//}
+			if (mapDescription == null)
+			{
+				ShowSettingsError("Map description not chosen");
+				return;
+			}
 
 			generatorWindow = new GeneratorWindow(new GeneratorSettings()
 			{
                 RandomGeneratorSeed = useRandomSeedCheckbox.Checked ? random.Next() : (int) generatorSeedInput.Value,
 				NumberOfLayouts = (int) numberOfLayoutsInput.Value,
+
+				MapDescription = mapDescription,
 
 				ShowFinalLayouts = showFinalLayouts.Checked,
 				ShowFinalLayoutsTime = (int) showFinalLayoutsTime.Value,
@@ -69,57 +77,56 @@
 
 		private void uploadButton_Click(object sender, EventArgs e)
 		{
-			// TODO:
-			//if (mapDescriptionFileDialog.ShowDialog() == DialogResult.OK)
-			//{
-			//	var filename = mapDescriptionFileDialog.FileName;
+            if (mapDescriptionFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				var filename = mapDescriptionFileDialog.FileName;
 
-			//	using (var sr = new StreamReader(filename))
-			//	{
-			//		try
-			//		{
-			//			mapDescriptionOld = configLoader.LoadMapDescription(sr);
-			//		}
-			//		catch (Exception exception)
-			//		{
-			//			ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
-			//			return;
-			//		}
+				using (var sr = new StreamReader(filename))
+				{
+					try
+					{
+						mapDescription = configLoader.LoadMapDescription(sr);
+					}
+					catch (Exception exception)
+					{
+						ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}");
+						return;
+					}
 
-			//		usingUploaded = true;
-			//		UpdateInfo();
-			//	}
-			//}
+					usingUploaded = true;
+					UpdateInfo();
+				}
+			}
 		}
 
 		private void loadedMapDescriptionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//var mapDescriptionFile = (string) loadedMapDescriptionsComboBox.SelectedItem;
+			var mapDescriptionFile = (string)loadedMapDescriptionsComboBox.SelectedItem;
 
-			//try
-			//{
-			//	mapDescriptionOld = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
-			//}
-			//catch (Exception exception)
-			//{
-			//	ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}. Inner exception: {exception.InnerException}");
-			//	return;
-			//}
+            try
+			{
+				mapDescription = configLoader.LoadMapDescriptionFromResources(mapDescriptionFile);
+			}
+			catch (Exception exception)
+			{
+				ShowSettingsError($"Map description could not be loaded. Exception: {exception.Message}. Inner exception: {exception.InnerException}");
+				return;
+			}
 
-			//usingUploaded = false;
-			//UpdateInfo();
+			usingUploaded = false;
+			UpdateInfo();
 		}
 
 		private void UpdateInfo()
 		{
-			//descriptionNotChosen.Hide();
-			//var graph = mapDescriptionOld.GetGraph();
+			descriptionNotChosen.Hide();
+			var graph = mapDescription.GetGraph();
 
-			//usedDescription.Text = usingUploaded ? $"Using uploaded map description file." : $"Using map description file from Resources.";
-			//usedDescriptionRoomsCount.Text = $"Number of rooms: {graph.VerticesCount}";
-			//usedDescriptionPassagesCount.Text = $"Number of passages: {graph.Edges.Count()}";
+			usedDescription.Text = usingUploaded ? $"Using uploaded map description file." : $"Using map description file from Resources.";
+			usedDescriptionRoomsCount.Text = $"Number of rooms: {graph.VerticesCount}";
+			usedDescriptionPassagesCount.Text = $"Number of passages: {graph.Edges.Count()}";
 
-			//usedDescriptionInfoPanel.Show();
+			usedDescriptionInfoPanel.Show();
 		}
 	}
 }

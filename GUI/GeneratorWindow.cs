@@ -1,5 +1,7 @@
-﻿using MapGeneration.Core.MapLayouts;
+﻿using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Core.MapLayouts;
 using MapGeneration.Utils.Interfaces;
+using MapGeneration.Utils.Serialization;
 
 namespace GUI
 {
@@ -27,6 +29,7 @@ namespace GUI
 		private readonly WFLayoutDrawer<int> wfLayoutDrawer = new WFLayoutDrawer<int>();
 		private readonly SVGLayoutDrawer<int> svgLayoutDrawer = new SVGLayoutDrawer<int>();
 		private readonly OldMapDrawer<int> oldMapDrawer = new OldMapDrawer<int>();
+        private readonly JsonSerializer<int> jsonSerializer = new JsonSerializer<int>();
 
 		private Task task;
 		private CancellationTokenSource cancellationTokenSource;
@@ -100,23 +103,10 @@ namespace GUI
 
 					if (layoutGenerator == null)
 					{
-						throw new NotImplementedException();
-						//if (settings.MapDescriptionOld.IsWithCorridors)
-						//{
-						//	var defaultGenerator =
-						//		LayoutGeneratorFactory.GetChainBasedGenerator<int>(true, settings.MapDescriptionOld.CorridorsOffsets);
-						//	defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
-
-						//	layoutGenerator = defaultGenerator;
-						//}
-						//else
-						//{
-						//	var defaultGenerator = LayoutGeneratorFactory.GetDefaultChainBasedGenerator<int>();
-						//	defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
-
-						//	layoutGenerator = defaultGenerator;
-						//}
-					}
+						var defaultGenerator = new DungeonGenerator<int>(settings.MapDescription);
+						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
+                        layoutGenerator = defaultGenerator;
+                    }
 
 					// Set cancellation token
 					if (layoutGenerator is ICancellable cancellable)
@@ -486,9 +476,8 @@ namespace GUI
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						// TODO: serialize with JSON
-						throw new NotImplementedException();
-						// jsonSerializer.Serialize(layoutToDraw, sw);
+
+                        jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}
@@ -506,9 +495,7 @@ namespace GUI
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-                        // TODO: serialize with JSON
-                        throw new NotImplementedException();
-                        // jsonSerializer.Serialize(layoutToDraw, sw);
+                        jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}
