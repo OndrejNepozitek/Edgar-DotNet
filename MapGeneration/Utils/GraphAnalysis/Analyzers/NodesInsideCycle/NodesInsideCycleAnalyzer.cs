@@ -31,10 +31,11 @@ namespace MapGeneration.Utils.GraphAnalysis.Analyzers.NodesInsideCycle
                     }
 
                     var positiveCount = 0;
+                    var threshold = 1;
 
-                    if (HasNonCycleNodes(graph, commonNodes)) positiveCount++;
-                    if (HasNonCycleNodes(graph, cycle1Only)) positiveCount++;
-                    if (HasNonCycleNodes(graph, cycle2Only)) positiveCount++;
+                    if (HasNonCycleNodes(graph, commonNodes) >= threshold) positiveCount++;
+                    if (HasNonCycleNodes(graph, cycle1Only) >= threshold) positiveCount++;
+                    if (HasNonCycleNodes(graph, cycle2Only) >= threshold) positiveCount++;
 
                     if (positiveCount >= 2)
                     {
@@ -49,8 +50,11 @@ namespace MapGeneration.Utils.GraphAnalysis.Analyzers.NodesInsideCycle
             };
         }
 
-        private bool HasNonCycleNodes(IGraph<TNode> graph, List<TNode> nodes)
+        private int HasNonCycleNodes(IGraph<TNode> graph, List<TNode> nodes)
         {
+            var startingNodes = new List<TNode>();
+            var nonCycleNodes = new List<TNode>();
+            
             foreach (var node in nodes)
             {
                 var neighbors = graph.GetNeighbours(node).ToList();
@@ -61,13 +65,31 @@ namespace MapGeneration.Utils.GraphAnalysis.Analyzers.NodesInsideCycle
                     continue;
                 }
 
-                if (neighbors.Count > 2)
+                startingNodes.Add(node);
+
+                //if (neighbors.Count > 2)
+                //{
+                //    return true;
+                //}
+            }
+
+            var buffer = new Stack<TNode>(startingNodes);
+
+            while (buffer.Count != 0)
+            {
+                var node = buffer.Pop();
+
+                foreach (var neighbor in graph.GetNeighbours(node))
                 {
-                    return true;
+                    if (!nodes.Contains(neighbor) && !nonCycleNodes.Contains(neighbor))
+                    {
+                        nonCycleNodes.Add(neighbor);
+                        buffer.Push(neighbor);
+                    }
                 }
             }
 
-            return false;
+            return nonCycleNodes.Count;
         }
     }
 }

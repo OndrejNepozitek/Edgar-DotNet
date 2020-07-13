@@ -7,10 +7,26 @@ namespace MapGeneration.Utils.Statistics
 {
     public class BoxPlotHelper
     {
-        public static List<double> GetTimeDifferences(BenchmarkScenarioResult result, BenchmarkScenarioResult referenceResult)
+        public static List<double> GetTimeDifferences(BenchmarkScenarioResult result, BenchmarkScenarioResult referenceResult, double successRateThreshold = 0d)
         {
             var times = result.BenchmarkResults.Select(x => x.Runs.Average(y => y.Time)).ToList();
             var timesReference = referenceResult.BenchmarkResults.Select(x => x.Runs.Average(y => y.Time)).ToList();
+
+            for (var i = 0; i < result.BenchmarkResults.Count; i++)
+            {
+                var benchmarkResult = result.BenchmarkResults[i];
+                var benchmarkResultReference = referenceResult.BenchmarkResults[i];
+
+                var successRate = benchmarkResult.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResult.Runs.Count;
+                var successRateReference = benchmarkResultReference.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResultReference.Runs.Count;
+
+                if (successRate < successRateThreshold && successRateReference < successRateThreshold)
+                {
+                    times[i] = 1;
+                    timesReference[i] = 1;
+                }
+            }
+
             var differences = times.Zip(timesReference, StatisticsUtils.DifferenceToReference).ToList();
 
             return differences;

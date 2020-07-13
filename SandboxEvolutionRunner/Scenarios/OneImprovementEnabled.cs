@@ -52,14 +52,27 @@ namespace SandboxEvolutionRunner.Scenarios
             return configuration;
         }
 
+        private DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
+        {
+            var configuration = GetBasicConfiguration(namedMapDescription);
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
+            {
+                MaxIterationsWithoutSuccess = 100,
+                HandleTreesGreedily = true,
+            });
+
+            return configuration;
+        }
+
         protected override void Run()
         {
             var mapDescriptions = GetMapDescriptions();
 
+            RunBenchmark(mapDescriptions, GetNewConfiguration, Options.FinalEvaluationIterations, "New");
             RunBenchmark(mapDescriptions, GetGreedyTreesConfiguration, Options.FinalEvaluationIterations, "GreedyTrees");
+            RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
             RunBenchmark(mapDescriptions, GetMaxIterationsConfiguration, Options.FinalEvaluationIterations, "MaxIterations");
             RunBenchmark(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "ChainDecomposition");
-            RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
         }
     }
 }

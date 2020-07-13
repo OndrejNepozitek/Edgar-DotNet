@@ -44,13 +44,15 @@ namespace Sandbox
             // new Clustering().Run();
             // new TwoStageGeneration().Run();
             // new PlatformersFeature().Run();
-            new ThesisPlots().Run();
+            // new ThesisPlots().Run();
             
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
             // RunExample();
             // ConvertToXml();
+
+            new Profiler().Run();
 
             // Main();
         }

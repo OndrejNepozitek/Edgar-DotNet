@@ -33,7 +33,7 @@ namespace MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters
             {
                 Clusters = clusters,
                 MaxDensity = maxDensity,
-                MaxCyclesInCluster = clusters.Max(x => x.Cycles.Count),
+                MaxCyclesInCluster = clusters.Count != 0 ? clusters.Max(x => x.Cycles.Count) : 0,
             };
         }
 

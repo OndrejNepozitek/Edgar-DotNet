@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using MapGeneration.Benchmarks;
 using MapGeneration.Utils.Statistics;
@@ -9,19 +10,65 @@ namespace Sandbox.Features
     {
         public void Run()
         {
-            var folder = @"1586506670_OneImprovementDisabled";
-            var excludeOutliers = true;
+            RunBoxPlot();
+            // RunRandomGraphsStats();
+        }
+
+        public void RunRandomGraphsStats()
+        {
+            // var folder = @"1588669377_NumberOfEdges_edges_0_3";
+            // var folder = @"1588712706_NumberOfEdges_1_edges_0_3";
+            // var folder = @"1588712706_NumberOfEdges_3_edges_0_3";
+            // var folder = @"1588848834_NumberOfEdges_1_edges_0_3";
+            var folder = @"1588927280_NumberOfEdges_1_edges_0_3";
+            // var folder = @"1588875883_NumberOfEdges_3_edges_0_3";
+            var results = new List<List<BenchmarkScenarioResult>>();
+
+            for (int i = 0; i <= 5; i++)
+            {
+                var edges = $"e_{i}_{i}";
+                var resultsEdges = new List<BenchmarkScenarioResult>();
+                results.Add(resultsEdges);
+
+                for (int j = 1; j <= 4; j++)
+                {
+                    var vertices = $"v_{10 * j}_{10 * j + 9}";
+                    var resultName = $"{edges}_{vertices}";
+                    var result = LoadResult(folder, resultName);
+                    resultsEdges.Add(result);
+                }
+            }
+
+            RandomGraphStatistics.PrintAverageTime(results, false, true, true);
+            RandomGraphStatistics.PrintSuccessRate(results, true);
+        }
+
+        public void RunBoxPlot()
+        {
+            // var folder = @"1586506670_OneImprovementDisabled";
+            var folder = @"1590239906_OneImprovementEnabled";
+            // var folder = @"1590241123_OneImprovementDisabled";
+            var excludeOutliers = false;
+
+            //var resultOld = LoadResult(folder, "Old");
+            //var resultNew = LoadResult(folder, "ChainDecomposition");
+
+            //var resultOld = LoadResult(folder, "Old");
+            //var resultNew = LoadResult(folder, "New");
+            //var resultWithoutChainDecomposition = LoadResult(folder, "WithoutChainDecomposition");
+            //var resultWithoutGreedyTrees = LoadResult(folder, "WithoutGreedyTrees");
+            //var resultWithoutMaxIterations = LoadResult(folder, "WithoutMaxIterations");
 
             var resultOld = LoadResult(folder, "Old");
             var resultNew = LoadResult(folder, "New");
-            var resultWithoutChainDecomposition = LoadResult(folder, "WithoutChainDecomposition");
-            var resultWithoutGreedyTrees = LoadResult(folder, "WithoutGreedyTrees");
-            var resultWithoutMaxIterations = LoadResult(folder, "WithoutMaxIterations");
+            var resultWithoutChainDecomposition = LoadResult(folder, "ChainDecomposition");
+            var resultWithoutGreedyTrees = LoadResult(folder, "GreedyTrees");
+            var resultWithoutMaxIterations = LoadResult(folder, "MaxIterations");
 
-            OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutChainDecomposition, resultOld, excludeOutliers));
-            OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutGreedyTrees, resultOld, excludeOutliers));
-            OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutMaxIterations, resultOld, excludeOutliers));
-            OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultNew, resultOld, excludeOutliers));
+            //OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutChainDecomposition, resultOld, excludeOutliers));
+            //OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutGreedyTrees, resultOld, excludeOutliers));
+            //OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultWithoutMaxIterations, resultOld, excludeOutliers));
+            //OutputPlot(BoxPlotHelper.GetBoxPlotValues(resultNew, resultOld, excludeOutliers));
 
             var differences = BoxPlotHelper.GetTimeDifferences(resultNew, resultOld);
             for (int i = 0; i < differences.Count; i++)

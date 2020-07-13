@@ -70,9 +70,9 @@ namespace SandboxEvolutionRunner.Scenarios
 
             RunBenchmark(mapDescriptions, GetNewConfiguration, Options.FinalEvaluationIterations, "New");
             RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
-            RunBenchmark(mapDescriptions, GetWithoutGreedyTreesConfiguration, Options.FinalEvaluationIterations, "WithoutGreedyTrees");
-            RunBenchmark(mapDescriptions, GetWithoutMaxIterationsConfiguration, Options.FinalEvaluationIterations, "WithoutMaxIterations");
-            RunBenchmark(mapDescriptions, GetWithoutChainDecompositionConfiguration, Options.FinalEvaluationIterations, "WithoutChainDecomposition");
+            //RunBenchmark(mapDescriptions, GetWithoutGreedyTreesConfiguration, Options.FinalEvaluationIterations, "WithoutGreedyTrees");
+            //RunBenchmark(mapDescriptions, GetWithoutMaxIterationsConfiguration, Options.FinalEvaluationIterations, "WithoutMaxIterations");
+            //RunBenchmark(mapDescriptions, GetWithoutChainDecompositionConfiguration, Options.FinalEvaluationIterations, "WithoutChainDecomposition");
         }
     }
 }

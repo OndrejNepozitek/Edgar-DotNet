@@ -23,7 +23,7 @@ namespace SandboxEvolutionRunner.Scenarios
             //    File.ReadAllText(
             //        @"D:\ProceduralLevelGenerator-data\Random\1583013308_FixedMaxIterationsEvolution_Time_edges_3_3_NewConfigurations - Copy.json");
             var benchmarkResult = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(File.ReadAllText(
-                @"D:\ProceduralLevelGenerator-data\Random\1583013308_FixedMaxIterationsEvolution_Time_edges_3_3_NewConfigurations - Copy.json"));
+                @"D:\ProceduralLevelGenerator-data\Random\1588689334_OldAndNew_edges_3_3\1588689334_OldAndNew_edges_3_3_ChainsAndMaxIterationAndTrees.json"));
 
             var correct = 0;
             var tp = 0;
@@ -32,7 +32,7 @@ namespace SandboxEvolutionRunner.Scenarios
 
             var chainDecomposition = new BreadthFirstChainDecomposition<int>(new ChainDecompositionConfiguration()
             {
-                PreferSmallCycles = false,
+                // PreferSmallCycles = false,
             });
 
             for (var i = 0; i < graphs.Count; i++)
@@ -40,8 +40,8 @@ namespace SandboxEvolutionRunner.Scenarios
                 var namedGraph = graphs[i];
                 var result = benchmarkResult.BenchmarkResults[2 * i];
 
-                var maxCyclesInClusterThreshold = 6;
-                var nodesInsideThreshold = 1;
+                var maxCyclesInClusterThreshold = 4;
+                var nodesInsideThreshold = 40;
 
                 var clustersReport = cycleClustersAnalyzer.GetReport(namedGraph.Graph);
                 var maxClusterIndex = clustersReport.Clusters.MaxBy(x => x.Nodes.Count);
@@ -70,9 +70,9 @@ namespace SandboxEvolutionRunner.Scenarios
                 Console.Write($"{nodesInsideCycleReport.ProblemsCount,3}");
                 Console.ResetColor();
 
-                Console.Write($"{result.Runs.Average(x => x.Iterations),12:F}");
+                Console.Write($"{result.Runs.Average(x => x.Time),12:F}");
 
-                var resultNok = result.Runs.Average(x => x.Iterations) > 5000;
+                var resultNok = result.Runs.Average(x => x.Time) > 5000;
                 var reportNok = (clustersReport.MaxCyclesInCluster >= maxCyclesInClusterThreshold) || nodesInsideCycleReport.ProblemsCount >= nodesInsideThreshold;
 
                 if (reportNok && resultNok)
@@ -101,6 +101,10 @@ namespace SandboxEvolutionRunner.Scenarios
                     correct++;
                 }
 
+                if (i == 95)
+                {
+                    var s = 0;
+                }
                 var chains = chainDecomposition.GetChains(namedGraph.Graph);
                 foreach (var chain in chains)
                 {

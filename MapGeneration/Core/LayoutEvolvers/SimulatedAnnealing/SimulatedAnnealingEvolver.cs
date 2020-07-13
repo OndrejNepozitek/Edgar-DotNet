@@ -98,40 +98,41 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
                         if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
                             yield break;
 
-						if (LayoutOperations.IsLayoutValid(copy) && LayoutOperations.TryCompleteChain(copy, chain.Nodes))
+						if (LayoutOperations.IsLayoutValid(copy))
                         {
-                            OnPerturbed?.Invoke(this, copy);
-
-                            if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
-                                yield break;
-
-                            OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                            if (LayoutOperations.TryCompleteChain(copy, chain.Nodes))
                             {
-                                Type = SimulatedAnnealingEventType.LayoutGenerated,
-                                IterationsSinceLastEvent = iters - lastEventIters,
-                                IterationsTotal = iters,
-                                LayoutsGenerated = -1,
-                                ChainNumber = chain.Number,
-                            });
+                                OnPerturbed?.Invoke(this, copy);
 
-                            lastEventIters = iters;
+                                if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
+                                    yield break;
 
-                            yield return copy;
-                            break;
+                                OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
+                                {
+                                    Type = SimulatedAnnealingEventType.LayoutGenerated,
+                                    IterationsSinceLastEvent = iters - lastEventIters,
+                                    IterationsTotal = iters,
+                                    LayoutsGenerated = -1,
+                                    ChainNumber = chain.Number,
+                                });
+
+                                lastEventIters = iters;
+
+                                yield return copy;
+                                break;
+                            }
                         }
-                        else
+     
+                        OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
                         {
-                            OnEvent?.Invoke(this, new SimulatedAnnealingEventArgs()
-                            {
-                                Type = SimulatedAnnealingEventType.OutOfIterations,
-                                IterationsSinceLastEvent = iters - lastEventIters,
-                                IterationsTotal = iters,
-                                LayoutsGenerated = -1,
-                                ChainNumber = chain.Number,
-                            });
+                            Type = SimulatedAnnealingEventType.OutOfIterations,
+                            IterationsSinceLastEvent = iters - lastEventIters,
+                            IterationsTotal = iters,
+                            LayoutsGenerated = -1,
+                            ChainNumber = chain.Number,
+                        });
 
-                            lastEventIters = iters;
-                        }
+                        lastEventIters = iters;
                     }
                 }
 

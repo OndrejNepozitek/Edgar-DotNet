@@ -71,6 +71,9 @@ namespace SandboxEvolutionRunner
                 { "OneImprovementEnabled", new OneImprovementEnabled() },
                 { "OneImprovementDisabled", new OneImprovementDisabled() },
                 { "DifferentRoomTemplates", new DifferentRoomTemplates() },
+                { "NumberOfEdges", new NumberOfEdges() },
+                { "NumberOfEdges_1", new NumberOfEdges(1) },
+                { "NumberOfEdges_3", new NumberOfEdges(3) },
             };
 
             if (options.Name == null)

@@ -60,25 +60,10 @@ namespace SandboxEvolutionRunner.Scenarios
         {
             var mapDescriptions = GetMapDescriptions();
 
-            if (Options.AsyncBenchmark)
-            {
-                var tasks = new Task[]
-                {
-                    RunBenchmarkAsync(mapDescriptions, GetChainsAndMaxIterationsAndTreesConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIterationAndTrees"),
-                    RunBenchmarkAsync(mapDescriptions, GetChainsAndMaxIterationsConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration"),
-                    RunBenchmarkAsync(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "Chains"),
-                    RunBenchmarkAsync(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old"),
-                };
-
-                Task.WaitAll(tasks);
-            }
-            else
-            {
-                RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsAndTreesConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIterationAndTrees");
-                RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration");
-                RunBenchmark(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "Chains");
-                RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
-            }
+            RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsAndTreesConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIterationAndTrees");
+            RunBenchmark(mapDescriptions, GetChainsAndMaxIterationsConfiguration, Options.FinalEvaluationIterations, "ChainsAndMaxIteration");
+            RunBenchmark(mapDescriptions, GetChainsConfiguration, Options.FinalEvaluationIterations, "Chains");
+            RunBenchmark(mapDescriptions, GetOldConfiguration, Options.FinalEvaluationIterations, "Old");
         }
     }
 }

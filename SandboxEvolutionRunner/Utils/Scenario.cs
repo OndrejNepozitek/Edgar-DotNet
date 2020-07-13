@@ -40,7 +40,7 @@ namespace SandboxEvolutionRunner.Utils
             return MapDescriptionLoader.GetMapDescriptions(namedGraphs);
         }
 
-        protected virtual void RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
+        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
         {
             var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>(name, GetGeneratorRunnerFactory);
@@ -55,6 +55,8 @@ namespace SandboxEvolutionRunner.Utils
                 WithFileOutput = false,
             });
             resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath, name: $"{Directory}_{name}", withDatetime: false);
+
+            return scenarioResult;
         }
 
         protected virtual Task RunBenchmarkAsync(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
@@ -71,9 +73,9 @@ namespace SandboxEvolutionRunner.Utils
             return RunBenchmarkAsync(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
         }
 
-        protected virtual void RunBenchmark(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
+        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
         {
-            RunBenchmark(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
+            return RunBenchmark(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
         }
 
         protected virtual DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
@@ -131,7 +133,7 @@ namespace SandboxEvolutionRunner.Utils
             DirectoryFullPath = Path.Combine("DungeonGeneratorEvolutions", Directory);
             System.IO.Directory.CreateDirectory(DirectoryFullPath);
             Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
-            MapDescriptionLoader = new MapDescriptionLoader(options);
+            MapDescriptionLoader = new BetterMapDescriptionLoader(options, Options.RoomTemplatesSet);
 
             Run();
         }

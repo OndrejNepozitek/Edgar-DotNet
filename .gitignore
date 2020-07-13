@@ -308,3 +308,4 @@ OpenCover/
 !BoostWrapper/boost/boost/preprocessor/debug/
 !BoostWrapper/boost/boost/predef/hardware/simd/x86/
 !BoostWrapper/boost/boost/predef/architecture/x86/
+Resources/RandomGraphs/**/*
