@@ -6,6 +6,7 @@ using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
+using MapGeneration.Utils.ConfigParsing;
 using Newtonsoft.Json;
 
 namespace SandboxEvolutionRunner.Utils
@@ -13,6 +14,7 @@ namespace SandboxEvolutionRunner.Utils
     public class MapDescriptionLoader
     {
         protected readonly Options Options;
+        private readonly ConfigLoader configLoader = new ConfigLoader();
 
         public MapDescriptionLoader(Options options)
         {
@@ -133,9 +135,21 @@ namespace SandboxEvolutionRunner.Utils
                 TypeNameHandling = TypeNameHandling.All,
             };
 
-            var mapDescription =
-                JsonConvert.DeserializeObject<MapDescription<int>>(
+            MapDescription<int> mapDescription = null;
+
+            if (File.Exists($"Resources/MapDescriptions/{name}.json"))
+            {
+                mapDescription = JsonConvert.DeserializeObject<MapDescription<int>>(
                     File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings);
+            }
+            else
+            {
+                using (var sr = new StreamReader($"Resources/Maps/Thesis/{name}.yml"))
+                {
+                    mapDescription = configLoader.LoadMapDescription(sr);
+                }
+            }
+
 
             return new NamedMapDescription(mapDescription, name, mapDescription.GetGraph().VerticesCount != mapDescription.GetStageOneGraph().VerticesCount);
         }

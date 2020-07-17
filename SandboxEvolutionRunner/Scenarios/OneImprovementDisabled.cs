@@ -1,6 +1,16 @@
-﻿using MapGeneration.Core.ChainDecompositions;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using MapGeneration.Benchmarks;
+using MapGeneration.Benchmarks.GeneratorRunners;
+using MapGeneration.Benchmarks.Interfaces;
+using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Core.MapDescriptions.Interfaces;
+using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using MapGeneration.Utils.MapDrawing;
+using SandboxEvolutionRunner.Evolution;
 using SandboxEvolutionRunner.Utils;
 
 namespace SandboxEvolutionRunner.Scenarios
@@ -74,5 +84,53 @@ namespace SandboxEvolutionRunner.Scenarios
             //RunBenchmark(mapDescriptions, GetWithoutMaxIterationsConfiguration, Options.FinalEvaluationIterations, "WithoutMaxIterations");
             //RunBenchmark(mapDescriptions, GetWithoutChainDecompositionConfiguration, Options.FinalEvaluationIterations, "WithoutChainDecomposition");
         }
+
+        protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
+        {
+            var configuration = base.GetBasicConfiguration(namedMapDescription);
+            configuration.RepeatModeOverride = RepeatMode.NoRepeat;
+            return configuration;
+        }
+
+        /*protected override IGeneratorRunner GetGeneratorRunnerFactory(GeneratorInput<IMapDescription<int>> input)
+        {
+            var layoutDrawer = new SVGLayoutDrawer<int>();
+
+            var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
+            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
+            layoutGenerator.InjectRandomGenerator(new Random(0));
+
+            Logger.WriteLine($"{input.Name} {input.MapDescription.GetStageOneGraph().VerticesCount}");
+
+            return new LambdaGeneratorRunner(() =>
+            {
+                var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+                void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
+                {
+                    simulatedAnnealingArgsContainer.Add(eventArgs);
+                }
+
+                layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
+                var layout = layoutGenerator.GenerateLayout();
+                layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
+
+                var additionalData = new AdditionalRunData<int>()
+                {
+                    SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
+                    GeneratedLayoutSvg = layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    GeneratedLayout = layout,
+                };
+
+                var path = Path.Combine(DirectoryFullPath, $"{input.Name}.svg");
+                if (!File.Exists(path))
+                {
+                    File.WriteAllText(path, layoutDrawer.DrawLayout(layout, 800, forceSquare: false, flipY: true, showRoomNames: false));
+                }
+                
+                var generatorRun = new GeneratorRun<AdditionalRunData<int>>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+
+                return generatorRun;
+            });
+        }*/
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using MapGeneration.Benchmarks;
 using MapGeneration.Utils.Statistics;
 
@@ -10,7 +11,8 @@ namespace Sandbox.Features
     {
         public void Run()
         {
-            RunBoxPlot();
+            GetManualTable();
+            // RunBoxPlot();
             // RunRandomGraphsStats();
         }
 
@@ -20,7 +22,8 @@ namespace Sandbox.Features
             // var folder = @"1588712706_NumberOfEdges_1_edges_0_3";
             // var folder = @"1588712706_NumberOfEdges_3_edges_0_3";
             // var folder = @"1588848834_NumberOfEdges_1_edges_0_3";
-            var folder = @"1588927280_NumberOfEdges_1_edges_0_3";
+            // var folder = @"1588927280_NumberOfEdges_1_edges_0_3";
+            var folder = @"1594648977_manual";
             // var folder = @"1588875883_NumberOfEdges_3_edges_0_3";
             var results = new List<List<BenchmarkScenarioResult>>();
 
@@ -43,11 +46,48 @@ namespace Sandbox.Features
             RandomGraphStatistics.PrintSuccessRate(results, true);
         }
 
+        public void GetManualTable()
+        {
+            //var folder = @"1594656126_Manual";
+            var folder = $"1594705922_manual";
+            var resultOld = LoadResult(folder, "Old");
+            var resultNew = LoadResult(folder, "New");
+
+            var differences = BoxPlotHelper.GetTimeDifferences(resultNew, resultOld);
+
+            for (int i = 0; i < differences.Count; i++)
+            {
+                var oldResult = resultOld.BenchmarkResults[i];
+                var newResult = resultNew.BenchmarkResults[i];
+                var name = oldResult.InputName;
+                name = name.Replace("_", " ");
+
+                if (name.Contains("wc"))
+                {
+                    continue;
+                }
+
+                var diffText = $"{(differences[i] > 0 ? "+" : "")}{differences[i]:##.}\\%";
+
+                if (differences[i] >= 5)
+                {
+                    diffText = @"\textcolor{red}{" + diffText + @"}";
+                }
+                if (differences[i] <= -5)
+                {
+                    diffText = @"\textcolor{ForestGreen}{" + diffText + @"}";
+                }
+
+                Console.WriteLine($"{name} & {oldResult.Runs.Average(x=>x.Time) / 1000d:0.00}s & {newResult.Runs.Average(x=>x.Time) / 1000d:0.00}s & {diffText} \\\\");
+            }
+        }
+
         public void RunBoxPlot()
         {
             // var folder = @"1586506670_OneImprovementDisabled";
-            var folder = @"1590239906_OneImprovementEnabled";
+            // var folder = @"1590239906_OneImprovementEnabled";
             // var folder = @"1590241123_OneImprovementDisabled";
+            var folder = @"1594643749_Manual";
             var excludeOutliers = false;
 
             //var resultOld = LoadResult(folder, "Old");
@@ -104,6 +144,8 @@ namespace Sandbox.Features
                     Console.WriteLine($"{i} & {differences[i]} \\\\");
                 }
             }
+
+            Console.WriteLine();
         }
 
         private void OutputPlot(BoxPlotValues values)

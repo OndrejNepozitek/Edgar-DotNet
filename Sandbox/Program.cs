@@ -38,7 +38,7 @@ namespace Sandbox
 			Application.SetCompatibleTextRenderingDefault(false);
 
             // new RandomGraphs().Run();
-            CompareWithReference();
+            // CompareWithReference();
 
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
@@ -50,7 +50,7 @@ namespace Sandbox
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
-            // RunExample();
+            RunExample();
             // ConvertToXml();
 
             // new Profiler().Run();
@@ -167,6 +167,10 @@ namespace Sandbox
 
                 ShowPartialValidLayouts = false,
                 ShowPartialValidLayoutsTime = 500,
+
+                FixedFontSize = true,
+                FixedFontSizeValue = 26,
+                FidexSquareExport = true,
             };
 
             Application.Run(new GeneratorWindow(settings));
