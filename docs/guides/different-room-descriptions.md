@@ -46,7 +46,7 @@ var rectangleRoom = ;// Setup rectanble room
 var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
 ```
 
-## Prepare room description
+## Prepare map description
 
 Now we just make sure to use correct room descriptions:
 

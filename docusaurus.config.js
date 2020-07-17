@@ -3,18 +3,18 @@ module.exports = {
   tagline:
     "Library for procedural generation of 2D levels based on a graph of room connections.",
   url: "https://ondrejnepozitek.github.io",
-  baseUrl: "/ProceduralLevelGenerator/",
+  baseUrl: "/Edgar-DotNet/",
   favicon: "img/favicon.ico",
   organizationName: "OndrejNepozitek", // Usually your GitHub org/user name.
-  projectName: "ProceduralLevelGenerator", // Usually your repo name.
+  projectName: "Edgar-DotNet", // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: "Procedural level generator",
+      title: "Edgar-DotNet",
       links: [
         { to: "versions", label: "v1.0.6", position: "left" },
         { to: "docs/introduction", label: "Docs", position: "right" },
         {
-          href: "https://github.com/OndrejNepozitek/ProceduralLevelGenerator/",
+          href: "https://github.com/OndrejNepozitek/Edgar-DotNet/",
           label: "GitHub",
           position: "right"
         }
@@ -54,7 +54,7 @@ module.exports = {
             },
             {
               label: "GitHub",
-              href: "https://github.com/OndrejNepozitek/ProceduralLevelGenerator"
+              href: "https://github.com/OndrejNepozitek/Edgar-DotNet"
             },
           ]
         }
@@ -68,7 +68,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/OndrejNepozitek/ProceduralLevelGenerator/tree/docusaurus"
+          editUrl: "https://github.com/OndrejNepozitek/Edgar-DotNet/tree/docusaurus"
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")

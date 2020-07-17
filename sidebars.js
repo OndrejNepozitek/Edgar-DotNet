@@ -23,12 +23,12 @@ module.exports = {
     {
       type: "category",
       label: "Guides",
-      items: ["guides/introduction", "guides/basics", "guides/different-room-descriptions", "guides/corridors", "guides/export", "guides/performance-guidelines"]
+      items: ["guides/introduction", "guides/basics", "guides/different-room-descriptions", "guides/corridors", "guides/export", "guides/performance-tips"]
     },
     {
       type: "category",
       label: "API reference",
-      items: ["api/room-template", "api/map-description", "api/map-layout"]
+      items: ["api/dungeon-generator", "api/room-template", "api/map-description", "api/map-layout"]
     }
   ]
 };

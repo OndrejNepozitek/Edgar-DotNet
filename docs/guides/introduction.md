@@ -16,3 +16,15 @@ This section will walk you through the process of creating so-called **map descr
 - **Map description** holds the whole graph of rooms and connections together with room descriptions for each room.
 
 > **Note:** In the older version of the library, it was also possible to use YAML config files to construct map descriptions. However, YAML support was dropped in favor of C# API as it is more flexible and it is currently not possible to support both.
+
+```csharp
+/// <summary>
+/// Adds a given room to the map description
+/// </summary>
+/// <remarks>
+/// 
+/// </remarks>
+/// <param name="room">The room to be added.</param>
+/// <param name="roomDescription">Corresponding room description that describes the look of the room.</param>
+public void AddRoom(TRoom room, IRoomDescription roomDescription)
+```

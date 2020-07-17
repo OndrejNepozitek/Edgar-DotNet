@@ -101,10 +101,10 @@ Don't forget to use the appropriate layout generator if using the C# api.
 ## Results
 
 <Gallery cols={2}>
-  <GalleryImage src="img/corridors/0.jpg" />
-  <GalleryImage src="img/corridors/1.jpg" />
-  <GalleryImage src="img/corridors/2.jpg" />
-  <GalleryImage src="img/corridors/3.jpg" />
+  <GalleryImage src="img/corridors_old/0.jpg" />
+  <GalleryImage src="img/corridors_old/1.jpg" />
+  <GalleryImage src="img/corridors_old/2.jpg" />
+  <GalleryImage src="img/corridors_old/3.jpg" />
 </Gallery>
 
 
