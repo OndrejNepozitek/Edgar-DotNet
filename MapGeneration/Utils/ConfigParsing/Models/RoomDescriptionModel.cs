@@ -1,4 +1,5 @@
 ﻿using MapGeneration.Core.Doors.Interfaces;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Utils.ConfigParsing.Models

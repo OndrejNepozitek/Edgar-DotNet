@@ -2,6 +2,9 @@
 
 namespace MapGeneration.Benchmarks
 {
+    /// <summary>
+    /// Statistics about a single run of the generator.
+    /// </summary>
     public class GeneratorRun : IGeneratorRun<object>
     {
         public bool IsSuccessful { get; set; }

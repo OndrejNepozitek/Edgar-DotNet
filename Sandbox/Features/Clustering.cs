@@ -68,7 +68,7 @@ namespace Sandbox.Features
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>
@@ -265,7 +265,7 @@ namespace Sandbox.Features
 
             Console.WriteLine($"average size {averageSize}");
 
-            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration, input.Offsets);
+            var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             var layouts = new List<MapLayout<int>>();

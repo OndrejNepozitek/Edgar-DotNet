@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Configurations;
 using MapGeneration.Utils.Interfaces;

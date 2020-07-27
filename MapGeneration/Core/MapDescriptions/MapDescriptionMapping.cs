@@ -4,6 +4,10 @@ using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace MapGeneration.Core.MapDescriptions
 {
+    /// <summary>
+    /// Mapping from a generic map description to an integer version in order to improve performance.
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
     public class MapDescriptionMapping<TNode> : IMapDescription<int>
     {
         private readonly IMapDescription<TNode> mapDescription;

@@ -29,12 +29,16 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
 {
+    /// <summary>
+    /// This generator is currently not used as the dungeon generator can also handle platformers.
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
     public class PlatformersGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<MapLayout<TNode>>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
-        private SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
+        private ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
 
@@ -149,7 +153,7 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
                     new PlatformersEvolver<Layout<Configuration<CorridorsData>>, int,
                         Configuration<CorridorsData>>(layoutOperations);
 
-            generator = new SimpleChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator = new ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             generator.OnRandomInjected += (random) =>
             {

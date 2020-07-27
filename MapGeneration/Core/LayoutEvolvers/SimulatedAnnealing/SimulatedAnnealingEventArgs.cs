@@ -2,6 +2,9 @@
 
 namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
+    /// <summary>
+    /// Simulated annealing event args.
+    /// </summary>
     public class SimulatedAnnealingEventArgs : EventArgs
     {
         public SimulatedAnnealingEventType Type { get; set; }

@@ -1,7 +1,8 @@
-﻿namespace MapGeneration.Core.MapDescriptions.Interfaces
+﻿namespace MapGeneration.Core.MapDescriptions
 {
-    // TODO: how to name this?
-    // TODO: move elsewhere when possible
+    /// <summary>
+    /// Determines if a room template can repeat in a level.
+    /// </summary>
     public enum RepeatMode
     {
         AllowRepeat,

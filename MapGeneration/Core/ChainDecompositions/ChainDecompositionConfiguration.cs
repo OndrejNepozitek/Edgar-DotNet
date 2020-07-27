@@ -2,6 +2,9 @@
 
 namespace MapGeneration.Core.ChainDecompositions
 {
+    /// <summary>
+    /// Chain decomposition configuration.
+    /// </summary>
     public class ChainDecompositionConfiguration : ISmartCloneable<ChainDecompositionConfiguration>
     {
         public int MaxTreeSize { get; set; } = 8;

@@ -1,5 +1,9 @@
 ﻿namespace MapGeneration.Benchmarks
 {
+    /// <summary>
+    /// Input for the generator.
+    /// </summary>
+    /// <typeparam name="TMapDescription"></typeparam>
     public class GeneratorInput<TMapDescription>
     {
         public string Name { get; set; }

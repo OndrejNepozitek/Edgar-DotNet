@@ -83,16 +83,9 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
                         var copy = initialLayout.SmartClone();
                         LayoutOperations.AddChain(copy, chain.Nodes, true, out var addChainIterationsCount);
 
-                        // iters += chain.Nodes.Count;
                         iters += addChainIterationsCount;
 
-						// TODO: improve
-						//for (int j = 0; j < addChainIterationsCount; j++)
-						//{
-						//	OnPerturbed?.Invoke(this, copy);
-						//}
-
-						// An event must be sent in order for the early stopping handler to work
+                        // An event must be sent in order for the early stopping handler to work
                         OnPerturbed?.Invoke(this, copy);
 
                         if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
@@ -142,13 +135,7 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 			if (addNodesGreedilyBeforeEvolve)
             {
                 LayoutOperations.AddChain(initialLayout, chain.Nodes, true, out var addChainIterationsCount);
-
-				// TODO: improve
-				//for (int j = 0; j < addChainIterationsCount; j++)
-				//{
-				//	OnPerturbed?.Invoke(this, initialLayout);
-				//}
-			}
+            }
 
             const double p0 = 0.2d;
 			const double p1 = 0.01d;

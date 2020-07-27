@@ -15,6 +15,12 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutConverters
 {
+	/// <summary>
+	/// Converts layout from its internal representation to a representation more suitable for users.
+	/// </summary>
+	/// <typeparam name="TLayout"></typeparam>
+	/// <typeparam name="TNode"></typeparam>
+	/// <typeparam name="TConfiguration"></typeparam>
     public class BasicLayoutConverter<TLayout, TNode, TConfiguration> : ILayoutConverter<TLayout, MapLayout<TNode>>, IRandomInjectable
 		where TLayout : ILayout<int, TConfiguration>
 		where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>

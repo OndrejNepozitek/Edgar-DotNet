@@ -9,30 +9,14 @@ namespace MapGeneration.Benchmarks
 {
     public class BenchmarkRunner<TMapDescription>
     {
-        //public BenchmarkResult Run(
-        //    IBenchmark<GeneratorInput<TMapDescription>> benchmark,
-        //    IList<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)
-        //{
-        //    if (benchmark == null) throw new ArgumentNullException(nameof(benchmark));
-        //    if (inputs == null) throw new ArgumentNullException(nameof(inputs));
-        //    if (repeats <= 0) throw new ArgumentOutOfRangeException(nameof(repeats));
-
-        //    if (options == null)
-        //    {
-        //        options = new BenchmarkOptions();
-        //    }
-
-        //    var scenarioResults = new List<BenchmarkScenarioResult>();
-
-        //    foreach (var scenario in benchmark.GetScenarios())
-        //    {
-        //        var scenarioResult = Run(scenario, inputs, repeats, options);
-        //        scenarioResults.Add(scenarioResult);
-        //    }
-
-        //    return new BenchmarkResult(scenarioResults);
-        //}
-
+        /// <summary>
+        /// Runs a given benchmark scenario.
+        /// </summary>
+        /// <param name="scenario"></param>
+        /// <param name="inputs"></param>
+        /// <param name="repeats"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public BenchmarkScenarioResult Run(
             IBenchmarkScenario<GeneratorInput<TMapDescription>> scenario,
             IEnumerable<GeneratorInput<TMapDescription>> inputs, int repeats, BenchmarkOptions options = null)

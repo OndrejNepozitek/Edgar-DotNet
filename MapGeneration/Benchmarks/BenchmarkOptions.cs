@@ -1,5 +1,8 @@
 ﻿namespace MapGeneration.Benchmarks
 {
+    /// <summary>
+    /// Benchmark settings.
+    /// </summary>
     public class BenchmarkOptions
     {
         public bool WithConsoleOutput { get; set; } = true;

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using Newtonsoft.Json;
 
 namespace MapGeneration.Core.MapDescriptions
 {
+    /// <summary>
+    /// Description of a level.
+    /// </summary>
+    /// <typeparam name="TRoom"></typeparam>
     public class MapDescription<TRoom> : IMapDescription<TRoom>
     {
         [JsonProperty]
@@ -16,6 +19,9 @@ namespace MapGeneration.Core.MapDescriptions
         [JsonProperty]
         private readonly List<Passage> passages = new List<Passage>();
 
+        /// <summary>
+        /// Adds a given room to the level description.
+        /// </summary>
         public void AddRoom(TRoom room, IRoomDescription roomDescription)
         {
             if (roomDescription == null) throw new ArgumentNullException(nameof(roomDescription));
@@ -28,6 +34,9 @@ namespace MapGeneration.Core.MapDescriptions
             roomDescriptions.Add(room, roomDescription);
         }
 
+        /// <summary>
+        /// Adds a connection between given two rooms.
+        /// </summary>
         public void AddConnection(TRoom room1, TRoom room2)
         {
             var passage = new Passage(room1, room2);
@@ -50,6 +59,10 @@ namespace MapGeneration.Core.MapDescriptions
             passages.Add(passage);
         }
 
+        /// <summary>
+        /// Gets the graph of rooms with all rooms (including corridor rooms)
+        /// </summary>
+        /// <returns></returns>
         public IGraph<TRoom> GetGraph()
         {
             var graph = new UndirectedAdjacencyListGraph<TRoom>();
@@ -69,6 +82,10 @@ namespace MapGeneration.Core.MapDescriptions
             return graph;
         }
 
+        /// <summary>
+        /// Gets a graph of rooms for the first stage of the generate (excluding corridor rooms)
+        /// </summary>
+        /// <returns></returns>
         public IGraph<TRoom> GetStageOneGraph()
         {
             var graph = GetGraph();
@@ -107,6 +124,11 @@ namespace MapGeneration.Core.MapDescriptions
             return stageOneGraph;
         }
 
+        /// <summary>
+        /// Get room description of a given room.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public IRoomDescription GetRoomDescription(TRoom node)
         {
             return roomDescriptions[node];

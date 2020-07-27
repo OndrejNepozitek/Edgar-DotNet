@@ -5,6 +5,9 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
+    /// <summary>
+    /// Simulated annealing configuration provider. Provides configurations for individual chains.
+    /// </summary>
     public class SimulatedAnnealingConfigurationProvider : ISmartCloneable<SimulatedAnnealingConfigurationProvider>
     {
         private readonly List<SimulatedAnnealingConfiguration> configurationsForChains;

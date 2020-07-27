@@ -7,6 +7,7 @@ using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Benchmarks;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
 using MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters;

@@ -8,6 +8,9 @@ namespace MapGeneration.Benchmarks
 	using BenchmarkUtils;
     using Utils;
 
+    /// <summary>
+    /// Benchmark job.
+    /// </summary>
 	public class BenchmarkJob : IPreviewableBenchmarkJob<BenchmarkJobResult>
 	{
 		private readonly IGeneratorRunner generatorRunner;

@@ -3,12 +3,25 @@ using System.Linq;
 
 namespace MapGeneration.Core.ChainDecompositions
 {
+    /// <summary>
+    /// Represents a chain of nodes in a chain decomposition.
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
     public class Chain<TNode>
     {
+        /// <summary>
+        /// Nodes in the chain.
+        /// </summary>
         public List<TNode> Nodes { get; }
 
+        /// <summary>
+        /// Number of the chain.
+        /// </summary>
         public int Number { get; }
 
+        /// <summary>
+        /// Whether it was created from a face or from an acyclic component.
+        /// </summary>
         public bool IsFromFace { get; set; }
 
         public Chain(List<TNode> nodes, int number)

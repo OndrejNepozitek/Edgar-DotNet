@@ -1,5 +1,8 @@
 ﻿namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 {
+    /// <summary>
+    /// Type of a simulated annealing event.
+    /// </summary>
     public enum SimulatedAnnealingEventType
     {
         LayoutGenerated = 0,

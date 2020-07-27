@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 
 namespace MapGeneration.Benchmarks.AdditionalData
 {
-    // TODO: handle better later
     public class AdditionalRunData
     {
         public List<SimulatedAnnealingEventArgs> SimulatedAnnealingEventArgs { get; set; }

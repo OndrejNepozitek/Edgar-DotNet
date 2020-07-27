@@ -14,6 +14,9 @@ using MapGeneration.Utils;
 
 namespace MapGeneration.Core.ConfigurationSpaces
 {
+    /// <summary>
+    /// Class responsible for generating configuration spaces.
+    /// </summary>
     public class ConfigurationSpacesGenerator
     {
         private readonly IPolygonOverlap<GridPolygon> polygonOverlap;

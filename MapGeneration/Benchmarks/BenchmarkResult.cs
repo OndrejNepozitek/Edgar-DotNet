@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace MapGeneration.Benchmarks
 {
+    /// <summary>
+    /// Result of a benchmark.
+    /// </summary>
     public class BenchmarkResult
     {
         public string InputName { get; }
@@ -19,7 +22,6 @@ namespace MapGeneration.Benchmarks
             Runs = runs;
         }
 
-        // TODO: ugly
         [JsonConstructor]
         public BenchmarkResult(string inputName, IList<GeneratorRun> runs)
         {

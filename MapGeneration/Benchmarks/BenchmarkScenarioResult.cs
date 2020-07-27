@@ -2,6 +2,9 @@
 
 namespace MapGeneration.Benchmarks
 {
+    /// <summary>
+    /// Result of a benchmark scenario.
+    /// </summary>
     public class BenchmarkScenarioResult
     {
         public string Name { get; }

@@ -7,6 +7,7 @@ using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using MapGeneration.Utils.MapDrawing;

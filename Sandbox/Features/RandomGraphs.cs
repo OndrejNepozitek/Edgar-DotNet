@@ -55,7 +55,7 @@ namespace Sandbox.Features
             {
                 var layoutDrawer = new SVGLayoutDrawer<int>();
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>

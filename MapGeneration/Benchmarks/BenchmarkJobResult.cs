@@ -6,6 +6,9 @@ namespace MapGeneration.Benchmarks
 	using BenchmarkUtils.Attributes;
 	using BenchmarkUtils.Enums;
 
+	/// <summary>
+	/// Result of a benchmark job.
+	/// </summary>
 	public class BenchmarkJobResult
 	{
 		[Name("Name")]

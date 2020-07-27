@@ -24,15 +24,17 @@ namespace MapGeneration.Utils.MapDrawing
         private int height;
         private bool flipY;
 
-		/// <summary>
-		/// Draws a given layout and returns a string with SVG data.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
-		/// <param name="showRoomNames"></param>
-		/// <param name="fixedFontSize"></param>
-		/// <returns></returns>
-		public string DrawLayout(MapLayout<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false, bool flipY = false)
+        /// <summary>
+        /// Draws a given layout and returns a string with SVG data.
+        /// </summary>
+        /// <param name="layout">Layout that should be drawn</param>
+        /// <param name="width">Width of the SVG</param>
+        /// <param name="showRoomNames">Whether to show rooms names</param>
+        /// <param name="fixedFontSize">What should be the font size of room names</param>
+        /// <param name="forceSquare">Whether to force the output to have 1:1 aspect ration</param>
+        /// <param name="flipY">Whether to flip ty Y axis</param>
+        /// <returns></returns>
+        public string DrawLayout(MapLayout<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false, bool flipY = false)
 		{
 			if (width <= 0)
 				throw new ArgumentException("Width must be greater than zero.", nameof(width));

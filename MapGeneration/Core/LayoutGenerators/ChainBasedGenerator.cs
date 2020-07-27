@@ -13,7 +13,14 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutGenerators
 {
-    public class SimpleChainBasedGenerator<TMapDescription, TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TOutputLayout>, IRandomInjectable, ICancellable
+    /// <summary>
+    /// Simple chain based procedural level generator. Serves as a base for the dungeon generator.
+    /// </summary>
+    /// <typeparam name="TMapDescription"></typeparam>
+    /// <typeparam name="TLayout"></typeparam>
+    /// <typeparam name="TOutputLayout"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
+    public class ChainBasedGenerator<TMapDescription, TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TOutputLayout>, IRandomInjectable, ICancellable
     {
         private readonly TLayout initialLayout;
         private readonly IGeneratorPlanner<TLayout, TNode> generatorPlanner;
@@ -27,7 +34,7 @@ namespace MapGeneration.Core.LayoutGenerators
         public event Action<Random> OnRandomInjected; 
         public event Action<CancellationToken> OnCancellationTokenInjected; 
 
-        public SimpleChainBasedGenerator(TLayout initialLayout, IGeneratorPlanner<TLayout, TNode> generatorPlanner, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver, ILayoutConverter<TLayout, TOutputLayout> layoutConverter)
+        public ChainBasedGenerator(TLayout initialLayout, IGeneratorPlanner<TLayout, TNode> generatorPlanner, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver, ILayoutConverter<TLayout, TOutputLayout> layoutConverter)
         {
             this.initialLayout = initialLayout;
             this.generatorPlanner = generatorPlanner;
@@ -36,6 +43,10 @@ namespace MapGeneration.Core.LayoutGenerators
             this.layoutConverter = layoutConverter;
         }
 
+        /// <summary>
+        /// Generates a layout.
+        /// </summary>
+        /// <returns></returns>
         public TOutputLayout GenerateLayout()
         {
             IterationsCount = 0;

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using GeneralAlgorithms.DataStructures.Polygons;
+using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.MapDescriptions;
 using NUnit.Framework;
 
@@ -12,7 +15,7 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         public void AddRoom_DuplicateRoom_Throws()
         {
             var mapDescription = new MapDescription<int>();
-            var roomDescription = new BasicRoomDescription();
+            var roomDescription = new BasicRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, roomDescription);
 
@@ -23,7 +26,7 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         public void AddRoom_DuplicatePassage_Throws()
         {
             var mapDescription = new MapDescription<int>();
-            var roomDescription = new BasicRoomDescription();
+            var roomDescription = new BasicRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, roomDescription);
             mapDescription.AddRoom(1, roomDescription);
@@ -38,8 +41,8 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         {
             var mapDescription = new MapDescription<int>();
 
-            var basicRoomDescription = new BasicRoomDescription();
-            var corridorRoomDescription = new CorridorRoomDescription();
+            var basicRoomDescription = new BasicRoomDescription(GetRoomTemplates());
+            var corridorRoomDescription = new CorridorRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, basicRoomDescription);
             mapDescription.AddRoom(1, corridorRoomDescription);
@@ -59,8 +62,8 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         {
             var mapDescription = new MapDescription<int>();
 
-            var basicRoomDescription = new BasicRoomDescription();
-            var corridorRoomDescription = new CorridorRoomDescription();
+            var basicRoomDescription = new BasicRoomDescription(GetRoomTemplates());
+            var corridorRoomDescription = new CorridorRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, corridorRoomDescription);
             mapDescription.AddRoom(1, basicRoomDescription);
@@ -79,7 +82,7 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         public void GetGraph_WhenOnlyBasicRooms_ReturnsGraph()
         {
             var mapDescription = new MapDescription<int>();
-            var basicRoomDescription = new BasicRoomDescription();
+            var basicRoomDescription = new BasicRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, basicRoomDescription);
             mapDescription.AddRoom(1, basicRoomDescription);
@@ -105,14 +108,22 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         {
             var mapDescription = new MapDescription<int>();
 
-            var basicRoomDescription1 = new BasicRoomDescription();
-            var basicRoomDescription2 = new BasicRoomDescription();
+            var basicRoomDescription1 = new BasicRoomDescription(GetRoomTemplates());
+            var basicRoomDescription2 = new BasicRoomDescription(GetRoomTemplates());
 
             mapDescription.AddRoom(0, basicRoomDescription1);
             mapDescription.AddRoom(1, basicRoomDescription2);
 
             Assert.That(mapDescription.GetRoomDescription(0), Is.EqualTo(basicRoomDescription1));
             Assert.That(mapDescription.GetRoomDescription(1), Is.EqualTo(basicRoomDescription2));
+        }
+
+        private static List<RoomTemplate> GetRoomTemplates()
+        {
+            return new List<RoomTemplate>()
+            {
+                new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 1)),
+            };
         }
     }
 }

@@ -13,6 +13,12 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.LayoutEvolvers.PlatformersEvolver
 {
+    /// <summary>
+    /// This evolver is used in the Platformer generator and will be deprecated soon.
+    /// </summary>
+    /// <typeparam name="TLayout"></typeparam>
+    /// <typeparam name="TNode"></typeparam>
+    /// <typeparam name="TConfiguration"></typeparam>
     public class PlatformersEvolver<TLayout, TNode, TConfiguration> : ILayoutEvolver<TLayout, TNode>, IRandomInjectable, ICancellable
         where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
         where TConfiguration : IConfiguration<IntAlias<GridPolygon>, TNode>

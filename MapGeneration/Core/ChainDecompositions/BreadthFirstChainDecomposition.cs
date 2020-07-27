@@ -10,9 +10,7 @@ namespace MapGeneration.Core.ChainDecompositions
 	using GeneralAlgorithms.DataStructures.Graphs;
 
 	/// <summary>
-	/// The algorithm starts with the smallest chains. It then looks for connected faces that
-	/// are as small as possible. If no such face exists, paths close to already covered nodes
-	/// are considered. When a face can be processed, it has greater priority than paths.
+    /// Breadth-first search guided chain decomposition
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>

@@ -7,6 +7,9 @@ using MapGeneration.Utils.Interfaces;
 
 namespace MapGeneration.Core.Constraints
 {
+	/// <summary>
+	/// Computes energy of a layout based on given constraints.
+	/// </summary>
     public class ConstraintsEvaluator<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData>
         where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
         where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>, ISmartCloneable<TConfiguration>, new()

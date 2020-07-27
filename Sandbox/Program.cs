@@ -80,7 +80,7 @@ namespace Sandbox
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration, dungeonGeneratorInput.Offsets);
+                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 //return new LambdaGeneratorRunner(() =>
@@ -139,6 +139,9 @@ namespace Sandbox
 		/// </summary>
 		public static void RunExample()
 		{
+            new ExportLevelExample().Run();
+            return;
+
             // var mapDescription = new BasicsExample().GetMapDescription();
             // var mapDescription = new DifferentRoomDescriptionsExample().GetMapDescription();
             var mapDescription = new CorridorsExample().GetMapDescription();

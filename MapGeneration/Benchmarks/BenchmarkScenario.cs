@@ -11,6 +11,10 @@ namespace MapGeneration.Benchmarks
 
     public delegate IBenchmarkableLayoutGenerator<TLayout> GeneratorFactory<TMapDescription, TLayout>(GeneratorInput<TMapDescription> input);
 
+    /// <summary>
+    /// Benchmark scenario.
+    /// </summary>
+    /// <typeparam name="TMapDescription"></typeparam>
     public class BenchmarkScenario<TMapDescription> : IBenchmarkScenario<GeneratorInput<TMapDescription>>
     {
         public string Name { get; }

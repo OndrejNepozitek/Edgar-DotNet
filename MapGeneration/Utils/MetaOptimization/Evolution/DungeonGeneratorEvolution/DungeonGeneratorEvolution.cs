@@ -59,7 +59,7 @@ namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
                         // individual.Configuration.EarlyStopIfIterationsExceeded = null;
                     }
 
-                    var layoutGenerator = new DungeonGenerator<TNode>(input.MapDescription, individual.Configuration, null);
+                    var layoutGenerator = new DungeonGenerator<TNode>(input.MapDescription, individual.Configuration);
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var generatorRunner = new LambdaGeneratorRunner(() =>
