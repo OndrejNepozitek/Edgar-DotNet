@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net471</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <AssemblyTitle>Sandbox</AssemblyTitle>
-    <Product>Sandbox</Product>
-    <Copyright>Copyright ©  2018</Copyright>
+    <AssemblyTitle>GUI</AssemblyTitle>
+    <Product>GUI</Product>
+    <Copyright>Copyright ©  2017</Copyright>
     <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,15 +17,26 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -39,15 +50,28 @@
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="GeneratorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="GeneratorWindow.Designer.cs">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Update="MainSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MainSettings.Designer.cs">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="GeneratorWindow.resx">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MainSettings.resx">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -56,6 +80,7 @@
     <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -68,8 +93,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
-    <ProjectReference Include="..\GUI\GUI.csproj" />
-    <ProjectReference Include="..\MapGeneration\MapGeneration.csproj" />
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
   </ItemGroup>
 </Project>

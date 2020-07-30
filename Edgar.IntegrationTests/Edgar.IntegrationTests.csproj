@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
-    <ProjectReference Include="..\MapGeneration\MapGeneration.csproj" />
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
   </ItemGroup>
 
 </Project>

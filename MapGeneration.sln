@@ -3,25 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration", "MapGeneration\MapGeneration.csproj", "{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralAlgorithms", "GeneralAlgorithms\GeneralAlgorithms.csproj", "{6505FED6-EFB7-446E-BDE5-713D167083CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar", "Edgar\Edgar.csproj", "{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{913B8829-7BC1-4627-995B-8ECF6AC15FBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralAlgorithms.Tests", "GeneralAlgorithms.Tests\GeneralAlgorithms.Tests.csproj", "{CD72AFE4-17C9-4F89-892A-1C86127B7466}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.GeneralAlgorithmsTests", "Edgar.GeneralAlgorithmsTests\Edgar.GeneralAlgorithmsTests.csproj", "{CD72AFE4-17C9-4F89-892A-1C86127B7466}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.Tests", "MapGeneration.Tests\MapGeneration.Tests.csproj", "{D21972B1-D75A-4ADC-802F-394BD5FFE654}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.Tests", "Edgar.Tests\Edgar.Tests.csproj", "{D21972B1-D75A-4ADC-802F-394BD5FFE654}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{93F99DE4-5100-4B25-8602-C636C62768E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.GUI", "Edgar.GUI\Edgar.GUI.csproj", "{93F99DE4-5100-4B25-8602-C636C62768E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{6609983F-B790-4E65-A329-832AFE28BA77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.Sandbox", "Edgar.Sandbox\Edgar.Sandbox.csproj", "{6609983F-B790-4E65-A329-832AFE28BA77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceTests", "PerformanceTests\PerformanceTests.csproj", "{9D61AC5D-3924-435E-94FC-14062AAC3937}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.PerformanceTests", "Edgar.PerformanceTests\Edgar.PerformanceTests.csproj", "{9D61AC5D-3924-435E-94FC-14062AAC3937}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapGeneration.IntegrationTests", "MapGeneration.IntegrationTests\MapGeneration.IntegrationTests.csproj", "{3FF2AF2C-22E7-482D-AB26-D222AB16CAE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.IntegrationTests", "Edgar.IntegrationTests\Edgar.IntegrationTests.csproj", "{3FF2AF2C-22E7-482D-AB26-D222AB16CAE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxEvolutionRunner", "SandboxEvolutionRunner\SandboxEvolutionRunner.csproj", "{EF1747AE-47A4-4EDA-B3E1-8259F902A231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edgar.SandboxEvolutionRunner", "Edgar.SandboxEvolutionRunner\Edgar.SandboxEvolutionRunner.csproj", "{EF1747AE-47A4-4EDA-B3E1-8259F902A231}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,18 +43,6 @@ Global
 		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Release|x64.Build.0 = Release|Any CPU
 		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Release|x86.Build.0 = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|x64.Build.0 = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Debug|x86.Build.0 = Debug|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|x64.ActiveCfg = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|x64.Build.0 = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|x86.ActiveCfg = Release|Any CPU
-		{6505FED6-EFB7-446E-BDE5-713D167083CE}.Release|x86.Build.0 = Release|Any CPU
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD72AFE4-17C9-4F89-892A-1C86127B7466}.Debug|x64.ActiveCfg = Debug|Any CPU

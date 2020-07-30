@@ -7,8 +7,8 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <AssemblyTitle>GeneralAlgorithms.Tests</AssemblyTitle>
-    <Product>GeneralAlgorithms.Tests</Product>
+    <AssemblyTitle>MapGeneration.Tests</AssemblyTitle>
+    <Product>MapGeneration.Tests</Product>
     <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
@@ -18,6 +18,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
   </ItemGroup>
 </Project>

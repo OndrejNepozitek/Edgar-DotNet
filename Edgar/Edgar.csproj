@@ -22,10 +22,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkUtils" Version="1.2.2" />
+    <PackageReference Include="GraphPlanarityTesting" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="RangeTree" Version="1.0.0" />
     <PackageReference Include="YamlDotNet" Version="8.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GeneralAlgorithms\GeneralAlgorithms.csproj" />
   </ItemGroup>
 </Project>

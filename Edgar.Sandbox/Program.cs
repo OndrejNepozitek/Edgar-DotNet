@@ -139,9 +139,6 @@ namespace Sandbox
 		/// </summary>
 		public static void RunExample()
 		{
-            new ExportLevelExample().Run();
-            return;
-
             // var mapDescription = new BasicsExample().GetMapDescription();
             // var mapDescription = new DifferentRoomDescriptionsExample().GetMapDescription();
             var mapDescription = new CorridorsExample().GetMapDescription();
