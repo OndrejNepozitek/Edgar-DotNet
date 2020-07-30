@@ -2,12 +2,11 @@ language: csharp
 mono: none
 dotnet: 2.2.207
 script:
-  - dotnet build ./GeneralAlgorithms/GeneralAlgorithms.csproj
-  - dotnet build ./MapGeneration/MapGeneration.csproj
-  - dotnet build ./GeneralAlgorithms.Tests/GeneralAlgorithms.Tests.csproj
-  - dotnet build ./MapGeneration.Tests/MapGeneration.Tests.csproj
-  - dotnet test ./GeneralAlgorithms.Tests/GeneralAlgorithms.Tests.csproj
-  - dotnet test ./MapGeneration.Tests/MapGeneration.Tests.csproj
-  - dotnet test ./MapGeneration.IntegrationTests/MapGeneration.IntegrationTests.csproj
-  - dotnet build --configuration Release ./PerformanceTests/PerformanceTests.csproj
-  - dotnet ./PerformanceTests/bin/Release/netcoreapp2.2/PerformanceTests.dll --commit="$TRAVIS_COMMIT" --commitMessage="$TRAVIS_COMMIT_MESSAGE" --branch="$TRAVIS_BRANCH" --pullRequest="$TRAVIS_PULL_REQUEST" --buildNumber="$TRAVIS_BUILD_NUMBER" --url="$PERFORMANCE_TESTS_URL" --repeats="$PERFORMANCE_TESTS_REPEATS"
+  - dotnet build ./Edgar/Edgar.csproj
+  - dotnet build ./Edgar.GeneralAlgorithmsTests/Edgar.GeneralAlgorithmsTests.csproj
+  - dotnet build ./Edgar.Tests/Edgar.Tests.csproj
+  - dotnet test ./Edgar.GeneralAlgorithmsTests/Edgar.GeneralAlgorithmsTests.csproj
+  - dotnet test ./Edgar.Tests/Edgar.Tests.csproj
+  - dotnet test ./Edgar.IntegrationTests/Edgar.IntegrationTests.csproj
+  - dotnet build --configuration Release ./Edgar.PerformanceTests/Edgar.PerformanceTests.csproj
+  - dotnet ./Edgar.PerformanceTests/bin/Release/netcoreapp2.2/Edgar.PerformanceTests.dll --commit="$TRAVIS_COMMIT" --commitMessage="$TRAVIS_COMMIT_MESSAGE" --branch="$TRAVIS_BRANCH" --pullRequest="$TRAVIS_PULL_REQUEST" --buildNumber="$TRAVIS_BUILD_NUMBER" --url="$PERFORMANCE_TESTS_URL" --repeats="$PERFORMANCE_TESTS_REPEATS"
