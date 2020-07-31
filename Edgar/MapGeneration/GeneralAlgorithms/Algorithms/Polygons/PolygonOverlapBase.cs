@@ -13,7 +13,7 @@
 	public abstract class PolygonOverlapBase<TShape> : IPolygonOverlap<TShape>
 	{
 		/// <inheritdoc />
-		public bool DoOverlap(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
+		public bool DoOverlap(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
 		{
 			// Polygons cannot overlap if their bounding rectangles do not overlap
 			if (!DoOverlap(GetBoundingRectangle(polygon1) + position1, GetBoundingRectangle(polygon2) + position2))
@@ -48,7 +48,7 @@
 		}
 
 		/// <inheritdoc />
-		public int OverlapArea(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
+		public int OverlapArea(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
 		{
 			// Polygons cannot overlap if their bounding rectangles do not overlap
 			if (!DoOverlap(GetBoundingRectangle(polygon1) + position1, GetBoundingRectangle(polygon2) + position2))
@@ -72,7 +72,7 @@
 		}
 
 		/// <inheritdoc />
-		public bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 0)
+		public bool DoTouch(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2, int minimumLength = 0)
 		{
 			if (minimumLength < 0)
 				throw new ArgumentException("The minimum length must by at least 0.", nameof(minimumLength));
@@ -116,7 +116,7 @@
 		}
 
 		/// <inheritdoc />
-		public IList<Tuple<IntVector2, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line)
+		public IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line)
 		{
 			var reverse = line.GetDirection() == OrthogonalLine.Direction.Bottom || line.GetDirection() == OrthogonalLine.Direction.Left;
 
@@ -132,7 +132,7 @@
 			var fixedDecomposition = GetDecomposition(fixedPolygon).Select(x => x.Rotate(rotation)).ToList();
 
 			var smallestX = movingDecomposition.Min(x => x.A.X);
-			var events = new List<Tuple<IntVector2, bool>>();
+			var events = new List<Tuple<Vector2Int, bool>>();
 
 			// Compute the overlap for every rectangle in the decomposition of the moving polygon
 			foreach (var movingRectangle in movingDecomposition)
@@ -150,7 +150,7 @@
 		}
 
 		/// <inheritdoc />
-		public int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
+		public int GetDistance(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
 		{
 			throw new NotImplementedException();
 		}
@@ -163,12 +163,12 @@
 		/// <param name="line"></param>
 		/// <param name="movingRectangleOffset">Specifies the X-axis offset of a given moving rectangle.</param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> OverlapAlongLine(GridRectangle movingRectangle, IList<GridRectangle> fixedRectangles, OrthogonalLine line, int movingRectangleOffset = 0)
+		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(GridRectangle movingRectangle, IList<GridRectangle> fixedRectangles, OrthogonalLine line, int movingRectangleOffset = 0)
 		{
 			if (line.GetDirection() != OrthogonalLine.Direction.Right)
 				throw new ArgumentException();
 
-			var events = new List<Tuple<IntVector2, bool>>();
+			var events = new List<Tuple<Vector2Int, bool>>();
 
 			foreach (var fixedRectangle in fixedRectangles)
 			{
@@ -187,7 +187,7 @@
 		/// <param name="line"></param>
 		/// <param name="movingRectangleOffset"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> OverlapAlongLine(GridRectangle movingRectangle, GridRectangle fixedRectangle, OrthogonalLine line, int movingRectangleOffset = 0)
+		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(GridRectangle movingRectangle, GridRectangle fixedRectangle, OrthogonalLine line, int movingRectangleOffset = 0)
 		{
 			if (line.GetDirection() != OrthogonalLine.Direction.Right)
 				throw new ArgumentException();
@@ -198,10 +198,10 @@
 			// They cannot overlap if the bounding rectangle does not overlap with the fixed one
 			if (!DoOverlap(boundingRectangle, fixedRectangle))
 			{
-				return new List<Tuple<IntVector2, bool>>();
+				return new List<Tuple<Vector2Int, bool>>();
 			}
 
-			var events = new List<Tuple<IntVector2, bool>>();
+			var events = new List<Tuple<Vector2Int, bool>>();
 
 			if (fixedRectangle.A.X - movingRectangle.Width - movingRectangleOffset  <= line.From.X)
 			{
@@ -210,12 +210,12 @@
 
 			if (fixedRectangle.A.X > line.From.X + movingRectangle.Width + movingRectangleOffset)
 			{
-				events.Add(Tuple.Create(new IntVector2(fixedRectangle.A.X - movingRectangle.Width + 1 - movingRectangleOffset, line.From.Y), true));
+				events.Add(Tuple.Create(new Vector2Int(fixedRectangle.A.X - movingRectangle.Width + 1 - movingRectangleOffset, line.From.Y), true));
 			}
 
 			if (fixedRectangle.B.X - movingRectangleOffset < line.To.X)
 			{
-				events.Add(Tuple.Create(new IntVector2(fixedRectangle.B.X - movingRectangleOffset, line.From.Y), false));
+				events.Add(Tuple.Create(new Vector2Int(fixedRectangle.B.X - movingRectangleOffset, line.From.Y), false));
 			}
 
 			return events;
@@ -227,15 +227,15 @@
 		/// <param name="events"></param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> ReverseEvents(List<Tuple<IntVector2, bool>> events, OrthogonalLine line)
+		protected List<Tuple<Vector2Int, bool>> ReverseEvents(List<Tuple<Vector2Int, bool>> events, OrthogonalLine line)
 		{
-			var eventsCopy = new List<Tuple<IntVector2, bool>>(events);
+			var eventsCopy = new List<Tuple<Vector2Int, bool>>(events);
 
 			if (events.Count == 0)
 				return events;
 
 			eventsCopy.Reverse();
-			var newEvents = new List<Tuple<IntVector2, bool>>();
+			var newEvents = new List<Tuple<Vector2Int, bool>>();
 
 			if (events.Last().Item2)
 			{
@@ -260,7 +260,7 @@
 		/// <param name="events2"></param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> MergeEvents(List<Tuple<IntVector2, bool>> events1, List<Tuple<IntVector2, bool>> events2, OrthogonalLine line)
+		protected List<Tuple<Vector2Int, bool>> MergeEvents(List<Tuple<Vector2Int, bool>> events1, List<Tuple<Vector2Int, bool>> events2, OrthogonalLine line)
 		{
 			if (events1.Count == 0)
 				return events2;
@@ -268,7 +268,7 @@
 			if (events2.Count == 0)
 				return events1;
 
-			var merged = new List<Tuple<IntVector2, bool>>();
+			var merged = new List<Tuple<Vector2Int, bool>>();
 
 			var counter1 = 0;
 			var counter2 = 0;

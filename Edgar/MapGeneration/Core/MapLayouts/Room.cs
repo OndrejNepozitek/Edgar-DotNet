@@ -25,7 +25,7 @@ namespace MapGeneration.Core.MapLayouts
         /// <summary>
         /// Position of the room.
         /// </summary>
-        public IntVector2 Position { get; }
+        public Vector2Int Position { get; }
         
         /// <summary>
         /// Room template used for this room.
@@ -62,7 +62,7 @@ namespace MapGeneration.Core.MapLayouts
         /// </summary>
         public IList<Transformation> Transformations { get; }
 
-		public Room(TNode node, GridPolygon shape, IntVector2 position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstance roomTemplateInstance)
+		public Room(TNode node, GridPolygon shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstance roomTemplateInstance)
 		{
 			Node = node;
 			Shape = shape;

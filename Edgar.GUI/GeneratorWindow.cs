@@ -54,7 +54,7 @@ namespace GUI
 
 		private float fixedScaleRatio = 1f;
 		private float fixedScale;
-		private IntVector2 fixedOffset;
+		private Vector2Int fixedOffset;
 
 		public GeneratorWindow(GeneratorSettings settings)
 		{

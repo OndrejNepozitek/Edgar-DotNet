@@ -8,17 +8,17 @@
 		/// <summary>
 		/// Bottom-left corner of the rectangle.
 		/// </summary>
-		public readonly IntVector2 A;
+		public readonly Vector2Int A;
 
 		/// <summary>
 		/// Top right corner of the rectangle.
 		/// </summary>
-		public readonly IntVector2 B;
+		public readonly Vector2Int B;
 
 		/// <summary>
 		/// Center point of the rectangle. (Possibly rounded)
 		/// </summary>
-		public IntVector2 Center => new IntVector2((A.X + B.X) / 2, (A.Y + B.Y) / 2);
+		public Vector2Int Center => new Vector2Int((A.X + B.X) / 2, (A.Y + B.Y) / 2);
 
 		/// <summary>
 		/// Area of the rectangle.
@@ -44,13 +44,13 @@
 		/// </remarks>
 		/// <param name="a"></param>
 		/// <param name="b"></param>
-		public GridRectangle(IntVector2 a, IntVector2 b)
+		public GridRectangle(Vector2Int a, Vector2Int b)
 		{
 			if (a.X == b.X || a.Y == b.Y)
 				throw new ArgumentException();
 
-			A = new IntVector2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
-			B = new IntVector2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+			A = new Vector2Int(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
+			B = new Vector2Int(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
 		}
 
 		/// <summary>
@@ -74,7 +74,7 @@
 		/// <param name="rectangle"></param>
 		/// <param name="offset"></param>
 		/// <returns></returns>
-		public static GridRectangle operator +(GridRectangle rectangle, IntVector2 offset)
+		public static GridRectangle operator +(GridRectangle rectangle, Vector2Int offset)
 		{
 			return new GridRectangle(rectangle.A + offset, rectangle.B + offset);
 		}

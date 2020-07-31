@@ -75,7 +75,7 @@
 
 				if (x1 <= x2)
 				{
-					intersection = new OrthogonalLine(new IntVector2(x1, line1.From.Y), new IntVector2(x2, line1.From.Y));
+					intersection = new OrthogonalLine(new Vector2Int(x1, line1.From.Y), new Vector2Int(x2, line1.From.Y));
 					return true;
 				}
 
@@ -96,7 +96,7 @@
 
 				if (y1 <= y2)
 				{
-					intersection = new OrthogonalLine(new IntVector2(line1.From.X, y1), new IntVector2(line1.From.X, y2));
+					intersection = new OrthogonalLine(new Vector2Int(line1.From.X, y1), new Vector2Int(line1.From.X, y2));
 					return true;
 				}
 
@@ -120,7 +120,7 @@
 				    vline.From.Y <= hline.From.Y &&
 				    vline.To.Y >= hline.From.Y)
 				{
-					intersection = new OrthogonalLine(new IntVector2(vline.From.X, hline.From.Y), new IntVector2(vline.From.X, hline.From.Y));
+					intersection = new OrthogonalLine(new Vector2Int(vline.From.X, hline.From.Y), new Vector2Int(vline.From.X, hline.From.Y));
 					return true;
 				}
 

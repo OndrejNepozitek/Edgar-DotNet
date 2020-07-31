@@ -74,7 +74,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
             var roomShape = GridPolygon.GetSquare(3);
             var doorPositions = new List<OrthogonalLine>()
             {
-                new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 1)),
+                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 1)),
             };
 
             var roomTemplate = new RoomTemplate(roomShape, new ManualDoorMode(doorPositions), TransformationHelper.GetAllTransformations().ToList());

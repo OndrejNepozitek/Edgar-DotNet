@@ -12,8 +12,8 @@ namespace GeneralAlgorithms.DataStructures.Common
 	/// </summary>
 	public struct OrthogonalLine : IEquatable<OrthogonalLine>
 	{
-		public readonly IntVector2 From;
-		public readonly IntVector2 To;
+		public readonly Vector2Int From;
+		public readonly Vector2Int To;
 
 		// TODO: handle better
 		[JsonProperty]
@@ -24,7 +24,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <summary>
 		/// Returns number of points minus 1.
 		/// </summary>
-		public int Length => IntVector2.ManhattanDistance(new IntVector2(0, 0), From - To);
+		public int Length => Vector2Int.ManhattanDistance(new Vector2Int(0, 0), From - To);
 
 		/// <summary>
 		/// Construct an orthogonal line from given endpoints.
@@ -32,7 +32,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <param name="from"></param>
 		/// <param name="to"></param>
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
-		public OrthogonalLine(IntVector2 from, IntVector2 to)
+		public OrthogonalLine(Vector2Int from, Vector2Int to)
 		{
 			if (from.X != to.X && from.Y != to.Y)
 			{
@@ -58,7 +58,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
         // TODO: remove
         [JsonConstructor]
-		public OrthogonalLine(IntVector2 from, IntVector2 to, Direction degeneratedDirection)
+		public OrthogonalLine(Vector2Int from, Vector2Int to, Direction degeneratedDirection)
 		{
 			if (from.X != to.X && from.Y != to.Y)
 			{
@@ -101,7 +101,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <param name="to"></param>
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line</exception>
 		/// <returns></returns>
-		public static Direction GetDirection(IntVector2 from, IntVector2 to)
+		public static Direction GetDirection(Vector2Int from, Vector2Int to)
 		{
 			if (from == to)
 			{
@@ -171,8 +171,8 @@ namespace GeneralAlgorithms.DataStructures.Common
 			var rotation = ComputeRotation();
 			var rotated = Rotate(rotation);
 
-			var movedFrom = new IntVector2(rotated.From.X + from, rotated.From.Y);
-			var movedTo = new IntVector2(rotated.To.X - to, rotated.To.Y);
+			var movedFrom = new Vector2Int(rotated.From.X + from, rotated.From.Y);
+			var movedTo = new Vector2Int(rotated.To.X - to, rotated.To.Y);
 
 			return new OrthogonalLine(movedFrom, movedTo, RotateDirection(GetDirection(), rotation)).Rotate(-rotation);
 		}
@@ -246,9 +246,9 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// The direction is from "From" to "To";
 		/// </summary>
 		/// <returns></returns>
-		public List<IntVector2> GetPoints()
+		public List<Vector2Int> GetPoints()
 		{
-			var points = new List<IntVector2>();
+			var points = new List<Vector2Int>();
 
 			switch (GetDirection())
 			{
@@ -258,19 +258,19 @@ namespace GeneralAlgorithms.DataStructures.Common
 
 				case Direction.Top:
 					for (var i = From.Y; i <= To.Y; i++)
-						points.Add(new IntVector2(From.X, i));
+						points.Add(new Vector2Int(From.X, i));
 					break;
 				case Direction.Bottom:
 					for (var i = From.Y; i >= To.Y; i--)
-						points.Add(new IntVector2(From.X, i));
+						points.Add(new Vector2Int(From.X, i));
 					break;
 				case Direction.Right:
 					for (var i = From.X; i <= To.X; i++)
-						points.Add(new IntVector2(i, From.Y));
+						points.Add(new Vector2Int(i, From.Y));
 					break;
 				case Direction.Left:
 					for (var i = From.X; i >= To.X; i--)
-						points.Add(new IntVector2(i, From.Y));
+						points.Add(new Vector2Int(i, From.Y));
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -326,7 +326,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// 
 		/// <returns></returns>
 		[Pure]
-		public IntVector2 GetNthPoint(int n)
+		public Vector2Int GetNthPoint(int n)
 		{
 			if (n > Length)
 				throw new ArgumentException("n is greater than the length of the line.", nameof(n));
@@ -336,13 +336,13 @@ namespace GeneralAlgorithms.DataStructures.Common
 			switch (direction)
 			{
 				case Direction.Top:
-					return From + new IntVector2(0, n);
+					return From + new Vector2Int(0, n);
 				case Direction.Right:
-					return From + new IntVector2(n, 0);
+					return From + new Vector2Int(n, 0);
 				case Direction.Bottom:
-					return From - new IntVector2(0, n);
+					return From - new Vector2Int(0, n);
 				case Direction.Left:
-					return From - new IntVector2(n, 0);
+					return From - new Vector2Int(n, 0);
 				case Direction.Undefined:
 				{
 					if (n > 0)
@@ -364,7 +364,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <param name="point"></param>
 		/// <returns>Index of a given point on the line or -1.</returns>
 		[Pure]
-		public int Contains(IntVector2 point)
+		public int Contains(Vector2Int point)
 		{
 			var direction = GetDirection();
 
@@ -426,18 +426,18 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// </remarks>
 		/// <returns></returns>
 		[Pure]
-		public IntVector2 GetDirectionVector()
+		public Vector2Int GetDirectionVector()
 		{
 			switch (GetDirection())
 			{
 				case Direction.Top:
-					return new IntVector2(0, 1);
+					return new Vector2Int(0, 1);
 				case Direction.Right:
-					return new IntVector2(1, 0);
+					return new Vector2Int(1, 0);
 				case Direction.Bottom:
-					return new IntVector2(0, -1);
+					return new Vector2Int(0, -1);
 				case Direction.Left:
-					return new IntVector2(-1, 0);
+					return new Vector2Int(-1, 0);
 				case Direction.Undefined:
 					throw new InvalidOperationException("Degenerated lines without a direction set do not have a direction vector.");
 				default:
@@ -453,7 +453,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <param name="line"></param>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public static OrthogonalLine operator +(OrthogonalLine line, IntVector2 point)
+		public static OrthogonalLine operator +(OrthogonalLine line, Vector2Int point)
 		{
 			return new OrthogonalLine(line.From + point, line.To + point, line.GetDirection());
 		}
@@ -464,7 +464,7 @@ namespace GeneralAlgorithms.DataStructures.Common
 		/// <param name="line"></param>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public static OrthogonalLine operator +(IntVector2 point, OrthogonalLine line)
+		public static OrthogonalLine operator +(Vector2Int point, OrthogonalLine line)
 		{
 			return line + point;
 		}

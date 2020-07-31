@@ -16,7 +16,7 @@ namespace MapGeneration.Core.Configurations.Interfaces
 		/// <summary>
 		/// Position of the node.
 		/// </summary>
-		new IntVector2 Position { get; set; }
+		new Vector2Int Position { get; set; }
 
         new TNode Node { get; set; }
 	}

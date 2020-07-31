@@ -20,7 +20,7 @@
 		/// <inheritdoc />
 		public List<GridRectangle> GetPartitions(GridPolygon polygon)
 		{
-			IList<IntVector2> points = polygon.GetPoints();
+			IList<Vector2Int> points = polygon.GetPoints();
 
 			var vertices = new List<Vertex>();
 
@@ -150,7 +150,7 @@
 				if (minx == maxx || miny == maxy)
 					throw new InvalidOperationException("Degenerated rectangle. Must not happen.");
 
-				rectangles.Add(new GridRectangle(new IntVector2(minx, miny), new IntVector2(maxx, maxy)));
+				rectangles.Add(new GridRectangle(new Vector2Int(minx, miny), new Vector2Int(maxx, maxy)));
 			}
 
 			return rectangles;
@@ -238,8 +238,8 @@
 				}
 
 				//Create two splitting vertices
-				var splitA = new Vertex(new IntVector2(closestDistance, v.Point.Y), 0, false);
-				var splitB = new Vertex(new IntVector2(closestDistance, v.Point.Y), 0, false);
+				var splitA = new Vertex(new Vector2Int(closestDistance, v.Point.Y), 0, false);
+				var splitB = new Vertex(new Vector2Int(closestDistance, v.Point.Y), 0, false);
 
 				//Clear concavity flag
 				v.Concave = false;
@@ -629,7 +629,7 @@
 
 		private class Vertex
 		{
-			public IntVector2 Point;
+			public Vector2Int Point;
 			public int Index;
 			public bool Concave;
 
@@ -643,7 +643,7 @@
 
 			public Vertex Prev;
 
-			public Vertex(IntVector2 point, int index, bool concave)
+			public Vertex(Vector2Int point, int index, bool concave)
 			{
 				Point = point;
 				Index = index;

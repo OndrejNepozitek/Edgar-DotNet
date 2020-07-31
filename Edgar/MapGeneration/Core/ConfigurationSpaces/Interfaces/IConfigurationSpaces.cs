@@ -19,7 +19,7 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 		/// <param name="mainConfiguration">Configuration of a node for which we look for a new position.</param>
 		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
 		/// <returns></returns>
-		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
+		Vector2Int GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations);
 
 		/// <summary>
 		/// Gets a random point in the maximum intersection of configuration spaces
@@ -29,7 +29,7 @@ namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
 		/// <param name="configurations">Configurations that we try to satisfy when looking for a new position.</param>
 		/// <param name="configurationsSatisfied">How many of given configurations were satisfied.</param>
 		/// <returns></returns>
-		IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
+		Vector2Int GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied);
 
 		/// <summary>
 		/// Gets a maximum intersection of configuration spaces of given

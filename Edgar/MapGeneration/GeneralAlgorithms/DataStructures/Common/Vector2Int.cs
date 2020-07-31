@@ -9,13 +9,13 @@
 	/// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
 	/// </summary>
-	public struct IntVector2 : IComparable<IntVector2>, IEquatable<IntVector2>
+	public struct Vector2Int : IComparable<Vector2Int>, IEquatable<Vector2Int>
 	{
 		public readonly int X;
 
 		public readonly int Y;
 
-		public IntVector2(int x, int y)
+		public Vector2Int(int x, int y)
 		{
 			X = x;
 			Y = y;
@@ -29,7 +29,7 @@
 		/// <param name="a"></param>
 		/// <param name="b"></param>
 		/// <returns></returns>
-		public static int ManhattanDistance(IntVector2 a, IntVector2 b)
+		public static int ManhattanDistance(Vector2Int a, Vector2Int b)
 		{
 			return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
 		}
@@ -40,7 +40,7 @@
 		/// <param name="a"></param>
 		/// <param name="b"></param>
 		/// <returns></returns>
-		public static double EuclideanDistance(IntVector2 a, IntVector2 b)
+		public static double EuclideanDistance(Vector2Int a, Vector2Int b)
 		{
 			return Math.Sqrt((int)(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)));
 		}
@@ -51,7 +51,7 @@
 		/// <param name="a"></param>
 		/// <param name="b"></param>
 		/// <returns></returns>
-		public static int MaxDistance(IntVector2 a, IntVector2 b)
+		public static int MaxDistance(Vector2Int a, Vector2Int b)
 		{
 			return Math.Max(Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y));
 		}
@@ -66,7 +66,7 @@
 		/// </summary>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public bool Equals(IntVector2 other)
+		public bool Equals(Vector2Int other)
 		{
 			return X == other.X && Y == other.Y;
 		}
@@ -80,7 +80,7 @@
 		{
 			if (obj is null) return false;
 
-			return obj is IntVector2 vector2 && Equals(vector2);
+			return obj is Vector2Int vector2 && Equals(vector2);
 		}
 
 		/// <inheritdoc />
@@ -89,7 +89,7 @@
 		/// </summary>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public int CompareTo(IntVector2 other)
+		public int CompareTo(Vector2Int other)
 		{
 			if (other == this)
 			{
@@ -124,12 +124,12 @@
 		/// <param name="degrees">Multiples of 90 are expected.</param>
 		/// <returns></returns>
 		[Pure]
-		public IntVector2 RotateAroundCenter(int degrees)
+		public Vector2Int RotateAroundCenter(int degrees)
 		{
 			var x = X * IntegerGoniometric.Cos(degrees) + Y * IntegerGoniometric.Sin(degrees);
 			var y = -X * IntegerGoniometric.Sin(degrees) + Y * IntegerGoniometric.Cos(degrees);
 
-			return new IntVector2(x, y);
+			return new Vector2Int(x, y);
 		}
 
 		/// <summary>
@@ -138,7 +138,7 @@
 		/// <param name="transformation"></param>
 		/// <returns></returns>
 		[Pure]
-		public IntVector2 Transform(Transformation transformation)
+		public Vector2Int Transform(Transformation transformation)
 		{
 			switch (transformation)
 			{
@@ -155,16 +155,16 @@
 					return RotateAroundCenter(270);
 
 				case Transformation.MirrorX:
-					return new IntVector2(X, -Y);
+					return new Vector2Int(X, -Y);
 
 				case Transformation.MirrorY:
-					return new IntVector2(-X, Y);
+					return new Vector2Int(-X, Y);
 
 				case Transformation.Diagonal13:
-					return new IntVector2(Y, X);
+					return new Vector2Int(Y, X);
 
 				case Transformation.Diagonal24:
-					return new IntVector2(-Y, -X);
+					return new Vector2Int(-Y, -X);
 
 				default:
 					throw new ArgumentException("Given polygon transformation is not implemented");
@@ -176,7 +176,7 @@
 		/// </summary>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public int DotProduct(IntVector2 other)
+		public int DotProduct(Vector2Int other)
 		{
 			return X * other.X + Y * other.Y;
 		}
@@ -186,9 +186,9 @@
 		/// </summary>
 		/// <param name="other"></param>
 		/// <returns></returns>
-		public IntVector2 ElementWiseProduct(IntVector2 other)
+		public Vector2Int ElementWiseProduct(Vector2Int other)
 		{
-			return new IntVector2(X * other.X, Y * other.Y);
+			return new Vector2Int(X * other.X, Y * other.Y);
 		}
 
 		/// <summary>
@@ -196,14 +196,14 @@
 		/// That means vector that are different by 1 in exactly one of its components.
 		/// </summary>
 		/// <returns></returns>
-		public List<IntVector2> GetAdjacentVectors()
+		public List<Vector2Int> GetAdjacentVectors()
 		{
-			var positions = new List<IntVector2>
+			var positions = new List<Vector2Int>
 			{
-				new IntVector2(X + 1, Y),
-				new IntVector2(X - 1, Y),
-				new IntVector2(X, Y + 1),
-				new IntVector2(X, Y - 1)
+				new Vector2Int(X + 1, Y),
+				new Vector2Int(X - 1, Y),
+				new Vector2Int(X, Y + 1),
+				new Vector2Int(X, Y - 1)
 			};
 
 			return positions;
@@ -214,14 +214,14 @@
 		/// That means vector that are different by 1 both of its components.
 		/// </summary>
 		/// <returns></returns>
-		public List<IntVector2> GetAdjacentAndDiagonalVectors()
+		public List<Vector2Int> GetAdjacentAndDiagonalVectors()
 		{
 			var positions = GetAdjacentVectors();
 
-			positions.Add(new IntVector2(X + 1, Y + 1));
-			positions.Add(new IntVector2(X - 1, Y - 1));
-			positions.Add(new IntVector2(X - 1, Y + 1));
-			positions.Add(new IntVector2(X + 1, Y - 1));
+			positions.Add(new Vector2Int(X + 1, Y + 1));
+			positions.Add(new Vector2Int(X - 1, Y - 1));
+			positions.Add(new Vector2Int(X - 1, Y + 1));
+			positions.Add(new Vector2Int(X + 1, Y - 1));
 
 			return positions;
 		}
@@ -230,49 +230,49 @@
 
 		#region Operators
 
-		public static IntVector2 operator +(IntVector2 a, IntVector2 b)
+		public static Vector2Int operator +(Vector2Int a, Vector2Int b)
 		{
-			return new IntVector2(a.X + b.X, a.Y + b.Y);
+			return new Vector2Int(a.X + b.X, a.Y + b.Y);
 		}
 
-		public static IntVector2 operator -(IntVector2 a, IntVector2 b)
+		public static Vector2Int operator -(Vector2Int a, Vector2Int b)
 		{
-			return new IntVector2(a.X - b.X, a.Y - b.Y);
+			return new Vector2Int(a.X - b.X, a.Y - b.Y);
 		}
 
-		public static IntVector2 operator *(int a, IntVector2 b)
+		public static Vector2Int operator *(int a, Vector2Int b)
 		{
-			return new IntVector2(a * b.X, a * b.Y);
+			return new Vector2Int(a * b.X, a * b.Y);
 		}
 
-		public static bool operator ==(IntVector2 a, IntVector2 b)
+		public static bool operator ==(Vector2Int a, Vector2Int b)
 		{
 			return Equals(a, b);
 		}
 
-		public static bool operator !=(IntVector2 a, IntVector2 b)
+		public static bool operator !=(Vector2Int a, Vector2Int b)
 		{
 
 			return !Equals(a, b);
 		}
 
-		public static bool operator <=(IntVector2 a, IntVector2 b)
+		public static bool operator <=(Vector2Int a, Vector2Int b)
 		{
 
 			return a.X <= b.X || (a.X == b.X && a.Y <= b.Y);
 		}
 
-		public static bool operator <(IntVector2 a, IntVector2 b)
+		public static bool operator <(Vector2Int a, Vector2Int b)
 		{
 			return a.X < b.X || (a.X == b.X && a.Y < b.Y);
 		}
 
-		public static bool operator >(IntVector2 a, IntVector2 b)
+		public static bool operator >(Vector2Int a, Vector2Int b)
 		{
 			return !(a <= b);
 		}
 
-		public static bool operator >=(IntVector2 a, IntVector2 b)
+		public static bool operator >=(Vector2Int a, Vector2Int b)
 		{
 			return !(a < b);
 		}

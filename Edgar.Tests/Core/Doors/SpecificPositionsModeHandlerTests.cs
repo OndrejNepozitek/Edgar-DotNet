@@ -28,23 +28,23 @@ namespace MapGeneration.Tests.Core.Doors
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new ManualDoorMode(new List<OrthogonalLine>()
 			{
-				new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0)),
-				new OrthogonalLine(new IntVector2(0, 5), new IntVector2(0, 5)),
-				new OrthogonalLine(new IntVector2(3, 5), new IntVector2(3, 5)),
-				new OrthogonalLine(new IntVector2(3, 0), new IntVector2(3, 0)),
+				new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 0)),
+				new OrthogonalLine(new Vector2Int(0, 5), new Vector2Int(0, 5)),
+				new OrthogonalLine(new Vector2Int(3, 5), new Vector2Int(3, 5)),
+				new OrthogonalLine(new Vector2Int(3, 0), new Vector2Int(3, 0)),
 			});
 			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
 
 			var expectedPositions = new List<DoorLine>()
 			{
-				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0), OrthogonalLine.Direction.Left), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, 0), OrthogonalLine.Direction.Top), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(0, 5), new IntVector2(0, 5), OrthogonalLine.Direction.Top), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(0, 5), new IntVector2(0, 5), OrthogonalLine.Direction.Right), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(3, 5), new IntVector2(3, 5), OrthogonalLine.Direction.Right), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(3, 5), new IntVector2(3, 5), OrthogonalLine.Direction.Bottom), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(3, 0), new IntVector2(3, 0), OrthogonalLine.Direction.Bottom), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(3, 0), new IntVector2(3, 0), OrthogonalLine.Direction.Left), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 0), OrthogonalLine.Direction.Left), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 0), OrthogonalLine.Direction.Top), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(0, 5), new Vector2Int(0, 5), OrthogonalLine.Direction.Top), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(0, 5), new Vector2Int(0, 5), OrthogonalLine.Direction.Right), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(3, 5), new Vector2Int(3, 5), OrthogonalLine.Direction.Right), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(3, 5), new Vector2Int(3, 5), OrthogonalLine.Direction.Bottom), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(3, 0), new Vector2Int(3, 0), OrthogonalLine.Direction.Bottom), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(3, 0), new Vector2Int(3, 0), OrthogonalLine.Direction.Left), 0),
 			};
 
 			Assert.IsTrue(doorPositions.SequenceEqualWithoutOrder(expectedPositions));
@@ -56,19 +56,19 @@ namespace MapGeneration.Tests.Core.Doors
 			var polygon = GridPolygon.GetRectangle(3, 5);
 			var mode = new ManualDoorMode(new List<OrthogonalLine>()
 			{
-				new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 1)),
-				new OrthogonalLine(new IntVector2(1, 5), new IntVector2(1, 5)),
-				new OrthogonalLine(new IntVector2(3, 4), new IntVector2(3, 4)),
-				new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 0)),
+				new OrthogonalLine(new Vector2Int(0, 1), new Vector2Int(0, 1)),
+				new OrthogonalLine(new Vector2Int(1, 5), new Vector2Int(1, 5)),
+				new OrthogonalLine(new Vector2Int(3, 4), new Vector2Int(3, 4)),
+				new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(2, 0)),
 			});
 			var doorPositions = overlapModeHandler.GetDoorPositions(polygon, mode);
 
 			var expectedPositions = new List<DoorLine>()
 			{
-				new DoorLine(new OrthogonalLine(new IntVector2(0, 1), new IntVector2(0, 1), OrthogonalLine.Direction.Top), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(1, 5), new IntVector2(1, 5), OrthogonalLine.Direction.Right), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(3, 4), new IntVector2(3, 4), OrthogonalLine.Direction.Bottom), 0),
-				new DoorLine(new OrthogonalLine(new IntVector2(2, 0), new IntVector2(2, 0), OrthogonalLine.Direction.Left), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(0, 1), new Vector2Int(0, 1), OrthogonalLine.Direction.Top), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(1, 5), new Vector2Int(1, 5), OrthogonalLine.Direction.Right), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(3, 4), new Vector2Int(3, 4), OrthogonalLine.Direction.Bottom), 0),
+				new DoorLine(new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(2, 0), OrthogonalLine.Direction.Left), 0),
 			};
 
 			Assert.IsTrue(doorPositions.SequenceEqualWithoutOrder(expectedPositions));

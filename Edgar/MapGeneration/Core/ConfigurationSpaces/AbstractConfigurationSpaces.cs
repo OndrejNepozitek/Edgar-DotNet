@@ -32,13 +32,13 @@ namespace MapGeneration.Core.ConfigurationSpaces
 		}
 
 		/// <inheritdoc />
-		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
+		public Vector2Int GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
 			return GetRandomIntersectionPoint(mainConfiguration, configurations, out var _);
 		}
 
 		/// <inheritdoc />
-		public IntVector2 GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		public Vector2Int GetRandomIntersectionPoint(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var intersection = GetMaximumIntersection(mainConfiguration, configurations, out configurationsSatisfied);
 
@@ -141,7 +141,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 			return LineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)), lines1);
 		}
 
-		private OrthogonalLine FastAddition(OrthogonalLine line, IntVector2 position) 
+		private OrthogonalLine FastAddition(OrthogonalLine line, Vector2Int position) 
 		{
 			return new OrthogonalLine(line.From + position, line.To + position);
 		}

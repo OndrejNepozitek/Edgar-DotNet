@@ -22,10 +22,10 @@ namespace MapGeneration.Utils.Statistics
 
             foreach (var node in nodeToRoom1.Keys)
             {
-                var shape1Center = nodeToRoom1[node].BoundingRectangle.Center - new IntVector2(minX1, minY1);
-                var shape2Center = nodeToRoom2[node].BoundingRectangle.Center - new IntVector2(minX2, minY2);
+                var shape1Center = nodeToRoom1[node].BoundingRectangle.Center - new Vector2Int(minX1, minY1);
+                var shape2Center = nodeToRoom2[node].BoundingRectangle.Center - new Vector2Int(minX2, minY2);
                 
-                distances.Add(IntVector2.ManhattanDistance(shape1Center, shape2Center));
+                distances.Add(Vector2Int.ManhattanDistance(shape1Center, shape2Center));
             }
 
             return distances.Average();

@@ -127,14 +127,14 @@ namespace MapGeneration.Core.LayoutOperations
 			// The first node is set to have a random shape and [0,0] position
 			if (neighborsConfigurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
+				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new Vector2Int(), node));
                 iterationsCount++;
 				return;
 			}
 
 			var bestEnergy = float.MaxValue;
 			var bestShape = default(TShapeContainer);
-			var bestPosition = new IntVector2();
+			var bestPosition = new Vector2Int();
 
             var shapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
 
@@ -155,7 +155,7 @@ namespace MapGeneration.Core.LayoutOperations
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-                var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations);
+                var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new Vector2Int(), node), neighborsConfigurations);
 
                 if (intersection == null)
 					continue;
@@ -271,7 +271,7 @@ namespace MapGeneration.Core.LayoutOperations
 		/// <param name="shapeContainer"></param>
 		/// <param name="position"></param>
 		/// <returns></returns>
-		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position, TNode node)
+		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, Vector2Int position, TNode node)
 		{
 			var configuration = new TConfiguration
 			{
@@ -375,14 +375,14 @@ namespace MapGeneration.Core.LayoutOperations
 
 			var foundValid = false;
 			var bestShape = default(TShapeContainer);
-			var bestPosition = new IntVector2();
+			var bestPosition = new Vector2Int();
 
 			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
 			shapes.Shuffle(Random);
 
 			foreach (var shape in shapes)
 			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
+				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new Vector2Int(), node), configurations, out var configurationsSatisfied);
 
 				if (configurationsSatisfied != 2)
 					continue;

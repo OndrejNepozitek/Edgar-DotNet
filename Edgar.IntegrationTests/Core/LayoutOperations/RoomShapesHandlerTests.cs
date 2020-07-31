@@ -329,7 +329,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
 
         private void SetConfiguration(Layout<Configuration<CorridorsData>> layout, int node, IntAlias<GridPolygon> alias)
         {
-            layout.SetConfiguration(node, new Configuration<CorridorsData>(alias, new IntVector2(0, 0), new CorridorsData(), node));
+            layout.SetConfiguration(node, new Configuration<CorridorsData>(alias, new Vector2Int(0, 0), new CorridorsData(), node));
         }
 
         private ConfigurationSpaces<Configuration<CorridorsData>> GetConfigurationSpaces(MapDescription<int> mapDescription)

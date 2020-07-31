@@ -263,8 +263,8 @@ namespace MapGeneration.Core.ConfigurationSpaces
 				{
 					var cline = cDoorLine.Line;
 					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new IntVector2(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
-					var to = new IntVector2(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
+					var from = new Vector2Int(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
+					var to = new Vector2Int(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
 
 					if (from.X < to.X) continue;
 
@@ -278,7 +278,7 @@ namespace MapGeneration.Core.ConfigurationSpaces
 					{
 						foreach (var offset in offsets)
 						{
-							var offsetVector = new IntVector2(0, offset);
+							var offsetVector = new Vector2Int(0, offset);
 							var resultLine = new OrthogonalLine(from - offsetVector, to - offsetVector, OrthogonalLine.Direction.Left).Rotate(-rotation);
 							reverseDoor.Add(Tuple.Create(resultLine, new DoorLine(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length)));
 							configurationSpaceLines.Add(resultLine);

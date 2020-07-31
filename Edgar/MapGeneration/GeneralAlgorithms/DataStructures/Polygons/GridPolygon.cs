@@ -20,13 +20,13 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 	/// - no two adjacent line can be both horizontal or both vertical
 	/// - points are in a clockwise order
 	/// </remarks>
-	public class GridPolygon : IPolygon<IntVector2>
+	public class GridPolygon : IPolygon<Vector2Int>
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 
 		// TODO: handle better
 		[JsonProperty]
-		private readonly List<IntVector2> points;
+		private readonly List<Vector2Int> points;
 
 		private readonly int hash;
 
@@ -39,9 +39,9 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		/// </summary>
 		/// <param name="points"></param>
 		/// <exception cref="ArgumentException">Thrown when invariants do not hold</exception>
-		public GridPolygon(IEnumerable<IntVector2> points)
+		public GridPolygon(IEnumerable<Vector2Int> points)
 		{
-			this.points = new List<IntVector2>(points);
+			this.points = new List<Vector2Int>(points);
 
             CheckIntegrity();
 
@@ -88,7 +88,7 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 				throw new ArgumentException("Points must be in a clockwise order.");
 		}
 
-		private bool IsClockwiseOriented(IList<IntVector2> points)
+		private bool IsClockwiseOriented(IList<Vector2Int> points)
 		{
 			var previous = points[points.Count - 1];
 			var sum = 0L;
@@ -109,7 +109,7 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 			var smallestY = points.Min(x => x.Y);
 			var biggestY = points.Max(x => x.Y);
 
-			return new GridRectangle(new IntVector2(smallestX, smallestY), new IntVector2(biggestX, biggestY));
+			return new GridRectangle(new Vector2Int(smallestX, smallestY), new Vector2Int(biggestX, biggestY));
 		}
 
 		private int ComputeHash()
@@ -126,7 +126,7 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		/// Gets point of the polygon.
 		/// </summary>
 		/// <returns></returns>
-		public ReadOnlyCollection<IntVector2> GetPoints()
+		public ReadOnlyCollection<Vector2Int> GetPoints()
 		{
 			return points.AsReadOnly();
 		}
@@ -174,7 +174,7 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		/// <param name="polygon"></param>
 		/// <param name="position"></param>
 		/// <returns></returns>
-		public static GridPolygon operator +(GridPolygon polygon, IntVector2 position)
+		public static GridPolygon operator +(GridPolygon polygon, Vector2Int position)
 		{
 			return new GridPolygon(polygon.points.Select(x => x + position));
 		}
@@ -186,7 +186,7 @@ namespace GeneralAlgorithms.DataStructures.Polygons
 		/// </summary>
 		/// <param name="factor"></param>
 		/// <returns></returns>
-		public GridPolygon Scale(IntVector2 factor)
+		public GridPolygon Scale(Vector2Int factor)
 		{
 			if (factor.X <= 0 || factor.Y <= 0)
 				throw new ArgumentOutOfRangeException(nameof(factor), "Both components of factor must be positive");

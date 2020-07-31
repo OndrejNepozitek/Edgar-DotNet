@@ -117,7 +117,7 @@ namespace MapGeneration.Core.LayoutConverters
 				.Select(x => x + configuration1.Position).ToList();
 		}
 
-		private List<OrthogonalLine> GetDoors(IntVector2 position, ConfigurationSpace configurationSpace)
+		private List<OrthogonalLine> GetDoors(Vector2Int position, ConfigurationSpace configurationSpace)
 		{
 			var doors = new List<OrthogonalLine>();
 

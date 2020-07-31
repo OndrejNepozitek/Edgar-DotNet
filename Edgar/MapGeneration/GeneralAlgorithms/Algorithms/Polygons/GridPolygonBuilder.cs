@@ -9,7 +9,7 @@
 	/// </summary>
 	public class GridPolygonBuilder
 	{
-		private readonly List<IntVector2> points = new List<IntVector2>();
+		private readonly List<Vector2Int> points = new List<Vector2Int>();
 
 		/// <summary>
 		/// Adds point to the polygon.
@@ -19,7 +19,7 @@
 		/// <returns></returns>
 		public GridPolygonBuilder AddPoint(int x, int y)
 		{
-			points.Add(new IntVector2(x, y));
+			points.Add(new Vector2Int(x, y));
 			return this;
 		}
 

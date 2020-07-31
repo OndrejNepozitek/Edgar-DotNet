@@ -11,7 +11,7 @@
 
 		public Dictionary<List<int>, RoomModel> Rooms { get; set; }
 
-		public List<IntVector2> Passages { get; set; }
+		public List<Vector2Int> Passages { get; set; }
 
 		public RoomDescriptionsSetModel CustomRoomDescriptionsSet { get; set; }
 

@@ -7,9 +7,9 @@
 	{
 		public TNode Node { get; set; }
 
-		public IList<IntVector2> Shape { get; set; }
+		public IList<Vector2Int> Shape { get; set; }
 
-		public IntVector2 Position { get; set; }
+		public Vector2Int Position { get; set; }
 
 		public bool IsCorridor { get; set; }
 

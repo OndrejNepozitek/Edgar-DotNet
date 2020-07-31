@@ -6,8 +6,8 @@
 	{
 		public TNode Node { get; set; }
 
-		public IntVector2 From { get; set; }
+		public Vector2Int From { get; set; }
 
-		public IntVector2 To { get; set; }
+		public Vector2Int To { get; set; }
 	}
 }

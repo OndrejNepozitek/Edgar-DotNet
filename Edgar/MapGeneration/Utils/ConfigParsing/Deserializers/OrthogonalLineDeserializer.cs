@@ -20,15 +20,15 @@
 				return false;
 			}
 
-			var valueObject = nestedObjectDeserializer(reader, typeof(List<IntVector2>));
+			var valueObject = nestedObjectDeserializer(reader, typeof(List<Vector2Int>));
 
 			if (valueObject == null)
 				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLine)}.");
 
-			var intVector2List = (List<IntVector2>) valueObject;
+			var intVector2List = (List<Vector2Int>) valueObject;
 
 			if (intVector2List.Count != 2)
-				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLine)}. There must be exactly 2 elements of type {nameof(IntVector2)} in the array.");
+				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLine)}. There must be exactly 2 elements of type {nameof(Vector2Int)} in the array.");
 
 			value = new OrthogonalLine(intVector2List[0], intVector2List[1]);
 			return true;

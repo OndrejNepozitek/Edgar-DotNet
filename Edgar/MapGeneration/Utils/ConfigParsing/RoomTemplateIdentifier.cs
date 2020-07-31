@@ -9,7 +9,7 @@ namespace MapGeneration.Utils.ConfigParsing
 
         public string RoomDescriptionName { get; set; }
 
-        public IntVector2 Scale { get; set; }
+        public Vector2Int Scale { get; set; }
 
         #region Equals
 

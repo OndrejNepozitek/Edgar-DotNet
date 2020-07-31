@@ -18,7 +18,7 @@
 		/// <param name="polygon2"></param>
 		/// <param name="position2"></param>
 		/// <returns></returns>
-		bool DoOverlap(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
+		bool DoOverlap(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2);
 
 		/// <summary>
 		/// Computes the area of overlap of two given polygons.
@@ -28,7 +28,7 @@
 		/// <param name="polygon2"></param>
 		/// <param name="position2"></param>
 		/// <returns></returns>
-		int OverlapArea(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
+		int OverlapArea(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2);
 
 		/// <summary>
 		/// Checks if two polygons touch 
@@ -39,7 +39,7 @@
 		/// <param name="position2"></param>
 		/// <param name="minimumLength"></param>
 		/// <returns></returns>
-		bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 0);
+		bool DoTouch(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2, int minimumLength = 0);
 
 		/// <summary>
 		/// Returns a list of point where a given moving polygon starts or ends overlapping a given fixed polygon.
@@ -55,7 +55,7 @@
 		/// <param name="fixedPolygon">A polygon that stays fixed.</param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		IList<Tuple<IntVector2, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line);
+		IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line);
 
 		/// <summary>
 		/// Gets distance between the two polygons.
@@ -73,6 +73,6 @@
 		/// 0 if polygons share at least one point
 		/// positive number othetwise
 		/// </returns>
-		int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2);
+		int GetDistance(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2);
 	}
 }

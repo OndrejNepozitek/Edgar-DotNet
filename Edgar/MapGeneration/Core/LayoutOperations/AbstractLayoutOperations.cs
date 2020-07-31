@@ -222,7 +222,7 @@ namespace MapGeneration.Core.LayoutOperations
 				if (layout1.GetConfiguration(node, out var c1) && layout2.GetConfiguration(node, out var c2))
 				{
 					diff += (float)(Math.Pow(
-						                5 * IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+						                5 * Vector2Int.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
 							                c2.Shape.BoundingRectangle.Center + c2.Position) / (float)AverageSize, 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
 				}
 			}

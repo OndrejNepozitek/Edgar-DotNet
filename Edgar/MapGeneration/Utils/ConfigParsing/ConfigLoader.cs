@@ -313,13 +313,13 @@ namespace MapGeneration.Utils.ConfigParsing
 			return roomTemplates;
 		}
 
-		private RoomTemplate ConvertRoomModelToRoomTemplate(RoomDescriptionModel model, IntVector2? scale, List<Transformation> transformations, string setName)
+		private RoomTemplate ConvertRoomModelToRoomTemplate(RoomDescriptionModel model, Vector2Int? scale, List<Transformation> transformations, string setName)
 		{
 			var identifier = new RoomTemplateIdentifier()
             {
 				RoomDescriptionName = model.Name,
 				SetName = setName,
-				Scale = scale ?? new IntVector2(1, 1),
+				Scale = scale ?? new Vector2Int(1, 1),
             };
 
             if (roomTemplates.ContainsKey(identifier))
@@ -327,7 +327,7 @@ namespace MapGeneration.Utils.ConfigParsing
                 return roomTemplates[identifier];
             }
 
-			var roomTemplate = new RoomTemplate(new GridPolygon(model.Shape).Scale(scale ?? new IntVector2(1, 1)), GetDoorMode(model.DoorMode), transformations, model.RepeatMode ?? RepeatMode.AllowRepeat);
+			var roomTemplate = new RoomTemplate(new GridPolygon(model.Shape).Scale(scale ?? new Vector2Int(1, 1)), GetDoorMode(model.DoorMode), transformations, model.RepeatMode ?? RepeatMode.AllowRepeat);
             roomTemplates.Add(identifier, roomTemplate);
 
             return roomTemplate;

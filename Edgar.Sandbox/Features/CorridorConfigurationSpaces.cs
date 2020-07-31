@@ -34,7 +34,7 @@ namespace Sandbox.Features
     {
         private void ShowVisualization()
         {
-            var input = Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() {2, 4, 6}, false)[4];
+            var input = Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() {2, 4, 6}, false)[4];
 
             var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, input.Configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
@@ -66,9 +66,9 @@ namespace Sandbox.Features
             //return;
 
             var inputs = new List<DungeonGeneratorInput<int>>();
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4 }, false));

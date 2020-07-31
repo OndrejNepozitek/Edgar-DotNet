@@ -16,6 +16,6 @@ namespace MapGeneration.Utils.ConfigParsing.Models
 
 		public bool? NormalizeProbabilities { get; set; }
 
-        public IntVector2? Scale { get; set; }
+        public Vector2Int? Scale { get; set; }
 	}
 }

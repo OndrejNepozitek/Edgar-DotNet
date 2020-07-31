@@ -31,7 +31,7 @@ namespace GUI.MapDrawing
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="width"></param>
-		public Bitmap DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, IntVector2? offset = null)
+		public Bitmap DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, Vector2Int? offset = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
@@ -53,7 +53,7 @@ namespace GUI.MapDrawing
 			return bitmap;
 		}
 
-		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
+		protected override void DrawRoom(GridPolygon polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());

@@ -14,7 +14,7 @@ namespace MapGeneration.Utils
 {
     public static class MapDescriptionUtils
     {
-        public static List<RoomTemplate> GetRectangularRoomTemplates(IntVector2 scale)
+        public static List<RoomTemplate> GetRectangularRoomTemplates(Vector2Int scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
@@ -30,7 +30,7 @@ namespace MapGeneration.Utils
             };
         }
 
-        public static List<RoomTemplate> GetBasicRoomTemplates(IntVector2 scale)
+        public static List<RoomTemplate> GetBasicRoomTemplates(Vector2Int scale)
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
@@ -94,8 +94,8 @@ namespace MapGeneration.Utils
                     GridPolygon.GetRectangle(length, width),
                     new ManualDoorMode(new List<OrthogonalLine>()
                     {
-                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(0, width)),
-                        new OrthogonalLine(new IntVector2(length, 0), new IntVector2(length, width)),
+                        new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, width)),
+                        new OrthogonalLine(new Vector2Int(length, 0), new Vector2Int(length, width)),
                     }),
                     transformations
                 );
@@ -137,11 +137,11 @@ namespace MapGeneration.Utils
             return mapDescription;
         }
 
-        public static string GetInputName(string name, IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, string suffix = null)
+        public static string GetInputName(string name, Vector2Int scale, bool withCorridors, List<int> offsets, bool canTouch, string suffix = null)
         {
             var inputName = name;
 
-            if (scale != new IntVector2(1, 1))
+            if (scale != new Vector2Int(1, 1))
             {
                 inputName += $" scale ({scale.X},{scale.Y})";
             }

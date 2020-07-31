@@ -50,7 +50,7 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
-		protected void DrawLayout(MapLayout<TNode> layout, float scale, IntVector2 offset, bool withNames, int? fixedFontSize = null)
+		protected void DrawLayout(MapLayout<TNode> layout, float scale, Vector2Int offset, bool withNames, int? fixedFontSize = null)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
@@ -64,7 +64,7 @@ namespace MapGeneration.Utils.MapDrawing
 
 				var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
 
-				if (transformedPoints.All(x => x == new IntVector2(0, 0)))
+				if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
 				{
 					throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
 				}
@@ -89,9 +89,9 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		/// <returns></returns>
-		protected IntVector2 TransformPoint(IntVector2 point, float scale, IntVector2 offset)
+		protected Vector2Int TransformPoint(Vector2Int point, float scale, Vector2Int offset)
 		{
-			return new IntVector2((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
+			return new Vector2Int((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
 		}
 
 		/// <summary>
@@ -105,12 +105,12 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="height"></param>
 		/// <param name="scale"></param>
 		/// <returns></returns>
-		public IntVector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
+		public Vector2Int GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
 			var centery = scale * (maxy + miny) / 2;
 
-			return new IntVector2((int)(width / 2f - centerx), (int)(height / 2f - centery));
+			return new Vector2Int((int)(width / 2f - centerx), (int)(height / 2f - centery));
 		}
 
 		/// <summary>
@@ -146,7 +146,7 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="polygon">Polygon to be drawn.</param>
 		/// <param name="outline">Outline of the room. The bool signals whether a line should be drawn (polygon side) or not (doors).</param>
 		/// <param name="penWidth"></param>
-		protected abstract void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth);
+		protected abstract void DrawRoom(GridPolygon polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth);
 
 		/// <summary>
 		/// Draws text onto given polygon.
@@ -162,9 +162,9 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<IntVector2, bool>> GetOutline(GridPolygon polygon, List<DoorInfo<TNode>> doorLines)
+		protected List<Tuple<Vector2Int, bool>> GetOutline(GridPolygon polygon, List<DoorInfo<TNode>> doorLines)
 		{
-			var outline = new List<Tuple<IntVector2, bool>>();
+			var outline = new List<Tuple<Vector2Int, bool>>();
 
 			foreach (var line in polygon.GetLines())
 			{
@@ -198,7 +198,7 @@ namespace MapGeneration.Utils.MapDrawing
 
 			return outline;
 
-			void AddToOutline(Tuple<IntVector2, bool> point)
+			void AddToOutline(Tuple<Vector2Int, bool> point)
 			{
 				if (outline.Count == 0)
 				{

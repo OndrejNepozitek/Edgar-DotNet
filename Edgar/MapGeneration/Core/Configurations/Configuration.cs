@@ -23,7 +23,7 @@ namespace MapGeneration.Core.Configurations
 		public GridPolygon Shape => ShapeContainer.Value;
 
 		/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
-		public IntVector2 Position { get; set; }
+		public Vector2Int Position { get; set; }
 
 		/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />
 		public TEnergyData EnergyData { get; set; }
@@ -38,7 +38,7 @@ namespace MapGeneration.Core.Configurations
 			/* empty */
 		}
 
-		public Configuration(IntAlias<GridPolygon> shape, IntVector2 position, TEnergyData energyData, int node)
+		public Configuration(IntAlias<GridPolygon> shape, Vector2Int position, TEnergyData energyData, int node)
 		{
 			ShapeContainer = shape;
 			Position = position;
@@ -71,7 +71,7 @@ namespace MapGeneration.Core.Configurations
 			var hashCode = 1750933667;
 			hashCode = hashCode * -1521134295 + EqualityComparer<IntAlias<GridPolygon>>.Default.GetHashCode(ShapeContainer);
 			hashCode = hashCode * -1521134295 + EqualityComparer<GridPolygon>.Default.GetHashCode(Shape);
-			hashCode = hashCode * -1521134295 + EqualityComparer<IntVector2>.Default.GetHashCode(Position);
+			hashCode = hashCode * -1521134295 + EqualityComparer<Vector2Int>.Default.GetHashCode(Position);
 			hashCode = hashCode * -1521134295 + EqualityComparer<TEnergyData>.Default.GetHashCode(EnergyData);
 			hashCode = hashCode * -1521134295 + IsValid.GetHashCode();
 			return hashCode;

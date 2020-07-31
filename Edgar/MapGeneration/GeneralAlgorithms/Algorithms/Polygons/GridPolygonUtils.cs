@@ -22,7 +22,7 @@
 
 			// Order it such that the point with the smallest X (and smallest Y if there are multiple) is the first one
 			var smallestXY = points.Where(x => x.X == smallestX).Min(x => x.Y);
-			var orderedPoints = new List<IntVector2>();
+			var orderedPoints = new List<Vector2Int>();
 			var index = int.MinValue;
 			for (var i = 0; i < points.Count; i++)
 			{

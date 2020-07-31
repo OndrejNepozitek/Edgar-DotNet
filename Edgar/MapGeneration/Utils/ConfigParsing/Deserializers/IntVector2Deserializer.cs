@@ -14,7 +14,7 @@
 	{
 		public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
 		{
-			if (expectedType != typeof(IntVector2) && expectedType != typeof(IntVector2?))
+			if (expectedType != typeof(Vector2Int) && expectedType != typeof(Vector2Int?))
 			{
 				value = null;
 				return false;
@@ -28,9 +28,9 @@
 			var intList = (List<int>) valueObject;
 
 			if (intList.Count != 2)
-				throw new ParsingException($"Given element could not be parsed into {nameof(IntVector2)}. There must be exactly 2 elements of type {nameof(Int32)} in the array.");
+				throw new ParsingException($"Given element could not be parsed into {nameof(Vector2Int)}. There must be exactly 2 elements of type {nameof(Int32)} in the array.");
 
-			value = new IntVector2(intList[0], intList[1]);
+			value = new Vector2Int(intList[0], intList[1]);
 			return true;
 		}
 	}

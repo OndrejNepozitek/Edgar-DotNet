@@ -79,7 +79,7 @@ namespace MapGeneration.Utils.MapDrawing
 		/// <param name="polygon"></param>
 		/// <param name="outline"></param>
 		/// <param name="penWidth"></param>
-		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
+		protected override void DrawRoom(GridPolygon polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
 		{
 			// Draw polygon
 			data.Append($"    <polygon points=\"");
@@ -109,7 +109,7 @@ namespace MapGeneration.Utils.MapDrawing
 			data.AppendLine();
 		}
 
-        private int GetY(IntVector2 point)
+        private int GetY(Vector2Int point)
         {
             if (flipY)
             {
@@ -119,7 +119,7 @@ namespace MapGeneration.Utils.MapDrawing
             return point.Y;
         }
 
-        private int GetX(IntVector2 point)
+        private int GetX(Vector2Int point)
         {
             return point.X;
         }

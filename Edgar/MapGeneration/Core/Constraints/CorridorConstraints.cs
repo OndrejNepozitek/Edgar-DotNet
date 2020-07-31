@@ -127,7 +127,7 @@ namespace MapGeneration.Core.Constraints
 		// TODO: keep dry
 		private int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			var distance = IntVector2.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
+			var distance = Vector2Int.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
 				configuration2.Shape.BoundingRectangle.Center + configuration2.Position);
 
 			if (distance < 0)

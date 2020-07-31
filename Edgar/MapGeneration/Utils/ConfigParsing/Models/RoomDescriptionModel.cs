@@ -11,7 +11,7 @@ namespace MapGeneration.Utils.ConfigParsing.Models
 	{
 		public string Name { get; set; }
 
-		public List<IntVector2> Shape { get; set; }
+		public List<Vector2Int> Shape { get; set; }
 
 		public IDoorModeModel DoorMode { get; set; }
 

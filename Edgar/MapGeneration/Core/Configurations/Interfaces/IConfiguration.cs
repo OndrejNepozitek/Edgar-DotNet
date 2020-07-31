@@ -22,7 +22,7 @@ namespace MapGeneration.Core.Configurations.Interfaces
 		/// <summary>
 		/// Position of the node.
 		/// </summary>
-		IntVector2 Position { get; }
+		Vector2Int Position { get; }
 
 		/// <summary>
 		/// Whether a node is valid or not.
