@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    <PackageReference Include="ScottPlot" Version="4.0.38" />
   </ItemGroup>
 
   <ItemGroup>

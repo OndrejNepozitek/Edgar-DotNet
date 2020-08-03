@@ -16,15 +16,17 @@ namespace MapGeneration.Benchmarks
 		private readonly IGeneratorRunner generatorRunner;
 		private readonly string inputName;
         private readonly int repeats;
+        private readonly double earlyStopThreshold;
 
-		public event Action<BenchmarkJobResult> OnPreview;
+        public event Action<BenchmarkJobResult> OnPreview;
 
-		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10)
+		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10, double earlyStopThreshold = 0)
 		{
 			this.generatorRunner = generatorRunner;
 			this.inputName = inputName;
             this.repeats = repeats;
-		}
+            this.earlyStopThreshold = earlyStopThreshold;
+        }
 
 		public BenchmarkJobResult Execute()
 		{
@@ -39,10 +41,22 @@ namespace MapGeneration.Benchmarks
                 runs.Add(generatorRun);
 
                 OnPreview?.Invoke(GetResult($"Run {i + 1}/{repeats}", runs));
-			}
+
+                if (ShouldEarlyStop(runs))
+                {
+                    break;
+                }
+            }
 
 			return GetResult(inputName, runs);
 		}
+
+        private bool ShouldEarlyStop(List<IGeneratorRun> runs)
+        {
+            var unsuccessfulCount = runs.Count(x => !x.IsSuccessful);
+
+            return unsuccessfulCount / (double) repeats > (1 - earlyStopThreshold);
+        }
 
         private BenchmarkJobResult GetResult(string name, List<IGeneratorRun> runs)
         {
