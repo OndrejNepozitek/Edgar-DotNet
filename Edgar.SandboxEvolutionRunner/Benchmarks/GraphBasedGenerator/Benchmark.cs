@@ -47,6 +47,14 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             }, withInit);
         }
 
+        protected GraphBasedGeneratorFactory<TNode> GetNewGenerator<TNode>(BenchmarkOptions options, bool withInit = false)
+        {
+            return new GraphBasedGeneratorFactory<TNode>(new DungeonGeneratorConfiguration<TNode>()
+            {
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?)
+            }, withInit);
+        }
+
         protected void RunBenchmark<TNode>(List<BenchmarkScenario<TNode>> scenarios, List<ILevelGeneratorFactory<TNode>> generators)
         {
             var results = new List<BenchmarkScenarioResult>();

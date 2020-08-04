@@ -41,6 +41,17 @@
 		/// <returns></returns>
 		bool DoTouch(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumLength = 0);
 
+        /// <summary>
+        /// Checks if two polygons touch 
+        /// </summary>
+        /// <param name="polygon1"></param>
+        /// <param name="position1"></param>
+        /// <param name="polygon2"></param>
+        /// <param name="position2"></param>
+        /// <param name="minimumDistance"></param>
+        /// <returns></returns>
+        bool DoHaveMinimumDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumDistance);
+
 		/// <summary>
 		/// Returns a list of point where a given moving polygon starts or ends overlapping a given fixed polygon.
 		/// </summary>

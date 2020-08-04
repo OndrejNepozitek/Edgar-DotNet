@@ -25,7 +25,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             var graphs = new List<NamedGraph<int>>();
 
             var counter = 0;
-            var graphsPerSet = count / randomGraphSets.Count;
+            var graphsPerSet = Math.Max(1, count / randomGraphSets.Count);
             var everyNth = graphsPerSet >= 10 ? 1 : 10 / graphsPerSet;
 
             while (graphs.Count < count)
@@ -33,6 +33,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
                 foreach (var randomGraphSet in randomGraphSets)
                 {
                     graphs.Add(randomGraphSet[counter * everyNth]);
+
+                    if (graphs.Count >= count)
+                    {
+                        break;
+                    }
                 }
 
                 counter++;

@@ -12,18 +12,18 @@ using MapGeneration.Utils.MapDrawing;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {
-    public class OldGraphBasedGeneratorFactory<TNode> : ILevelGeneratorFactory<TNode>
+    public class GraphBasedGeneratorFactory<TNode> : ILevelGeneratorFactory<TNode>
     {
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
         private readonly bool benchmarkInitialization;
 
         public string Name { get; }
 
-        public OldGraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false)
+        public GraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false)
         {
             this.configuration = configuration;
             this.benchmarkInitialization = benchmarkInitialization;
-            Name = "Old generator" + (benchmarkInitialization ? " with init" : "");
+            Name = "New generator" + (benchmarkInitialization ? " with init" : "");
         }
 
         public IGeneratorRunner GetGeneratorRunner(GraphBasedLevelDescription<TNode> levelDescription)
@@ -38,7 +38,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
-            var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+            var layoutGenerator = new GraphBasedGenerator<TNode>(levelDescription, configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             return new LambdaGeneratorRunner(() =>

@@ -202,6 +202,36 @@
 			}
 		}
 
+        [Test]
+        public void DoHaveMinimumDistance_TwoSquares()
+        {
+            var r1 = GridPolygon.GetSquare(6);
+            var r2 = GridPolygon.GetSquare(3);
+
+			Assert.IsTrue(polygonOverlap.DoHaveMinimumDistance(r1, new IntVector2(0, 0), r2, new IntVector2(10, 10), 4));
+			Assert.IsFalse(polygonOverlap.DoHaveMinimumDistance(r1, new IntVector2(0, 0), r2, new IntVector2(10, 10), 5));
+			Assert.IsFalse(polygonOverlap.DoHaveMinimumDistance(r1, new IntVector2(0, 0), r2, new IntVector2(3, 3), 0));
+        }
+
+        [Test]
+        public void DoHaveMinimumDistance_TwoPolygons()
+        {
+            var p1 = GetLShape();
+            var p2 = GridPolygon.GetSquare(3);
+
+            foreach (var degrees in GridPolygon.PossibleRotations)
+            {
+                var pr1 = p1.Rotate(degrees);
+                var pr2 = p2.Rotate(degrees);
+
+                var pos1 = new IntVector2(0, 0).RotateAroundCenter(degrees);
+                var pos2 = new IntVector2(6, 6).RotateAroundCenter(degrees);
+
+                Assert.IsTrue(polygonOverlap.DoHaveMinimumDistance(pr1, pos1, pr2, pos2, 3));
+                Assert.IsFalse(polygonOverlap.DoHaveMinimumDistance(pr1, pos1, pr2, pos2, 4));
+            }
+        }
+
 		[Test]
 		public void OverlapAlongLine_Rectangles_NonOverlapping()
 		{

@@ -52,6 +52,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2) : null;
 
             var levelDescription = new GraphBasedLevelDescription<int>();
+            levelDescription.MinimumRoomDistance = 0;
+
             var graph = namedGraph.Graph;
 
             foreach (var room in graph.Vertices)

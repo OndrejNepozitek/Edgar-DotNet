@@ -102,7 +102,7 @@
 			return false;
 		}
 
-		protected bool DoTouch(GridRectangle rectangle1, GridRectangle rectangle2, int minimumLength)
+        protected bool DoTouch(GridRectangle rectangle1, GridRectangle rectangle2, int minimumLength)
 		{
 			var overlapX = Math.Max(-1, Math.Min(rectangle1.B.X, rectangle2.B.X) - Math.Max(rectangle1.A.X, rectangle2.A.X));
 			var overlapY = Math.Max(-1, Math.Min(rectangle1.B.Y, rectangle2.B.Y) - Math.Max(rectangle1.A.Y, rectangle2.A.Y));
@@ -114,6 +114,44 @@
 
 			return false;
 		}
+
+        public bool DoHaveMinimumDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2, int minimumDistance)
+        {
+            if (minimumDistance < 0)
+                throw new ArgumentException("The minimum distance must by at least 0.", nameof(minimumDistance));
+
+            var bounding1 = GetBoundingRectangle(polygon1) + position1;
+            var bounding2 = GetBoundingRectangle(polygon2) + position2;
+
+            if (DoHaveMinimumDistance(bounding1, bounding2, minimumDistance))
+            {
+                return true;
+            }
+
+            var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1);
+            var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2);
+
+            foreach (var r1 in decomposition1)
+            {
+                foreach (var r2 in decomposition2)
+                {
+                    if (!DoHaveMinimumDistance(r1, r2, minimumDistance))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        protected bool DoHaveMinimumDistance(GridRectangle rectangle1, GridRectangle rectangle2, int minimumDistance)
+        {
+            var distanceX = Math.Max(rectangle2.A.X - rectangle1.B.X, rectangle1.A.X - rectangle2.B.X);
+			var distanceY = Math.Max(rectangle2.A.Y - rectangle1.B.Y, rectangle1.A.Y - rectangle2.B.Y);
+
+            return distanceX >= minimumDistance || distanceY >= minimumDistance;
+        }
 
 		/// <inheritdoc />
 		public IList<Tuple<IntVector2, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line)
