@@ -75,6 +75,9 @@ namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
 
 				for (int i = 0; i < 2; i++)
 				{
+                    if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)
+                        yield break;
+
                     for (int k = 0; k < 1; k++)
                     {
                         if (CancellationToken.HasValue && CancellationToken.Value.IsCancellationRequested)

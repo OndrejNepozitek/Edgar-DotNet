@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Edgar.GraphBasedGenerator;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
+using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Benchmarks.Interfaces;
 using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
@@ -29,7 +30,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
         protected override void Run()
         {
-            var graphs = GraphLoader.GetRandomGraphsVariety(30);
+            var graphs = GraphLoader.GetRandomGraphsVariety(20);
             var options = new BenchmarkOptions()
             {
                 EarlyStopTime = 5000,
@@ -41,15 +42,19 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 // GetCorridorScenario(graphs),
             };
 
+            var scenarioGroup = new MinimumDistanceScenario().GetScenario(graphs, new MinimumDistanceScenario.Options());
+
             var generators = new List<ILevelGeneratorFactory<int>>()
             {
                 GetNewGenerator<int>(options),
+                // GetBeforeMasterThesisGenerator<int>(options),
                 GetOldGenerator<int>(options),
                 // GetOldGenerator<int>(options, true),
             };
 
             // LoadFromFolder<int>();
             RunBenchmark(scenarios, generators);
+            // RunBenchmark(scenarioGroup, generators);
         }
     }
 }

@@ -47,6 +47,14 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             }, withInit);
         }
 
+        protected BeforeMasterThesisGraphBasedGeneratorFactory<TNode> GetBeforeMasterThesisGenerator<TNode>(BenchmarkOptions options, bool withInit = false)
+        {
+            return new BeforeMasterThesisGraphBasedGeneratorFactory<TNode>(new DungeonGeneratorConfiguration<TNode>()
+            {
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?)
+            }, withInit);
+        }
+
         protected GraphBasedGeneratorFactory<TNode> GetNewGenerator<TNode>(BenchmarkOptions options, bool withInit = false)
         {
             return new GraphBasedGeneratorFactory<TNode>(new DungeonGeneratorConfiguration<TNode>()
@@ -66,9 +74,29 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
                     var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory, Options.FinalEvaluationIterations);
                     results.Add(result);
                 }
+
+                PlotResults<TNode>($"All - step {results.Count}", results);
             }
 
             PlotResults<TNode>("All", results);
+        }
+
+        protected void RunBenchmark<TNode>(BenchmarkScenarioGroup<TNode> scenarioGroup, List<ILevelGeneratorFactory<TNode>> generators)
+        {
+            var results = new List<BenchmarkScenarioResult>();
+
+            foreach (var benchmarkScenario in scenarioGroup.Scenarios)
+            {
+                foreach (var levelGeneratorFactory in generators)
+                {
+                    var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory, Options.FinalEvaluationIterations);
+                    results.Add(result);
+                }
+
+                PlotResults<TNode>($"{scenarioGroup.Name} - step {results.Count}", results);
+            }
+
+            PlotResults<TNode>(scenarioGroup.Name, results);
         }
 
         protected void LoadFromFolder<TNode>()
@@ -96,7 +124,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
                 plt.PlotScatter(xValues, times.ToArray(), label: result.Name);
             }
 
-            plt.Legend(fontSize: 10);
+            plt.Legend(fontSize: 10, location: legendLocation.upperLeft);
+            plt.Title(name);
             plt.SaveFig(Path.Combine(DirectoryFullPath, $"{name}.png"));
 
         }

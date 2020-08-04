@@ -2,6 +2,7 @@
 using System.Linq;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
+using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Configurations.Interfaces.EnergyData;
 using MapGeneration.Core.ConfigurationSpaces;
@@ -17,7 +18,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 		where TEnergyData : IBasicConstraintData, IEnergyData
 	{
 		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
-		private readonly float energySigma;
+        private readonly float energySigma;
 		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
 
 		public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
@@ -29,7 +30,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 
 		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			var overlap = 0;
+            var overlap = 0;
 			var distance = 0;
 			var neighbors = layout.Graph.GetNeighbours(node).ToList();
 

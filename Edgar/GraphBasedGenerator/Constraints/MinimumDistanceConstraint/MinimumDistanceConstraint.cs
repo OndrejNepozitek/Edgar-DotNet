@@ -54,7 +54,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 				if (AreNeighbours(node, vertex))
 					continue;
 
-				if (DoTouch(configuration, c))
+				if (!HaveMinimumDistance(configuration, c))
 				{
 					wrongDistanceCount++;
 				}
@@ -79,8 +79,8 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 
 			if (!AreNeighbours(perturbedNode, node))
 			{
-				wrongDistanceOld += DoTouch(configuration, oldConfiguration) ? 1 : 0;
-				wrongDistanceNew += DoTouch(configuration, newConfiguration) ? 1 : 0;
+				wrongDistanceOld += !HaveMinimumDistance(configuration, oldConfiguration) ? 1 : 0;
+				wrongDistanceNew += !HaveMinimumDistance(configuration, newConfiguration) ? 1 : 0;
 			}
 
 			var wrongDistanceTotal = configuration.EnergyData.MinimumDistanceConstraintData.WrongDistanceCount + (wrongDistanceNew - wrongDistanceOld);
@@ -121,9 +121,9 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 			return wrongDistanceNew == 0;
 		}
 
-		private bool DoTouch(TConfiguration configuration1, TConfiguration configuration2)
+		private bool HaveMinimumDistance(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.DoTouch(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, 0);
+			return polygonOverlap.DoHaveMinimumDistance(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, minimumDistance);
 		}
 
         private bool AreNeighbours(TNode node1, TNode node2)
