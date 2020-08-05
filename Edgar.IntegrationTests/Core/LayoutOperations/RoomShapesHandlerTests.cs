@@ -44,7 +44,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
@@ -73,7 +73,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
@@ -100,7 +100,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
@@ -132,7 +132,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
@@ -164,7 +164,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
@@ -197,7 +197,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
@@ -243,7 +243,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription, corridorRoomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
@@ -294,7 +294,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription
