@@ -4,7 +4,7 @@ using SandboxEvolutionRunner.Utils;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 {
-    public class MinimumDistanceScenario
+    public class MinimumDistanceScenario : Benchmark
     {
         public BenchmarkScenarioGroup<int> GetScenario(List<NamedGraph<int>> graphs, Options options)
         {
@@ -36,6 +36,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
             public int MinimumDistance { get; set; } = 0;
 
             public int MaximumDistance { get; set; } = 5;
+        }
+
+        protected override void Run()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.Constraints;
 using Edgar.GraphBasedGenerator.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint;
+using Edgar.GraphBasedGenerator.RoomShapeGeometry;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
@@ -25,6 +27,7 @@ using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.LayoutGenerators.Interfaces;
 using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.Layouts;
+using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Core.MapLayouts;
@@ -94,41 +97,40 @@ namespace Edgar.GraphBasedGenerator
                 new GridPolygonUtils());
 
             var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsDataNew>>(mapDescription);
-            var corridorConfigurationSpaces = configurationSpaces;
 
             var averageSize = configurationSpaces.GetAverageSize();
-            var polygonOverlap = new FastPolygonOverlap();
+
+            var energyUpdater = new BasicEnergyUpdater<int, Configuration<CorridorsDataNew>>(10 * averageSize);
+            var roomShapeGeometry = new FastGridPolygonGeometry<Configuration<CorridorsDataNew>, int>();
 
             // Create generator constraints
             var stageOneConstraints =
-                new List<INodeConstraint<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>,
+                new List<INodeConstraint<ILayout<int, Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>,
                     CorridorsDataNew>>
                 {
-                    new Constraints.BasicConstraint.BasicConstraint<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>,
-                        CorridorsDataNew, IntAlias<GridPolygon>>(
-                        new FastPolygonOverlap(),
-                        averageSize,
+                    new BasicConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
+                        roomShapeGeometry,
                         configurationSpaces
                     ),
-                    new Constraints.CorridorConstraint.CorridorConstraints<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, CorridorsDataNew, IntAlias<GridPolygon>>(
+                    new CorridorConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
                         mapDescription,
-                        averageSize,
-                        corridorConfigurationSpaces
+                        configurationSpaces,
+                        roomShapeGeometry
                     ),
                 };
 
             if (levelDescriptionOriginal.MinimumRoomDistance > 0)
             {
-                stageOneConstraints.Add(new MinimumDistanceConstraint<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, CorridorsDataNew, IntAlias<GridPolygon>>(
+                stageOneConstraints.Add(new MinimumDistanceConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
                     mapDescription,
-                    polygonOverlap,
+                    roomShapeGeometry,
                     levelDescriptionOriginal.MinimumRoomDistance
                 ));
             }
 
-            var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, IntAlias<GridPolygon>, CorridorsDataNew>(stageOneConstraints);
+            var constraintsEvaluator = new ConstraintsEvaluator<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(stageOneConstraints, energyUpdater);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsDataNew>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
@@ -136,7 +138,7 @@ namespace Edgar.GraphBasedGenerator
             );
 
             // Create layout operations
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, IntAlias<GridPolygon>, CorridorsDataNew>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied);
+            var layoutOperations = new LayoutController<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, IntAlias<GridPolygon>, CorridorsDataNew>(configurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied);
 
             var initialLayout = new Layout<Configuration<CorridorsDataNew>>(mapDescription.GetGraph());
             var layoutConverter =

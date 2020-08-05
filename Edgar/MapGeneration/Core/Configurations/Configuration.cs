@@ -1,4 +1,5 @@
-﻿using MapGeneration.Core.Configurations.Interfaces;
+﻿using Edgar.GraphBasedGenerator.Configurations;
+using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Configurations.Interfaces.EnergyData;
 using MapGeneration.Utils.Interfaces;
 
@@ -13,7 +14,7 @@ namespace MapGeneration.Core.Configurations
 	/// Basic implementation of an IEnergyConfiguration interface.
 	/// </summary>
 	/// <typeparam name="TEnergyData"></typeparam>
-	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>
+	public class Configuration<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<Configuration<TEnergyData>>, ISimpleEnergyConfiguration<TEnergyData>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>
 	{
 		/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TEnergyData}" />

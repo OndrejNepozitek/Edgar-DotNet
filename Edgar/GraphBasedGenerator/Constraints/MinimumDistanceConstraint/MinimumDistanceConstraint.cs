@@ -1,4 +1,6 @@
-﻿using Edgar.GraphBasedGenerator.Constraints.CorridorConstraint;
+﻿using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.Constraints.CorridorConstraint;
+using Edgar.GraphBasedGenerator.RoomShapeGeometry;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Core.Configurations.Interfaces;
@@ -10,29 +12,25 @@ using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 {
-    public class MinimumDistanceConstraint
-    <TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
-		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
-		where TEnergyData : IMinimumDistanceConstraintData, IEnergyData
+    public class MinimumDistanceConstraint<TNode, TConfiguration, TEnergyData> : INodeConstraint<ILayout<TNode, TConfiguration>, TNode, TConfiguration, TEnergyData>
+        where TConfiguration : ISimpleEnergyConfiguration<TEnergyData>
+		where TEnergyData : IMinimumDistanceConstraintData
 	{
         private readonly IMapDescription<TNode> mapDescription;
-		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
-        private readonly IGraph<TNode> stageOneGraph;
+		private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
         private readonly IGraph<TNode> graph;
         private readonly int minimumDistance;
 
-		public MinimumDistanceConstraint(IMapDescription<TNode> mapDescription, IPolygonOverlap<TShapeContainer> polygonOverlap, int minimumDistance)
+		public MinimumDistanceConstraint(IMapDescription<TNode> mapDescription, IRoomShapeGeometry<TConfiguration> roomShapeGeometry, int minimumDistance)
 		{
 			this.mapDescription = mapDescription;
-			this.polygonOverlap = polygonOverlap;
+			this.roomShapeGeometry = roomShapeGeometry;
             this.minimumDistance = minimumDistance;
-            stageOneGraph = mapDescription.GetStageOneGraph();
             graph = mapDescription.GetGraph();
 		}
 
 		/// <inheritdoc />
-		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			// TODO: why this?
 			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
@@ -62,13 +60,12 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 
             var constraintData = new MinimumDistanceConstraintData() {WrongDistanceCount = wrongDistanceCount};
             energyData.MinimumDistanceConstraintData = constraintData;
-            energyData.Energy += wrongDistanceCount;
 
-			return wrongDistanceCount == 0;
+            return wrongDistanceCount == 0;
 		}
 
 		/// <inheritdoc />
-		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription) || mapDescription.GetRoomDescription(perturbedNode).GetType() == typeof(CorridorRoomDescription))
@@ -87,13 +84,12 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 
             var constraintData = new MinimumDistanceConstraintData() {WrongDistanceCount = wrongDistanceTotal};
             energyData.MinimumDistanceConstraintData = constraintData;
-			energyData.Energy += wrongDistanceTotal;
 
-			return wrongDistanceTotal == 0;
+            return wrongDistanceTotal == 0;
 		}
 
 		/// <inheritdoc />
-		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
 			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
 				return true;
@@ -116,24 +112,18 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 
             var constraintData = new MinimumDistanceConstraintData() {WrongDistanceCount = wrongDistanceNew};
             energyData.MinimumDistanceConstraintData = constraintData;
-            energyData.Energy += wrongDistanceNew;
 
-			return wrongDistanceNew == 0;
+            return wrongDistanceNew == 0;
 		}
 
 		private bool HaveMinimumDistance(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.DoHaveMinimumDistance(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position, minimumDistance);
+			return roomShapeGeometry.DoHaveMinimumDistance(configuration1, configuration2, minimumDistance);
 		}
 
         private bool AreNeighbours(TNode node1, TNode node2)
         {
             return graph.HasEdge(node1, node2);
         }
-
-        private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
-        {
-            return stageOneGraph.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
-        }
-	}
+    }
 }

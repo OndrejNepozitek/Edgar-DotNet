@@ -121,7 +121,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
 
             var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<GridPolygon>, CorridorsData>(stageOneConstraints);
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,

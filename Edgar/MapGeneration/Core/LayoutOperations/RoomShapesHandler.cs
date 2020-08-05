@@ -18,11 +18,9 @@ namespace MapGeneration.Core.LayoutOperations
     /// <summary>
     /// Class responsible for returning available shapes for a node based on used repeat mode.
     /// </summary>
-    /// <typeparam name="TLayout"></typeparam>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TLayout, TNode, TConfiguration> : IRoomShapesHandler<TLayout, TNode, IntAlias<GridPolygon>>
-        where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
+    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, IntAlias<GridPolygon>>
         where TConfiguration : IConfiguration<IntAlias<GridPolygon>, TNode>, ISmartCloneable<TConfiguration>, new()
     {
         private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
@@ -78,7 +76,7 @@ namespace MapGeneration.Core.LayoutOperations
         /// If zero shapes are found and tryToFixEmpty is set to true, we try to lower the requirements and e.g. use
         /// only the NoImmediate mode instead of the NoRepeat mode.
         /// </summary>
-        public List<IntAlias<GridPolygon>> GetPossibleShapesForNode(TLayout layout, TNode node, bool tryToFixEmpty = false)
+        public List<IntAlias<GridPolygon>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
         {
             if (mapDescription.GetRoomDescription(node) is CorridorRoomDescription)
             {
@@ -105,7 +103,7 @@ namespace MapGeneration.Core.LayoutOperations
             return shapes;
         }
 
-        private List<IntAlias<GridPolygon>> GetPossibleShapesForNode(TLayout layout, TNode node, RepeatMode? modeOverride)
+        private List<IntAlias<GridPolygon>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<GridPolygon>>(configurationSpaces.GetShapesForNode(node));
 

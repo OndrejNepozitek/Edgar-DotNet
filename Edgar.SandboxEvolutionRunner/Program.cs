@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks;
+using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using MapGeneration.Benchmarks;
@@ -55,6 +56,7 @@ namespace SandboxEvolutionRunner
         public static void Run(Options options)
         {
             new BasicComparisonBenchmark().Run(options);
+            // new DeformedRoomTemplates().Run(options);
             return;
 
             var scenarios = new Dictionary<string, Scenario>()

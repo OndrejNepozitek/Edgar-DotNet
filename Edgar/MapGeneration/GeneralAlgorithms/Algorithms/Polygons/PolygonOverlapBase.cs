@@ -47,12 +47,20 @@
 			return rectangle1.A.X < rectangle2.B.X && rectangle1.B.X > rectangle2.A.X && rectangle1.A.Y < rectangle2.B.Y && rectangle1.B.Y > rectangle2.A.Y;
 		}
 
+        public bool DoOverlap(GridRectangle rectangle1, IntVector2 position1, GridRectangle rectangle2, IntVector2 position2)
+        {
+            return (rectangle1.A.X + position1.X) < (rectangle2.B.X + position2.X) && (rectangle1.B.X + position1.X) > (rectangle2.A.X + position2.X) && (rectangle1.A.Y + position1.Y) < (rectangle2.B.Y + position2.Y) && (rectangle1.B.Y + position1.Y) > (rectangle2.A.Y + position2.Y);
+        }
+
 		/// <inheritdoc />
 		public int OverlapArea(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
 		{
 			// Polygons cannot overlap if their bounding rectangles do not overlap
 			if (!DoOverlap(GetBoundingRectangle(polygon1) + position1, GetBoundingRectangle(polygon2) + position2))
 				return 0;
+
+			//if (!DoOverlap(GetBoundingRectangle(polygon1), position1, GetBoundingRectangle(polygon2), position2))
+			//    return 0;
 
 			var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1).ToList();
 			var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2).ToList();
@@ -153,7 +161,13 @@
             return distanceX >= minimumDistance || distanceY >= minimumDistance;
         }
 
-		/// <inheritdoc />
+        /// <inheritdoc />
+        public int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
 		public IList<Tuple<IntVector2, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line)
 		{
 			var reverse = line.GetDirection() == OrthogonalLine.Direction.Bottom || line.GetDirection() == OrthogonalLine.Direction.Left;
@@ -187,13 +201,7 @@
 			return events.Select(x => Tuple.Create(x.Item1.RotateAroundCenter(-rotation), x.Item2)).ToList();
 		}
 
-		/// <inheritdoc />
-		public int GetDistance(TShape polygon1, IntVector2 position1, TShape polygon2, IntVector2 position2)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
+        /// <summary>
 		/// Computes the overlap along a line of a given moving rectangle and a set o fixed rectangles.
 		/// </summary>
 		/// <param name="movingRectangle"></param>

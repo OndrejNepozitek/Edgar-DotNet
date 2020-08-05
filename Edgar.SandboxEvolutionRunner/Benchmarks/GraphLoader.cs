@@ -46,6 +46,43 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return graphs;
         }
 
+        public static List<NamedGraph<int>> GetRandomGraphsVariety2(int count)
+        {
+            var randomGraphSets = new List<List<NamedGraph<int>>>();
+
+            for (int nonTreeEdges = 1; nonTreeEdges < 4; nonTreeEdges++)
+            {
+                for (int vertices = 10; vertices <= 30; vertices+=10)
+                {
+                    // We do not need that many graphs
+                    randomGraphSets.Add(GetRandomGraphs(count, vertices, nonTreeEdges));
+                }
+            }
+
+            var graphs = new List<NamedGraph<int>>();
+
+            var counter = 0;
+            var graphsPerSet = Math.Max(1, count / randomGraphSets.Count);
+            var everyNth = graphsPerSet >= 10 ? 1 : 10 / graphsPerSet;
+
+            while (graphs.Count < count)
+            {
+                foreach (var randomGraphSet in randomGraphSets)
+                {
+                    graphs.Add(randomGraphSet[counter * everyNth]);
+
+                    if (graphs.Count >= count)
+                    {
+                        break;
+                    }
+                }
+
+                counter++;
+            }
+
+            return graphs;
+        }
+
         public static List<NamedGraph<int>> GetRandomGraphs(int count, int vertices, int nonTreeEdges)
         {
             var name = $"e_{nonTreeEdges}_{nonTreeEdges}_v_{vertices}_{vertices + 9}";

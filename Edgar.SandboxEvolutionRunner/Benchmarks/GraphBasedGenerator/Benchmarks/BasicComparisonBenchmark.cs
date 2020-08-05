@@ -30,7 +30,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
         protected override void Run()
         {
-            var graphs = GraphLoader.GetRandomGraphsVariety(20);
+            var graphs = GraphLoader.GetRandomGraphsVariety(10);
             var options = new BenchmarkOptions()
             {
                 EarlyStopTime = 5000,
@@ -38,8 +38,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
             var scenarios = new List<BenchmarkScenario<int>>()
             {
-                GetNonCorridorScenario(graphs),
-                // GetCorridorScenario(graphs),
+                // GetNonCorridorScenario(graphs),
+                GetCorridorScenario(graphs),
             };
 
             var scenarioGroup = new MinimumDistanceScenario().GetScenario(graphs, new MinimumDistanceScenario.Options());
@@ -47,9 +47,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             var generators = new List<ILevelGeneratorFactory<int>>()
             {
                 GetNewGenerator<int>(options),
+                //GetNewGenerator<int>(options),
                 // GetBeforeMasterThesisGenerator<int>(options),
                 GetOldGenerator<int>(options),
+                //GetOldGenerator<int>(options),
                 // GetOldGenerator<int>(options, true),
+                GetNewGenerator<int>(options),
             };
 
             // LoadFromFolder<int>();

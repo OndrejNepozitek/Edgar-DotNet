@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
 using GeneralAlgorithms.Algorithms.Common;
@@ -15,8 +16,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 {
     public class LevelDescriptionLoader
     {
-        private readonly List<RoomTemplate> roomTemplatesSmall;
-        private readonly List<RoomTemplate> roomTemplatesMedium;
+        private List<RoomTemplate> roomTemplatesSmall;
+        private List<RoomTemplate> roomTemplatesMedium;
         private readonly List<RoomTemplate> roomTemplatesOriginal;
         private readonly RoomTemplatesSet roomTemplatesSet;
         private readonly RepeatMode repeatMode;
@@ -29,8 +30,6 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             this.roomTemplatesSet = roomTemplatesSet;
             this.scale = scale;
             this.repeatMode = repeatMode;
-            roomTemplatesSmall = GetSmallRoomTemplates();
-            roomTemplatesMedium = GetMediumRoomTemplates();
             roomTemplatesOriginal = MapDescriptionUtils.GetBasicRoomTemplates(scale);
         }
 
@@ -46,7 +45,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return levelDescriptions;
         }
 
-        protected GraphBasedLevelDescription<int> GetLevelDescription(NamedGraph<int> namedGraph, List<int> corridorOffsets)
+        protected virtual GraphBasedLevelDescription<int> GetLevelDescription(NamedGraph<int> namedGraph, List<int> corridorOffsets)
         {
             var withCorridors = corridorOffsets[0] != 0;
             var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2) : null;
@@ -93,56 +92,57 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return corridorRoomDescription;
         }
 
-                private List<RoomTemplate> GetSmallRoomTemplates()
+        protected virtual List<RoomTemplate> GetSmallRoomTemplates()
         {
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 1);
 
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(6), doorMode, transformations, name: "Square 6x6", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(8), doorMode, transformations, name: "Square 8x8", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(6, 8), doorMode, transformations, name: "Rectangle 6x8", repeatMode: repeatMode));
-
-            if (enhanceRoomTemplates)
-            {
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(7), doorMode, transformations, name: "Square 7x7", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(5, 7), doorMode, transformations, name: "Rectangle 5x7", repeatMode: repeatMode));
-            }
+            roomTemplates.Add(GetSquareRoomTemplate(6, doorMode));
+            roomTemplates.Add(GetSquareRoomTemplate(8, doorMode));
+            roomTemplates.Add(GetRectangleRoomTemplate(6, 8, doorMode));
 
             return roomTemplates;
         }
 
-        private List<RoomTemplate> GetMediumRoomTemplates()
+        protected virtual List<RoomTemplate> GetMediumRoomTemplates()
         {
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 2);
 
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(12), doorMode, transformations, name: "Square 12x12", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(14), doorMode, transformations, name: "Square 14x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(10, 14), doorMode, transformations, name: "Rectangle 10x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(12, 15), doorMode, transformations, name: "Rectangle 12x15", repeatMode: repeatMode));
-
-            //roomTemplates.Add(new RoomTemplate(
-            //    new GridPolygonBuilder()
-            //        .AddPoint(0, 0)
-            //        .AddPoint(0, 16)
-            //        .AddPoint(8, 16)
-            //        .AddPoint(8, 8)
-            //        .AddPoint(16, 8)
-            //        .AddPoint(16, 0)
-            //        .Build()
-            //    , doorMode, transformations, name: "L-shape large", repeatMode: RepeatMode.NoRepeat));
-
-            if (enhanceRoomTemplates)
-            {
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(13), doorMode, transformations, name: "Square 13x13", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(10, 16), doorMode, transformations, name: "Rectangle 10x16", repeatMode: repeatMode));
-            }
+            roomTemplates.Add(GetSquareRoomTemplate(12, doorMode));
+            roomTemplates.Add(GetSquareRoomTemplate(14, doorMode));
+            roomTemplates.Add(GetRectangleRoomTemplate(10, 14, doorMode));
+            roomTemplates.Add(GetRectangleRoomTemplate(12, 15, doorMode));
 
             return roomTemplates;
         }
 
-        private IRoomDescription GetBasicRoomDescription(IGraph<int> graph, int vertex)
+        protected virtual RoomTemplate GetSquareRoomTemplate(int width, SimpleDoorMode doorMode)
         {
+            return GetRectangleRoomTemplate(width, width, doorMode);
+        }
+
+        protected virtual RoomTemplate GetRectangleRoomTemplate(int width, int height, SimpleDoorMode doorMode)
+        {
+            return GetRoomTemplate(GridPolygon.GetRectangle(width, height), doorMode, $"Rectangle {width}x{width}");
+        }
+
+        protected virtual RoomTemplate GetRoomTemplate(GridPolygon polygon, SimpleDoorMode doorMode, string name)
+        {
+            var minScale = Math.Min(scale.X, scale.Y);
+            doorMode = new SimpleDoorMode(doorMode.DoorLength * minScale, doorMode.CornerDistance * minScale);
+
+            return new RoomTemplate(polygon.Scale(scale), doorMode, transformations, name: name, repeatMode: repeatMode);
+        }
+
+        protected virtual IRoomDescription GetBasicRoomDescription(IGraph<int> graph, int vertex)
+        {
+            if (roomTemplatesSmall == null)
+            {
+                roomTemplatesSmall = GetSmallRoomTemplates();
+                roomTemplatesMedium = GetMediumRoomTemplates();
+            }
+
             var roomTemplates = new List<RoomTemplate>();
 
             switch (roomTemplatesSet)

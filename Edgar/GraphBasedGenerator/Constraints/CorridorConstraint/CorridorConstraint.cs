@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
+using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.RoomShapeGeometry;
 using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
 using MapGeneration.Core.Constraints.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
@@ -13,29 +12,27 @@ using MapGeneration.Core.MapDescriptions.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 {
-    public class CorridorConstraints
-    <TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
-		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
-		where TEnergyData : ICorridorConstraintData, IEnergyData
+    public class CorridorConstraint<TNode, TConfiguration, TEnergyData> : INodeConstraint<ILayout<TNode, TConfiguration>, TNode, TConfiguration, TEnergyData>
+        where TConfiguration : ISimpleEnergyConfiguration<TEnergyData>
+		where TEnergyData : ICorridorConstraintData
 	{
 		private readonly IMapDescription<TNode> mapDescription;
-		private readonly float energySigma;
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
+        private readonly IConfigurationSpaces<TConfiguration> configurationSpaces;
 		private readonly IGraph<TNode> stageOneGraph;
         private readonly IGraph<TNode> graph;
+        private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
 
-		public CorridorConstraints(IMapDescription<TNode> mapDescription, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public CorridorConstraint(IMapDescription<TNode> mapDescription, IConfigurationSpaces<TConfiguration> configurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
 		{
 			this.mapDescription = mapDescription;
-			this.energySigma = 10 * averageSize; // TODO: should it be like this?
-			this.configurationSpaces = configurationSpaces;
-			stageOneGraph = mapDescription.GetStageOneGraph();
+            this.configurationSpaces = configurationSpaces;
+            this.roomShapeGeometry = roomShapeGeometry;
+            stageOneGraph = mapDescription.GetStageOneGraph();
             graph = mapDescription.GetGraph();
         }
 
 		/// <inheritdoc />
-		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
 				return true;
@@ -61,17 +58,14 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 				}
 			}
 
-			var energy = ComputeEnergy(0, distance);
-
             var constraintData = new CorridorConstraintData {CorridorDistance = distance};
             energyData.CorridorConstraintData = constraintData;
-			energyData.Energy += energy;
 
-			return distance == 0;
+            return distance == 0;
 		}
 
 		/// <inheritdoc />
-		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
             if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
@@ -88,17 +82,14 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 				distanceTotal = configuration.EnergyData.CorridorConstraintData.CorridorDistance + (distanceNew - distanceOld);
 			}
 
-			var newEnergy = ComputeEnergy(0, distanceTotal);
-
             var constraintData = new CorridorConstraintData {CorridorDistance = distanceTotal};
 			energyData.CorridorConstraintData = constraintData;
-			energyData.Energy += newEnergy;
 
-			return distanceTotal == 0;
+            return distanceTotal == 0;
 		}
 
 		/// <inheritdoc />
-		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
             if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
 				return true;
@@ -118,20 +109,16 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 				newDistance += newNodeConfiguration.EnergyData.CorridorConstraintData.CorridorDistance - nodeConfiguration.EnergyData.CorridorConstraintData.CorridorDistance;
 			}
 
-			var newEnergy = ComputeEnergy(0, newDistance);
-
             var constraintData = new CorridorConstraintData {CorridorDistance = newDistance};
             energyData.CorridorConstraintData = constraintData;
-			energyData.Energy += newEnergy;
 
-			return newDistance == 0;
+            return newDistance == 0;
 		}
 
 		// TODO: keep dry
 		private int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)
-		{
-			var distance = IntVector2.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
-				configuration2.Shape.BoundingRectangle.Center + configuration2.Position);
+        {
+            var distance = roomShapeGeometry.GetCenterDistance(configuration1, configuration2);
 
 			if (distance < 0)
 			{
@@ -141,12 +128,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 			return distance;
 		}
 
-		private float ComputeEnergy(int overlap, float distance)
-		{
-			return (float)(Math.Pow(Math.E, overlap / (energySigma * 625)) * Math.Pow(Math.E, distance / (energySigma * 50)) - 1);
-		}
-
-		private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
+        private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
 		{
 			return stageOneGraph.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
 		}

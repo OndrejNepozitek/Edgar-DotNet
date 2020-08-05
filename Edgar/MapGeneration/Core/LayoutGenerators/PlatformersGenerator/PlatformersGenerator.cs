@@ -134,7 +134,7 @@ namespace MapGeneration.Core.LayoutGenerators.PlatformersGenerator
             //}
 
 
-            var roomShapesHandler = new RoomShapesHandler<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>>(
+            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsData>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,

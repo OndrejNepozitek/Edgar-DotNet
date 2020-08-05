@@ -1,34 +1,27 @@
 ﻿using System;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.RoomShapeGeometry;
 using MapGeneration.Core.Constraints.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 {
-    public class BasicConstraint<TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>
-		where TLayout : ILayout<TNode, TConfiguration>
-		where TConfiguration : IEnergyConfiguration<TShapeContainer, TNode, TEnergyData>
-		where TEnergyData : IBasicConstraintData, IEnergyData
-	{
-		private readonly IPolygonOverlap<TShapeContainer> polygonOverlap;
-        private readonly float energySigma;
-		private readonly IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces;
+    public class BasicConstraint<TNode, TConfiguration, TEnergyData> : INodeConstraint<ILayout<TNode, TConfiguration>, TNode, TConfiguration, TEnergyData>
+        where TConfiguration : ISimpleEnergyConfiguration<TEnergyData>
+		where TEnergyData : IBasicConstraintData
+    {
+        private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
+        private readonly IConfigurationSpaces<TConfiguration> configurationSpaces;
 
-		public BasicConstraint(IPolygonOverlap<TShapeContainer> polygonOverlap, float averageSize, IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces)
+		public BasicConstraint(IRoomShapeGeometry<TConfiguration> roomShapeGeometry, IConfigurationSpaces<TConfiguration> configurationSpaces)
 		{
-			this.polygonOverlap = polygonOverlap;
-			energySigma = 10 * averageSize;
-			this.configurationSpaces = configurationSpaces;
-		}
+            this.configurationSpaces = configurationSpaces;
+            this.roomShapeGeometry = roomShapeGeometry;
+        }
 
-		public bool ComputeEnergyData(TLayout layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
+		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
             var overlap = 0;
 			var distance = 0;
@@ -58,18 +51,13 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 				}
 			}
 
-			var energy = ComputeEnergy(overlap, distance);
-
-            var constraintData = new BasicConstraintData();
-            constraintData.Overlap = overlap;
-            constraintData.MoveDistance = distance;
+            var constraintData = new BasicConstraintData {Overlap = overlap, MoveDistance = distance};
             energyData.BasicConstraintData = constraintData;
-            energyData.Energy += energy;
 
-			return overlap == 0 && distance == 0;
+            return overlap == 0 && distance == 0;
 		}
 
-		public bool UpdateEnergyData(TLayout layout, TNode perturbedNode, TConfiguration oldConfiguration,
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
             var overlapOld = ComputeOverlap(configuration, oldConfiguration);
@@ -87,18 +75,15 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 				distanceTotal = configuration.EnergyData.BasicConstraintData.MoveDistance + (distanceNew - distanceOld);
 			}
 
-			var newEnergy = ComputeEnergy(overlapTotal, distanceTotal);
-
             var constraintData = energyData.BasicConstraintData;
             constraintData.MoveDistance = distanceTotal;
             constraintData.Overlap = overlapTotal;
             energyData.BasicConstraintData = constraintData;
-			energyData.Energy += newEnergy;
 
-			return overlapTotal == 0 && distanceTotal == 0;
+            return overlapTotal == 0 && distanceTotal == 0;
 		}
 
-		public bool UpdateEnergyData(TLayout oldLayout, TLayout newLayout, TNode node, ref TEnergyData energyData)
+		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
 			var newOverlap = oldConfiguration.EnergyData.BasicConstraintData.Overlap;
@@ -118,27 +103,22 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 				newDistance += newNodeConfiguration.EnergyData.BasicConstraintData.MoveDistance - nodeConfiguration.EnergyData.BasicConstraintData.MoveDistance;
 			}
 
-
-			var newEnergy = ComputeEnergy(newOverlap, newDistance);
-
             var constraintData = energyData.BasicConstraintData;
             constraintData.MoveDistance = newDistance;
             constraintData.Overlap = newOverlap;
             energyData.BasicConstraintData = constraintData;
-			energyData.Energy += newEnergy;
 
-			return newOverlap == 0 && newDistance == 0;
+            return newOverlap == 0 && newDistance == 0;
 		}
 
 		private int ComputeOverlap(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return polygonOverlap.OverlapArea(configuration1.ShapeContainer, configuration1.Position, configuration2.ShapeContainer, configuration2.Position);
+			return roomShapeGeometry.GetOverlapArea(configuration1, configuration2);
 		}
 
 		private int ComputeDistance(TConfiguration configuration1, TConfiguration configuration2)
-		{
-			var distance = IntVector2.ManhattanDistance(configuration1.Shape.BoundingRectangle.Center + configuration1.Position,
-				configuration2.Shape.BoundingRectangle.Center + configuration2.Position);
+        {
+            var distance = roomShapeGeometry.GetCenterDistance(configuration1, configuration2);
 
 			if (distance < 0)
 			{
@@ -148,12 +128,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 			return distance;
 		}
 
-		private float ComputeEnergy(int overlap, float distance)
-		{
-			return (float)(Math.Pow(Math.E, overlap / (energySigma * 625)) * Math.Pow(Math.E, distance / (energySigma * 50)) - 1);
-		}
-
-		private bool AreNeighbours(TLayout layout, TNode node1, TNode node2)
+        private bool AreNeighbours(ILayout<TNode, TConfiguration> layout, TNode node1, TNode node2)
 		{
 			return layout.Graph.HasEdge(node1, node2);
 		}
