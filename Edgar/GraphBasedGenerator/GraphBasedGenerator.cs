@@ -44,7 +44,7 @@ namespace Edgar.GraphBasedGenerator
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly GraphBasedLevelDescription<TNode> levelDescriptionOriginal;
-        private readonly DungeonGeneratorConfiguration<TNode> configuration;
+        private readonly GraphBasedGeneratorConfiguration<TNode> configuration;
         private ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsDataNew>>, MapLayout<TNode>, int> generator;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
@@ -52,11 +52,11 @@ namespace Edgar.GraphBasedGenerator
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<Configuration<CorridorsDataNew>>> OnPerturbedInternal;
 
-        public GraphBasedGenerator(GraphBasedLevelDescription<TNode> levelDescription, DungeonGeneratorConfiguration<TNode> configuration = null)
+        public GraphBasedGenerator(GraphBasedLevelDescription<TNode> levelDescription, GraphBasedGeneratorConfiguration<TNode> configuration = null)
         {
             this.levelDescriptionOriginal = levelDescription;
             this.mapDescription = new MapDescriptionMapping<TNode>(levelDescription);
-            this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>();
+            this.configuration = configuration ?? new GraphBasedGeneratorConfiguration<TNode>();
             SetupGenerator();
         }
 
@@ -110,7 +110,9 @@ namespace Edgar.GraphBasedGenerator
                 {
                     new BasicConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
                         roomShapeGeometry,
-                        configurationSpaces
+                        configurationSpaces,
+                        mapDescription,
+                        configuration.OptimizeCorridorConstraints
                     ),
                     new CorridorConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
                         mapDescription,

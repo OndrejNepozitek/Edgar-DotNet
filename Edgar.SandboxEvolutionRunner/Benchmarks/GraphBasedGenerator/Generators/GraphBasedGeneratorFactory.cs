@@ -14,16 +14,16 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {
     public class GraphBasedGeneratorFactory<TNode> : ILevelGeneratorFactory<TNode>
     {
-        private readonly DungeonGeneratorConfiguration<TNode> configuration;
+        private readonly GraphBasedGeneratorConfiguration<TNode> configuration;
         private readonly bool benchmarkInitialization;
 
         public string Name { get; }
 
-        public GraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false)
+        public GraphBasedGeneratorFactory(GraphBasedGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false, string name = null)
         {
             this.configuration = configuration;
             this.benchmarkInitialization = benchmarkInitialization;
-            Name = "New generator" + (benchmarkInitialization ? " with init" : "");
+            Name = $"{name ?? "New generator"}" + (benchmarkInitialization ? " with init" : "");
         }
 
         public IGeneratorRunner GetGeneratorRunner(GraphBasedLevelDescription<TNode> levelDescription)
