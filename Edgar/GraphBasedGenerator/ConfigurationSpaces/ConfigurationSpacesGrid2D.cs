@@ -18,7 +18,7 @@ using MapGeneration.Utils.Interfaces;
 namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
 {
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, IntVector2>, IRandomInjectable
-        where TConfiguration: IConfiguration<IntAlias<GridPolygon>, IntVector2, TNode>
+        where TConfiguration: IConfiguration<RoomTemplateInstance, IntVector2, TNode>
     {
         private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly ILineIntersection<OrthogonalLine> lineIntersection;

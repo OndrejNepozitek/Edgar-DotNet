@@ -440,8 +440,8 @@ namespace Edgar.GraphBasedGenerator
             }
 
             var newConfiguration = mainConfiguration.SmartClone();
-            // newConfiguration.Position = newPosition;
-            ((IMutableConfiguration<TShapeContainer, TNode>) newConfiguration).Position = newPosition;
+            newConfiguration.Position = newPosition;
+            // ((IMutableConfiguration<TShapeContainer, TNode>) newConfiguration).Position = newPosition;
 
             if (updateLayout)
             {
