@@ -9,6 +9,8 @@ namespace MapGeneration.Core.MapDescriptions
     /// </summary>
     public class BasicRoomDescription : IRoomDescription
     {
+        public bool IsCorridor => false;
+
         /// <summary>
         /// This room is handled in the first stage of the generator.
         /// </summary>

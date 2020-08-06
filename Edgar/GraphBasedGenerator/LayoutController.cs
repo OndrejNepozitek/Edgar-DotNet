@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Constraints;
+using Edgar.GraphBasedGenerator.RoomShapeGeometry;
 using GeneralAlgorithms.DataStructures.Common;
 using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces;
 using MapGeneration.Core.ConfigurationSpaces.Interfaces;
 using MapGeneration.Core.Constraints;
 using MapGeneration.Core.LayoutOperations;
@@ -15,34 +16,37 @@ using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
 using MapGeneration.Utils.Interfaces;
+using ConfigurationSpace = MapGeneration.Core.ConfigurationSpaces.ConfigurationSpace;
 
 namespace Edgar.GraphBasedGenerator
 {
     /// <summary>
 	/// Layout operations that compute energy based on given constraints.
 	/// </summary>
-	public class LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>
+	public class LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutController<TLayout, TNode, TConfiguration, TShapeContainer>
 		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
-		where TConfiguration : IMutableConfiguration<TShapeContainer, TNode>, ISmartCloneable<TConfiguration>, ISimpleEnergyConfiguration<TEnergyData>, new()
+		where TConfiguration : IConfiguration<TShapeContainer, IntVector2, TNode>, /*IMutableConfiguration<TShapeContainer, TNode>,*/ ISmartCloneable<TConfiguration>, ISimpleEnergyConfiguration<TEnergyData>, new()
 		where TEnergyData : IEnergyData, new()
     {
         private readonly ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator;
         private readonly bool throwIfRepeatModeNotSatisfied;
+        private readonly IConfigurationSpaces<TConfiguration, IntVector2> simpleConfigurationSpaces;
 
         public LayoutController(
-            IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces,
             int averageSize,
             IMapDescription<TNode> mapDescription,
             ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator,
-            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied)
+            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, IntVector2> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
             : base(
-            configurationSpaces,
+            null,
             averageSize,
             mapDescription,
-            roomShapesHandler)
+            roomShapesHandler,
+            roomShapeGeometry)
         {
             this.constraintsEvaluator = constraintsEvaluator;
             this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
+            this.simpleConfigurationSpaces = simpleConfigurationSpaces;
         }
 
         /// <summary>
@@ -125,7 +129,7 @@ namespace Edgar.GraphBasedGenerator
 			// The first node is set to have a random shape and [0,0] position
 			if (neighborsConfigurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(ConfigurationSpaces.GetRandomShape(node), new IntVector2(), node));
+				layout.SetConfiguration(node, CreateConfiguration(RoomShapesHandler.GetRandomShapeWithoutConstraintsDoNotUse(node), new IntVector2(), node));
                 iterationsCount++;
 				return;
 			}
@@ -153,78 +157,33 @@ namespace Edgar.GraphBasedGenerator
 			// Try all shapes
 			foreach (var shape in shapes)
 			{
-                var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations);
+                // var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations);
+                var intersection = simpleConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations, out var configurationsSatisfied);
 
-                if (intersection == null)
+                if (configurationsSatisfied == 0)
 					continue;
 
-				intersection.Shuffle(Random);
+                const int maxPoints = 20;
+                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, Random))
+                {
+                    iterationsCount++;
 
-				// Try all lines from the maximum intersection
-				foreach (var intersectionLine in intersection)
-				{
-                    // Limit the number of points to 20.
-					// It is very slow to try all the positions if rooms are big.
-					const int maxPoints = 20;
+                    var energy = constraintsEvaluator
+                        .ComputeNodeEnergy(layout, node, CreateConfiguration(shape, position, node)).Energy;
 
-					if (intersectionLine.Length > maxPoints)
-					{
-						var mod = intersectionLine.Length / maxPoints - 1;
-
-						for (var i = 0; i < maxPoints; i++)
-                        {
-                            iterationsCount++;
-
-							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length);
-
-							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, node, CreateConfiguration(shape, position, node)).Energy;
-
-							if (energy < bestEnergy)
-							{
-								bestEnergy = energy;
-								bestShape = shape;
-								bestPosition = position;
-							}
-
-							if (bestEnergy <= 0)
-							{
-								break;
-							}
-						}
-					}
-					else
+                    if (energy < bestEnergy)
                     {
-                        iterationsCount++;
+                        bestEnergy = energy;
+                        bestShape = shape;
+                        bestPosition = position;
+                    }
 
-                        var points = intersectionLine.GetPoints();
-						points.Shuffle(Random);
-
-						foreach (var position in points)
-						{
-							var energy = constraintsEvaluator.ComputeNodeEnergy(layout, node, CreateConfiguration(shape, position, node)).Energy;
-
-							if (energy < bestEnergy)
-							{
-								bestEnergy = energy;
-								bestShape = shape;
-								bestPosition = position;
-							}
-
-							if (bestEnergy <= 0)
-							{
-								break;
-							}
-						}
-					}
-
-					// There is no point of looking for more solutions when you already reached a valid state
-					// and so no position would be accepted anyway
-					if (bestEnergy <= 0)
-					{
-						break;
-					}
-				}
-			}
+                    if (bestEnergy <= 0)
+                    {
+                        break;
+                    }
+                }
+            }
 
 			if (bestEnergy == float.MaxValue)
 			{
@@ -271,12 +230,21 @@ namespace Edgar.GraphBasedGenerator
 		/// <returns></returns>
 		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, IntVector2 position, TNode node)
 		{
-			var configuration = new TConfiguration
-			{
-				ShapeContainer = shapeContainer,
-				Position = position,
-				Node = node,
-			};
+			//var configuration = new TConfiguration
+			//{
+			//	ShapeContainer = shapeContainer,
+			//	// Position = position,
+			//	Node = node,
+			//};
+
+   //         ((IMutableConfiguration<TShapeContainer, TNode>) configuration).Position = position;
+
+            var configuration = new TConfiguration()
+            {
+                RoomShape = shapeContainer,
+                Position = position,
+                Room = node,
+            };
 
 			return configuration;
 		}
@@ -375,78 +343,44 @@ namespace Edgar.GraphBasedGenerator
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new IntVector2();
 
-			var shapes = ConfigurationSpaces.GetShapesForNode(node).ToList();
+            var shapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, false);
 			shapes.Shuffle(Random);
 
-			foreach (var shape in shapes)
-			{
-				var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
+            foreach (var shape in shapes)
+            {
+                // var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), configurations, out var configurationsSatisfied);
 
-				if (configurationsSatisfied != 2)
-					continue;
+                var intersection = simpleConfigurationSpaces.GetMaximumIntersection(
+                    CreateConfiguration(shape, new IntVector2(), node), configurations,
+                    out var configurationsSatisfied);
 
-				intersection.Shuffle(Random);
+                if (configurationsSatisfied != 2)
+                    continue;
 
-				foreach (var intersectionLine in intersection)
-				{
-					const int maxPoints = 20;
+                const int maxPoints = 20;
 
-					if (intersectionLine.Length > maxPoints)
-					{
-						var mod = intersectionLine.Length / maxPoints - 1;
+                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, Random))
+                {
+                    var energyData =
+                        constraintsEvaluator.ComputeNodeEnergy(layout, node,
+                            CreateConfiguration(shape, position, node));
 
-						for (var i = 0; i < maxPoints; i++)
-						{
-							var position = intersectionLine.GetNthPoint(i != maxPoints - 1 ? i * mod : intersectionLine.Length + 1);
+                    if (energyData.IsValid)
+                    {
+                        bestShape = shape;
+                        bestPosition = position;
+                        foundValid = true;
+                        break;
+                    }
 
-							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, node, CreateConfiguration(shape, position, node));
+                    if (foundValid)
+                    {
+                        break;
+                    }
+                }
+            }
 
-							if (energyData.IsValid)
-							{
-								bestShape = shape;
-								bestPosition = position;
-								foundValid = true;
-								break;
-							}
-
-							if (foundValid)
-							{
-								break;
-							}
-						}
-					}
-					else
-					{
-						var points = intersectionLine.GetPoints();
-						points.Shuffle(Random);
-
-						foreach (var position in points)
-						{
-							var energyData = constraintsEvaluator.ComputeNodeEnergy(layout, node, CreateConfiguration(shape, position, node));
-
-							if (energyData.IsValid)
-							{
-								bestShape = shape;
-								bestPosition = position;
-								foundValid = true;
-								break;
-							}
-
-							if (foundValid)
-							{
-								break;
-							}
-						}
-					}
-
-					if (foundValid)
-					{
-						break;
-					}
-				}
-			}
-
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
+            var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);
 
 			return foundValid;
@@ -473,6 +407,95 @@ namespace Edgar.GraphBasedGenerator
                 var random = nonCorridors.GetRandom(Random);
                 PerturbPosition(layout, random, updateLayout);
             }
+        }
+
+		// NEW
+        public override void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
+        {
+            var configurations = new List<TConfiguration>();
+
+            foreach (var neighbor in StageOneGraph.GetNeighbours(node))
+            {
+                if (layout.GetConfiguration(neighbor, out var configuration))
+                {
+                    configurations.Add(configuration);
+                }
+            }
+
+            if (!layout.GetConfiguration(node, out var mainConfiguration))
+                throw new InvalidOperationException();
+
+
+            var configurationSpace = simpleConfigurationSpaces.GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
+            var newPosition = configurationSpace.GetRandomPosition(Random);
+
+            // var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
+
+            // If zero configurations were satisfied, that means that the current shape was not compatible
+            // with any of its neighbours so we perturb shape instead.
+            if (configurationsSatisfied == 0)
+            {
+                PerturbShape(layout, node, updateLayout);
+                return;
+            }
+
+            var newConfiguration = mainConfiguration.SmartClone();
+            // newConfiguration.Position = newPosition;
+            ((IMutableConfiguration<TShapeContainer, TNode>) newConfiguration).Position = newPosition;
+
+            if (updateLayout)
+            {
+                UpdateLayout(layout, node, newConfiguration);
+                return;
+            }
+
+            layout.SetConfiguration(node, newConfiguration);
+        }
+
+        // NEW
+        public override void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
+        {
+            var canBePerturbed = chain
+                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle better
+                .Where(x => RoomShapesHandler.CanPerturbShapeDoNotUse(x))
+                .ToList();
+
+            if (canBePerturbed.Count == 0)
+                return;
+
+            PerturbShape(layout, canBePerturbed.GetRandom(Random), updateLayout);
+        }
+
+        // NEW
+        public override void PerturbShape(TLayout layout, TNode node, bool updateLayout)
+        {
+            layout.GetConfiguration(node, out var configuration);
+
+            // Return the current layout if a given node cannot be shape-perturbed
+            if (!RoomShapesHandler.CanPerturbShapeDoNotUse(node))
+            {
+                return;
+            }
+            
+            var possibleShapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, false);
+
+            if (possibleShapes.Count == 0)
+            {
+                return;
+            }
+
+            var shape = possibleShapes.GetRandom(Random);
+            var newConfiguration = configuration.SmartClone();
+            // newConfiguration.ShapeContainer = shape;
+            newConfiguration.RoomShape = shape;
+
+            if (updateLayout)
+            {
+                UpdateLayout(layout, node, newConfiguration);
+                return;
+            }
+
+            layout.SetConfiguration(node, newConfiguration);
         }
 	}
 }

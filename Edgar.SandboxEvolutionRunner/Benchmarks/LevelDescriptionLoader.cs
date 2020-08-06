@@ -33,9 +33,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             roomTemplatesOriginal = MapDescriptionUtils.GetBasicRoomTemplates(scale);
         }
 
-        public List<GraphBasedLevelDescription<int>> GetLevelDescriptions(List<NamedGraph<int>> namedGraphs, List<int> corridorOffsets)
+        public List<LevelDescriptionGrid2D<int>> GetLevelDescriptions(List<NamedGraph<int>> namedGraphs, List<int> corridorOffsets)
         {
-            var levelDescriptions = new List<GraphBasedLevelDescription<int>>();
+            var levelDescriptions = new List<LevelDescriptionGrid2D<int>>();
 
             foreach (var namedGraph in namedGraphs)
             {
@@ -45,12 +45,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return levelDescriptions;
         }
 
-        protected virtual GraphBasedLevelDescription<int> GetLevelDescription(NamedGraph<int> namedGraph, List<int> corridorOffsets)
+        protected virtual LevelDescriptionGrid2D<int> GetLevelDescription(NamedGraph<int> namedGraph, List<int> corridorOffsets)
         {
             var withCorridors = corridorOffsets[0] != 0;
             var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2) : null;
 
-            var levelDescription = new GraphBasedLevelDescription<int>();
+            var levelDescription = new LevelDescriptionGrid2D<int>();
             levelDescription.MinimumRoomDistance = 0;
 
             var graph = namedGraph.Graph;

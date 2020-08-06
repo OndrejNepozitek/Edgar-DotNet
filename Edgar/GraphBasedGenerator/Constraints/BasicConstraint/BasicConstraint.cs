@@ -29,7 +29,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 
 		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
         {
-            var isCorridor = optimizeCorridors && mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription);
+            var isCorridor = optimizeCorridors && mapDescription.GetRoomDescription(node).IsCorridor;
 
             var overlap = 0;
 			var distance = 0;
@@ -68,7 +68,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-            var isCorridor = optimizeCorridors && (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription) || mapDescription.GetRoomDescription(perturbedNode).GetType() == typeof(CorridorRoomDescription));
+            var isCorridor = optimizeCorridors && (mapDescription.GetRoomDescription(node).IsCorridor || mapDescription.GetRoomDescription(perturbedNode).IsCorridor);
 
             var overlapOld = ComputeOverlap(configuration, oldConfiguration);
 			var overlapNew = ComputeOverlap(configuration, newConfiguration);

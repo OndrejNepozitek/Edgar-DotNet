@@ -7,6 +7,6 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
     {
         string Name { get; }
 
-        IGeneratorRunner GetGeneratorRunner(GraphBasedLevelDescription<TNode> levelDescription);
+        IGeneratorRunner GetGeneratorRunner(LevelDescriptionGrid2D<TNode> levelDescription);
     }
 }

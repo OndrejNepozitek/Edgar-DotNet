@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Constraints;
 using Edgar.GraphBasedGenerator.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Constraints.CorridorConstraint;
@@ -14,16 +15,12 @@ using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.ChainDecompositions;
 using MapGeneration.Core.Configurations;
-using MapGeneration.Core.Configurations.EnergyData;
 using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.Constraints;
 using MapGeneration.Core.Constraints.Interfaces;
 using MapGeneration.Core.Doors;
 using MapGeneration.Core.GeneratorPlanners;
-using MapGeneration.Core.LayoutConverters;
 using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
 using MapGeneration.Core.LayoutGenerators;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using MapGeneration.Core.LayoutGenerators.Interfaces;
 using MapGeneration.Core.LayoutOperations;
 using MapGeneration.Core.Layouts;
@@ -43,16 +40,16 @@ namespace Edgar.GraphBasedGenerator
     public class GraphBasedGenerator<TNode> : IRandomInjectable, ICancellable, IObservableGenerator<MapLayout<TNode>>
     {
         private readonly MapDescriptionMapping<TNode> mapDescription;
-        private readonly GraphBasedLevelDescription<TNode> levelDescriptionOriginal;
+        private readonly LevelDescriptionGrid2D<TNode> levelDescriptionOriginal;
         private readonly GraphBasedGeneratorConfiguration<TNode> configuration;
-        private ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsDataNew>>, MapLayout<TNode>, int> generator;
+        private ChainBasedGenerator<IMapDescription<int>, Layout<ConfigurationNew<CorridorsDataNew>>, MapLayout<TNode>, int> generator;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
 
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
-        private event Action<Layout<Configuration<CorridorsDataNew>>> OnPerturbedInternal;
+        private event Action<Layout<ConfigurationNew<CorridorsDataNew>>> OnPerturbedInternal;
 
-        public GraphBasedGenerator(GraphBasedLevelDescription<TNode> levelDescription, GraphBasedGeneratorConfiguration<TNode> configuration = null)
+        public GraphBasedGenerator(LevelDescriptionGrid2D<TNode> levelDescription, GraphBasedGeneratorConfiguration<TNode> configuration = null)
         {
             this.levelDescriptionOriginal = levelDescription;
             this.mapDescription = new MapDescriptionMapping<TNode>(levelDescription);
@@ -87,7 +84,7 @@ namespace Edgar.GraphBasedGenerator
                 .ToList();
 
             // Create generator planner
-            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsDataNew>>, int>(configuration.SimulatedAnnealingMaxBranching);
+            var generatorPlanner = new GeneratorPlanner<Layout<ConfigurationNew<CorridorsDataNew>>, int>(configuration.SimulatedAnnealingMaxBranching);
 
             // Create configuration spaces
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
@@ -96,43 +93,44 @@ namespace Edgar.GraphBasedGenerator
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
 
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsDataNew>>(mapDescription);
+            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew<CorridorsDataNew>>(mapDescription);
+            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationNew<CorridorsDataNew>, int>(configurationSpaces, mapDescription);
 
             var averageSize = configurationSpaces.GetAverageSize();
 
-            var energyUpdater = new BasicEnergyUpdater<int, Configuration<CorridorsDataNew>>(10 * averageSize);
-            var roomShapeGeometry = new FastGridPolygonGeometry<Configuration<CorridorsDataNew>, int>();
+            var energyUpdater = new BasicEnergyUpdater<int, ConfigurationNew<CorridorsDataNew>>(10 * averageSize);
+            var roomShapeGeometry = new FastGridPolygonGeometry<ConfigurationNew<CorridorsDataNew>, int>();
 
             // Create generator constraints
             var stageOneConstraints =
-                new List<INodeConstraint<ILayout<int, Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>,
+                new List<INodeConstraint<ILayout<int, ConfigurationNew<CorridorsDataNew>>, int, ConfigurationNew<CorridorsDataNew>,
                     CorridorsDataNew>>
                 {
-                    new BasicConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
+                    new BasicConstraint<int, ConfigurationNew<CorridorsDataNew>, CorridorsDataNew>(
                         roomShapeGeometry,
-                        configurationSpaces,
+                        simpleConfigurationSpaces,
                         mapDescription,
                         configuration.OptimizeCorridorConstraints
                     ),
-                    new CorridorConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
+                    new CorridorConstraint<int, ConfigurationNew<CorridorsDataNew>, CorridorsDataNew>(
                         mapDescription,
-                        configurationSpaces,
+                        simpleConfigurationSpaces,
                         roomShapeGeometry
                     ),
                 };
 
             if (levelDescriptionOriginal.MinimumRoomDistance > 0)
             {
-                stageOneConstraints.Add(new MinimumDistanceConstraint<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(
+                stageOneConstraints.Add(new MinimumDistanceConstraint<int, ConfigurationNew<CorridorsDataNew>, CorridorsDataNew>(
                     mapDescription,
                     roomShapeGeometry,
                     levelDescriptionOriginal.MinimumRoomDistance
                 ));
             }
 
-            var constraintsEvaluator = new ConstraintsEvaluator<int, Configuration<CorridorsDataNew>, CorridorsDataNew>(stageOneConstraints, energyUpdater);
+            var constraintsEvaluator = new ConstraintsEvaluator<int, ConfigurationNew<CorridorsDataNew>, CorridorsDataNew>(stageOneConstraints, energyUpdater);
 
-            var roomShapesHandler = new RoomShapesHandler<int, Configuration<CorridorsDataNew>>(
+            var roomShapesHandler = new MapGeneration.Core.LayoutOperations.RoomShapesHandler<int, ConfigurationNew<CorridorsDataNew>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
@@ -140,21 +138,21 @@ namespace Edgar.GraphBasedGenerator
             );
 
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<Configuration<CorridorsDataNew>>, int, Configuration<CorridorsDataNew>, IntAlias<GridPolygon>, CorridorsDataNew>(configurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied);
+            var layoutOperations = new LayoutController<Layout<ConfigurationNew<CorridorsDataNew>>, int, ConfigurationNew<CorridorsDataNew>, IntAlias<GridPolygon>, CorridorsDataNew>(configurationSpaces.GetAverageSize(), mapDescription, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
 
-            var initialLayout = new Layout<Configuration<CorridorsDataNew>>(mapDescription.GetGraph());
+            var initialLayout = new Layout<ConfigurationNew<CorridorsDataNew>>(mapDescription.GetGraph());
             var layoutConverter =
-                new BasicLayoutConverter<Layout<Configuration<CorridorsDataNew>>, TNode,
-                    Configuration<CorridorsDataNew>>(mapDescription, configurationSpaces,
+                new BasicLayoutConverterGrid2D<TNode,
+                    ConfigurationNew<CorridorsDataNew>>(mapDescription, simpleConfigurationSpaces,
                     configurationSpaces.GetIntAliasMapping());
 
             // Create simulated annealing evolver
             var layoutEvolver =
-                    new SimulatedAnnealingEvolver<Layout<Configuration<CorridorsDataNew>>, int,
-                    Configuration<CorridorsDataNew>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
+                    new SimulatedAnnealingEvolver<Layout<ConfigurationNew<CorridorsDataNew>>, int,
+                    ConfigurationNew<CorridorsDataNew>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
 
             // Create the generator itself
-            generator = new ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsDataNew>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator = new ChainBasedGenerator<IMapDescription<int>, Layout<ConfigurationNew<CorridorsDataNew>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             // Register event handlers
             generator.OnRandomInjected += (random) =>
@@ -163,6 +161,7 @@ namespace Edgar.GraphBasedGenerator
                 ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
+                ((IRandomInjectable)simpleConfigurationSpaces).InjectRandomGenerator(random);
             };
 
             generator.OnCancellationTokenInjected += (token) =>
@@ -193,7 +192,7 @@ namespace Edgar.GraphBasedGenerator
             return layout;
         }
 
-        private Action<Layout<Configuration<CorridorsDataNew>>> GetEarlyStoppingHandler(DateTime generatorStarted)
+        private Action<Layout<ConfigurationNew<CorridorsDataNew>>> GetEarlyStoppingHandler(DateTime generatorStarted)
         {
             var iterations = 0;
             var cts = new CancellationTokenSource();

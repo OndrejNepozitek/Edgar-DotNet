@@ -47,13 +47,15 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             var generators = new List<ILevelGeneratorFactory<int>>()
             {
                 GetNewGenerator<int>(options),
-                GetNewGenerator<int>(options, optimizeCorridorConstraints: true, name: "CorCons"),
-                GetNewGenerator<int>(options),
-                GetNewGenerator<int>(options, optimizeCorridorConstraints: true, name: "CorCons"),
+                GetOldGenerator<int>(options),
+
+                //GetNewGenerator<int>(options),
+                //GetNewGenerator<int>(options, optimizeCorridorConstraints: true, name: "CorCons"),
+                //GetNewGenerator<int>(options),
+                //GetNewGenerator<int>(options, optimizeCorridorConstraints: true, name: "CorCons"),
 
                 // GetNewGenerator<int>(options),
                 // GetBeforeMasterThesisGenerator<int>(options),
-                GetOldGenerator<int>(options),
                 // GetOldGenerator<int>(options),
                 // GetOldGenerator<int>(options, true),
                 // GetNewGenerator<int>(options),

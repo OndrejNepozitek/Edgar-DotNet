@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Configurations;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
@@ -13,15 +14,15 @@ using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutOperations
+namespace Edgar.GraphBasedGenerator
 {
     /// <summary>
     /// Class responsible for returning available shapes for a node based on used repeat mode.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, IntAlias<GridPolygon>>
-        where TConfiguration : IConfiguration<IntAlias<GridPolygon>, TNode>, ISmartCloneable<TConfiguration>, new()
+    public class RoomShapesHandler<TNode, TConfiguration, TRoomShape> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, IntAlias<GridPolygon>>
+        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<TRoomShape>, ISmartCloneable<TConfiguration>, new()
     {
         private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping;
@@ -115,28 +116,29 @@ namespace MapGeneration.Core.LayoutOperations
 
         private List<IntAlias<GridPolygon>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
         {
-            var shapesForNode = new HashSet<IntAlias<GridPolygon>>(configurationSpaces.GetShapesForNode(node));
+            throw new NotImplementedException();
+            //var shapesForNode = new HashSet<IntAlias<GridPolygon>>(configurationSpaces.GetShapesForNode(node));
 
-            foreach (var configuration in layout.GetAllConfigurations())
-            {
-                if (configuration.Node.Equals(node))
-                {
-                    continue;
-                }
+            //foreach (var configuration in layout.GetAllConfigurations())
+            //{
+            //    if (configuration.Node.Equals(node))
+            //    {
+            //        continue;
+            //    }
 
-                var roomTemplateInfo = roomTemplateInstanceInfo[configuration.ShapeContainer.Alias];
-                var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode;
+            //    var roomTemplateInfo = roomTemplateInstanceInfo[configuration.ShapeContainer.Alias];
+            //    var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode;
 
-                if (repeatMode == RepeatMode.NoRepeat || (repeatMode == RepeatMode.NoImmediate && stageOneGraph.HasEdge(node, configuration.Node)))
-                {
-                    foreach (var alias in roomTemplateInfo.Aliases)
-                    {
-                        shapesForNode.Remove(alias);
-                    }
-                }
-            }
+            //    if (repeatMode == RepeatMode.NoRepeat || (repeatMode == RepeatMode.NoImmediate && stageOneGraph.HasEdge(node, configuration.Node)))
+            //    {
+            //        foreach (var alias in roomTemplateInfo.Aliases)
+            //        {
+            //            shapesForNode.Remove(alias);
+            //        }
+            //    }
+            //}
 
-            return shapesForNode.ToList();
+            //return shapesForNode.ToList();
         }
 
         private class RoomTemplateInfo

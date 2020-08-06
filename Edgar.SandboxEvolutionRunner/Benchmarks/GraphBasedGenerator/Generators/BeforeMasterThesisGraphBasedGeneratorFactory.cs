@@ -27,7 +27,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             Name = "Pre-master" + (benchmarkInitialization ? " with init" : "");
         }
 
-        public IGeneratorRunner GetGeneratorRunner(GraphBasedLevelDescription<TNode> levelDescription)
+        public IGeneratorRunner GetGeneratorRunner(LevelDescriptionGrid2D<TNode> levelDescription)
         {
             if (benchmarkInitialization)
             {
@@ -78,7 +78,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             });
         }
 
-        private IGeneratorRunner GetGeneratorRunnerWithInit(GraphBasedLevelDescription<TNode> levelDescription)
+        private IGeneratorRunner GetGeneratorRunnerWithInit(LevelDescriptionGrid2D<TNode> levelDescription)
         {
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;

@@ -7,9 +7,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
     {
         public string Name { get; }
 
-        public List<GraphBasedLevelDescription<TNode>> LevelDescriptions { get; }
+        public List<LevelDescriptionGrid2D<TNode>> LevelDescriptions { get; }
 
-        public BenchmarkScenario(string name, List<GraphBasedLevelDescription<TNode>> levelDescriptions)
+        public BenchmarkScenario(string name, List<LevelDescriptionGrid2D<TNode>> levelDescriptions)
         {
             Name = name;
             LevelDescriptions = levelDescriptions;

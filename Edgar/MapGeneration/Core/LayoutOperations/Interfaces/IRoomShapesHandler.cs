@@ -15,5 +15,9 @@ namespace MapGeneration.Core.LayoutOperations.Interfaces
         /// <param name="tryToFixEmpty">Whether to try to return at least some room shapes even though not all requirements are satisfied.</param>
         /// <returns></returns>
         List<TShape> GetPossibleShapesForNode(TLayout layout, TNode node, bool tryToFixEmpty);
+
+        TShape GetRandomShapeWithoutConstraintsDoNotUse(TNode node);
+
+        bool CanPerturbShapeDoNotUse(TNode node);
     }
 }

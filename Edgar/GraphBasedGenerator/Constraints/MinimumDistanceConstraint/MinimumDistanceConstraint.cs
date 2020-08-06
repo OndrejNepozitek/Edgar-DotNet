@@ -1,10 +1,6 @@
 ﻿using Edgar.GraphBasedGenerator.Configurations;
-using Edgar.GraphBasedGenerator.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.RoomShapeGeometry;
-using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
 using MapGeneration.Core.Constraints.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
@@ -33,7 +29,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
 			// TODO: why this?
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.GetRoomDescription(node).IsCorridor)
 				return true;
 
 			var wrongDistanceCount = 0;
@@ -68,7 +64,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription) || mapDescription.GetRoomDescription(perturbedNode).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.GetRoomDescription(node).IsCorridor || mapDescription.GetRoomDescription(perturbedNode).IsCorridor)
 				return true;
 
 			var wrongDistanceOld = 0;
@@ -91,7 +87,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 		/// <inheritdoc />
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.GetRoomDescription(node).IsCorridor)
 				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);

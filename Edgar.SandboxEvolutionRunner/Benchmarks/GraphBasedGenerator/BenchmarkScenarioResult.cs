@@ -18,11 +18,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 
         public class LevelDescriptionResult
         {
-            public GraphBasedLevelDescription<TNode> LevelDescription { get; }
+            public LevelDescriptionGrid2D<TNode> LevelDescription { get; }
 
             public List<IGeneratorRun> Runs { get; }
 
-            public LevelDescriptionResult(GraphBasedLevelDescription<TNode> levelDescription, List<IGeneratorRun> runs)
+            public LevelDescriptionResult(LevelDescriptionGrid2D<TNode> levelDescription, List<IGeneratorRun> runs)
             {
                 LevelDescription = levelDescription;
                 Runs = runs;

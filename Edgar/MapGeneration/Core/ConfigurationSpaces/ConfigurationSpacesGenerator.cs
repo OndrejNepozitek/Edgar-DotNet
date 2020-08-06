@@ -126,9 +126,9 @@ namespace MapGeneration.Core.ConfigurationSpaces
             return configurationSpaces;
         }
 
-        public Dictionary<Tuple<int, int>, CorridorRoomDescription> GetNodesToCorridorMapping(IMapDescription<int> mapDescription)
+        public Dictionary<Tuple<TNode, TNode>, CorridorRoomDescription> GetNodesToCorridorMapping<TNode>(IMapDescription<TNode> mapDescription)
         {
-            var mapping = new Dictionary<Tuple<int, int>, CorridorRoomDescription>();
+            var mapping = new Dictionary<Tuple<TNode, TNode>, CorridorRoomDescription>();
 
             var graph = mapDescription.GetGraph();
 
@@ -139,8 +139,8 @@ namespace MapGeneration.Core.ConfigurationSpaces
                 if (roomDescription is CorridorRoomDescription corridorRoomDescription)
                 {
                     var neighbors = graph.GetNeighbours(room).ToList();
-                    mapping.Add(new Tuple<int, int>(neighbors[0], neighbors[1]), corridorRoomDescription);
-                    mapping.Add(new Tuple<int, int>(neighbors[1], neighbors[0]), corridorRoomDescription);
+                    mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), corridorRoomDescription);
+                    mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), corridorRoomDescription);
                 }
             }
 

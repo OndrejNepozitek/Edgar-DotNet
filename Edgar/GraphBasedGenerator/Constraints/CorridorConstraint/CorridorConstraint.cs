@@ -34,7 +34,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 		/// <inheritdoc />
 		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+			if (mapDescription.GetRoomDescription(node).IsCorridor)
 				return true;
 
 			var distance = 0;
@@ -68,7 +68,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-            if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+            if (mapDescription.GetRoomDescription(node).IsCorridor)
 				return true;
 
 			// MoveDistance should not be recomputed as it is used only when two nodes are neighbours which is not the case here
@@ -91,7 +91,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 		/// <inheritdoc />
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
-            if (mapDescription.GetRoomDescription(node).GetType() == typeof(CorridorRoomDescription))
+            if (mapDescription.GetRoomDescription(node).IsCorridor)
 				return true;
 
 			oldLayout.GetConfiguration(node, out var oldConfiguration);

@@ -2,7 +2,7 @@
 
 namespace Edgar.GraphBasedGenerator
 {
-    public class GraphBasedLevelDescription<TNode> : MapDescription<TNode>
+    public class LevelDescriptionGrid2D<TNode> : MapDescription<TNode>
     {
         public string Name { get; set; }
 
