@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Configurations;
+using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
@@ -21,25 +22,24 @@ namespace Edgar.GraphBasedGenerator
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstance>
+    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstance>, IRandomInjectable
         where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstance>, ISmartCloneable<TConfiguration>, new()
     {
-        private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping;
         private readonly IMapDescription<TNode> mapDescription;
         private readonly IGraph<TNode> stageOneGraph;
         private readonly RepeatMode? repeatModeOverride;
         private RoomTemplateInfo[] roomTemplateInstanceInfo;
+        private readonly Dictionary<TNode, List<WeightedShape>> shapesForNodes;
+        private Random random;
 
         public RoomShapesHandler(
-            IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces,
             TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping,
-            IMapDescription<TNode> mapDescription,
-            RepeatMode? repeatModeOverride = null)
+            IMapDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes, RepeatMode? repeatModeOverride = null)
         {
-            this.configurationSpaces = configurationSpaces;
             this.intAliasMapping = intAliasMapping;
             this.mapDescription = mapDescription;
+            this.shapesForNodes = shapesForNodes;
             this.repeatModeOverride = repeatModeOverride;
             stageOneGraph = mapDescription.GetStageOneGraph();
 
@@ -81,7 +81,8 @@ namespace Edgar.GraphBasedGenerator
         {
             if (mapDescription.GetRoomDescription(node) is CorridorRoomDescription)
             {
-                return configurationSpaces.GetShapesForNode(node).Select(x => intAliasMapping.GetByValue(x)).ToList();
+                return shapesForNodes[node].Select(x => intAliasMapping.GetByValue(x.Shape)).ToList();
+                // return configurationSpaces.GetShapesForNode(node).Select(x => intAliasMapping.GetByValue(x)).ToList();
             }
 
             var shapes = GetPossibleShapesForNode(layout, node, repeatModeOverride);
@@ -107,17 +108,18 @@ namespace Edgar.GraphBasedGenerator
         public RoomTemplateInstance GetRandomShapeWithoutConstraintsDoNotUse(TNode node)
         {
             // TODO: slow
-            return intAliasMapping.GetByValue(configurationSpaces.GetRandomShape(node));
+            return intAliasMapping.GetByValue(shapesForNodes[node].GetWeightedRandom(x => x.Weight, random).Shape);
         }
 
         public bool CanPerturbShapeDoNotUse(TNode node)
         {
-            return configurationSpaces.CanPerturbShape(node);
+            return shapesForNodes[node].Count > 2;
+            // return configurationSpaces.CanPerturbShape(node);
         }
 
         private List<RoomTemplateInstance> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
         {
-            var shapesForNode = new HashSet<IntAlias<GridPolygon>>(configurationSpaces.GetShapesForNode(node));
+            var shapesForNode = new HashSet<IntAlias<GridPolygon>>(shapesForNodes[node].Select(x => x.Shape));
 
             foreach (var configuration in layout.GetAllConfigurations())
             {
@@ -153,6 +155,11 @@ namespace Edgar.GraphBasedGenerator
                 Aliases = aliases;
                 RoomTemplate = roomTemplate;
             }
+        }
+
+        public void InjectRandomGenerator(Random random)
+        {
+            this.random = random;
         }
     }
 }

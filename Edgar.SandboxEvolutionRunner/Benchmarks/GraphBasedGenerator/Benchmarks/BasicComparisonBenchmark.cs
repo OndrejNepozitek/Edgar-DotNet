@@ -48,6 +48,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             {
                 GetNewGenerator<int>(options),
                 GetOldGenerator<int>(options),
+                GetNewGenerator<int>(options),
+                GetOldGenerator<int>(options),
+                //GetNewGenerator<int>(options, true),
+                //GetOldGenerator<int>(options, true),
 
                 //GetNewGenerator<int>(options),
                 //GetNewGenerator<int>(options, optimizeCorridorConstraints: true, name: "CorCons"),

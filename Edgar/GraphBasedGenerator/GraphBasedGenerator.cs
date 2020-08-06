@@ -93,16 +93,84 @@ namespace Edgar.GraphBasedGenerator
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
 
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
-            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationNew2<CorridorsDataNew>, int>(configurationSpaces, mapDescription);
+            // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
+            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationNew2<CorridorsDataNew>, int>(mapDescription);
+
+            // Needlessly complex for backwards compatibility
+
+            #region IntAliasMapping
+
+            var roomDescriptions = mapDescription.GetGraph().Vertices.ToDictionary(x => x, mapDescription.GetRoomDescription);
+            var roomTemplates = roomDescriptions.Values.SelectMany(x => x.RoomTemplates).Distinct().ToList();
+            var roomTemplateInstances = roomTemplates.ToDictionary(x => x, configurationSpacesGenerator.GetRoomTemplateInstances);
+            var roomTemplateInstancesMapping = roomTemplateInstances.SelectMany(x => x.Value).CreateIntMapping();
+            var intAliasMapping = new TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>>();
+
+            foreach (var shape1 in roomTemplateInstancesMapping.Keys)
+            {
+                foreach (var shape2 in roomTemplateInstancesMapping.Keys)
+                {
+                    if (!intAliasMapping.ContainsKey(shape1))
+                    {
+                        var newAlias = new IntAlias<GridPolygon>(intAliasMapping.Count, shape1.RoomShape); 
+                        intAliasMapping.Add(shape1, newAlias);
+                        shape1.RoomShapeAlias = newAlias;
+                    }
+                    if (!intAliasMapping.ContainsKey(shape2))
+                    {
+                        var newAlias = new IntAlias<GridPolygon>(intAliasMapping.Count, shape2.RoomShape); 
+                        intAliasMapping.Add(shape2, newAlias);
+                        shape2.RoomShapeAlias = newAlias;
+                    }
+                }
+            }
 
             // TODO: remove when possible
-            foreach (var pair in configurationSpaces.GetIntAliasMapping())
+            foreach (var pair in intAliasMapping)
             {
                 pair.Key.RoomShapeAlias = pair.Value;
             }
 
-            var averageSize = configurationSpaces.GetAverageSize();
+            var shapesForNodes = new Dictionary<int, List<WeightedShape>>();
+            foreach (var vertex in mapDescription.GetGraph().Vertices)
+            {
+                shapesForNodes.Add(vertex, new List<WeightedShape>());
+                var roomDescription = mapDescription.GetRoomDescription(vertex);
+
+                foreach (var roomTemplate in roomDescription.RoomTemplates)
+                {
+                    var instances = roomTemplateInstances[roomTemplate];
+
+                    foreach (var roomTemplateInstance in instances)
+                    {
+                        shapesForNodes[vertex].Add(new WeightedShape(intAliasMapping[roomTemplateInstance], 1d / instances.Count));
+                    }
+                }
+            }
+
+            var usedShapes = new HashSet<int>();
+            var allShapes = new List<IntAlias<GridPolygon>>();
+            foreach (var vertex in mapDescription.GetGraph().Vertices)
+            {
+                var shapes = shapesForNodes[vertex];
+
+                foreach (var shape in shapes)
+                {
+                    if (!usedShapes.Contains(shape.Shape.Alias))
+                    {
+                        allShapes.Add(shape.Shape);
+                        usedShapes.Add(shape.Shape.Alias);
+                    }
+                }
+            }
+
+            var averageSize = (int) allShapes.Select(x => x.Value.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
+
+            #endregion
+
+
+
+            // var averageSize = configurationSpaces.GetAverageSize();
 
             var energyUpdater = new BasicEnergyUpdater<int, ConfigurationNew2<CorridorsDataNew>>(10 * averageSize);
             var roomShapeGeometry = new FastGridPolygonGeometry<ConfigurationNew2<CorridorsDataNew>, int>();
@@ -137,20 +205,20 @@ namespace Edgar.GraphBasedGenerator
             var constraintsEvaluator = new ConstraintsEvaluator<int, ConfigurationNew2<CorridorsDataNew>, CorridorsDataNew>(stageOneConstraints, energyUpdater);
 
             var roomShapesHandler = new RoomShapesHandler<int, ConfigurationNew2<CorridorsDataNew>>(
-                configurationSpaces,
-                configurationSpaces.GetIntAliasMapping(),
+                intAliasMapping,
                 mapDescription,
+                shapesForNodes,
                 configuration.RepeatModeOverride
             );
 
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<ConfigurationNew2<CorridorsDataNew>>, int, ConfigurationNew2<CorridorsDataNew>, RoomTemplateInstance, CorridorsDataNew>(configurationSpaces.GetAverageSize(), mapDescription, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
+            var layoutOperations = new LayoutController<Layout<ConfigurationNew2<CorridorsDataNew>>, int, ConfigurationNew2<CorridorsDataNew>, RoomTemplateInstance, CorridorsDataNew>(averageSize, mapDescription, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
 
             var initialLayout = new Layout<ConfigurationNew2<CorridorsDataNew>>(mapDescription.GetGraph());
             var layoutConverter =
                 new BasicLayoutConverterGrid2D<TNode,
                     ConfigurationNew2<CorridorsDataNew>>(mapDescription, simpleConfigurationSpaces,
-                    configurationSpaces.GetIntAliasMapping());
+                    intAliasMapping);
 
             // Create simulated annealing evolver
             var layoutEvolver =
@@ -163,11 +231,12 @@ namespace Edgar.GraphBasedGenerator
             // Register event handlers
             generator.OnRandomInjected += (random) =>
             {
-                ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
+                // ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
                 ((IRandomInjectable)simpleConfigurationSpaces).InjectRandomGenerator(random);
+                ((IRandomInjectable)roomShapesHandler).InjectRandomGenerator(random);
             };
 
             generator.OnCancellationTokenInjected += (token) =>

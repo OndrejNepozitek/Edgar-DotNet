@@ -20,7 +20,6 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, IntVector2>, IRandomInjectable
         where TConfiguration: IConfiguration<RoomTemplateInstance, IntVector2, TNode>
     {
-        private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly ILineIntersection<OrthogonalLine> lineIntersection;
         private readonly IMapDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
         private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
@@ -28,12 +27,14 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
 
         private Dictionary<Tuple<TNode, TNode>, CorridorRoomDescription> nodesToCorridorMapping;
 
-        public ConfigurationSpacesGrid2D(IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces, IMapDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
+        // TODO: far from ideal
+        private Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, CorridorRoomDescription>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, CorridorRoomDescription>, ConfigurationSpaceGrid2D>();
+
+        public ConfigurationSpacesGrid2D(IMapDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
         {
-            this.configurationSpaces = configurationSpaces;
             this.levelDescription = levelDescription;
             this.lineIntersection = lineIntersection ?? new OrthogonalLineIntersection();
-            configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, lineIntersection, new GridPolygonUtils());
+            configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, this.lineIntersection, new GridPolygonUtils());
             Initialize();
         }
 
@@ -44,7 +45,15 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
 
         public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
         {
-            return configurationSpaces.HaveValidPosition(configuration1, configuration2);
+            var space = GetConfigurationSpace(configuration1, configuration2);
+            var lines1 = new List<OrthogonalLine>() {new OrthogonalLine(configuration1.Position, configuration1.Position)};
+
+            return lineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)), lines1);
+        }
+
+        private OrthogonalLine FastAddition(OrthogonalLine line, IntVector2 position) 
+        {
+            return new OrthogonalLine(line.From + position, line.To + position);
         }
 
         IConfigurationSpace<IntVector2> IConfigurationSpaces<TConfiguration, IntVector2>.GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
@@ -57,16 +66,33 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
             // If is over corridor
             if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)))
             {
-                var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
+                var roomDescription = nodesToCorridorMapping[new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)];
+                var selector = Tuple.Create(configuration1.RoomShape, configuration2.RoomShape, roomDescription);
 
-                return new ConfigurationSpaceGrid2D(configurationSpace.Lines, configurationSpace.ReverseDoors);
+                if (corridorToConfigurationSpaceMapping.TryGetValue(selector, out var cachedConfigurationSpace))
+                {
+                    return cachedConfigurationSpace;
+                }
+
+                var corridorRoomTemplateInstances = roomDescription.RoomTemplates
+                    .SelectMany(configurationSpacesGenerator.GetRoomTemplateInstances).ToList();
+
+                // var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
+
+                var configurationSpace = configurationSpacesGenerator.GetConfigurationSpaceOverCorridors(configuration1.RoomShape, configuration2.RoomShape, corridorRoomTemplateInstances);
+
+                var configurationSpaceNew =
+                    new ConfigurationSpaceGrid2D(configurationSpace.Lines, configurationSpace.ReverseDoors);
+                corridorToConfigurationSpaceMapping[selector] = configurationSpaceNew;
+
+                return configurationSpaceNew;
             }
             // Otherwise
             else
             {
-                // configurationSpacesGenerator.GetConfigurationSpace(configuration1.Shape, )
+                var configurationSpace = configurationSpacesGenerator.GetConfigurationSpace(configuration1.RoomShape, configuration2.RoomShape);
 
-                var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
+                // var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
 
                 return new ConfigurationSpaceGrid2D(configurationSpace.Lines, configurationSpace.ReverseDoors);
             }
