@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Configurations;
 using GeneralAlgorithms.DataStructures.Common;
@@ -21,8 +20,8 @@ namespace Edgar.GraphBasedGenerator
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstance>
-        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstance>, ISmartCloneable<TConfiguration>, new()
+    public class RoomShapesHandler2<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, IntAlias<GridPolygon>>
+        where TConfiguration : IConfiguration<IntAlias<GridPolygon>, IntVector2, TNode>, ISmartCloneable<TConfiguration>, new()
     {
         private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping;
@@ -31,7 +30,7 @@ namespace Edgar.GraphBasedGenerator
         private readonly RepeatMode? repeatModeOverride;
         private RoomTemplateInfo[] roomTemplateInstanceInfo;
 
-        public RoomShapesHandler(
+        public RoomShapesHandler2(
             IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces,
             TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping,
             IMapDescription<TNode> mapDescription,
@@ -77,11 +76,11 @@ namespace Edgar.GraphBasedGenerator
         /// If zero shapes are found and tryToFixEmpty is set to true, we try to lower the requirements and e.g. use
         /// only the NoImmediate mode instead of the NoRepeat mode.
         /// </summary>
-        public List<RoomTemplateInstance> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
+        public List<IntAlias<GridPolygon>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
         {
             if (mapDescription.GetRoomDescription(node) is CorridorRoomDescription)
             {
-                return configurationSpaces.GetShapesForNode(node).Select(x => intAliasMapping.GetByValue(x)).ToList();
+                return configurationSpaces.GetShapesForNode(node).ToList();
             }
 
             var shapes = GetPossibleShapesForNode(layout, node, repeatModeOverride);
@@ -104,10 +103,9 @@ namespace Edgar.GraphBasedGenerator
             return shapes;
         }
 
-        public RoomTemplateInstance GetRandomShapeWithoutConstraintsDoNotUse(TNode node)
+        public IntAlias<GridPolygon> GetRandomShapeWithoutConstraintsDoNotUse(TNode node)
         {
-            // TODO: slow
-            return intAliasMapping.GetByValue(configurationSpaces.GetRandomShape(node));
+            return configurationSpaces.GetRandomShape(node);
         }
 
         public bool CanPerturbShapeDoNotUse(TNode node)
@@ -115,7 +113,7 @@ namespace Edgar.GraphBasedGenerator
             return configurationSpaces.CanPerturbShape(node);
         }
 
-        private List<RoomTemplateInstance> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
+        private List<IntAlias<GridPolygon>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<GridPolygon>>(configurationSpaces.GetShapesForNode(node));
 
@@ -126,8 +124,7 @@ namespace Edgar.GraphBasedGenerator
                     continue;
                 }
 
-                var polygon = intAliasMapping[configuration.RoomShape];
-                var roomTemplateInfo = roomTemplateInstanceInfo[polygon.Alias];
+                var roomTemplateInfo = roomTemplateInstanceInfo[configuration.RoomShape.Alias];
                 var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode;
 
                 if (repeatMode == RepeatMode.NoRepeat || (repeatMode == RepeatMode.NoImmediate && stageOneGraph.HasEdge(node, configuration.Room)))
@@ -139,7 +136,7 @@ namespace Edgar.GraphBasedGenerator
                 }
             }
 
-            return shapesForNode.Select(x => intAliasMapping.GetByValue(x)).ToList();
+            return shapesForNode.ToList();
         }
 
         private class RoomTemplateInfo

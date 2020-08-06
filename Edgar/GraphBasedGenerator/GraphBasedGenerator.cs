@@ -96,6 +96,12 @@ namespace Edgar.GraphBasedGenerator
             var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew<CorridorsDataNew>>(mapDescription);
             var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationNew<CorridorsDataNew>, int>(configurationSpaces, mapDescription);
 
+            // TODO: remove when possible
+            foreach (var pair in configurationSpaces.GetIntAliasMapping())
+            {
+                pair.Key.RoomShapeAlias = pair.Value;
+            }
+
             var averageSize = configurationSpaces.GetAverageSize();
 
             var energyUpdater = new BasicEnergyUpdater<int, ConfigurationNew<CorridorsDataNew>>(10 * averageSize);
@@ -130,7 +136,7 @@ namespace Edgar.GraphBasedGenerator
 
             var constraintsEvaluator = new ConstraintsEvaluator<int, ConfigurationNew<CorridorsDataNew>, CorridorsDataNew>(stageOneConstraints, energyUpdater);
 
-            var roomShapesHandler = new MapGeneration.Core.LayoutOperations.RoomShapesHandler<int, ConfigurationNew<CorridorsDataNew>>(
+            var roomShapesHandler = new RoomShapesHandler2<int, ConfigurationNew<CorridorsDataNew>>(
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,

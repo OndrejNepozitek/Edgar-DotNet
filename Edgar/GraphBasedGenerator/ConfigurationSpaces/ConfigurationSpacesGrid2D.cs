@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Configurations;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
@@ -17,7 +18,7 @@ using MapGeneration.Utils.Interfaces;
 namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
 {
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, IntVector2>, IRandomInjectable
-        where TConfiguration: IConfiguration<IntAlias<GridPolygon>, TNode>
+        where TConfiguration: IConfiguration<IntAlias<GridPolygon>, IntVector2, TNode>
     {
         private readonly IConfigurationSpaces<TNode, IntAlias<GridPolygon>, TConfiguration, ConfigurationSpace> configurationSpaces;
         private readonly ILineIntersection<OrthogonalLine> lineIntersection;
@@ -54,7 +55,7 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
         public ConfigurationSpaceGrid2D GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
         {
             // If is over corridor
-            if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Node, configuration2.Node)))
+            if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)))
             {
                 var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
 

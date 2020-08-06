@@ -19,6 +19,11 @@ namespace MapGeneration.Core.MapDescriptions
         public GridPolygon RoomShape { get; }
 
         /// <summary>
+        /// Room shape after transformation.
+        /// </summary>
+        public IntAlias<GridPolygon> RoomShapeAlias { get; set; }
+
+        /// <summary>
         /// Door lines.
         /// </summary>
         public List<DoorLine> DoorLines { get; }

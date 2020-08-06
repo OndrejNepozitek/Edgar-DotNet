@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.RoomTemplates;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Configurations.Interfaces;
 using MapGeneration.Core.Configurations.Interfaces.EnergyData;
+using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Configurations
@@ -13,13 +15,13 @@ namespace Edgar.GraphBasedGenerator.Configurations
 	/// Basic implementation of an IEnergyConfiguration interface.
 	/// </summary>
 	/// <typeparam name="TEnergyData"></typeparam>
-	public class ConfigurationNew<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<ConfigurationNew<TEnergyData>>, ISimpleEnergyConfiguration<TEnergyData>, IConfiguration<IntAlias<GridPolygon>, IntVector2, int>
+	public class ConfigurationNew2<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<ConfigurationNew2<TEnergyData>>, ISimpleEnergyConfiguration<TEnergyData>, IConfiguration<RoomTemplateInstance, IntVector2, int>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>
 	{
         public IntAlias<GridPolygon> ShapeContainer
         {
-            get => RoomShape;
-            set => RoomShape = value;
+            get => RoomShape.RoomShapeAlias;
+            set => throw new NotSupportedException();
         }
 
         public GridPolygon Shape => ShapeContainer.Value;
@@ -38,25 +40,25 @@ namespace Edgar.GraphBasedGenerator.Configurations
 
         public int Room { get; set; }
 
-        public IntAlias<GridPolygon> RoomShape { get; set; }
+        public RoomTemplateInstance RoomShape { get; set; }
 
-        public ConfigurationNew()
+        public ConfigurationNew2()
 		{
 			/* empty */
 		}
 
-		public ConfigurationNew(IntAlias<GridPolygon> shape, IntVector2 position, TEnergyData energyData, int node)
+		public ConfigurationNew2(RoomTemplateInstance shape, IntVector2 position, TEnergyData energyData, int node)
 		{
-			ShapeContainer = shape;
+			RoomShape = shape;
 			Position = position;
 			EnergyData = energyData;
             Node = node;
         }
 
-		public ConfigurationNew<TEnergyData> SmartClone()
+		public ConfigurationNew2<TEnergyData> SmartClone()
 		{
-			return new ConfigurationNew<TEnergyData>(
-				ShapeContainer,
+			return new ConfigurationNew2<TEnergyData>(
+				RoomShape,
 				Position,
 				EnergyData.SmartClone(),
 				Node
@@ -65,7 +67,7 @@ namespace Edgar.GraphBasedGenerator.Configurations
 
 		public override bool Equals(object obj)
 		{
-			return obj is ConfigurationNew<TEnergyData> configuration &&
+			return obj is ConfigurationNew2<TEnergyData> configuration &&
 				   EqualityComparer<IntAlias<GridPolygon>>.Default.Equals(ShapeContainer, configuration.ShapeContainer) &&
 				   EqualityComparer<GridPolygon>.Default.Equals(Shape, configuration.Shape) &&
 				   Position.Equals(configuration.Position) &&

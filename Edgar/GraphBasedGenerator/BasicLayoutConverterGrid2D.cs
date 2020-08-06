@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Configurations;
 using Edgar.GraphBasedGenerator.ConfigurationSpaces;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
@@ -23,7 +24,7 @@ namespace Edgar.GraphBasedGenerator
 	/// <typeparam name="TNode"></typeparam>
 	/// <typeparam name="TConfiguration"></typeparam>
     public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<int, TConfiguration>, MapLayout<TNode>>, IRandomInjectable
-        where TConfiguration : IConfiguration<IntAlias<GridPolygon>, int>
+        where TConfiguration : IConfiguration<IntAlias<GridPolygon>, IntVector2, int>
 	{
 		protected readonly MapDescriptionMapping<TNode> MapDescription;
 		protected Random Random;
@@ -54,12 +55,12 @@ namespace Edgar.GraphBasedGenerator
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
 				{
 					var vertex = mapping.GetByValue(vertexAlias);
-					var roomTemplateInstance = IntAliasMapping.GetByValue(configuration.ShapeContainer);
+					var roomTemplateInstance = IntAliasMapping.GetByValue(configuration.RoomShape);
 
 					// Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
 					// TODO: maybe make a unit/integration test?
                     var transformation = roomTemplateInstance.Transformations.GetRandom(Random);
-                    var shape = configuration.Shape;
+                    var shape = configuration.RoomShape.Value;
                     var originalShape = roomTemplateInstance.RoomTemplate.Shape;
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
