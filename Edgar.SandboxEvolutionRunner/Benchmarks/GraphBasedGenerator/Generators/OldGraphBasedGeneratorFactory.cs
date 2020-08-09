@@ -33,12 +33,13 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 return GetGeneratorRunnerWithInit(levelDescription);
             }
 
+            var mapDescription = levelDescription.GetMapDescription();
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
-            var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+            var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             return new LambdaGeneratorRunner(() =>
@@ -76,13 +77,15 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
             var seedGenerator = new Random();
+
+            var mapDescription = levelDescription.GetMapDescription();
             
             return new LambdaGeneratorRunner(() =>
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+                var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(seedGenerator.Next()));
 
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();

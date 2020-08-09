@@ -57,9 +57,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var additionalData = new AdditionalRunData<TNode>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    GeneratedLayoutSvg =
-                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
-                    GeneratedLayout = layout,
+                    //GeneratedLayoutSvg =
+                    //    layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    // GeneratedLayout = layout,
                 };
 
                 var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, layoutGenerator.TimeTotal,
@@ -82,7 +82,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+                var layoutGenerator = new GraphBasedGenerator<TNode>(levelDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(seedGenerator.Next()));
 
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
@@ -101,9 +101,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var additionalData = new AdditionalRunData<TNode>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    GeneratedLayoutSvg =
-                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
-                    GeneratedLayout = layout,
+                    //GeneratedLayoutSvg =
+                    //    layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    // GeneratedLayout = layout,
                 };
 
                 var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, stopwatch.ElapsedMilliseconds,

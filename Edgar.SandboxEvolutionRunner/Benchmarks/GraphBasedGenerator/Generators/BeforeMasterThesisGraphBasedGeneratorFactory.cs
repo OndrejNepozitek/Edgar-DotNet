@@ -37,8 +37,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
 
+            var mapDescription = levelDescription.GetMapDescription();
+
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
-            var chainDecomposition = new TwoStageChainDecomposition<TNode>(levelDescription, chainDecompositionOld);
+            var chainDecomposition = new MapGeneration.Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
             {
@@ -47,7 +49,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
-            var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+            var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             return new LambdaGeneratorRunner(() =>
@@ -82,9 +84,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
         {
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
+            var mapDescription = levelDescription.GetMapDescription();
 
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
-            var chainDecomposition = new TwoStageChainDecomposition<TNode>(levelDescription, chainDecompositionOld);
+            var chainDecomposition = new MapGeneration.Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
             {
@@ -99,7 +102,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                var layoutGenerator = new DungeonGenerator<TNode>(levelDescription, configuration);
+                var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(seedGenerator.Next()));
 
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();

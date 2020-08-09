@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Configurations;
+using Edgar.GraphBasedGenerator.RoomTemplates;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
 using GeneralAlgorithms.DataStructures.Common;
@@ -14,6 +15,7 @@ using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
 using MapGeneration.Utils.Interfaces;
+using IRoomDescription = Edgar.GraphBasedGenerator.RoomTemplates.IRoomDescription;
 
 namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
 {
@@ -21,16 +23,16 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
         where TConfiguration: IConfiguration<RoomTemplateInstance, IntVector2, TNode>
     {
         private readonly ILineIntersection<OrthogonalLine> lineIntersection;
-        private readonly IMapDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
+        private readonly ILevelDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
         private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
         private Random random;
 
-        private Dictionary<Tuple<TNode, TNode>, CorridorRoomDescription> nodesToCorridorMapping;
+        private Dictionary<Tuple<TNode, TNode>, IRoomDescription> nodesToCorridorMapping;
 
         // TODO: far from ideal
-        private Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, CorridorRoomDescription>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, CorridorRoomDescription>, ConfigurationSpaceGrid2D>();
+        private readonly Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D>();
 
-        public ConfigurationSpacesGrid2D(IMapDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
+        public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
         {
             this.levelDescription = levelDescription;
             this.lineIntersection = lineIntersection ?? new OrthogonalLineIntersection();
@@ -66,7 +68,7 @@ namespace Edgar.GraphBasedGenerator.ConfigurationSpaces
             // If is over corridor
             if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)))
             {
-                var roomDescription = nodesToCorridorMapping[new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)];
+                var roomDescription = (RoomDescriptionGrid2D) nodesToCorridorMapping[new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)];
                 var selector = Tuple.Create(configuration1.RoomShape, configuration2.RoomShape, roomDescription);
 
                 if (corridorToConfigurationSpaceMapping.TryGetValue(selector, out var cachedConfigurationSpace))

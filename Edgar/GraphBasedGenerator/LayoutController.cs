@@ -34,13 +34,13 @@ namespace Edgar.GraphBasedGenerator
 
         public LayoutController(
             int averageSize,
-            IMapDescription<TNode> mapDescription,
+            ILevelDescription<TNode> levelDescription,
             ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator,
             IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, IntVector2> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
             : base(
             null,
             averageSize,
-            mapDescription,
+            levelDescription,
             roomShapesHandler,
             roomShapeGeometry)
         {
@@ -116,7 +116,7 @@ namespace Edgar.GraphBasedGenerator
         {
             iterationsCount = 0;
 			var neighborsConfigurations = new List<TConfiguration>();
-			var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
+			var neighbors = LevelDescription.GetGraphWithoutCorridors().GetNeighbours(node);
 
 			foreach (var neighbor in neighbors)
 			{
@@ -275,7 +275,7 @@ namespace Edgar.GraphBasedGenerator
 		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
-			var corridors = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 2).ToList();
+			var corridors = chain.Where(x => LevelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
 			foreach (var corridor in corridors)
 			{
@@ -301,7 +301,7 @@ namespace Edgar.GraphBasedGenerator
         public override void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount)
         {
             iterationsCount = 0;
-            var rooms = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1);
+            var rooms = chain.Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor);
 
             foreach (var room in rooms)
             {
@@ -396,7 +396,7 @@ namespace Edgar.GraphBasedGenerator
         public override void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
             // TODO: change
-            var nonCorridors = chain.Where(x => MapDescription.GetRoomDescription(x).Stage == 1).ToList();
+            var nonCorridors = chain.Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
             if (Random.NextDouble() < 0.4f)
             {
@@ -456,7 +456,7 @@ namespace Edgar.GraphBasedGenerator
         public override void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
             var canBePerturbed = chain
-                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle better
+                .Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
                 .Where(x => RoomShapesHandler.CanPerturbShapeDoNotUse(x))
                 .ToList();
 

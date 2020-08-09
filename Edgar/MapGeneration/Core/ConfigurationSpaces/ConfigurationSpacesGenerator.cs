@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Configurations;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.Algorithms.Polygons;
@@ -12,6 +13,7 @@ using MapGeneration.Core.Doors.Interfaces;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
+using IRoomDescription = Edgar.GraphBasedGenerator.RoomTemplates.IRoomDescription;
 
 namespace MapGeneration.Core.ConfigurationSpaces
 {
@@ -142,6 +144,28 @@ namespace MapGeneration.Core.ConfigurationSpaces
                     var neighbors = graph.GetNeighbours(room).ToList();
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), corridorRoomDescription);
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), corridorRoomDescription);
+                }
+            }
+
+            return mapping;
+        }
+
+        // TODO: remove when possible
+        public Dictionary<Tuple<TNode, TNode>, IRoomDescription> GetNodesToCorridorMapping<TNode>(ILevelDescription<TNode> mapDescription)
+        {
+            var mapping = new Dictionary<Tuple<TNode, TNode>, IRoomDescription>();
+
+            var graph = mapDescription.GetGraph();
+
+            foreach (var room in graph.Vertices)
+            {
+                var roomDescription = mapDescription.GetRoomDescription(room);
+
+                if (roomDescription.IsCorridor)
+                {
+                    var neighbors = graph.GetNeighbours(room).ToList();
+                    mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), roomDescription);
+                    mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), roomDescription);
                 }
             }
 

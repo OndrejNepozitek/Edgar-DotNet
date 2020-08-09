@@ -29,19 +29,19 @@ namespace Edgar.GraphBasedGenerator
 		protected float ShapePerturbChance = 0.4f;
 		protected float DifferenceFromAverageScale = 0.4f;
 		protected int AverageSize;
-        protected readonly IMapDescription<TNode> MapDescription;
+        protected readonly ILevelDescription<TNode> LevelDescription;
         protected readonly IGraph<TNode> StageOneGraph;
         protected readonly IRoomShapesHandler<TLayout, TNode, TShapeContainer> RoomShapesHandler;
         protected readonly IRoomShapeGeometry<TConfiguration> RoomShapeGeometry;
 
-		protected AbstractLayoutController(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, IMapDescription<TNode> mapDescription, IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
+		protected AbstractLayoutController(IConfigurationSpaces<TNode, TShapeContainer, TConfiguration, ConfigurationSpace> configurationSpaces, int averageSize, ILevelDescription<TNode> levelDescription, IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
 		{
 			ConfigurationSpaces = configurationSpaces;
 			AverageSize = averageSize;
-            MapDescription = mapDescription;
+            LevelDescription = levelDescription;
             RoomShapesHandler = roomShapesHandler;
             RoomShapeGeometry = roomShapeGeometry;
-            StageOneGraph = mapDescription.GetStageOneGraph();
+            StageOneGraph = levelDescription.GetGraphWithoutCorridors();
         }
 
 		/// <inheritdoc />
@@ -93,7 +93,7 @@ namespace Edgar.GraphBasedGenerator
 		public virtual void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
 		{
 			var canBePerturbed = chain
-                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle better
+                .Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
                 .Where(x => ConfigurationSpaces.CanPerturbShape(x))
                 .ToList();
 
@@ -150,7 +150,7 @@ namespace Edgar.GraphBasedGenerator
 		{
 			// TODO: check what would happen if only invalid nodes could be perturbed
 			var canBePerturbed = chain
-                .Where(x => MapDescription.GetRoomDescription(x).Stage == 1) // TODO: handle
+                .Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle
                 .ToList();
 
 			if (canBePerturbed.Count == 0)

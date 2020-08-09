@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
+using Edgar.GraphBasedGenerator.RoomTemplates;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
 using GeneralAlgorithms.DataStructures.Polygons;
 using MapGeneration.Core.Doors.DoorModes;
 using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
 using MapGeneration.Utils;
 using SandboxEvolutionRunner.Utils;
+using IRoomDescription = MapGeneration.Core.MapDescriptions.Interfaces.IRoomDescription;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks
 {
@@ -84,10 +85,14 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return levelDescription;
         }
 
-        protected virtual IRoomDescription GetCorridorRoomDescription(List<int> corridorOffsets, int width = 1)
+        protected virtual RoomDescriptionGrid2D GetCorridorRoomDescription(List<int> corridorOffsets, int width = 1)
         {
             var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets, width);
-            var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
+            var corridorRoomDescription = new RoomDescriptionGrid2D()
+            {
+                IsCorridor = true,
+                RoomTemplates = corridorRoomTemplates,
+            };
 
             return corridorRoomDescription;
         }
@@ -135,7 +140,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return new RoomTemplate(polygon.Scale(scale), doorMode, transformations, name: name, repeatMode: repeatMode);
         }
 
-        protected virtual IRoomDescription GetBasicRoomDescription(IGraph<int> graph, int vertex)
+        protected virtual RoomDescriptionGrid2D GetBasicRoomDescription(IGraph<int> graph, int vertex)
         {
             if (roomTemplatesSmall == null)
             {
@@ -170,7 +175,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
             }
 
-            return new BasicRoomDescription(roomTemplates);
+            return new RoomDescriptionGrid2D()
+            {
+                IsCorridor = false,
+                RoomTemplates = roomTemplates,
+            };
         }
     }
 }

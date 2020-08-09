@@ -20,7 +20,7 @@ namespace MapGeneration.Core.LayoutGenerators
     /// <typeparam name="TLayout"></typeparam>
     /// <typeparam name="TOutputLayout"></typeparam>
     /// <typeparam name="TNode"></typeparam>
-    public class ChainBasedGenerator<TMapDescription, TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TOutputLayout>, IRandomInjectable, ICancellable
+    public class ChainBasedGenerator<TLayout, TOutputLayout, TNode> : IBenchmarkableLayoutGenerator<TOutputLayout>, IRandomInjectable, ICancellable
     {
         private readonly TLayout initialLayout;
         private readonly IGeneratorPlanner<TLayout, TNode> generatorPlanner;

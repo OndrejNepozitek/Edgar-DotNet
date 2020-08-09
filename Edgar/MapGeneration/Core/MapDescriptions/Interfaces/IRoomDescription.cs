@@ -2,10 +2,8 @@
 
 namespace MapGeneration.Core.MapDescriptions.Interfaces
 {
-    public interface IRoomDescription
+    public interface  IRoomDescription : Edgar.GraphBasedGenerator.RoomTemplates.IRoomDescription
     {
-        bool IsCorridor { get; }
-
         int Stage { get; }
 
         List<RoomTemplate> RoomTemplates { get; }

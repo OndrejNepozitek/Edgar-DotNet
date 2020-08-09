@@ -15,7 +15,7 @@ namespace Edgar.GraphBasedGenerator.Configurations
 	/// Basic implementation of an IEnergyConfiguration interface.
 	/// </summary>
 	/// <typeparam name="TEnergyData"></typeparam>
-	public class ConfigurationNew2<TEnergyData> : IEnergyConfiguration<IntAlias<GridPolygon>, int, TEnergyData>, ISmartCloneable<ConfigurationNew2<TEnergyData>>, ISimpleEnergyConfiguration<TEnergyData>, IConfiguration<RoomTemplateInstance, IntVector2, int>
+	public class ConfigurationNew2<TNode, TEnergyData> : ISmartCloneable<ConfigurationNew2<TNode, TEnergyData>>, ISimpleEnergyConfiguration<TEnergyData>, IConfiguration<RoomTemplateInstance, IntVector2, RoomNode<TNode>>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>
 	{
         public IntAlias<GridPolygon> ShapeContainer
@@ -32,13 +32,7 @@ namespace Edgar.GraphBasedGenerator.Configurations
 
 		public bool IsValid => EnergyData.IsValid;
 
-        public int Node
-        {
-            get => Room;
-            set => Room = value;
-        }
-
-        public int Room { get; set; }
+        public RoomNode<TNode> Room { get; set; }
 
         public RoomTemplateInstance RoomShape { get; set; }
 
@@ -47,27 +41,27 @@ namespace Edgar.GraphBasedGenerator.Configurations
 			/* empty */
 		}
 
-		public ConfigurationNew2(RoomTemplateInstance shape, IntVector2 position, TEnergyData energyData, int node)
+		public ConfigurationNew2(RoomTemplateInstance shape, IntVector2 position, TEnergyData energyData, RoomNode<TNode> node)
 		{
 			RoomShape = shape;
 			Position = position;
 			EnergyData = energyData;
-            Node = node;
+            Room = node;
         }
 
-		public ConfigurationNew2<TEnergyData> SmartClone()
+		public ConfigurationNew2<TNode, TEnergyData> SmartClone()
 		{
-			return new ConfigurationNew2<TEnergyData>(
+			return new ConfigurationNew2<TNode, TEnergyData>(
 				RoomShape,
 				Position,
 				EnergyData.SmartClone(),
-				Node
+				Room
 			);
 		}
 
 		public override bool Equals(object obj)
 		{
-			return obj is ConfigurationNew2<TEnergyData> configuration &&
+			return obj is ConfigurationNew2<TNode, TEnergyData> configuration &&
 				   EqualityComparer<IntAlias<GridPolygon>>.Default.Equals(ShapeContainer, configuration.ShapeContainer) &&
 				   EqualityComparer<GridPolygon>.Default.Equals(Shape, configuration.Shape) &&
 				   Position.Equals(configuration.Position) &&

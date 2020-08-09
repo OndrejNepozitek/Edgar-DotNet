@@ -16,10 +16,10 @@ namespace Edgar.GraphBasedGenerator.Constraints.BasicConstraint
     {
         private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
         private readonly IConfigurationSpaces<TConfiguration> configurationSpaces;
-        private readonly IMapDescription<TNode> mapDescription;
+        private readonly ILevelDescription<TNode> mapDescription;
         private readonly bool optimizeCorridors;
 
-		public BasicConstraint(IRoomShapeGeometry<TConfiguration> roomShapeGeometry, IConfigurationSpaces<TConfiguration> configurationSpaces, IMapDescription<TNode> mapDescription, bool optimizeCorridors)
+		public BasicConstraint(IRoomShapeGeometry<TConfiguration> roomShapeGeometry, IConfigurationSpaces<TConfiguration> configurationSpaces, ILevelDescription<TNode> mapDescription, bool optimizeCorridors)
 		{
             this.configurationSpaces = configurationSpaces;
             this.mapDescription = mapDescription;

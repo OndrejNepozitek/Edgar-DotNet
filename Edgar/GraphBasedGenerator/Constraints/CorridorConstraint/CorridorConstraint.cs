@@ -16,18 +16,18 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
         where TConfiguration : ISimpleEnergyConfiguration<TEnergyData>
 		where TEnergyData : ICorridorConstraintData
 	{
-		private readonly IMapDescription<TNode> mapDescription;
+		private readonly ILevelDescription<TNode> mapDescription;
         private readonly IConfigurationSpaces<TConfiguration> configurationSpaces;
-		private readonly IGraph<TNode> stageOneGraph;
+		private readonly IGraph<TNode> graphWithoutCorridors;
         private readonly IGraph<TNode> graph;
         private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
 
-		public CorridorConstraint(IMapDescription<TNode> mapDescription, IConfigurationSpaces<TConfiguration> configurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
+		public CorridorConstraint(ILevelDescription<TNode> mapDescription, IConfigurationSpaces<TConfiguration> configurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
 		{
 			this.mapDescription = mapDescription;
             this.configurationSpaces = configurationSpaces;
             this.roomShapeGeometry = roomShapeGeometry;
-            stageOneGraph = mapDescription.GetStageOneGraph();
+            graphWithoutCorridors = mapDescription.GetGraphWithoutCorridors();
             graph = mapDescription.GetGraph();
         }
 
@@ -38,7 +38,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 				return true;
 
 			var distance = 0;
-			var neighbours = stageOneGraph.GetNeighbours(node).ToList();
+			var neighbours = graphWithoutCorridors.GetNeighbours(node).ToList();
 
 			foreach (var vertex in neighbours)
 			{
@@ -130,7 +130,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.CorridorConstraint
 
         private bool AreNeighboursWithoutCorridors(TNode node1, TNode node2)
 		{
-			return stageOneGraph.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
+			return graphWithoutCorridors.HasEdge(node1, node2) && !graph.HasEdge(node1, node2);
 		}
 	}
 }

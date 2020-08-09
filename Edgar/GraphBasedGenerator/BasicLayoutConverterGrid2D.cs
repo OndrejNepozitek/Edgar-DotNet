@@ -5,9 +5,6 @@ using Edgar.GraphBasedGenerator.Configurations;
 using Edgar.GraphBasedGenerator.ConfigurationSpaces;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
 using MapGeneration.Core.LayoutConverters.Interfaces;
 using MapGeneration.Core.Layouts.Interfaces;
 using MapGeneration.Core.MapDescriptions;
@@ -23,17 +20,17 @@ namespace Edgar.GraphBasedGenerator
 	/// <typeparam name="TLayout"></typeparam>
 	/// <typeparam name="TNode"></typeparam>
 	/// <typeparam name="TConfiguration"></typeparam>
-    public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<int, TConfiguration>, MapLayout<TNode>>, IRandomInjectable
-        where TConfiguration : IConfiguration<RoomTemplateInstance, IntVector2, int>
+    public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<RoomNode<TNode>, TConfiguration>, LevelGrid2D<TNode>>, IRandomInjectable
+        where TConfiguration : IConfiguration<RoomTemplateInstance, IntVector2, RoomNode<TNode>>
 	{
-		protected readonly MapDescriptionMapping<TNode> MapDescription;
+		protected readonly LevelDescriptionGrid2D<TNode> MapDescription;
 		protected Random Random;
-		protected readonly ConfigurationSpacesGrid2D<TConfiguration, int> ConfigurationSpaces;
+		protected readonly ConfigurationSpacesGrid2D<TConfiguration, RoomNode<TNode>> ConfigurationSpaces;
         protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> IntAliasMapping;
 
 		public BasicLayoutConverterGrid2D(
-            MapDescriptionMapping<TNode> mapDescription, 
-            ConfigurationSpacesGrid2D<TConfiguration, int> configurationSpaces, 
+            LevelDescriptionGrid2D<TNode> mapDescription, 
+            ConfigurationSpacesGrid2D<TConfiguration, RoomNode<TNode>> configurationSpaces, 
 			TwoWayDictionary<RoomTemplateInstance, IntAlias<GridPolygon>> intAliasMapping
         )
 		{
@@ -43,18 +40,16 @@ namespace Edgar.GraphBasedGenerator
         }
 
 		/// <inheritdoc />
-		public MapLayout<TNode> Convert(ILayout<int, TConfiguration> layout, bool addDoors)
+		public LevelGrid2D<TNode> Convert(ILayout<RoomNode<TNode>, TConfiguration> layout, bool addDoors)
 		{
 			var rooms = new List<Room<TNode>>();
 			var roomsDict = new Dictionary<TNode, Room<TNode>>();
 
-			var mapping = MapDescription.GetMapping();
-
             foreach (var vertexAlias in layout.Graph.Vertices)
 			{
 				if (layout.GetConfiguration(vertexAlias, out var configuration))
-				{
-					var vertex = mapping.GetByValue(vertexAlias);
+                {
+                    var vertex = vertexAlias.Room;
                     var roomTemplateInstance = configuration.RoomShape;
 
 					// Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
@@ -65,7 +60,7 @@ namespace Edgar.GraphBasedGenerator
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
 
-                    var room = new Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias) is CorridorRoomDescription, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
+                    var room = new Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
 					rooms.Add(room);
 
 					if (!addDoors)
@@ -84,7 +79,7 @@ namespace Edgar.GraphBasedGenerator
 
 				foreach (var vertexAlias in layout.Graph.Vertices)
 				{
-					var vertex = mapping.GetByValue(vertexAlias);
+					var vertex = vertexAlias.Room;
 
 					if (layout.GetConfiguration(vertexAlias, out var configuration))
 					{
@@ -92,7 +87,7 @@ namespace Edgar.GraphBasedGenerator
 
 						foreach (var neighbourAlias in neighbours)
 						{
-							var neighbour = mapping.GetByValue(neighbourAlias);
+							var neighbour = neighbourAlias.Room;
 
 							if (layout.GetConfiguration(neighbourAlias, out var neighbourConfiguration) && !generatedDoors.Contains(Tuple.Create(neighbour, vertex)))
 							{
@@ -108,7 +103,7 @@ namespace Edgar.GraphBasedGenerator
 				}
 			}
 
-			return new MapLayout<TNode>(rooms);
+			return new LevelGrid2D<TNode>(rooms);
 		}
 
 		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)

@@ -36,7 +36,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
         private readonly MapDescriptionMapping<TNode> mapDescription;
         private readonly IMapDescription<TNode> mapDescriptionOriginal;
         private readonly DungeonGeneratorConfiguration<TNode> configuration;
-        private ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
+        private ChainBasedGenerator<Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int> generator;
 
         public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
 
@@ -143,7 +143,7 @@ namespace MapGeneration.Core.LayoutGenerators.DungeonGenerator
                     Configuration<CorridorsData>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
 
             // Create the generator itself
-            generator = new ChainBasedGenerator<IMapDescription<int>, Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator = new ChainBasedGenerator<Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             // Register event handlers
             generator.OnRandomInjected += (random) =>

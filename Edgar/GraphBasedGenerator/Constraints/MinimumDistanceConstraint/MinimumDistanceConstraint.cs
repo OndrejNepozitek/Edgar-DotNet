@@ -12,12 +12,12 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
         where TConfiguration : ISimpleEnergyConfiguration<TEnergyData>
 		where TEnergyData : IMinimumDistanceConstraintData
 	{
-        private readonly IMapDescription<TNode> mapDescription;
+        private readonly ILevelDescription<TNode> mapDescription;
 		private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
         private readonly IGraph<TNode> graph;
         private readonly int minimumDistance;
 
-		public MinimumDistanceConstraint(IMapDescription<TNode> mapDescription, IRoomShapeGeometry<TConfiguration> roomShapeGeometry, int minimumDistance)
+		public MinimumDistanceConstraint(ILevelDescription<TNode> mapDescription, IRoomShapeGeometry<TConfiguration> roomShapeGeometry, int minimumDistance)
 		{
 			this.mapDescription = mapDescription;
 			this.roomShapeGeometry = roomShapeGeometry;
@@ -42,7 +42,7 @@ namespace Edgar.GraphBasedGenerator.Constraints.MinimumDistanceConstraint
 				if (!layout.GetConfiguration(vertex, out var c))
 					continue;
 
-                if (mapDescription.GetRoomDescription(vertex).GetType() == typeof(CorridorRoomDescription))
+                if (mapDescription.GetRoomDescription(vertex).IsCorridor)
                     continue;
 
 				if (AreNeighbours(node, vertex))
