@@ -1,6 +1,6 @@
-﻿using MapGeneration.Core.LayoutGenerators.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Core.MapLayouts;
+﻿using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapLayouts;
 
 namespace GUI
 {

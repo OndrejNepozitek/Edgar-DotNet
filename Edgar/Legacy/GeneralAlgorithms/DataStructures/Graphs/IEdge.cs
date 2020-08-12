@@ -1,4 +1,4 @@
-﻿namespace GeneralAlgorithms.DataStructures.Graphs
+﻿namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs
 {
 	/// <summary>
 	/// Interface describing an edge of a graph.

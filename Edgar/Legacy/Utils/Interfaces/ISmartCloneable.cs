@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.Interfaces
+﻿namespace Edgar.Legacy.Utils.Interfaces
 {
 	/// <summary>
 	/// Represents types that can be cloned.

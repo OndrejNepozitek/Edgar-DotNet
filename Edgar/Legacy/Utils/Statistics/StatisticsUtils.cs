@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapGeneration.Utils.Statistics
+namespace Edgar.Legacy.Utils.Statistics
 {
     public static class StatisticsUtils
     {

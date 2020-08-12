@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.MetaOptimization.Stats;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class GeneratorEvaluation<TRunData> : IGeneratorEvaluation<GeneratorData>
         where TRunData : ISimulatedAnnealingData

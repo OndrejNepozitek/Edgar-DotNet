@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeneralAlgorithms.DataStructures.Common
+﻿namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 {
 	/// <summary>
 	/// Integer alias of an object of a given generic type.

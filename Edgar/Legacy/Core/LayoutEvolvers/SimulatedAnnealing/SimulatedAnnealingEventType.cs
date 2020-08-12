@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
+﻿namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 {
     /// <summary>
     /// Type of a simulated annealing event.

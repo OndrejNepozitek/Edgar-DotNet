@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.Interfaces
+﻿namespace Edgar.Legacy.Utils.Interfaces
 {
     public interface IWebGuiRunData
     {

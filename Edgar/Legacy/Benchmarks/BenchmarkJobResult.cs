@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Benchmarks.Interfaces;
+using BenchmarkUtils.Attributes;
+using BenchmarkUtils.Enums;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
-	using BenchmarkUtils.Attributes;
-	using BenchmarkUtils.Enums;
-
-	/// <summary>
+    /// <summary>
 	/// Result of a benchmark job.
 	/// </summary>
 	public class BenchmarkJobResult

@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using DataStructures.Common;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Helper class for creating polygons.
 	/// </summary>
 	public class GridPolygonBuilder

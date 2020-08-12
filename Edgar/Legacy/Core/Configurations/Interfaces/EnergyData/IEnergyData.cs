@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Configurations.Interfaces.EnergyData
+﻿namespace Edgar.Legacy.Core.Configurations.Interfaces.EnergyData
 {
 	/// <summary>
 	/// Represents an energy data.

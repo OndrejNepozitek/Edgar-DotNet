@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.General;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Logging;
+using Edgar.Legacy.Utils.Logging.Handlers;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.ResultSaving;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils;
-using MapGeneration.Utils.Logging;
-using MapGeneration.Utils.Logging.Handlers;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using SandboxEvolutionRunner.Evolution;
@@ -134,7 +133,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 
         protected virtual BenchmarkScenarioResult RunBenchmark<TNode>(BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> generator, int iterations)
         {
-            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations, new MapGeneration.Benchmarks.BenchmarkOptions()
+            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations, new Legacy.Benchmarks.BenchmarkOptions()
             {
                 WithConsolePreview = Options.WithConsolePreview,
                 MultiThreaded = Options.MaxThreads > 1,

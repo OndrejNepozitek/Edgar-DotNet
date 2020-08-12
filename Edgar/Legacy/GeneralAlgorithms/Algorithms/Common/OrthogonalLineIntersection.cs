@@ -1,11 +1,11 @@
-﻿namespace GeneralAlgorithms.Algorithms.Common
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using DataStructures.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	public class OrthogonalLineIntersection : ILineIntersection<OrthogonalLine>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
+{
+    public class OrthogonalLineIntersection : ILineIntersection<OrthogonalLine>
 	{
 		/// <summary>
 		/// Get all intersections where one line is from the first set and the other one from the second one.
@@ -70,8 +70,8 @@
 					return false;
 				}
 
-				var x1 = Math.Max(line1.From.X, line2.From.X);
-				var x2 = Math.Min(line1.To.X, line2.To.X);
+				var x1 = System.Math.Max(line1.From.X, line2.From.X);
+				var x2 = System.Math.Min(line1.To.X, line2.To.X);
 
 				if (x1 <= x2)
 				{
@@ -91,8 +91,8 @@
 					return false;
 				}
 
-				var y1 = Math.Max(line1.From.Y, line2.From.Y);
-				var y2 = Math.Min(line1.To.Y, line2.To.Y);
+				var y1 = System.Math.Max(line1.From.Y, line2.From.Y);
+				var y2 = System.Math.Min(line1.To.Y, line2.To.Y);
 
 				if (y1 <= y2)
 				{

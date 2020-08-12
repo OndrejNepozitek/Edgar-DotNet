@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutOperations
+namespace Edgar.Legacy.Core.LayoutOperations
 {
     /// <summary>
     /// Class responsible for returning available shapes for a node based on used repeat mode.

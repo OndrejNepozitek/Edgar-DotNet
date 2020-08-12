@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Grid2D;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {

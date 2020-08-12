@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.ChainDecompositions.Interfaces
+namespace Edgar.Legacy.Core.ChainDecompositions.Interfaces
 {
     /// <summary>
 	/// Represents an algorithm that can decompose graph into disjunct chains covering all vertices.

@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.Algorithms.Math
-{
-	using System;
-	using Common;
+﻿using System;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 
-	public static class IntegerGoniometric
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Math
+{
+    public static class IntegerGoniometric
 	{
 		/// <summary>
 		/// Returns the sine of given degrees.

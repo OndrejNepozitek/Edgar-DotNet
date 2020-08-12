@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters
+namespace Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters
 {
     public class CycleClustersAnalyzer<TNode>
     {

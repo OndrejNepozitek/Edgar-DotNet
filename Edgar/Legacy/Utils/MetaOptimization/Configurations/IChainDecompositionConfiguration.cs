@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.ChainDecompositions;
+using Edgar.Legacy.Core.ChainDecompositions;
 
-namespace MapGeneration.MetaOptimization.Configurations
+namespace Edgar.Legacy.Utils.MetaOptimization.Configurations
 {
     public interface IChainDecompositionConfiguration<TNode>
     {

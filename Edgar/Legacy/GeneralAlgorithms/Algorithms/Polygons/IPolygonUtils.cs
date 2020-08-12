@@ -1,4 +1,4 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
+﻿namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 {
 	/// <summary>
 	/// Represents types that can normalize given polygons.

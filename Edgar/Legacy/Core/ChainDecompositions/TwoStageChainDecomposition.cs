@@ -1,14 +1,13 @@
-﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.ChainDecompositions
+namespace Edgar.Legacy.Core.ChainDecompositions
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Graphs;
-
-	/// <inheritdoc />
+    /// <inheritdoc />
 	/// <summary>
 	/// Chain decomposition for layout generators with two-stage generation.
 	/// </summary>

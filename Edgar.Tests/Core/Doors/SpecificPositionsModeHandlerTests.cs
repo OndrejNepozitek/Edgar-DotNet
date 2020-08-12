@@ -1,15 +1,13 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.Core.Doors.ManualMode;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace MapGeneration.Tests.Core.Doors
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-    using MapGeneration.Core.Doors;
-	using MapGeneration.Core.Doors.DoorHandlers;
-	using MapGeneration.Core.Doors.DoorModes;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class SpecificPositionsModeHandlerTests

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.ChainDecompositions.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.GraphBasedGenerator.General
 {

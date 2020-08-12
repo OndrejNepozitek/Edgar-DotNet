@@ -1,12 +1,9 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils.ConfigParsing.Models
+namespace Edgar.Legacy.Utils.ConfigParsing.Models
 {
-	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-
     public class RoomDescriptionModel
 	{
 		public string Name { get; set; }

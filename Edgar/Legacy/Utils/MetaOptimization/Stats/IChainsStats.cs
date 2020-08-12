@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.MetaOptimization.Stats
+namespace Edgar.Legacy.Utils.MetaOptimization.Stats
 {
     public interface IChainsStats
     {

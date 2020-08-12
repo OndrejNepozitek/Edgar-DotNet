@@ -1,12 +1,13 @@
-﻿namespace GeneralAlgorithms.Tests.Algorithms.Graphs
+﻿using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+
+namespace GeneralAlgorithms.Tests.Algorithms.Graphs
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Graphs;
-	using GeneralAlgorithms.DataStructures.Graphs;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class GraphUtilsTests

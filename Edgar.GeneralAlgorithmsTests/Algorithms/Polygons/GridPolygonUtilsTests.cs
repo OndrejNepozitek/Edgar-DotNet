@@ -1,10 +1,11 @@
-﻿namespace GeneralAlgorithms.Tests.Algorithms.Polygons
+﻿using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+
+namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 {
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	internal class GridPolygonUtilsTests

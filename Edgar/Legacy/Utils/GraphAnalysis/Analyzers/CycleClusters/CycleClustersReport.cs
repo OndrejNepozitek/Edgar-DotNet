@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters
+namespace Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters
 {
     public class CycleClustersReport<TNode>
     {

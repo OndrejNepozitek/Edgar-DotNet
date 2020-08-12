@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Core.LayoutConverters.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.Utils;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.Core.LayoutConverters.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutConverters
+namespace Edgar.Legacy.Core.LayoutConverters
 {
 	/// <summary>
 	/// Converts layout from its internal representation to a representation more suitable for users.

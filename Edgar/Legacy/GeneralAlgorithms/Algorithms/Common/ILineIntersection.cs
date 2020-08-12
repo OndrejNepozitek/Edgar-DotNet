@@ -1,10 +1,8 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
+﻿using System.Collections.Generic;
 
-namespace GeneralAlgorithms.Algorithms.Common
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
-	using System.Collections.Generic;
-
-	public interface ILineIntersection<TLine>
+    public interface ILineIntersection<TLine>
 	{
 		/// <summary>
 		/// Get all intersections where one line is from the first set and the other one from the second one.

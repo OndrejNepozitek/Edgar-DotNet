@@ -1,13 +1,12 @@
-﻿namespace GeneralAlgorithms.Algorithms.Graphs
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Common;
-	using DataStructures.Graphs;
-	using GraphPlanarityTesting.PlanarityTesting.BoyerMyrvold;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using GraphPlanarityTesting.PlanarityTesting.BoyerMyrvold;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
+{
+    /// <summary>
 	/// Utility methods for graphs
 	/// </summary>
 	public class GraphUtils

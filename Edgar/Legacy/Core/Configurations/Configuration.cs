@@ -1,15 +1,14 @@
-﻿using Edgar.GraphBasedGenerator.General.Configurations;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Utils.Interfaces;
+﻿using System.Collections.Generic;
+using Edgar.GraphBasedGenerator.General.Configurations;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.Configurations
+namespace Edgar.Legacy.Core.Configurations
 {
-	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
-	/// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TNode,TEnergyData}" />
+    /// <inheritdoc cref="IEnergyConfiguration{TShapeContainer,TNode,TEnergyData}" />
 	/// <summary>
 	/// Basic implementation of an IEnergyConfiguration interface.
 	/// </summary>

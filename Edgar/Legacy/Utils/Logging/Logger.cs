@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MapGeneration.Utils.Logging.Handlers;
+using Edgar.Legacy.Utils.Logging.Handlers;
 
-namespace MapGeneration.Utils.Logging
+namespace Edgar.Legacy.Utils.Logging
 {
     public class Logger
     {

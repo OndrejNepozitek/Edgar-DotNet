@@ -1,13 +1,13 @@
-﻿using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.Constraints
+namespace Edgar.Legacy.Core.Constraints
 {
     public class TouchingConstraints
     <TLayout, TNode, TConfiguration, TEnergyData, TShapeContainer> : INodeConstraint<TLayout, TNode, TConfiguration, TEnergyData>

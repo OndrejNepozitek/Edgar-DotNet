@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
+namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 {
     /// <summary>
     /// Simulated annealing event args.

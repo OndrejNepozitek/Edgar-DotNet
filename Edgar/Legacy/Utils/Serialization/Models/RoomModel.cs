@@ -1,9 +1,9 @@
-﻿namespace MapGeneration.Utils.Serialization.Models
-{
-	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	public class RoomModel<TNode>
+namespace Edgar.Legacy.Utils.Serialization.Models
+{
+    public class RoomModel<TNode>
 	{
 		public TNode Node { get; set; }
 

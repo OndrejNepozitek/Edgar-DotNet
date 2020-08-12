@@ -1,12 +1,12 @@
 ﻿using System;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace GeneralAlgorithms.Tests.Algorithms.Common
 {
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Common;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class OrthogonalLineIntersectionTests

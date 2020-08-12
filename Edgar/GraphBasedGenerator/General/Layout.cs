@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

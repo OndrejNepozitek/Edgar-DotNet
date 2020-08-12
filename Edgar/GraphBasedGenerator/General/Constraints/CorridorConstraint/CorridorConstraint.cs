@@ -3,9 +3,9 @@ using System.Linq;
 using Edgar.GraphBasedGenerator.General.Configurations;
 using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.General.RoomShapeGeometry;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.GraphBasedGenerator.General.Constraints.CorridorConstraint
 {

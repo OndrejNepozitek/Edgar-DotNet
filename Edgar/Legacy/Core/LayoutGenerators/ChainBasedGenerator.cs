@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.ChainDecompositions.Interfaces;
-using MapGeneration.Core.GeneratorPlanners.Interfaces;
-using MapGeneration.Core.LayoutConverters.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
-using MapGeneration.Core.LayoutGenerators.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.GeneratorPlanners.Interfaces;
+using Edgar.Legacy.Core.LayoutConverters.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutGenerators
+namespace Edgar.Legacy.Core.LayoutGenerators
 {
     /// <summary>
     /// Simple chain based procedural level generator. Serves as a base for the dungeon generator.

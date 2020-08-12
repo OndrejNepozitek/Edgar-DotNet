@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

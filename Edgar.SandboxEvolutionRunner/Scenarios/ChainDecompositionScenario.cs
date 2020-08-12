@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using SandboxEvolutionRunner.Evolution;
 using SandboxEvolutionRunner.Utils;
 

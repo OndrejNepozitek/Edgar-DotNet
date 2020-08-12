@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MapGeneration.Benchmarks.ResultSaving
+namespace Edgar.Legacy.Benchmarks.ResultSaving
 {
     public class BenchmarkResultSaver
     {

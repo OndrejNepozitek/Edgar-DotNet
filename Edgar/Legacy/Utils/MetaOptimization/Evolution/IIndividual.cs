@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization.Evolution
+﻿namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
 {
     public interface IIndividual<out TConfiguration>
     {

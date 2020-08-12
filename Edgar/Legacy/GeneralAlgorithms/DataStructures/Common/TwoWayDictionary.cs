@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.DataStructures.Common
-{
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+{
+    /// <summary>
 	/// Two way dictionary.
 	/// </summary>
 	/// <remarks>

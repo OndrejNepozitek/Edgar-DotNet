@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
+﻿namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
 {
     public enum MaxIterationsStrategy
     {

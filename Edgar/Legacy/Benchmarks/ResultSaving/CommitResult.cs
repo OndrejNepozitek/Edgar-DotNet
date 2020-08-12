@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MapGeneration.Benchmarks.ResultSaving
+namespace Edgar.Legacy.Benchmarks.ResultSaving
 {
     internal class CommitResult
     {

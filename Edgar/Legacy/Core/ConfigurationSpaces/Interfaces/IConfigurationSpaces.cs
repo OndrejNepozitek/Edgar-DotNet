@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.ConfigurationSpaces.Interfaces
+namespace Edgar.Legacy.Core.ConfigurationSpaces.Interfaces
 {
     /// <summary>
 	/// Represents a data structure holding configuration spaces.

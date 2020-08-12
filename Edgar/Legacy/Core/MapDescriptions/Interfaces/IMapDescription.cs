@@ -1,6 +1,6 @@
-﻿using GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.MapDescriptions.Interfaces
+namespace Edgar.Legacy.Core.MapDescriptions.Interfaces
 {
     /// <summary>
 	/// Represents a description of a map to be generated.

@@ -3,8 +3,8 @@ using System.Linq;
 using Edgar.GraphBasedGenerator.General.Configurations;
 using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.General.RoomShapeGeometry;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General.Constraints.BasicConstraint
 {

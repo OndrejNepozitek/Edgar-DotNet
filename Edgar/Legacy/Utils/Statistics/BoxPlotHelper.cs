@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Benchmarks;
+using Edgar.Legacy.Benchmarks;
 
-namespace MapGeneration.Utils.Statistics
+namespace Edgar.Legacy.Utils.Statistics
 {
     public class BoxPlotHelper
     {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

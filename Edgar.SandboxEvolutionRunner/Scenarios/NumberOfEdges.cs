@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Benchmarks;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils;
-using MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters;
-using MapGeneration.Utils.Statistics;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
+using Edgar.Legacy.Utils.Statistics;
 using SandboxEvolutionRunner.Utils;
 
 namespace SandboxEvolutionRunner.Scenarios

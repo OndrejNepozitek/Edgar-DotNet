@@ -1,7 +1,7 @@
-﻿using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Utils.Interfaces;
+﻿using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.Configurations.EnergyData
+namespace Edgar.Legacy.Core.Configurations.EnergyData
 {
 	/// <inheritdoc cref="ICorridorsData" />
 	/// <summary>

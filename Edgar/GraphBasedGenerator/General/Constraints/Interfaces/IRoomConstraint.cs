@@ -1,4 +1,4 @@
-﻿using MapGeneration.Core.Layouts.Interfaces;
+﻿using Edgar.Legacy.Core.Layouts.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General.Constraints.Interfaces
 {

@@ -1,7 +1,7 @@
-﻿namespace MapGeneration.Core.MapLayouts
-{
-	using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Edgar.Legacy.Core.MapLayouts
+{
     /// <summary>
     /// Represents a complete layout of a map. 
     /// </summary>

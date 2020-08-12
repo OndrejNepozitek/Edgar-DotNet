@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
     /// <summary>
     /// Result of a benchmark scenario.

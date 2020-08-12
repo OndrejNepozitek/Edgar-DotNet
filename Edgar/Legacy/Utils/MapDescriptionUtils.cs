@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Doors.DoorModes;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.Doors.ManualMode;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Utils
+namespace Edgar.Legacy.Utils
 {
     public static class MapDescriptionUtils
     {

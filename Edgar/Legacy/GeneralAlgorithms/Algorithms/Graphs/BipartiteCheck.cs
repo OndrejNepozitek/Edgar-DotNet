@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Graphs
-{
-	using System;
-	using System.Collections.Generic;
-	using DataStructures.Graphs;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
+{
+    /// <summary>
 	/// Class that checks whether a graph is bipartite.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>

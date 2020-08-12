@@ -4,13 +4,12 @@ using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.General;
 using Edgar.GraphBasedGenerator.Grid2D;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.GeneratorRunners;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.Utils.MapDrawing;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.GeneratorRunners;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Utils.MapDrawing;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {

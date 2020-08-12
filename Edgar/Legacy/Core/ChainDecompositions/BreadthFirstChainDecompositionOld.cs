@@ -1,14 +1,12 @@
-﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.ChainDecompositions
+namespace Edgar.Legacy.Core.ChainDecompositions
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Graphs;
-
-	/// <summary>
+    /// <summary>
 	/// The algorithm starts with the smallest chains. It then looks for connected faces that
 	/// are as small as possible. If no such face exists, paths close to already covered nodes
 	/// are considered. When a face can be processed, it has greater priority than paths.

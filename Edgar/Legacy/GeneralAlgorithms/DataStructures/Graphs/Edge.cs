@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.DataStructures.Graphs
-{
-	using System;
-	using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs
+{
+    /// <summary>
 	/// Class representing an edge of a graph.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>

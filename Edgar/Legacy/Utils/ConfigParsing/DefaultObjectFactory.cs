@@ -19,13 +19,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-namespace MapGeneration.Utils.ConfigParsing
-{
-	using System;
-	using System.Collections.Generic;
-	using YamlDotNet.Serialization;
+using System;
+using System.Collections.Generic;
+using YamlDotNet.Serialization;
 
-	/// <summary>
+namespace Edgar.Legacy.Utils.ConfigParsing
+{
+    /// <summary>
 	/// Creates objects using Activator.CreateInstance.
 	/// </summary>
 	public sealed class DefaultObjectFactory : IObjectFactory

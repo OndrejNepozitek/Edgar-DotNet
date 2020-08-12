@@ -1,21 +1,20 @@
-﻿using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutOperations
+namespace Edgar.Legacy.Core.LayoutOperations
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using ConfigurationSpaces;
-	using GeneralAlgorithms.DataStructures.Common;
-    using Utils;
-
-	/// <inheritdoc cref="IChainBasedLayoutOperations{TLayout,TNode}" />
+    /// <inheritdoc cref="IChainBasedLayoutOperations{TLayout,TNode}" />
 	/// <summary>
 	/// Base class for layout operations.
 	/// </summary>

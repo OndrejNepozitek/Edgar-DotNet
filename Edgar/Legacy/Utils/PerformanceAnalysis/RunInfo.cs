@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Utils.PerformanceAnalysis
+namespace Edgar.Legacy.Utils.PerformanceAnalysis
 {
     public class RunInfo
     {

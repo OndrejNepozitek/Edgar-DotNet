@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.ChainDecompositions.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
 
-namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
 {
     public class ChainDecompositionMutation<TConfiguration, TNode> : IMutation<TConfiguration>
         where TConfiguration : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>

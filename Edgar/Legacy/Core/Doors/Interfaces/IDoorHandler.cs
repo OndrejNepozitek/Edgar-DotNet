@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.Doors.Interfaces
+namespace Edgar.Legacy.Core.Doors.Interfaces
 {
     /// <summary>
 	/// Represents a class that can compute door positions for a given polygon and door mode.

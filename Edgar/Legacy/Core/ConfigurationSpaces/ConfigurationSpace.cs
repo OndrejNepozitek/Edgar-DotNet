@@ -1,11 +1,11 @@
-﻿namespace MapGeneration.Core.ConfigurationSpaces
-{
-	using System;
-	using System.Collections.Generic;
-	using Doors;
-	using GeneralAlgorithms.DataStructures.Common;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	/// <summary>
+namespace Edgar.Legacy.Core.ConfigurationSpaces
+{
+    /// <summary>
 	/// Configuration space of a pair of polygons.
 	/// </summary>
 	public class ConfigurationSpace

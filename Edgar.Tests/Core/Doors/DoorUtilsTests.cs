@@ -1,11 +1,10 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace MapGeneration.Tests.Core.Doors
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-    using MapGeneration.Core.Doors;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class DoorUtilsTests

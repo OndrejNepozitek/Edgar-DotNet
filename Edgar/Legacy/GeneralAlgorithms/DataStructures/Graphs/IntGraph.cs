@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.DataStructures.Graphs
-{
-	using System;
-	using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-	/// <inheritdoc />
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs
+{
+    /// <inheritdoc />
 	/// <summary>
 	/// Class representing a graph of ints which is in fact an alias for a generic graph.
 	/// </summary>

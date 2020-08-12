@@ -1,9 +1,9 @@
 ﻿using Edgar.GraphBasedGenerator.General;
 using Edgar.GraphBasedGenerator.General.Configurations;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Computes polygon overlap by caching polygon partitions of polygons.
 	/// See <see cref="FastPolygonOverlap"/> for a faster implementation.
 	/// </summary>

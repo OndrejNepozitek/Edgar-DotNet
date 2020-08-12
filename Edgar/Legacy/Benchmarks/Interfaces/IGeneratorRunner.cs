@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Benchmarks.Interfaces
+﻿namespace Edgar.Legacy.Benchmarks.Interfaces
 {
     public interface IGeneratorRunner
     {

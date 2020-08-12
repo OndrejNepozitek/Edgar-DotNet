@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.General.Configurations;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

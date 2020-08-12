@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils;
-using MapGeneration.Utils.ConfigParsing;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.ConfigParsing;
 using Newtonsoft.Json;
 
 namespace SandboxEvolutionRunner.Utils

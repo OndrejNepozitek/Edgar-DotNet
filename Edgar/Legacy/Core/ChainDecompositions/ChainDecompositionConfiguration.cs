@@ -1,6 +1,6 @@
-﻿using MapGeneration.Utils.Interfaces;
+﻿using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.ChainDecompositions
+namespace Edgar.Legacy.Core.ChainDecompositions
 {
     /// <summary>
     /// Chain decomposition configuration.

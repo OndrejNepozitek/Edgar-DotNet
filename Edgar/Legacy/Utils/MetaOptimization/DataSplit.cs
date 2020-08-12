@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization
+﻿namespace Edgar.Legacy.Utils.MetaOptimization
 {
     public class DataSplit
     {

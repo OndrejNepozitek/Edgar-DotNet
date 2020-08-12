@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization.Mutations.MaxStageTwoFailures
+﻿namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
 {
     public enum MaxStageTwoFailuresStrategy
     {

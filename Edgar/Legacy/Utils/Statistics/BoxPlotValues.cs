@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.Statistics
+﻿namespace Edgar.Legacy.Utils.Statistics
 {
     public class BoxPlotValues
     {

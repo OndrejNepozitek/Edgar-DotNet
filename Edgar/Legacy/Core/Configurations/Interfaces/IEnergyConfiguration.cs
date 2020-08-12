@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Configurations.Interfaces
+﻿namespace Edgar.Legacy.Core.Configurations.Interfaces
 {
 	/// <inheritdoc />
 	/// <summary>

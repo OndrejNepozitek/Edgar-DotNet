@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 
 namespace SandboxEvolutionRunner.Evolution
 {

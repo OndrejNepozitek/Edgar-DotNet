@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.ChainDecompositions.Interfaces;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
 
-namespace MapGeneration.MetaOptimization.Mutations.ChainOrder
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainOrder
 {
     public class ChainOrderMutation<TConfiguration, TNode> : IMutation<TConfiguration>
         where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>

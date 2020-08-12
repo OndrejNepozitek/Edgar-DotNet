@@ -1,6 +1,6 @@
 ﻿using System;
 using Edgar.GraphBasedGenerator.General.Configurations;
-using MapGeneration.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General.Constraints
 {

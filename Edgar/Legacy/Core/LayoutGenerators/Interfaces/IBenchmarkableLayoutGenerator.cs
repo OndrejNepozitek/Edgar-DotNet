@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.LayoutGenerators.Interfaces
+﻿namespace Edgar.Legacy.Core.LayoutGenerators.Interfaces
 {
 	/// <summary>
 	/// Represents layout generators that can be benchmarked.

@@ -1,7 +1,7 @@
-﻿namespace MapGeneration.Core.MapLayouts
-{
-	using GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
+namespace Edgar.Legacy.Core.MapLayouts
+{
     /// <summary>
     /// Represents door information.
     /// </summary>

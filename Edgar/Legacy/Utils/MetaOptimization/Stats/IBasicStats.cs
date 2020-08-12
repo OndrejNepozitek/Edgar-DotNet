@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization.Stats
+﻿namespace Edgar.Legacy.Utils.MetaOptimization.Stats
 {
     public interface IBasicStats
     {

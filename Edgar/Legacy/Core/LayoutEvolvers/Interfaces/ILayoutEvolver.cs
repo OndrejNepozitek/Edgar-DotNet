@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MapGeneration.Core.ChainDecompositions;
+using Edgar.Legacy.Core.ChainDecompositions;
 
-namespace MapGeneration.Core.LayoutEvolvers.Interfaces
+namespace Edgar.Legacy.Core.LayoutEvolvers.Interfaces
 {
     /// <summary>
 	/// Represents types capable of evolving layouts.

@@ -1,10 +1,10 @@
-﻿using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.MapLayouts
+namespace Edgar.Legacy.Core.MapLayouts
 {
     /// <summary>
     /// Represents a layout room.

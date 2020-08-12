@@ -1,17 +1,16 @@
-﻿using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
+﻿using System;
+using System.Linq;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.Constraints
+namespace Edgar.Legacy.Core.Constraints
 {
-    using System;
-	using System.Linq;
-	using ConfigurationSpaces;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-
     /// <summary>
 	/// Basic constraint that checks if no polygons overlap and if neighboring
 	/// nodes are connected by doors.

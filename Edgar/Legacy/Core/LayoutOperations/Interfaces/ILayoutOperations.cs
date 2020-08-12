@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.LayoutOperations.Interfaces
+﻿namespace Edgar.Legacy.Core.LayoutOperations.Interfaces
 {
 	/// <summary>
 	/// Represents a type with useful layout operations.

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.Doors.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils.ConfigParsing.Models
+namespace Edgar.Legacy.Utils.ConfigParsing.Models
 {
     /// <summary>
 	/// Mode that holds all the door positions.

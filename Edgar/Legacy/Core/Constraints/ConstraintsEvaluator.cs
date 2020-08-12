@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.Constraints
+namespace Edgar.Legacy.Core.Constraints
 {
 	/// <summary>
 	/// Computes energy of a layout based on given constraints.

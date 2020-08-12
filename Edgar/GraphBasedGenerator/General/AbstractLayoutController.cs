@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.General.Configurations;
 using Edgar.GraphBasedGenerator.General.RoomShapeGeometry;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

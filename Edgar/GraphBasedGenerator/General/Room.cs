@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.Grid2D;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.GraphBasedGenerator.General
 {

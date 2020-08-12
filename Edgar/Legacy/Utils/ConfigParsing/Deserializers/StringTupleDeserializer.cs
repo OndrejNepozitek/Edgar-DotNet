@@ -1,11 +1,11 @@
-﻿namespace MapGeneration.Utils.ConfigParsing.Deserializers
-{
-	using System;
-	using System.Collections.Generic;
-	using YamlDotNet.Core;
-	using YamlDotNet.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
-	/// <summary>
+namespace Edgar.Legacy.Utils.ConfigParsing.Deserializers
+{
+    /// <summary>
 	/// A class to deserialize List of string into Tuple with two strings
 	/// </summary>
 	/// <exception cref="InvalidOperationException">Thrown where there are not exactly two elements in the list.</exception>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Newtonsoft.Json;
 
-namespace MapGeneration.Core.MapDescriptions
+namespace Edgar.Legacy.Core.MapDescriptions
 {
     /// <summary>
     /// Class that describes a basic (non-corridor) room

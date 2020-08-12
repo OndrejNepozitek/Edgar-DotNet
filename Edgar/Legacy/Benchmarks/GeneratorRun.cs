@@ -1,6 +1,6 @@
-﻿using MapGeneration.Benchmarks.Interfaces;
+﻿using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
     /// <summary>
     /// Statistics about a single run of the generator.

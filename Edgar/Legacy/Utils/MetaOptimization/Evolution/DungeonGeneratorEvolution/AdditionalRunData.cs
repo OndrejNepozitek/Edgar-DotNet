@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.Utils.Interfaces;
 using Newtonsoft.Json;
 
-namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class AdditionalRunData<TNode> : ISimulatedAnnealingData, IWebGuiRunData
     {

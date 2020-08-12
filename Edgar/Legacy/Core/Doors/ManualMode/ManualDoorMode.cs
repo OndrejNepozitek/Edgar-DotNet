@@ -1,12 +1,11 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.Doors.DoorModes
+namespace Edgar.Legacy.Core.Doors.ManualMode
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Common;
-
     /// <summary>
 	/// Mode that holds all the door positions.
 	/// </summary>

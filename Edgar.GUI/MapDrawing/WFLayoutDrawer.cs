@@ -1,4 +1,8 @@
-﻿using MapGeneration.Core.MapLayouts;
+﻿using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils.MapDrawing;
 
 namespace GUI.MapDrawing
 {
@@ -7,12 +11,8 @@ namespace GUI.MapDrawing
 	using System.Drawing;
 	using System.Drawing.Drawing2D;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-    using MapGeneration.Utils.MapDrawing;
 
-	/// <inheritdoc />
+    /// <inheritdoc />
 	/// <summary>
 	/// Class to draw a layout to a given PictureBox.
 	/// </summary>

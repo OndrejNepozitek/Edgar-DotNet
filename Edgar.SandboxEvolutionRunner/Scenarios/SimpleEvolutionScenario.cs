@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.MetaOptimization.Evolution.SimpleDungeonGeneratorEvolution;
-using MapGeneration.MetaOptimization.Mutations;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.SimpleDungeonGeneratorEvolution;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
 using SandboxEvolutionRunner.Evolution;
 using SandboxEvolutionRunner.Utils;
 

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.LayoutConverters.Interfaces
+﻿namespace Edgar.Legacy.Core.LayoutConverters.Interfaces
 {
 	/// <summary>
 	/// Represents type that can convert one representation of a layout to another.

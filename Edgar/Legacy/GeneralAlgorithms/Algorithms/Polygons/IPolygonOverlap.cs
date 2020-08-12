@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System;
-	using System.Collections.Generic;
-	using DataStructures.Common;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Interface for computing when polygons overlap.
 	/// </summary>
 	/// <typeparam name="TShape">This generic type lets us improve performance by using IntAlias.</typeparam>

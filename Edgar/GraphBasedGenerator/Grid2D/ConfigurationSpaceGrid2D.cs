@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.Doors;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

@@ -1,6 +1,6 @@
-﻿using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+﻿using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 
-namespace MapGeneration.MetaOptimization.Configurations
+namespace Edgar.Legacy.Utils.MetaOptimization.Configurations
 {
     public interface ISimulatedAnnealingConfiguration
     {

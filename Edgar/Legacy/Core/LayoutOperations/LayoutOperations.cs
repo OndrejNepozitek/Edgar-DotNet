@@ -1,23 +1,21 @@
-﻿using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Core.Constraints;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.Core.Constraints;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutOperations
+namespace Edgar.Legacy.Core.LayoutOperations
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using ConfigurationSpaces;
-	using GeneralAlgorithms.DataStructures.Common;
-    using Utils;
-
-	/// <summary>
+    /// <summary>
 	/// Layout operations that compute energy based on given constraints.
 	/// </summary>
 	public class LayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutOperations<TLayout, TNode, TConfiguration, TShapeContainer>

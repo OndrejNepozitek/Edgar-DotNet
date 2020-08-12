@@ -1,12 +1,12 @@
-﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+﻿using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace MapGeneration.Tests.Core.GraphDecomposition
 {
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.DataStructures.Graphs;
-    using MapGeneration.Core.ChainDecompositions;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	public abstract class ChainDecomposersTests
 	{

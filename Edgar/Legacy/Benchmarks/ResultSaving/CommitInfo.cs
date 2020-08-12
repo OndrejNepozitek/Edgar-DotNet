@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Benchmarks.ResultSaving
+﻿namespace Edgar.Legacy.Benchmarks.ResultSaving
 {
     public class CommitInfo
     {

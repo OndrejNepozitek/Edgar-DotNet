@@ -1,7 +1,7 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.Configurations.Interfaces
+namespace Edgar.Legacy.Core.Configurations.Interfaces
 {
     /// <summary>
 	/// Represents a configuration of a layout's node.

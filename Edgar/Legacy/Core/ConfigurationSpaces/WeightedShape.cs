@@ -1,8 +1,8 @@
 ﻿using System;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.ConfigurationSpaces
+namespace Edgar.Legacy.Core.ConfigurationSpaces
 {
     public class WeightedShape
     {

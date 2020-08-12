@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Common
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-	public static class CollectionExtensions
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
+{
+    public static class CollectionExtensions
 	{
 		/// <summary>
 		/// Check if two collections are equal.

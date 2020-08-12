@@ -1,6 +1,4 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
-
-namespace MapGeneration.Utils.ConfigParsing.Models
+﻿namespace Edgar.Legacy.Utils.ConfigParsing.Models
 {
     public class SimpleDoorModeModel : IDoorModeModel
 	{

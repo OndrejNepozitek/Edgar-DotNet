@@ -1,11 +1,8 @@
 ﻿using System;
-using MapGeneration.Benchmarks.GeneratorRunners;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.LayoutGenerators.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
     public delegate IGeneratorRunner GeneratorRunnerFactory<TMapDescription>(GeneratorInput<TMapDescription> input);
 

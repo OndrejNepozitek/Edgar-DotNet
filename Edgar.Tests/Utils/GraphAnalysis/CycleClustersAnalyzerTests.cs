@@ -1,5 +1,5 @@
-﻿using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
 using NUnit.Framework;
 
 namespace MapGeneration.Tests.Utils.GraphAnalysis

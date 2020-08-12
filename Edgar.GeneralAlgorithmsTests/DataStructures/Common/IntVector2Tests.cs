@@ -1,7 +1,8 @@
-﻿namespace GeneralAlgorithms.Tests.DataStructures.Common
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+
+namespace GeneralAlgorithms.Tests.DataStructures.Common
 {
-	using GeneralAlgorithms.DataStructures.Common;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class IntVector2Tests

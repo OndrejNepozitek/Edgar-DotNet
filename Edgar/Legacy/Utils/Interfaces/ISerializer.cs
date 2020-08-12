@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Core.MapLayouts;
 
-namespace MapGeneration.Utils.Interfaces
+namespace Edgar.Legacy.Utils.Interfaces
 {
     /// <summary>
 	/// Represents types that are able to serialize MapLayout.

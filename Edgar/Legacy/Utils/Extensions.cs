@@ -1,14 +1,10 @@
-﻿using MapGeneration.Core.ConfigurationSpaces.Interfaces;
+﻿using System.Linq;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Utils
+namespace Edgar.Legacy.Utils
 {
-	using System.Linq;
-	using Core;
-	using Core.MapDescriptions;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Graphs;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     public static class Extensions
 	{
 		public static int GetAverageSize<TNode, TConfiguration, TConfigurationSpace>(this IConfigurationSpaces<TNode, IntAlias<PolygonGrid2D>, TConfiguration, TConfigurationSpace> configurationSpaces) 

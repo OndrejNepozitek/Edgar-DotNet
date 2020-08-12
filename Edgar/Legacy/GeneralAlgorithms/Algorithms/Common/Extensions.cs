@@ -1,9 +1,8 @@
-﻿namespace GeneralAlgorithms.Algorithms.Common
-{
-	using DataStructures.Common;
-	using DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-	public static class Extensions
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
+{
+    public static class Extensions
 	{
 		/// <summary>
 		/// Returns x mod m.

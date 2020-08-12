@@ -1,7 +1,7 @@
-﻿using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Utils
+namespace Edgar.Legacy.Utils
 {
     public class GraphsDatabase
 	{

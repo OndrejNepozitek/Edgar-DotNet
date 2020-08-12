@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.MetaOptimization.Stats;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class GeneratorData : IChainsStats, IBasicStats
     {

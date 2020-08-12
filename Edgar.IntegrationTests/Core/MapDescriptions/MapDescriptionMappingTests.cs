@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Doors.DoorModes;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using NUnit.Framework;
 
 namespace MapGeneration.IntegrationTests.Core.MapDescriptions

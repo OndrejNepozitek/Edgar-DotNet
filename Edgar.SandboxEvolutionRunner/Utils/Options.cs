@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CommandLine;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.MetaOptimization.Evolution;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
 
 namespace SandboxEvolutionRunner.Utils
 {

@@ -1,14 +1,14 @@
-﻿using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.ConfigurationSpaces.Interfaces;
-using MapGeneration.Utils.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.ConfigurationSpaces
+namespace Edgar.Legacy.Core.ConfigurationSpaces
 {
     /// <inheritdoc cref="IConfigurationSpaces{TNode,TShape,TConfiguration,TConfigurationSpace}" />
 	/// <summary>

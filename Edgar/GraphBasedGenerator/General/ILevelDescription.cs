@@ -1,5 +1,5 @@
 ﻿using Edgar.GraphBasedGenerator.General.RoomTemplates;
-using GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.GraphBasedGenerator.General
 {

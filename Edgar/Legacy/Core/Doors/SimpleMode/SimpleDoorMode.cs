@@ -1,10 +1,8 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
-using YamlDotNet.Serialization;
+﻿using System;
+using Edgar.Legacy.Core.Doors.Interfaces;
 
-namespace MapGeneration.Core.Doors.DoorModes
+namespace Edgar.Legacy.Core.Doors.SimpleMode
 {
-	using System;
-
     /// <summary>
 	/// Mode that is used to generate doors of a specified length on all sides of the polygon.
 	/// The only condition is that doors are at least CornerDistance units far from corners.

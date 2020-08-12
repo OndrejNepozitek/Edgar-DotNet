@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BenchmarkUtils.Enums;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.MapDescriptions;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
     public class BenchmarkRunner<TMapDescription>
     {

@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Constraints.Interfaces
+﻿namespace Edgar.Legacy.Core.Constraints.Interfaces
 {
 	/// <summary>
 	/// Represents a node constraint.

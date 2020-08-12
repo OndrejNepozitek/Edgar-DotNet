@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations;
-using MapGeneration.Core.Configurations.EnergyData;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.Doors;
-using MapGeneration.Core.Doors.DoorModes;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.Configurations;
+using Edgar.Legacy.Core.Configurations.EnergyData;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using NUnit.Framework;
 
 namespace MapGeneration.IntegrationTests.Core.ConfigurationSpaces

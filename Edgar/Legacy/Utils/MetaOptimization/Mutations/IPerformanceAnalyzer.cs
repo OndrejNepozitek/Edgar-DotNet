@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.MetaOptimization.Evolution;
 
-namespace MapGeneration.MetaOptimization.Mutations
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations
 {
     public interface IPerformanceAnalyzer<TConfiguration, in TIndividual>
     {

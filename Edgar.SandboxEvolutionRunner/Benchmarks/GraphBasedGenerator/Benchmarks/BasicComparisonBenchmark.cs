@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Edgar.GraphBasedGenerator;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
 using SandboxEvolutionRunner.Utils;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks

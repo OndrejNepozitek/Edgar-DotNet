@@ -1,16 +1,17 @@
 ﻿using System.Drawing.Text;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.Core.Doors.ManualMode;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
 
 namespace Sandbox.Examples
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using MapGeneration.Core.Doors.DoorModes;
-	using MapGeneration.Core.MapDescriptions;
-	using MapGeneration.Utils;
 
     public class CorridorsExample : IExample
 	{

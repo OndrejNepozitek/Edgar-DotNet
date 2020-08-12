@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
 
-namespace MapGeneration.Core.GeneratorPlanners.Interfaces
+namespace Edgar.Legacy.Core.GeneratorPlanners.Interfaces
 {
     /// <summary>
     /// Represents types that can generate a complete level from an initial layout and a set of chains.

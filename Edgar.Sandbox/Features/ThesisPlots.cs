@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MapGeneration.Benchmarks;
-using MapGeneration.Utils.Statistics;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Utils.Statistics;
 
 namespace Sandbox.Features
 {

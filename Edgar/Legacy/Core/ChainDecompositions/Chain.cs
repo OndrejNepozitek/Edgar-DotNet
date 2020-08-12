@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MapGeneration.Core.ChainDecompositions
+namespace Edgar.Legacy.Core.ChainDecompositions
 {
     /// <summary>
     /// Represents a chain of nodes in a chain decomposition.

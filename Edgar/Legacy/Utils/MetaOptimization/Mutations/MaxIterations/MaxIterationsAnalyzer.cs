@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Stats;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
 {
     public class MaxIterationsAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>

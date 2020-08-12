@@ -1,13 +1,12 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.Core.Doors.ManualMode;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.Doors
+namespace Edgar.Legacy.Core.Doors
 {
-	using System;
-	using System.Collections.Generic;
-	using DoorHandlers;
-	using DoorModes;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     /// <inheritdoc />
 	/// <summary>
 	/// Door handler to be used in a context where multiple door modes are used.

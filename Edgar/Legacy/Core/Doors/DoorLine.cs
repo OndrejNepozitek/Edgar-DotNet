@@ -1,10 +1,8 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using System;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.Doors
+namespace Edgar.Legacy.Core.Doors
 {
-	using System;
-	using GeneralAlgorithms.DataStructures.Common;
-
     /// <summary>
     /// Represents a door line.
     /// </summary>

@@ -1,16 +1,14 @@
-﻿using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.ChainDecompositions.Interfaces;
-using MapGeneration.Core.GeneratorPlanners.Interfaces;
-using MapGeneration.Core.LayoutEvolvers.Interfaces;
-using MapGeneration.Utils.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.GeneratorPlanners.Interfaces;
+using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.GeneratorPlanners
+namespace Edgar.Legacy.Core.GeneratorPlanners
 {
-	using System;
-	using System.Collections.Generic;
-    using System.Threading;
-
     /// <summary>
 	/// Class that builds a tree of nodes where each node represent a layout that can be
 	/// used as an initial layout to generate more layouts until a full layout is generated.

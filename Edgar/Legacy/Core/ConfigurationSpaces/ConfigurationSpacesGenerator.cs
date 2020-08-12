@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.General;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Configurations.Interfaces;
-using MapGeneration.Core.Doors;
-using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.Configurations.Interfaces;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
 using IRoomDescription = Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription;
 
-namespace MapGeneration.Core.ConfigurationSpaces
+namespace Edgar.Legacy.Core.ConfigurationSpaces
 {
     /// <summary>
     /// Class responsible for generating configuration spaces.

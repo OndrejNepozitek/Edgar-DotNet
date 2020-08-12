@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Graphs;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Doors.DoorModes;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions;
 using SandboxEvolutionRunner.Utils;
 
 namespace SandboxEvolutionRunner.Scenarios

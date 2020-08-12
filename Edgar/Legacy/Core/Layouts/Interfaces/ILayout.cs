@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.Layouts.Interfaces
+namespace Edgar.Legacy.Core.Layouts.Interfaces
 {
     /// <summary>
 	/// Represents a layout that holds configurations of nodes.

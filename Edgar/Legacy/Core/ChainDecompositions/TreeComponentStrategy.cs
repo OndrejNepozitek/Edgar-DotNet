@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.ChainDecompositions
+﻿namespace Edgar.Legacy.Core.ChainDecompositions
 {
     /// <summary>
     /// Chain decomposition strategy.

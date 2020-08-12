@@ -1,12 +1,10 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.Doors.DoorHandlers
+namespace Edgar.Legacy.Core.Doors.SimpleMode
 {
-	using System;
-	using System.Collections.Generic;
-	using DoorModes;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     /// <summary>
 	/// Generates door positions for <see cref="SimpleDoorMode"/>.
 	/// </summary>

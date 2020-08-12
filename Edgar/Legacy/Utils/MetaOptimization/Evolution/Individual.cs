@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.MetaOptimization.Mutations;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
 
-namespace MapGeneration.MetaOptimization.Evolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
 {
     public class Individual<TConfiguration, TConfigurationEvaluation> : IIndividual<TConfiguration>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using MapGeneration.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Benchmarks.GeneratorRunners
+namespace Edgar.Legacy.Benchmarks.GeneratorRunners
 {
     public class LambdaGeneratorRunner : IGeneratorRunner
     {

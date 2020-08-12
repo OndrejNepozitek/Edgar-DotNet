@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.MetaOptimization.Mutations
+﻿namespace Edgar.Legacy.Utils.MetaOptimization.Mutations
 {
     public interface IMutation<TConfiguration>
     {

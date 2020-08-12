@@ -1,6 +1,6 @@
-﻿using MapGeneration.Utils.Interfaces;
+﻿using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
+namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 {
     /// <summary>
     /// Configuration of simulated annealing

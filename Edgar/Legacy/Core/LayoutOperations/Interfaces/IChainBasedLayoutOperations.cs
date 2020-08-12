@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Core.LayoutOperations.Interfaces
+namespace Edgar.Legacy.Core.LayoutOperations.Interfaces
 {
     /// <inheritdoc />
 	/// <summary>

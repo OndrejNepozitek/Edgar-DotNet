@@ -1,11 +1,11 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using System.Linq;
-	using DataStructures.Common;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Class implementing utility functions for grid polygons.
 	/// </summary>
 	public class GridPolygonUtils : IPolygonUtils<PolygonGrid2D>

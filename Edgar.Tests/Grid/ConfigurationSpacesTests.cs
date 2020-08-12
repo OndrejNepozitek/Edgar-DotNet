@@ -1,9 +1,7 @@
 ﻿namespace MapGeneration.Tests.Grid
 {
 	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class ConfigurationSpacesTests

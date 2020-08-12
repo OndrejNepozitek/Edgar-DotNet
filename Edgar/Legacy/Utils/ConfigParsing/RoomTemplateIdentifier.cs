@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils.ConfigParsing
+namespace Edgar.Legacy.Utils.ConfigParsing
 {
     public class RoomTemplateIdentifier
     {

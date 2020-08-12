@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Graphs
-{
-	using System;
-	using System.Collections.Generic;
-	using DataStructures.Graphs;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
+{
+    /// <summary>
 	/// Implementation of the Hopcroft-Karp algorithm.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>

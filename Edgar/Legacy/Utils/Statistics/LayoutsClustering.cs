@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils.Statistics
+namespace Edgar.Legacy.Utils.Statistics
 {
     public delegate double GetDistanceDelegate<in TLayout>(TLayout layout1, TLayout layout2);
 

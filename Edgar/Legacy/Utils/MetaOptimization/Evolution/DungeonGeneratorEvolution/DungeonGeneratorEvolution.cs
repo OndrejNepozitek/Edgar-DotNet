@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.AdditionalData;
-using MapGeneration.Benchmarks.GeneratorRunners;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Benchmarks.ResultSaving;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.MetaOptimization.Mutations;
-using MapGeneration.MetaOptimization.Visualizations;
-using MapGeneration.Utils.MapDrawing;
-using MapGeneration.Utils.Statistics;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.GeneratorRunners;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.Utils.MapDrawing;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
+using Edgar.Legacy.Utils.MetaOptimization.Visualizations;
+using Edgar.Legacy.Utils.Statistics;
 
-namespace MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution
 {
     public class DungeonGeneratorEvolution<TNode> : ConfigurationEvolution<DungeonGeneratorConfiguration<TNode>, Individual<TNode>>
     {

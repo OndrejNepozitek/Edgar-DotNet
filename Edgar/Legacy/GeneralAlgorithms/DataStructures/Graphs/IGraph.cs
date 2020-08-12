@@ -1,8 +1,8 @@
-﻿namespace GeneralAlgorithms.DataStructures.Graphs
-{
-	using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs
+{
+    /// <summary>
 	/// Interface describing a generic graph.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>

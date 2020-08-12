@@ -1,24 +1,21 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.Core.Doors.ManualMode;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils.ConfigParsing.Deserializers;
+using Edgar.Legacy.Utils.ConfigParsing.Models;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
-namespace MapGeneration.Utils.ConfigParsing
+namespace Edgar.Legacy.Utils.ConfigParsing
 {
-	using System;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
-	using Core;
-	using Core.Doors.DoorModes;
-	using Core.MapDescriptions;
-	using Deserializers;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using Models;
-	using YamlDotNet.Serialization;
-	using YamlDotNet.Serialization.NamingConventions;
-	using YamlDotNet.Serialization.NodeDeserializers;
-
-	/// <summary>
+    /// <summary>
 	/// Class that loads MapDescription from a file.
 	/// </summary>
 	public class ConfigLoader

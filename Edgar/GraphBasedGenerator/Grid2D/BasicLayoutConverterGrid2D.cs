@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.General;
 using Edgar.GraphBasedGenerator.General.Configurations;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.LayoutConverters.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.Utils;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.LayoutConverters.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

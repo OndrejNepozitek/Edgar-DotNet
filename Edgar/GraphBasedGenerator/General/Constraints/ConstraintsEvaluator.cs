@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.General.Configurations;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.Constraints.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.Constraints.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General.Constraints
 {

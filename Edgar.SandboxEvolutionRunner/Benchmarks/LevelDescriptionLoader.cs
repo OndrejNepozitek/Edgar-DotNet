@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Grid2D;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Doors.DoorModes;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Utils;
+using Edgar.Legacy.Core.Doors.SimpleMode;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
 using SandboxEvolutionRunner.Utils;
-using IRoomDescription = MapGeneration.Core.MapDescriptions.Interfaces.IRoomDescription;
+using IRoomDescription = Edgar.Legacy.Core.MapDescriptions.Interfaces.IRoomDescription;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks
 {

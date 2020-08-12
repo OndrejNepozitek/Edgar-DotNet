@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
-namespace MapGeneration.Benchmarks.GeneratorRunners
+namespace Edgar.Legacy.Benchmarks.GeneratorRunners
 {
     public delegate IGeneratorRun GeneratorRunCreator(bool isSuccessful, double time, int iterations);
 

@@ -1,12 +1,12 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using DataStructures.Common;
-	using DataStructures.Polygons;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Base class for implementing the <see cref="IPolygonOverlap{TShape}"/> interface.
 	/// </summary>
 	/// <typeparam name="TShape"></typeparam>
@@ -70,8 +70,8 @@
 			{
 				foreach (var r2 in decomposition2)
 				{
-					var overlapX = Math.Max(0, Math.Min(r1.B.X, r2.B.X) - Math.Max(r1.A.X, r2.A.X));
-					var overlapY = Math.Max(0, Math.Min(r1.B.Y, r2.B.Y) - Math.Max(r1.A.Y, r2.A.Y));
+					var overlapX = System.Math.Max(0, System.Math.Min(r1.B.X, r2.B.X) - System.Math.Max(r1.A.X, r2.A.X));
+					var overlapY = System.Math.Max(0, System.Math.Min(r1.B.Y, r2.B.Y) - System.Math.Max(r1.A.Y, r2.A.Y));
 					area += overlapX * overlapY;
 				}
 			}
@@ -112,8 +112,8 @@
 
         protected bool DoTouch(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumLength)
 		{
-			var overlapX = Math.Max(-1, Math.Min(rectangle1.B.X, rectangle2.B.X) - Math.Max(rectangle1.A.X, rectangle2.A.X));
-			var overlapY = Math.Max(-1, Math.Min(rectangle1.B.Y, rectangle2.B.Y) - Math.Max(rectangle1.A.Y, rectangle2.A.Y));
+			var overlapX = System.Math.Max(-1, System.Math.Min(rectangle1.B.X, rectangle2.B.X) - System.Math.Max(rectangle1.A.X, rectangle2.A.X));
+			var overlapY = System.Math.Max(-1, System.Math.Min(rectangle1.B.Y, rectangle2.B.Y) - System.Math.Max(rectangle1.A.Y, rectangle2.A.Y));
 
 			if ((overlapX == 0 && overlapY >= minimumLength) || (overlapY == 0 && overlapX >= minimumLength))
 			{
@@ -155,8 +155,8 @@
 
         protected bool DoHaveMinimumDistance(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumDistance)
         {
-            var distanceX = Math.Max(rectangle2.A.X - rectangle1.B.X, rectangle1.A.X - rectangle2.B.X);
-			var distanceY = Math.Max(rectangle2.A.Y - rectangle1.B.Y, rectangle1.A.Y - rectangle2.B.Y);
+            var distanceX = System.Math.Max(rectangle2.A.X - rectangle1.B.X, rectangle1.A.X - rectangle2.B.X);
+			var distanceY = System.Math.Max(rectangle2.A.Y - rectangle1.B.Y, rectangle1.A.Y - rectangle2.B.Y);
 
             return distanceX >= minimumDistance || distanceY >= minimumDistance;
         }

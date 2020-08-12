@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.Logging.Handlers
+﻿namespace Edgar.Legacy.Utils.Logging.Handlers
 {
     public interface ILoggerHandler
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapGeneration.Core.LayoutGenerators.Interfaces
+namespace Edgar.Legacy.Core.LayoutGenerators.Interfaces
 {
     /// <inheritdoc />
 	/// <summary>

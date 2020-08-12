@@ -4,7 +4,7 @@ using System.Linq;
 using GraphPlanarityTesting.Graphs.Algorithms;
 using GraphPlanarityTesting.Graphs.DataStructures;
 
-namespace MapGeneration.Utils.GraphAnalysis
+namespace Edgar.Legacy.Utils.GraphAnalysis
 {
     public class GraphCyclesGetter<TNode>
     {

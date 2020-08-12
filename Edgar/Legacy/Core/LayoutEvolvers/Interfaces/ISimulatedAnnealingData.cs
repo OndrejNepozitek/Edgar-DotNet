@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 
-namespace MapGeneration.Core.LayoutEvolvers.Interfaces
+namespace Edgar.Legacy.Core.LayoutEvolvers.Interfaces
 {
     public interface ISimulatedAnnealingData
     {

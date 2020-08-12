@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Utils.MapDrawing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils.MapDrawing;
 using Newtonsoft.Json;
 
 namespace Sandbox.Examples

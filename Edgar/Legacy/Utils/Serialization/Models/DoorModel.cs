@@ -1,8 +1,8 @@
-﻿namespace MapGeneration.Utils.Serialization.Models
-{
-	using GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	public class DoorModel<TNode>
+namespace Edgar.Legacy.Utils.Serialization.Models
+{
+    public class DoorModel<TNode>
 	{
 		public TNode Node { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Grid2D;
-using MapGeneration.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.Interfaces;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 {

@@ -1,13 +1,12 @@
-﻿using MapGeneration.Core.MapLayouts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Utils.MapDrawing
+namespace Edgar.Legacy.Utils.MapDrawing
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     /// <summary>
 	/// Class that should help with drawing layouts to different outputs.
 	/// </summary>

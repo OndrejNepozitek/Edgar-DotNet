@@ -1,8 +1,8 @@
-﻿namespace GeneralAlgorithms.DataStructures.Polygons
-{
-	using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
+{
+    /// <summary>
 	/// Represents a polygon.
 	/// </summary>
 	/// <typeparam name="TPoint"></typeparam>

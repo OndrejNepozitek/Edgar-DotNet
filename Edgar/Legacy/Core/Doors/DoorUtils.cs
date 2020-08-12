@@ -1,12 +1,10 @@
-﻿using MapGeneration.Core.Doors.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.Doors
+namespace Edgar.Legacy.Core.Doors
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Common;
-
     public static class DoorUtils
 	{
 		/// <summary>

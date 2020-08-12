@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.Algorithms.Common
-{
-	using System;
-	using DataStructures.Common;
+﻿using System;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	public static class TransformationHelper
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
+{
+    public static class TransformationHelper
 	{
 		public static Transformation[] GetAllTransformations()
 		{

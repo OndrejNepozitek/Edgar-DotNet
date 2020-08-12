@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapGeneration.Utils
+namespace Edgar.Legacy.Utils
 {
     public static class FileNamesHelper
     {

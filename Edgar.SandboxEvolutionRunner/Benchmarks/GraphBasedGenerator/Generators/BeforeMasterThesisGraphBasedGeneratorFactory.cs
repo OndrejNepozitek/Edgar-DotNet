@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Grid2D;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.GeneratorRunners;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.Utils.MapDrawing;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.GeneratorRunners;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils.MapDrawing;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {
@@ -41,7 +41,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var mapDescription = levelDescription.GetMapDescription();
 
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
-            var chainDecomposition = new MapGeneration.Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
+            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
             {
@@ -88,7 +88,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var mapDescription = levelDescription.GetMapDescription();
 
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
-            var chainDecomposition = new MapGeneration.Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
+            var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
             {

@@ -1,8 +1,8 @@
-﻿using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.Utils.Interfaces;
+﻿using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
 
-namespace MapGeneration.MetaOptimization.Mutations.MaxIterations
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
 {
     public class MaxIterationsMutation<TConfiguration> : IMutation<TConfiguration>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>

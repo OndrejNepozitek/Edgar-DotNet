@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Benchmarks
+﻿namespace Edgar.Legacy.Benchmarks
 {
     /// <summary>
     /// Benchmark settings.

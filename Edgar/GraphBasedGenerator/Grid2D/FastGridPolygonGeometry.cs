@@ -1,8 +1,8 @@
 ﻿using Edgar.GraphBasedGenerator.General.Configurations;
 using Edgar.GraphBasedGenerator.General.RoomShapeGeometry;
-using GeneralAlgorithms.Algorithms.Polygons;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

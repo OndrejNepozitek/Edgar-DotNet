@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.DataStructures.Common
-{
-	using System;
-	using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+{
+    /// <summary>
 	/// Datastructure to hold upto 32 boolean values.
 	/// </summary>
 	public struct SimpleBitVector32

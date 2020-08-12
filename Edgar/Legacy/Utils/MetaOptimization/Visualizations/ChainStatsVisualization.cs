@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MapGeneration.MetaOptimization.Stats;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Visualizations
+namespace Edgar.Legacy.Utils.MetaOptimization.Visualizations
 {
     public class ChainStatsVisualization<TGeneratorStats>
         where TGeneratorStats : IChainsStats, IBasicStats

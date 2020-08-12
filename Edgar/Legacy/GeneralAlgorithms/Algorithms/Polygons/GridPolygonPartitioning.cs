@@ -1,16 +1,15 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Common;
-	using DataStructures.Common;
-	using DataStructures.Graphs;
-	using DataStructures.Polygons;
-	using Graphs;
-	using RangeTree;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using RangeTree;
 
-	/// <remarks>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <remarks>
 	/// Adapted from https://github.com/mikolalysenko/rectangle-decomposition
 	/// </remarks>>
 	public class GridPolygonPartitioning : IPolygonPartitioning
@@ -138,10 +137,10 @@
 
 				while (!v.Visited)
 				{
-					minx = Math.Min(v.Point.X, minx);
-					miny = Math.Min(v.Point.Y, miny);
-					maxx = Math.Max(v.Point.X, maxx);
-					maxy = Math.Max(v.Point.Y, maxy);
+					minx = System.Math.Min(v.Point.X, minx);
+					miny = System.Math.Min(v.Point.Y, miny);
+					maxx = System.Math.Max(v.Point.X, maxx);
+					maxy = System.Math.Max(v.Point.Y, maxy);
 
 					v.Visited = true;
 					v = v.Next;
@@ -613,11 +612,11 @@
 
 				if (horizontal)
 				{
-					Range = new Range<int>(Math.Min(from.Point.X, to.Point.X), Math.Max(from.Point.X, to.Point.X));
+					Range = new Range<int>(System.Math.Min(from.Point.X, to.Point.X), System.Math.Max(from.Point.X, to.Point.X));
 				}
 				else
 				{
-					Range = new Range<int>(Math.Min(from.Point.Y, to.Point.Y), Math.Max(from.Point.Y, to.Point.Y));
+					Range = new Range<int>(System.Math.Min(from.Point.Y, to.Point.Y), System.Math.Max(from.Point.Y, to.Point.Y));
 				}
 			}
 

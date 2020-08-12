@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Stats;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Mutations.ChainDecomposition
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
 {
     public class ChainDecompositionAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>, ISimulatedAnnealingConfiguration

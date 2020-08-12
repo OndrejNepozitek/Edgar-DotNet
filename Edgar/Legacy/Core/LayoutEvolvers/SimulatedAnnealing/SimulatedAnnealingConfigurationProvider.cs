@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing
+namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 {
     /// <summary>
     /// Simulated annealing configuration provider. Provides configurations for individual chains.

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MapGeneration.Utils.Statistics;
+using Edgar.Legacy.Utils.Statistics;
 using NUnit.Framework;
 
 namespace MapGeneration.Tests.Utils.Statistics

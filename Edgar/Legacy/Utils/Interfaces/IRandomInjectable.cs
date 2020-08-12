@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapGeneration.Utils.Interfaces
+namespace Edgar.Legacy.Utils.Interfaces
 {
     /// <summary>
 	/// Represents a class that can be injected with a random numbers generator.

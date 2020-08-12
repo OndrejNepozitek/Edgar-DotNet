@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.GraphBasedGenerator.General
 {

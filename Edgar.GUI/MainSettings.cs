@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Utils.ConfigParsing;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Utils.ConfigParsing;
 
 namespace GUI
 {

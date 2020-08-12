@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.MetaOptimization.Mutations;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
 
-namespace MapGeneration.MetaOptimization.Evolution.SimpleDungeonGeneratorEvolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.SimpleDungeonGeneratorEvolution
 {
     public class SimpleDungeonGeneratorEvolution<TNode> : DungeonGeneratorEvolution<TNode>
     {

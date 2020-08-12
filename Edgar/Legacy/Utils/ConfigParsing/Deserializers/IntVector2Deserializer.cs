@@ -1,12 +1,12 @@
-﻿namespace MapGeneration.Utils.ConfigParsing.Deserializers
-{
-	using System;
-	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Common;
-	using YamlDotNet.Core;
-	using YamlDotNet.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
-	/// <summary>
+namespace Edgar.Legacy.Utils.ConfigParsing.Deserializers
+{
+    /// <summary>
 	/// A class to deserialize List of ints into IntVector2 or IntVector2?
 	/// </summary>
 	/// <exception cref="InvalidOperationException">Thrown where there are not exactly two elements in the list.</exception>

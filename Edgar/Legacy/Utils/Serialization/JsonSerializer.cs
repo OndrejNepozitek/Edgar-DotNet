@@ -1,14 +1,13 @@
-﻿using MapGeneration.Core.MapLayouts;
-using MapGeneration.Utils.Interfaces;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.Utils.Interfaces;
+using Newtonsoft.Json;
 
-namespace MapGeneration.Utils.Serialization
+namespace Edgar.Legacy.Utils.Serialization
 {
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
-    using Newtonsoft.Json;
-
-	/// <summary>
+    /// <summary>
 	/// JSON serializer.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>

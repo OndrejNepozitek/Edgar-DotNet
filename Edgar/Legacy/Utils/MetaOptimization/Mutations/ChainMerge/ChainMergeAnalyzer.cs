@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Stats;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
-namespace MapGeneration.MetaOptimization.Mutations.ChainMerge
+namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainMerge
 {
     public class ChainMergeAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>

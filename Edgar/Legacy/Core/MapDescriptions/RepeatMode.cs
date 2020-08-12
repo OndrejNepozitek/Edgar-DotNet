@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.MapDescriptions
+﻿namespace Edgar.Legacy.Core.MapDescriptions
 {
     /// <summary>
     /// Determines if a room template can repeat in a level.

@@ -1,13 +1,12 @@
-﻿using MapGeneration.Core.ChainDecompositions.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.ChainDecompositions
+namespace Edgar.Legacy.Core.ChainDecompositions
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Graphs;
-	using GeneralAlgorithms.DataStructures.Graphs;
-
     /// <inheritdoc />
 	/// <summary>
 	/// Base class for chain decomposer with some utility functions.

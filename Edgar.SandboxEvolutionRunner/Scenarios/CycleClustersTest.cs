@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using MapGeneration.Benchmarks;
-using MapGeneration.Core.ChainDecompositions;
-using MapGeneration.Utils.GraphAnalysis.Analyzers.CycleClusters;
-using MapGeneration.Utils.GraphAnalysis.Analyzers.NodesInsideCycle;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
+using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.NodesInsideCycle;
 using Newtonsoft.Json;
 using SandboxEvolutionRunner.Utils;
 

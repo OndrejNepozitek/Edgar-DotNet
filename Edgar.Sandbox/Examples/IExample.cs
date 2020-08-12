@@ -1,8 +1,8 @@
-﻿namespace Sandbox.Examples
-{
-	using MapGeneration.Core.MapDescriptions;
+﻿using Edgar.Legacy.Core.MapDescriptions;
 
-	public interface IExample
+namespace Sandbox.Examples
+{
+    public interface IExample
 	{
 		MapDescription<int> GetMapDescription();
     }

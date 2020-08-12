@@ -1,12 +1,11 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils
+namespace Edgar.Legacy.Utils
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-
-	public static class CollectionExtensions
+    public static class CollectionExtensions
 	{
 		/// <summary>
 		/// Get random element from the list.

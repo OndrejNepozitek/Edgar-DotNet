@@ -1,4 +1,4 @@
-﻿namespace GeneralAlgorithms.DataStructures.Common
+﻿namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 {
 	public enum Transformation
 	{

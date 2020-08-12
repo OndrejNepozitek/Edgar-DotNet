@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Represents algorithms that can decompose a given polygon into rectangular partitions that 
 	/// do not overlap and cover the whole polygon.
 	/// </summary>

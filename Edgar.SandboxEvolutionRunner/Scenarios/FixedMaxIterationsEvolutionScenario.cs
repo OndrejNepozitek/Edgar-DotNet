@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.MetaOptimization;
-using MapGeneration.MetaOptimization.Configurations;
-using MapGeneration.MetaOptimization.Evolution;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.MetaOptimization.Mutations;
-using MapGeneration.MetaOptimization.Mutations.MaxIterations;
-using MapGeneration.MetaOptimization.Stats;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MetaOptimization;
+using Edgar.Legacy.Utils.MetaOptimization.Configurations;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations;
+using Edgar.Legacy.Utils.MetaOptimization.Stats;
 using SandboxEvolutionRunner.Evolution;
 
 namespace SandboxEvolutionRunner.Scenarios

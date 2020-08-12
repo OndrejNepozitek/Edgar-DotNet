@@ -1,5 +1,5 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using IRoomDescription = Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription;
 
 namespace Edgar.GraphBasedGenerator.General

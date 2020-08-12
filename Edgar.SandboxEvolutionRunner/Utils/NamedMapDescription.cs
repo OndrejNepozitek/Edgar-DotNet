@@ -1,4 +1,4 @@
-﻿using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 
 namespace SandboxEvolutionRunner.Utils
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Benchmarks;
+using Edgar.Legacy.Benchmarks;
 
-namespace MapGeneration.MetaOptimization.Stats
+namespace Edgar.Legacy.Utils.MetaOptimization.Stats
 {
     public class GeneratorStats
     {

@@ -1,11 +1,10 @@
-﻿using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils.Interfaces;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Legacy.Utils.Interfaces;
 
-namespace MapGeneration.Core.Layouts
+namespace Edgar.Legacy.Core.Layouts
 {
-	using System.Collections.Generic;
-	using GeneralAlgorithms.DataStructures.Graphs;
-
     /// <inheritdoc cref="ILayout{TNode,TConfiguration}" />
 	/// <summary>
 	/// Basic layout implementation.

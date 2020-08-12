@@ -1,6 +1,6 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Core.Configurations.Interfaces
+namespace Edgar.Legacy.Core.Configurations.Interfaces
 {
     /// <summary>
 	/// Represents a mutable configuration of a layout's node.

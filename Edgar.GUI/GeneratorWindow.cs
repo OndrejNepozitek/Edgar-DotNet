@@ -1,7 +1,9 @@
-﻿using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapLayouts;
-using MapGeneration.Utils.Interfaces;
-using MapGeneration.Utils.Serialization;
+﻿using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Legacy.Utils.MapDrawing;
+using Edgar.Legacy.Utils.Serialization;
 
 namespace GUI
 {
@@ -14,10 +16,7 @@ namespace GUI
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
-	using GeneralAlgorithms.DataStructures.Common;
-	using MapDrawing;
-    using MapGeneration.Utils;
-	using MapGeneration.Utils.MapDrawing;
+    using MapDrawing;
 
     /// <summary>
 	/// Window that shows progress of the layout generator. 

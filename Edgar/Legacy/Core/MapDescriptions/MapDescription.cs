@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Newtonsoft.Json;
 
-namespace MapGeneration.Core.MapDescriptions
+namespace Edgar.Legacy.Core.MapDescriptions
 {
     /// <summary>
     /// Description of a level.

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.MapLayouts;
 using Newtonsoft.Json;
 
-namespace MapGeneration.Benchmarks.AdditionalData
+namespace Edgar.Legacy.Benchmarks.AdditionalData
 {
     public class AdditionalRunData
     {

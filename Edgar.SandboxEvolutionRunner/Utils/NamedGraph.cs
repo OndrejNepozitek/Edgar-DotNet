@@ -1,4 +1,4 @@
-﻿using GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace SandboxEvolutionRunner.Utils
 {

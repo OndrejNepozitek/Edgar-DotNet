@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Core.MapDescriptions.Interfaces
+namespace Edgar.Legacy.Core.MapDescriptions.Interfaces
 {
     public interface  IRoomDescription : Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription
     {

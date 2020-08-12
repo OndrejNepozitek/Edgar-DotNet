@@ -1,11 +1,12 @@
-﻿namespace GeneralAlgorithms.Tests.DataStructures.Common
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+
+namespace GeneralAlgorithms.Tests.DataStructures.Common
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class OrthogonalLineTests

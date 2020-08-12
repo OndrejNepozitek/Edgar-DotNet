@@ -3,17 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using GeneralAlgorithms.Algorithms.Common;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
     using MapGeneration.Core;
-	using MapGeneration.Core.Configurations;
-	using MapGeneration.Core.ConfigurationSpaces;
-	using MapGeneration.Core.Doors;
-	using MapGeneration.Core.Doors.DoorModes;
-	using MapGeneration.Core.MapDescriptions;
-	using NUnit.Framework;
+    using NUnit.Framework;
 
 	[TestFixture]
 	public class CSGeneratorTests

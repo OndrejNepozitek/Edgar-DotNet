@@ -1,8 +1,8 @@
-﻿using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Graphs;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-namespace MapGeneration.Core.MapDescriptions
+namespace Edgar.Legacy.Core.MapDescriptions
 {
     /// <summary>
     /// Mapping from a generic map description to an integer version in order to improve performance.

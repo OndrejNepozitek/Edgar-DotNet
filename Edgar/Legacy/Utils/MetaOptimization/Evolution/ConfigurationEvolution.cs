@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MapGeneration.MetaOptimization.Mutations;
-using MapGeneration.Utils.Logging;
-using MapGeneration.Utils.Logging.Handlers;
-using MapGeneration.Utils.Statistics;
+using Edgar.Legacy.Utils.Logging;
+using Edgar.Legacy.Utils.Logging.Handlers;
+using Edgar.Legacy.Utils.MetaOptimization.Mutations;
+using Edgar.Legacy.Utils.Statistics;
 
-namespace MapGeneration.MetaOptimization.Evolution
+namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
 {
     public abstract class ConfigurationEvolution<TConfiguration, TIndividual>
         where TIndividual : IIndividual<TConfiguration>

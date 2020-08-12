@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Newtonsoft.Json;
 
-namespace GeneralAlgorithms.DataStructures.Common
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics.Contracts;
-	using Algorithms.Common;
-
-	/// <summary>
+    /// <summary>
 	/// Structure representing an orthogonal line in a integer grid.
 	/// </summary>
 	public struct OrthogonalLine : IEquatable<OrthogonalLine>

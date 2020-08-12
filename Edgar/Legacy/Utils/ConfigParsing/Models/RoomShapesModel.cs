@@ -1,10 +1,8 @@
-﻿using MapGeneration.Core.MapDescriptions.Interfaces;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace MapGeneration.Utils.ConfigParsing.Models
+namespace Edgar.Legacy.Utils.ConfigParsing.Models
 {
-	using GeneralAlgorithms.DataStructures.Common;
-
-	public class RoomShapesModel
+    public class RoomShapesModel
 	{
 		public string SetName { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using Edgar.GraphBasedGenerator.General.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.General.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.General.Constraints.MinimumDistanceConstraint;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General.Configurations
 {

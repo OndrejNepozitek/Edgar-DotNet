@@ -1,15 +1,14 @@
-﻿using MapGeneration.Core.MapLayouts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Utils.MapDrawing
+namespace Edgar.Legacy.Utils.MapDrawing
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using GeneralAlgorithms.Algorithms.Polygons;
-	using GeneralAlgorithms.DataStructures.Common;
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     /// <inheritdoc />
 	/// <summary>
 	/// Class to draw a layout as an SVG.

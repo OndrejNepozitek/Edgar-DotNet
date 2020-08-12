@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Core.Doors.Interfaces
+﻿namespace Edgar.Legacy.Core.Doors.Interfaces
 {
 	/// <summary>
 	/// Represents a door mode used to generate door lines.

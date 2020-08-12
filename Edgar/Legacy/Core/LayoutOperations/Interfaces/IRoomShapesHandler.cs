@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Core.LayoutOperations.Interfaces
+namespace Edgar.Legacy.Core.LayoutOperations.Interfaces
 {
     /// <summary>
     /// An interface that computes which room shapes are available for a given node.

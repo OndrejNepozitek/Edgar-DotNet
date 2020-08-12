@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using SandboxEvolutionRunner.Utils;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios

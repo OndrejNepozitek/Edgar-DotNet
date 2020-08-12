@@ -1,10 +1,10 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using DataStructures.Common;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Computes polygon overlap by fast caching with int aliases.
 	/// </summary>
 	public class FastPolygonOverlap : PolygonOverlapBase<IntAlias<PolygonGrid2D>>

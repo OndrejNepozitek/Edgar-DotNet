@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.Algorithms.Polygons
-{
-	using System.Collections.Generic;
-	using DataStructures.Polygons;
+﻿using System.Collections.Generic;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+{
+    /// <summary>
 	/// Class that computes partition and caches results for later use.
 	/// </summary>
 	public class CachedPolygonPartitioning : IPolygonPartitioning

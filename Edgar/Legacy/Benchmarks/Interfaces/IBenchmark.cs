@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MapGeneration.Benchmarks.Interfaces
+namespace Edgar.Legacy.Benchmarks.Interfaces
 {
     public interface IBenchmark<TInput>
     {

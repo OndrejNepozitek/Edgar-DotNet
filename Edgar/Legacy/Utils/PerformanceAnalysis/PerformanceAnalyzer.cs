@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MapGeneration.Benchmarks;
-using MapGeneration.Core.LayoutEvolvers;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using Newtonsoft.Json;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Newtonsoft.Json.Linq;
 
-namespace MapGeneration.Utils.PerformanceAnalysis
+namespace Edgar.Legacy.Utils.PerformanceAnalysis
 {
     public class PerformanceAnalyzer
     {

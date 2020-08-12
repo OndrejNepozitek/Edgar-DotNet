@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Benchmarks.ResultSaving;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.ResultSaving;
 using Newtonsoft.Json;
 
 namespace Sandbox.Utils

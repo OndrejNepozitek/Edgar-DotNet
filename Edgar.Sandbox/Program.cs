@@ -1,16 +1,19 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MapGeneration.Benchmarks;
-using MapGeneration.Benchmarks.GeneratorRunners;
-using MapGeneration.Benchmarks.Interfaces;
-using MapGeneration.Benchmarks.ResultSaving;
-using MapGeneration.Core.LayoutEvolvers.SimulatedAnnealing;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.MetaOptimization.Evolution.DungeonGeneratorEvolution;
-using MapGeneration.MetaOptimization.Visualizations;
-using MapGeneration.Utils.MapDrawing;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Benchmarks.GeneratorRunners;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.MapDrawing;
+using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
+using Edgar.Legacy.Utils.MetaOptimization.Visualizations;
 using Sandbox.Examples;
 using Sandbox.Features;
 
@@ -19,10 +22,7 @@ namespace Sandbox
 	using System;
 	using System.Collections.Generic;
     using System.Windows.Forms;
-    using GeneralAlgorithms.DataStructures.Common;
-	using GUI;
-    using MapGeneration.Core.MapDescriptions;
-	using MapGeneration.Utils;
+    using GUI;
     using Utils;
 
 	internal static class Program

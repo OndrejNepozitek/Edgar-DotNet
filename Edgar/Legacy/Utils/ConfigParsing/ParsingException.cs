@@ -1,8 +1,8 @@
-﻿namespace MapGeneration.Utils.ConfigParsing
-{
-	using System;
+﻿using System;
 
-	/// <summary>
+namespace Edgar.Legacy.Utils.ConfigParsing
+{
+    /// <summary>
 	/// Exception to be thrown when parsing yaml configs.
 	/// </summary>
 	public class ParsingException : Exception

@@ -1,8 +1,8 @@
-﻿namespace GeneralAlgorithms.Tests.DataStructures.Graphs
-{
-	using GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
-	public class UndirectedAdjacencyListGraphTests : GraphTests
+namespace GeneralAlgorithms.Tests.DataStructures.Graphs
+{
+    public class UndirectedAdjacencyListGraphTests : GraphTests
 	{
 		protected override void CreateConcrete()
 		{

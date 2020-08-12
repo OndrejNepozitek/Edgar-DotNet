@@ -1,4 +1,4 @@
-﻿namespace MapGeneration.Utils.PerformanceAnalysis
+﻿namespace Edgar.Legacy.Utils.PerformanceAnalysis
 {
     public class ChainInfo
     {

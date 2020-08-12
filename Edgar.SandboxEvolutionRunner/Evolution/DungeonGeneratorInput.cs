@@ -1,7 +1,7 @@
 ﻿using System;
-using MapGeneration.Benchmarks;
-using MapGeneration.Core.LayoutGenerators.DungeonGenerator;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Benchmarks;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 
 namespace SandboxEvolutionRunner.Evolution
 {

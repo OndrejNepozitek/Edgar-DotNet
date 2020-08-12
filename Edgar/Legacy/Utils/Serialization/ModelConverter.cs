@@ -1,11 +1,10 @@
 ﻿using System.Linq;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.Utils.Serialization.Models;
 
-namespace MapGeneration.Utils.Serialization
+namespace Edgar.Legacy.Utils.Serialization
 {
-    using Models;
-
-	/// <summary>
+    /// <summary>
 	/// Converts given class to representations more suitable for serializing.
 	/// </summary>
 	public class ModelConverter

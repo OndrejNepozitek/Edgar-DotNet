@@ -5,12 +5,12 @@ using Edgar.GraphBasedGenerator.General.Configurations;
 using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.General.Constraints;
 using Edgar.GraphBasedGenerator.General.RoomShapeGeometry;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.Configurations.Interfaces.EnergyData;
-using MapGeneration.Core.LayoutOperations.Interfaces;
-using MapGeneration.Core.Layouts.Interfaces;
-using MapGeneration.Utils;
-using MapGeneration.Utils.Interfaces;
+using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
+using Edgar.Legacy.Core.LayoutOperations.Interfaces;
+using Edgar.Legacy.Core.Layouts.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.General
 {

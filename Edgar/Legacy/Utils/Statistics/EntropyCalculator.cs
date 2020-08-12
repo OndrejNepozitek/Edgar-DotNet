@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.Algorithms.Common;
-using GeneralAlgorithms.Algorithms.Polygons;
-using MapGeneration.Core.ConfigurationSpaces;
-using MapGeneration.Core.Doors;
-using MapGeneration.Core.MapDescriptions;
-using MapGeneration.Core.MapDescriptions.Interfaces;
-using MapGeneration.Core.MapLayouts;
+using Edgar.Legacy.Core.ConfigurationSpaces;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.MapLayouts;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 
-namespace MapGeneration.Utils.Statistics
+namespace Edgar.Legacy.Utils.Statistics
 {
     public class EntropyCalculator
     {
