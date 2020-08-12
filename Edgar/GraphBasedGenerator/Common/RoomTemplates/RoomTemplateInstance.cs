@@ -1,4 +1,4 @@
-﻿namespace Edgar.GraphBasedGenerator.General.RoomTemplates
+﻿namespace Edgar.GraphBasedGenerator.Common.RoomTemplates
 {
     public class RoomTemplateInstance<TRoomShape> : IRoomTemplateInstance<TRoomShape>
     {

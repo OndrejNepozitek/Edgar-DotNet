@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edgar.GraphBasedGenerator.General;
+using Edgar.GraphBasedGenerator.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

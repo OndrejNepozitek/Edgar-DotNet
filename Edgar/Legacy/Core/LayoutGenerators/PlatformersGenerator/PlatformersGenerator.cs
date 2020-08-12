@@ -24,6 +24,7 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
+using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator

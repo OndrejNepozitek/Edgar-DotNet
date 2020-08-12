@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edgar.GraphBasedGenerator.General.RoomTemplates;
+using Edgar.GraphBasedGenerator.Common.RoomTemplates;
 using Edgar.Legacy.Core.MapDescriptions;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
