@@ -59,11 +59,11 @@
 		public void Scale_ReturnsScaled()
 		{
 			{
-				var p = GridPolygon.GetSquare(3);
-				var factor = new IntVector2(2, 3);
+				var p = PolygonGrid2D.GetSquare(3);
+				var factor = new Vector2Int(2, 3);
 
 				var scaled = p.Scale(factor);
-				var expected = GridPolygon.GetRectangle(6, 9);
+				var expected = PolygonGrid2D.GetRectangle(6, 9);
 
 				Assert.AreEqual(expected, scaled);
 			}
@@ -83,21 +83,21 @@
 		public void Plus_ReturnsTranslated()
 		{
 			{
-				var p = GridPolygon.GetSquare(3);
-				var amount = new IntVector2(2, 3);
+				var p = PolygonGrid2D.GetSquare(3);
+				var amount = new Vector2Int(2, 3);
 
 				var translated = p + amount;
-				var expected = new GridPolygon(p.GetPoints().Select(x => x + amount));
+				var expected = new PolygonGrid2D(p.GetPoints().Select(x => x + amount));
 
 				Assert.AreEqual(expected, translated);
 			}
 
 			{
-				var p = GridPolygon.GetRectangle(2, 4);
-				var amount = new IntVector2(-3, 5);
+				var p = PolygonGrid2D.GetRectangle(2, 4);
+				var amount = new Vector2Int(-3, 5);
 
 				var translated = p + amount;
-				var expected = new GridPolygon(p.GetPoints().Select(x => x + amount));
+				var expected = new PolygonGrid2D(p.GetPoints().Select(x => x + amount));
 
 				Assert.AreEqual(expected, translated);
 			}
@@ -107,10 +107,10 @@
 		public void BoudingRectangle_ReturnsBoundingBox()
 		{
 			{
-				var p = GridPolygon.GetRectangle(2, 4);
+				var p = PolygonGrid2D.GetRectangle(2, 4);
 
 				var boundingRectangle = p.BoundingRectangle;
-				var expected = new GridRectangle(new IntVector2(0, 0), new IntVector2(2, 4));
+				var expected = new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(2, 4));
 
 				Assert.AreEqual(expected, boundingRectangle);
 			}
@@ -126,7 +126,7 @@
 					.Build();
 
 				var boundingRectangle = p.BoundingRectangle;
-				var expected = new GridRectangle(new IntVector2(0, 0), new IntVector2(7, 6));
+				var expected = new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(7, 6));
 
 				Assert.AreEqual(expected, boundingRectangle);
 			}
@@ -135,14 +135,14 @@
 		[Test]
 		public void Rotate_Square_ReturnsRotated()
 		{
-			var square = GridPolygon.GetSquare(4);
+			var square = PolygonGrid2D.GetSquare(4);
 			var rotatedSquare = square.Rotate(180);
-			var expectedPoints = new List<IntVector2>()
+			var expectedPoints = new List<Vector2Int>()
 			{
-				new IntVector2(0, 0),
-				new IntVector2(0, -4),
-				new IntVector2(-4, -4),
-				new IntVector2(-4, 0),
+				new Vector2Int(0, 0),
+				new Vector2Int(0, -4),
+				new Vector2Int(-4, -4),
+				new Vector2Int(-4, 0),
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedSquare.GetPoints()));
@@ -151,14 +151,14 @@
 		[Test]
 		public void Rotate_Rectangle_ReturnsRotated()
 		{
-			var polygon = GridPolygon.GetRectangle(2, 5);
+			var polygon = PolygonGrid2D.GetRectangle(2, 5);
 			var rotatedPolygon = polygon.Rotate(270);
-			var expectedPoints = new List<IntVector2>()
+			var expectedPoints = new List<Vector2Int>()
 			{
-				new IntVector2(0, 0),
-				new IntVector2(-5, 0),
-				new IntVector2(-5, 2),
-				new IntVector2(0, 2),
+				new Vector2Int(0, 0),
+				new Vector2Int(-5, 0),
+				new Vector2Int(-5, 2),
+				new Vector2Int(0, 2),
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(rotatedPolygon.GetPoints()));
@@ -257,93 +257,93 @@
 		[Test]
 		public void Transform_ReturnsTransformed()
 		{
-			var polygon = GridPolygon.GetRectangle(2, 1);
+			var polygon = PolygonGrid2D.GetRectangle(2, 1);
 
 			{
 				var transformed = polygon.Transform(Transformation.Identity);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(0, 1),
-					new IntVector2(2, 1),
-					new IntVector2(2, 0)
+					new Vector2Int(0, 0),
+					new Vector2Int(0, 1),
+					new Vector2Int(2, 1),
+					new Vector2Int(2, 0)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.Rotate90);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(1, 0),
-					new IntVector2(1, -2),
-					new IntVector2(0, -2)
+					new Vector2Int(0, 0),
+					new Vector2Int(1, 0),
+					new Vector2Int(1, -2),
+					new Vector2Int(0, -2)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.Rotate180);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(0, -1),
-					new IntVector2(-2, -1),
-					new IntVector2(-2, 0)
+					new Vector2Int(0, 0),
+					new Vector2Int(0, -1),
+					new Vector2Int(-2, -1),
+					new Vector2Int(-2, 0)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.Rotate270);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(-1, 0),
-					new IntVector2(-1, 2),
-					new IntVector2(0, 2)
+					new Vector2Int(0, 0),
+					new Vector2Int(-1, 0),
+					new Vector2Int(-1, 2),
+					new Vector2Int(0, 2)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.MirrorX);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(2, 0),
-					new IntVector2(2, -1),
-					new IntVector2(0, -1)
+					new Vector2Int(0, 0),
+					new Vector2Int(2, 0),
+					new Vector2Int(2, -1),
+					new Vector2Int(0, -1)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.MirrorY);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(-2, 0),
-					new IntVector2(-2, 1),
-					new IntVector2(0, 1)
+					new Vector2Int(0, 0),
+					new Vector2Int(-2, 0),
+					new Vector2Int(-2, 1),
+					new Vector2Int(0, 1)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.Diagonal13);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(0, 2),
-					new IntVector2(1, 2),
-					new IntVector2(1, 0)
+					new Vector2Int(0, 0),
+					new Vector2Int(0, 2),
+					new Vector2Int(1, 2),
+					new Vector2Int(1, 0)
 				}));
 			}
 
 			{
 				var transformed = polygon.Transform(Transformation.Diagonal24);
-				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<IntVector2>()
+				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
-					new IntVector2(0, 0),
-					new IntVector2(0, -2),
-					new IntVector2(-1, -2),
-					new IntVector2(-1, 0)
+					new Vector2Int(0, 0),
+					new Vector2Int(0, -2),
+					new Vector2Int(-1, -2),
+					new Vector2Int(-1, 0)
 				}));
 			}
 		}
@@ -351,8 +351,8 @@
 		[Test]
 		public void GetAllTransformations_ReturnsCorrectCount()
 		{
-			var square = GridPolygon.GetSquare(1);
-			var rectangle = GridPolygon.GetRectangle(1, 2);
+			var square = PolygonGrid2D.GetSquare(1);
+			var rectangle = PolygonGrid2D.GetRectangle(1, 2);
 
 			var transformedSquares = square.GetAllTransformations();
 			var transformedRectangles = rectangle.GetAllTransformations();

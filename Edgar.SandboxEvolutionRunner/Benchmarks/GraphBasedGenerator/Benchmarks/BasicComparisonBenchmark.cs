@@ -14,7 +14,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
     {
         private BenchmarkScenario<int> GetNonCorridorScenario(List<NamedGraph<int>> namedGraphs)
         {
-            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new IntVector2(1, 1));
+            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
 
             return new BenchmarkScenario<int>("Without corridors", levelDescriptions);
@@ -22,7 +22,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
         private BenchmarkScenario<int> GetCorridorScenario(List<NamedGraph<int>> namedGraphs)
         {
-            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new IntVector2(1, 1));
+            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 2, 4 });
 
             return new BenchmarkScenario<int>("With corridors", levelDescriptions);

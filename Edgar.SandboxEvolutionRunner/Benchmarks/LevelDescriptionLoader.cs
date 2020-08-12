@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
-using Edgar.GraphBasedGenerator.RoomTemplates;
+using Edgar.GraphBasedGenerator.Grid2D;
 using GeneralAlgorithms.Algorithms.Common;
 using GeneralAlgorithms.DataStructures.Common;
 using GeneralAlgorithms.DataStructures.Graphs;
@@ -24,9 +24,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
         private readonly RepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
         private readonly List<Transformation> transformations = TransformationHelper.GetAllTransformations().ToList();
-        private readonly IntVector2 scale;
+        private readonly Vector2Int scale;
 
-        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, IntVector2 scale, RepeatMode repeatMode = RepeatMode.AllowRepeat)
+        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RepeatMode repeatMode = RepeatMode.AllowRepeat)
         {
             this.roomTemplatesSet = roomTemplatesSet;
             this.scale = scale;
@@ -129,10 +129,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
         protected virtual RoomTemplate GetRectangleRoomTemplate(int width, int height, SimpleDoorMode doorMode)
         {
-            return GetRoomTemplate(GridPolygon.GetRectangle(width, height), doorMode, $"Rectangle {width}x{width}");
+            return GetRoomTemplate(PolygonGrid2D.GetRectangle(width, height), doorMode, $"Rectangle {width}x{width}");
         }
 
-        protected virtual RoomTemplate GetRoomTemplate(GridPolygon polygon, SimpleDoorMode doorMode, string name)
+        protected virtual RoomTemplate GetRoomTemplate(PolygonGrid2D polygon, SimpleDoorMode doorMode, string name)
         {
             var minScale = Math.Min(scale.X, scale.Y);
             doorMode = new SimpleDoorMode(doorMode.DoorLength * minScale, doorMode.CornerDistance * minScale);

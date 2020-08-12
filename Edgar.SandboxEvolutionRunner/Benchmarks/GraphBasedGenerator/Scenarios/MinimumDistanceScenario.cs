@@ -20,7 +20,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 
         private BenchmarkScenario<int> GetScenario(List<NamedGraph<int>> graphs, int minimumDistance)
         {
-            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new IntVector2(1, 1));
+            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() { 2, 4, 8 });
 
             foreach (var graphBasedLevelDescription in levelDescriptions)

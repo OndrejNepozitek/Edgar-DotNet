@@ -75,7 +75,7 @@ namespace GUI.MapDrawing
 		}
 
 		/// <inheritdoc />
-		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
+		protected override void DrawRoom(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			var offset = polygon.BoundingRectangle.A;
@@ -101,7 +101,7 @@ namespace GUI.MapDrawing
 		}
 
 		/// <inheritdoc />
-		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
+		protected override void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
 		{
 			var partitions = polygonPartitioning.GetPartitions(polygon);
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();

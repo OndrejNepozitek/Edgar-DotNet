@@ -31,7 +31,7 @@ namespace GUI.MapDrawing
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="width"></param>
-		public Bitmap DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, IntVector2? offset = null)
+		public Bitmap DrawLayout(MapLayout<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, Vector2Int? offset = null)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
@@ -53,7 +53,7 @@ namespace GUI.MapDrawing
 			return bitmap;
 		}
 
-		protected override void DrawRoom(GridPolygon polygon, List<Tuple<IntVector2, bool>> outline, float penWidth)
+		protected override void DrawRoom(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
 		{
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			graphics.FillPolygon(Brushes.LightGray, polyPoints.ToArray());
@@ -79,7 +79,7 @@ namespace GUI.MapDrawing
 			}
 		}
 
-		protected override void DrawTextOntoPolygon(GridPolygon polygon, string text, float penWidth)
+		protected override void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
 		{
 			var partitions = polygonPartitioning.GetPartitions(polygon);
 			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();

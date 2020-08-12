@@ -61,7 +61,7 @@ namespace Sandbox
         public static void CompareWithReference()
         {
             var inputs = new List<DungeonGeneratorInput<int>>();
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true));
             //inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, true));
             //inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false));
@@ -295,7 +295,7 @@ namespace Sandbox
 		//	return inputs;
 		//}
 
-        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(IntVector2 scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null, BasicRoomDescription basicRoomDescription = null, string suffix = null)
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(Vector2Int scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null, BasicRoomDescription basicRoomDescription = null, string suffix = null)
         {
             var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(scale);
             basicRoomDescription = basicRoomDescription ?? new BasicRoomDescription(basicRoomTemplates);

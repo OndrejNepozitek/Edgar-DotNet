@@ -31,13 +31,13 @@ namespace Sandbox.Features
     {
         public void Run()
         {
-            var rectangularRoomTemplates = MapDescriptionUtils.GetRectangularRoomTemplates(new IntVector2(1, 1));
+            var rectangularRoomTemplates = MapDescriptionUtils.GetRectangularRoomTemplates(new Vector2Int(1, 1));
             var basicRoomDescription = new BasicRoomDescription(rectangularRoomTemplates);
 
             var inputs = new List<DungeonGeneratorInput<int>>();
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), false, null, true, basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2 }, false));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true, basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, false));
 
             inputs.Add(LoadInput("gungeon_1_1"));
             inputs.Add(LoadInput("gungeon_1_1", true));
@@ -259,7 +259,7 @@ namespace Sandbox.Features
 
         private void RunOld()
         {
-            var input = Program.GetMapDescriptionsSet(1 * new IntVector2(1, 1), false, new List<int>() { 2, 4 }, true)[1];
+            var input = Program.GetMapDescriptionsSet(1 * new Vector2Int(1, 1), false, new List<int>() { 2, 4 }, true)[1];
             var mapDescription = input.MapDescription;
             var averageSize = GetAverageRoomTemplateSize(mapDescription);
 
@@ -398,10 +398,10 @@ namespace Sandbox.Features
 
             foreach (var node in nodeToRoom1.Keys)
             {
-                var shape1Center = nodeToRoom1[node].BoundingRectangle.Center - new IntVector2(minX1, minY1);
-                var shape2Center = nodeToRoom2[node].BoundingRectangle.Center - new IntVector2(minX2, minY2);
+                var shape1Center = nodeToRoom1[node].BoundingRectangle.Center - new Vector2Int(minX1, minY1);
+                var shape2Center = nodeToRoom2[node].BoundingRectangle.Center - new Vector2Int(minX2, minY2);
 
-                distances.Add(IntVector2.ManhattanDistance(shape1Center, shape2Center) + (nodeToRoom1[node].Equals(nodeToRoom2[node]) ? 0 : 15));
+                distances.Add(Vector2Int.ManhattanDistance(shape1Center, shape2Center) + (nodeToRoom1[node].Equals(nodeToRoom2[node]) ? 0 : 15));
             }
 
             return distances.Average();

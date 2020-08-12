@@ -31,14 +31,14 @@
 
 			var normalized = utils.NormalizePolygon(polygon);
 			var squarePoints = normalized.GetPoints();
-			var expectedPoints = new List<IntVector2>()
+			var expectedPoints = new List<Vector2Int>()
 			{
-				new IntVector2(0, 3),
-				new IntVector2(0, 5),
-				new IntVector2(5, 5),
-				new IntVector2(5, 0),
-				new IntVector2(2, 0),
-				new IntVector2(2, 3),
+				new Vector2Int(0, 3),
+				new Vector2Int(0, 5),
+				new Vector2Int(5, 5),
+				new Vector2Int(5, 0),
+				new Vector2Int(2, 0),
+				new Vector2Int(2, 3),
 			};
 
 			Assert.IsTrue(expectedPoints.SequenceEqual(squarePoints));

@@ -23,7 +23,7 @@ namespace Sandbox.Examples
                     .AddPoint(2, 8).AddPoint(2, 9).AddPoint(7, 9).AddPoint(7, 8)
                     .AddPoint(8, 8).AddPoint(8, 7).AddPoint(9, 7).AddPoint(9, 2)
                     .AddPoint(8, 2).AddPoint(8, 1).AddPoint(7, 1).AddPoint(7, 0)
-                    .Build().Scale(new IntVector2(2, 2)),
+                    .Build().Scale(new Vector2Int(2, 2)),
                 new SimpleDoorMode(1, 1)
             );
 
@@ -33,12 +33,12 @@ namespace Sandbox.Examples
             var doorMode = new SimpleDoorMode(1, 1);
 
             var squareRoom = new RoomTemplate(
-                GridPolygon.GetSquare(8),
+                PolygonGrid2D.GetSquare(8),
                 doorMode
             );
 
             var rectangleRoom = new RoomTemplate(
-                GridPolygon.GetRectangle(6, 10),
+                PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );

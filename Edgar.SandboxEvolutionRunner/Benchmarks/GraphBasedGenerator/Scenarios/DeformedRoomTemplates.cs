@@ -11,7 +11,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
     {
         private BenchmarkScenario<int> GetDeformedScenario(List<NamedGraph<int>> graphs)
         {
-            var levelDescriptionLoader = new CustomLevelDescriptionLoader(RoomTemplatesSet.Smart, new IntVector2(1, 1));
+            var levelDescriptionLoader = new CustomLevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() { 0 });
 
             return new BenchmarkScenario<int>("Deformed", levelDescriptions);
@@ -19,7 +19,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 
         private BenchmarkScenario<int> GetNormalScenario(List<NamedGraph<int>> graphs)
         {
-            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new IntVector2(1, 1));
+            var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() { 0 });
 
             return new BenchmarkScenario<int>("Normal", levelDescriptions);
@@ -50,7 +50,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 
         public class CustomLevelDescriptionLoader : LevelDescriptionLoader
         {
-            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, IntVector2 scale, RepeatMode repeatMode = RepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode)
+            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RepeatMode repeatMode = RepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode)
             {
             }
 

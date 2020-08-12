@@ -40,19 +40,19 @@
 				.Build();
 
 			var partitions = partitioner.GetPartitions(polygon);
-			var expected = new List<List<GridRectangle>>()
+			var expected = new List<List<RectangleGrid2D>>()
 			{
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(2, 0), new IntVector2(4, 2)),
-					new GridRectangle(new IntVector2(0, 2), new IntVector2(6, 4)),
-					new GridRectangle(new IntVector2(2, 4), new IntVector2(4, 6)),
+					new RectangleGrid2D(new Vector2Int(2, 0), new Vector2Int(4, 2)),
+					new RectangleGrid2D(new Vector2Int(0, 2), new Vector2Int(6, 4)),
+					new RectangleGrid2D(new Vector2Int(2, 4), new Vector2Int(4, 6)),
 				},
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(0, 2), new IntVector2(2, 4)),
-					new GridRectangle(new IntVector2(2, 0), new IntVector2(4, 6)),
-					new GridRectangle(new IntVector2(4, 2), new IntVector2(6, 4)),
+					new RectangleGrid2D(new Vector2Int(0, 2), new Vector2Int(2, 4)),
+					new RectangleGrid2D(new Vector2Int(2, 0), new Vector2Int(4, 6)),
+					new RectangleGrid2D(new Vector2Int(4, 2), new Vector2Int(6, 4)),
 				}
 			};
 
@@ -94,17 +94,17 @@
 				.Build();
 
 			var partitions = partitioner.GetPartitions(polygon);
-			var expected = new List<List<GridRectangle>>()
+			var expected = new List<List<RectangleGrid2D>>()
 			{
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(0, 3), new IntVector2(3, 6)),
-					new GridRectangle(new IntVector2(0, 0), new IntVector2(7, 3)),
+					new RectangleGrid2D(new Vector2Int(0, 3), new Vector2Int(3, 6)),
+					new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(7, 3)),
 				},
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(0, 0), new IntVector2(3, 6)),
-					new GridRectangle(new IntVector2(3, 0), new IntVector2(7, 3)),
+					new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(3, 6)),
+					new RectangleGrid2D(new Vector2Int(3, 0), new Vector2Int(7, 3)),
 				}
 			};
 
@@ -152,13 +152,13 @@
 				.Build();
 
 			var partitions = partitioner.GetPartitions(polygon);
-			var expected = new List<List<GridRectangle>>()
+			var expected = new List<List<RectangleGrid2D>>()
 			{
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(-1, -2), new IntVector2(5, 0)),
-					new GridRectangle(new IntVector2(0, 0), new IntVector2(4, 3)),
-					new GridRectangle(new IntVector2(-1, 3), new IntVector2(5, 5)),
+					new RectangleGrid2D(new Vector2Int(-1, -2), new Vector2Int(5, 0)),
+					new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(4, 3)),
+					new RectangleGrid2D(new Vector2Int(-1, 3), new Vector2Int(5, 5)),
 				},
 			};
 
@@ -214,23 +214,23 @@
 				.Build();
 
 			var partitions = partitioner.GetPartitions(polygon);
-			var expected = new List<List<GridRectangle>>()
+			var expected = new List<List<RectangleGrid2D>>()
 			{
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(2, 0), new IntVector2(7, 1)),
-					new GridRectangle(new IntVector2(1, 1), new IntVector2(8, 2)),
-					new GridRectangle(new IntVector2(0, 2), new IntVector2(9, 7)),
-					new GridRectangle(new IntVector2(1, 7), new IntVector2(8, 8)),
-					new GridRectangle(new IntVector2(2, 8), new IntVector2(7, 9)),
+					new RectangleGrid2D(new Vector2Int(2, 0), new Vector2Int(7, 1)),
+					new RectangleGrid2D(new Vector2Int(1, 1), new Vector2Int(8, 2)),
+					new RectangleGrid2D(new Vector2Int(0, 2), new Vector2Int(9, 7)),
+					new RectangleGrid2D(new Vector2Int(1, 7), new Vector2Int(8, 8)),
+					new RectangleGrid2D(new Vector2Int(2, 8), new Vector2Int(7, 9)),
 				},
-				new List<GridRectangle>()
+				new List<RectangleGrid2D>()
 				{
-					new GridRectangle(new IntVector2(0, 2), new IntVector2(1, 7)),
-					new GridRectangle(new IntVector2(1, 1), new IntVector2(2, 8)),
-					new GridRectangle(new IntVector2(2, 0), new IntVector2(7, 9)),
-					new GridRectangle(new IntVector2(7, 1), new IntVector2(8, 8)),
-					new GridRectangle(new IntVector2(8, 2), new IntVector2(9, 7)),
+					new RectangleGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 7)),
+					new RectangleGrid2D(new Vector2Int(1, 1), new Vector2Int(2, 8)),
+					new RectangleGrid2D(new Vector2Int(2, 0), new Vector2Int(7, 9)),
+					new RectangleGrid2D(new Vector2Int(7, 1), new Vector2Int(8, 8)),
+					new RectangleGrid2D(new Vector2Int(8, 2), new Vector2Int(9, 7)),
 				}
 			};
 

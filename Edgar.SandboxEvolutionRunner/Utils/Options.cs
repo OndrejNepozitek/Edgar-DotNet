@@ -61,7 +61,7 @@ namespace SandboxEvolutionRunner.Utils
         [Option("asyncBenchmark")]
         public bool AsyncBenchmark { get; set; } = false;
 
-        public IntVector2 Scale { get; set; } = new IntVector2(1, 1);
+        public Vector2Int Scale { get; set; } = new Vector2Int(1, 1);
 
         [Option("roomTemplates")]
         public RoomTemplatesSet RoomTemplatesSet { get; set; } = RoomTemplatesSet.Original;

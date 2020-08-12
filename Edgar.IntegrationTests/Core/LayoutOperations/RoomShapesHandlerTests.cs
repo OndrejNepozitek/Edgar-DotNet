@@ -148,7 +148,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 var shapes = roomShapesHandler
                     .GetPossibleShapesForNode(layout, node);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[node] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[node] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -181,7 +181,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 var shapes = roomShapesHandler
                     .GetPossibleShapesForNode(layout, node);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[node] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[node] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -212,21 +212,21 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -258,21 +258,21 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
@@ -308,28 +308,28 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0, true);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1, true);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2, true);
-                var expectedShapes = new List<IntAlias<GridPolygon>>() { roomShapes[0] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0] };
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
 
-        private void SetConfiguration(Layout<Configuration<CorridorsData>> layout, int node, IntAlias<GridPolygon> alias)
+        private void SetConfiguration(Layout<Configuration<CorridorsData>> layout, int node, IntAlias<PolygonGrid2D> alias)
         {
-            layout.SetConfiguration(node, new Configuration<CorridorsData>(alias, new IntVector2(0, 0), new CorridorsData(), node));
+            layout.SetConfiguration(node, new Configuration<CorridorsData>(alias, new Vector2Int(0, 0), new CorridorsData(), node));
         }
 
         private ConfigurationSpaces<Configuration<CorridorsData>> GetConfigurationSpaces(MapDescription<int> mapDescription)
@@ -375,7 +375,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         private RoomTemplate GetRoomTemplate(RepeatMode repeatMode, List<Transformation> transformations = null)
         {
             return new RoomTemplate(
-                GridPolygon.GetRectangle(10, 20),
+                PolygonGrid2D.GetRectangle(10, 20),
                 new SimpleDoorMode(1, 0),
                 transformations,
                 repeatMode

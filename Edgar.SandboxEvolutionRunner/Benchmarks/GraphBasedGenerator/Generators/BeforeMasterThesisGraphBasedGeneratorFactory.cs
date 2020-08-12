@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
+using Edgar.GraphBasedGenerator.Grid2D;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;

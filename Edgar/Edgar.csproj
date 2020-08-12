@@ -16,9 +16,9 @@
     <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="false" />
   </Target>
   <ItemGroup>
-    <Compile Remove="MapGeneration\Core\LayoutConverters\CorridorNodesCreators\**" />
-    <EmbeddedResource Remove="MapGeneration\Core\LayoutConverters\CorridorNodesCreators\**" />
-    <None Remove="MapGeneration\Core\LayoutConverters\CorridorNodesCreators\**" />
+    <Compile Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
+    <EmbeddedResource Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
+    <None Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkUtils" Version="1.2.2" />

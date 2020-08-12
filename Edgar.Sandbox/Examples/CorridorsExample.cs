@@ -24,12 +24,12 @@ namespace Sandbox.Examples
             var doorMode = new SimpleDoorMode(1, 1);
 
             var squareRoom = new RoomTemplate(
-                GridPolygon.GetSquare(8),
+                PolygonGrid2D.GetSquare(8),
                 doorMode
             );
 
             var rectangleRoom = new RoomTemplate(
-                GridPolygon.GetRectangle(6, 10),
+                PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );
@@ -38,11 +38,11 @@ namespace Sandbox.Examples
             
 			// Basic corridor shape
 			var corridorRoom1x2 = new RoomTemplate(
-                GridPolygon.GetRectangle(1, 2),
+                PolygonGrid2D.GetRectangle(1, 2),
 				new ManualDoorMode(new List<OrthogonalLine>()
 				{
-					new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
-					new OrthogonalLine(new IntVector2(0, 2), new IntVector2(1, 2))
+					new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+					new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2))
 				}),
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90 }
 			);
@@ -53,11 +53,11 @@ namespace Sandbox.Examples
             if (useLongCorridors)
             {
                 var corridorRoom1x4 = new RoomTemplate(
-                    GridPolygon.GetRectangle(1, 4),
+                    PolygonGrid2D.GetRectangle(1, 4),
                     new ManualDoorMode(new List<OrthogonalLine>()
                     {
-                        new OrthogonalLine(new IntVector2(0, 0), new IntVector2(1, 0)),
-                        new OrthogonalLine(new IntVector2(0, 4), new IntVector2(1, 4))
+                        new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                        new OrthogonalLine(new Vector2Int(0, 4), new Vector2Int(1, 4))
                     }),
                     new List<Transformation>() { Transformation.Identity, Transformation.Rotate90 }
                 );
@@ -79,8 +79,8 @@ namespace Sandbox.Examples
                         .Build(), 
                     new ManualDoorMode(new List<OrthogonalLine>()
                     {
-                        new OrthogonalLine(new IntVector2(0, 2), new IntVector2(0, 3)),
-                        new OrthogonalLine(new IntVector2(2, 0), new IntVector2(3, 0))
+                        new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(0, 3)),
+                        new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(3, 0))
                     }),
                     TransformationHelper.GetAllTransformations().ToList()
                 );
@@ -108,8 +108,8 @@ namespace Sandbox.Examples
                         .Build(), 
                     new ManualDoorMode(new List<OrthogonalLine>()
                     {
-                        new OrthogonalLine(new IntVector2(1, 0), new IntVector2(2, 0)),
-                        new OrthogonalLine(new IntVector2(1, 5), new IntVector2(2, 5))
+                        new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)),
+                        new OrthogonalLine(new Vector2Int(1, 5), new Vector2Int(2, 5))
                     }),
                     TransformationHelper.GetAllTransformations().ToList()
                 );

@@ -36,14 +36,14 @@ namespace SandboxEvolutionRunner.Utils
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 1);
 
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(6), doorMode, transformations, name: "Square 6x6", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(8), doorMode, transformations, name: "Square 8x8", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(6, 8), doorMode, transformations, name: "Rectangle 6x8", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(6), doorMode, transformations, name: "Square 6x6", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(8), doorMode, transformations, name: "Square 8x8", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(6, 8), doorMode, transformations, name: "Rectangle 6x8", repeatMode: repeatMode));
 
             if (enhanceRoomTemplates)
             {
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(7), doorMode, transformations, name: "Square 7x7", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(5, 7), doorMode, transformations, name: "Rectangle 5x7", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(7), doorMode, transformations, name: "Square 7x7", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(5, 7), doorMode, transformations, name: "Rectangle 5x7", repeatMode: repeatMode));
             }
 
             return roomTemplates;
@@ -54,10 +54,10 @@ namespace SandboxEvolutionRunner.Utils
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 2);
 
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(12), doorMode, transformations, name: "Square 12x12", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(14), doorMode, transformations, name: "Square 14x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(10, 14), doorMode, transformations, name: "Rectangle 10x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(12, 15), doorMode, transformations, name: "Rectangle 12x15", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(12), doorMode, transformations, name: "Square 12x12", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(14), doorMode, transformations, name: "Square 14x14", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 14), doorMode, transformations, name: "Rectangle 10x14", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(12, 15), doorMode, transformations, name: "Rectangle 12x15", repeatMode: repeatMode));
 
             //roomTemplates.Add(new RoomTemplate(
             //    new GridPolygonBuilder()
@@ -72,8 +72,8 @@ namespace SandboxEvolutionRunner.Utils
 
             if (enhanceRoomTemplates)
             {
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetSquare(13), doorMode, transformations, name: "Square 13x13", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(GridPolygon.GetRectangle(10, 16), doorMode, transformations, name: "Rectangle 10x16", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(13), doorMode, transformations, name: "Square 13x13", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 16), doorMode, transformations, name: "Rectangle 10x16", repeatMode: repeatMode));
             }
 
             return roomTemplates;

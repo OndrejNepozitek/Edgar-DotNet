@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator;
-using Edgar.GraphBasedGenerator.RoomTemplates;
+using Edgar.GraphBasedGenerator.Grid2D;
 using MapGeneration.Core.MapDescriptions;
 using MapGeneration.Core.MapDescriptions.Interfaces;
 

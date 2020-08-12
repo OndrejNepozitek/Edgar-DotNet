@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
+using Edgar.GraphBasedGenerator.General;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.ResultSaving;

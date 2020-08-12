@@ -122,7 +122,7 @@ namespace MapGeneration.Tests.Core.MapDescriptions
         {
             return new List<RoomTemplate>()
             {
-                new RoomTemplate(GridPolygon.GetSquare(10), new SimpleDoorMode(1, 1)),
+                new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 1)),
             };
         }
     }

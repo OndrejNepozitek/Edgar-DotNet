@@ -28,7 +28,7 @@ namespace Sandbox.Examples
             );
 
             var rectangleRoom = new RoomTemplate(
-                GridPolygon.GetRectangle(6, 10),
+                PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
                 new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
             );

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
+using Edgar.GraphBasedGenerator.General;
+using Edgar.GraphBasedGenerator.Grid2D;
 using MapGeneration.Benchmarks;
 using MapGeneration.Benchmarks.GeneratorRunners;
 using MapGeneration.Benchmarks.Interfaces;
@@ -38,7 +40,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
-            var layoutGenerator = new GraphBasedGenerator<TNode>(levelDescription, configuration);
+            var layoutGenerator = new GraphBasedGeneratorGrid2D<TNode>(levelDescription, configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
 
             return new LambdaGeneratorRunner(() =>
@@ -82,7 +84,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                var layoutGenerator = new GraphBasedGenerator<TNode>(levelDescription, configuration);
+                var layoutGenerator = new GraphBasedGeneratorGrid2D<TNode>(levelDescription, configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(seedGenerator.Next()));
 
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();

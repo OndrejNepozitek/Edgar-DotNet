@@ -106,7 +106,7 @@ namespace Sandbox.Features
             //var gungeonRoomTemplates = gungeonMapDescription.GetStageOneGraph().Vertices
             //    .SelectMany(x => gungeonMapDescription.GetRoomDescription(x).RoomTemplates).Distinct().ToList();
 
-            var rectangularRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(new IntVector2(1, 1));
+            var rectangularRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(new Vector2Int(1, 1));
             var basicRoomDescription = new BasicRoomDescription(rectangularRoomTemplates);
             // var basicRoomDescription = new BasicRoomDescription(gungeonRoomTemplates);
 
