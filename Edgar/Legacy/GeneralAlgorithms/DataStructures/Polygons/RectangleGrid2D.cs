@@ -1,9 +1,9 @@
-﻿namespace GeneralAlgorithms.DataStructures.Polygons
-{
-	using System;
-	using Common;
+﻿using System;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-	public struct RectangleGrid2D
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
+{
+    public struct RectangleGrid2D
 	{
 		/// <summary>
 		/// Bottom-left corner of the rectangle.

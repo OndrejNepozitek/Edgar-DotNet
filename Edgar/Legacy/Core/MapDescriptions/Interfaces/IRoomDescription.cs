@@ -2,7 +2,7 @@
 
 namespace Edgar.Legacy.Core.MapDescriptions.Interfaces
 {
-    public interface  IRoomDescription : Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription
+    public interface  IRoomDescription : GraphBasedGenerator.Common.RoomTemplates.IRoomDescription
     {
         int Stage { get; }
 

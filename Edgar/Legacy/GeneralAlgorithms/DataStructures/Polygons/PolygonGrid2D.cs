@@ -1,16 +1,14 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Newtonsoft.Json;
 
-namespace GeneralAlgorithms.DataStructures.Polygons
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
-	using System.Linq;
-	using Algorithms.Polygons;
-	using Common;
-
-	/// <summary>
+    /// <summary>
 	/// A class representing an immutable polygon where each of its vertices has integer coordinates.
 	/// </summary>
 	/// <remarks>

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeneralAlgorithms.DataStructures.Common;
-using GeneralAlgorithms.DataStructures.Polygons;
-using MapGeneration.Core.Doors;
+using Edgar.Legacy.Core.Doors;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.MapDescriptions
+namespace Edgar.Legacy.Core.MapDescriptions
 {
 	public class RoomTemplateInstance
     {

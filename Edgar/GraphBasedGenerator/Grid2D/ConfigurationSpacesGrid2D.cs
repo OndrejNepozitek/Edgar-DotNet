@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.GraphBasedGenerator.General;
-using Edgar.GraphBasedGenerator.General.Configurations;
-using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Common.Configurations;
+using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.MapDescriptions;
@@ -12,7 +12,7 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
-using IRoomDescription = Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription;
+using IRoomDescription = Edgar.GraphBasedGenerator.Common.RoomTemplates.IRoomDescription;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

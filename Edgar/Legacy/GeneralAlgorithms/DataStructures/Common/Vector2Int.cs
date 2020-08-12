@@ -1,12 +1,11 @@
-﻿namespace GeneralAlgorithms.DataStructures.Common
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics.Contracts;
-	using Algorithms.Math;
-	using Polygons;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
 
-	/// <summary>
+namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+{
+    /// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
 	/// </summary>
 	public struct Vector2Int : IComparable<Vector2Int>, IEquatable<Vector2Int>

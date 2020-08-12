@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.GraphBasedGenerator.General;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.Doors.Interfaces;
@@ -12,7 +12,7 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils;
-using IRoomDescription = Edgar.GraphBasedGenerator.General.RoomTemplates.IRoomDescription;
+using IRoomDescription = Edgar.GraphBasedGenerator.Common.RoomTemplates.IRoomDescription;
 
 namespace Edgar.Legacy.Core.ConfigurationSpaces
 {

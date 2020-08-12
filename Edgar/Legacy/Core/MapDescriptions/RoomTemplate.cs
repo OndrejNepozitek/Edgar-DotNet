@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using GeneralAlgorithms.DataStructures.Common;
-using MapGeneration.Core.Doors.Interfaces;
-using MapGeneration.Core.MapDescriptions.Interfaces;
+using Edgar.Legacy.Core.Doors.Interfaces;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace MapGeneration.Core.MapDescriptions
+namespace Edgar.Legacy.Core.MapDescriptions
 {
-	using GeneralAlgorithms.DataStructures.Polygons;
-
     /// <summary>
 	/// Description of a room.
 	/// </summary>

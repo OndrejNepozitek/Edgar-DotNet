@@ -1,5 +1,5 @@
-﻿using Edgar.GraphBasedGenerator.General;
-using Edgar.GraphBasedGenerator.General.Configurations;
+﻿using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.GraphBasedGenerator.General.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;

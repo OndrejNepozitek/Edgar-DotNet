@@ -1,13 +1,12 @@
-﻿using MapGeneration.Benchmarks.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BenchmarkUtils;
+using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Legacy.Utils;
 
-namespace MapGeneration.Benchmarks
+namespace Edgar.Legacy.Benchmarks
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using BenchmarkUtils;
-    using Utils;
-
     /// <summary>
     /// Benchmark job.
     /// </summary>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
-using Edgar.GraphBasedGenerator.General;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;

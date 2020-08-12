@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Edgar.GraphBasedGenerator.General;
-using Edgar.GraphBasedGenerator.General.Configurations;
-using Edgar.GraphBasedGenerator.General.Constraints;
-using Edgar.GraphBasedGenerator.General.Constraints.BasicConstraint;
-using Edgar.GraphBasedGenerator.General.Constraints.CorridorConstraint;
-using Edgar.GraphBasedGenerator.General.Constraints.MinimumDistanceConstraint;
+using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Common.Configurations;
+using Edgar.GraphBasedGenerator.Common.Constraints;
+using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
+using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
+using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Constraints.Interfaces;
@@ -69,7 +69,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Create chain decomposition
             if (chainsGeneric == null)
             {
-                var chainDecomposition = new General.TwoStageChainDecomposition<TNode>(levelDescription, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                var chainDecomposition = new Common.TwoStageChainDecomposition<TNode>(levelDescription, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
                 chainsGeneric = chainDecomposition.GetChains(levelDescription.GetGraph());
             }
 
@@ -217,7 +217,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             // Create simulated annealing evolver
             var layoutEvolver =
-                    new General.SimulatedAnnealingEvolver<Layout<TNode, ConfigurationGrid2D<TNode, EnergyData>>, RoomNode<TNode>,
+                    new Common.SimulatedAnnealingEvolver<Layout<TNode, ConfigurationGrid2D<TNode, EnergyData>>, RoomNode<TNode>,
                     ConfigurationGrid2D<TNode, EnergyData>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
 
             // Create the generator itself

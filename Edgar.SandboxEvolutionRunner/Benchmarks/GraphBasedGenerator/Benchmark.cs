@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Edgar.GraphBasedGenerator;
-using Edgar.GraphBasedGenerator.General;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
