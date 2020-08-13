@@ -143,5 +143,3 @@ var corridorRoomLShaped = new RoomTemplate(
   <GalleryImage src="img/corridors_l/2.jpg" />
   <GalleryImage src="img/corridors_l/3.jpg" />
 </Gallery>
-
-> **Note:** You can find the full C# source code [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/master/Sandbox/Examples/CorridorsExample.cs).

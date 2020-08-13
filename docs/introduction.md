@@ -10,8 +10,6 @@ This project is a library for procedural generation of 2D layouts based on a gra
 
 To produce a game level, the algorithm takes a set of polygonal building blocks and a level connectivity graph (the level topology) as an input. Nodes in the graph represent rooms, and edges define connectivities between them. The graph has to be planar. The goal of the algorithm is to assign a room shape and a position to each node in the graph in a way that no two room shapes intersect and every pair of neighbouring room shapes can be connected by doors.
 
-See the [Guides](guides.md) section to learn how to use the application and the [Chain based generator](chainBasedGenerator.md) section if you want to find out how it all works or plan to extend the generator.
-
 ## Features
 
 - Any planar connected graph can be used as an input
@@ -39,7 +37,7 @@ Some things in this library are done differently and/or improved:
 
 ### Input
 
-<img alt="Docusaurus with Keytar" src={useBaseUrl('img/introduction/introduction.svg')} />;
+<img src={useBaseUrl('img/introduction/introduction.svg')} />;
 
 ### Results
 

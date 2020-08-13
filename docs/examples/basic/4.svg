@@ -1,0 +1,14 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="454,764 454,400 672,400 672,764 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 672 400 L 672 764 L 454 764 L 454 728 M 454 691 L 454 400 L 490 400 M 527 400 L 672 400 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="563" y="582" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="18">0</text>
+    <polygon points="418,400 418,37 636,37 636,400 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 636 37 L 636 400 L 527 400 M 490 400 L 418 400 L 418 364 M 418 328 L 418 37 L 636 37 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="527" y="219" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="18">1</text>
+    <polygon points="127,473 127,182 418,182 418,473 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 418 364 L 418 473 L 272 473 M 236 473 L 127 473 L 127 182 L 418 182 L 418 328 M 418 364 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="272" y="328" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="18">2</text>
+    <polygon points="163,764 163,473 454,473 454,764 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 454 728 L 454 764 L 163 764 L 163 473 L 236 473 M 272 473 L 454 473 L 454 691 M 454 728 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="308" y="619" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="18">3</text>
+</svg>

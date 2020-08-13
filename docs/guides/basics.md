@@ -10,7 +10,7 @@ In this tutorial, we will create a basic map description with 4 rooms that have 
 
 ## Room templates
 
-First, we will create our room templates. We must create an instance of `RoomTemplate` class for each room room template. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
+First, we will create our room templates. We must create an instance of `RoomTemplate` class for each room template. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
 
 ### Polygons
 We define polygons with a sequence of their vertices. In this tutorial, we will use an *8x8 square* and a *6x10 rectangle* but it is possible to use any orthogonal polygon.
@@ -61,7 +61,7 @@ There is one more step needed before we create the graph of rooms and connection
 In this tutorial, we do not have any special rooms that should look different than other rooms so we can create only a single room description and reuse it for all rooms.
 
 ```csharp
-var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
+var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
 ```
 
 ## Graph
@@ -114,5 +114,3 @@ var layout = generator.GenerateLayout();
   <GalleryImage src="img/basics/2.jpg" />
   <GalleryImage src="img/basics/3.jpg" />
 </Gallery>
-
-> **Note:** You can find the full C# source code [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/master/Sandbox/Examples/BasicsExample.cs).

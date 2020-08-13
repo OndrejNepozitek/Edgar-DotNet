@@ -35,7 +35,7 @@ var bossRoom = new RoomTemplate(
 Then we create a room description from that template:
 
 ```csharp
-var bossRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { bossRoom });
+var bossRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { bossRoom });
 ```
 
 And finally we create a room description for our basic rooms:
@@ -43,7 +43,7 @@ And finally we create a room description for our basic rooms:
 ```csharp
 var squareRoom = ;// Setup square room
 var rectangleRoom = ;// Setup rectanble room
-var basicRoomDescription = new BasicRoomDescription(new List<IRoomTemplate>() { squareRoom, rectangleRoom });
+var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
 ```
 
 ## Prepare map description
@@ -76,5 +76,3 @@ And the map description is ready to be used.
   <GalleryImage src="img/differentShapes/2.jpg" />
   <GalleryImage src="img/differentShapes/3.jpg" />
 </Gallery>
-
-> **Note:** You can find the full C# source code [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/master/Sandbox/Examples/DifferentRoomDescriptionsExample.cs).
