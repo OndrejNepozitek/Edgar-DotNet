@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.Core.Doors
@@ -71,6 +72,71 @@ namespace Edgar.Legacy.Core.Doors
 			return result;
 		}
 
+        public static List<DoorLineGrid2D> MergeDoorLines(IEnumerable<DoorLineGrid2D> doorLines)
+        {
+            var doorLinesByDirection = doorLines.GroupBy(x => x.Line.GetDirection());
+            var result = new List<DoorLineGrid2D>();
+
+            foreach (var grouping in doorLinesByDirection)
+            {
+                if (grouping.Key == OrthogonalLine.Direction.Undefined)
+                    throw new ArgumentException("There must be no door lines with undefined direction");
+
+                var sameDirectionDoorLines = new LinkedList<DoorLineGrid2D>(grouping);
+
+                while (sameDirectionDoorLines.Count != 0)
+                {
+                    var doorLineNode = sameDirectionDoorLines.First;
+                    var doorLine = doorLineNode.Value;
+                    sameDirectionDoorLines.RemoveFirst();
+
+                    while (true)
+                    {
+                        var found = false;
+                        var nextDoorLineNode = sameDirectionDoorLines.First;
+
+                        while (nextDoorLineNode != null)
+                        {
+                            var otherDoorLineNode = nextDoorLineNode;
+                            var otherDoorLine = otherDoorLineNode.Value;
+                            nextDoorLineNode = otherDoorLineNode.Next;
+
+                            if (otherDoorLine.Length != doorLine.Length)
+                            {
+                                continue;
+                            }
+
+							// TODO: improve later
+                            if (otherDoorLine.DoorSocket != doorLine.DoorSocket)
+                            {
+                                continue;
+                            }
+								
+                            if (doorLine.Line.To + doorLine.Line.GetDirectionVector() == otherDoorLine.Line.From)
+                            {
+                                doorLine = new DoorLineGrid2D(new OrthogonalLine(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
+                                found = true;
+                                sameDirectionDoorLines.Remove(otherDoorLineNode);
+                            }
+                            else if (doorLine.Line.From - doorLine.Line.GetDirectionVector() == otherDoorLine.Line.To)
+                            {
+                                doorLine = new DoorLineGrid2D(new OrthogonalLine(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
+                                found = true;
+                                sameDirectionDoorLines.Remove(otherDoorLineNode);
+                            }
+                        }
+
+                        if (!found)
+                            break;
+                    }
+
+                    result.Add(doorLine);
+                }
+            }
+
+            return result;
+        }
+
 		/// <summary>
 		/// Transform door line according to a given transformation.
 		/// </summary>
@@ -118,6 +184,48 @@ namespace Edgar.Legacy.Core.Doors
 
 			return new DoorLine(newDoorPosition, doorLine.Length);
 		}
+
+        public static DoorLineGrid2D TransformDoorLine(DoorLineGrid2D doorLine, Transformation transformation)
+        {
+            var doorPosition = doorLine.Line;
+
+            if (doorPosition.GetDirection() == OrthogonalLine.Direction.Undefined)
+                throw new InvalidOperationException("Cannot fix door direction when original direction is undefined");
+
+            switch (transformation)
+            {
+                case Transformation.Identity:
+                    return doorLine;
+
+                case Transformation.Rotate90:
+                    return new DoorLineGrid2D(doorPosition.Rotate(90), doorLine.Length, doorLine.DoorSocket);
+
+                case Transformation.Rotate180:
+                    return new DoorLineGrid2D(doorPosition.Rotate(180), doorLine.Length, doorLine.DoorSocket);
+
+                case Transformation.Rotate270:
+                    return new DoorLineGrid2D(doorPosition.Rotate(270), doorLine.Length, doorLine.DoorSocket);
+            }
+
+            // Other transformations need to switch door directions
+            var firstStartPoint = doorPosition.From.Transform(transformation);
+            var lastStartPoint = doorPosition.To.Transform(transformation);
+            var length = doorLine.Length;
+            var transformedDirection = TransformDirection(doorPosition.GetDirection(), transformation);
+            var transformedLine = new OrthogonalLine(firstStartPoint, lastStartPoint, transformedDirection);
+
+            var lastEndPoint = lastStartPoint + length * transformedLine.GetDirectionVector();
+
+            var newDirection = OrthogonalLine.GetOppositeDirection(transformedDirection);
+            var newDoorPosition = new OrthogonalLine(lastEndPoint, lastEndPoint + transformedLine. Length * transformedLine.SwitchOrientation().GetDirectionVector(), newDirection);
+
+            if (newDoorPosition.Length != doorPosition.Length)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return new DoorLineGrid2D(newDoorPosition, doorLine.Length, doorLine.DoorSocket);
+        }
 
 		private static OrthogonalLine.Direction TransformDirection(OrthogonalLine.Direction originalDirection, Transformation transformation)
 		{

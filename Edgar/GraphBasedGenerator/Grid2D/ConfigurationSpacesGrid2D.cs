@@ -17,7 +17,7 @@ using IRoomDescription = Edgar.GraphBasedGenerator.Common.RoomTemplates.IRoomDes
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, Vector2Int>, IRandomInjectable
-        where TConfiguration: IConfiguration<RoomTemplateInstance, Vector2Int, TNode>
+        where TConfiguration: IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, TNode>
     {
         private readonly ILineIntersection<OrthogonalLine> lineIntersection;
         private readonly ILevelDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
@@ -27,7 +27,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         private Dictionary<Tuple<TNode, TNode>, IRoomDescription> nodesToCorridorMapping;
 
         // TODO: far from ideal
-        private readonly Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstance, RoomTemplateInstance, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D>();
+        private readonly Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D>();
 
         public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
         {
@@ -81,7 +81,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 var configurationSpace = configurationSpacesGenerator.GetConfigurationSpaceOverCorridors(configuration1.RoomShape, configuration2.RoomShape, corridorRoomTemplateInstances);
 
                 var configurationSpaceNew =
-                    new ConfigurationSpaceGrid2D(configurationSpace.Lines, configurationSpace.ReverseDoors);
+                    new ConfigurationSpaceGrid2D(configurationSpace.Lines, null);
                 corridorToConfigurationSpaceMapping[selector] = configurationSpaceNew;
 
                 return configurationSpaceNew;
@@ -93,7 +93,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
                 // var configurationSpace = configurationSpaces.GetConfigurationSpace(configuration1, configuration2);
 
-                return new ConfigurationSpaceGrid2D(configurationSpace.Lines, configurationSpace.ReverseDoors);
+                return configurationSpace;
             }
         }
 

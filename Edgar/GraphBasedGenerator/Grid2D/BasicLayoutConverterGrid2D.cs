@@ -21,17 +21,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 	/// <typeparam name="TNode"></typeparam>
 	/// <typeparam name="TConfiguration"></typeparam>
     public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<RoomNode<TNode>, TConfiguration>, LevelGrid2D<TNode>>, IRandomInjectable
-        where TConfiguration : IConfiguration<RoomTemplateInstance, Vector2Int, RoomNode<TNode>>
+        where TConfiguration : IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, RoomNode<TNode>>
 	{
 		protected readonly LevelDescriptionGrid2D<TNode> MapDescription;
 		protected Random Random;
 		protected readonly ConfigurationSpacesGrid2D<TConfiguration, RoomNode<TNode>> ConfigurationSpaces;
-        protected readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> IntAliasMapping;
+        protected readonly TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> IntAliasMapping;
 
 		public BasicLayoutConverterGrid2D(
             LevelDescriptionGrid2D<TNode> mapDescription, 
             ConfigurationSpacesGrid2D<TConfiguration, RoomNode<TNode>> configurationSpaces, 
-			TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> intAliasMapping
+			TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping
         )
 		{
 			MapDescription = mapDescription;
@@ -42,8 +42,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// <inheritdoc />
 		public LevelGrid2D<TNode> Convert(ILayout<RoomNode<TNode>, TConfiguration> layout, bool addDoors)
 		{
-			var rooms = new List<Common.Room<TNode>>();
-			var roomsDict = new Dictionary<TNode, Common.Room<TNode>>();
+			var rooms = new List<Common.RoomGrid2D<TNode>>();
+			var roomsDict = new Dictionary<TNode, Common.RoomGrid2D<TNode>>();
 
             foreach (var vertexAlias in layout.Graph.Vertices)
 			{
@@ -56,11 +56,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 					// TODO: maybe make a unit/integration test?
                     var transformation = roomTemplateInstance.Transformations.GetRandom(Random);
                     var shape = configuration.RoomShape.RoomShape;
-                    var originalShape = roomTemplateInstance.RoomTemplate.Shape;
+                    var originalShape = roomTemplateInstance.RoomTemplate.Outline;
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
 
-                    var room = new Common.Room<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
+                    var room = new Common.RoomGrid2D<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
 					rooms.Add(room);
 
 					if (!addDoors)

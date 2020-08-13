@@ -9,9 +9,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     /// <typeparam name="TNode"></typeparam>
 	public class LevelGrid2D<TNode>
 	{
-		public List<Room<TNode>> Rooms { get; }
+		public List<RoomGrid2D<TNode>> Rooms { get; }
 
-		public LevelGrid2D(List<Room<TNode>> rooms)
+		public LevelGrid2D(List<RoomGrid2D<TNode>> rooms)
 		{
 			Rooms = rooms;
 		}

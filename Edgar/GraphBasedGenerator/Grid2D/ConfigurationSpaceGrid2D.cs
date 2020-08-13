@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
@@ -15,11 +16,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
         public IReadOnlyList<OrthogonalLine> Lines { get; }
 
-        private readonly List<Tuple<OrthogonalLine, DoorLine>> reverseDoors;
+        private readonly List<Tuple<OrthogonalLine, DoorLineGrid2D>> reverseDoors;
 
-        public IReadOnlyList<Tuple<OrthogonalLine, DoorLine>> ReverseDoors { get; }
+        public IReadOnlyList<Tuple<OrthogonalLine, DoorLineGrid2D>> ReverseDoors { get; }
 
-        public ConfigurationSpaceGrid2D(List<OrthogonalLine> lines, List<Tuple<OrthogonalLine, DoorLine>> reverseDoors = null)
+        public ConfigurationSpaceGrid2D(List<OrthogonalLine> lines, List<Tuple<OrthogonalLine, DoorLineGrid2D>> reverseDoors = null)
         {
             this.lines = lines;
             this.reverseDoors = reverseDoors;

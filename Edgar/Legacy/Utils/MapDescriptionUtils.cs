@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.Core.Doors.ManualMode;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.Core.MapDescriptions;
@@ -99,6 +101,36 @@ namespace Edgar.Legacy.Utils
                         new OrthogonalLine(new Vector2Int(length, 0), new Vector2Int(length, width)),
                     }),
                     transformations
+                );
+
+                roomTemplates.Add(roomTemplate);
+            }
+
+            return roomTemplates;
+        }
+
+        public static List<RoomTemplateGrid2D> GetNewCorridorRoomTemplates(List<int> offsets, int width = 1)
+        {
+            if (offsets == null)
+            {
+                return null;
+            }
+
+            var roomTemplates = new List<RoomTemplateGrid2D>();
+            var transformations = TransformationHelper.GetAllTransformations().ToList();
+
+            foreach (var offset in offsets)
+            {
+                var length = offset;
+                var roomTemplate = new RoomTemplateGrid2D(
+                    PolygonGrid2D.GetRectangle(length, width),
+                    new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+                    {
+                        new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, width)),
+                        new DoorGrid2D(new Vector2Int(length, 0), new Vector2Int(length, width)),
+                    }),
+                    allowedTransformations: transformations,
+                    repeatMode: RepeatMode.AllowRepeat
                 );
 
                 roomTemplates.Add(roomTemplate);

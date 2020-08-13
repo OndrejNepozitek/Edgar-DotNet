@@ -98,7 +98,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var roomTemplates = roomDescriptions.Values.SelectMany(x => x.RoomTemplates).Distinct().ToList();
             var roomTemplateInstances = roomTemplates.ToDictionary(x => x, configurationSpacesGenerator.GetRoomTemplateInstances);
             var roomTemplateInstancesMapping = roomTemplateInstances.SelectMany(x => x.Value).CreateIntMapping();
-            var intAliasMapping = new TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>>();
+            var intAliasMapping = new TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>>();
 
             foreach (var shape1 in roomTemplateInstancesMapping.Keys)
             {
@@ -199,7 +199,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             var constraintsEvaluator = new ConstraintsEvaluator<RoomNode<TNode>, ConfigurationGrid2D<TNode, EnergyData>, EnergyData>(stageOneConstraints, energyUpdater);
 
-            var roomShapesHandler = new RoomShapesHandler<RoomNode<TNode>, ConfigurationGrid2D<TNode, EnergyData>>(
+            var roomShapesHandler = new RoomShapesHandlerGrid2D<RoomNode<TNode>, ConfigurationGrid2D<TNode, EnergyData>>(
                 intAliasMapping,
                 levelDescriptionMapped,
                 shapesForNodes,
@@ -207,7 +207,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             );
 
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<TNode, ConfigurationGrid2D<TNode, EnergyData>>, RoomNode<TNode>, ConfigurationGrid2D<TNode, EnergyData>, RoomTemplateInstance, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
+            var layoutOperations = new LayoutController<Layout<TNode, ConfigurationGrid2D<TNode, EnergyData>>, RoomNode<TNode>, ConfigurationGrid2D<TNode, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
 
             var initialLayout = new Layout<TNode, ConfigurationGrid2D<TNode, EnergyData>>(levelDescriptionMapped.GetGraph());
             var layoutConverter =

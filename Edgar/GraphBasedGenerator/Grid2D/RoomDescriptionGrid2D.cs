@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.Common.RoomTemplates;
-using Edgar.Legacy.Core.MapDescriptions;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -8,6 +7,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     {
         public bool IsCorridor { get; set; }
 
-        public List<RoomTemplate> RoomTemplates { get; set; }
+        public List<RoomTemplateGrid2D> RoomTemplates { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
@@ -54,7 +56,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
             {
             }
 
-            protected override RoomTemplate GetRectangleRoomTemplate(int width, int height, SimpleDoorMode doorMode)
+            protected override RoomTemplateGrid2D GetRectangleRoomTemplate(int width, int height, SimpleDoorModeGrid2D doorMode)
             {
                 if (doorMode.CornerDistance >= 2)
                 {
@@ -82,7 +84,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
                         .Build();
 
                     return GetRoomTemplate(polygon,
-                        new SimpleDoorMode(doorMode.DoorLength, doorMode.CornerDistance - 2),
+                        new SimpleDoorModeGrid2D(doorMode.DoorLength, doorMode.CornerDistance - 2),
                         $"Deformed {width}x{height}");
                 }
                 else

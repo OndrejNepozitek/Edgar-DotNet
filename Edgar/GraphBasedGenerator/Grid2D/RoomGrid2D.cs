@@ -11,7 +11,7 @@ namespace Edgar.GraphBasedGenerator.Common
     /// Represents a layout room.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
-	public class Room<TNode>
+	public class RoomGrid2D<TNode>
 	{
         /// <summary>
         /// Corresponding input graph node.
@@ -31,12 +31,12 @@ namespace Edgar.GraphBasedGenerator.Common
         /// <summary>
         /// Room template used for this room.
         /// </summary>
-        public RoomTemplate RoomTemplate { get; }
+        public RoomTemplateGrid2D RoomTemplate { get; }
 
         /// <summary>
         /// Room template instance used for this room.
         /// </summary>
-        public RoomTemplateInstance RoomTemplateInstance { get; }
+        public RoomTemplateInstanceGrid2D RoomTemplateInstance { get; }
 
         /// <summary>
         /// Whether it is a corridor room or not.
@@ -63,7 +63,7 @@ namespace Edgar.GraphBasedGenerator.Common
         /// </summary>
         public IList<Transformation> Transformations { get; }
 
-		public Room(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate, RoomDescriptionGrid2D roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstance roomTemplateInstance)
+		public RoomGrid2D(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstanceGrid2D roomTemplateInstance)
 		{
 			Node = node;
 			Shape = shape;

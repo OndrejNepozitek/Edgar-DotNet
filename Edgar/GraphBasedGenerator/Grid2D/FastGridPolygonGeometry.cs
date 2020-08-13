@@ -7,7 +7,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     public class FastGridPolygonGeometry<TConfiguration, TNode> : IRoomShapeGeometry<TConfiguration>
-        where TConfiguration : IShapeConfiguration<RoomTemplateInstance>, IPositionConfiguration<Vector2Int>
+        where TConfiguration : IShapeConfiguration<RoomTemplateInstanceGrid2D>, IPositionConfiguration<Vector2Int>
     {
         private readonly FastPolygonOverlap polygonOverlap = new FastPolygonOverlap();
 

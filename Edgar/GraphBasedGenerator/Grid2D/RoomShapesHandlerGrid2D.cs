@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.LayoutOperations.Interfaces;
@@ -12,17 +13,17 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Common
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
     /// Class responsible for returning available shapes for a node based on used repeat mode.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstance>, IRandomInjectable
-        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstance>, ISmartCloneable<TConfiguration>, new()
+    public class RoomShapesHandlerGrid2D<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstanceGrid2D>, IRandomInjectable
+        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstanceGrid2D>, ISmartCloneable<TConfiguration>, new()
     {
-        private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> intAliasMapping;
+        private readonly TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping;
         private readonly ILevelDescription<TNode> mapDescription;
         private readonly IGraph<TNode> graphWithoutCorridors;
         private readonly RepeatMode? repeatModeOverride;
@@ -30,8 +31,8 @@ namespace Edgar.GraphBasedGenerator.Common
         private readonly Dictionary<TNode, List<WeightedShape>> shapesForNodes;
         private Random random;
 
-        public RoomShapesHandler(
-            TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> intAliasMapping,
+        public RoomShapesHandlerGrid2D(
+            TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping,
             ILevelDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes, RepeatMode? repeatModeOverride = null)
         {
             this.intAliasMapping = intAliasMapping;
@@ -74,7 +75,7 @@ namespace Edgar.GraphBasedGenerator.Common
         /// If zero shapes are found and tryToFixEmpty is set to true, we try to lower the requirements and e.g. use
         /// only the NoImmediate mode instead of the NoRepeat mode.
         /// </summary>
-        public List<RoomTemplateInstance> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
+        public List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
         {
             if (mapDescription.GetRoomDescription(node).IsCorridor)
             {
@@ -102,7 +103,7 @@ namespace Edgar.GraphBasedGenerator.Common
             return shapes;
         }
 
-        public RoomTemplateInstance GetRandomShapeWithoutConstraintsDoNotUse(TNode node)
+        public RoomTemplateInstanceGrid2D GetRandomShapeWithoutConstraintsDoNotUse(TNode node)
         {
             // TODO: slow
             return intAliasMapping.GetByValue(shapesForNodes[node].GetWeightedRandom(x => x.Weight, random).Shape);
@@ -114,7 +115,7 @@ namespace Edgar.GraphBasedGenerator.Common
             // return configurationSpaces.CanPerturbShape(node);
         }
 
-        private List<RoomTemplateInstance> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
+        private List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<PolygonGrid2D>>(shapesForNodes[node].Select(x => x.Shape));
 
@@ -145,9 +146,9 @@ namespace Edgar.GraphBasedGenerator.Common
         {
             public List<IntAlias<PolygonGrid2D>> Aliases { get; }
 
-            public RoomTemplate RoomTemplate { get; }
+            public RoomTemplateGrid2D RoomTemplate { get; }
 
-            public RoomTemplateInfo(List<IntAlias<PolygonGrid2D>> aliases, RoomTemplate roomTemplate)
+            public RoomTemplateInfo(List<IntAlias<PolygonGrid2D>> aliases, RoomTemplateGrid2D roomTemplate)
             {
                 Aliases = aliases;
                 RoomTemplate = roomTemplate;
