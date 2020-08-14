@@ -7,7 +7,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Examples.Grid2D
 {
-    public class BasicExample : IExampleGrid2D
+    public class BasicsExample : IExampleGrid2D
     {
         public string Name => "Basics";
 
@@ -43,11 +43,11 @@ namespace Edgar.Examples.Grid2D
             //md ### Doors
             //md `IDoorModeGrid2D` is an interface that specifies door positions of a given room template. The most simple *door mode* is the `SimpleDoorModeGrid2D` - it lets us specify the length of doors and how far from corners they must be. In this tutorial, we will use doors with length of 1 tile and at least 1 tile away from corners.
             
-            var doorMode = new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1);
+            var doors = new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1);
 
             //md > **Note:** There is also an additional door mode available - `ManualDoorModeGrid2D`. This mode lets you specify exactly which door positions are available. It is useful for example when we want to have doors only on the two opposite sides of a corridor.
 
-            //md ### (Optional) Allowed transformations
+            //md ### Allowed transformations
             //md Optionally, it is also possible to let the algorithm apply some transformations to the room, e.g. rotate it by 90 degrees or mirror it by the X axis. The algorithm then also handles all the door positions automatically.
 
             var transformations = new List<TransformationGrid2D>()
@@ -61,7 +61,7 @@ namespace Edgar.Examples.Grid2D
 
             var squareRoom = new RoomTemplateGrid2D(
                 squareRoomOutline,
-                doorMode,
+                doors,
                 name: "Square 8x8",
                 allowedTransformations: transformations
             );
@@ -109,6 +109,13 @@ namespace Edgar.Examples.Grid2D
             levelDescription.AddConnection(2, 3);
 
             return levelDescription;
+        }
+
+        public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
+        {
+            //md Below you can see some of the results generated from this example:
+
+            yield return GetLevelDescription();
         }
     }
 }

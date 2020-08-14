@@ -1,9 +1,10 @@
-﻿using Edgar.GraphBasedGenerator.Grid2D;
+﻿using System.Collections.Generic;
+using Edgar.GraphBasedGenerator.Grid2D;
 
 namespace Edgar.Examples
 {
     public interface IExampleGrid2D : IExample
     {
-        LevelDescriptionGrid2D<int> GetLevelDescription();
+        IEnumerable<LevelDescriptionGrid2D<int>> GetResults();
     }
 }
