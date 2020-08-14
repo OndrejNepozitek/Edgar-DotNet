@@ -32,7 +32,7 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
+                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
             var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
@@ -45,7 +45,7 @@ namespace Sandbox.Examples
 					new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
 					new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2))
 				}),
-                new List<Transformation>() { Transformation.Identity, Transformation.Rotate90 }
+                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
 			);
 
             var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() { corridorRoom1x2 });
@@ -60,7 +60,7 @@ namespace Sandbox.Examples
                         new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
                         new OrthogonalLine(new Vector2Int(0, 4), new Vector2Int(1, 4))
                     }),
-                    new List<Transformation>() { Transformation.Identity, Transformation.Rotate90 }
+                    new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
                 );
 
                 corridorRoomDescription.RoomTemplates.Add(corridorRoom1x4);
@@ -70,7 +70,7 @@ namespace Sandbox.Examples
             if (useLShapedCorridors)
             {
                 var corridorRoomLShaped = new RoomTemplate(
-                    new GridPolygonBuilder()
+                    new PolygonGrid2DBuilder()
                         .AddPoint(0, 2)
                         .AddPoint(0, 3)
                         .AddPoint(3, 3)
@@ -83,7 +83,7 @@ namespace Sandbox.Examples
                         new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(0, 3)),
                         new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(3, 0))
                     }),
-                    TransformationHelper.GetAllTransformations().ToList()
+                    TransformationGrid2DHelper.GetAllTransformationsOld().ToList()
                 );
 
                 corridorRoomDescription.RoomTemplates.Add(corridorRoomLShaped);
@@ -93,7 +93,7 @@ namespace Sandbox.Examples
             if (useWideCorridors)
             {
                 var corridorWide = new RoomTemplate(
-                    new GridPolygonBuilder()
+                    new PolygonGrid2DBuilder()
                         .AddPoint(1, 0)
                         .AddPoint(1, 1)
                         .AddPoint(0, 1)
@@ -112,7 +112,7 @@ namespace Sandbox.Examples
                         new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)),
                         new OrthogonalLine(new Vector2Int(1, 5), new Vector2Int(2, 5))
                     }),
-                    TransformationHelper.GetAllTransformations().ToList()
+                    TransformationGrid2DHelper.GetAllTransformationsOld().ToList()
                 );
 
                 corridorRoomDescription.RoomTemplates.Add(corridorWide);

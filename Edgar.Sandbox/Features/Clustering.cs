@@ -156,7 +156,7 @@ namespace Sandbox.Features
                     .Distinct()
                     .SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x))
                     .ToList();
-                var roomTemplatesMapping = roomTemplateInstances.ToDictionary(x => x, x => x.Transformations.Contains(Transformation.Identity) ? x.RoomTemplate.Name : $"{x.RoomTemplate.Name} {x.Transformations[0]}");
+                var roomTemplatesMapping = roomTemplateInstances.ToDictionary(x => x, x => x.Transformations.Contains(TransformationGrid2D.Identity) ? x.RoomTemplate.Name : $"{x.RoomTemplate.Name} {x.Transformations[0]}");
                 var entropyCalculator = new EntropyCalculator();
 
 

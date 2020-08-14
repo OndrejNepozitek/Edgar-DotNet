@@ -21,7 +21,7 @@ namespace Edgar.Legacy.Utils
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
-            var transformations = TransformationHelper.GetAllTransformations().ToList();
+            var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
             var squareRoom = new RoomTemplate(PolygonGrid2D.GetSquare(6).Scale(scale), doorMode, transformations, name: "Square");
             var rectangleRoom = new RoomTemplate(PolygonGrid2D.GetRectangle(6, 9).Scale(scale), doorMode, transformations, name: "Rectangle");
@@ -37,10 +37,10 @@ namespace Edgar.Legacy.Utils
         {
             var overlapScale = Math.Min(scale.X, scale.Y);
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
-            var transformations = TransformationHelper.GetAllTransformations().ToList();
+            var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
             var room1 = new RoomTemplate(
-                new GridPolygonBuilder()
+                new PolygonGrid2DBuilder()
                     .AddPoint(0, 0)
                     .AddPoint(0, 6)
                     .AddPoint(3, 6)
@@ -50,7 +50,7 @@ namespace Edgar.Legacy.Utils
                     .Build().Scale(scale)
                 , doorMode, transformations, name: "L-shape");
             var room2 = new RoomTemplate(
-                new GridPolygonBuilder()
+                new PolygonGrid2DBuilder()
                     .AddPoint(0, 0)
                     .AddPoint(0, 9)
                     .AddPoint(3, 9)
@@ -60,7 +60,7 @@ namespace Edgar.Legacy.Utils
                     .Build().Scale(scale)
                 , doorMode, transformations, name: "L-shape long");
             var room3 = new RoomTemplate(
-                new GridPolygonBuilder()
+                new PolygonGrid2DBuilder()
                     .AddPoint(0, 0)
                     .AddPoint(0, 3)
                     .AddPoint(3, 3)
@@ -88,7 +88,7 @@ namespace Edgar.Legacy.Utils
             }
 
             var roomTemplates = new List<RoomTemplate>();
-            var transformations = TransformationHelper.GetAllTransformations().ToList();
+            var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
             foreach (var offset in offsets)
             {
@@ -117,7 +117,7 @@ namespace Edgar.Legacy.Utils
             }
 
             var roomTemplates = new List<RoomTemplateGrid2D>();
-            var transformations = TransformationHelper.GetAllTransformations().ToList();
+            var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
             foreach (var offset in offsets)
             {

@@ -269,16 +269,16 @@ namespace Edgar.Legacy.Utils.ConfigParsing
             }
         }
 
-        private List<Transformation> GetTransformations(bool? rotate)
+        private List<TransformationGrid2D> GetTransformations(bool? rotate)
 		{
 			return (rotate.HasValue && rotate.Value == false)
-                ? new List<Transformation>() {Transformation.Identity}
-                : new List<Transformation>()
+                ? new List<TransformationGrid2D>() {TransformationGrid2D.Identity}
+                : new List<TransformationGrid2D>()
             {
-				Transformation.Identity,
-				Transformation.Rotate90,
-				Transformation.Rotate180,
-				Transformation.Rotate270
+				TransformationGrid2D.Identity,
+				TransformationGrid2D.Rotate90,
+				TransformationGrid2D.Rotate180,
+				TransformationGrid2D.Rotate270
             };
 		}
 
@@ -310,7 +310,7 @@ namespace Edgar.Legacy.Utils.ConfigParsing
 			return roomTemplates;
 		}
 
-		private RoomTemplate ConvertRoomModelToRoomTemplate(RoomDescriptionModel model, Vector2Int? scale, List<Transformation> transformations, string setName)
+		private RoomTemplate ConvertRoomModelToRoomTemplate(RoomDescriptionModel model, Vector2Int? scale, List<TransformationGrid2D> transformations, string setName)
 		{
 			var identifier = new RoomTemplateIdentifier()
             {

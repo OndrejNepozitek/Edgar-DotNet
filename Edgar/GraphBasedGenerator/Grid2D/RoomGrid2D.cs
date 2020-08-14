@@ -56,14 +56,14 @@ namespace Edgar.GraphBasedGenerator.Common
         /// <summary>
         /// Chosen transformation of the room shape.
         /// </summary>
-        public Transformation Transformation { get; }
+        public TransformationGrid2D Transformation { get; }
 
         /// <summary>
         /// All possible transformations of the room description.
         /// </summary>
-        public IList<Transformation> Transformations { get; }
+        public IList<TransformationGrid2D> Transformations { get; }
 
-		public RoomGrid2D(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstanceGrid2D roomTemplateInstance)
+		public RoomGrid2D(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, TransformationGrid2D transformation, List<TransformationGrid2D> transformations, RoomTemplateInstanceGrid2D roomTemplateInstance)
 		{
 			Node = node;
 			Shape = shape;

@@ -16,7 +16,7 @@ namespace Sandbox.Examples
             var doorMode = new SimpleDoorMode(1, 1);
 
             var squareRoom = new RoomTemplate(
-                new GridPolygonBuilder()
+                new PolygonGrid2DBuilder()
                     .AddPoint(0, 0)
                     .AddPoint(0, 8)
                     .AddPoint(8, 8)
@@ -28,7 +28,7 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
+                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
             // Create room description

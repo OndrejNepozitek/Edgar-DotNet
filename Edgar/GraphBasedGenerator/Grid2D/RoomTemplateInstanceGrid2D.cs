@@ -33,9 +33,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// All transformations that led to this room shape.
         /// </summary>
-        public List<Transformation> Transformations { get; }
+        public List<TransformationGrid2D> Transformations { get; }
 
-        public RoomTemplateInstanceGrid2D(RoomTemplateGrid2D roomTemplate, PolygonGrid2D roomShape, List<DoorLineGrid2D> doorLines, List<Transformation> transformations)
+        public RoomTemplateInstanceGrid2D(RoomTemplateGrid2D roomTemplate, PolygonGrid2D roomShape, List<DoorLineGrid2D> doorLines, List<TransformationGrid2D> transformations)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;

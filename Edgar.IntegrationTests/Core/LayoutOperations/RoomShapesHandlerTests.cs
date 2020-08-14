@@ -66,7 +66,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void DifferentTransformationsProperlyHandled()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat, TransformationHelper.GetAllTransformations().ToList());
+            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat, TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -371,7 +371,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             return mapDescription;
         }
 
-        private RoomTemplate GetRoomTemplate(RepeatMode repeatMode, List<Transformation> transformations = null)
+        private RoomTemplate GetRoomTemplate(RepeatMode repeatMode, List<TransformationGrid2D> transformations = null)
         {
             return new RoomTemplate(
                 PolygonGrid2D.GetRectangle(10, 20),

@@ -7,7 +7,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
     /// <summary>
 	/// Helper class for creating polygons.
 	/// </summary>
-	public class GridPolygonBuilder
+	public class PolygonGrid2DBuilder
 	{
 		private readonly List<Vector2Int> points = new List<Vector2Int>();
 
@@ -17,7 +17,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns></returns>
-		public GridPolygonBuilder AddPoint(int x, int y)
+		public PolygonGrid2DBuilder AddPoint(int x, int y)
 		{
 			points.Add(new Vector2Int(x, y));
 			return this;

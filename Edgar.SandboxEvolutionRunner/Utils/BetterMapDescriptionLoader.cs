@@ -19,7 +19,7 @@ namespace SandboxEvolutionRunner.Utils
         private readonly RoomTemplatesSet roomTemplatesSet;
         private readonly RepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
-        private readonly List<Transformation> transformations = TransformationHelper.GetAllTransformations().ToList();
+        private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
         public BetterMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RepeatMode repeatMode = RepeatMode.AllowRepeat) : base(options)
         {

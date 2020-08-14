@@ -25,7 +25,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		[Test]
 		public void GetPolygons_PlusShape()
 		{
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 2)
 				.AddPoint(0, 4)
 				.AddPoint(2, 4)
@@ -85,7 +85,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		[Test]
 		public void GetPolygons_LShape()
 		{
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 6)
 				.AddPoint(3, 6)
@@ -137,7 +137,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		[Test]
 		public void GetPolygons_AnotherShape()
 		{
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 3)
 				.AddPoint(-1, 3)
@@ -191,7 +191,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		[Test]
 		public void GetPolygons_ComplexShape()
 		{
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(2, 0)
 				.AddPoint(2, 1)
 				.AddPoint(1, 1)

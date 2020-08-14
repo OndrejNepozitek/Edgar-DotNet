@@ -21,7 +21,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		[Test]
 		public void NormalizePolygon_Polygon_ReturnsNormalizedPolygon()
 		{
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 5)
 				.AddPoint(5, 5)
 				.AddPoint(5, 0)

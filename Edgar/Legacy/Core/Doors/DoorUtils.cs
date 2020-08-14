@@ -143,7 +143,7 @@ namespace Edgar.Legacy.Core.Doors
 		/// <param name="doorLine"></param>
 		/// <param name="transformation"></param>
 		/// <returns></returns>
-		public static DoorLine TransformDoorLine(DoorLine doorLine, Transformation transformation)
+		public static DoorLine TransformDoorLine(DoorLine doorLine, TransformationGrid2D transformation)
 		{
 			var doorPosition = doorLine.Line;
 
@@ -152,16 +152,16 @@ namespace Edgar.Legacy.Core.Doors
 
 			switch (transformation)
 			{
-				case Transformation.Identity:
+				case TransformationGrid2D.Identity:
 					return doorLine;
 
-				case Transformation.Rotate90:
+				case TransformationGrid2D.Rotate90:
 					return new DoorLine(doorPosition.Rotate(90), doorLine.Length);
 
-				case Transformation.Rotate180:
+				case TransformationGrid2D.Rotate180:
 					return new DoorLine(doorPosition.Rotate(180), doorLine.Length);
 
-				case Transformation.Rotate270:
+				case TransformationGrid2D.Rotate270:
 					return new DoorLine(doorPosition.Rotate(270), doorLine.Length);
 			}
 
@@ -185,7 +185,7 @@ namespace Edgar.Legacy.Core.Doors
 			return new DoorLine(newDoorPosition, doorLine.Length);
 		}
 
-        public static DoorLineGrid2D TransformDoorLine(DoorLineGrid2D doorLine, Transformation transformation)
+        public static DoorLineGrid2D TransformDoorLine(DoorLineGrid2D doorLine, TransformationGrid2D transformation)
         {
             var doorPosition = doorLine.Line;
 
@@ -194,16 +194,16 @@ namespace Edgar.Legacy.Core.Doors
 
             switch (transformation)
             {
-                case Transformation.Identity:
+                case TransformationGrid2D.Identity:
                     return doorLine;
 
-                case Transformation.Rotate90:
+                case TransformationGrid2D.Rotate90:
                     return new DoorLineGrid2D(doorPosition.Rotate(90), doorLine.Length, doorLine.DoorSocket);
 
-                case Transformation.Rotate180:
+                case TransformationGrid2D.Rotate180:
                     return new DoorLineGrid2D(doorPosition.Rotate(180), doorLine.Length, doorLine.DoorSocket);
 
-                case Transformation.Rotate270:
+                case TransformationGrid2D.Rotate270:
                     return new DoorLineGrid2D(doorPosition.Rotate(270), doorLine.Length, doorLine.DoorSocket);
             }
 
@@ -227,14 +227,14 @@ namespace Edgar.Legacy.Core.Doors
             return new DoorLineGrid2D(newDoorPosition, doorLine.Length, doorLine.DoorSocket);
         }
 
-		private static OrthogonalLine.Direction TransformDirection(OrthogonalLine.Direction originalDirection, Transformation transformation)
+		private static OrthogonalLine.Direction TransformDirection(OrthogonalLine.Direction originalDirection, TransformationGrid2D transformation)
 		{
 			if (originalDirection == OrthogonalLine.Direction.Undefined)
 				throw new InvalidOperationException("Cannot transform direction when original direction is undefined");
 
 			switch (transformation)
 			{
-				case Transformation.MirrorX:
+				case TransformationGrid2D.MirrorX:
 					if (IsHorizontal(originalDirection))
 					{
 						return originalDirection;
@@ -242,7 +242,7 @@ namespace Edgar.Legacy.Core.Doors
 
 					return OrthogonalLine.GetOppositeDirection(originalDirection);
 
-				case Transformation.MirrorY:
+				case TransformationGrid2D.MirrorY:
 					if (IsHorizontal(originalDirection))
 					{
 						return OrthogonalLine.GetOppositeDirection(originalDirection);
@@ -250,7 +250,7 @@ namespace Edgar.Legacy.Core.Doors
 
 					return originalDirection;
 
-				case Transformation.Diagonal13:
+				case TransformationGrid2D.Diagonal13:
 					switch (originalDirection)
 					{
 						case OrthogonalLine.Direction.Top:
@@ -269,7 +269,7 @@ namespace Edgar.Legacy.Core.Doors
 							throw new ArgumentException();
 					}
 
-				case Transformation.Diagonal24:
+				case TransformationGrid2D.Diagonal24:
 					switch (originalDirection)
 					{
 						case OrthogonalLine.Direction.Top:

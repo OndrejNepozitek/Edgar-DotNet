@@ -16,14 +16,14 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		public void Equals_WhenEqual_ReturnsTrue()
 		{
 			{
-				var p1 = new GridPolygonBuilder()
+				var p1 = new PolygonGrid2DBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 3)
 					.AddPoint(3, 3)
 					.AddPoint(3, 0)
 					.Build();
 
-				var p2 = new GridPolygonBuilder()
+				var p2 = new PolygonGrid2DBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 3)
 					.AddPoint(3, 3)
@@ -38,14 +38,14 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		public void Equals_WhenNotEqual_ReturnsFalse()
 		{
 			{
-				var p1 = new GridPolygonBuilder()
+				var p1 = new PolygonGrid2DBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 3)
 					.AddPoint(3, 3)
 					.AddPoint(3, 0)
 					.Build();
 
-				var p2 = new GridPolygonBuilder()
+				var p2 = new PolygonGrid2DBuilder()
 					.AddPoint(3, 0)
 					.AddPoint(0, 0)
 					.AddPoint(0, 3)
@@ -117,7 +117,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var p = new GridPolygonBuilder()
+				var p = new PolygonGrid2DBuilder()
 					.AddPoint(0, 0)
 					.AddPoint(0, 6)
 					.AddPoint(3, 6)
@@ -168,13 +168,13 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		[Test]
 		public void Constructor_ValidPolygons()
 		{
-			var square = new GridPolygonBuilder()
+			var square = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 3)
 				.AddPoint(3, 3)
 				.AddPoint(3, 0);
 
-			var lPolygon = new GridPolygonBuilder()
+			var lPolygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 6)
 				.AddPoint(3, 6)
@@ -189,11 +189,11 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		[Test]
 		public void Constructor_TooFewPoints_Throws()
 		{
-			var polygon1 = new GridPolygonBuilder()
+			var polygon1 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 5);
 
-			var polygon2 = new GridPolygonBuilder()
+			var polygon2 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 5)
 				.AddPoint(5, 5);
@@ -205,7 +205,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		[Test]
 		public void Constructor_EdgesNotOrthogonal_Trows()
 		{
-			var polygon1 = new GridPolygonBuilder()
+			var polygon1 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 5)
 				.AddPoint(3, 4)
@@ -217,7 +217,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		[Test]
 		public void Constructor_OverlappingEdges_Throws()
 		{
-			var polygon1 = new GridPolygonBuilder()
+			var polygon1 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(3, 0)
 				.AddPoint(3, 2)
@@ -232,7 +232,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 		{
 			{
 				// Square
-				var p = new GridPolygonBuilder()
+				var p = new PolygonGrid2DBuilder()
 					.AddPoint(3, 0)
 					.AddPoint(3, 3)
 					.AddPoint(0, 3)
@@ -243,7 +243,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 
 			{
 				// L Shape
-				var p = new GridPolygonBuilder()
+				var p = new PolygonGrid2DBuilder()
 					.AddPoint(6, 0)
 					.AddPoint(6, 3)
 					.AddPoint(3, 3)
@@ -261,7 +261,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			var polygon = PolygonGrid2D.GetRectangle(2, 1);
 
 			{
-				var transformed = polygon.Transform(Transformation.Identity);
+				var transformed = polygon.Transform(TransformationGrid2D.Identity);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -272,7 +272,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.Rotate90);
+				var transformed = polygon.Transform(TransformationGrid2D.Rotate90);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -283,7 +283,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.Rotate180);
+				var transformed = polygon.Transform(TransformationGrid2D.Rotate180);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -294,7 +294,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.Rotate270);
+				var transformed = polygon.Transform(TransformationGrid2D.Rotate270);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -305,7 +305,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.MirrorX);
+				var transformed = polygon.Transform(TransformationGrid2D.MirrorX);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -316,7 +316,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.MirrorY);
+				var transformed = polygon.Transform(TransformationGrid2D.MirrorY);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -327,7 +327,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.Diagonal13);
+				var transformed = polygon.Transform(TransformationGrid2D.Diagonal13);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),
@@ -338,7 +338,7 @@ namespace GeneralAlgorithms.Tests.DataStructures.Polygons
 			}
 
 			{
-				var transformed = polygon.Transform(Transformation.Diagonal24);
+				var transformed = polygon.Transform(TransformationGrid2D.Diagonal24);
 				Assert.That(transformed.GetPoints(), Is.EquivalentTo(new List<Vector2Int>()
 				{
 					new Vector2Int(0, 0),

@@ -16,7 +16,7 @@ namespace Sandbox.Examples
 		{
 			// Create boss room template and room description
             var bossRoom = new RoomTemplate(
-                new GridPolygonBuilder()
+                new PolygonGrid2DBuilder()
                     .AddPoint(2, 0).AddPoint(2, 1).AddPoint(1, 1).AddPoint(1, 2)
                     .AddPoint(0, 2).AddPoint(0, 7).AddPoint(1, 7).AddPoint(1, 8)
                     .AddPoint(2, 8).AddPoint(2, 9).AddPoint(7, 9).AddPoint(7, 8)
@@ -39,7 +39,7 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<Transformation>() { Transformation.Identity, Transformation.Rotate90}
+                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
             var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });

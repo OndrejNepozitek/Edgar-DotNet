@@ -24,7 +24,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
         private readonly RoomTemplatesSet roomTemplatesSet;
         private readonly RepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
-        private readonly List<Transformation> transformations = TransformationHelper.GetAllTransformations().ToList();
+        private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
         private readonly Vector2Int scale;
 
         public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RepeatMode repeatMode = RepeatMode.AllowRepeat)

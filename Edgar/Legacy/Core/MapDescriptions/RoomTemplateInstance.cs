@@ -31,9 +31,9 @@ namespace Edgar.Legacy.Core.MapDescriptions
         /// <summary>
         /// All transformations that led to this room shape.
         /// </summary>
-        public List<Transformation> Transformations { get; }
+        public List<TransformationGrid2D> Transformations { get; }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, List<Transformation> transformations, List<DoorLine> doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, List<TransformationGrid2D> transformations, List<DoorLine> doorLines)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;
@@ -41,8 +41,8 @@ namespace Edgar.Legacy.Core.MapDescriptions
             DoorLines = doorLines;
         }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, Transformation transformation, List<DoorLine> doorLines)
-            : this(roomTemplate, roomShape, new List<Transformation>() { transformation }, doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, TransformationGrid2D transformation, List<DoorLine> doorLines)
+            : this(roomTemplate, roomShape, new List<TransformationGrid2D>() { transformation }, doorLines)
         {
 
         }

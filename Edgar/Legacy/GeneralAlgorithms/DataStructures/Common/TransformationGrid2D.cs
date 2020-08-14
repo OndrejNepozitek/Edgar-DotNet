@@ -1,6 +1,6 @@
 ﻿namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 {
-	public enum Transformation
+	public enum TransformationGrid2D
 	{
 		Identity,
 		Rotate90, Rotate180, Rotate270, // Rotations are clockwise

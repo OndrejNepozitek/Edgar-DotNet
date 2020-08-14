@@ -231,15 +231,15 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
 		/// </remarks>
 		/// <param name="transformation"></param>
 		/// <returns></returns>
-		public PolygonGrid2D Transform(Transformation transformation)
+		public PolygonGrid2D Transform(TransformationGrid2D transformation)
 		{
 			var newPoints = points.Select(x => x.Transform(transformation));
 
 			// Change order of points if needed
-			if (transformation == Transformation.MirrorX
-			    || transformation == Transformation.MirrorY
-			    || transformation == Transformation.Diagonal13
-			    || transformation == Transformation.Diagonal24)
+			if (transformation == TransformationGrid2D.MirrorX
+			    || transformation == TransformationGrid2D.MirrorY
+			    || transformation == TransformationGrid2D.Diagonal13
+			    || transformation == TransformationGrid2D.Diagonal24)
 			{
 				var newPointsList = newPoints.ToList();
 				newPoints = new[] {newPointsList[0]}.Concat(newPointsList.Skip(1).Reverse());
@@ -257,7 +257,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
 		/// <returns></returns>
 		public IEnumerable<PolygonGrid2D> GetAllTransformations()
 		{
-			foreach (var transformation in (Transformation[])Enum.GetValues(typeof(Transformation)))
+			foreach (var transformation in (TransformationGrid2D[])Enum.GetValues(typeof(TransformationGrid2D)))
 			{
 				yield return Transform(transformation);
 			}
@@ -291,7 +291,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
 			if (height <= 0)
 				throw new ArgumentOutOfRangeException(nameof(height), "Both a and b must be greater than 0");
 
-			var polygon = new GridPolygonBuilder()
+			var polygon = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, height)
 				.AddPoint(width, height)

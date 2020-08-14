@@ -31,8 +31,8 @@ namespace MapGeneration.IntegrationTests.Core.ConfigurationSpaces
         [Test]
         public void Generate_BasicTest()
         {
-            var roomTemplate1 = new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
-            var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0), TransformationHelper.GetAllTransformations().ToList());
+            var roomTemplate1 = new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0), TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
+            var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0), TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
 
             var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
             var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });

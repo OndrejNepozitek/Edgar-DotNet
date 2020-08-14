@@ -60,7 +60,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
             {
                 if (doorMode.CornerDistance >= 2)
                 {
-                    var polygon = new GridPolygonBuilder()
+                    var polygon = new PolygonGrid2DBuilder()
                         .AddPoint(2, 0)
                         .AddPoint(2, 1)
                         .AddPoint(1, 1)

@@ -55,14 +55,14 @@ namespace Edgar.Legacy.Core.MapLayouts
         /// <summary>
         /// Chosen transformation of the room shape.
         /// </summary>
-        public Transformation Transformation { get; }
+        public TransformationGrid2D Transformation { get; }
 
         /// <summary>
         /// All possible transformations of the room description.
         /// </summary>
-        public IList<Transformation> Transformations { get; }
+        public IList<TransformationGrid2D> Transformations { get; }
 
-		public Room(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, Transformation transformation, List<Transformation> transformations, RoomTemplateInstance roomTemplateInstance)
+		public Room(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, TransformationGrid2D transformation, List<TransformationGrid2D> transformations, RoomTemplateInstance roomTemplateInstance)
 		{
 			Node = node;
 			Shape = shape;

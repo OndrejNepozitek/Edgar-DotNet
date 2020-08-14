@@ -326,7 +326,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		public void OverlapAlongLine_SquareAndL3()
 		{
 			var p1 = PolygonGrid2D.GetSquare(6);
-			var p2 = new GridPolygonBuilder()
+			var p2 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 6)
 				.AddPoint(6, 6)
@@ -366,7 +366,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		public void OverlapAlongLine_LAndL2()
 		{
 			var p1 = GetLShape();
-			var p2 = new GridPolygonBuilder()
+			var p2 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 9)
 				.AddPoint(3, 9)
@@ -405,7 +405,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		public void OverlapAlongLine_ComplexCase()
 		{
 			var p1 = GetPlusShape();
-			var p2 = new GridPolygonBuilder()
+			var p2 = new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 8)
 				.AddPoint(8, 8)
@@ -432,7 +432,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 
 		private static PolygonGrid2D GetPlusShape()
 		{
-			return new GridPolygonBuilder()
+			return new PolygonGrid2DBuilder()
 				.AddPoint(0, 2)
 				.AddPoint(0, 4)
 				.AddPoint(2, 4)
@@ -450,7 +450,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 
 		private static PolygonGrid2D GetLShape()
 		{
-			return new GridPolygonBuilder()
+			return new PolygonGrid2DBuilder()
 				.AddPoint(0, 0)
 				.AddPoint(0, 6)
 				.AddPoint(3, 6)

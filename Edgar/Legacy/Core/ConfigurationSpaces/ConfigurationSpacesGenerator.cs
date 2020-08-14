@@ -546,7 +546,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
                 if (sameRoomShapeFound)
                     continue;
 
-                result.Add(new RoomTemplateInstanceGrid2D(roomTemplate, transformedShape, transformedDoorLines, new List<Transformation>() { transformation }));
+                result.Add(new RoomTemplateInstanceGrid2D(roomTemplate, transformedShape, transformedDoorLines, new List<TransformationGrid2D>() { transformation }));
             }
 
             return result;

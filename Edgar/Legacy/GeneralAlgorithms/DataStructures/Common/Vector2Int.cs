@@ -137,32 +137,32 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <param name="transformation"></param>
 		/// <returns></returns>
 		[Pure]
-		public Vector2Int Transform(Transformation transformation)
+		public Vector2Int Transform(TransformationGrid2D transformation)
 		{
 			switch (transformation)
 			{
-				case Transformation.Identity:
+				case TransformationGrid2D.Identity:
 					return this;
 
-				case Transformation.Rotate90:
+				case TransformationGrid2D.Rotate90:
 					return RotateAroundCenter(90);
 
-				case Transformation.Rotate180:
+				case TransformationGrid2D.Rotate180:
 					return RotateAroundCenter(180);
 
-				case Transformation.Rotate270:
+				case TransformationGrid2D.Rotate270:
 					return RotateAroundCenter(270);
 
-				case Transformation.MirrorX:
+				case TransformationGrid2D.MirrorX:
 					return new Vector2Int(X, -Y);
 
-				case Transformation.MirrorY:
+				case TransformationGrid2D.MirrorY:
 					return new Vector2Int(-X, Y);
 
-				case Transformation.Diagonal13:
+				case TransformationGrid2D.Diagonal13:
 					return new Vector2Int(Y, X);
 
-				case Transformation.Diagonal24:
+				case TransformationGrid2D.Diagonal24:
 					return new Vector2Int(-Y, -X);
 
 				default:
