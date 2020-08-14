@@ -88,5 +88,5 @@ return levelDescription;
 
 ```
 
-![](../assets/1.svg)
+![](./basic/1.svg)
 

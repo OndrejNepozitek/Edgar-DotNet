@@ -18,8 +18,6 @@ The generator is made of following building blocks:
 
 The basic idea is that the input graph is decomposed into chains (e.g. sets of vertices). Layouts are then created incrementally by adding chains one by one. After adding a chain, the algorithm starts with a possibly not valid partial layout and uses a layout evolver (currently simulated annealing) to evolve a valid layout. Another chain is then added until a full layout is generated. See the following diagram:
 
-![alt-text](assets/diagram.svg)
-
 **Note:** It would seem that a generator planner is the most complicated part of the layout generator. Well, it's like the exact opposite - there is like nothing more to it that is not already shown. It's just important for imagining how the whole algorithm works but most of the _magic_ happens in _layout evolvers_.
 
 **Note:** _Layout operations_ and _configuration spaces_ are not shown in the diagram but they are extensively used in layout evolvers.

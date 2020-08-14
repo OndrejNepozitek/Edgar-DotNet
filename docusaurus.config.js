@@ -8,9 +8,10 @@ module.exports = {
   organizationName: "OndrejNepozitek", // Usually your GitHub org/user name.
   projectName: "Edgar-DotNet", // Usually your repo name.
   themeConfig: {
+    sidebarCollapsible: false,
     navbar: {
       title: "Edgar-DotNet",
-      links: [
+      items: [
         { to: "versions", label: "v1.0.6", position: "left" },
         { to: "docs/introduction", label: "Docs", position: "right" },
         {
