@@ -55,6 +55,24 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 			var rooms = layout.Rooms.ToList();
 			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
 
+			// TODO: remove later
+            for (var i = 0; i < rooms.Count; i++)
+            {
+                var room = rooms[i];
+                var outline = GetOutline(polygons[i], room.Doors?.ToList())
+                    .Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
+
+                var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+
+                if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
+                {
+                    throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
+                }
+
+                var polygon = new PolygonGrid2D(transformedPoints);
+                DrawRoomBefore(polygon, outline, 2);
+            }
+
 			for (var i = 0; i < rooms.Count; i++)
 			{
 				var room = rooms[i];
@@ -146,6 +164,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 		/// <param name="outline">Outline of the room. The bool signals whether a line should be drawn (polygon side) or not (doors).</param>
 		/// <param name="penWidth"></param>
 		protected abstract void DrawRoom(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth);
+
+        protected virtual void DrawRoomBefore(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
+        {
+
+        }
 
 		/// <summary>
 		/// Draws text onto given polygon.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Edgar.Examples.Grid2D;
+using Edgar.Examples.MapDrawing;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.MapDrawing;
 
@@ -145,7 +146,7 @@ namespace Edgar.Examples
                     stringBuilder.AppendLine("<Gallery cols={4}>");
                     for (int i = 0; i < 4; i++)
                     {
-                        stringBuilder.AppendLine($"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.svg').default}} />");
+                        stringBuilder.AppendLine($"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.jpg').default}} />");
                     }
                     stringBuilder.AppendLine("</Gallery>");
                     stringBuilder.AppendLine();
@@ -179,6 +180,7 @@ namespace Edgar.Examples
                 generator.InjectRandomGenerator(new Random(0));
 
                 var layoutDrawer = new SVGLayoutDrawer<int>();
+                var oldMapDrawer = new OldMapDrawer<int>();
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -186,6 +188,9 @@ namespace Edgar.Examples
                     var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true, fixedFontSize: 30);
                     Directory.CreateDirectory(Path.Combine(outputFolder, example.DocsFileName));
                     File.WriteAllText(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.svg"), svg);
+
+                    var bitmap = oldMapDrawer.DrawLayout(level, 3200, 3200, fixedFontSize: 30, withNames: false);
+                    bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.jpg"));
                 }
 
                 resultsCounter++;
