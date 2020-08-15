@@ -58,7 +58,7 @@ namespace Edgar.Examples.Grid2D
             //md To simplify this tutorial, we will use a graph of rooms from our graph database:
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
-            var graph = GraphsDatabase.GetExample1();
+            var graph = GraphsDatabase.GetExample5();
 
             //md First, we add non-corridor rooms:
 

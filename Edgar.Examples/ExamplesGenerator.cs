@@ -143,7 +143,7 @@ namespace Edgar.Examples
                     }
 
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("<Gallery cols={4}>");
+                    stringBuilder.AppendLine("<Gallery cols={2}>");
                     for (int i = 0; i < 4; i++)
                     {
                         stringBuilder.AppendLine($"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.jpg').default}} />");
@@ -189,7 +189,7 @@ namespace Edgar.Examples
                     Directory.CreateDirectory(Path.Combine(outputFolder, example.DocsFileName));
                     File.WriteAllText(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.svg"), svg);
 
-                    var bitmap = oldMapDrawer.DrawLayout(level, 3200, 3200, fixedFontSize: 30, withNames: false);
+                    var bitmap = oldMapDrawer.DrawLayout(level, 2000, 2000, fixedFontSize: 1.5f, withNames: true);
                     bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.jpg"));
                 }
 

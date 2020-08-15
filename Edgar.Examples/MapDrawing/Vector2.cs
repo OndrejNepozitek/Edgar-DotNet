@@ -42,7 +42,7 @@ namespace Edgar.Examples.MapDrawing
 		/// <returns></returns>
 		public static double EuclideanDistance(Vector2 a, Vector2 b)
 		{
-			return Math.Sqrt((int)(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)));
+			return Math.Sqrt((Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2)));
 		}
 
 		/// <summary>
