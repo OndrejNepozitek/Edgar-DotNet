@@ -7,7 +7,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Examples.Grid2D
 {
-    public class BasicsExample : IExampleGrid2D
+    public class BasicsExample : IExampleGrid2D<int>
     {
         public string Name => "Basics";
 

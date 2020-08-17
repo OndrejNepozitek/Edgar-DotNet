@@ -48,11 +48,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             {
                 if (intersectionLine.Length > maxPointsPerLine)
                 {
-                    var mod = intersectionLine.Length / maxPointsPerLine - 1;
+                    // TODO: this is quite bad when mod == 1
+                    var mod = intersectionLine.Length / maxPointsPerLine;
 
                     for (var i = 0; i < maxPointsPerLine; i++)
                     {
-                        var position = intersectionLine.GetNthPoint(i != maxPointsPerLine - 1 ? i * mod : intersectionLine.Length + 1);
+                        var position = intersectionLine.GetNthPoint(i != maxPointsPerLine - 1 ? i * mod : intersectionLine.Length);
                         yield return position;
                     }
                 }

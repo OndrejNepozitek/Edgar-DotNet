@@ -7,7 +7,7 @@ using Edgar.Legacy.Utils;
 
 namespace Edgar.Examples.Grid2D
 {
-    public class CorridorsExample : IExampleGrid2D
+    public class CorridorsExample : IExampleGrid2D<int>
     {
         public string Name => "Corridors";
 

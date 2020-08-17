@@ -300,15 +300,21 @@ namespace Edgar.Examples.MapDrawing
 		protected void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
 		{
 			var partitions = polygonPartitioning.GetPartitions(polygon);
-			var biggestRectangle = partitions.OrderByDescending(x => x.Width).First();
+			var orderedRectangles = partitions.OrderBy(x => Vector2Int.ManhattanDistance(x.Center, polygon.BoundingRectangle.Center)).ToList();
+            var targetRectangle = orderedRectangles.First();
+
+            if (orderedRectangles.Any(x => x.Width > 6 && x.Height > 3))
+            {
+                targetRectangle = orderedRectangles.First(x => x.Width > 6 && x.Height > 3);
+            }
 
 			using (var font = new Font("Baskerville Old Face", penWidth, FontStyle.Bold, GraphicsUnit.Pixel))
 			{
 				var rect = new RectangleF(
-					biggestRectangle.A.X,
-					biggestRectangle.A.Y,
-					biggestRectangle.Width,
-					biggestRectangle.Height
+                    targetRectangle.A.X,
+                    targetRectangle.A.Y,
+                    targetRectangle.Width,
+                    targetRectangle.Height
 				);
 
 				var sf = new StringFormat
@@ -358,7 +364,7 @@ namespace Edgar.Examples.MapDrawing
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
-		protected void DrawLayout(LevelGrid2D<TNode> layout, float scale, Vector2Int offset, bool withNames, float? fixedFontSize = null)
+		protected void DrawLayout(LevelGrid2D<TNode> layout, float scale, Vector2 offset, bool withNames, float? fixedFontSize = null)
 		{
 			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
@@ -441,7 +447,7 @@ namespace Edgar.Examples.MapDrawing
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		/// <returns></returns>
-		protected Vector2Int TransformPoint(Vector2Int point, float scale, Vector2Int offset)
+		protected Vector2Int TransformPoint(Vector2Int point, float scale, Vector2 offset)
 		{
 			return new Vector2Int((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
 		}
@@ -457,12 +463,12 @@ namespace Edgar.Examples.MapDrawing
 		/// <param name="height"></param>
 		/// <param name="scale"></param>
 		/// <returns></returns>
-		public Vector2Int GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
+		public Vector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
 			var centery = scale * (maxy + miny) / 2;
 
-			return new Vector2Int((int)(width / 2f - centerx), (int)(height / 2f - centery));
+			return new Vector2((width / 2f - centerx), (height / 2f - centery));
 		}
 
 		/// <summary>

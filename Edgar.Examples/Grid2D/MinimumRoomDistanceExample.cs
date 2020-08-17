@@ -3,7 +3,7 @@ using Edgar.GraphBasedGenerator.Grid2D;
 
 namespace Edgar.Examples.Grid2D
 {
-    public class MinimumRoomDistanceExample : IExampleGrid2D
+    public class MinimumRoomDistanceExample : IExampleGrid2D<int>
     {
         public string Name => "Minimum room distance";
 

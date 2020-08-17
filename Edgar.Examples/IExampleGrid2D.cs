@@ -3,8 +3,8 @@ using Edgar.GraphBasedGenerator.Grid2D;
 
 namespace Edgar.Examples
 {
-    public interface IExampleGrid2D : IExample
+    public interface IExampleGrid2D<TRoom> : IExample
     {
-        IEnumerable<LevelDescriptionGrid2D<int>> GetResults();
+        IEnumerable<LevelDescriptionGrid2D<TRoom>> GetResults();
     }
 }

@@ -22,20 +22,13 @@ namespace Edgar.Examples
 
         public void Run()
         {
-            var examples = new List<IExampleGrid2D>()
-            {
-                new BasicsExample(),
-                new CorridorsExample(),
-                new MinimumRoomDistanceExample(),
-            };
-
-            foreach (var example in examples)
-            {
-                GenerateExample(example);
-            }
+            //GenerateExample(new BasicsExample());
+            //GenerateExample(new CorridorsExample());
+            //GenerateExample(new MinimumRoomDistanceExample());
+            GenerateExample(new RealLifeExample());
         }
 
-        private void GenerateExample(IExampleGrid2D example)
+        private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
         {
             var sourceCode = GetSourceCode(example, "GetLevelDescription");
             var stringBuilder = new StringBuilder();
@@ -176,11 +169,11 @@ namespace Edgar.Examples
             resultsCounter = 0;
             foreach (var levelDescription in example.GetResults())
             {
-                var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+                var generator = new GraphBasedGeneratorGrid2D<TRoom>(levelDescription);
                 generator.InjectRandomGenerator(new Random(0));
 
-                var layoutDrawer = new SVGLayoutDrawer<int>();
-                var oldMapDrawer = new OldMapDrawer<int>();
+                var layoutDrawer = new SVGLayoutDrawer<TRoom>();
+                var oldMapDrawer = new OldMapDrawer<TRoom>();
 
                 for (int i = 0; i < 4; i++)
                 {

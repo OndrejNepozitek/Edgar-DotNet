@@ -4,7 +4,7 @@
     "$id": "2",
     "0": {
       "$id": "3",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "4",
@@ -41,7 +41,7 @@
             },
             "DoorsMode": {
               "$id": "12",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -86,7 +86,7 @@
             },
             "DoorsMode": {
               "$id": "21",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -131,7 +131,7 @@
             },
             "DoorsMode": {
               "$id": "30",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -256,7 +256,7 @@
             },
             "DoorsMode": {
               "$id": "55",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -341,7 +341,7 @@
             },
             "DoorsMode": {
               "$id": "72",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -426,7 +426,7 @@
             },
             "DoorsMode": {
               "$id": "89",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -471,7 +471,7 @@
             },
             "DoorsMode": {
               "$id": "98",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -489,7 +489,7 @@
     },
     "1": {
       "$id": "100",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "101",
@@ -526,7 +526,7 @@
             },
             "DoorsMode": {
               "$id": "109",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -544,7 +544,7 @@
     },
     "2": {
       "$id": "111",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "112",
@@ -575,7 +575,7 @@
     },
     "3": {
       "$id": "113",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "114",
@@ -612,7 +612,7 @@
             },
             "DoorsMode": {
               "$id": "122",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 4
             },
@@ -657,7 +657,7 @@
             },
             "DoorsMode": {
               "$id": "131",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 4
             },
@@ -702,7 +702,7 @@
             },
             "DoorsMode": {
               "$id": "140",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 4
             },
@@ -720,7 +720,7 @@
     },
     "4": {
       "$id": "142",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "143",
@@ -751,7 +751,7 @@
     },
     "5": {
       "$id": "144",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "145",
@@ -828,7 +828,7 @@
             },
             "DoorsMode": {
               "$id": "161",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -846,7 +846,7 @@
     },
     "6": {
       "$id": "163",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "164",
@@ -877,7 +877,7 @@
     },
     "7": {
       "$id": "165",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "166",
@@ -914,7 +914,7 @@
             },
             "DoorsMode": {
               "$id": "174",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "175",
                 "$values": [
@@ -995,7 +995,7 @@
     },
     "8": {
       "$id": "189",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "190",
@@ -1032,7 +1032,7 @@
             },
             "DoorsMode": {
               "$id": "198",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 3
             },
@@ -1050,7 +1050,7 @@
     },
     "9": {
       "$id": "200",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "201",
@@ -1087,7 +1087,7 @@
             },
             "DoorsMode": {
               "$id": "209",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "210",
                 "$values": [
@@ -1168,7 +1168,7 @@
     },
     "10": {
       "$id": "224",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "225",
@@ -1187,7 +1187,7 @@
     },
     "11": {
       "$id": "226",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "227",
@@ -1218,7 +1218,7 @@
     },
     "12": {
       "$id": "228",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "229",
@@ -1249,7 +1249,7 @@
     },
     "13": {
       "$id": "230",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "231",
@@ -1262,7 +1262,7 @@
     },
     "14": {
       "$id": "232",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "233",
@@ -1293,7 +1293,7 @@
     },
     "15": {
       "$id": "234",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "235",
@@ -1370,7 +1370,7 @@
             },
             "DoorsMode": {
               "$id": "251",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
@@ -1388,7 +1388,7 @@
     },
     "16": {
       "$id": "253",
-      "$type": "MapGeneration.Core.MapDescriptions.CorridorRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.CorridorRoomDescription, Edgar",
       "Stage": 2,
       "RoomTemplates": {
         "$id": "254",
@@ -1425,7 +1425,7 @@
             },
             "DoorsMode": {
               "$id": "262",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "263",
                 "$values": [
@@ -1503,7 +1503,7 @@
             },
             "DoorsMode": {
               "$id": "278",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "279",
                 "$values": [
@@ -1581,7 +1581,7 @@
             },
             "DoorsMode": {
               "$id": "294",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "295",
                 "$values": [
@@ -1659,7 +1659,7 @@
             },
             "DoorsMode": {
               "$id": "310",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "311",
                 "$values": [
@@ -1737,7 +1737,7 @@
             },
             "DoorsMode": {
               "$id": "326",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "327",
                 "$values": [
@@ -1815,7 +1815,7 @@
             },
             "DoorsMode": {
               "$id": "342",
-              "$type": "MapGeneration.Core.Doors.DoorModes.ManualDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
               "DoorPositions": {
                 "$id": "343",
                 "$values": [
@@ -1914,7 +1914,7 @@
     },
     "33": {
       "$id": "351",
-      "$type": "MapGeneration.Core.MapDescriptions.BasicRoomDescription, MapGeneration",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
       "Stage": 1,
       "RoomTemplates": {
         "$id": "352",
@@ -1951,7 +1951,7 @@
             },
             "DoorsMode": {
               "$id": "360",
-              "$type": "MapGeneration.Core.Doors.DoorModes.SimpleDoorMode, MapGeneration",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
               "DoorLength": 1,
               "CornerDistance": 2
             },
