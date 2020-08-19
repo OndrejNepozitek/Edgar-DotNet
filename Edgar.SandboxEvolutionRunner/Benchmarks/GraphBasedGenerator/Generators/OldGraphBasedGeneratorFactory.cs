@@ -38,6 +38,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
 
+            configuration.RepeatModeOverride = levelDescription.RoomTemplateRepeatModeOverride;
+            if (levelDescription.RoomTemplateRepeatModeDefault.HasValue)
+            {
+                throw new ArgumentException("Default repeat mode not supported");
+            }
+
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
             var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);
@@ -75,6 +81,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
         {
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
+
+            configuration.RepeatModeOverride = levelDescription.RoomTemplateRepeatModeOverride;
+            if (levelDescription.RoomTemplateRepeatModeDefault.HasValue)
+            {
+                throw new ArgumentException("Default repeat mode not supported");
+            }
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
             var seedGenerator = new Random();

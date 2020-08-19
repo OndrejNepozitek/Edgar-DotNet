@@ -22,12 +22,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
         private List<RoomTemplateGrid2D> roomTemplatesMedium;
         private readonly List<RoomTemplateGrid2D> roomTemplatesOriginal;
         private readonly RoomTemplatesSet roomTemplatesSet;
-        private readonly RepeatMode repeatMode;
+        private readonly RoomTemplateRepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
         private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
         private readonly Vector2Int scale;
 
-        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RepeatMode repeatMode = RepeatMode.AllowRepeat)
+        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat)
         {
             this.roomTemplatesSet = roomTemplatesSet;
             this.scale = scale;

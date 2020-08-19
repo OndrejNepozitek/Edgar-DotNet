@@ -26,18 +26,20 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         private readonly TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping;
         private readonly ILevelDescription<TNode> mapDescription;
         private readonly IGraph<TNode> graphWithoutCorridors;
-        private readonly RepeatMode? repeatModeOverride;
+        private readonly RoomTemplateRepeatMode? repeatModeOverride;
+        private readonly RoomTemplateRepeatMode? repeatModeDefault;
         private RoomTemplateInfo[] roomTemplateInstanceInfo;
         private readonly Dictionary<TNode, List<WeightedShape>> shapesForNodes;
         private Random random;
 
         public RoomShapesHandlerGrid2D(
             TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping,
-            ILevelDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes, RepeatMode? repeatModeOverride = null)
+            ILevelDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes, RoomTemplateRepeatMode? repeatModeOverride = null, RoomTemplateRepeatMode? repeatModeDefault = null)
         {
             this.intAliasMapping = intAliasMapping;
             this.mapDescription = mapDescription;
             this.shapesForNodes = shapesForNodes;
+            this.repeatModeDefault = repeatModeDefault;
             this.repeatModeOverride = repeatModeOverride;
             graphWithoutCorridors = mapDescription.GetGraphWithoutCorridors();
 
@@ -88,15 +90,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             if (shapes.Count == 0 && tryToFixEmpty)
             {
                 // Try to lower our requirements and use NoImmediate instead of NoRepeat rather than returning an empty list
-                if (repeatModeOverride == null || repeatModeOverride == RepeatMode.NoRepeat)
+                if (repeatModeOverride == null || repeatModeOverride == RoomTemplateRepeatMode.NoRepeat)
                 {
-                    shapes = GetPossibleShapesForNode(layout, node, RepeatMode.NoImmediate);
+                    shapes = GetPossibleShapesForNode(layout, node, RoomTemplateRepeatMode.NoImmediate);
                 }
 
                 // Try to lower our requirements and use AllowRepeat instead of returning an empty list
-                if (shapes.Count == 0 && repeatModeOverride != RepeatMode.AllowRepeat)
+                if (shapes.Count == 0 && repeatModeOverride != RoomTemplateRepeatMode.AllowRepeat)
                 {
-                    shapes = GetPossibleShapesForNode(layout, node, RepeatMode.AllowRepeat);
+                    shapes = GetPossibleShapesForNode(layout, node, RoomTemplateRepeatMode.AllowRepeat);
                 }
             }
 
@@ -115,7 +117,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // return configurationSpaces.CanPerturbShape(node);
         }
 
-        private List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RepeatMode? modeOverride)
+        private List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RoomTemplateRepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<PolygonGrid2D>>(shapesForNodes[node].Select(x => x.Shape));
 
@@ -128,9 +130,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
                 var polygon = intAliasMapping[configuration.RoomShape];
                 var roomTemplateInfo = roomTemplateInstanceInfo[polygon.Alias];
-                var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode;
+                var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode ?? repeatModeDefault;
 
-                if (repeatMode == RepeatMode.NoRepeat || (repeatMode == RepeatMode.NoImmediate && graphWithoutCorridors.HasEdge(node, configuration.Room)))
+                if (repeatMode == RoomTemplateRepeatMode.NoRepeat || (repeatMode == RoomTemplateRepeatMode.NoImmediate && graphWithoutCorridors.HasEdge(node, configuration.Room)))
                 {
                     foreach (var alias in roomTemplateInfo.Aliases)
                     {

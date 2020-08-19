@@ -14,11 +14,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
         public string Name { get; }
 
-        public RepeatMode? RepeatMode { get; }
+        public RoomTemplateRepeatMode? RepeatMode { get; }
 
         public List<TransformationGrid2D> AllowedTransformations { get; }
 
-        public RoomTemplateGrid2D(PolygonGrid2D outline, IDoorModeGrid2D doors, string name = null, RepeatMode? repeatMode = null, List<TransformationGrid2D> allowedTransformations = null)
+        public RoomTemplateGrid2D(PolygonGrid2D outline, IDoorModeGrid2D doors, string name = null, RoomTemplateRepeatMode? repeatMode = null, List<TransformationGrid2D> allowedTransformations = null)
         {
             Outline = outline;
             Doors = doors;

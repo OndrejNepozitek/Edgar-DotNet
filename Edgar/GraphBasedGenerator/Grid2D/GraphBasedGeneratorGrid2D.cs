@@ -203,7 +203,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 intAliasMapping,
                 levelDescriptionMapped,
                 shapesForNodes,
-                configuration.RepeatModeOverride
+                levelDescription.RoomTemplateRepeatModeOverride,
+                levelDescription.RoomTemplateRepeatModeDefault
             );
 
             // Create layout operations

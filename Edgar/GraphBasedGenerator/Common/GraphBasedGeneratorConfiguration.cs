@@ -17,7 +17,7 @@ namespace Edgar.GraphBasedGenerator.Common
                 RoomsCanTouch = RoomsCanTouch,
                 EarlyStopIfIterationsExceeded = EarlyStopIfIterationsExceeded,
                 EarlyStopIfTimeExceeded = EarlyStopIfTimeExceeded,
-                RepeatModeOverride = RepeatMode.NoImmediate,
+                RepeatModeOverride = RoomTemplateRepeatMode.NoImmediate,
                 ThrowIfRepeatModeNotSatisfied = ThrowIfRepeatModeNotSatisfied,
                 ChainDecompositionConfiguration = ChainDecompositionConfiguration.SmartClone(),
                 Chains = Chains?.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).ToList(),

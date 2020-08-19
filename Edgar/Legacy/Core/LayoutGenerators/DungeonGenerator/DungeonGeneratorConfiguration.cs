@@ -43,7 +43,7 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
         /// If this property is set, the chosen repeat mode will be used for all room templates
         /// no matter what their own repeat mode was.
         /// </summary>
-        public RepeatMode? RepeatModeOverride { get; set; }
+        public RoomTemplateRepeatMode? RepeatModeOverride { get; set; }
 
         /// <summary>
         /// Whether to throw an exception when the algorithm is not able to satisfy all the repeat
@@ -99,7 +99,7 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
                 RoomsCanTouch = RoomsCanTouch,
                 EarlyStopIfIterationsExceeded = EarlyStopIfIterationsExceeded,
                 EarlyStopIfTimeExceeded = EarlyStopIfTimeExceeded,
-                RepeatModeOverride = RepeatMode.NoImmediate,
+                RepeatModeOverride = RepeatModeOverride,
                 ThrowIfRepeatModeNotSatisfied = ThrowIfRepeatModeNotSatisfied,
                 ChainDecompositionConfiguration = ChainDecompositionConfiguration.SmartClone(),
                 Chains = Chains?.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number)).ToList(),

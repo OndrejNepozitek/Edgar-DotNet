@@ -45,7 +45,7 @@ namespace Sandbox.Features
             {
                 var configuration = new DungeonGeneratorConfiguration<int>()
                 {
-                    RepeatModeOverride = RepeatMode.NoImmediate,
+                    RepeatModeOverride = RoomTemplateRepeatMode.NoImmediate,
                     ThrowIfRepeatModeNotSatisfied = true,
                     SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
                     {

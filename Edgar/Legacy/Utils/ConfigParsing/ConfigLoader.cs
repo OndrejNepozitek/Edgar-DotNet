@@ -324,7 +324,7 @@ namespace Edgar.Legacy.Utils.ConfigParsing
                 return roomTemplates[identifier];
             }
 
-			var roomTemplate = new RoomTemplate(new PolygonGrid2D(model.Shape).Scale(scale ?? new Vector2Int(1, 1)), GetDoorMode(model.DoorMode), transformations, model.RepeatMode ?? RepeatMode.AllowRepeat);
+			var roomTemplate = new RoomTemplate(new PolygonGrid2D(model.Shape).Scale(scale ?? new Vector2Int(1, 1)), GetDoorMode(model.DoorMode), transformations, model.RepeatMode ?? RoomTemplateRepeatMode.AllowRepeat);
             roomTemplates.Add(identifier, roomTemplate);
 
             return roomTemplate;

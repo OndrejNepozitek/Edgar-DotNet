@@ -83,7 +83,7 @@ namespace SandboxEvolutionRunner.Scenarios
         protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = base.GetBasicConfiguration(namedMapDescription);
-            configuration.RepeatModeOverride = RepeatMode.NoRepeat;
+            configuration.RepeatModeOverride = RoomTemplateRepeatMode.NoRepeat;
             return configuration;
         }
 

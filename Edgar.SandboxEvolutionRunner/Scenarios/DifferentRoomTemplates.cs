@@ -9,7 +9,7 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class DifferentRoomTemplates : Scenario
     {
-        private DungeonGeneratorConfiguration<int> GetConfiguration(NamedMapDescription namedMapDescription, RepeatMode repeatMode = RepeatMode.AllowRepeat)
+        private DungeonGeneratorConfiguration<int> GetConfiguration(NamedMapDescription namedMapDescription, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
             configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
@@ -34,7 +34,7 @@ namespace SandboxEvolutionRunner.Scenarios
             Run(RoomTemplatesSet.Original);
         }
 
-        private void Run(RoomTemplatesSet roomTemplatesSet, RepeatMode repeatMode = RepeatMode.AllowRepeat, bool enhanceRoomTemplates = false)
+        private void Run(RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, bool enhanceRoomTemplates = false)
         {
             var loader = new BetterMapDescriptionLoader(Options, roomTemplatesSet, repeatMode);
             var mapDescriptions = loader.GetMapDescriptions();

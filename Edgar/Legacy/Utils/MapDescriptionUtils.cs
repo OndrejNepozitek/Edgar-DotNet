@@ -130,7 +130,7 @@ namespace Edgar.Legacy.Utils
                         new DoorGrid2D(new Vector2Int(length, 0), new Vector2Int(length, width)),
                     }),
                     allowedTransformations: transformations,
-                    repeatMode: RepeatMode.AllowRepeat
+                    repeatMode: RoomTemplateRepeatMode.AllowRepeat
                 );
 
                 roomTemplates.Add(roomTemplate);

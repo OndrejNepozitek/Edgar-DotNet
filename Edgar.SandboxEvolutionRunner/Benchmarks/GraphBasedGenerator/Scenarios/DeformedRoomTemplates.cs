@@ -52,7 +52,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 
         public class CustomLevelDescriptionLoader : LevelDescriptionLoader
         {
-            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RepeatMode repeatMode = RepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode)
+            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode)
             {
             }
 

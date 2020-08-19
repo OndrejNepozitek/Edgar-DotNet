@@ -3,7 +3,7 @@
     /// <summary>
     /// Determines if a room template can repeat in a level.
     /// </summary>
-    public enum RepeatMode
+    public enum RoomTemplateRepeatMode
     {
         AllowRepeat,
         NoImmediate,

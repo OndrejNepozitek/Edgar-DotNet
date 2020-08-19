@@ -12,6 +12,6 @@ namespace Edgar.Legacy.Utils.ConfigParsing.Models
 
 		public IDoorModeModel DoorMode { get; set; }
 
-        public RepeatMode? RepeatMode { get; set; }
+        public RoomTemplateRepeatMode? RepeatMode { get; set; }
 	}
 }

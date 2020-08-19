@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Edgar.GraphBasedGenerator;
+using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
 using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios;
@@ -15,6 +16,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
 
+            levelDescriptions.ForEach(x => x.RoomTemplateRepeatModeOverride = RoomTemplateRepeatMode.NoImmediate);
+
             return new BenchmarkScenario<int>("Without corridors", levelDescriptions);
         }
 
@@ -22,6 +25,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         {
             var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 2, 4 });
+
+            levelDescriptions.ForEach(x => x.RoomTemplateRepeatModeOverride = RoomTemplateRepeatMode.NoImmediate);
 
             return new BenchmarkScenario<int>("With corridors", levelDescriptions);
         }

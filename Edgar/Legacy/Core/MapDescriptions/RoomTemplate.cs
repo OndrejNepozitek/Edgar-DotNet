@@ -16,16 +16,16 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
         public List<TransformationGrid2D> AllowedTransformations { get; }
 
-		public RepeatMode RepeatMode { get; }
+		public RoomTemplateRepeatMode RoomTemplateRepeatMode { get; }
 
 		public string Name { get; }
 
-		public RoomTemplate(PolygonGrid2D shape, IDoorMode doorsMode, List<TransformationGrid2D> allowedTransformations = null, RepeatMode repeatMode = RepeatMode.AllowRepeat, string name = null)
+		public RoomTemplate(PolygonGrid2D shape, IDoorMode doorsMode, List<TransformationGrid2D> allowedTransformations = null, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, string name = null)
 		{
 			Shape = shape;
 			DoorsMode = doorsMode;
             AllowedTransformations = allowedTransformations ?? new List<TransformationGrid2D>() { TransformationGrid2D.Identity };
-            RepeatMode = repeatMode;
+            RoomTemplateRepeatMode = repeatMode;
             Name = name ?? "Room template";
         }
 	}

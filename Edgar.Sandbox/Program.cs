@@ -295,7 +295,7 @@ namespace Sandbox
 		//	return inputs;
 		//}
 
-        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(Vector2Int scale, bool withCorridors, List<int> offsets, bool canTouch, RepeatMode? repeatModeOverride = null, BasicRoomDescription basicRoomDescription = null, string suffix = null)
+        public static List<DungeonGeneratorInput<int>> GetMapDescriptionsSet(Vector2Int scale, bool withCorridors, List<int> offsets, bool canTouch, RoomTemplateRepeatMode? repeatModeOverride = null, BasicRoomDescription basicRoomDescription = null, string suffix = null)
         {
             var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(scale);
             basicRoomDescription = basicRoomDescription ?? new BasicRoomDescription(basicRoomTemplates);

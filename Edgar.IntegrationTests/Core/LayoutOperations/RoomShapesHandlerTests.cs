@@ -35,9 +35,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void AllowRepeat()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.AllowRepeat);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.AllowRepeat);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.AllowRepeat);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -66,7 +66,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void DifferentTransformationsProperlyHandled()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat, TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat, TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -91,9 +91,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void AllowRepeatOverride()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.NoRepeat);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.NoRepeat);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -103,7 +103,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
-                RepeatMode.AllowRepeat
+                RoomTemplateRepeatMode.AllowRepeat
             );
 
             var roomShapes = configurationSpaces.GetIntAliasMapping().Values.ToList();
@@ -123,9 +123,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void NoRepeat()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.NoRepeat);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.NoRepeat);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -155,9 +155,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void NoRepeatOverride()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.AllowRepeat);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.AllowRepeat);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.AllowRepeat);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -167,7 +167,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
                 configurationSpaces,
                 configurationSpaces.GetIntAliasMapping(),
                 mapDescription,
-                RepeatMode.NoRepeat
+                RoomTemplateRepeatMode.NoRepeat
             );
 
             var roomShapes = configurationSpaces.GetIntAliasMapping().Values.ToList();
@@ -188,9 +188,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void NoImmediate()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoImmediate);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.NoImmediate);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.NoImmediate);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -233,9 +233,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void NoImmediateWithCorridors()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoImmediate);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.NoImmediate);
-            var roomTemplate3 = GetRoomTemplate(RepeatMode.NoImmediate);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
+            var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
             var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
 
@@ -286,8 +286,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void TryToFixEmpty_NoRepeatToNoImmediate()
         {
-            var roomTemplate1 = GetRoomTemplate(RepeatMode.NoRepeat);
-            var roomTemplate2 = GetRoomTemplate(RepeatMode.NoRepeat);
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
+            var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
 
             var mapDescription = GetMapDescription(roomDescription);
@@ -371,7 +371,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             return mapDescription;
         }
 
-        private RoomTemplate GetRoomTemplate(RepeatMode repeatMode, List<TransformationGrid2D> transformations = null)
+        private RoomTemplate GetRoomTemplate(RoomTemplateRepeatMode repeatMode, List<TransformationGrid2D> transformations = null)
         {
             return new RoomTemplate(
                 PolygonGrid2D.GetRectangle(10, 20),

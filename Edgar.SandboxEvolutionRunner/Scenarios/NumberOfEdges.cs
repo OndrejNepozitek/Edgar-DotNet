@@ -61,7 +61,7 @@ namespace SandboxEvolutionRunner.Scenarios
 
         private BenchmarkScenarioResult Run(string graphSet)
         {
-            var loader = new CustomMapDescriptionLoader(Options, Options.RoomTemplatesSet, RepeatMode.NoImmediate, graphSet, maxClusterSize);
+            var loader = new CustomMapDescriptionLoader(Options, Options.RoomTemplatesSet, RoomTemplateRepeatMode.NoImmediate, graphSet, maxClusterSize);
             var mapDescriptions = loader.GetMapDescriptions();
 
             return RunBenchmark(mapDescriptions, x => GetConfiguration(x), Options.FinalEvaluationIterations, $"{graphSet}");
@@ -72,7 +72,7 @@ namespace SandboxEvolutionRunner.Scenarios
             private readonly string graphSet;
             private readonly int maxClusterSize;
 
-            public CustomMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RepeatMode repeatMode, string graphSet, int maxClusterSize) : base(options, roomTemplatesSet, repeatMode)
+            public CustomMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode, string graphSet, int maxClusterSize) : base(options, roomTemplatesSet, repeatMode)
             {
                 this.graphSet = graphSet;
                 this.maxClusterSize = maxClusterSize;

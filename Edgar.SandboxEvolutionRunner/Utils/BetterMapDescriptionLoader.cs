@@ -17,11 +17,11 @@ namespace SandboxEvolutionRunner.Utils
         private readonly List<RoomTemplate> roomTemplatesMedium;
         private readonly List<RoomTemplate> roomTemplatesOriginal;
         private readonly RoomTemplatesSet roomTemplatesSet;
-        private readonly RepeatMode repeatMode;
+        private readonly RoomTemplateRepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
         private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
-        public BetterMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RepeatMode repeatMode = RepeatMode.AllowRepeat) : base(options)
+        public BetterMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(options)
         {
             this.roomTemplatesSet = roomTemplatesSet;
             this.repeatMode = repeatMode;

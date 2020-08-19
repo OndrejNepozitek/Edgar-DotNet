@@ -235,7 +235,7 @@ namespace Sandbox.Features
 
             return new DungeonGeneratorInput<int>(name, mapDescription, new DungeonGeneratorConfiguration<int>()
             {
-                RepeatModeOverride = RepeatMode.NoRepeat,
+                RepeatModeOverride = RoomTemplateRepeatMode.NoRepeat,
             }, null);
         }
 
