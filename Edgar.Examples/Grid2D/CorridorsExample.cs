@@ -31,7 +31,7 @@ namespace Edgar.Examples.Grid2D
 
             //md Now we can create the corridor room template. We must not forget to allow the 90 degrees rotation because, otherwise we would not be able to connect rooms both vertically and horizontally.
 
-			var corridorRoomTemplate = new RoomTemplateGrid2D(
+            var corridorRoomTemplate = new RoomTemplateGrid2D(
                 corridorOutline,
                 corridorDoors,
                 allowedTransformations: new List<TransformationGrid2D>()
@@ -46,7 +46,7 @@ namespace Edgar.Examples.Grid2D
             var corridorRoomDescription = new RoomDescriptionGrid2D()
             {
                 IsCorridor = true,
-                RoomTemplates = new List<RoomTemplateGrid2D>() { corridorRoomTemplate }
+                RoomTemplates = new List<RoomTemplateGrid2D>() {corridorRoomTemplate}
             };
 
             //md ## Basic room description
@@ -105,7 +105,7 @@ namespace Edgar.Examples.Grid2D
             };
 
             var squareRoom = new RoomTemplateGrid2D(
-                PolygonGrid2D.GetSquare(8), 
+                PolygonGrid2D.GetSquare(8),
                 doors,
                 name: "Square 8x8",
                 allowedTransformations: transformations

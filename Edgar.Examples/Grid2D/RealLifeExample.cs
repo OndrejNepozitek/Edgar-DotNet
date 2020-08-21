@@ -14,18 +14,33 @@ namespace Edgar.Examples.Grid2D
 {
     public class RealLifeExample : IExampleGrid2D<RealLifeExample.Room>
     {
-        public string Name => "Real-life";
+        public string Name => "Real-life example";
 
         public string DocsFileName => "real-life";
 
-        public LevelDescriptionGrid2D<Room> GetLevelDescription()
+        public LevelDescriptionGrid2D<Room> GetLevelDescription() 
         {
-            // roomDescription.RoomTemplates = roomTemplates.Values.ToList();
+            //md In this example, we will create a level description that should be close to what we could use in a game. We will cover the following:
+            //md - create a room type enum for individual types of rooms - spawn, boss, shop, reward, etc.
+            //md - create a custom room class to identify rooms in the level graph
+            //md - assign room templates based on the type of the room
+            //md - use corridors with different lengths
+
+            //sc enum:RoomType
+
+            //sc class:Room
+
+            //md ## Room templates
+            //sc method:GetRoomTemplates
+
+            #region Test 2
 
             var levelDescription = new LevelDescriptionGrid2D<Room>();
             levelDescription.MinimumRoomDistance = 2;
             levelDescription.RoomTemplateRepeatModeDefault = RoomTemplateRepeatMode.NoImmediate;
             var graph = GetGraph();
+
+            #region Test
 
             var roomTemplates = GetRoomTemplates();
             var corridorRoomDescription = new RoomDescriptionGrid2D()
@@ -34,12 +49,14 @@ namespace Edgar.Examples.Grid2D
                 RoomTemplates = GetCorridorRoomTemplates(),
             };
 
+            #endregion
+
             foreach (var room in graph.Vertices)
             {
                 levelDescription.AddRoom(room, new RoomDescriptionGrid2D()
                 {
                     IsCorridor = false,
-                    RoomTemplates = GetRoomTemplates(room.Type, roomTemplates),
+                    RoomTemplates = GetRoomTemplatesForRoom(room.Type, roomTemplates),
                 });
             }
 
@@ -53,9 +70,11 @@ namespace Edgar.Examples.Grid2D
             }
 
             return levelDescription;
+
+            #endregion
         }
 
-        private List<RoomTemplateGrid2D> GetRoomTemplates(RoomType type, Dictionary<string, RoomTemplateGrid2D> roomTemplates)
+        private List<RoomTemplateGrid2D> GetRoomTemplatesForRoom(RoomType type, Dictionary<string, RoomTemplateGrid2D> roomTemplates)
         {
             switch (type)
             {
@@ -138,6 +157,7 @@ namespace Edgar.Examples.Grid2D
                     repeatMode: RoomTemplateRepeatMode.NoRepeat,
                     allowedTransformations: TransformationGrid2DHelper.GetRotations()
                 )},
+                #region hidden:Other room templates
                 {"Normal 4", new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-39, 1).AddPoint(-37, 1).AddPoint(-37, 10).AddPoint(-39, 10)
@@ -212,6 +232,7 @@ namespace Edgar.Examples.Grid2D
                     PolygonGrid2D.GetSquare(9), 
                     new SimpleDoorModeGrid2D(1, 2)
                 )},
+                #endregion
             };
         }
 
@@ -396,6 +417,9 @@ namespace Edgar.Examples.Grid2D
             yield return GetLevelDescription();
         }
 
+        /// <summary>
+        /// Test
+        /// </summary>
         public enum RoomType
         {
             Normal, Spawn, Boss, Corridor, Exit, Reward, Shop, Hub

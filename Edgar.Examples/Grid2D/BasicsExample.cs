@@ -15,7 +15,7 @@ namespace Edgar.Examples.Grid2D
 
         public LevelDescriptionGrid2D<int> GetLevelDescription()
         {
-            //md In this examples, we will generate a very simple level consisting of 4 rooms with rectangular shapes.
+            //md In this example, we will generate a very simple level consisting of 4 rooms with rectangular shapes.
 
             //md ## Room templates
             //md First, we will create our room templates. We must create an instance of the `RoomTemplateGrid2D` class for each room template. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
