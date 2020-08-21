@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
@@ -162,7 +163,7 @@ namespace Edgar.Legacy.Utils.MapDrawing
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon, List<DoorInfo<TNode>> doorLines)
+		protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines)
 		{
 			var outline = new List<Tuple<Vector2Int, bool>>();
 
@@ -174,7 +175,7 @@ namespace Edgar.Legacy.Utils.MapDrawing
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<DoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+					new Tuple<LayoutDoorGrid2D<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
 				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
 				foreach (var pair in doorDistances)

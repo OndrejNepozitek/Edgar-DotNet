@@ -73,9 +73,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutGenerators
         public static MapDescription<int> GetImpossibleMapDescription()
         {
             var roomShape = PolygonGrid2D.GetSquare(3);
-            var doorPositions = new List<OrthogonalLine>()
+            var doorPositions = new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 1)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
             };
 
             var roomTemplate = new RoomTemplate(roomShape, new ManualDoorMode(doorPositions), TransformationGrid2DHelper.GetAllTransformationsOld().ToList());

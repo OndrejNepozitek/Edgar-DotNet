@@ -24,7 +24,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
         protected TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> IntAliasMapping = new TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>>();
 
         public ConfigurationSpaces(
-            ILineIntersection<OrthogonalLine> lineIntersection, int roomTemplateInstancesCount, int nodesCount, Func<TConfiguration, TConfiguration, int> configurationSpaceSelector) : base(lineIntersection)
+            ILineIntersection<OrthogonalLineGrid2D> lineIntersection, int roomTemplateInstancesCount, int nodesCount, Func<TConfiguration, TConfiguration, int> configurationSpaceSelector) : base(lineIntersection)
         {
             this.configurationSpaceSelector = configurationSpaceSelector;
             // Init configuration spaces array

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -125,7 +126,7 @@ namespace Edgar.Examples
                     for (int i = 0; i < 4; i++)
                     {
                         stringBuilder.AppendLine(
-                            $"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.jpg').default}} />");
+                            $"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.png').default}} />");
                     }
 
                     stringBuilder.AppendLine("</Gallery>");
@@ -171,7 +172,7 @@ namespace Edgar.Examples
                         svg);
 
                     var bitmap = oldMapDrawer.DrawLayout(level, 2000, 2000, fixedFontSize: 1.5f, withNames: true);
-                    bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.jpg"));
+                    bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.png"));
                 }
 
                 resultsCounter++;

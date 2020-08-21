@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.Doors.Interfaces;
@@ -92,7 +93,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     throw new NotSupportedException("Old room templates support only null sockets");
                 }
 
-                oldDoorMode = new ManualDoorMode(manualDoorMode.Doors.Select(x => new OrthogonalLine(x.From, x.To)).ToList());
+                oldDoorMode = new ManualDoorMode(manualDoorMode.Doors.Select(x => new OrthogonalLineGrid2D(x.From, x.To)).ToList());
             }
             else
             {

@@ -84,15 +84,15 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareAllRotationsOneDoor_ReturnsFourInstance()
         {
             var roomShape = PolygonGrid2D.GetSquare(10);
-            var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0))});
+            var doorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>() { new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0))});
             var transformations = new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90, TransformationGrid2D.Rotate180, TransformationGrid2D.Rotate270 };
 
             var expectedDoorPositions = new Dictionary<TransformationGrid2D, DoorLine>()
             {
-                { TransformationGrid2D.Identity, new DoorLine(new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(1, 0)), 1) },
-                { TransformationGrid2D.Rotate90, new DoorLine(new OrthogonalLine(new Vector2Int(0, 9), new Vector2Int(0, 9)), 1) },
-                { TransformationGrid2D.Rotate180, new DoorLine(new OrthogonalLine(new Vector2Int(9, 10), new Vector2Int(9, 10)), 1) },
-                { TransformationGrid2D.Rotate270, new DoorLine(new OrthogonalLine(new Vector2Int(10, 1), new Vector2Int(10, 1)), 1) },
+                { TransformationGrid2D.Identity, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(1, 0)), 1) },
+                { TransformationGrid2D.Rotate90, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, 9), new Vector2Int(0, 9)), 1) },
+                { TransformationGrid2D.Rotate180, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(9, 10), new Vector2Int(9, 10)), 1) },
+                { TransformationGrid2D.Rotate270, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(10, 1), new Vector2Int(10, 1)), 1) },
             };
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -117,20 +117,20 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
         public void GetRoomTemplateInstances_SquareAllTransformationsOneDoor_ReturnsFourInstance()
         {
             var roomShape = PolygonGrid2D.GetSquare(10);
-            var doorsMode = new ManualDoorMode(new List<OrthogonalLine>() { new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)) });
+            var doorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>() { new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)) });
             var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
             var expectedDoorPositions = new Dictionary<TransformationGrid2D, DoorLine>()
             {
-                { TransformationGrid2D.Identity, new DoorLine(new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(1, 0)), 1) },
-                { TransformationGrid2D.Rotate90, new DoorLine(new OrthogonalLine(new Vector2Int(0, 9), new Vector2Int(0, 9)), 1) },
-                { TransformationGrid2D.Rotate180, new DoorLine(new OrthogonalLine(new Vector2Int(9, 10), new Vector2Int(9, 10)), 1) },
-                { TransformationGrid2D.Rotate270, new DoorLine(new OrthogonalLine(new Vector2Int(10, 1), new Vector2Int(10, 1)), 1) },
+                { TransformationGrid2D.Identity, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(1, 0)), 1) },
+                { TransformationGrid2D.Rotate90, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, 9), new Vector2Int(0, 9)), 1) },
+                { TransformationGrid2D.Rotate180, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(9, 10), new Vector2Int(9, 10)), 1) },
+                { TransformationGrid2D.Rotate270, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(10, 1), new Vector2Int(10, 1)), 1) },
 
-                { TransformationGrid2D.MirrorY, new DoorLine(new OrthogonalLine(new Vector2Int(10, 0), new Vector2Int(10, 0)), 1) },
-                { TransformationGrid2D.MirrorX, new DoorLine(new OrthogonalLine(new Vector2Int(0, 10), new Vector2Int(0, 10)), 1) },
-                { TransformationGrid2D.Diagonal13, new DoorLine(new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 0)), 1) },
-                { TransformationGrid2D.Diagonal24, new DoorLine(new OrthogonalLine(new Vector2Int(10, 10), new Vector2Int(10, 10)), 1) },
+                { TransformationGrid2D.MirrorY, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(10, 0), new Vector2Int(10, 0)), 1) },
+                { TransformationGrid2D.MirrorX, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, 10), new Vector2Int(0, 10)), 1) },
+                { TransformationGrid2D.Diagonal13, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 1) },
+                { TransformationGrid2D.Diagonal24, new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(10, 10), new Vector2Int(10, 10)), 1) },
             };
 
             var roomTemplate = new RoomTemplate(roomShape, doorsMode, transformations);
@@ -184,15 +184,15 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var roomDoorsMode = new SimpleDoorMode(1, 0);
 
             var corridor = PolygonGrid2D.GetRectangle(1, 2);
-            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(0, 0)),
-                new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(0, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2)),
             });
 
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-4, 7), new Vector2Int(4, 7)),
-                new OrthogonalLine(new Vector2Int(-4, -7), new Vector2Int(4, -7)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-4, 7), new Vector2Int(4, 7)),
+                new OrthogonalLineGrid2D(new Vector2Int(-4, -7), new Vector2Int(4, -7)),
             };
 
             var configurationSpace = generator.GetConfigurationSpaceOverCorridor(roomShape, roomDoorsMode, roomShape,
@@ -208,15 +208,15 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var roomDoorsMode = new SimpleDoorMode(1, 0);
 
             var corridor = PolygonGrid2D.GetRectangle(2, 1);
-            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 1), new Vector2Int(0, 0)),
-                new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(2, 1)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(2, 1)),
             });
 
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, -4), new Vector2Int(-7, 4)),
-                new OrthogonalLine(new Vector2Int(7, -4), new Vector2Int(7, 4)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, -4), new Vector2Int(-7, 4)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, -4), new Vector2Int(7, 4)),
             };
 
             var configurationSpace = generator.GetConfigurationSpaceOverCorridor(roomShape, roomDoorsMode, roomShape,
@@ -240,16 +240,16 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
                 .AddPoint(1, 0)
                 .AddPoint(1, 1)
                 .Build();
-            var roomDoorsMode2 = new ManualDoorMode(new List<OrthogonalLine>()
+            var roomDoorsMode2 = new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(1, 1), new Vector2Int(0, 1)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 1), new Vector2Int(0, 1)),
             });
 
             var corridor = PolygonGrid2D.GetSquare(2);
-            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-                new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2)),
             });
 
             var configurationSpace = generator.GetConfigurationSpaceOverCorridor(roomShape2, roomDoorsMode2, roomShape1,
@@ -266,18 +266,18 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var basicRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetRectangle(2, 1), new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetRectangle(2, 1), new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 1), new Vector2Int(0, 0)),
-                new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(2, 1)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(2, 1)),
             }), transformations);
             var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
             
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, -4), new Vector2Int(-7, 4)),
-                new OrthogonalLine(new Vector2Int(7, -4), new Vector2Int(7, 4)),
-                new OrthogonalLine(new Vector2Int(-4, 7), new Vector2Int(4, 7)),
-                new OrthogonalLine(new Vector2Int(-4, -7), new Vector2Int(4, -7)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, -4), new Vector2Int(-7, 4)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, -4), new Vector2Int(7, 4)),
+                new OrthogonalLineGrid2D(new Vector2Int(-4, 7), new Vector2Int(4, 7)),
+                new OrthogonalLineGrid2D(new Vector2Int(-4, -7), new Vector2Int(4, -7)),
             };
 
             var configurationSpace = generator.GetConfigurationSpaceOverCorridors(basicRoomTemplateInstance,
@@ -294,18 +294,18 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var basicRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(5), new SimpleDoorMode(0, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(1, 0)),
-                new OrthogonalLine(new Vector2Int(1, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 2), new Vector2Int(1, 2)),
             }), transformations);
             var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
             
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
-                new OrthogonalLine(new Vector2Int(7, -5), new Vector2Int(7, 5)),
-                new OrthogonalLine(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
-                new OrthogonalLine(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, -5), new Vector2Int(7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
             };
 
             var expectedPoints = expectedLines
@@ -327,16 +327,16 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var basicRoomTemplate = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 4), new SimpleDoorMode(0, 2), new List<TransformationGrid2D>() { TransformationGrid2D.Identity });
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(1, 0)),
-                new OrthogonalLine(new Vector2Int(1, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 2), new Vector2Int(1, 2)),
             }), new List<TransformationGrid2D>() { TransformationGrid2D.Rotate90 });
             var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
             
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, 0), new Vector2Int(-7, 0)),
-                new OrthogonalLine(new Vector2Int(7, 0), new Vector2Int(7, 0)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, 0), new Vector2Int(-7, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, 0), new Vector2Int(7, 0)),
             };
 
             var expectedPoints = expectedLines
@@ -358,20 +358,20 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var basicRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-                new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)),
-                new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2)),
-                new OrthogonalLine(new Vector2Int(1, 2), new Vector2Int(2, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 2), new Vector2Int(2, 2)),
             }), transformations);
             var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
             
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
-                new OrthogonalLine(new Vector2Int(7, -5), new Vector2Int(7, 5)),
-                new OrthogonalLine(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
-                new OrthogonalLine(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, -5), new Vector2Int(7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
             };
 
             var expectedPoints = expectedLines
@@ -393,22 +393,22 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
             var basicRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(5), new SimpleDoorMode(1, 0), transformations);
             var basicRoomTemplateInstance = generator.GetRoomTemplateInstances(basicRoomTemplate).First();
 
-            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorRoomTemplate = new RoomTemplate(PolygonGrid2D.GetSquare(2), new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-                new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)),
-                new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2)),
-                new OrthogonalLine(new Vector2Int(1, 2), new Vector2Int(2, 2)),
-                new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 2)),
-                new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(2, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(1, 2), new Vector2Int(2, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(2, 2)),
             }), transformations);
             var corridorRoomTemplateInstances = generator.GetRoomTemplateInstances(corridorRoomTemplate);
             
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
-                new OrthogonalLine(new Vector2Int(7, -5), new Vector2Int(7, 5)),
-                new OrthogonalLine(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
-                new OrthogonalLine(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-7, -5), new Vector2Int(-7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(7, -5), new Vector2Int(7, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, 7), new Vector2Int(5, 7)),
+                new OrthogonalLineGrid2D(new Vector2Int(-5, -7), new Vector2Int(5, -7)),
             };
 
             var expectedPoints = expectedLines
@@ -437,21 +437,21 @@ namespace MapGeneration.Tests.Core.ConfigurationSpaces
                 .AddPoint(1, 1)
                 .Build();
 
-            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLine>()
+            var corridorDoorsMode = new ManualDoorMode(new List<OrthogonalLineGrid2D>()
             {
-                new OrthogonalLine(new Vector2Int(0, 1), new Vector2Int(0, 2)),
-                new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(1, 0)),
+                new OrthogonalLineGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)),
+                new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(1, 0)),
             });
 
-            var expectedLines = new List<OrthogonalLine>() {
-                new OrthogonalLine(new Vector2Int(-6, 2), new Vector2Int(-6, 6)), // Left side
-                new OrthogonalLine(new Vector2Int(-5, 2), new Vector2Int(-5, 6)),
-                new OrthogonalLine(new Vector2Int(-6, 6), new Vector2Int(-2, 6)), // Top side
-                new OrthogonalLine(new Vector2Int(-6, 5), new Vector2Int(-2, 5)),
-                new OrthogonalLine(new Vector2Int(2, -6), new Vector2Int(6, -6)), // Bottom side
-                new OrthogonalLine(new Vector2Int(2, -5), new Vector2Int(6, -5)),
-                new OrthogonalLine(new Vector2Int(5, -2), new Vector2Int(5, -6)), // Right side
-                new OrthogonalLine(new Vector2Int(6, -2), new Vector2Int(6, -6)),
+            var expectedLines = new List<OrthogonalLineGrid2D>() {
+                new OrthogonalLineGrid2D(new Vector2Int(-6, 2), new Vector2Int(-6, 6)), // Left side
+                new OrthogonalLineGrid2D(new Vector2Int(-5, 2), new Vector2Int(-5, 6)),
+                new OrthogonalLineGrid2D(new Vector2Int(-6, 6), new Vector2Int(-2, 6)), // Top side
+                new OrthogonalLineGrid2D(new Vector2Int(-6, 5), new Vector2Int(-2, 5)),
+                new OrthogonalLineGrid2D(new Vector2Int(2, -6), new Vector2Int(6, -6)), // Bottom side
+                new OrthogonalLineGrid2D(new Vector2Int(2, -5), new Vector2Int(6, -5)),
+                new OrthogonalLineGrid2D(new Vector2Int(5, -2), new Vector2Int(5, -6)), // Right side
+                new OrthogonalLineGrid2D(new Vector2Int(6, -2), new Vector2Int(6, -6)),
             };
 
             var expectedPoints = expectedLines

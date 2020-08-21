@@ -1,4 +1,5 @@
 ﻿using System;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.Core.Doors
@@ -11,14 +12,14 @@ namespace Edgar.Legacy.Core.Doors
         /// <summary>
         /// Set of points where doors can start. 
         /// </summary>
-		public OrthogonalLine Line { get; }
+		public OrthogonalLineGrid2D Line { get; }
 
         /// <summary>
         /// Length of doors.
         /// </summary>
 		public int Length { get; }
 
-		public DoorLine(OrthogonalLine line, int length)
+		public DoorLine(OrthogonalLineGrid2D line, int length)
 		{
 			Line = line;
 			Length = length;

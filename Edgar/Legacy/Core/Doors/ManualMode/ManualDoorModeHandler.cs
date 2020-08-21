@@ -36,7 +36,7 @@ namespace Edgar.Legacy.Core.Doors.ManualMode
 			return doors;
 		}
 
-		private IEnumerable<DoorLine> GetDoorLine(PolygonGrid2D polygon, OrthogonalLine doorPosition)
+		private IEnumerable<DoorLine> GetDoorLine(PolygonGrid2D polygon, OrthogonalLineGrid2D doorPosition)
 		{
 			var found = false;
 
@@ -49,7 +49,7 @@ namespace Edgar.Legacy.Core.Doors.ManualMode
 				var from = isGoodDirection ? doorPosition.From : doorPosition.To;
 
 				found = true;
-				yield return new DoorLine(new OrthogonalLine(from, from, side.GetDirection()), doorPosition.Length);
+				yield return new DoorLine(new OrthogonalLineGrid2D(from, from, side.GetDirection()), doorPosition.Length);
 			}
 
             if (found == false)

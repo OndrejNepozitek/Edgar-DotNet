@@ -25,10 +25,10 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
     {
         private readonly IPolygonOverlap<PolygonGrid2D> polygonOverlap;
         private readonly IDoorHandler doorHandler;
-        private readonly ILineIntersection<OrthogonalLine> lineIntersection;
+        private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
         private readonly IPolygonUtils<PolygonGrid2D> polygonUtils;
 
-        public ConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, IDoorHandler doorHandler, ILineIntersection<OrthogonalLine> lineIntersection, IPolygonUtils<PolygonGrid2D> polygonUtils)
+        public ConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, IDoorHandler doorHandler, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, IPolygonUtils<PolygonGrid2D> polygonUtils)
         {
             this.polygonOverlap = polygonOverlap;
             this.doorHandler = doorHandler;
@@ -175,7 +175,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
         public ConfigurationSpace GetConfigurationSpaceOverCorridors(RoomTemplateInstance roomTemplateInstance, RoomTemplateInstance fixedRoomTemplateInstance, List<RoomTemplateInstance> corridors)
         {
-            var configurationSpaceLines = new List<OrthogonalLine>();
+            var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
 
             foreach (var corridor in corridors)
             {
@@ -221,15 +221,15 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
                     var rotatedLine = corridorDoorLine.Line.Rotate(rotation);
                     var rotatedCorridorLine = corridorPositionLine.Rotate(rotation).GetNormalized();
 
-                    if (rotatedCorridorLine.GetDirection() == OrthogonalLine.Direction.Right)
+                    if (rotatedCorridorLine.GetDirection() == OrthogonalLineGrid2D.Direction.Right)
                     {
                         var correctPositionLine = (rotatedCorridorLine + rotatedLine.From);
-                        var correctLengthLine = new OrthogonalLine(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector(), rotatedCorridorLine.GetDirection());
+                        var correctLengthLine = new OrthogonalLineGrid2D(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector(), rotatedCorridorLine.GetDirection());
                         var correctRotationLine = correctLengthLine.Rotate(-rotation);
 
                         // TODO: problem with corridors overlapping
                         newCorridorDoorLines.Add(new DoorLine(correctRotationLine, corridorDoorLine.Length));
-                    } else if (rotatedCorridorLine.GetDirection() == OrthogonalLine.Direction.Top)
+                    } else if (rotatedCorridorLine.GetDirection() == OrthogonalLineGrid2D.Direction.Top)
                     {
                         foreach (var corridorPosition in rotatedCorridorLine.GetPoints())
                         {
@@ -255,8 +255,8 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			var configurationSpaceLines = new List<OrthogonalLine>();
-			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLine>>();
+			var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
+			var reverseDoor = new List<Tuple<OrthogonalLineGrid2D, DoorLine>>();
 
 			doorLines = DoorUtils.MergeDoorLines(doorLines);
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
@@ -280,7 +280,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 			foreach (var doorLine in doorLines)
 			{
 				var line = doorLine.Line;
-				var oppositeDirection = OrthogonalLine.GetOppositeDirection(line.GetDirection());
+				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
 				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length).Select(x => new DoorLine(x.Line.Rotate(rotation), x.Length));
@@ -296,7 +296,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
 					if (offsets == null)
 					{
-						var resultLine = new OrthogonalLine(from, to, OrthogonalLine.Direction.Left).Rotate(-rotation);
+						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
 						reverseDoor.Add(Tuple.Create(resultLine, new DoorLine(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length)));
 						configurationSpaceLines.Add(resultLine);
 					}
@@ -305,7 +305,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 						foreach (var offset in offsets)
 						{
 							var offsetVector = new Vector2Int(0, offset);
-							var resultLine = new OrthogonalLine(from - offsetVector, to - offsetVector, OrthogonalLine.Direction.Left).Rotate(-rotation);
+							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
 							reverseDoor.Add(Tuple.Create(resultLine, new DoorLine(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length)));
 							configurationSpaceLines.Add(resultLine);
 						}
@@ -327,8 +327,8 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			var configurationSpaceLines = new List<OrthogonalLine>();
-			var reverseDoor = new List<Tuple<OrthogonalLine, DoorLineGrid2D>>();
+			var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
+			var reverseDoor = new List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>>();
 
 			doorLines = DoorUtils.MergeDoorLines(doorLines);
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
@@ -352,7 +352,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 			foreach (var doorLine in doorLines)
 			{
 				var line = doorLine.Line;
-				var oppositeDirection = OrthogonalLine.GetOppositeDirection(line.GetDirection());
+				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
 				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket));
@@ -368,7 +368,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
 					if (offsets == null)
 					{
-						var resultLine = new OrthogonalLine(from, to, OrthogonalLine.Direction.Left).Rotate(-rotation);
+						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
 						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket)));
 						configurationSpaceLines.Add(resultLine);
 					}
@@ -377,7 +377,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 						foreach (var offset in offsets)
 						{
 							var offsetVector = new Vector2Int(0, offset);
-							var resultLine = new OrthogonalLine(from - offsetVector, to - offsetVector, OrthogonalLine.Direction.Left).Rotate(-rotation);
+							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
 							reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket)));
 							configurationSpaceLines.Add(resultLine);
 						}
@@ -425,9 +425,9 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
         /// <param name="fixedCenter"></param>
         /// <param name="lines"></param>
         /// <returns></returns>
-        private List<OrthogonalLine> RemoveOverlapping(PolygonGrid2D polygon, PolygonGrid2D fixedCenter, List<OrthogonalLine> lines)
+        private List<OrthogonalLineGrid2D> RemoveOverlapping(PolygonGrid2D polygon, PolygonGrid2D fixedCenter, List<OrthogonalLineGrid2D> lines)
         {
-            var nonOverlapping = new List<OrthogonalLine>();
+            var nonOverlapping = new List<OrthogonalLineGrid2D>();
 
             foreach (var line in lines)
             {
@@ -447,7 +447,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
                         if (line.Contains(endPoint) != -1)
                         {
-                            nonOverlapping.Add(new OrthogonalLine(lastPoint, endPoint));
+                            nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, endPoint));
                         }
                     }
 
@@ -461,7 +461,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
                 }
                 else if (!lastOverlap && lastPoint != line.To)
                 {
-                    nonOverlapping.Add(new OrthogonalLine(lastPoint, line.To));
+                    nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, line.To));
                 }
             }
 

@@ -67,7 +67,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="fixedPolygon">A polygon that stays fixed.</param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line);
+		IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLineGrid2D line);
 
 		/// <summary>
 		/// Gets distance between the two polygons.

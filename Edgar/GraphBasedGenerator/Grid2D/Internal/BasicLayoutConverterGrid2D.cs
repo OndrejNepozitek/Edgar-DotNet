@@ -21,7 +21,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 	/// <typeparam name="TLayout"></typeparam>
 	/// <typeparam name="TNode"></typeparam>
 	/// <typeparam name="TConfiguration"></typeparam>
-    public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<RoomNode<TNode>, TConfiguration>, LevelGrid2D<TNode>>, IRandomInjectable
+    public class BasicLayoutConverterGrid2D<TNode, TConfiguration> : ILayoutConverter<ILayout<RoomNode<TNode>, TConfiguration>, LayoutGrid2D<TNode>>, IRandomInjectable
         where TConfiguration : IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, RoomNode<TNode>>
 	{
 		protected readonly LevelDescriptionGrid2D<TNode> MapDescription;
@@ -41,10 +41,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         }
 
 		/// <inheritdoc />
-		public LevelGrid2D<TNode> Convert(ILayout<RoomNode<TNode>, TConfiguration> layout, bool addDoors)
+		public LayoutGrid2D<TNode> Convert(ILayout<RoomNode<TNode>, TConfiguration> layout, bool addDoors)
 		{
-			var rooms = new List<RoomGrid2D<TNode>>();
-			var roomsDict = new Dictionary<TNode, RoomGrid2D<TNode>>();
+			var rooms = new List<LayoutRoomGrid2D<TNode>>();
+			var roomsDict = new Dictionary<TNode, LayoutRoomGrid2D<TNode>>();
 
             foreach (var vertexAlias in layout.Graph.Vertices)
 			{
@@ -61,13 +61,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
 
-                    var room = new RoomGrid2D<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
+                    var room = new LayoutRoomGrid2D<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation);
 					rooms.Add(room);
 
 					if (!addDoors)
 						continue;
 
-					var doors = new List<DoorInfo<TNode>>();
+					var doors = new List<LayoutDoorGrid2D<TNode>>();
 					room.Doors = doors;
 
 					roomsDict[vertex] = room;
@@ -95,8 +95,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(new DoorInfo<TNode>(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(new DoorInfo<TNode>(vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}
@@ -104,19 +104,19 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 				}
 			}
 
-			return new LevelGrid2D<TNode>(rooms);
+			return new LayoutGrid2D<TNode>(rooms);
 		}
 
-		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
+		private List<OrthogonalLineGrid2D> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
 				ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 
-		private List<OrthogonalLine> GetDoors(Vector2Int position, ConfigurationSpaceGrid2D configurationSpace)
+		private List<OrthogonalLineGrid2D> GetDoors(Vector2Int position, ConfigurationSpaceGrid2D configurationSpace)
 		{
-			var doors = new List<OrthogonalLine>();
+			var doors = new List<OrthogonalLineGrid2D>();
 
 			foreach (var doorInfo in configurationSpace.ReverseDoors)
 			{
@@ -139,7 +139,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 					var doorStart = doorLine.Line.GetNthPoint(Math.Max(0, index - offset) + i);
 					var doorEnd = doorStart + doorLine.Length * doorLine.Line.GetDirectionVector();
 
-					doors.Add(new OrthogonalLine(doorStart, doorEnd, doorLine.Line.GetDirection()));
+					doors.Add(new OrthogonalLineGrid2D(doorStart, doorEnd, doorLine.Line.GetDirection()));
 				}
 			}
 

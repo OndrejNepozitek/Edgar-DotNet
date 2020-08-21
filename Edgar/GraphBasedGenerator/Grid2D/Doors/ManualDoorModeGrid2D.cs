@@ -33,7 +33,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         private IEnumerable<DoorLineGrid2D> GetDoorLine(PolygonGrid2D polygon, DoorGrid2D door)
         {
             var found = false;
-            var doorLine = new OrthogonalLine(door.From, door.To);
+            var doorLine = new OrthogonalLineGrid2D(door.From, door.To);
 
             foreach (var side in polygon.GetLines())
             {
@@ -44,7 +44,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 var from = isGoodDirection ? doorLine.From : doorLine.To;
 
                 found = true;
-                yield return new DoorLineGrid2D(new OrthogonalLine(from, from, side.GetDirection()), doorLine.Length, door.Socket);
+                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, from, side.GetDirection()), doorLine.Length, door.Socket);
             }
 
             if (found == false)

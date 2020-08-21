@@ -21,7 +21,7 @@ namespace Edgar.Legacy.Core.Doors
 
 			foreach (var grouping in doorLinesByDirection)
 			{
-				if (grouping.Key == OrthogonalLine.Direction.Undefined)
+				if (grouping.Key == OrthogonalLineGrid2D.Direction.Undefined)
 					throw new ArgumentException("There must be no door lines with undefined direction");
 
 				var sameDirectionDoorLines = new LinkedList<DoorLine>(grouping);
@@ -50,13 +50,13 @@ namespace Edgar.Legacy.Core.Doors
 								
 							if (doorLine.Line.To + doorLine.Line.GetDirectionVector() == otherDoorLine.Line.From)
 							{
-								doorLine = new DoorLine(new OrthogonalLine(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length);
+								doorLine = new DoorLine(new OrthogonalLineGrid2D(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length);
 								found = true;
 								sameDirectionDoorLines.Remove(otherDoorLineNode);
 							}
 							else if (doorLine.Line.From - doorLine.Line.GetDirectionVector() == otherDoorLine.Line.To)
 							{
-								doorLine = new DoorLine(new OrthogonalLine(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length);
+								doorLine = new DoorLine(new OrthogonalLineGrid2D(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length);
 								found = true;
 								sameDirectionDoorLines.Remove(otherDoorLineNode);
 							}
@@ -80,7 +80,7 @@ namespace Edgar.Legacy.Core.Doors
 
             foreach (var grouping in doorLinesByDirection)
             {
-                if (grouping.Key == OrthogonalLine.Direction.Undefined)
+                if (grouping.Key == OrthogonalLineGrid2D.Direction.Undefined)
                     throw new ArgumentException("There must be no door lines with undefined direction");
 
                 var sameDirectionDoorLines = new LinkedList<DoorLineGrid2D>(grouping);
@@ -115,13 +115,13 @@ namespace Edgar.Legacy.Core.Doors
 								
                             if (doorLine.Line.To + doorLine.Line.GetDirectionVector() == otherDoorLine.Line.From)
                             {
-                                doorLine = new DoorLineGrid2D(new OrthogonalLine(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
+                                doorLine = new DoorLineGrid2D(new OrthogonalLineGrid2D(doorLine.Line.From, otherDoorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
                                 found = true;
                                 sameDirectionDoorLines.Remove(otherDoorLineNode);
                             }
                             else if (doorLine.Line.From - doorLine.Line.GetDirectionVector() == otherDoorLine.Line.To)
                             {
-                                doorLine = new DoorLineGrid2D(new OrthogonalLine(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
+                                doorLine = new DoorLineGrid2D(new OrthogonalLineGrid2D(otherDoorLine.Line.From, doorLine.Line.To), doorLine.Length, doorLine.DoorSocket);
                                 found = true;
                                 sameDirectionDoorLines.Remove(otherDoorLineNode);
                             }
@@ -148,7 +148,7 @@ namespace Edgar.Legacy.Core.Doors
 		{
 			var doorPosition = doorLine.Line;
 
-			if (doorPosition.GetDirection() == OrthogonalLine.Direction.Undefined)
+			if (doorPosition.GetDirection() == OrthogonalLineGrid2D.Direction.Undefined)
 				throw new InvalidOperationException("Cannot fix door direction when original direction is undefined");
 
 			switch (transformation)
@@ -171,12 +171,12 @@ namespace Edgar.Legacy.Core.Doors
 			var lastStartPoint = doorPosition.To.Transform(transformation);
 			var length = doorLine.Length;
 			var transformedDirection = TransformDirection(doorPosition.GetDirection(), transformation);
-			var transformedLine = new OrthogonalLine(firstStartPoint, lastStartPoint, transformedDirection);
+			var transformedLine = new OrthogonalLineGrid2D(firstStartPoint, lastStartPoint, transformedDirection);
 
 			var lastEndPoint = lastStartPoint + length * transformedLine.GetDirectionVector();
 
-			var newDirection = OrthogonalLine.GetOppositeDirection(transformedDirection);
-			var newDoorPosition = new OrthogonalLine(lastEndPoint, lastEndPoint + transformedLine. Length * transformedLine.SwitchOrientation().GetDirectionVector(), newDirection);
+			var newDirection = OrthogonalLineGrid2D.GetOppositeDirection(transformedDirection);
+			var newDoorPosition = new OrthogonalLineGrid2D(lastEndPoint, lastEndPoint + transformedLine. Length * transformedLine.SwitchOrientation().GetDirectionVector(), newDirection);
 
 			if (newDoorPosition.Length != doorPosition.Length)
 			{
@@ -190,7 +190,7 @@ namespace Edgar.Legacy.Core.Doors
         {
             var doorPosition = doorLine.Line;
 
-            if (doorPosition.GetDirection() == OrthogonalLine.Direction.Undefined)
+            if (doorPosition.GetDirection() == OrthogonalLineGrid2D.Direction.Undefined)
                 throw new InvalidOperationException("Cannot fix door direction when original direction is undefined");
 
             switch (transformation)
@@ -213,12 +213,12 @@ namespace Edgar.Legacy.Core.Doors
             var lastStartPoint = doorPosition.To.Transform(transformation);
             var length = doorLine.Length;
             var transformedDirection = TransformDirection(doorPosition.GetDirection(), transformation);
-            var transformedLine = new OrthogonalLine(firstStartPoint, lastStartPoint, transformedDirection);
+            var transformedLine = new OrthogonalLineGrid2D(firstStartPoint, lastStartPoint, transformedDirection);
 
             var lastEndPoint = lastStartPoint + length * transformedLine.GetDirectionVector();
 
-            var newDirection = OrthogonalLine.GetOppositeDirection(transformedDirection);
-            var newDoorPosition = new OrthogonalLine(lastEndPoint, lastEndPoint + transformedLine. Length * transformedLine.SwitchOrientation().GetDirectionVector(), newDirection);
+            var newDirection = OrthogonalLineGrid2D.GetOppositeDirection(transformedDirection);
+            var newDoorPosition = new OrthogonalLineGrid2D(lastEndPoint, lastEndPoint + transformedLine. Length * transformedLine.SwitchOrientation().GetDirectionVector(), newDirection);
 
             if (newDoorPosition.Length != doorPosition.Length)
             {
@@ -228,9 +228,9 @@ namespace Edgar.Legacy.Core.Doors
             return new DoorLineGrid2D(newDoorPosition, doorLine.Length, doorLine.DoorSocket);
         }
 
-		private static OrthogonalLine.Direction TransformDirection(OrthogonalLine.Direction originalDirection, TransformationGrid2D transformation)
+		private static OrthogonalLineGrid2D.Direction TransformDirection(OrthogonalLineGrid2D.Direction originalDirection, TransformationGrid2D transformation)
 		{
-			if (originalDirection == OrthogonalLine.Direction.Undefined)
+			if (originalDirection == OrthogonalLineGrid2D.Direction.Undefined)
 				throw new InvalidOperationException("Cannot transform direction when original direction is undefined");
 
 			switch (transformation)
@@ -241,12 +241,12 @@ namespace Edgar.Legacy.Core.Doors
 						return originalDirection;
 					}
 
-					return OrthogonalLine.GetOppositeDirection(originalDirection);
+					return OrthogonalLineGrid2D.GetOppositeDirection(originalDirection);
 
 				case TransformationGrid2D.MirrorY:
 					if (IsHorizontal(originalDirection))
 					{
-						return OrthogonalLine.GetOppositeDirection(originalDirection);
+						return OrthogonalLineGrid2D.GetOppositeDirection(originalDirection);
 					}
 
 					return originalDirection;
@@ -254,17 +254,17 @@ namespace Edgar.Legacy.Core.Doors
 				case TransformationGrid2D.Diagonal13:
 					switch (originalDirection)
 					{
-						case OrthogonalLine.Direction.Top:
-							return OrthogonalLine.Direction.Right;
+						case OrthogonalLineGrid2D.Direction.Top:
+							return OrthogonalLineGrid2D.Direction.Right;
 
-						case OrthogonalLine.Direction.Right:
-							return OrthogonalLine.Direction.Top;
+						case OrthogonalLineGrid2D.Direction.Right:
+							return OrthogonalLineGrid2D.Direction.Top;
 
-						case OrthogonalLine.Direction.Bottom:
-							return OrthogonalLine.Direction.Left;
+						case OrthogonalLineGrid2D.Direction.Bottom:
+							return OrthogonalLineGrid2D.Direction.Left;
 
-						case OrthogonalLine.Direction.Left:
-							return OrthogonalLine.Direction.Bottom;
+						case OrthogonalLineGrid2D.Direction.Left:
+							return OrthogonalLineGrid2D.Direction.Bottom;
 
 						default:
 							throw new ArgumentException();
@@ -273,17 +273,17 @@ namespace Edgar.Legacy.Core.Doors
 				case TransformationGrid2D.Diagonal24:
 					switch (originalDirection)
 					{
-						case OrthogonalLine.Direction.Top:
-							return OrthogonalLine.Direction.Left;
+						case OrthogonalLineGrid2D.Direction.Top:
+							return OrthogonalLineGrid2D.Direction.Left;
 
-						case OrthogonalLine.Direction.Right:
-							return OrthogonalLine.Direction.Bottom;
+						case OrthogonalLineGrid2D.Direction.Right:
+							return OrthogonalLineGrid2D.Direction.Bottom;
 
-						case OrthogonalLine.Direction.Bottom:
-							return OrthogonalLine.Direction.Right;
+						case OrthogonalLineGrid2D.Direction.Bottom:
+							return OrthogonalLineGrid2D.Direction.Right;
 
-						case OrthogonalLine.Direction.Left:
-							return OrthogonalLine.Direction.Top;
+						case OrthogonalLineGrid2D.Direction.Left:
+							return OrthogonalLineGrid2D.Direction.Top;
 
 						default:
 							throw new ArgumentException();
@@ -293,9 +293,9 @@ namespace Edgar.Legacy.Core.Doors
 			throw new ArgumentException();
 		}
 
-		private static bool IsHorizontal(OrthogonalLine.Direction direction)
+		private static bool IsHorizontal(OrthogonalLineGrid2D.Direction direction)
 		{
-			if (direction == OrthogonalLine.Direction.Left || direction == OrthogonalLine.Direction.Right)
+			if (direction == OrthogonalLineGrid2D.Direction.Left || direction == OrthogonalLineGrid2D.Direction.Right)
 			{
 				return true;
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
@@ -13,7 +14,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Set of points where doors can start. 
         /// </summary>
-		public OrthogonalLine Line { get; }
+		public OrthogonalLineGrid2D Line { get; }
 
         /// <summary>
         /// Length of doors.
@@ -22,7 +23,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
         public IDoorSocket DoorSocket { get; }
 
-        public DoorLineGrid2D(OrthogonalLine line, int length, IDoorSocket doorSocket)
+        public DoorLineGrid2D(OrthogonalLineGrid2D line, int length, IDoorSocket doorSocket)
 		{
 			Line = line;
 			Length = length;

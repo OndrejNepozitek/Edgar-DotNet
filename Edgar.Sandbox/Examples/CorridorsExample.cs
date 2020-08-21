@@ -41,10 +41,10 @@ namespace Sandbox.Examples
 			// Basic corridor shape
 			var corridorRoom1x2 = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(1, 2),
-				new ManualDoorMode(new List<OrthogonalLine>()
+				new ManualDoorMode(new List<OrthogonalLineGrid2D>()
 				{
-					new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-					new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(1, 2))
+					new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+					new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2))
 				}),
                 new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
 			);
@@ -56,10 +56,10 @@ namespace Sandbox.Examples
             {
                 var corridorRoom1x4 = new RoomTemplate(
                     PolygonGrid2D.GetRectangle(1, 4),
-                    new ManualDoorMode(new List<OrthogonalLine>()
+                    new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
-                        new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-                        new OrthogonalLine(new Vector2Int(0, 4), new Vector2Int(1, 4))
+                        new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                        new OrthogonalLineGrid2D(new Vector2Int(0, 4), new Vector2Int(1, 4))
                     }),
                     new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
                 );
@@ -79,10 +79,10 @@ namespace Sandbox.Examples
                         .AddPoint(2, 0)
                         .AddPoint(2, 2)
                         .Build(), 
-                    new ManualDoorMode(new List<OrthogonalLine>()
+                    new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
-                        new OrthogonalLine(new Vector2Int(0, 2), new Vector2Int(0, 3)),
-                        new OrthogonalLine(new Vector2Int(2, 0), new Vector2Int(3, 0))
+                        new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3)),
+                        new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0))
                     }),
                     TransformationGrid2DHelper.GetAllTransformationsOld().ToList()
                 );
@@ -108,10 +108,10 @@ namespace Sandbox.Examples
                         .AddPoint(2, 1)
                         .AddPoint(2, 0)
                         .Build(), 
-                    new ManualDoorMode(new List<OrthogonalLine>()
+                    new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
-                        new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)),
-                        new OrthogonalLine(new Vector2Int(1, 5), new Vector2Int(2, 5))
+                        new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)),
+                        new OrthogonalLineGrid2D(new Vector2Int(1, 5), new Vector2Int(2, 5))
                     }),
                     TransformationGrid2DHelper.GetAllTransformationsOld().ToList()
                 );

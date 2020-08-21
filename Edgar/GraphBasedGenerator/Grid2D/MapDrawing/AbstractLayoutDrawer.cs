@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.Legacy.Core.MapLayouts;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 {
@@ -23,9 +21,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
 		/// <param name="borderSize"></param>
-		protected void DrawLayout(LevelGrid2D<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
+		protected void DrawLayout(LayoutGrid2D<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
 		{
-			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -50,11 +48,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 		/// <param name="offset"></param>
 		/// <param name="withNames">Whether names should be displayed</param>
 		/// <param name="fixedFontSize"></param>
-		protected void DrawLayout(LevelGrid2D<TNode> layout, float scale, Vector2Int offset, bool withNames, int? fixedFontSize = null)
+		protected void DrawLayout(LayoutGrid2D<TNode> layout, float scale, Vector2Int offset, bool withNames, int? fixedFontSize = null)
 		{
-			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
-			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Shape + x.Position).Min(x => x.BoundingRectangle.Width);
+			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Outline + x.Position).Min(x => x.BoundingRectangle.Width);
 
 			// TODO: remove later
             for (var i = 0; i < rooms.Count; i++)
@@ -92,7 +90,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 
 				if (withNames && !room.IsCorridor)
 				{
-					DrawTextOntoPolygon(polygon, room.Node.ToString(), fixedFontSize ?? 2.5f * minWidth);
+					DrawTextOntoPolygon(polygon, room.Room.ToString(), fixedFontSize ?? 2.5f * minWidth);
 				}
 			}
 		}
@@ -185,7 +183,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 		/// <param name="polygon"></param>
 		/// <param name="doorLines"></param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon, List<DoorInfo<TNode>> doorLines)
+		protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines)
 		{
 			var outline = new List<Tuple<Vector2Int, bool>>();
 
@@ -197,7 +195,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 					continue;
 
 				var doorDistances = doorLines.Select(x =>
-					new Tuple<DoorInfo<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+					new Tuple<LayoutDoorGrid2D<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
 				doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
 				foreach (var pair in doorDistances)

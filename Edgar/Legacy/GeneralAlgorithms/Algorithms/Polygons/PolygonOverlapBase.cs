@@ -169,9 +169,9 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
         }
 
         /// <inheritdoc />
-		public IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLine line)
+		public IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLineGrid2D line)
 		{
-			var reverse = line.GetDirection() == OrthogonalLine.Direction.Bottom || line.GetDirection() == OrthogonalLine.Direction.Left;
+			var reverse = line.GetDirection() == OrthogonalLineGrid2D.Direction.Bottom || line.GetDirection() == OrthogonalLineGrid2D.Direction.Left;
 
 			if (reverse)
 			{
@@ -210,9 +210,9 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="line"></param>
 		/// <param name="movingRectangleOffset">Specifies the X-axis offset of a given moving rectangle.</param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(RectangleGrid2D movingRectangle, IList<RectangleGrid2D> fixedRectangles, OrthogonalLine line, int movingRectangleOffset = 0)
+		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(RectangleGrid2D movingRectangle, IList<RectangleGrid2D> fixedRectangles, OrthogonalLineGrid2D line, int movingRectangleOffset = 0)
 		{
-			if (line.GetDirection() != OrthogonalLine.Direction.Right)
+			if (line.GetDirection() != OrthogonalLineGrid2D.Direction.Right)
 				throw new ArgumentException();
 
 			var events = new List<Tuple<Vector2Int, bool>>();
@@ -234,9 +234,9 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="line"></param>
 		/// <param name="movingRectangleOffset"></param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(RectangleGrid2D movingRectangle, RectangleGrid2D fixedRectangle, OrthogonalLine line, int movingRectangleOffset = 0)
+		protected List<Tuple<Vector2Int, bool>> OverlapAlongLine(RectangleGrid2D movingRectangle, RectangleGrid2D fixedRectangle, OrthogonalLineGrid2D line, int movingRectangleOffset = 0)
 		{
-			if (line.GetDirection() != OrthogonalLine.Direction.Right)
+			if (line.GetDirection() != OrthogonalLineGrid2D.Direction.Right)
 				throw new ArgumentException();
 
 			// The smallest rectangle that covers both the first and the last position on the line of the moving rectangle
@@ -274,7 +274,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="events"></param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> ReverseEvents(List<Tuple<Vector2Int, bool>> events, OrthogonalLine line)
+		protected List<Tuple<Vector2Int, bool>> ReverseEvents(List<Tuple<Vector2Int, bool>> events, OrthogonalLineGrid2D line)
 		{
 			var eventsCopy = new List<Tuple<Vector2Int, bool>>(events);
 
@@ -307,7 +307,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		/// <param name="events2"></param>
 		/// <param name="line"></param>
 		/// <returns></returns>
-		protected List<Tuple<Vector2Int, bool>> MergeEvents(List<Tuple<Vector2Int, bool>> events1, List<Tuple<Vector2Int, bool>> events2, OrthogonalLine line)
+		protected List<Tuple<Vector2Int, bool>> MergeEvents(List<Tuple<Vector2Int, bool>> events1, List<Tuple<Vector2Int, bool>> events2, OrthogonalLineGrid2D line)
 		{
 			if (events1.Count == 0)
 				return events2;

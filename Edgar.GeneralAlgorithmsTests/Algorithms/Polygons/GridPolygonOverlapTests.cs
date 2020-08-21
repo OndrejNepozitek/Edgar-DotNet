@@ -239,7 +239,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(5);
 			var p2 = PolygonGrid2D.GetRectangle(2, 3) + new Vector2Int(10, 10);
-			var line = new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(10, 0));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(10, 0));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			Assert.AreEqual(0, result.Count);
@@ -250,7 +250,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(5);
 			var p2 = PolygonGrid2D.GetRectangle(2, 3) + new Vector2Int(0, 8);
-			var line = new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 10));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 10));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -266,7 +266,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(5);
 			var p2 = PolygonGrid2D.GetRectangle(2, 3);
-			var line = new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 10));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 10));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -283,7 +283,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(5);
 			var p2 = PolygonGrid2D.GetRectangle(2, 3) + new Vector2Int(0, -3);
-			var line = new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 10));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 10));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 
@@ -295,7 +295,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(6);
 			var p2 = GetLShape();
-			var line = new OrthogonalLine(new Vector2Int(-2, 3), new Vector2Int(5, 3));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(-2, 3), new Vector2Int(5, 3));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -312,7 +312,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = PolygonGrid2D.GetSquare(6);
 			var p2 = GetLShape();
-			var line = new OrthogonalLine(new Vector2Int(3, 5), new Vector2Int(3, -2));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(3, 5), new Vector2Int(3, -2));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -335,7 +335,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 				.AddPoint(3, 3)
 				.AddPoint(3, 0)
 				.Build();
-			var line = new OrthogonalLine(new Vector2Int(3, 2), new Vector2Int(3, -5));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(3, 2), new Vector2Int(3, -5));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -352,7 +352,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = GetLShape();
 			var p2 = GetLShape();
-			var line = new OrthogonalLine(new Vector2Int(-3, -5), new Vector2Int(-3, 2));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(-3, -5), new Vector2Int(-3, 2));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -375,7 +375,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 				.AddPoint(6, 3)
 				.AddPoint(6, 0)
 				.Build();
-			var line = new OrthogonalLine(new Vector2Int(3, 8), new Vector2Int(3, -2));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(3, 8), new Vector2Int(3, -2));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -391,7 +391,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 		{
 			var p1 = GetLShape();
 			var p2 = GetLShape();
-			var line = new OrthogonalLine(new Vector2Int(3, 5), new Vector2Int(3, -2));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(3, 5), new Vector2Int(3, -2));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()
@@ -417,7 +417,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 				.AddPoint(2, 0)
 				.Build();
 
-			var line = new OrthogonalLine(new Vector2Int(0, -2), new Vector2Int(15, -2));
+			var line = new OrthogonalLineGrid2D(new Vector2Int(0, -2), new Vector2Int(15, -2));
 
 			var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
 			var expected = new List<Tuple<Vector2Int, bool>>()

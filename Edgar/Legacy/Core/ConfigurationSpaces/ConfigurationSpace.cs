@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
@@ -10,8 +11,8 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 	/// </summary>
 	public class ConfigurationSpace
 	{
-		public List<OrthogonalLine> Lines;
+		public List<OrthogonalLineGrid2D> Lines;
 
-		public List<Tuple<OrthogonalLine, DoorLine>> ReverseDoors;
+		public List<Tuple<OrthogonalLineGrid2D, DoorLine>> ReverseDoors;
 	}
 }

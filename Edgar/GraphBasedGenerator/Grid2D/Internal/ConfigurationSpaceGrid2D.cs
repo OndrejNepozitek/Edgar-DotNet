@@ -12,15 +12,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 {
     public class ConfigurationSpaceGrid2D : IConfigurationSpace<Vector2Int>
     {
-        private readonly List<OrthogonalLine> lines;
+        private readonly List<OrthogonalLineGrid2D> lines;
 
-        public IReadOnlyList<OrthogonalLine> Lines { get; }
+        public IReadOnlyList<OrthogonalLineGrid2D> Lines { get; }
 
-        private readonly List<Tuple<OrthogonalLine, DoorLineGrid2D>> reverseDoors;
+        private readonly List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> reverseDoors;
 
-        public IReadOnlyList<Tuple<OrthogonalLine, DoorLineGrid2D>> ReverseDoors { get; }
+        public IReadOnlyList<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> ReverseDoors { get; }
 
-        public ConfigurationSpaceGrid2D(List<OrthogonalLine> lines, List<Tuple<OrthogonalLine, DoorLineGrid2D>> reverseDoors = null)
+        public ConfigurationSpaceGrid2D(List<OrthogonalLineGrid2D> lines, List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> reverseDoors = null)
         {
             this.lines = lines;
             this.reverseDoors = reverseDoors;

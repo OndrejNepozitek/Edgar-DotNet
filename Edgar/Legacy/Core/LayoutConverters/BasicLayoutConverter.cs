@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
@@ -71,7 +72,7 @@ namespace Edgar.Legacy.Core.LayoutConverters
 					if (!addDoors)
 						continue;
 
-					var doors = new List<DoorInfo<TNode>>();
+					var doors = new List<LayoutDoorGrid2D<TNode>>();
 					room.Doors = doors;
 
 					roomsDict[vertex] = room;
@@ -99,8 +100,8 @@ namespace Edgar.Legacy.Core.LayoutConverters
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(new DoorInfo<TNode>(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(new DoorInfo<TNode>(vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}
@@ -111,16 +112,16 @@ namespace Edgar.Legacy.Core.LayoutConverters
 			return new MapLayout<TNode>(rooms);
 		}
 
-		private List<OrthogonalLine> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
+		private List<OrthogonalLineGrid2D> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			return GetDoors(configuration2.Position - configuration1.Position,
 				ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1))
 				.Select(x => x + configuration1.Position).ToList();
 		}
 
-		private List<OrthogonalLine> GetDoors(Vector2Int position, ConfigurationSpace configurationSpace)
+		private List<OrthogonalLineGrid2D> GetDoors(Vector2Int position, ConfigurationSpace configurationSpace)
 		{
-			var doors = new List<OrthogonalLine>();
+			var doors = new List<OrthogonalLineGrid2D>();
 
 			foreach (var doorInfo in configurationSpace.ReverseDoors)
 			{
@@ -143,7 +144,7 @@ namespace Edgar.Legacy.Core.LayoutConverters
 					var doorStart = doorLine.Line.GetNthPoint(Math.Max(0, index - offset) + i);
 					var doorEnd = doorStart + doorLine.Length * doorLine.Line.GetDirectionVector();
 
-					doors.Add(new OrthogonalLine(doorStart, doorEnd, doorLine.Line.GetDirection()));
+					doors.Add(new OrthogonalLineGrid2D(doorStart, doorEnd, doorLine.Line.GetDirection()));
 				}
 			}
 

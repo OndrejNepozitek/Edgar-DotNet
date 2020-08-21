@@ -19,9 +19,9 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 		where TConfiguration : IConfiguration<TShapeContainer, TNode>
 	{
 		protected Random Random;
-		protected ILineIntersection<OrthogonalLine> LineIntersection;
+		protected ILineIntersection<OrthogonalLineGrid2D> LineIntersection;
 
-		protected AbstractConfigurationSpaces(ILineIntersection<OrthogonalLine> lineIntersection)
+		protected AbstractConfigurationSpaces(ILineIntersection<OrthogonalLineGrid2D> lineIntersection)
 		{
 			LineIntersection = lineIntersection;
 		}
@@ -53,7 +53,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 		}
 
 		/// <inheritdoc />
-		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
+		public IList<OrthogonalLineGrid2D> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations)
 		{
 			return GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
 		}
@@ -63,7 +63,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 		/// Tries possible combinations of given configurations until an intersection is found.
 		/// Throws when no intersection was found.
 		/// </remarks>
-		public IList<OrthogonalLine> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
+		public IList<OrthogonalLineGrid2D> GetMaximumIntersection(TConfiguration mainConfiguration, IList<TConfiguration> configurations, out int configurationsSatisfied)
 		{
 			var spaces = GetConfigurationSpaces(mainConfiguration, configurations);
 			spaces.Shuffle(Random);
@@ -72,7 +72,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 			{
 				foreach (var indices in configurations.GetCombinations(i))
 				{
-					List<OrthogonalLine> intersection = null;
+					List<OrthogonalLineGrid2D> intersection = null;
 
 					foreach (var index in indices)
 					{
@@ -137,14 +137,14 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 		public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
 		{
 			var space = GetConfigurationSpace(configuration1, configuration2);
-			var lines1 = new List<OrthogonalLine>() {new OrthogonalLine(configuration1.Position, configuration1.Position)};
+			var lines1 = new List<OrthogonalLineGrid2D>() {new OrthogonalLineGrid2D(configuration1.Position, configuration1.Position)};
 
 			return LineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)), lines1);
 		}
 
-		private OrthogonalLine FastAddition(OrthogonalLine line, Vector2Int position) 
+		private OrthogonalLineGrid2D FastAddition(OrthogonalLineGrid2D line, Vector2Int position) 
 		{
-			return new OrthogonalLine(line.From + position, line.To + position);
+			return new OrthogonalLineGrid2D(line.From + position, line.To + position);
 		}
 	}
 }

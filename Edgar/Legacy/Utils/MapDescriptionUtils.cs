@@ -96,10 +96,10 @@ namespace Edgar.Legacy.Utils
                 var length = offset;
                 var roomTemplate = new RoomTemplate(
                     PolygonGrid2D.GetRectangle(length, width),
-                    new ManualDoorMode(new List<OrthogonalLine>()
+                    new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
-                        new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, width)),
-                        new OrthogonalLine(new Vector2Int(length, 0), new Vector2Int(length, width)),
+                        new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, width)),
+                        new OrthogonalLineGrid2D(new Vector2Int(length, 0), new Vector2Int(length, width)),
                     }),
                     transformations
                 );

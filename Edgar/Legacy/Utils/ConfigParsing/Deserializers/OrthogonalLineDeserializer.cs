@@ -15,7 +15,7 @@ namespace Edgar.Legacy.Utils.ConfigParsing.Deserializers
 	{
 		public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
 		{
-			if (expectedType != typeof(OrthogonalLine))
+			if (expectedType != typeof(OrthogonalLineGrid2D))
 			{
 				value = null;
 				return false;
@@ -24,14 +24,14 @@ namespace Edgar.Legacy.Utils.ConfigParsing.Deserializers
 			var valueObject = nestedObjectDeserializer(reader, typeof(List<Vector2Int>));
 
 			if (valueObject == null)
-				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLine)}.");
+				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLineGrid2D)}.");
 
 			var intVector2List = (List<Vector2Int>) valueObject;
 
 			if (intVector2List.Count != 2)
-				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLine)}. There must be exactly 2 elements of type {nameof(Vector2Int)} in the array.");
+				throw new ParsingException($"Given element could not be parsed into {nameof(OrthogonalLineGrid2D)}. There must be exactly 2 elements of type {nameof(Vector2Int)} in the array.");
 
-			value = new OrthogonalLine(intVector2List[0], intVector2List[1]);
+			value = new OrthogonalLineGrid2D(intVector2List[0], intVector2List[1]);
 			return true;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.Utils.ConfigParsing.Models
@@ -8,6 +9,6 @@ namespace Edgar.Legacy.Utils.ConfigParsing.Models
 	/// </summary>
 	public class ManualDoorModeModel : IDoorModeModel
 	{
-		public List<OrthogonalLine> DoorPositions { get; set; }
+		public List<OrthogonalLineGrid2D> DoorPositions { get; set; }
     }
 }

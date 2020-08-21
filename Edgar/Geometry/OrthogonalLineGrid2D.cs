@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Newtonsoft.Json;
 
-namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+namespace Edgar.Geometry
 {
     /// <summary>
 	/// Structure representing an orthogonal line in a integer grid.
 	/// </summary>
-	public struct OrthogonalLine : IEquatable<OrthogonalLine>
+	public struct OrthogonalLineGrid2D : IEquatable<OrthogonalLineGrid2D>
 	{
 		public readonly Vector2Int From;
 		public readonly Vector2Int To;
@@ -32,7 +31,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <param name="from"></param>
 		/// <param name="to"></param>
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
-		public OrthogonalLine(Vector2Int from, Vector2Int to)
+		public OrthogonalLineGrid2D(Vector2Int from, Vector2Int to)
 		{
 			if (from.X != to.X && from.Y != to.Y)
 			{
@@ -58,7 +57,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
         // TODO: remove
         [JsonConstructor]
-		public OrthogonalLine(Vector2Int from, Vector2Int to, Direction degeneratedDirection)
+		public OrthogonalLineGrid2D(Vector2Int from, Vector2Int to, Direction degeneratedDirection)
 		{
 			if (from.X != to.X && from.Y != to.Y)
 			{
@@ -132,26 +131,26 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <exception cref="ArgumentException">Thrown when degress are not a multiple of 90.</exception>
 		/// <returns></returns>
 		[Pure]
-		public OrthogonalLine Rotate(int degrees, bool checkDirection = true)
+		public OrthogonalLineGrid2D Rotate(int degrees, bool checkDirection = true)
 		{
 			if (degrees % 90 != 0)
 				throw new ArgumentException("Degress must be a multiple of 90.", nameof(degrees));
 
 			if (checkDirection)
 			{
-				return new OrthogonalLine(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees), RotateDirection(GetDirection(), degrees));
+				return new OrthogonalLineGrid2D(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees), RotateDirection(GetDirection(), degrees));
 			}
 
-			return new OrthogonalLine(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees));
+			return new OrthogonalLineGrid2D(From.RotateAroundCenter(degrees), To.RotateAroundCenter(degrees));
 		}
 
 		/// <summary>
 		/// Returns a line where From and To are switched.
 		/// </summary>
 		/// <returns></returns>
-		public OrthogonalLine SwitchOrientation()
+		public OrthogonalLineGrid2D SwitchOrientation()
 		{
-			return new OrthogonalLine(To, From, GetOppositeDirection(GetDirection()));
+			return new OrthogonalLineGrid2D(To, From, GetOppositeDirection(GetDirection()));
 		}
 
 		/// <summary>
@@ -163,7 +162,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <param name="from"></param>
 		/// <param name="to"></param>
 		/// <returns></returns>
-		public OrthogonalLine Shrink(int from, int to)
+		public OrthogonalLineGrid2D Shrink(int from, int to)
 		{
 			if (Length - from - to < 0)
 				throw new ArgumentException("There must be at least one point left after shrinking.");
@@ -174,7 +173,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 			var movedFrom = new Vector2Int(rotated.From.X + from, rotated.From.Y);
 			var movedTo = new Vector2Int(rotated.To.X - to, rotated.To.Y);
 
-			return new OrthogonalLine(movedFrom, movedTo, RotateDirection(GetDirection(), rotation)).Rotate(-rotation);
+			return new OrthogonalLineGrid2D(movedFrom, movedTo, RotateDirection(GetDirection(), rotation)).Rotate(-rotation);
 		}
 
 		/// <summary>
@@ -182,7 +181,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// </summary>
 		/// <param name="length"></param>
 		/// <returns></returns>
-		public OrthogonalLine Shrink(int length)
+		public OrthogonalLineGrid2D Shrink(int length)
 		{
 			return Shrink(length, length);
 		}
@@ -309,14 +308,14 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// Returns a line that has the same endpoints and From is smaller than To.
 		/// </summary>
 		/// <returns></returns>
-		public OrthogonalLine GetNormalized()
+		public OrthogonalLineGrid2D GetNormalized()
 		{
             if (From == To)
             {
                 return this;
             }
 
-			return From < To ? this : new OrthogonalLine(To, From);
+			return From < To ? this : new OrthogonalLineGrid2D(To, From);
 		}
 
 		/// <summary>
@@ -453,9 +452,9 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <param name="line"></param>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public static OrthogonalLine operator +(OrthogonalLine line, Vector2Int point)
+		public static OrthogonalLineGrid2D operator +(OrthogonalLineGrid2D line, Vector2Int point)
 		{
-			return new OrthogonalLine(line.From + point, line.To + point, line.GetDirection());
+			return new OrthogonalLineGrid2D(line.From + point, line.To + point, line.GetDirection());
 		}
 
 		/// <summary>
@@ -464,7 +463,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		/// <param name="line"></param>
 		/// <param name="point"></param>
 		/// <returns></returns>
-		public static OrthogonalLine operator +(Vector2Int point, OrthogonalLine line)
+		public static OrthogonalLineGrid2D operator +(Vector2Int point, OrthogonalLineGrid2D line)
 		{
 			return line + point;
 		}
@@ -472,7 +471,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		#endregion
 
 		/// <inheritdoc />
-		public bool Equals(OrthogonalLine other)
+		public bool Equals(OrthogonalLineGrid2D other)
 		{
 			return From.Equals(other.From) && To.Equals(other.To);
 		}
@@ -482,7 +481,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
 		{
 			if (obj is null) return false;
 
-			return obj is OrthogonalLine line && Equals(line);
+			return obj is OrthogonalLineGrid2D line && Equals(line);
 		}
 
 		/// <inheritdoc />

@@ -34,7 +34,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
         /// <param name="forceSquare">Whether to force the output to have 1:1 aspect ration</param>
         /// <param name="flipY">Whether to flip ty Y axis</param>
         /// <returns></returns>
-        public string DrawLayout(LevelGrid2D<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false, bool flipY = false)
+        public string DrawLayout(LayoutGrid2D<TNode> layout, int width, bool showRoomNames = true, int? fixedFontSize = null, bool forceSquare = false, bool flipY = false)
 		{
 			if (width <= 0)
 				throw new ArgumentException("Width must be greater than zero.", nameof(width));
@@ -58,9 +58,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
 			return svgData;
 		}
 
-		private float GetWidthHeightRatio(LevelGrid2D<TNode> layout)
+		private float GetWidthHeightRatio(LayoutGrid2D<TNode> layout)
 		{
-			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);

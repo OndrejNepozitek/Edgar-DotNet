@@ -134,9 +134,9 @@ namespace Edgar.Geometry
 		/// Gets all lines of the polygon ordered as they appear on the polygon.
 		/// </summary>
 		/// <returns></returns>
-		public List<OrthogonalLine> GetLines()
+		public List<OrthogonalLineGrid2D> GetLines()
 		{
-			var lines = new List<OrthogonalLine>();
+			var lines = new List<OrthogonalLineGrid2D>();
 			var x1 = points[points.Count - 1];
 
 			foreach (var point in points)
@@ -144,7 +144,7 @@ namespace Edgar.Geometry
 				var x2 = x1;
 				x1 = point;
 
-				lines.Add(new OrthogonalLine(x2, x1));
+				lines.Add(new OrthogonalLineGrid2D(x2, x1));
 			}
 
 			return lines;

@@ -6,7 +6,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
-    public class OrthogonalLineIntersection : ILineIntersection<OrthogonalLine>
+    public class OrthogonalLineIntersection : ILineIntersection<OrthogonalLineGrid2D>
 	{
 		/// <summary>
 		/// Get all intersections where one line is from the first set and the other one from the second one.
@@ -17,12 +17,12 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		public List<OrthogonalLine> GetIntersections(List<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
+		public List<OrthogonalLineGrid2D> GetIntersections(List<OrthogonalLineGrid2D> lines1, List<OrthogonalLineGrid2D> lines2)
 		{
 			return GetIntersectionsLazy(lines1, lines2).ToList();
 		}
 
-		private IEnumerable<OrthogonalLine> GetIntersectionsLazy(IEnumerable<OrthogonalLine> lines1, IReadOnlyCollection<OrthogonalLine> lines2)
+		private IEnumerable<OrthogonalLineGrid2D> GetIntersectionsLazy(IEnumerable<OrthogonalLineGrid2D> lines1, IReadOnlyCollection<OrthogonalLineGrid2D> lines2)
 		{
 			foreach (var line1 in lines1)
 			{
@@ -42,7 +42,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="lines1"></param>
 		/// <param name="lines2"></param>
 		/// <returns></returns>
-		public bool DoIntersect(IEnumerable<OrthogonalLine> lines1, List<OrthogonalLine> lines2)
+		public bool DoIntersect(IEnumerable<OrthogonalLineGrid2D> lines1, List<OrthogonalLineGrid2D> lines2)
 		{
 			return GetIntersectionsLazy(lines1, lines2).Any();
 		}
@@ -54,7 +54,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="line2"></param>
 		/// <param name="intersection"></param>
 		/// <returns>True if there is a non-empty intersection.</returns>
-		public bool TryGetIntersection(OrthogonalLine line1, OrthogonalLine line2, out OrthogonalLine intersection)
+		public bool TryGetIntersection(OrthogonalLineGrid2D line1, OrthogonalLineGrid2D line2, out OrthogonalLineGrid2D intersection)
 		{
 			var horizontal1 = line1.From.Y == line1.To.Y;
 			var horizontal2 = line2.From.Y == line2.To.Y;
@@ -67,7 +67,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 			{
 				if (line1.From.Y != line2.From.Y)
 				{
-					intersection = new OrthogonalLine();
+					intersection = new OrthogonalLineGrid2D();
 					return false;
 				}
 
@@ -76,11 +76,11 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 
 				if (x1 <= x2)
 				{
-					intersection = new OrthogonalLine(new Vector2Int(x1, line1.From.Y), new Vector2Int(x2, line1.From.Y));
+					intersection = new OrthogonalLineGrid2D(new Vector2Int(x1, line1.From.Y), new Vector2Int(x2, line1.From.Y));
 					return true;
 				}
 
-				intersection = new OrthogonalLine();
+				intersection = new OrthogonalLineGrid2D();
 				return false;
 			}
 			// Both vertical
@@ -88,7 +88,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 			{
 				if (line1.From.X != line2.From.X)
 				{
-					intersection = new OrthogonalLine();
+					intersection = new OrthogonalLineGrid2D();
 					return false;
 				}
 
@@ -97,11 +97,11 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 
 				if (y1 <= y2)
 				{
-					intersection = new OrthogonalLine(new Vector2Int(line1.From.X, y1), new Vector2Int(line1.From.X, y2));
+					intersection = new OrthogonalLineGrid2D(new Vector2Int(line1.From.X, y1), new Vector2Int(line1.From.X, y2));
 					return true;
 				}
 
-				intersection = new OrthogonalLine();
+				intersection = new OrthogonalLineGrid2D();
 				return false;
 			}
 			// One horizontal and one vertical
@@ -121,22 +121,22 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 				    vline.From.Y <= hline.From.Y &&
 				    vline.To.Y >= hline.From.Y)
 				{
-					intersection = new OrthogonalLine(new Vector2Int(vline.From.X, hline.From.Y), new Vector2Int(vline.From.X, hline.From.Y));
+					intersection = new OrthogonalLineGrid2D(new Vector2Int(vline.From.X, hline.From.Y), new Vector2Int(vline.From.X, hline.From.Y));
 					return true;
 				}
 
-				intersection = new OrthogonalLine();
+				intersection = new OrthogonalLineGrid2D();
 				return false;
 			}
 		}
 
-        public List<OrthogonalLine> RemoveIntersections(List<OrthogonalLine> lines)
+        public List<OrthogonalLineGrid2D> RemoveIntersections(List<OrthogonalLineGrid2D> lines)
         {
-            var linesWithoutIntersections = new List<OrthogonalLine>();
+            var linesWithoutIntersections = new List<OrthogonalLineGrid2D>();
 
             foreach (var line in lines)
             {
-                var intersection = GetIntersections(new List<OrthogonalLine>() { line }, linesWithoutIntersections);
+                var intersection = GetIntersections(new List<OrthogonalLineGrid2D>() { line }, linesWithoutIntersections);
 
                 if (intersection.Count == 0)
                 {
@@ -151,9 +151,9 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
             return linesWithoutIntersections;
 		}
 
-        public List<OrthogonalLine> PartitionByIntersection(OrthogonalLine line, IList<OrthogonalLine> intersection)
+        public List<OrthogonalLineGrid2D> PartitionByIntersection(OrthogonalLineGrid2D line, IList<OrthogonalLineGrid2D> intersection)
         {
-            var result = new List<OrthogonalLine>();
+            var result = new List<OrthogonalLineGrid2D>();
             var rotation = line.ComputeRotation();
             var rotatedLine = line.Rotate(rotation, true);
             var directionVector = rotatedLine.GetDirectionVector();
@@ -188,7 +188,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 
                 if (intersectionLine.From != lastPoint && intersectionLine.From - directionVector != lastPoint)
                 {
-                    result.Add(new OrthogonalLine(lastPoint + directionVector,
+                    result.Add(new OrthogonalLineGrid2D(lastPoint + directionVector,
                         intersectionLine.From - directionVector));
                 }
 
@@ -197,7 +197,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 
             if (rotatedLine.To != lastPoint && rotatedLine.To - directionVector != lastPoint)
             {
-                result.Add(new OrthogonalLine(lastPoint + directionVector, rotatedLine.To));
+                result.Add(new OrthogonalLineGrid2D(lastPoint + directionVector, rotatedLine.To));
             }
 
             return result.Select(x => x.Rotate(-rotation, false)).ToList();

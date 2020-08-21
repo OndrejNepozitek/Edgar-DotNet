@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Legacy.Core.MapLayouts
 {
@@ -46,7 +45,7 @@ namespace Edgar.Legacy.Core.MapLayouts
         /// <summary>
         /// Information about connections to neighbours.
         /// </summary>
-        public List<DoorInfo<TNode>> Doors { get; set; }
+        public List<LayoutDoorGrid2D<TNode>> Doors { get; set; }
 
         /// <summary>
         /// Room description.

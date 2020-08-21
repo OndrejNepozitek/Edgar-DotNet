@@ -20,7 +20,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, Vector2Int>, IRandomInjectable
         where TConfiguration: IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, TNode>
     {
-        private readonly ILineIntersection<OrthogonalLine> lineIntersection;
+        private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
         private readonly ILevelDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
         private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
         private Random random;
@@ -30,7 +30,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         // TODO: far from ideal
         private readonly Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D>();
 
-        public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLine> lineIntersection = null)
+        public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLineGrid2D> lineIntersection = null)
         {
             this.levelDescription = levelDescription;
             this.lineIntersection = lineIntersection ?? new OrthogonalLineIntersection();
@@ -46,14 +46,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
         {
             var space = GetConfigurationSpace(configuration1, configuration2);
-            var lines1 = new List<OrthogonalLine>() {new OrthogonalLine(configuration1.Position, configuration1.Position)};
+            var lines1 = new List<OrthogonalLineGrid2D>() {new OrthogonalLineGrid2D(configuration1.Position, configuration1.Position)};
 
             return lineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)), lines1);
         }
 
-        private OrthogonalLine FastAddition(OrthogonalLine line, Vector2Int position) 
+        private OrthogonalLineGrid2D FastAddition(OrthogonalLineGrid2D line, Vector2Int position) 
         {
-            return new OrthogonalLine(line.From + position, line.To + position);
+            return new OrthogonalLineGrid2D(line.From + position, line.To + position);
         }
 
         IConfigurationSpace<Vector2Int> IConfigurationSpaces<TConfiguration, Vector2Int>.GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
@@ -127,7 +127,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             {
                 foreach (var indices in configurationsList.GetCombinations(i))
                 {
-                    List<OrthogonalLine> intersection = null;
+                    List<OrthogonalLineGrid2D> intersection = null;
 
                     foreach (var index in indices)
                     {

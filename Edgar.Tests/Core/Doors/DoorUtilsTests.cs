@@ -15,19 +15,19 @@ namespace MapGeneration.Tests.Core.Doors
 		{
 			var doorLines = new List<DoorLine>()
 			{
-				new DoorLine(new OrthogonalLine(new Vector2Int(1, 0), new Vector2Int(2, 0)), 2),
-				new DoorLine(new OrthogonalLine(new Vector2Int(3, 0), new Vector2Int(5, 0)), 2),
-				new DoorLine(new OrthogonalLine(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 1),
-				new DoorLine(new OrthogonalLine(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 2),
-				new DoorLine(new OrthogonalLine(new Vector2Int(0, 0), new Vector2Int(0, 3)), 2),
-				new DoorLine(new OrthogonalLine(new Vector2Int(0, -2), new Vector2Int(0, -1)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(3, 0), new Vector2Int(5, 0)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 1),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 3)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, -2), new Vector2Int(0, -1)), 2),
 			};
 
 			var expectedDoorLines = new List<DoorLine>()
 			{
-				new DoorLine(new OrthogonalLine(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 1),
-				new DoorLine(new OrthogonalLine(new Vector2Int(-3, 0), new Vector2Int(5, 0)), 2),
-				new DoorLine(new OrthogonalLine(new Vector2Int(0, -2), new Vector2Int(0, 3)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(-3, 0), new Vector2Int(0, 0)), 1),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(-3, 0), new Vector2Int(5, 0)), 2),
+				new DoorLine(new OrthogonalLineGrid2D(new Vector2Int(0, -2), new Vector2Int(0, 3)), 2),
 			};
 
 			var mergedDoorLines = DoorUtils.MergeDoorLines(doorLines);
