@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
+namespace Edgar.Geometry
 {
     public static class TransformationGrid2DHelper
 	{

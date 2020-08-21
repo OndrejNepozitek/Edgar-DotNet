@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.ConfigParsing;
 using Newtonsoft.Json;

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Common;
+using Edgar.Graphs;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
 using Edgar.Legacy.Utils.Statistics;
 using SandboxEvolutionRunner.Utils;

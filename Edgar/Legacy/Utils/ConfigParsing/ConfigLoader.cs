@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.Legacy.Core.Doors.Interfaces;
 using Edgar.Legacy.Core.Doors.ManualMode;
 using Edgar.Legacy.Core.Doors.SimpleMode;

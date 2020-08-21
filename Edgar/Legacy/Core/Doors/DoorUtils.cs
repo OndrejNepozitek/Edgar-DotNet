@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.GraphBasedGenerator.Grid2D.Doors;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.Core.Doors

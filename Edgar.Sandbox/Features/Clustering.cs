@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.AdditionalData;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;

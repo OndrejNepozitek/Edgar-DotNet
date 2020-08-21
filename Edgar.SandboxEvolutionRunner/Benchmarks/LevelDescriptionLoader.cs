@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.GraphBasedGenerator.Grid2D.Doors;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils;
 using SandboxEvolutionRunner.Utils;

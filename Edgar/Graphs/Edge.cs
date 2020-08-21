@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs
+namespace Edgar.Graphs
 {
     /// <summary>
 	/// Class representing an edge of a graph.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Common.RoomTemplates;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Graphs;
 using Newtonsoft.Json;
 
 namespace Edgar.GraphBasedGenerator.Common

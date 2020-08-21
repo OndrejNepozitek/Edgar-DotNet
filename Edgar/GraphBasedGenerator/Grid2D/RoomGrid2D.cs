@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.Legacy.Core.MapDescriptions;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.MapLayouts;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace Edgar.GraphBasedGenerator.Common
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
     /// Represents a layout room.

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Graphs;
 
 namespace Edgar.Legacy.Core.ChainDecompositions.Interfaces
 {

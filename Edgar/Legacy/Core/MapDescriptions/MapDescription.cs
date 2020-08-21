@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Newtonsoft.Json;
 
 namespace Edgar.Legacy.Core.MapDescriptions

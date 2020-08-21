@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
@@ -8,7 +10,6 @@ using Edgar.Legacy.Core.LayoutOperations.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 

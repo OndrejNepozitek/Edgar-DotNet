@@ -1,7 +1,7 @@
-﻿using Edgar.Legacy.Core.ChainDecompositions;
+﻿using Edgar.Graphs;
+using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace MapGeneration.Tests.Core.GraphDecomposition
 {

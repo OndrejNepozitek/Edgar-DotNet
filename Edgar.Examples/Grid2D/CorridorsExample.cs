@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.GraphBasedGenerator.Grid2D.Doors;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils;
 
 namespace Edgar.Examples.Grid2D

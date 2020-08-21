@@ -1,4 +1,4 @@
-﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Graphs;
 using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
 using NUnit.Framework;
 

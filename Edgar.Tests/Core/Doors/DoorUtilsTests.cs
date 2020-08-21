@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.Core.Doors;
+﻿using Edgar.Geometry;
+using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace MapGeneration.Tests.Core.Doors

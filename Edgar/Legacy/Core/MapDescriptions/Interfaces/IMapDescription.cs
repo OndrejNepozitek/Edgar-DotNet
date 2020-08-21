@@ -1,4 +1,4 @@
-﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Graphs;
 
 namespace Edgar.Legacy.Core.MapDescriptions.Interfaces
 {

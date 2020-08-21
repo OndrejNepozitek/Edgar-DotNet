@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Newtonsoft.Json;
 

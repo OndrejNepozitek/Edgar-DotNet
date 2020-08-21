@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+namespace Edgar.Geometry
 {
     /// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.

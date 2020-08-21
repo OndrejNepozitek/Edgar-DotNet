@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
 using Edgar.Legacy.Benchmarks.Interfaces;

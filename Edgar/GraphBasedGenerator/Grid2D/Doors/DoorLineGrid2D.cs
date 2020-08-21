@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.GraphBasedGenerator.Grid2D.Doors
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
     /// Represents a door line.

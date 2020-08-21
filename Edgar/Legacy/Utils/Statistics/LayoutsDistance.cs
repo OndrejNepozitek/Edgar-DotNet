@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.Core.MapLayouts;

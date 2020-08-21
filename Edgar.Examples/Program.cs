@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using CommandLine;
 using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.Core.Doors.ManualMode;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.Core.MapDescriptions;

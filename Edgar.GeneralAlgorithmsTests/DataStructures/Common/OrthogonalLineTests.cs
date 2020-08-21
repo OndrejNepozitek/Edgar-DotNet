@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Geometry;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace GeneralAlgorithms.Tests.DataStructures.Common

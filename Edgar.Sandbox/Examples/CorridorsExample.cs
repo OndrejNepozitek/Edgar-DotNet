@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Text;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.Doors.ManualMode;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.Core.MapDescriptions;

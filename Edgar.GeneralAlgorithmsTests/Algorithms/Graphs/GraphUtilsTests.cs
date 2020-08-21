@@ -1,6 +1,6 @@
-﻿using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
+﻿using Edgar.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace GeneralAlgorithms.Tests.Algorithms.Graphs
 {

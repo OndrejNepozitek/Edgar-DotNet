@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.ConfigurationSpaces;
@@ -9,7 +11,6 @@ using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.Legacy.Core.Constraints
 {

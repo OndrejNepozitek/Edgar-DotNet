@@ -4,21 +4,22 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Newtonsoft.Json;
 
-namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
+namespace Edgar.Geometry
 {
     /// <summary>
 	/// A class representing an immutable polygon where each of its vertices has integer coordinates.
 	/// </summary>
 	/// <remarks>
-	/// Serveral invariants hold:
+	/// Several invariants hold:
 	/// - a polygon has at least 4 points
 	/// - all lines must be parallel to one of the axis
 	/// - no two adjacent line can be both horizontal or both vertical
 	/// - points are in a clockwise order
 	/// </remarks>
-	public class PolygonGrid2D : IPolygon<Vector2Int>
+	public class PolygonGrid2D
 	{
 		public static readonly int[] PossibleRotations = { 0, 90, 180, 270 };
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 

@@ -8,7 +8,7 @@ namespace Edgar.Legacy.Utils.GraphAnalysis
 {
     public class GraphCyclesGetter<TNode>
     {
-        public List<List<TNode>> GetCycles(GeneralAlgorithms.DataStructures.Graphs.IGraph<TNode> graph)
+        public List<List<TNode>> GetCycles(Graphs.IGraph<TNode> graph)
         {
             var convertedGraph = new UndirectedAdjacencyListGraph<TNode>();
 
@@ -77,7 +77,7 @@ namespace Edgar.Legacy.Utils.GraphAnalysis
 
             public List<TNode> Nodes { get; }
 
-            public Cycle(List<TNode> nodes, List<GeneralAlgorithms.DataStructures.Graphs.IEdge<TNode>> orderedEdges)
+            public Cycle(List<TNode> nodes, List<Graphs.IEdge<TNode>> orderedEdges)
             {
                 Nodes = nodes;
                 Edges = new bool[orderedEdges.Count];
@@ -101,7 +101,7 @@ namespace Edgar.Legacy.Utils.GraphAnalysis
                 }
             }
 
-            public Cycle(bool[] edges, List<GeneralAlgorithms.DataStructures.Graphs.IEdge<TNode>> orderedEdges)
+            public Cycle(bool[] edges, List<Graphs.IEdge<TNode>> orderedEdges)
             {
                 Edges = edges;
                 Nodes = new List<TNode>();

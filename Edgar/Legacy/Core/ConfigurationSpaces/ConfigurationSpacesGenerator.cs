@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.GraphBasedGenerator.Grid2D.Doors;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.Doors.Interfaces;

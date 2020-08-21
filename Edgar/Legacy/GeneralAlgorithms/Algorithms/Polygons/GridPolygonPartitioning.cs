@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using RangeTree;
 

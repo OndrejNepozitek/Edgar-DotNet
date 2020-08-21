@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
+namespace Edgar.Geometry
 {
     /// <summary>
 	/// Helper class for creating polygons.

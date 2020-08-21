@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;

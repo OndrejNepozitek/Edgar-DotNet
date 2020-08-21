@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Edgar.Geometry;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.AdditionalData;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;

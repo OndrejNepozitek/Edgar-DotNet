@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.Core.Doors;
+﻿using Edgar.Geometry;
+using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.Doors.SimpleMode;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;

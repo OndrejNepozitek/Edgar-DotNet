@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
+﻿using Edgar.Geometry;
+using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils.Interfaces;

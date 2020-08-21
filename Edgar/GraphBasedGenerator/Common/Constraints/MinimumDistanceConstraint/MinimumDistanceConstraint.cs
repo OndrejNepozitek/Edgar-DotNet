@@ -1,8 +1,8 @@
 ﻿using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Constraints.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint
 {

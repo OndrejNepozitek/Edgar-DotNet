@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.Doors.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 

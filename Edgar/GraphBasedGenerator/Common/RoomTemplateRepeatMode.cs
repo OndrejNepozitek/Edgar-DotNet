@@ -1,4 +1,4 @@
-﻿namespace Edgar.Legacy.Core.MapDescriptions
+﻿namespace Edgar.GraphBasedGenerator.Common
 {
     /// <summary>
     /// Determines if a room template can repeat in a level.

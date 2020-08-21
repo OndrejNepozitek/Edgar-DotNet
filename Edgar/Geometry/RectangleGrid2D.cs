@@ -1,7 +1,7 @@
 ﻿using System;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons
+namespace Edgar.Geometry
 {
     public struct RectangleGrid2D
 	{

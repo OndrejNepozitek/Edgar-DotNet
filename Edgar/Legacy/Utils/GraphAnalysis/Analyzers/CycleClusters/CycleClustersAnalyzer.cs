@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Graphs;
 
 namespace Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters
 {

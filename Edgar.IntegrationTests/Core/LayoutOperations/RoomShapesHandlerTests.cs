@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Configurations;
 using Edgar.Legacy.Core.Configurations.EnergyData;
 using Edgar.Legacy.Core.ConfigurationSpaces;
@@ -11,7 +14,6 @@ using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using NUnit.Framework;
 

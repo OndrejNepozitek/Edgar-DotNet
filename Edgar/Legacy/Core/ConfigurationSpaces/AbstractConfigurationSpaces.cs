@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;

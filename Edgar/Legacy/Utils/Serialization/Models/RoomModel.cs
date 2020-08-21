@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.Utils.Serialization.Models

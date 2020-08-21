@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Graphs;
 using SandboxEvolutionRunner.Utils;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks

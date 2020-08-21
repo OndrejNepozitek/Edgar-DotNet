@@ -1,5 +1,5 @@
-﻿using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+﻿using Edgar.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 
 namespace GeneralAlgorithms.Tests.DataStructures.Graphs
 {

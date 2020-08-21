@@ -1,6 +1,6 @@
-﻿using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+﻿using Edgar.Graphs;
+using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.Legacy.Core.MapDescriptions
 {

@@ -1,7 +1,7 @@
-﻿using Edgar.GraphBasedGenerator.Common.Doors;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
+﻿using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common.Doors;
 
-namespace Edgar.GraphBasedGenerator.Grid2D.Doors
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     public class DoorGrid2D
     {

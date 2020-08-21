@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.LayoutConverters.Interfaces;
@@ -42,8 +43,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// <inheritdoc />
 		public LevelGrid2D<TNode> Convert(ILayout<RoomNode<TNode>, TConfiguration> layout, bool addDoors)
 		{
-			var rooms = new List<Common.RoomGrid2D<TNode>>();
-			var roomsDict = new Dictionary<TNode, Common.RoomGrid2D<TNode>>();
+			var rooms = new List<RoomGrid2D<TNode>>();
+			var roomsDict = new Dictionary<TNode, RoomGrid2D<TNode>>();
 
             foreach (var vertexAlias in layout.Graph.Vertices)
 			{
@@ -60,7 +61,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
 
-                    var room = new Common.RoomGrid2D<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
+                    var room = new RoomGrid2D<TNode>(vertex, transformedShape, configuration.Position - offset, MapDescription.GetRoomDescription(vertexAlias.Room).IsCorridor, roomTemplateInstance.RoomTemplate, MapDescription.GetRoomDescription(vertexAlias.Room), transformation, roomTemplateInstance.Transformations, roomTemplateInstance);
 					rooms.Add(room);
 
 					if (!addDoors)

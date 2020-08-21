@@ -1,11 +1,11 @@
-﻿using Edgar.Legacy.Core.Configurations.Interfaces;
+﻿using Edgar.Graphs;
+using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.Constraints.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 
 namespace Edgar.Legacy.Core.Constraints
 {

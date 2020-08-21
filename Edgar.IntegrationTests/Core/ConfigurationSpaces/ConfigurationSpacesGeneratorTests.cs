@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.Configurations;
 using Edgar.Legacy.Core.Configurations.EnergyData;
 using Edgar.Legacy.Core.ConfigurationSpaces;

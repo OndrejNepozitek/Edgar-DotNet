@@ -1,4 +1,4 @@
-﻿namespace Edgar.Legacy.GeneralAlgorithms.DataStructures.Common
+﻿namespace Edgar.Geometry
 {
 	public enum TransformationGrid2D
 	{

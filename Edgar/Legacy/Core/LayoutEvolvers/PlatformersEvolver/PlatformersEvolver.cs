@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;

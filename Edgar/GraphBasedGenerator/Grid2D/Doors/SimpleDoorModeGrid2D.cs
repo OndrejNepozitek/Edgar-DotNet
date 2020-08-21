@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
-using Edgar.Legacy.Core.Doors;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace Edgar.GraphBasedGenerator.Grid2D.Doors
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
 	/// Mode that is used to generate doors of a specified length on all sides of the polygon.

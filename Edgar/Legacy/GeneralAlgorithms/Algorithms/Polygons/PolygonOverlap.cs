@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons

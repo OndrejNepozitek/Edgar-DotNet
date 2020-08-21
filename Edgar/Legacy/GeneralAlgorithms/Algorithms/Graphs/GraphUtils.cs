@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
+using Edgar.Graphs;
 using GraphPlanarityTesting.PlanarityTesting.BoyerMyrvold;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs

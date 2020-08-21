@@ -1,4 +1,5 @@
-﻿using Edgar.GraphBasedGenerator.Common.Configurations;
+﻿using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;

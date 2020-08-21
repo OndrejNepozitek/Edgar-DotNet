@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace Edgar.GraphBasedGenerator.Grid2D.Doors
+namespace Edgar.GraphBasedGenerator.Grid2D
 {
     public class ManualDoorModeGrid2D : IDoorModeGrid2D
     {

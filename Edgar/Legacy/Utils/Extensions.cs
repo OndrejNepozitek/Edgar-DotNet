@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.ConfigurationSpaces.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;

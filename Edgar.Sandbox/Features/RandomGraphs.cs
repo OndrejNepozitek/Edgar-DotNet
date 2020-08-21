@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Geometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.AdditionalData;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
@@ -12,7 +14,6 @@ using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Graphs;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.MapDrawing;
 using Newtonsoft.Json;

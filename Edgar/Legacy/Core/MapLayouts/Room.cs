@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.Geometry;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
