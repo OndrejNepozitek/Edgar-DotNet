@@ -41,11 +41,11 @@ namespace Edgar.Examples.Grid2D
 
             //md And finally, we can create the corridor room description. We must not forget to set the `IsCorridor` flag to `true`.
 
-            var corridorRoomDescription = new RoomDescriptionGrid2D()
-            {
-                IsCorridor = true,
-                RoomTemplates = new List<RoomTemplateGrid2D>() {corridorRoomTemplate}
-            };
+            var corridorRoomDescription = new RoomDescriptionGrid2D
+            (
+                isCorridor: true,
+                roomTemplates: new List<RoomTemplateGrid2D>() {corridorRoomTemplate}
+            );
 
             //md ## Basic room description
             //md For non-corridor rooms, we will use two rectangular room templates - 8x8 square and 6x10 rectangle. The full code is omitted for simplicity.
@@ -116,15 +116,14 @@ namespace Edgar.Examples.Grid2D
                 allowedTransformations: transformations
             );
 
-            return new RoomDescriptionGrid2D()
-            {
-                IsCorridor = false,
-                RoomTemplates = new List<RoomTemplateGrid2D>()
-                {
+            return new RoomDescriptionGrid2D
+            (
+                isCorridor: false,
+                roomTemplates: new List<RoomTemplateGrid2D>() {            
                     squareRoom,
-                    rectangleRoom,
+                    rectangleRoom
                 }
-            };
+            );
         }
     }
 }

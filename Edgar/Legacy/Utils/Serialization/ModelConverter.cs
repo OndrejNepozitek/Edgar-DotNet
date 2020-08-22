@@ -14,7 +14,7 @@ namespace Edgar.Legacy.Utils.Serialization
 		{
 			return new DoorModel<TNode>()
 			{
-				Node = layoutDoorGrid2D.Node,
+				Node = layoutDoorGrid2D.To,
 				From = layoutDoorGrid2D.DoorLine.From,
 				To = layoutDoorGrid2D.DoorLine.To,
 			};

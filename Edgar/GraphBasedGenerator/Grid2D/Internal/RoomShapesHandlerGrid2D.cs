@@ -8,13 +8,11 @@ using Edgar.Graphs;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.LayoutOperations.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
-using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
     /// <summary>
     /// Class responsible for returning available shapes for a node based on used repeat mode.

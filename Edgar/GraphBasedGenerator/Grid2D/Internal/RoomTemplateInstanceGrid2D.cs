@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Edgar.Geometry;
-using Edgar.Legacy.Core.Doors;
-using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
 	public class RoomTemplateInstanceGrid2D
     {

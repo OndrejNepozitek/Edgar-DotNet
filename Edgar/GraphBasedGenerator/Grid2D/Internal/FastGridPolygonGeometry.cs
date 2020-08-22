@@ -1,11 +1,9 @@
 ﻿using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
-using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
     public class FastGridPolygonGeometry<TConfiguration, TNode> : IRoomShapeGeometry<TConfiguration>
         where TConfiguration : IShapeConfiguration<RoomTemplateInstanceGrid2D>, IPositionConfiguration<Vector2Int>

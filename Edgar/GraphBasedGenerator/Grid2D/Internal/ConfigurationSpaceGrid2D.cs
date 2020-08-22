@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
-using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
     public class ConfigurationSpaceGrid2D : IConfigurationSpace<Vector2Int>
     {

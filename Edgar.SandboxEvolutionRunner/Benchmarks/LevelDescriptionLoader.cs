@@ -90,11 +90,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
         protected virtual RoomDescriptionGrid2D GetCorridorRoomDescription(List<int> corridorOffsets, int width = 1)
         {
             var corridorRoomTemplates = MapDescriptionUtils.GetNewCorridorRoomTemplates(corridorOffsets, width);
-            var corridorRoomDescription = new RoomDescriptionGrid2D()
-            {
-                IsCorridor = true,
-                RoomTemplates = corridorRoomTemplates,
-            };
+            var corridorRoomDescription = new RoomDescriptionGrid2D
+            (
+                isCorridor: true,
+                roomTemplates: corridorRoomTemplates
+            );
 
             return corridorRoomDescription;
         }
@@ -177,11 +177,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
             }
 
-            return new RoomDescriptionGrid2D()
-            {
-                IsCorridor = false,
-                RoomTemplates = roomTemplates,
-            };
+            return new RoomDescriptionGrid2D
+            (
+                isCorridor: false,
+                roomTemplates: roomTemplates
+            );
         }
     }
 }

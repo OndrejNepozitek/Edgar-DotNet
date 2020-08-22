@@ -53,9 +53,9 @@ namespace Edgar.Examples
 
         public void Run()
         {
-            //GenerateExample(new BasicsExample());
-            //GenerateExample(new CorridorsExample());
-            //GenerateExample(new MinimumRoomDistanceExample());
+            GenerateExample(new BasicsExample());
+            GenerateExample(new CorridorsExample());
+            GenerateExample(new MinimumRoomDistanceExample());
             GenerateExample(new RealLifeExample());
         }
 

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Edgar.GraphBasedGenerator.Common
 {
-    public class LevelDescription<TRoom, TRoomDescription> : ILevelDescription<TRoom>
+    public abstract class LevelDescription<TRoom, TRoomDescription> : ILevelDescription<TRoom>
         where TRoomDescription : IRoomDescription
     {
         [JsonProperty]

@@ -5,17 +5,14 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
-using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Doors;
-using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 using IRoomDescription = Edgar.GraphBasedGenerator.Common.RoomTemplates.IRoomDescription;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
     public class ConfigurationSpacesGrid2D<TConfiguration, TNode> : IConfigurationSpaces<TConfiguration, Vector2Int>, IRandomInjectable
         where TConfiguration: IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, TNode>

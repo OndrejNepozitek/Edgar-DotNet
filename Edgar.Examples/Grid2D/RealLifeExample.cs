@@ -38,21 +38,21 @@ namespace Edgar.Examples.Grid2D
             #region Test
 
             var roomTemplates = GetRoomTemplates();
-            var corridorRoomDescription = new RoomDescriptionGrid2D()
-            {
-                IsCorridor = true,
-                RoomTemplates = GetCorridorRoomTemplates(),
-            };
+            var corridorRoomDescription = new RoomDescriptionGrid2D
+            (
+                isCorridor: true,
+                roomTemplates: GetCorridorRoomTemplates()
+            );
 
             #endregion
 
             foreach (var room in graph.Vertices)
             {
-                levelDescription.AddRoom(room, new RoomDescriptionGrid2D()
-                {
-                    IsCorridor = false,
-                    RoomTemplates = GetRoomTemplatesForRoom(room.Type, roomTemplates),
-                });
+                levelDescription.AddRoom(room, new RoomDescriptionGrid2D
+                (
+                    isCorridor: false,
+                    roomTemplates: GetRoomTemplatesForRoom(room.Type, roomTemplates)
+                ));
             }
 
             foreach (var edge in graph.Edges)

@@ -79,10 +79,11 @@ namespace Edgar.Examples.Grid2D
             //md ## Room description
             //md When we have our room templates ready, we need to create an instance of the `RoomDescriptionGrid2D` which describes the properties of individual rooms in the level. In this tutorial, all the rooms use the same pool of room templates, so we can create only a single room description and reuse it. However, it is also possible to use different room description for different types of rooms. For example, we may want to have a boss room and a spawn room that should use different room templates than other rooms.
 
-            var roomDescription = new RoomDescriptionGrid2D()
-            {
-                RoomTemplates = new List<RoomTemplateGrid2D>() { squareRoom, rectangleRoom }
-            };
+            var roomDescription = new RoomDescriptionGrid2D
+            (
+                isCorridor: false,
+                roomTemplates: new List<RoomTemplateGrid2D>() { squareRoom, rectangleRoom }
+            );
 
             //md ## Level description
             //md The final step is to describe the structure of the level. First, we have to create an instance of the `LevelDescriptionGrid2D<TRoom>` class. For simplicity, We will use `integers` to identify individual rooms. But it is also possible to use a custom room type by using a different generic type parameter.

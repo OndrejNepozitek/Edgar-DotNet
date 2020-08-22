@@ -100,8 +100,8 @@ namespace Edgar.Legacy.Core.LayoutConverters
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, randomChoice));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, randomChoice));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}

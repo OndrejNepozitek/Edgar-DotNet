@@ -9,6 +9,7 @@ using Edgar.GraphBasedGenerator.Common.Constraints;
 using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
+using Edgar.GraphBasedGenerator.Grid2D.Internal;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Constraints.Interfaces;
@@ -23,6 +24,7 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
+using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.ConfigurationSpacesGenerator;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {

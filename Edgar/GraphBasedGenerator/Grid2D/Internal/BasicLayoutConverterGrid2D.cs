@@ -13,7 +13,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
 	/// <summary>
 	/// Converts layout from its internal representation to a representation more suitable for users.
