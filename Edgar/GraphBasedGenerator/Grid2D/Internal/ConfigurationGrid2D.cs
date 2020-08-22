@@ -2,10 +2,9 @@
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Grid2D
+namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
 	public class ConfigurationGrid2D<TNode, TEnergyData> : IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, RoomNode<TNode>>, IEnergyConfiguration<TEnergyData>,  ISmartCloneable<ConfigurationGrid2D<TNode, TEnergyData>>
 		where TEnergyData : IEnergyData, ISmartCloneable<TEnergyData>
