@@ -3,7 +3,7 @@
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Description of the structure of a level on the 2D (integer) grid.
+    /// Represents a description of the structure of a level on the 2D (integer) grid.
     /// </summary>
     /// <typeparam name="TRoom"></typeparam>
     public class LevelDescriptionGrid2D<TRoom> : LevelDescription<TRoom, RoomDescriptionGrid2D>

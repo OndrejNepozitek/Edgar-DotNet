@@ -3,7 +3,7 @@
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
 	/// <summary>
-	/// Represents a door between two rooms in the level.
+	/// Represents a door between two rooms in the final layout.
 	/// </summary>
     public class LayoutDoorGrid2D<TRoom>
 	{

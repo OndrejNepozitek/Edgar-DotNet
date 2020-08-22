@@ -29,9 +29,8 @@ using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.C
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Implementation of the procedural dungeon generator algorithm.
+    /// Represents a graph-based layout generator that works on the 2D (integer) grid.
     /// </summary>
-    /// <typeparam name="TRoom"></typeparam>
     public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable, IObservableGenerator<LayoutGrid2D<TRoom>>
     {
         private readonly LevelDescriptionMapping<TRoom> levelDescriptionMapped;

@@ -3,7 +3,7 @@
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
 	/// <summary>
-	/// Represents a final layout. Each room has a shape and a position assigned.
+	/// Represents a final layout produced by the generator.
 	/// </summary>
     public class LayoutGrid2D<TRoom>
 	{

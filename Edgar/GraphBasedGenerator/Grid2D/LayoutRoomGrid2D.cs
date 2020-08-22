@@ -4,7 +4,7 @@ using Edgar.Geometry;
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Holds information about a single room in the final layout.
+    /// Represents a single room in the final layout. It contains information about the shape of the room, its position, etc.
     /// </summary>
     public class LayoutRoomGrid2D<TRoom>
 	{
