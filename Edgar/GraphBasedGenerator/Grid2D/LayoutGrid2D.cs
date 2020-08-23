@@ -12,6 +12,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// </summary>
 		public List<LayoutRoomGrid2D<TRoom>> Rooms { get; }
 
+		/// <param name="rooms">See the <see cref="Rooms"/> property.</param>
 		public LayoutGrid2D(List<LayoutRoomGrid2D<TRoom>> rooms)
 		{
 			Rooms = rooms;

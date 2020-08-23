@@ -29,7 +29,7 @@ using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.C
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Represents a graph-based layout generator that works on the 2D (integer) grid.
+    /// Implements a graph-based layout generator that works on the 2D (integer) grid.
     /// </summary>
     public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable, IObservableGenerator<LayoutGrid2D<TRoom>>
     {
@@ -43,6 +43,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnPerturbedInternal;
 
+        /// <summary>
+        /// Creates an instance of the generator.
+        /// </summary>
+        /// <param name="levelDescription">Level description of the level that should be generated.</param>
+        /// <param name="configuration">Configuration of the generator. Can be omitted for reasonable defaults.</param>
         public GraphBasedGeneratorGrid2D(LevelDescriptionGrid2D<TRoom> levelDescription, GraphBasedGeneratorConfiguration<TRoom> configuration = null)
         {
             this.levelDescription = levelDescription;

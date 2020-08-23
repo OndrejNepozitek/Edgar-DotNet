@@ -6,10 +6,17 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
+    /// <summary>
+    /// Represents a manual door mode which consists of a list of doors provided by the user.
+    /// </summary>
     public class ManualDoorModeGrid2D : IDoorModeGrid2D
     {
+        /// <summary>
+        /// List of available doors.
+        /// </summary>
         public List<DoorGrid2D> Doors { get; }
 
+        /// <param name="doors">See the <see cref="Doors"/> property.</param>
         public ManualDoorModeGrid2D(List<DoorGrid2D> doors)
         {
             Doors = doors ?? throw new ArgumentNullException(nameof(doors));

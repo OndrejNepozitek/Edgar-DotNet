@@ -10,23 +10,26 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// <summary>
 		/// Room on one side of the door.
 		/// </summary>
-		public TRoom From { get; }
+		public TRoom FromRoom { get; }
 
 		/// <summary>
 		/// Room on the other side of the door.
 		/// </summary>
-		public TRoom To { get; }
+		public TRoom ToRoom { get; }
 
 		/// <summary>
 		/// Line containing all the door points.
 		/// </summary>
 		public OrthogonalLineGrid2D DoorLine { get; }
 
-		public LayoutDoorGrid2D(TRoom from, TRoom to, OrthogonalLineGrid2D doorLine)
+		/// <param name="fromRoom">See the <see cref="FromRoom"/> property.</param>
+		/// <param name="toRoom">See the <see cref="ToRoom"/> property.</param>
+		/// <param name="doorLine">See the <see cref="DoorLine"/> property.</param>
+		public LayoutDoorGrid2D(TRoom fromRoom, TRoom toRoom, OrthogonalLineGrid2D doorLine)
 		{
             DoorLine = doorLine;
-            From = from;
-            To = to;
+            FromRoom = fromRoom;
+            ToRoom = toRoom;
         }
 	}
 }

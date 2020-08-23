@@ -3,7 +3,7 @@
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Represents a description of the structure of a level on the 2D (integer) grid.
+    /// Describes the structure of a level on the 2D (integer) grid.
     /// </summary>
     /// <typeparam name="TRoom"></typeparam>
     public class LevelDescriptionGrid2D<TRoom> : LevelDescription<TRoom, RoomDescriptionGrid2D>
@@ -26,7 +26,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// Default room template repeat mode that is used if there is no repeat mode specified on the room template itself.
         /// </summary>
         /// <remarks>
-        /// Defaults to RoomTemplateRepeatMode.NoRepeat, i.e. room templates should not repeat in a level if possible.
+        /// Defaults to <see cref="RoomTemplateRepeatMode.NoRepeat"/>, i.e. room templates should not repeat in a level if possible.
         /// </remarks>
         public RoomTemplateRepeatMode? RoomTemplateRepeatModeDefault { get; set; } = RoomTemplateRepeatMode.NoRepeat;
 

@@ -5,7 +5,7 @@ using Edgar.GraphBasedGenerator.Common.RoomTemplates;
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
-    /// Represents a description of a room in a level.
+    /// Describes the properties of a single room in a level.
     /// </summary>
     public class RoomDescriptionGrid2D : IRoomDescription
     {
@@ -19,6 +19,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </summary>
         public List<RoomTemplateGrid2D> RoomTemplates { get; }
 
+        /// <param name="isCorridor">See the <see cref="IsCorridor"/> property.</param>
+        /// <param name="roomTemplates">See the <see cref="RoomTemplates"/> property.</param>
         public RoomDescriptionGrid2D(bool isCorridor, List<RoomTemplateGrid2D> roomTemplates)
         {
             if (roomTemplates == null) 

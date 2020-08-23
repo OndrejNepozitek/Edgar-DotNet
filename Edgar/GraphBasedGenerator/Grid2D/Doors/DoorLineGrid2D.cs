@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
     /// <summary>
     /// Represents a door line.
     /// </summary>
+    /// <remarks>
+    /// The difference between this class and the <see cref="DoorGrid2D"/> class is that a single instance of this class
+    /// can represent multiple instances of the <see cref="DoorGrid2D"/> class.
+    /// </remarks>
 	public struct DoorLineGrid2D : IEquatable<DoorLineGrid2D>
 	{
         /// <summary>
@@ -21,8 +24,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </summary>
 		public int Length { get; }
 
+		/// <summary>
+		/// Door socket.
+		/// </summary>
         public IDoorSocket DoorSocket { get; }
 
+		/// <param name="line">See the <see cref="Line"/> property.</param>
+		/// <param name="length">See the <see cref="Length"/> property.</param>
+		/// <param name="doorSocket">See the <see cref="DoorSocket"/> property.</param>
         public DoorLineGrid2D(OrthogonalLineGrid2D line, int length, IDoorSocket doorSocket)
 		{
 			Line = line;

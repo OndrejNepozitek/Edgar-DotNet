@@ -61,6 +61,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </remarks>
         public TransformationGrid2D Transformation { get; }
 
+        /// <param name="room">See the <see cref="Room"/> property.</param>
+        /// <param name="outline">See the <see cref="Outline"/> property.</param>
+        /// <param name="position">See the <see cref="Position"/> property.</param>
+        /// <param name="isCorridor">See the <see cref="IsCorridor"/> property.</param>
+        /// <param name="roomTemplate">See the <see cref="RoomTemplate"/> property.</param>
+        /// <param name="roomDescription">See the <see cref="RoomDescription"/> property.</param>
+        /// <param name="transformation">See the <see cref="Transformation"/> property.</param>
         public LayoutRoomGrid2D(TRoom room, PolygonGrid2D outline, Vector2Int position, bool isCorridor, RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, TransformationGrid2D transformation)
 		{
 			Room = room;

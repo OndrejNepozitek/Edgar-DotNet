@@ -9,6 +9,9 @@
     <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\ondra\OneDrive\Dokumenty\Visual Studio 2017\Projects\MapGeneration\Edgar\Edgar.xml</DocumentationFile>
+  </PropertyGroup>
   <Target Name="CopyResources" AfterTargets="Build">
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />
