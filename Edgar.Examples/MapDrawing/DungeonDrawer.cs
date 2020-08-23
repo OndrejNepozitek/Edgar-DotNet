@@ -14,7 +14,7 @@ namespace Edgar.Examples.MapDrawing
 	/// Draws a layout on an old paper texture.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
-	public class OldMapDrawer<TNode>
+	public class DungeonDrawer<TNode>
 	{
 		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 		private Bitmap bitmap;
@@ -91,14 +91,12 @@ namespace Edgar.Examples.MapDrawing
 			return bitmap;
 		}
 
-		/// <inheritdoc />
-		protected void DrawRoom(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
+		private void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments)
         {
 			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 			var offset = polygon.BoundingRectangle.A;
             
 			innerBrush.TranslateTransform(offset.X, offset.Y);
-			//graphics.FillPolygon(innerBrush, polyPoints.ToArray());
             graphics.FillPolygon(new SolidBrush(Color.FromArgb(248, 248, 244)), polyPoints.ToArray());
 			innerBrush.ResetTransform();
 
@@ -137,37 +135,21 @@ namespace Edgar.Examples.MapDrawing
                 }
             }
 
-            for (var i = 0; i < outline.Count; i++)
+            for (var i = 0; i < outlineSegments.Count; i++)
             {
-                var pair = outline[i];
-                var point = pair.Item1;
+                var current = outlineSegments[i];
+                var previous = outlineSegments[Mod(i - 1, outlineSegments.Count)];
+                var next = outlineSegments[Mod(i + 1, outlineSegments.Count)];
 
-                var previous = outline[Mod(i - 1, outline.Count)];
-                var previousPoint = previous.Item1;
+                outlinePen.StartCap = previous.IsDoor ? LineCap.Square : LineCap.Round;
+                outlinePen.EndCap = next.IsDoor ? LineCap.Square : LineCap.Round;
 
-                var next = outline[Mod(i + 1, outline.Count)];
+                if (!current.IsDoor)
+                {
+                    var from = current.Line.From;
+                    var to = current.Line.To;
 
-                if (previous.Item2 == false)
-                {
-                    outlinePen.StartCap = LineCap.Square;
-                }
-                else
-                {
-                    outlinePen.StartCap = LineCap.Round;
-                }
-
-                if (next.Item2 == false)
-                {
-                    outlinePen.EndCap = LineCap.Square;
-                }
-                else
-                {
-                    outlinePen.EndCap = LineCap.Round;
-                }
-
-                if (pair.Item2)
-                {
-                    graphics.DrawLine(outlinePen, previousPoint.X, previousPoint.Y, point.X, point.Y);
+                    graphics.DrawLine(outlinePen, from.X, from.Y, to.X, to.Y);
                 }
             }
         }
@@ -176,34 +158,25 @@ namespace Edgar.Examples.MapDrawing
             return (x%m + m)%m;
         }
 
-        protected void DrawRoomBefore(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
+        private void DrawHatching(PolygonGrid2D outline)
         {
             var pen = new Pen(Color.FromArgb(50, 50, 50), scale * 0.55f);
             graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             var usedPointsAdd = new List<Vector2>();
 
-            foreach (var line in polygon.GetLines())
+            foreach (var line in outline.GetLines())
             {
                 var points = line.GetPoints().Select(x => (Vector2) x).ToList();
 				points.AddRange(points.Select(x => x + 0.5f * (Vector2) line.GetDirectionVector()).ToList());
 
-                //for (int i = 0; i < 5; i++)
-                //{
-                //    points.Add(points.Last() + line.GetDirectionVector()); 
-                //}
-                
+               
                 for (var i = 0; i < points.Count; i++)
                 {
                     var point = points[i];
 
                     if (true)
                     {
-                        //if (points.Count - 1 - i < 5)
-                        //{
-                        //    continue;
-                        //}
-
                         var direction = (Vector2) line.GetDirectionVector();
                         var directionPerpendicular = new Vector2(Math.Max(-1, Math.Min(1, direction.Y)), Math.Max(-1, Math.Min(1, direction.X)));
 
@@ -257,19 +230,16 @@ namespace Edgar.Examples.MapDrawing
             usedPoints.AddRange(usedPointsAdd);
         }
 
-        protected void DrawRoomBefore2(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
+        private void DrawShading(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments)
         {
-            for (var i = 0; i < outline.Count; i++)
+            foreach (var outlineSegment in outlineSegments)
             {
-                var pair = outline[i];
-                var point = pair.Item1;
-
-                var previous = outline[Mod(i - 1, outline.Count)];
-                var previousPoint = previous.Item1;
-
-                if (pair.Item2)
+                if (!outlineSegment.IsDoor)
                 {
-                    graphics.DrawLine(shadePen, previousPoint.X, previousPoint.Y, point.X, point.Y);
+                    var from = outlineSegment.Line.From;
+                    var to = outlineSegment.Line.To;
+
+                    graphics.DrawLine(shadePen, from.X, from.Y, to.X, to.Y);
                 }
             }
         }
@@ -325,143 +295,58 @@ namespace Edgar.Examples.MapDrawing
 			}
 		}
 
-        		/// <summary>
-		/// Entry point of the class. Draws a given layout to an output with given dimensions.
-		/// </summary>
-		/// <param name="layout">Layout do be drawn</param>
-		/// <param name="width">Width of the output</param>
-		/// <param name="height">Height of the output</param>
-		/// <param name="withNames">Whether names should be displayed</param>
-		/// <param name="fixedFontSize"></param>
-		/// <param name="borderSize"></param>
-		protected void DrawLayoutBase(LayoutGrid2D<TNode> layout, int width, int height, bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
+		private void DrawLayoutBase(LayoutGrid2D<TNode> layout, int width, int height, bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
 		{
-			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
-			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
+            var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
+            var (scale, offset) = GetScaleAndOffset(polygons, width, height);
 
-			var minx = points.Min(x => x.X);
-			var miny = points.Min(x => x.Y);
-			var maxx = points.Max(x => x.X);
-			var maxy = points.Max(x => x.Y);
-
-			var scale = GetScale(minx, miny, maxx, maxy, width, height, borderSize);
-			var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
-			offset = new Vector2Int((int) (offset.X / scale), (int) (offset.Y / scale));
-
-			DrawLayout(layout, scale, offset, withNames, fixedFontSize);
-		}
-
-		/// <summary>
-		/// Draws a given layout to an output using a given scale and offset. 
-		/// </summary>
-		/// <remarks>
-		/// All points are tranfosmer using the TransformPoint method.
-		/// </remarks>
-		/// <param name="layout">Layout do be drawn</param>
-		/// <param name="scale">Scale factor</param>
-		/// <param name="offset"></param>
-		/// <param name="withNames">Whether names should be displayed</param>
-		/// <param name="fixedFontSize"></param>
-		protected void DrawLayout(LayoutGrid2D<TNode> layout, float scale, Vector2 offset, bool withNames, float? fixedFontSize = null)
-		{
-			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
 			var rooms = layout.Rooms.ToList();
 			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Outline + x.Position).Min(x => x.BoundingRectangle.Width);
 
 			graphics.ScaleTransform(scale, scale);
-            var scaleOriginal = scale;
-            scale = 1;
+            graphics.TranslateTransform(offset.X, offset.Y);
 
-			graphics.TranslateTransform(offset.X, offset.Y);
-            var offsetOriginal = offset;
-			offset = new Vector2Int();
-
-            //// TODO: remove later
-            for (var i = 0; i < rooms.Count; i++)
+            foreach (var room in rooms)
             {
-                var room = rooms[i];
-                var outline = GetOutline(polygons[i], room.Doors?.ToList())
-                    .Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
-
-                var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
-
-                if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
-                {
-                    throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
-                }
-
-                var polygon = new PolygonGrid2D(transformedPoints);
-                DrawRoomBefore2(polygon, outline, 2);
+                DrawShading(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
             }
 
-			//// TODO: remove later
-			for (var i = 0; i < rooms.Count; i++)
-			{
-				var room = rooms[i];
-				var outline = GetOutline(polygons[i], room.Doors?.ToList())
-					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
+			foreach (var room in rooms)
+            {
+                DrawHatching(room.Outline + room.Position);
+            }
 
-				var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+            foreach (var room in rooms)
+            {
+                DrawOutline(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
+            }
 
-				if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
-				{
-					throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
-				}
+            foreach (var room in rooms)
+            {
+                if (withNames && !room.IsCorridor)
+                {
+                    DrawTextOntoPolygon(room.Outline + room.Position, room.Room.ToString(), fixedFontSize ?? 2.5f * minWidth);
+                }
+            }
+        }
 
-				var polygon = new PolygonGrid2D(transformedPoints);
-				DrawRoomBefore(polygon, outline, 2);
-			}
+        private (float scale, Vector2 offset) GetScaleAndOffset(List<PolygonGrid2D> polygons, int width, int height, float borderSize = 0.2f)
+        {
+            var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
-			for (var i = 0; i < rooms.Count; i++)
-			{
-				var room = rooms[i];
-				var outline = GetOutline(polygons[i], room.Doors?.ToList())
-					.Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
+            var minx = points.Min(x => x.X);
+            var miny = points.Min(x => x.Y);
+            var maxx = points.Max(x => x.X);
+            var maxy = points.Max(x => x.Y);
 
-				var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+            var scale = GetScale(minx, miny, maxx, maxy, width, height, borderSize);
+            var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
+            offset = new Vector2Int((int) (offset.X / scale), (int) (offset.Y / scale));
 
-				if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
-				{
-					throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
-				}
+            return (scale, offset);
+        }
 
-				var polygon = new PolygonGrid2D(transformedPoints);
-				DrawRoom(polygon, outline, 2);
-
-				if (withNames && !room.IsCorridor)
-				{
-					DrawTextOntoPolygon(polygon, room.Room.ToString(), fixedFontSize ?? 2.5f * minWidth);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Both coordinates are first multiplied by the scale factor and then the offset is added.
-		/// </summary>
-		/// <remarks>
-		/// Resulting coordinates must be cast back to int.
-		/// </remarks>
-		/// <param name="point"></param>
-		/// <param name="scale"></param>
-		/// <param name="offset"></param>
-		/// <returns></returns>
-		protected Vector2Int TransformPoint(Vector2Int point, float scale, Vector2 offset)
-		{
-			return new Vector2Int((int)(scale * point.X + offset.X), (int)(scale * point.Y + offset.Y));
-		}
-
-		/// <summary>
-		/// Computes an offset that will move points to the first quadrant as close to axis as possible.
-		/// </summary>
-		/// <param name="minx"></param>
-		/// <param name="miny"></param>
-		/// <param name="maxx"></param>
-		/// <param name="maxy"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="scale"></param>
-		/// <returns></returns>
-		public Vector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
+        private Vector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
 		{
 			var centerx = scale * (maxx + minx) / 2;
 			var centery = scale * (maxy + miny) / 2;
@@ -469,19 +354,7 @@ namespace Edgar.Examples.MapDrawing
 			return new Vector2((width / 2f - centerx), (height / 2f - centery));
 		}
 
-		/// <summary>
-		/// Computes a scale factor that will transform points to match given width and height. 
-		/// Some space can be also left for borders.
-		/// </summary>
-		/// <param name="minx"></param>
-		/// <param name="miny"></param>
-		/// <param name="maxx"></param>
-		/// <param name="maxy"></param>
-		/// <param name="expectedWidth"></param>
-		/// <param name="expectedHeight"></param>
-		/// <param name="borderSize">How much of the original image should be used for each border. </param>
-		/// <returns></returns>
-		public float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
+        private float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
 		{
 			var neededWidth = (1 + borderSize) * (maxx - minx);
 			var neededHeight = (1 + borderSize) * (maxy - miny);
@@ -495,6 +368,21 @@ namespace Edgar.Examples.MapDrawing
 
 			return scale;
 		}
+
+        private List<OutlineSegment> GetOutlineNew(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines, Vector2Int offset = default)
+        {
+            var old = GetOutline(polygon, doorLines);
+            var outline = new List<OutlineSegment>();
+
+            for (int i = 0; i < old.Count; i++)
+            {
+                var current = old[i];
+                var previous = old[Mod(i - 1, old.Count)];
+                outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
+            }
+
+            return outline;
+        }
 
         /// <summary>
         /// Computes the outline of a given polygon and its door lines.
@@ -553,6 +441,19 @@ namespace Edgar.Examples.MapDrawing
 
                 outline.Add(point);
             }
+        }
+
+        protected class OutlineSegment
+        {
+            public OutlineSegment(OrthogonalLineGrid2D line, bool isDoor)
+            {
+                Line = line;
+                IsDoor = isDoor;
+            }
+
+            public OrthogonalLineGrid2D Line { get; }
+
+            public bool IsDoor { get; }
         }
 	}
 }

@@ -161,7 +161,7 @@ namespace Edgar.Examples
                 generator.InjectRandomGenerator(new Random(0));
 
                 var layoutDrawer = new SVGLayoutDrawer<TRoom>();
-                var oldMapDrawer = new OldMapDrawer<TRoom>();
+                var oldMapDrawer = new DungeonDrawer<TRoom>();
 
                 for (int i = 0; i < 4; i++)
                 {
