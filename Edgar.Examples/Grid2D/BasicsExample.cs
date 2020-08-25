@@ -8,7 +8,7 @@ namespace Edgar.Examples.Grid2D
     {
         public string Name => "Basics";
 
-        public string DocsFileName => "basic";
+        public string DocsFileName => "basics";
 
         public LevelDescriptionGrid2D<int> GetLevelDescription()
         {

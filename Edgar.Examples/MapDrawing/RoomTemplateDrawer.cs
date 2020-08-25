@@ -7,6 +7,7 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Edgar.Examples.MapDrawing
 {
@@ -14,7 +15,7 @@ namespace Edgar.Examples.MapDrawing
 	/// Draws a layout on an old paper texture.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
-	public class DungeonDrawer<TNode>
+	public class RoomTemplateDrawer<TNode>
 	{
 		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 		private Bitmap bitmap;
@@ -43,7 +44,7 @@ namespace Edgar.Examples.MapDrawing
 		/// <param name="withNames"></param>
 		/// <param name="fixedFontSize"></param>
 		/// <returns></returns>
-		public Bitmap DrawLayout(LayoutGrid2D<TNode> layout, int width, int height, bool withNames = true, float? fixedFontSize = null)
+		public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, int width, int height, bool withNames = true, float? fixedFontSize = null, float borderSize = 0.2f)
 		{
 			bitmap = new Bitmap(width, height);
 			graphics = Graphics.FromImage(bitmap);
@@ -79,7 +80,9 @@ namespace Edgar.Examples.MapDrawing
                 StartCap = LineCap.Round
             };
 
-            DrawLayoutBase(layout, width, height, withNames, fixedFontSize);
+
+
+            DrawRoomTemplatesBase(GetRoomTemplateConfigurations(roomTemplates, width / (double) height), width, height, withNames, fixedFontSize, borderSize);
 
 			textureImgInner.Dispose();
 			innerBrush.Dispose();
@@ -90,6 +93,180 @@ namespace Edgar.Examples.MapDrawing
 
 			return bitmap;
 		}
+
+        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates, double expectedRatio)
+        {
+            var orderedRoomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Width).ToList();
+            var minDistance = 3;
+
+            var bestRatio = double.MaxValue;
+            List<RoomTemplateConfiguration> bestConfigurations = null;
+            List<List<RoomTemplateGrid2D>> lastRows = null;
+
+            while (true)
+            {
+                int rowWidth;
+
+                if (lastRows == null)
+                {
+                    rowWidth = orderedRoomTemplates[0].Outline.BoundingRectangle.Width;
+                }
+                else
+                {
+                    rowWidth = GetNextBreakPoint(lastRows);
+                }
+
+                var rows = GetRows(roomTemplates, rowWidth);
+                var configurations = GetConfigurations(rows, rowWidth, minDistance);
+                var ratio = GetWidthHeightRatio(configurations);
+                var emptySpaceRatio = GetEmptySpaceRatio(rows, rowWidth);
+
+                if (Math.Abs(expectedRatio - ratio) < Math.Abs(expectedRatio - bestRatio))
+                {
+                    bestConfigurations = configurations;
+                    bestRatio = ratio;
+                }
+
+                lastRows = rows;
+
+                if (rows.Count == 1)
+                {
+                    if (bestConfigurations == null)
+                    {
+                        bestConfigurations = configurations;
+                    }
+
+                    break;
+                }
+            }
+
+            return bestConfigurations;
+        }
+
+        private double GetWidthHeightRatio(List<RoomTemplateConfiguration> configurations)
+        {
+            var minX = configurations.Min(x => x.RoomTemplate.Outline.BoundingRectangle.A.X + x.Position.X);
+            var minY = configurations.Min(x => x.RoomTemplate.Outline.BoundingRectangle.A.Y + x.Position.Y);
+            var maxX = configurations.Max(x => x.RoomTemplate.Outline.BoundingRectangle.B.X + x.Position.X);
+            var maxY = configurations.Max(x => x.RoomTemplate.Outline.BoundingRectangle.B.Y + x.Position.Y);
+
+            var width = maxX - minX;
+            var height = maxY - minY;
+
+            return width / (double) height;
+        }
+
+        private double GetEmptySpaceRatio(List<List<RoomTemplateGrid2D>> rows, int rowWidth)
+        {
+            var worstRatio = double.MinValue;
+
+            foreach (var row in rows)
+            {
+                var width = row.Sum(x => x.Outline.BoundingRectangle.Width);
+                var emptySpace = rowWidth - width;
+
+                worstRatio = Math.Max(worstRatio, emptySpace / (double) rowWidth);
+            }
+
+            return worstRatio;
+        }
+
+        private int GetNextBreakPoint(List<List<RoomTemplateGrid2D>> rows)
+        {
+            var minWidth = int.MaxValue;
+
+            for (var i = 0; i < rows.Count - 1; i++)
+            {
+                var row = rows[i];
+                var nextRow = rows[i + 1];
+
+                var currentWidth = row.Sum(x => x.Outline.BoundingRectangle.Width);
+                var nextItemWidth = nextRow[0].Outline.BoundingRectangle.Width;
+                var nextWidth = currentWidth + nextItemWidth;
+
+                minWidth = Math.Min(minWidth, nextWidth);
+            }
+
+            return minWidth;
+        }
+
+        private List<RoomTemplateConfiguration> GetConfigurations(List<List<RoomTemplateGrid2D>> rows, int rowWidth, int minDistance)
+        {
+            var configurations = new List<RoomTemplateConfiguration>();
+            var maxHeight = int.MinValue;
+
+            rowWidth = rows.Max(x => x.Sum(y => y.Outline.BoundingRectangle.Width) + (x.Count - 1) * minDistance);
+
+            var offset = new Vector2Int();
+            foreach (var row in rows)
+            {
+                var totalWidth = row.Sum(x => x.Outline.BoundingRectangle.Width);
+                var space = rowWidth - totalWidth;
+                var distance = row.Count != 1 ? space / (row.Count - 1) : 0;
+                var remainder = space - distance * (row.Count - 1);
+
+                if (row == rows.Last())
+                {
+                    distance = minDistance;
+                    remainder = 0;
+                }
+
+                if (row.Count == 1)
+                {
+                    offset += new Vector2Int(space / 2, 0);
+                }
+
+                for (var i = 0; i < row.Count; i++)
+                {
+                    var roomTemplate = row[i];
+                    var outline = roomTemplate.Outline;
+                    configurations.Add(new RoomTemplateConfiguration(roomTemplate,
+                        -1 * roomTemplate.Outline.BoundingRectangle.A + offset));
+                    offset += new Vector2Int(roomTemplate.Outline.BoundingRectangle.Width, 0);
+                    maxHeight = Math.Max(maxHeight, outline.BoundingRectangle.Height);
+
+                    offset += new Vector2Int(distance, 0);
+
+                    if (i < remainder)
+                    {
+                        offset += new Vector2Int(1, 0);
+                    }
+                }
+
+                offset = new Vector2Int(0, offset.Y + maxHeight + minDistance);
+                maxHeight = int.MinValue;
+            }
+
+            return configurations;
+        }
+
+        private List<List<RoomTemplateGrid2D>> GetRows(List<RoomTemplateGrid2D> roomTemplates, int rowWidth)
+        {
+            roomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Height).ToList();
+            
+
+            var maxHeight = int.MinValue;
+            var rows = new List<List<RoomTemplateGrid2D>>();
+            rows.Add(new List<RoomTemplateGrid2D>());
+
+            foreach (var roomTemplate in roomTemplates)
+            {
+                var outline = roomTemplate.Outline;
+
+                if (rows.Last().Sum(x => x.Outline.BoundingRectangle.Width) + outline.BoundingRectangle.Width > rowWidth)
+                {
+                    maxHeight = int.MinValue;
+                    rows.Add(new List<RoomTemplateGrid2D>());
+                }
+
+                // configurations.Add(new RoomTemplateConfiguration(roomTemplate, -1 * roomTemplate.Outline.BoundingRectangle.A + offset));
+                rows.Last().Add(roomTemplate);
+                
+                maxHeight = Math.Max(maxHeight, outline.BoundingRectangle.Height);
+            }
+
+            return rows;
+        }
 
 		private void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments)
         {
@@ -116,24 +293,24 @@ namespace Edgar.Examples.MapDrawing
 
             var gridPen = new Pen(Color.FromArgb(100, 100, 100), scale * 0.50f);
             gridPen.DashStyle = DashStyle.Dash;
-            gridPen.DashPattern = new float[] {1.2f, 3.1f};
+            gridPen.DashPattern = new float[] {1.2f / 10, 3.1f};
             gridPen.DashOffset = 0.5f;
 
-            foreach (var point in points)
-            {
-                var right = point + new Vector2Int(1, 0);
-				var bottom = point + new Vector2Int(0, -1);
+            //foreach (var point in points)
+            //{
+            //    var right = point + new Vector2Int(1, 0);
+            //    var bottom = point + new Vector2Int(0, -1);
 
-                if (points.Contains(right))
-                {
-					graphics.DrawLine(gridPen, point.X, point.Y, right.X, right.Y);
-                }
+            //    if (points.Contains(right))
+            //    {
+            //        graphics.DrawLine(gridPen, point.X, point.Y, right.X, right.Y);
+            //    }
 
-                if (points.Contains(bottom))
-                {
-                    graphics.DrawLine(gridPen, point.X, point.Y, bottom.X, bottom.Y);
-                }
-            }
+            //    if (points.Contains(bottom))
+            //    {
+            //        graphics.DrawLine(gridPen, point.X, point.Y, bottom.X, bottom.Y);
+            //    }
+            //}
 
             for (var i = 0; i < outlineSegments.Count; i++)
             {
@@ -295,37 +472,47 @@ namespace Edgar.Examples.MapDrawing
 			}
 		}
 
-		private void DrawLayoutBase(LayoutGrid2D<TNode> layout, int width, int height, bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
+		private void DrawRoomTemplatesBase(List<RoomTemplateConfiguration> roomTemplates, int width, int height, bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
 		{
-            var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
+            var polygons = roomTemplates.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
             var (scale, offset) = GetScaleAndOffset(polygons, width, height, borderSize);
 
-			var rooms = layout.Rooms.ToList();
-			var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Outline + x.Position).Min(x => x.BoundingRectangle.Width);
+			var minWidth = polygons.Min(x => x.BoundingRectangle.Width);
 
 			graphics.ScaleTransform(scale, scale);
             graphics.TranslateTransform(offset.X, offset.Y);
 
-            foreach (var room in rooms)
+   //         foreach (var room in rooms)
+   //         {
+   //             DrawShading(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
+   //         }
+
+			//foreach (var room in rooms)
+   //         {
+   //             DrawHatching(room.Outline + room.Position);
+   //         }
+
+
+            foreach (var roomTemplate in roomTemplates)
             {
-                DrawShading(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
+                DrawShading(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
             }
 
-			foreach (var room in rooms)
+            foreach (var roomTemplate in roomTemplates)
             {
-                DrawHatching(room.Outline + room.Position);
+                DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position);
             }
 
-            foreach (var room in rooms)
+            foreach (var roomTemplate in roomTemplates)
             {
-                DrawOutline(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
+                DrawOutline(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
             }
 
-            foreach (var room in rooms)
+            foreach (var roomTemplate in roomTemplates)
             {
-                if (withNames && !room.IsCorridor)
+                if (withNames)
                 {
-                    DrawTextOntoPolygon(room.Outline + room.Position, room.Room.ToString(), fixedFontSize ?? 2.5f * minWidth);
+                    DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name.ToString(), fixedFontSize ?? 2.5f * minWidth);
                 }
             }
         }
@@ -369,16 +556,26 @@ namespace Edgar.Examples.MapDrawing
 			return scale;
 		}
 
-        private List<OutlineSegment> GetOutlineNew(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines, Vector2Int offset = default)
+        private List<OutlineSegment> GetOutlineNew(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines = null, Vector2Int offset = default)
         {
             var old = GetOutline(polygon, doorLines);
             var outline = new List<OutlineSegment>();
 
-            for (int i = 0; i < old.Count; i++)
+            if (doorLines == null)
             {
-                var current = old[i];
-                var previous = old[Mod(i - 1, old.Count)];
-                outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
+                foreach (var line in polygon.GetLines())
+                {
+                    outline.Add(new OutlineSegment(line + offset, false));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < old.Count; i++)
+                {
+                    var current = old[i];
+                    var previous = old[Mod(i - 1, old.Count)];
+                    outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
+                }
             }
 
             return outline;
@@ -440,6 +637,19 @@ namespace Edgar.Examples.MapDrawing
                     return;
 
                 outline.Add(point);
+            }
+        }
+
+        protected class RoomTemplateConfiguration
+        {
+            public RoomTemplateGrid2D RoomTemplate { get; }
+
+            public Vector2Int Position { get; }
+
+            public RoomTemplateConfiguration(RoomTemplateGrid2D roomTemplate, Vector2Int position)
+            {
+                RoomTemplate = roomTemplate;
+                Position = position;
             }
         }
 

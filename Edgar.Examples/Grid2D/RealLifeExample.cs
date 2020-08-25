@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Edgar.Examples.MapDrawing;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
@@ -43,6 +45,17 @@ namespace Edgar.Examples.Grid2D
                 isCorridor: true,
                 roomTemplates: GetCorridorRoomTemplates()
             );
+
+            //var roomTemplatesDrawer = new RoomTemplateDrawer<int>();
+
+            //for (int i = 1; i < 20; i++)
+            //{
+            //    var height = i * 500;
+            //    var width = 3000;
+            //    var bitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates.Values.ToList(), 3000, height, true, 1.5f);
+            //    bitmap.Save($"roomTemplates_{width}_{height}.png");
+            //}
+
 
             #endregion
 
@@ -128,19 +141,21 @@ namespace Edgar.Examples.Grid2D
 
         private Dictionary<string, RoomTemplateGrid2D> GetRoomTemplates()
         {
-            return new Dictionary<string, RoomTemplateGrid2D>()
+            return new List<RoomTemplateGrid2D>()
             {
-                {"Normal 1", new RoomTemplateGrid2D(
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetRectangle(15, 18),
                     new SimpleDoorModeGrid2D(1, 2),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Normal 2", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Normal 1"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetRectangle(13, 15),
                     new SimpleDoorModeGrid2D(1, 2),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Normal 3", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Normal 2"
+                ),
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-11, 6).AddPoint(-5, 6).AddPoint(-5, 5).AddPoint(-3, 5)
                         .AddPoint(-3, 6).AddPoint(2, 6).AddPoint(2, 5).AddPoint(4, 5)
@@ -150,59 +165,67 @@ namespace Edgar.Examples.Grid2D
                         .Build(),
                     new SimpleDoorModeGrid2D(1, 2),
                     repeatMode: RoomTemplateRepeatMode.NoRepeat,
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Normal 3"
+                ),
                 #region hidden:Other room templates
-                {"Normal 4", new RoomTemplateGrid2D(
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-39, 1).AddPoint(-37, 1).AddPoint(-37, 10).AddPoint(-39, 10)
                         .AddPoint(-39, 15).AddPoint(-26, 15).AddPoint(-26, 10).AddPoint(-28, 10)
                         .AddPoint(-28, 1).AddPoint(-26, 1).AddPoint(-26, -4).AddPoint(-39, -4)
                         .Build(),
                     new SimpleDoorModeGrid2D(1, 2),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Normal 5", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Normal 4"
+                ),
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-14, 3).AddPoint(0, 3).AddPoint(0, 5).AddPoint(-14, 5)
                         .AddPoint(-14, 12).AddPoint(8, 12).AddPoint(8, -4).AddPoint(-6, -4)
                         .AddPoint(-6, -6).AddPoint(8, -6).AddPoint(8, -13).AddPoint(-14, -13)
                         .Build(),
                     new SimpleDoorModeGrid2D(1, 2),
-                    repeatMode: RoomTemplateRepeatMode.NoRepeat
-                )},
-                {"Normal 6", new RoomTemplateGrid2D(
+                    repeatMode: RoomTemplateRepeatMode.NoRepeat,
+                    name: "Normal 5"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetSquare(15), 
-                    new SimpleDoorModeGrid2D(1, 2)
-                )},
-                {"Spawn", new RoomTemplateGrid2D(
+                    new SimpleDoorModeGrid2D(1, 2),
+                    name: "Normal 6"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetSquare(11), 
-                    new SimpleDoorModeGrid2D(1, 2)
-                )},
-                {"Hub 1", new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetRectangle(16, 20), 
+                    new SimpleDoorModeGrid2D(1, 2),
+                    name: "Spawn"
+                ),
+                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(16, 20), 
                     new SimpleDoorModeGrid2D(1, 4),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Boss", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Hub 1"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetRectangle(22, 22),
                     new SimpleDoorModeGrid2D(1, 4),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Reward", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Boss"
+                ),
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-8, 7).AddPoint(-7, 7).AddPoint(-7, 8).AddPoint(3, 8)
                         .AddPoint(3, 7).AddPoint(4, 7).AddPoint(4, -3).AddPoint(3, -3)
                         .AddPoint(3, -4).AddPoint(-7, -4).AddPoint(-7, -3).AddPoint(-8, -3)
                         .Build(),
-                    new SimpleDoorModeGrid2D(1, 2)
-                )},
-                {"Normal 7", new RoomTemplateGrid2D(
+                    new SimpleDoorModeGrid2D(1, 2),
+                    name: "Reward"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetRectangle(12, 17), 
                     new SimpleDoorModeGrid2D(1, 3),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
-                )},
-                {"Exit", new RoomTemplateGrid2D(
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Normal 7"
+                ),
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-3, 4).AddPoint(4, 4).AddPoint(4, -1).AddPoint(-3, -1)
                         .Build(),
@@ -213,22 +236,25 @@ namespace Edgar.Examples.Grid2D
                         new DoorGrid2D(new Vector2Int(0, 4), new Vector2Int(1, 4)),
                         new DoorGrid2D(new Vector2Int(0, -1), new Vector2Int(1, -1)),
                         }
-                    )
-                )},
-                {"Shop", new RoomTemplateGrid2D(
+                    ),
+                    name: "Exit"
+                ),
+                new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-8, 7).AddPoint(-7, 7).AddPoint(-7, 8).AddPoint(3, 8)
                         .AddPoint(3, 7).AddPoint(4, 7).AddPoint(4, -3).AddPoint(3, -3)
                         .AddPoint(3, -4).AddPoint(-7, -4).AddPoint(-7, -3).AddPoint(-8, -3)
                         .Build(),
-                    new SimpleDoorModeGrid2D(1, 2)
-                )},
-                {"Secret", new RoomTemplateGrid2D(
+                    new SimpleDoorModeGrid2D(1, 2),
+                    name: "Shop"
+                ),
+                new RoomTemplateGrid2D(
                     PolygonGrid2D.GetSquare(9), 
-                    new SimpleDoorModeGrid2D(1, 2)
-                )},
+                    new SimpleDoorModeGrid2D(1, 2),
+                    name: "Secret"
+                )
                 #endregion
-            };
+            }.ToDictionary(x => x.Name, x => x);
         }
 
         private List<RoomTemplateGrid2D> GetCorridorRoomTemplates()

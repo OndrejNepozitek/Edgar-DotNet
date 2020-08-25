@@ -175,6 +175,10 @@ namespace Edgar.Examples
                     bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.png"));
                 }
 
+                var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
+                var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
+                summary.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_summary.png"));
+
                 resultsCounter++;
             }
         }
