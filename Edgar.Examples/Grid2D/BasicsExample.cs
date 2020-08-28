@@ -117,6 +117,10 @@ namespace Edgar.Examples.Grid2D
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
 
+            //md The graph that we created can be seen below:
+            //md
+            //md ![](./basics/graph.png)
+
             //md_sc method_content:Run
 
             return levelDescription;
@@ -168,6 +172,23 @@ namespace Edgar.Examples.Grid2D
                 FontSize = 1,
             });
             roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
+
+            var graphDrawer = new GraphDrawer<int>();
+            var graphBitmap = graphDrawer.DrawGraph(levelDescription, new Dictionary<int, Vector2Int>()
+            {
+                { 0, new Vector2Int(0, 0) },
+                { 1, new Vector2Int(0, 1) },
+                { 2, new Vector2Int(1, 1) },
+                { 3, new Vector2Int(1, 0) },
+                { 4, new Vector2Int(-1, 0) },
+            }, new DungeonDrawerOptions()
+            {
+                Width = 2500,
+                Height = 700,
+                PaddingAbsolute = 80,
+                FontSize = 3,
+            });
+            graphBitmap.Save(ExamplesGenerator.AssetsFolder + "/graph.png");
 
             #endregion
         }

@@ -65,6 +65,7 @@ namespace Edgar.Examples
         private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
         {
             AssetsFolder = Path.Combine(outputFolder, example.DocsFileName);
+            Directory.CreateDirectory(AssetsFolder);
 
             var className = example.GetType().Name;
             sourceCodeParser = new SourceCodeParser(Path.Combine(sourceFolder, $"{className}.cs"));
@@ -131,7 +132,7 @@ namespace Edgar.Examples
                     for (int i = 0; i < 4; i++)
                     {
                         stringBuilder.AppendLine(
-                            $"<GalleryImage withoutLinks src={{require('!!url-loader!./{example.DocsFileName}/{resultsCounter}_{i}.png').default}} />");
+                            $"<GalleryImage src={{require('./{example.DocsFileName}/{resultsCounter}_{i}.png').default}} />");
                     }
 
                     stringBuilder.AppendLine("</Gallery>");
@@ -176,8 +177,7 @@ namespace Edgar.Examples
                 {
                     var level = generator.GenerateLayout();
                     var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true, fixedFontSize: 30);
-                    Directory.CreateDirectory(Path.Combine(outputFolder, example.DocsFileName));
-                    File.WriteAllText(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.svg"),
+                    File.WriteAllText(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.svg"),
                         svg);
 
                     var bitmap = oldMapDrawer.DrawLayout(level, new DungeonDrawerOptions()
@@ -185,12 +185,12 @@ namespace Edgar.Examples
                         Width = 2000,
                         Height = 2000,
                     });
-                    bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.png"));
+                    bitmap.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.png"));
                 }
 
                 var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
                 var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
-                summary.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_summary.png"));
+                summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
 
                 resultsCounter++;
             }
@@ -353,9 +353,9 @@ namespace Edgar.Examples
             for (var i = 0; i < sourceCode.Count; i++)
             {
                 var line = sourceCode[i];
-                var trimmed = line.Trim();
+                var trimmed = line.TrimStart();
 
-                if (trimmed.StartsWith("//md "))
+                if (trimmed.StartsWith("//md ") || trimmed.Equals("//md"))
                 {
                     codeBlockHandler.Exit();
                     trimmed = trimmed.Remove(0, trimmed.Length > 5 ? 5 : 4);

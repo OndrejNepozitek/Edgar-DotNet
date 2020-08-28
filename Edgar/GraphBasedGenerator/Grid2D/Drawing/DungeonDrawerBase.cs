@@ -11,18 +11,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
     public abstract class DungeonDrawerBase
     {
         protected readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
-        protected readonly Random random = new Random();
+        protected readonly Random random = new Random(0);
 
         protected Bitmap bitmap;
         protected Graphics graphics;
 
-        protected void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments, Pen outlinePen)
+        protected void DrawGrid(PolygonGrid2D polygon)
         {
-			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
-			var offset = polygon.BoundingRectangle.A;
-            
-            graphics.FillPolygon(new SolidBrush(Color.FromArgb(248, 248, 244)), polyPoints.ToArray());
-
             var rectangles = polygonPartitioning.GetPartitions(polygon);
             var points = new HashSet<Vector2Int>();
 
@@ -45,11 +40,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             foreach (var point in points)
             {
                 var right = point + new Vector2Int(1, 0);
-				var bottom = point + new Vector2Int(0, -1);
+                var bottom = point + new Vector2Int(0, -1);
 
                 if (points.Contains(right))
                 {
-					graphics.DrawLine(gridPen, point.X, point.Y, right.X, right.Y);
+                    graphics.DrawLine(gridPen, point.X, point.Y, right.X, right.Y);
                 }
 
                 if (points.Contains(bottom))
@@ -57,7 +52,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     graphics.DrawLine(gridPen, point.X, point.Y, bottom.X, bottom.Y);
                 }
             }
+        }
 
+        protected void DrawRoomBackground(PolygonGrid2D polygon)
+        {
+            var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
+
+            graphics.FillPolygon(new SolidBrush(Color.FromArgb(248, 248, 244)), polyPoints.ToArray());
+        }
+
+        protected void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments, Pen outlinePen)
+        {
             for (var i = 0; i < outlineSegments.Count; i++)
             {
                 var current = outlineSegments[i];
@@ -210,7 +215,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     targetRectangle.A.X,
                     targetRectangle.A.Y,
                     targetRectangle.Width,
-                    targetRectangle.Height
+                    targetRectangle.Height + 0.2f * penWidth
 				);
 
 				var sf = new StringFormat

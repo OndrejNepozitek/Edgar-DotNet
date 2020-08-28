@@ -69,6 +69,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             foreach (var room in rooms)
             {
+                DrawRoomBackground(room.Outline + room.Position);
+                DrawGrid(room.Outline + room.Position);
                 DrawOutline(room.Outline + room.Position, GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
             }
 

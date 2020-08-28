@@ -28,7 +28,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 		private Pen shadePen;
 
         private List<Vector2> usedPoints;
-        private readonly Random random = new Random();
+        private readonly Random random = new Random(0);
         private readonly float scale = 0.1f;
 		private readonly CachedPolygonPartitioning partitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 
