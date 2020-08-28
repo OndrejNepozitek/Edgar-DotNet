@@ -96,6 +96,18 @@ namespace Edgar.Examples
             return sourceCode;
         }
 
+        public List<string> GetWholeFile()
+        {
+            var content = root.ToFullString();
+
+            var sourceCode = content.Split(
+                new[] { "\r\n", "\r", "\n" },
+                StringSplitOptions.None
+            ).ToList();
+
+            return sourceCode;
+        }
+
         private List<string> TrimBrackets(List<string> sourceCode)
         {
             sourceCode = sourceCode.ToList();

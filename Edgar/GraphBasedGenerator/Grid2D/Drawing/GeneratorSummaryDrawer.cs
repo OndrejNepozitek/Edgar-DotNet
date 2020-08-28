@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Edgar.GraphBasedGenerator.Grid2D;
 
-namespace Edgar.Examples.MapDrawing
+namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     public class GeneratorSummaryDrawer<TRoom>
     {
@@ -84,7 +83,7 @@ namespace Edgar.Examples.MapDrawing
                 .SelectMany(x => x.RoomTemplates)
                 .Distinct()
                 .ToList();
-            var roomTemplatesDrawer = new RoomTemplateDrawer<TRoom>();
+            var roomTemplatesDrawer = new RoomTemplateDrawerOld<TRoom>();
             var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, (int) rect.Width, (int) rect.Height, true,1.5f, 0.2f);
             graphics.DrawImage(roomTemplatesBitmap, rect);
         }
@@ -92,7 +91,11 @@ namespace Edgar.Examples.MapDrawing
         private void DrawOutput(RectangleF rect)
         {
             var level = generator.GenerateLayout();
-            var drawing = dungeonDrawer.DrawLayout(level, (int) rect.Width, (int) rect.Height, true, 1.5f);
+            var drawing = dungeonDrawer.DrawLayout(level, new DungeonDrawerOptions()
+            {
+                Width = (int) rect.Width,
+                Height = (int) rect.Height,
+            });
             graphics.DrawImage(drawing, rect);
         }
 

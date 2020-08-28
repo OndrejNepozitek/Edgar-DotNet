@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
-namespace Edgar.Examples.MapDrawing
+namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
@@ -83,13 +81,16 @@ namespace Edgar.Examples.MapDrawing
 
 			return obj is Vector2 vector2 && Equals(vector2);
 		}
-		
+
         public override int GetHashCode()
         {
-            return HashCode.Combine(X, Y);
+            unchecked
+            {
+                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+            }
         }
 
-		#endregion
+        #endregion
 
 		#region Utility functions
 

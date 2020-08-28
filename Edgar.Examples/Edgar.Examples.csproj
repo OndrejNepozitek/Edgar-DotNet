@@ -19,6 +19,10 @@
     <ProjectReference Include="..\Edgar\Edgar.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MapDrawing\" />
+  </ItemGroup>
+
   <Target Name="CopyResources" AfterTargets="Build">
     <ItemGroup>
       <GeneratorResources Include="..\Resources\**\*.*" />

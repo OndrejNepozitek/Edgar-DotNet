@@ -4,18 +4,15 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using Edgar.Geometry;
-using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Edgar.Examples.MapDrawing
+namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
 	/// Draws a layout on an old paper texture.
 	/// </summary>
 	/// <typeparam name="TNode"></typeparam>
-	public class RoomTemplateDrawer<TNode>
+	public class RoomTemplateDrawerOld<TNode>
 	{
 		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 		private Bitmap bitmap;

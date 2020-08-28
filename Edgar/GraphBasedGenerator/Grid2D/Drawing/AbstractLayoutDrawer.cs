@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
-using Edgar.Legacy.Core.MapLayouts;
 
-namespace Edgar.GraphBasedGenerator.Grid2D.MapDrawing
+namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
 	/// Class that should help with drawing layouts to different outputs.

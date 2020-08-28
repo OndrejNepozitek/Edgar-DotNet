@@ -1,29 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Legacy.Utils;
 
 namespace Edgar.Examples.Grid2D
 {
     public class CorridorsExample : IExampleGrid2D<int>
     {
+        #region no-clean
+
         public string Name => "Corridors";
 
         public string DocsFileName => "corridors";
 
+        #endregion
+
         public LevelDescriptionGrid2D<int> GetLevelDescription()
         {
             //md ## Corridor room description
-            //md First, we create the outline for the corridor room template. As the performance of the generator is the best with rather short corridors, we will use a 1x2 rectangle:
+            //md First, we create the outline for the corridor room template. As the performance of the generator is the best with rather short corridors, we will use a 3x1 rectangle:
 
-            var corridorOutline = PolygonGrid2D.GetRectangle(1, 2);
+            var corridorOutline = PolygonGrid2D.GetRectangle(3, 1);
 
             //md The next step is to add doors. We can no longer use the simple door mode because we want to have exactly two door positions on the opposite sides of the corridor, which is not possible with the simple mode. With the manual mode, we have to specify all the door positions manually.
 
             var corridorDoors = new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                 {
-                    new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-                    new DoorGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2))
+                    new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
+                    new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1))
                 }
             );
 
@@ -38,6 +44,8 @@ namespace Edgar.Examples.Grid2D
                     TransformationGrid2D.Rotate90
                 }
             );
+
+            //md ![](./corridors/room_templates.png)
 
             //md And finally, we can create the corridor room description. We must not forget to set the `IsCorridor` flag to `true`.
 
@@ -86,12 +94,53 @@ namespace Edgar.Examples.Grid2D
             return levelDescription;
         }
 
+        public void Run()
+        {
+            var levelDescription = GetLevelDescription();
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+            var layout = generator.GenerateLayout();
+
+            var drawer = new DungeonDrawer<int>();
+            var bitmap = drawer.DrawLayout(layout, new DungeonDrawerOptions()
+            {
+                Width = 1000,
+                Height = 1000,
+            });
+            bitmap.Save("corridors.png");
+
+            #region no-clean
+
+            var roomTemplates = levelDescription
+                .GetGraph().Vertices
+                .Select(levelDescription.GetRoomDescription)
+                .Where(x => x.IsCorridor == true)
+                .SelectMany(x => x.RoomTemplates)
+                .Distinct()
+                .ToList();
+            var roomTemplatesDrawer = new RoomTemplateDrawer();
+            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
+            {
+                Width = 1200,
+                Height = 300,
+                Scale = 70,
+                FontSize = 0.7f,
+                ShowRoomNames = false,
+            });
+            roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
+
+            #endregion
+        }
+
+        #region no-clean
+
         public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
         {
             //md Below you can see some of the results generated from this example:
 
             yield return GetLevelDescription();
         }
+
+        #endregion
 
         private RoomDescriptionGrid2D GetBasicRoomDescription()
         {

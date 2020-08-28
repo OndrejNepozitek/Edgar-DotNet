@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Edgar.Examples.Grid2D;
-using Edgar.Examples.MapDrawing;
 using Edgar.GraphBasedGenerator.Grid2D;
-using Edgar.GraphBasedGenerator.Grid2D.MapDrawing;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
+using Edgar.Legacy.Utils.MapDrawing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -20,6 +20,9 @@ namespace Edgar.Examples
         private readonly string sourceFolder;
         private readonly string outputFolder;
         private SourceCodeParser sourceCodeParser;
+
+        // TODO: improve
+        public static string AssetsFolder;
 
         class RegionNodes
         {
@@ -61,6 +64,8 @@ namespace Edgar.Examples
 
         private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
         {
+            AssetsFolder = Path.Combine(outputFolder, example.DocsFileName);
+
             var className = example.GetType().Name;
             sourceCodeParser = new SourceCodeParser(Path.Combine(sourceFolder, $"{className}.cs"));
 
@@ -77,7 +82,7 @@ namespace Edgar.Examples
             stringBuilder.AppendLine();
 
             stringBuilder.AppendLine(
-                $"> This documentation page was automatically generated from the source code that can be found [on github](https://github.com/OndrejNepozitek/Edgar-DotNet/blob/master/Edgar.Examples/Grid2D/{className}.cs).");
+                $"> The source code for this example can be found at the end of this page.");
             stringBuilder.AppendLine();
 
             AddContent(sourceCode, stringBuilder);
@@ -151,8 +156,12 @@ namespace Edgar.Examples
                 }
             }
 
+            AddSourceCode(stringBuilder);
+
             Console.WriteLine(stringBuilder.ToString());
             File.WriteAllText(Path.Combine(outputFolder, $"{example.DocsFileName}.md"), stringBuilder.ToString());
+
+            example.Run();
 
             resultsCounter = 0;
             foreach (var levelDescription in example.GetResults())
@@ -160,7 +169,7 @@ namespace Edgar.Examples
                 var generator = new GraphBasedGeneratorGrid2D<TRoom>(levelDescription);
                 generator.InjectRandomGenerator(new Random(0));
 
-                var layoutDrawer = new SVGLayoutDrawer<TRoom>();
+                var layoutDrawer = new GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TRoom>();
                 var oldMapDrawer = new DungeonDrawer<TRoom>();
 
                 for (int i = 0; i < 4; i++)
@@ -171,7 +180,11 @@ namespace Edgar.Examples
                     File.WriteAllText(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.svg"),
                         svg);
 
-                    var bitmap = oldMapDrawer.DrawLayout(level, 2000, 2000, fixedFontSize: 1.5f, withNames: true);
+                    var bitmap = oldMapDrawer.DrawLayout(level, new DungeonDrawerOptions()
+                    {
+                        Width = 2000,
+                        Height = 2000,
+                    });
                     bitmap.Save(Path.Combine(outputFolder, example.DocsFileName, $"{resultsCounter}_{i}.png"));
                 }
 
@@ -183,6 +196,156 @@ namespace Edgar.Examples
             }
         }
 
+        private void AddSourceCode(StringBuilder output)
+        {
+            var sourceCode = sourceCodeParser.GetWholeFile();
+            sourceCode = RemoveRegions(sourceCode);
+            sourceCode = RemoveInterface(sourceCode);
+            sourceCode = ChangeNamespace(sourceCode);
+            sourceCode = RemoveMarkdown(sourceCode);
+            sourceCode = RemoveMultipleNewlines(sourceCode);
+            sourceCode = RemoveNewlinesNearBrackets(sourceCode);
+
+            output.AppendLine("## Source code");
+            output.AppendLine();
+            output.AppendLine("```");
+
+            foreach (var line in sourceCode)
+            {
+                output.AppendLine(line);
+            }
+
+            output.AppendLine("```");
+            output.AppendLine();
+        }
+
+        private List<string> RemoveRegions(List<string> sourceCode)
+        {
+            var output = new List<string>();
+            var nesting = 0;
+            var isInside = false;
+
+            foreach (var line in sourceCode)
+            {
+                var trimmed = line.Trim();
+
+                if (trimmed.StartsWith("#region") && trimmed.Contains("no-clean"))
+                {
+                    isInside = true;
+                    nesting = 1;
+                } 
+                else if (isInside && trimmed.StartsWith("#region"))
+                {
+                    nesting++;
+                }
+                else if (isInside && trimmed.StartsWith("#endregion"))
+                {
+                    nesting--;
+                }
+
+                if (!isInside)
+                {
+                    output.Add(line);
+                }
+
+                if (nesting == 0)
+                {
+                    isInside = false;
+                }
+            }
+
+            return output;
+        }
+
+        private List<string> RemoveMultipleNewlines(List<string> sourceCode)
+        {
+            var output = new List<string>();
+
+            for (var i = 0; i < sourceCode.Count; i++)
+            {
+                var line = sourceCode[i];
+                var nextLine = i < sourceCode.Count - 1 ? sourceCode[i + 1] : null;
+
+                if (line.Trim() == "" && (nextLine != null && nextLine.Trim() == ""))
+                {
+                    // skip
+                }
+                else
+                {
+                    output.Add(line);
+                }
+            }
+
+            return output;
+        }
+
+        private List<string> RemoveInterface(List<string> sourceCode)
+        {
+            var output = sourceCode.ToList();
+
+            for (var i = 0; i < output.Count; i++)
+            {
+                var line = output[i];
+
+                if (line.Contains("public class"))
+                {
+                    var split = line.Split(":");
+                    output[i] = split[0];
+                    break;
+                }
+            }
+
+            return output;
+        }
+
+        private List<string> ChangeNamespace(List<string> sourceCode)
+        {
+            var output = sourceCode.ToList();
+
+            for (var i = 0; i < output.Count; i++)
+            {
+                var line = output[i];
+
+                if (line.Contains("namespace"))
+                {
+                    output[i] = "namespace Examples";
+                    break;
+                }
+            }
+
+            return output;
+        }
+
+        private List<string> RemoveNewlinesNearBrackets(List<string> sourceCode)
+        {
+            var output = new List<string>();
+
+            for (var i = 0; i < sourceCode.Count; i++)
+            {
+                var line = sourceCode[i];
+                var previousLine = i > 0 ? sourceCode[i - 1] : null;
+                var nextLine = i < sourceCode.Count - 1 ? sourceCode[i + 1] : null;
+
+                var previousLineIsBracket = previousLine != null && previousLine.Trim().StartsWith("{");
+                var nextLineIsBracket = nextLine != null && nextLine.Trim().StartsWith("}");
+
+                if (!(line.Trim() == "" && (previousLineIsBracket || nextLineIsBracket)))
+                {
+                    output.Add(line);
+                }
+            }
+
+            return output;
+        }
+
+        private List<string> RemoveMarkdown(List<string> sourceCode)
+        {
+            return sourceCode
+                .Where(x => !x.Trim().StartsWith("//md"))
+                .Where(x => !x.Trim().StartsWith("//sc"))
+                .ToList();
+        }
+
         private void AddContent(List<string> sourceCode, StringBuilder output)
         {
             var codeBlockHandler = new CodeBlockHandler(output);
@@ -192,26 +355,30 @@ namespace Edgar.Examples
                 var line = sourceCode[i];
                 var trimmed = line.Trim();
 
-                if (trimmed.StartsWith("//md"))
+                if (trimmed.StartsWith("//md "))
                 {
                     codeBlockHandler.Exit();
                     trimmed = trimmed.Remove(0, trimmed.Length > 5 ? 5 : 4);
                     output.AppendLine(trimmed);
                 }
-                else if (trimmed.StartsWith("//sc"))
+                else if (trimmed.StartsWith("//md_hide-next"))
+                {
+                    i++;
+                }
+                else if (trimmed.StartsWith("//md_sc"))
                 {
                     codeBlockHandler.Exit();
-                    var shortcode = trimmed.Replace("//sc ", "");
+                    var shortcode = trimmed.Replace("//md_sc ", "");
                     HandleShortcode(shortcode, output);
                 }
-                else if (trimmed.StartsWith("#region hidden:"))
+                else if (trimmed.StartsWith("#region hidden"))
                 {
                     var nestLevel = 1;
                     i++;
 
                     var description = trimmed.Replace("#region hidden:", "");
 
-                    if (description != "")
+                    if (description != "" && trimmed.Contains("region:"))
                     {
                         output.AppendLine();
                         output.AppendLine(line.Replace("#region hidden:", "/* ") + " */");
@@ -268,6 +435,14 @@ namespace Edgar.Examples
                 {
                     var methodName = parts[1];
                     var sourceCode = sourceCodeParser.GetMethod(methodName, true);
+                    AddContent(sourceCode, output);
+                    break;
+                }
+
+                case "method_content":
+                {
+                    var methodName = parts[1];
+                    var sourceCode = sourceCodeParser.GetMethod(methodName, false);
                     AddContent(sourceCode, output);
                     break;
                 }

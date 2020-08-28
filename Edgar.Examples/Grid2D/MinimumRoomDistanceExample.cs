@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 
 namespace Edgar.Examples.Grid2D
 {
     public class MinimumRoomDistanceExample : IExampleGrid2D<int>
     {
+        #region no-clean
+
         public string Name => "Minimum room distance";
 
         public string DocsFileName => "minimum-room-distance";
+
+        #endregion
 
         public LevelDescriptionGrid2D<int> GetLevelDescription(int minimumRoomDistance = 0)
         {
@@ -18,6 +23,7 @@ namespace Edgar.Examples.Grid2D
             //md ## Setup
             //md We will use the level description from the [Corridors](corridors) example:
 
+            // Replace this with your own level description
             var levelDescription = new CorridorsExample().GetLevelDescription();
 
             //md And set the minimum room distance to an integer value that is passed to the example as a parameter:
@@ -26,6 +32,23 @@ namespace Edgar.Examples.Grid2D
 
             return levelDescription;
         }
+
+        public void Run()
+        {
+            var levelDescription = GetLevelDescription();
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+            var layout = generator.GenerateLayout();
+
+            var drawer = new DungeonDrawer<int>();
+            var bitmap = drawer.DrawLayout(layout, new DungeonDrawerOptions()
+            {
+                Height = 1000,
+                Width = 1000,
+            });
+            bitmap.Save("minimum_room_distance.png");
+        }
+
+        #region no-clean
 
         public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
         {
@@ -43,5 +66,7 @@ namespace Edgar.Examples.Grid2D
 
             //md It is not possible to set the minimum room distance to more than 2 because we would have to use longer corridors in order to be able to generate such levels.
         }
+
+        #endregion
     }
 }

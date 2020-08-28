@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Examples.MapDrawing;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Graphs;
 
 namespace Edgar.Examples.Grid2D
@@ -23,12 +23,14 @@ namespace Edgar.Examples.Grid2D
             //md - assign room templates based on the type of the room
             //md - use corridors with different lengths
 
-            //sc enum:RoomType
+            //md_sc enum:RoomType
 
-            //sc class:Room
+            //md_sc class:Room
 
             //md ## Room templates
-            //sc method:GetRoomTemplates
+            //md_sc method:GetRoomTemplates
+
+            //md ![](./real-life/room_templates.png)
 
             #region Test 2
 
@@ -431,6 +433,41 @@ namespace Edgar.Examples.Grid2D
 
 
             return graph;
+        }
+
+        public void Run()
+        {
+            var levelDescription = GetLevelDescription();
+            var generator = new GraphBasedGeneratorGrid2D<Room>(levelDescription);
+            var layout = generator.GenerateLayout();
+
+            var drawer = new DungeonDrawer<Room>();
+            drawer.DrawLayoutAndSave(layout, "basics.png", new DungeonDrawerOptions()
+            {
+                Width = 1000,
+                Height = 1000,
+            });
+
+            #region no-clean
+
+            var roomTemplates = levelDescription
+                .GetGraph().Vertices
+                .Select(levelDescription.GetRoomDescription)
+                .Where(x => x.IsCorridor == false)
+                .SelectMany(x => x.RoomTemplates)
+                .Distinct()
+                .ToList();
+            var roomTemplatesDrawer = new RoomTemplateDrawer();
+            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
+            {
+                Width = 1000,
+                Height = 1000,
+                PaddingPercentage = 0.05f,
+                FontSize = 3,
+            });
+            roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
+
+            #endregion
         }
 
         public IEnumerable<LevelDescriptionGrid2D<Room>> GetResults()

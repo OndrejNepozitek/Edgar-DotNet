@@ -1,18 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 
 namespace Edgar.Examples.Grid2D
 {
     public class BasicsExample : IExampleGrid2D<int>
     {
+        #region no-clean
+
         public string Name => "Basics";
 
         public string DocsFileName => "basics";
 
+        #endregion
+
+        /// <summary>
+        /// Prepare level description.
+        /// </summary>
         public LevelDescriptionGrid2D<int> GetLevelDescription()
         {
-            //md In this example, we will generate a very simple level consisting of 4 rooms with rectangular shapes.
+            //md In this example, we will generate a very simple level consisting of 5 rooms with rectangular shapes.
 
             //md ## Room templates
             //md First, we will create our room templates. We must create an instance of the `RoomTemplateGrid2D` class for each room template. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
@@ -76,6 +85,8 @@ namespace Edgar.Examples.Grid2D
                 }
             );
 
+            //md ![](./basics/room_templates.png)
+
             //md ## Room description
             //md When we have our room templates ready, we need to create an instance of the `RoomDescriptionGrid2D` which describes the properties of individual rooms in the level. In this tutorial, all the rooms use the same pool of room templates, so we can create only a single room description and reuse it. However, it is also possible to use different room description for different types of rooms. For example, we may want to have a boss room and a spawn room that should use different room templates than other rooms.
 
@@ -106,8 +117,62 @@ namespace Edgar.Examples.Grid2D
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
 
+            //md_sc method_content:Run
+
             return levelDescription;
         }
+
+        /// <summary>
+        /// Run the generator.
+        /// </summary>
+        public void Run()
+        {
+            //md ## Generating the level
+            //md To generate the level, we need to create an instance of the `GraphBasedGenerator<TRoom>` class. As we use integers to identify individual rooms, we will substitute the generic type parameter with `int` and pass the level description to the constructor of the generator.
+
+            //md_hide-next
+            var levelDescription = GetLevelDescription();
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+
+            //md When we have an instance of the generator, we simply call the `GenerateLayout()` method and wait until the generator finds a valid layout based on our level description.
+
+            var layout = generator.GenerateLayout();
+
+            //md The result contains information about all the rooms in the level such as outline of a room or its position.
+
+            //md ## Saving the result
+            //md If we want to quickly visualize the result, we can use the `DungeonDrawer<TRoom>` class and export the layout as PNG.
+
+            var drawer = new DungeonDrawer<int>();
+            drawer.DrawLayoutAndSave(layout, "basics.png", new DungeonDrawerOptions()
+            {
+                Width = 1000,
+                Height = 1000,
+            });
+
+            #region hidden no-clean 
+            
+            var roomTemplates = levelDescription
+                .GetGraph().Vertices
+                .Select(levelDescription.GetRoomDescription)
+                .Where(x => x.IsCorridor == false)
+                .SelectMany(x => x.RoomTemplates)
+                .Distinct()
+                .ToList();
+            var roomTemplatesDrawer = new RoomTemplateDrawer();
+            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
+            {
+                Width = 1200,
+                Height = 600,
+                PaddingPercentage = 0.1f,
+                FontSize = 1,
+            });
+            roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
+
+            #endregion
+        }
+
+        #region no-clean
 
         public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
         {
@@ -115,5 +180,7 @@ namespace Edgar.Examples.Grid2D
 
             yield return GetLevelDescription();
         }
+
+        #endregion
     }
 }
