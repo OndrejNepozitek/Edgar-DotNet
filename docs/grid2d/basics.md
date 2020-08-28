@@ -206,10 +206,10 @@ Below you can see some of the results generated from this example:
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./basics/0_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./basics/0_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./basics/0_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./basics/0_3.png').default} />
+<GalleryImage src={require('./basics/0_0.png').default} />
+<GalleryImage src={require('./basics/0_1.png').default} />
+<GalleryImage src={require('./basics/0_2.png').default} />
+<GalleryImage src={require('./basics/0_3.png').default} />
 </Gallery>
 
 ## Source code

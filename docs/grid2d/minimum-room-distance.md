@@ -38,10 +38,10 @@ Levels with the minimum room distance set to 0:
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/0_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/0_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/0_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/0_3.png').default} />
+<GalleryImage src={require('./minimum-room-distance/0_0.png').default} />
+<GalleryImage src={require('./minimum-room-distance/0_1.png').default} />
+<GalleryImage src={require('./minimum-room-distance/0_2.png').default} />
+<GalleryImage src={require('./minimum-room-distance/0_3.png').default} />
 </Gallery>
 
 
@@ -49,10 +49,10 @@ Levels with the minimum room distance set to 1:
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/1_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/1_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/1_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/1_3.png').default} />
+<GalleryImage src={require('./minimum-room-distance/1_0.png').default} />
+<GalleryImage src={require('./minimum-room-distance/1_1.png').default} />
+<GalleryImage src={require('./minimum-room-distance/1_2.png').default} />
+<GalleryImage src={require('./minimum-room-distance/1_3.png').default} />
 </Gallery>
 
 
@@ -60,10 +60,10 @@ Levels with the minimum room distance set to 2:
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/2_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/2_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/2_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./minimum-room-distance/2_3.png').default} />
+<GalleryImage src={require('./minimum-room-distance/2_0.png').default} />
+<GalleryImage src={require('./minimum-room-distance/2_1.png').default} />
+<GalleryImage src={require('./minimum-room-distance/2_2.png').default} />
+<GalleryImage src={require('./minimum-room-distance/2_3.png').default} />
 </Gallery>
 
 

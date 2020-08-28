@@ -153,10 +153,10 @@ foreach (var edge in graph.Edges)
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./real-life/0_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./real-life/0_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./real-life/0_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./real-life/0_3.png').default} />
+<GalleryImage src={require('./real-life/0_0.png').default} />
+<GalleryImage src={require('./real-life/0_1.png').default} />
+<GalleryImage src={require('./real-life/0_2.png').default} />
+<GalleryImage src={require('./real-life/0_3.png').default} />
 </Gallery>
 
 ## Source code

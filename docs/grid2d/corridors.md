@@ -138,10 +138,10 @@ Below you can see some of the results generated from this example:
 
 
 <Gallery cols={2}>
-<GalleryImage withoutLinks src={require('!!url-loader!./corridors/0_0.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./corridors/0_1.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./corridors/0_2.png').default} />
-<GalleryImage withoutLinks src={require('!!url-loader!./corridors/0_3.png').default} />
+<GalleryImage src={require('./corridors/0_0.png').default} />
+<GalleryImage src={require('./corridors/0_1.png').default} />
+<GalleryImage src={require('./corridors/0_2.png').default} />
+<GalleryImage src={require('./corridors/0_3.png').default} />
 </Gallery>
 
 ## Source code
