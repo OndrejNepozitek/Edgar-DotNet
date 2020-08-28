@@ -27,8 +27,8 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Examples",
-      items: ["examples/basic"]
+      label: "Guides",
+      items: ["grid2d/introduction", "grid2d/basics", /*"examples/repeating-room-templates",*/ "grid2d/corridors", "grid2d/minimum-room-distance", "grid2d/real-life"]
     },
     {
       type: "category",

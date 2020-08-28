@@ -73,3 +73,11 @@ blockquote {
 .menu .menu__link:hover {
   color: var(--ifm-menu-color-active);
 }
+
+.prism-code {
+  font-size: 12px !important;
+}
+
+.markdown > p {
+  text-align: justify;
+}
