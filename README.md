@@ -39,6 +39,8 @@
   Or <a href="https://github.com/OndrejNepozitek/Edgar-Unity/issues/new">create an issue</a>
 </p>
 -->
+
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="33%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="33%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="33%" />
                                                    
 ## Introduction
 
