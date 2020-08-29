@@ -1,52 +1,164 @@
-# ProceduralLevelGenerator
+<h1 align="center">
+  <br>
+  Edgar for .NET
+  <br>
+</h1>
 
-[![Gitter chat](https://badges.gitter.im/OndrejNepozitek/ProceduralLevelGenerator.png)](https://gitter.im/ProceduralLevelGenerator/community)
+<h4 align="center">Graph-based procedural 2D layout generator</h4>
 
-This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
+<p align="center">
+  <a href="https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/"><img src="https://img.shields.io/badge/online-docs-important" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg" /></a>
+  <a href="https://www.nuget.org/packages/Edgar-DotNet"><img src="https://img.shields.io/nuget/vpre/Edgar-DotNet" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-Unity"><img src="https://img.shields.io/badge/see also-Unity%20plugin-important" /></a>
+</p>
 
-To produce a game level, the algorithm takes a set of polygonal building blocks and a level connectivity graph (the level topology) as an input. Nodes in the graph represent rooms, and edges define connectivities between them. The graph has to be planar. The goal of the algorithm is to assign a room shape and a position to each node in the graph in a way that no two room shapes intersect and every pair of neighbouring room shapes can be connected by doors.
+<p align="center">
+  <a href="#introduction">Introduction</a> |
+  <a href="#key-features">Key features</a> |
+  <a href="#pro-version">PRO version</a> |
+  <a href="#limitations">Limitations</a> |
+  <a href="#getting-started">Getting started</a> |
+  <a href="#installation">Installation</a> |
+  <a href="#workflow">Example</a> |
+  <a href="#get-in-touch">Get in touch</a>
+</p>
 
-## See the documentation [here](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/introduction.html)
+<!--
+<p align="center">
+  <a href="https://ondrejnepozitek.github.io/Edgar-Unity/">Website</a> |
+  <a href="https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/">Documentation</a> |
+  <a href="https://github.com/OndrejNepozitek/Edgar-Unity/releases">Releases</a> |
+  <a href="https://ondrejnepozitek.itch.io/edgar-pro">PRO version on itch.io</a> |
+</p>
+-->
 
-## Features
-- Any planar connected graph can be used as an input
-- Any orthogonal polygon can be used as a room shape
-- Complete control over shapes of individual rooms
-- Complete control over door positions of individual room shapes
-- Rooms either directly connected by doors or connected by corridors
-- Export to JSON, SVG, JPG
-- Majority of features available through a GUI and YAML config files
-- Implicit support for keys and locks - just define the connectivity graph hovewer you like
+<!--
+<p align="center">
+  Need info? Check the <a href="https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/">docs</a> or <a href="https://ondrejnepozitek.github.io/Edgar-Unity/">website</a> |
+  Or <a href="https://github.com/OndrejNepozitek/Edgar-Unity/issues/new">create an issue</a>
+</p>
+-->
+                                                   
+<p align="center">
+<img src="http://zuzka.nepozitek.cz/output4.gif" width='600'"
+</p>
+                                                             
+## Introduction
 
-## Current state of the project
-The library should be functional, but is far from perfect. There are quite a few places that I know need an improvement and I have a bunch of new features in mind that will hopefully get implemented in not too distant future. I would also love to get any **feedback** - either on the features of the algorithm or on how usable it is from a programmer's point of view. If you have any questions or suggestions, you can either create an issue or contact me on [gitter](https://gitter.im/OndrejNepozitek/ProceduralLevelGenerator).
+This project is a Unity plugin for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. Under the hood, the plugin uses [Edgar for .NET](https://github.com/OndrejNepozitek/Edgar-DotNet).
 
-## Bachelor thesis and paper
-This library was created as a part of my bachelor thesis. Text of the thesis can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/bachelor_thesis.pdf). After completing the thesis, we decided to transform it to a paper and submit it to the Game-On 2018 conference. The extended version of the paper can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/extended_paper.pdf). This version also contains a practical use-case of the algorithm, which is not present in the regular version due to length limitations.
+### Graph-based approach
 
-## Inspiration
-The main idea of the algorithm used in this library comes from a [paper](http://chongyangma.com/publications/gl/index.html) written by **Chongyang Ma** and colleagues so be sure to check their work out.
+You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces levels that follow exactly that structure. Do you want a boss room at the end of each level? Or da shop room halfway through the level? Everything is possible with a graph-based approach.
 
-Some things in this library are done differently and/or improved:
-- **Integer coordinates** are used instead of reals - room shapes are therefore only orthogonal polygons.
-- With integer coordinates, **optimized polygon operations** (intersections, etc..) were implemented with a complete control over the process.
-- User has a complete control over door positions of rooms.
-- The algorithm was optimized to generate a layout as fast as possible.
-- A specialized version of the generator was implemented to support **adding (usally) short corridors** between rooms to the layout without sacrificing most of the convergence speed. (Average number of iterations usually stays the same but iterations themselves are slower.)
+### Handmade room templates
+
+The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a level. They are created with Unity tilemaps, but they can also contain additional game objects such as lights, enemies or chests with loot. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+
+## Key features
+
+- Procedural dungeon generator
+- Describe the structure of levels with a graph of rooms and connections 
+- Control the appearance of rooms with handmade room templates 
+- Connect rooms either directly with doors or with short corridors
+- Easy to customize with custom post-processing logic
+- Supports Unity 2018.4 and newer
+- Currently works only in 2D but may support 3D in future
+- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/)
+- Multiple example scenes included
+
+## PRO version
+
+There are two versions of this asset - free version and PRO version. The free version contains the core functions of the generator and should be fine for simple procedural dungeons. The PRO version can be bought at [itch.io](https://ondrejnepozitek.itch.io/edgar-pro) and contains some additional features. As of now, the PRO version contains features like platformer generator or isometric levels and also two advanced example scenes. If you like this asset, please consider buying the PRO version to support the development.
+
+- Coroutines - Call the generator as a coroutine so that the game does not freeze when generating a level ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/dungeon-generator#pro-with-coroutines))
+- Custom rooms - It is possible to add additional fields to rooms and connections in a level graph ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/level-graphs#pro-custom-rooms-and-connections))      
+- Platformers - Generator that is able to produce platformer levels ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/platformer-generator), [example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/platformer-1))
+- Isometric - Simple example of isometric levels ([example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/isometric-1))
+- Dead Cells - Tutorial on how to generate levels that are similar to Dead Cells ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/dead-cells))
+- Enter the Gungeon - Tutorial on how to generate levels that are similar to Enter the Gungeon ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/enter-the-gungeon/))
+- Custom input - Modify a level graph before it is used in the generator (e.g. add a random secret room) ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/custom-input))
+- (Planned) Fog of War
+- (Planned) Additional generators
+
+## Limitations
+
+- Still in alpha version - there may be some breaking changes in the API
+- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/performance-tips)
+- The graph-based approach is not suitable for large levels - we recommend less than 30 rooms
+- Not everything can be configured via editor - some programming knowledge is needed for more advanced setups
+                      
+## Getting started
+
+Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction). The documentation describes all the basics and also multiple example scenes that should help you get started. 
+                      
+## Installation
+
+There are several ways of installing the plugin:
+
+### via Package Manager
+Add the following line to the `packages/manifest.json` file under the `dependencies` section (you must have git installed):
+```
+ "com.ondrejnepozitek.procedurallevelgenerator": "https://github.com/OndrejNepozitek/ProceduralLevelGenerator-Unity.git#upm"
+```
+To try the examples, go to the Package Manager, find this plugin in the list of installed assets and import examples.
+
+> Note: When importing the package, I've got some weird "DirectoryNotFoundException: Could not find a part of the path" errors even though all the files are there. If that happens to you, just ignore that.
+
+#### How to update
+After installing the package, Unity adds something like this to your `manifest.json`:
+
+```
+  "lock": {
+    "com.ondrejnepozitek.procedurallevelgenerator": {
+      "hash": "fc2e2ea5a50ec4d1d23806e30b87d13cf74af04e",
+      "revision": "upm"
+    }
+  }
+```
+
+Remove it to let Unity download a new version of the plugin.
+
+### via .unitypackage
+
+Go to Releases and download the unitypackage that's included in every release. Then import the package to Unity project (*Assets -> Import package -> Custom package*).
+
+#### How to update
+In order to be able to download a new version of the plugin, **we recommend to not change anything inside the Assets/ProceduralLevelGenerator folder**. At this stage of the project, files are often moved, renamed or deleted, and Unity does not handle that very well.
+
+The safest way to update to the new version is to completely remove the old version (*Assets/ProceduralLevelGenerator* directory) and then import the new version. (Make sure to backup your project before deleting anything.)                                                         
+                                                             
+## Workflow 
+
+### 1. Draw rooms and corridors
+
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/room_templates_multiple.png)
+
+### 2. Prepare the structure of the level
+
+<img src="https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/examples/example1_level_graph2.png" height="500" />
+
+### 3. Generate levels
+
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/generated_levels_multiple.png)
 
 ## Examples
 
-### Input
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result1.png)
 
-![alt-text](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/introduction.svg)
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result_reallife1.png)
 
-### Results
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result1.png)
 
-<div class="results">
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/0.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/0.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/1.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/1.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/2.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/2.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/3.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/3.jpg" alt="result"></a>
-</div>
+![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result_reallife1.png)
 
-**Note:** Click on images to see them in a full size.
+## Get in touch
+
+If you have any questions, let me know at ondra-at-nepozitek.cz or create an issue here on github.
+
+## Terms of use
+
+The plugin can be used in both commercial and non-commercial projects, but **cannot be redistributed or resold**. If you want to include this plugin in your own asset, please contact me, and we will figure that out.
+
+
