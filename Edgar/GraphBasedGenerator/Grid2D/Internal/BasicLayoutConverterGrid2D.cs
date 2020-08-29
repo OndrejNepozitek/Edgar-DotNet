@@ -6,10 +6,7 @@ using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.Legacy.Core.LayoutConverters.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
-using Edgar.Legacy.Core.MapDescriptions;
-using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 

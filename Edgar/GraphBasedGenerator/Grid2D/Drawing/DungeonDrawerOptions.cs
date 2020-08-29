@@ -1,5 +1,8 @@
 ﻿namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
+    /// <summary>
+    /// Options for the <see cref="DungeonDrawer{TRoom}"/> class.
+    /// </summary>
     public class DungeonDrawerOptions
     {
         /// <summary>

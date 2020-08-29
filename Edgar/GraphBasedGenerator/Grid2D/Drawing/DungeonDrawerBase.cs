@@ -8,6 +8,9 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
+    /// <summary>
+    /// Base class for drawing dungeons.
+    /// </summary>
     public abstract class DungeonDrawerBase
     {
         protected readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());

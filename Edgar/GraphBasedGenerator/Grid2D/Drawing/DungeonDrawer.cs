@@ -1,28 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using Edgar.Geometry;
-using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
-	/// Draws a layout on an old paper texture.
+	/// Class that can export a given layout to a PNG image.
 	/// </summary>
-	/// <typeparam name="TRoom"></typeparam>
-	public class DungeonDrawer<TRoom> : DungeonDrawerBase
+    public class DungeonDrawer<TRoom> : DungeonDrawerBase
 	{
         private Pen outlinePen;
         private Pen shadePen;
 
+        /// <summary>
+        /// Draws a given layout and saves it to a PNG file.
+        /// </summary>
+        /// <param name="layout">Layout to be drawn.</param>
+        /// <param name="path">Path to the file.</param>
+        /// <param name="options">Options. See <see cref="DungeonDrawerOptions"/>.</param>
         public void DrawLayoutAndSave(LayoutGrid2D<TRoom> layout, string path, DungeonDrawerOptions options)
         {
             var bitmap = DrawLayout(layout, options);
             bitmap.Save(path);
         }
 
+        /// <summary>
+        /// Draws a given layout and returns a bitmap with the drawing.
+        /// </summary>
+        /// <param name="layout">Layout to be drawn.</param>
+        /// <param name="options">Options. See <see cref="DungeonDrawerOptions"/>.</param>
         public Bitmap DrawLayout(LayoutGrid2D<TRoom> layout, DungeonDrawerOptions options)
         {
             var roomOutlines = layout.Rooms.Select(x => x.Outline + x.Position).ToList();

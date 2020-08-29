@@ -6,7 +6,7 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
-	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
+	/// Float vector with 2 elements. Experimental.
 	/// </summary>
 	public struct Vector2 : IEquatable<Vector2>
 	{

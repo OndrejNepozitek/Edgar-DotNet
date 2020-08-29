@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
-using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Graphs;
