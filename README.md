@@ -16,7 +16,6 @@
 <p align="center">
   <a href="#introduction">Introduction</a> |
   <a href="#key-features">Key features</a> |
-  <a href="#pro-version">PRO version</a> |
   <a href="#limitations">Limitations</a> |
   <a href="#getting-started">Getting started</a> |
   <a href="#installation">Installation</a> |
@@ -72,14 +71,13 @@ The library is currently being refactored to make the API nicer and make it easi
 
 ## Limitations
 
-- Still in alpha version - there may be some breaking changes in the API
-- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/performance-tips)
+- The library is currently being refactored - see the caution above.
+- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/basics/performance-tips)
 - The graph-based approach is not suitable for large levels - we recommend less than 30 rooms
-- Not everything can be configured via editor - some programming knowledge is needed for more advanced setups
                       
 ## Getting started
 
-Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction). The documentation describes all the basics and also multiple example scenes that should help you get started. 
+Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction). The documentation describes all the basics and provides multiple examples.
                       
 ## Installation
 
@@ -140,22 +138,8 @@ Here are two layouts that were produced by the generator:
 
 <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
 
-## Examples
-
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result1.png)
-
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result_reallife1.png)
-
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result1.png)
-
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result_reallife1.png)
-
 ## Get in touch
 
-If you have any questions, let me know at ondra-at-nepozitek.cz or create an issue here on github.
-
-## Terms of use
-
-The plugin can be used in both commercial and non-commercial projects, but **cannot be redistributed or resold**. If you want to include this plugin in your own asset, please contact me, and we will figure that out.
+If you have any questions, let me know at ondra-at-nepozitek.cz, on Twitter at @OndrejNepozitek or create an issue here on github.
 
 
