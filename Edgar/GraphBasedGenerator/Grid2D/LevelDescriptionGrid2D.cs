@@ -1,4 +1,9 @@
-﻿using Edgar.GraphBasedGenerator.Common;
+﻿using System.Collections.Generic;
+using System.IO;
+using Edgar.GraphBasedGenerator.Common;
+using Edgar.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -37,5 +42,25 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// Defaults to null.
         /// </remarks>
         public RoomTemplateRepeatMode? RoomTemplateRepeatModeOverride { get; set; }
+
+        /// <summary>
+        /// Saves the level description as a JSON file.
+        /// </summary>
+        /// <param name="filename">Path to the JSON file.</param>
+        /// <param name="preserveReferences">Whether to preserve references to objects. The value should be true if the level description should be used later to generate a level.</param>
+        public void SaveToJson(string filename, bool preserveReferences = true)
+        {
+            JsonUtils.SaveToFile(this, filename, preserveReferences);
+        }
+
+        /// <summary>
+        /// Loads a level description from a given JSON file.
+        /// </summary>
+        /// <param name="filename">Path to the JSON file.</param>
+        /// <returns></returns>
+        public static LevelDescriptionGrid2D<TRoom> LoadFromJson(string filename)
+        {
+            return JsonUtils.LoadFromFile<LevelDescriptionGrid2D<TRoom>>(filename);
+        }
     }
 }

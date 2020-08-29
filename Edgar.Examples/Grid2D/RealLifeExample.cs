@@ -114,6 +114,7 @@ namespace Edgar.Examples.Grid2D
         public void Run()
         {
             var levelDescription = GetLevelDescription();
+
             var generator = new GraphBasedGeneratorGrid2D<Room>(levelDescription);
             var layout = generator.GenerateLayout();
 

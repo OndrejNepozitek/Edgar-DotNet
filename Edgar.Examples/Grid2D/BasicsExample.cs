@@ -134,6 +134,7 @@ namespace Edgar.Examples.Grid2D
 
             //md_hide-next
             var levelDescription = GetLevelDescription();
+
             var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
 
             //md When we have an instance of the generator, we simply call the `GenerateLayout()` method and wait until the generator finds a valid layout based on our level description.
@@ -152,8 +153,8 @@ namespace Edgar.Examples.Grid2D
                 Height = 2000,
             });
 
-            #region hidden no-clean 
-            
+            #region hidden no-clean
+
             var roomTemplates = levelDescription
                 .GetGraph().Vertices
                 .Select(levelDescription.GetRoomDescription)

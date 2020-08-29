@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Edgar.GraphBasedGenerator.Common.RoomTemplates;
 using Edgar.Graphs;
 using Newtonsoft.Json;
@@ -10,11 +11,26 @@ namespace Edgar.GraphBasedGenerator.Common
     public abstract class LevelDescription<TRoom, TRoomDescription> : ILevelDescription<TRoom>
         where TRoomDescription : IRoomDescription
     {
+        private Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
+
         [JsonProperty]
-        private readonly Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
+        // ReSharper disable once InconsistentNaming
+        private List<KeyValuePair<TRoom, TRoomDescription>> roomDescriptionsList;
 
         [JsonProperty]
         private readonly List<Passage> passages = new List<Passage>();
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            roomDescriptions = roomDescriptionsList.ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        [OnSerializing]
+        private void OnSerializing(StreamingContext context)
+        {
+            roomDescriptionsList = roomDescriptions.ToList();
+        }
 
         /// <summary>
         /// Adds a given room to the level description.
