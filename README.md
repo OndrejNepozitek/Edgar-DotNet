@@ -46,11 +46,11 @@ This project is a .NET library for procedural generation of 2D dungeons (and pla
 
 ### Graph-based approach
 
-You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces levels that follow exactly that structure. Do you want a boss room at the end of each level? Or a shop room halfway through the level? Everything is possible with a graph-based approach.
+You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces layouts that follow exactly that structure. Do you want a boss room at the end of each level? Or a shop room halfway through the level? Everything is possible with a graph-based approach.
 
 ### Handmade room templates
 
-The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a level. They are created with Unity tilemaps, but they can also contain additional game objects such as lights, enemies or chests with loot. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a layout. They are created with Unity tilemaps, but they can also contain additional game objects such as lights, enemies or chests with loot. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
 
 ## Key features
 
@@ -125,19 +125,54 @@ In order to be able to download a new version of the plugin, **we recommend to n
 
 The safest way to update to the new version is to completely remove the old version (*Assets/ProceduralLevelGenerator* directory) and then import the new version. (Make sure to backup your project before deleting anything.)                                                         
                                                              
-## Workflow 
+## Example
 
-### 1. Draw rooms and corridors
+```csharp
+// Create square room template
+var squareRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetSquare(8),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/room_templates_multiple.png)
+// Create rectangle room template
+var rectangleRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetRectangle(6, 10),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-### 2. Prepare the structure of the level
+// Create a room description which says that the room is not a corridor and that it can use the two room templates
+var roomDescription = new RoomDescriptionGrid2D(
+    isCorridor: false,
+    roomTemplates: new List<RoomTemplateGrid2D>() { squareRoomTemplate, rectangleRoomTemplate }
+);
 
-<img src="https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/examples/example1_level_graph2.png" height="500" />
+// Create an instance of the level description
+var levelDescription = new LevelDescriptionGrid2D<int>();
 
-### 3. Generate levels
+// Add 4 rooms to the level, use the room description that we created beforehand
+levelDescription.AddRoom(0, roomDescription);
+levelDescription.AddRoom(1, roomDescription);
+levelDescription.AddRoom(2, roomDescription);
+levelDescription.AddRoom(3, roomDescription);
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/generated_levels_multiple.png)
+// Add connections between the rooms - the level graph will be a cycle with 4 vertices
+levelDescription.AddConnection(0, 1);
+levelDescription.AddConnection(0, 3);
+levelDescription.AddConnection(1, 2);
+levelDescription.AddConnection(2, 3);
+
+// Create an instance of the generate and generate a layout
+var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+var layout = generator.GenerateLayout();
+
+// Export the resulting layout as PNG
+var drawer = new DungeonDrawer<int>();
+drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
+{
+    Width = 2000,
+    Height = 2000,
+});
+```
 
 ## Examples
 
