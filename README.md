@@ -60,8 +60,9 @@ The appearance of individual rooms is controlled with so-called room templates. 
 - Describe the structure of levels with a graph of rooms and connections 
 - Control the appearance of rooms with handmade room templates 
 - Connect rooms either directly with doors or with short corridors
+- Export to JSON or PNG
 - Supports .NET Standard 2.0
-- Currently works only in 2D but may support 3D in future
+- Currently works only on the 2D grid but may support 3D in future
 - Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
 
 ## Limitations
