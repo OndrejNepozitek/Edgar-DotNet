@@ -39,7 +39,7 @@
 </p>
 -->
 
-<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="33%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="33%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="33%" />
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="32%" />
 
 <p align="center"><i>(Design of exported levels inspired by <a href="https://watabou.itch.io/one-page-dungeon">Watabou's One Page Dungeon</a>)</i></p>
                                                    
