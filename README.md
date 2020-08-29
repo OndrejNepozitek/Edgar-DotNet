@@ -64,6 +64,7 @@ The appearance of individual rooms is controlled with so-called room templates. 
 - Supports .NET Standard 2.0
 - Currently works only on the 2D grid but may support 3D in future
 - Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
+- Implicit support for keys and locks - just define the connectivity graph hovewer you like
 
 ## Limitations
 
