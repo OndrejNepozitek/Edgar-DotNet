@@ -127,6 +127,8 @@ The safest way to update to the new version is to completely remove the old vers
                                                              
 ## Example
 
+Below is a very simple setup of the generator. We create two rectangular room templates, add 4 rooms to the level description and connect the rooms so that they form a cycle.
+
 ```csharp
 // Create square room template
 var squareRoomTemplate = new RoomTemplateGrid2D(
@@ -173,6 +175,8 @@ drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
     Height = 2000,
 });
 ```
+
+Here are two layouts that were produced by the generator:
 
 <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
 
