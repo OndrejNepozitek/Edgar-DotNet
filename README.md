@@ -174,6 +174,8 @@ drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
 });
 ```
 
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
+
 ## Examples
 
 ![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result1.png)
