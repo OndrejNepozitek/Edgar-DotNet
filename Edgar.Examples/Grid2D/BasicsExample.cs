@@ -65,7 +65,7 @@ namespace Edgar.Examples.Grid2D
             //md ### Putting it all together
             //md We can now combine the *outline*, *door mode* and *allowed transformations* together to create our first room template. We also provide a *name* which is optional but it may come in handy if we need to debug something.
 
-            var rectangleRoom = new RoomTemplateGrid2D(
+            var rectangleRoomTemplate = new RoomTemplateGrid2D(
                 squareRoomOutline,
                 doors,
                 allowedTransformations: transformations,
@@ -74,7 +74,7 @@ namespace Edgar.Examples.Grid2D
 
             //md We can also create a room template in-place with a single expression.
 
-            var squareRoom = new RoomTemplateGrid2D(
+            var squareRoomTemplate = new RoomTemplateGrid2D(
                 PolygonGrid2D.GetSquare(8),
                 new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1),
                 name: "Square 8x8"
@@ -90,7 +90,7 @@ namespace Edgar.Examples.Grid2D
             var roomDescription = new RoomDescriptionGrid2D
             (
                 isCorridor: false,
-                roomTemplates: new List<RoomTemplateGrid2D>() { rectangleRoom, squareRoom }
+                roomTemplates: new List<RoomTemplateGrid2D>() { rectangleRoomTemplate, squareRoomTemplate }
             );
 
             //md ## Level description

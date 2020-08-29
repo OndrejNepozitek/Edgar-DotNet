@@ -58,6 +58,8 @@ namespace Edgar.Examples
 
         public void Run()
         {
+            new SimpleExample().Run();
+
             //GenerateExample(new BasicsExample());
             //GenerateExample(new CorridorsExample());
             //GenerateExample(new MinimumRoomDistanceExample());
