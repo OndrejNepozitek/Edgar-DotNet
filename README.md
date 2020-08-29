@@ -40,10 +40,6 @@
 </p>
 -->
                                                    
-<p align="center">
-<img src="http://zuzka.nepozitek.cz/output4.gif" width='600'"
-</p>
-                                                             
 ## Introduction
 
 This project is a .NET library for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. If you are using Unity, make sure to check out [Edgar for Unity](https://github.com/OndrejNepozitek/Edgar-Unity) - Unity plugin based on this library.
