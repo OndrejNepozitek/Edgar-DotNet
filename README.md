@@ -136,7 +136,7 @@ drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
 });
 ```
 
-Here are two layouts that were produced by the generator:
+Here are two layouts that were produced from this example:
 
 <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
 
