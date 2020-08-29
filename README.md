@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/"><img src="https://img.shields.io/badge/online-docs-important" /></a>
-  <a href="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg" /></a>
   <a href="https://www.nuget.org/packages/Edgar-DotNet"><img src="https://img.shields.io/nuget/vpre/Edgar-DotNet" /></a>
   <a href="https://github.com/OndrejNepozitek/Edgar-Unity"><img src="https://img.shields.io/badge/see also-Unity%20plugin-important" /></a>
 </p>
@@ -16,7 +16,6 @@
 <p align="center">
   <a href="#introduction">Introduction</a> |
   <a href="#key-features">Key features</a> |
-  <a href="#pro-version">PRO version</a> |
   <a href="#limitations">Limitations</a> |
   <a href="#getting-started">Getting started</a> |
   <a href="#installation">Installation</a> |
@@ -39,22 +38,26 @@
   Or <a href="https://github.com/OndrejNepozitek/Edgar-Unity/issues/new">create an issue</a>
 </p>
 -->
+
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="32%" />
+
+<p align="center"><i>(Design of exported levels inspired by <a href="https://watabou.itch.io/one-page-dungeon">Watabou's One Page Dungeon</a>)</i></p>
                                                    
-<p align="center">
-<img src="http://zuzka.nepozitek.cz/output4.gif" width='600'"
-</p>
-                                                             
 ## Introduction
 
-This project is a Unity plugin for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. Under the hood, the plugin uses [Edgar for .NET](https://github.com/OndrejNepozitek/Edgar-DotNet).
+This project is a .NET library for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. If you are using Unity, make sure to check out [Edgar for Unity](https://github.com/OndrejNepozitek/Edgar-Unity) - Unity plugin based on this library. And I have also written a post about the graph-based approach on [my blog](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
 
 ### Graph-based approach
 
-You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces levels that follow exactly that structure. Do you want a boss room at the end of each level? Or da shop room halfway through the level? Everything is possible with a graph-based approach.
+You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces layouts that follow exactly that structure. Do you want a boss room at the end of each level? Or a shop room halfway through the level? Everything is possible with a graph-based approach.
 
 ### Handmade room templates
 
-The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a level. They are created with Unity tilemaps, but they can also contain additional game objects such as lights, enemies or chests with loot. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a layout. Each room template consists of an outline polygon and a set of available door positions. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+
+## CAUTION!
+
+The library is currently being refactored to make the API nicer and make it easier to add new features in the future. As a result, only the most important logic is documented and I would not recommend looking into the insides of the algorithm. If you want to know how the algorithm works, check out my [blog post](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
 
 ## Key features
 
@@ -62,103 +65,83 @@ The appearance of individual rooms is controlled with so-called room templates. 
 - Describe the structure of levels with a graph of rooms and connections 
 - Control the appearance of rooms with handmade room templates 
 - Connect rooms either directly with doors or with short corridors
-- Easy to customize with custom post-processing logic
-- Supports Unity 2018.4 and newer
-- Currently works only in 2D but may support 3D in future
-- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/)
-- Multiple example scenes included
-
-## PRO version
-
-There are two versions of this asset - free version and PRO version. The free version contains the core functions of the generator and should be fine for simple procedural dungeons. The PRO version can be bought at [itch.io](https://ondrejnepozitek.itch.io/edgar-pro) and contains some additional features. As of now, the PRO version contains features like platformer generator or isometric levels and also two advanced example scenes. If you like this asset, please consider buying the PRO version to support the development.
-
-- Coroutines - Call the generator as a coroutine so that the game does not freeze when generating a level ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/dungeon-generator#pro-with-coroutines))
-- Custom rooms - It is possible to add additional fields to rooms and connections in a level graph ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/level-graphs#pro-custom-rooms-and-connections))      
-- Platformers - Generator that is able to produce platformer levels ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/platformer-generator), [example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/platformer-1))
-- Isometric - Simple example of isometric levels ([example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/isometric-1))
-- Dead Cells - Tutorial on how to generate levels that are similar to Dead Cells ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/dead-cells))
-- Enter the Gungeon - Tutorial on how to generate levels that are similar to Enter the Gungeon ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/enter-the-gungeon/))
-- Custom input - Modify a level graph before it is used in the generator (e.g. add a random secret room) ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/custom-input))
-- (Planned) Fog of War
-- (Planned) Additional generators
+- Export to JSON or PNG
+- Supports .NET Standard 2.0
+- Currently works only on the 2D grid but may support 3D in future
+- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
+- Implicit support for keys and locks - just define the connectivity graph hovewer you like
 
 ## Limitations
 
-- Still in alpha version - there may be some breaking changes in the API
-- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/performance-tips)
+- The library is currently being refactored - see the caution above.
+- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/basics/performance-tips)
 - The graph-based approach is not suitable for large levels - we recommend less than 30 rooms
-- Not everything can be configured via editor - some programming knowledge is needed for more advanced setups
                       
 ## Getting started
 
-Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction). The documentation describes all the basics and also multiple example scenes that should help you get started. 
+Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction). The documentation describes all the basics and provides multiple examples.
                       
 ## Installation
 
-There are several ways of installing the plugin:
-
-### via Package Manager
-Add the following line to the `packages/manifest.json` file under the `dependencies` section (you must have git installed):
-```
- "com.ondrejnepozitek.procedurallevelgenerator": "https://github.com/OndrejNepozitek/ProceduralLevelGenerator-Unity.git#upm"
-```
-To try the examples, go to the Package Manager, find this plugin in the list of installed assets and import examples.
-
-> Note: When importing the package, I've got some weird "DirectoryNotFoundException: Could not find a part of the path" errors even though all the files are there. If that happens to you, just ignore that.
-
-#### How to update
-After installing the package, Unity adds something like this to your `manifest.json`:
-
-```
-  "lock": {
-    "com.ondrejnepozitek.procedurallevelgenerator": {
-      "hash": "fc2e2ea5a50ec4d1d23806e30b87d13cf74af04e",
-      "revision": "upm"
-    }
-  }
-```
-
-Remove it to let Unity download a new version of the plugin.
-
-### via .unitypackage
-
-Go to Releases and download the unitypackage that's included in every release. Then import the package to Unity project (*Assets -> Import package -> Custom package*).
-
-#### How to update
-In order to be able to download a new version of the plugin, **we recommend to not change anything inside the Assets/ProceduralLevelGenerator folder**. At this stage of the project, files are often moved, renamed or deleted, and Unity does not handle that very well.
-
-The safest way to update to the new version is to completely remove the old version (*Assets/ProceduralLevelGenerator* directory) and then import the new version. (Make sure to backup your project before deleting anything.)                                                         
+Download the latest version from [Nuget](https://www.nuget.org/packages/Edgar-DotNet).                                                
                                                              
-## Workflow 
+## Example
 
-### 1. Draw rooms and corridors
+Below is a very simple setup of the generator. We create two rectangular room templates, add 4 rooms to the level description and connect the rooms so that they form a cycle.
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/room_templates_multiple.png)
+```csharp
+// Create square room template
+var squareRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetSquare(8),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-### 2. Prepare the structure of the level
+// Create rectangle room template
+var rectangleRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetRectangle(6, 10),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-<img src="https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/examples/example1_level_graph2.png" height="500" />
+// Create a room description which says that the room is not a corridor and that it can use the two room templates
+var roomDescription = new RoomDescriptionGrid2D(
+    isCorridor: false,
+    roomTemplates: new List<RoomTemplateGrid2D>() { squareRoomTemplate, rectangleRoomTemplate }
+);
 
-### 3. Generate levels
+// Create an instance of the level description
+var levelDescription = new LevelDescriptionGrid2D<int>();
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/v2/generated_levels_multiple.png)
+// Add 4 rooms to the level, use the room description that we created beforehand
+levelDescription.AddRoom(0, roomDescription);
+levelDescription.AddRoom(1, roomDescription);
+levelDescription.AddRoom(2, roomDescription);
+levelDescription.AddRoom(3, roomDescription);
 
-## Examples
+// Add connections between the rooms - the level graph will be a cycle with 4 vertices
+levelDescription.AddConnection(0, 1);
+levelDescription.AddConnection(0, 3);
+levelDescription.AddConnection(1, 2);
+levelDescription.AddConnection(2, 3);
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result1.png)
+// Create an instance of the generate and generate a layout
+var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+var layout = generator.GenerateLayout();
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example1_result_reallife1.png)
+// Export the resulting layout as PNG
+var drawer = new DungeonDrawer<int>();
+drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
+{
+    Width = 2000,
+    Height = 2000,
+});
+```
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result1.png)
+Here are two layouts that were produced from this example:
 
-![](https://ondrejnepozitek.github.io/Edgar-Unity/img/original/example2_result_reallife1.png)
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
 
 ## Get in touch
 
-If you have any questions, let me know at ondra-at-nepozitek.cz or create an issue here on github.
-
-## Terms of use
-
-The plugin can be used in both commercial and non-commercial projects, but **cannot be redistributed or resold**. If you want to include this plugin in your own asset, please contact me, and we will figure that out.
+If you have any questions, let me know at ondra-at-nepozitek.cz, on Twitter at @OndrejNepozitek or create an issue here on github.
 
 
