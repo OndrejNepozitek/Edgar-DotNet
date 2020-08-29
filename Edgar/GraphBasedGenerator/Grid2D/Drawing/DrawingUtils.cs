@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 
@@ -18,7 +19,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         {
             var scale = (targetWidth - 2 * borderSize) / boundingBox.Width;
 
-            if (scale * boundingBox.Height > (targetHeight - borderSize))
+            if (scale * boundingBox.Height > (targetHeight - 2 * borderSize))
             {
                 scale = (targetHeight - 2 * borderSize) / boundingBox.Height;
             }
@@ -71,7 +72,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 }
             }
 
-            var padding = paddingAbsolute ?? paddingPercentage * targetWidth.Value;
+            var padding = paddingAbsolute ?? paddingPercentage * Math.Min(targetWidth.Value, targetHeight.Value);
 
             if (targetScale == null)
             {

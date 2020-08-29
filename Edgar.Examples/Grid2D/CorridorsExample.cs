@@ -3,7 +3,7 @@ using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
-using Edgar.Legacy.Utils;
+using Edgar.Graphs;
 
 namespace Edgar.Examples.Grid2D
 {
@@ -17,19 +17,26 @@ namespace Edgar.Examples.Grid2D
 
         #endregion
 
+        /// <summary>
+        /// Prepare level description.
+        /// </summary>
         public LevelDescriptionGrid2D<int> GetLevelDescription()
         {
-            //md ## Corridor room description
-            //md First, we create the outline for the corridor room template. As the performance of the generator is the best with rather short corridors, we will use a 3x1 rectangle:
+            //md By default, rooms in generated levels are connected directly - there are no corridors between them. If we want to use corridors, we have to add a corridor room between all pairs of neighboring rooms.
 
-            var corridorOutline = PolygonGrid2D.GetRectangle(3, 1);
+            //md > **Note:** As of now, the whole level geometry is fixed - the generator works only with the room templates that we create at design time. That means that we have to manually create all the shapes of corridor rooms. In the future, I would like to experiment with using path-finding for corridors instead of predefined room templates.
+
+            //md ## Corridor room description
+            //md First, we create the outline for the corridor room template. The performance of the generator is the best with rather short corridors, so we will use a 2x1 rectangle:
+
+            var corridorOutline = PolygonGrid2D.GetRectangle(2, 1);
 
             //md The next step is to add doors. We can no longer use the simple door mode because we want to have exactly two door positions on the opposite sides of the corridor, which is not possible with the simple mode. With the manual mode, we have to specify all the door positions manually.
 
             var corridorDoors = new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                 {
                     new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
-                    new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1))
+                    new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(2, 1))
                 }
             );
 
@@ -45,6 +52,25 @@ namespace Edgar.Examples.Grid2D
                 }
             );
 
+            //md We can also add another corridor room template which is a little bit longer then the previous one:
+
+            var corridorRoomTemplateLonger = new RoomTemplateGrid2D(
+                PolygonGrid2D.GetRectangle(4, 1),
+                new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+                    {
+                        new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
+                        new DoorGrid2D(new Vector2Int(4, 0), new Vector2Int(4, 1))
+                    }
+                ),
+                allowedTransformations: new List<TransformationGrid2D>()
+                {
+                    TransformationGrid2D.Identity,
+                    TransformationGrid2D.Rotate90
+                }
+            );
+
+            //md Below we can see a visualization of the two room templates:
+
             //md ![](./corridors/room_templates.png)
 
             //md And finally, we can create the corridor room description. We must not forget to set the `IsCorridor` flag to `true`.
@@ -52,28 +78,49 @@ namespace Edgar.Examples.Grid2D
             var corridorRoomDescription = new RoomDescriptionGrid2D
             (
                 isCorridor: true,
-                roomTemplates: new List<RoomTemplateGrid2D>() {corridorRoomTemplate}
+                roomTemplates: new List<RoomTemplateGrid2D>() {corridorRoomTemplate, corridorRoomTemplateLonger}
             );
 
             //md ## Basic room description
-            //md For non-corridor rooms, we will use two rectangular room templates - 8x8 square and 6x10 rectangle. The full code is omitted for simplicity.
+            //md For non-corridor rooms, we will use three rectangular room templates - 6x6 square, 8x8 square and 6x10 rectangle. The full code is omitted for simplicity.
 
             var basicRoomDescription = GetBasicRoomDescription();
 
             //md ## Level description
-            //md To simplify this tutorial, we will use a graph of rooms from our graph database:
+            //md First, we create a level description.
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
-            var graph = GraphsDatabase.GetExample5();
 
-            //md First, we add non-corridor rooms:
+            //md Next, we create a graph of rooms. Instead of adding rooms and connections directly to the level description, it might be sometimes beneficial to first prepare the graph data structure itself and then go through individual rooms and connections and add them to the level description.
+
+            var graph = new UndirectedAdjacencyListGraph<int>();
+
+            graph.AddVerticesRange(0, 13);
+
+            graph.AddEdge(0, 1);
+            graph.AddEdge(0, 2);
+            graph.AddEdge(0, 8);
+            graph.AddEdge(1, 3);
+            graph.AddEdge(1, 4);
+            graph.AddEdge(1, 5);
+            graph.AddEdge(2, 6);
+            graph.AddEdge(2, 7);
+            graph.AddEdge(5, 9);
+            graph.AddEdge(6, 9);
+            graph.AddEdge(8, 10);
+            graph.AddEdge(8, 11);
+            graph.AddEdge(8, 12);
+
+            //md > **Note:** As we want to have corridors between all neighboring rooms, it is better to create the graph only with non-corridor rooms and then add corridor rooms programatically.
+
+            //md When we have the graph ready, we can add non-corridor rooms:
 
             foreach (var room in graph.Vertices)
             {
                 levelDescription.AddRoom(room, basicRoomDescription);
             }
 
-            //md We have to somehow identify corridor rooms. As we use integers, probably the easiest way is to number them and keep track which was the last used number:
+            //md Before we add corridor rooms, we have to figure out how to identify them. As we use integers, probably the easiest way is to number the corridor rooms and keep track which was the last used number:
 
             var corridorCounter = graph.VerticesCount;
 
@@ -81,7 +128,7 @@ namespace Edgar.Examples.Grid2D
 
             foreach (var connection in graph.Edges)
             {
-                // We manually insert a new room between each neighboring rooms in the graph
+                // We manually insert a new room between each pair of neighboring rooms in the graph
                 levelDescription.AddRoom(corridorCounter, corridorRoomDescription);
 
                 // And instead of connecting the rooms directly, we connect them to the corridor room
@@ -94,6 +141,9 @@ namespace Edgar.Examples.Grid2D
             return levelDescription;
         }
 
+        /// <summary>
+        /// Run the generator and export the result.
+        /// </summary>
         public void Run()
         {
             var levelDescription = GetLevelDescription();
@@ -113,7 +163,7 @@ namespace Edgar.Examples.Grid2D
             var roomTemplates = levelDescription
                 .GetGraph().Vertices
                 .Select(levelDescription.GetRoomDescription)
-                .Where(x => x.IsCorridor == true)
+                .Where(x => x.IsCorridor)
                 .SelectMany(x => x.RoomTemplates)
                 .Distinct()
                 .ToList();
@@ -121,10 +171,11 @@ namespace Edgar.Examples.Grid2D
             var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
             {
                 Width = 1200,
-                Height = 300,
-                Scale = 70,
+                Height = 350,
                 FontSize = 0.7f,
+                PaddingAbsolute = 135,
                 ShowRoomNames = false,
+                EnableHatching = false,
             });
             roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
 
@@ -151,10 +202,17 @@ namespace Edgar.Examples.Grid2D
                 TransformationGrid2D.Rotate90
             };
 
-            var squareRoom = new RoomTemplateGrid2D(
+            var squareRoom1 = new RoomTemplateGrid2D(
                 PolygonGrid2D.GetSquare(8),
                 doors,
                 name: "Square 8x8",
+                allowedTransformations: transformations
+            );
+
+            var squareRoom2 = new RoomTemplateGrid2D(
+                PolygonGrid2D.GetSquare(6),
+                doors,
+                name: "Square 6x6",
                 allowedTransformations: transformations
             );
 
@@ -169,7 +227,8 @@ namespace Edgar.Examples.Grid2D
             (
                 isCorridor: false,
                 roomTemplates: new List<RoomTemplateGrid2D>() {            
-                    squareRoom,
+                    squareRoom1,
+                    squareRoom2,
                     rectangleRoom
                 }
             );

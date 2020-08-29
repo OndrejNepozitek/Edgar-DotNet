@@ -11,7 +11,6 @@ using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using Edgar.Legacy.Utils.MetaOptimization.Mutations;
 using Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxBranching;
 using Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations;
-using MapGeneration.Core.LayoutEvolvers;
 using Newtonsoft.Json;
 using Sandbox.Utils;
 

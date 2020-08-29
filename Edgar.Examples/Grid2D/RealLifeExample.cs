@@ -11,68 +11,94 @@ namespace Edgar.Examples.Grid2D
 {
     public class RealLifeExample : IExampleGrid2D<RealLifeExample.Room>
     {
+        #region no-clean
+
         public string Name => "Real-life example";
 
         public string DocsFileName => "real-life";
 
+        #endregion
+
+        /// <summary>
+        /// Prepare level description.
+        /// </summary>
         public LevelDescriptionGrid2D<Room> GetLevelDescription() 
         {
             //md In this example, we will create a level description that should be close to what we could use in a game. We will cover the following:
-            //md - create a room type enum for individual types of rooms - spawn, boss, shop, reward, etc.
-            //md - create a custom room class to identify rooms in the level graph
+            //md - create a `RoomType` enum for individual types of rooms - spawn, boss, shop, reward, etc.
+            //md - create a custom `Room` class to identify rooms in the level graph
             //md - assign room templates based on the type of the room
             //md - use corridors with different lengths
 
+            //md ## Room type
+            //md To distinguish between different types of rooms, we create a `RoomType` enum. We will use to when deciding which room templates should be assigned to individual rooms. *Normal* rooms are basic combat-oriented rooms, *Hub* rooms are rather large rooms which we can use when a room has many neighbors, and the meaning of the rest of room types should be obvious.
+
             //md_sc enum:RoomType
+
+            //md ## Room class
+            //md In the previous examples, we used integers to identify individual rooms. We could theoretically still use integers and have a mapping from these integers to room types, but there exists a better way. We can implement a custom room class which will hold the room type. And if we also override the `ToString()` method, we will get the name of each room written over the room when we export the level.
 
             //md_sc class:Room
 
             //md ## Room templates
+            //md The next step is to create room templates. We will create a mapping from the name of a room template to the instance of that room template so that we can refer to that instance later. We create at least a single room template for each room type.
+
             //md_sc method:GetRoomTemplates
+
+            //md Below we can see a visualization of all the room templates:
 
             //md ![](./real-life/room_templates.png)
 
-            #region Test 2
+            //md The last thing we have to do is to create a mapping from `RoomType` to its room templates.
 
-            var levelDescription = new LevelDescriptionGrid2D<Room>();
-            levelDescription.MinimumRoomDistance = 2;
-            levelDescription.RoomTemplateRepeatModeDefault = RoomTemplateRepeatMode.NoImmediate;
+            //md_sc method:GetRoomTemplatesForRoom
+
+            //md ## Corridor room templates
+            //md We will use corridors of 3 different sizes:
+
+            //md ![](./real-life/corridor_room_templates.png)
+
+            //md ## Graph of rooms
+
+            //md_sc method_content:GetGraph
+
+            //md ## Level description
+            //md Now we are ready to create the level description.
+
+            var levelDescription = new LevelDescriptionGrid2D<Room>
+            {
+                MinimumRoomDistance = 2,
+            };
+
+            //md First, we get the graph and room templates.
+
             var graph = GetGraph();
-
-            #region Test
-
             var roomTemplates = GetRoomTemplates();
-            var corridorRoomDescription = new RoomDescriptionGrid2D
-            (
-                isCorridor: true,
-                roomTemplates: GetCorridorRoomTemplates()
-            );
 
-            //var roomTemplatesDrawer = new RoomTemplateDrawer<int>();
-
-            //for (int i = 1; i < 20; i++)
-            //{
-            //    var height = i * 500;
-            //    var width = 3000;
-            //    var bitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates.Values.ToList(), 3000, height, true, 1.5f);
-            //    bitmap.Save($"roomTemplates_{width}_{height}.png");
-            //}
-
-
-            #endregion
+            //md Next, we add all the non-corridor rooms. For each room, we get room templates based on the type of the room.
 
             foreach (var room in graph.Vertices)
             {
                 levelDescription.AddRoom(room, new RoomDescriptionGrid2D
                 (
                     isCorridor: false,
-                    roomTemplates: GetRoomTemplatesForRoom(room.Type, roomTemplates)
+                    roomTemplates: GetRoomTemplatesForRoom(room, roomTemplates)
                 ));
             }
 
+            //md Then we prepare a corridor room description. All corridors use the same room templates so we can reuse the instance of the room description for all corridors.
+
+            var corridorRoomDescription = new RoomDescriptionGrid2D
+            (
+                isCorridor: true,
+                roomTemplates: GetCorridorRoomTemplates()
+            );
+
+            //md And the final step is to add all the connections.
+
             foreach (var edge in graph.Edges)
             {
-                var corridorRoom = new Room(RoomType.Corridor);
+                var corridorRoom = new Room("Corridor", RoomType.Corridor);
 
                 levelDescription.AddRoom(corridorRoom, corridorRoomDescription);
                 levelDescription.AddConnection(edge.From, corridorRoom);
@@ -80,19 +106,91 @@ namespace Edgar.Examples.Grid2D
             }
 
             return levelDescription;
+        }
+
+        /// <summary>
+        /// Run the generator.
+        /// </summary>
+        public void Run()
+        {
+            var levelDescription = GetLevelDescription();
+            var generator = new GraphBasedGeneratorGrid2D<Room>(levelDescription);
+            var layout = generator.GenerateLayout();
+
+            var drawer = new DungeonDrawer<Room>();
+            drawer.DrawLayoutAndSave(layout, "basics.png", new DungeonDrawerOptions()
+            {
+                Width = 1000,
+                Height = 1000,
+            });
+
+            #region no-clean
+
+            var roomTemplates = levelDescription
+                .GetGraph().Vertices
+                .Select(levelDescription.GetRoomDescription)
+                .Where(x => x.IsCorridor == false)
+                .SelectMany(x => x.RoomTemplates)
+                .Distinct()
+                .ToList();
+            var corridorRoomTemplates = levelDescription
+                .GetGraph().Vertices
+                .Select(levelDescription.GetRoomDescription)
+                .Where(x => x.IsCorridor)
+                .SelectMany(x => x.RoomTemplates)
+                .Distinct()
+                .ToList();
+            var roomTemplatesDrawer = new RoomTemplateDrawer();
+            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
+            {
+                Width = 2000,
+                Height = 1600,
+                PaddingPercentage = 0.05f,
+                FontSize = 2,
+                EnableHatching = false,
+            });
+            roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
+
+            var corridorRoomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(corridorRoomTemplates, new DungeonDrawerOptions()
+            {
+                Width = 1200,
+                Height = 350,
+                FontSize = 0.7f,
+                PaddingAbsolute = 100,
+                ShowRoomNames = false,
+                EnableHatching = false,
+            });
+            corridorRoomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/corridor_room_templates.png");
 
             #endregion
         }
 
-        private List<RoomTemplateGrid2D> GetRoomTemplatesForRoom(RoomType type, Dictionary<string, RoomTemplateGrid2D> roomTemplates)
+        /// <summary>
+        /// Gets room templates for a given room based on its type.
+        /// </summary>
+        private List<RoomTemplateGrid2D> GetRoomTemplatesForRoom(Room room, Dictionary<string, RoomTemplateGrid2D> roomTemplates)
         {
-            switch (type)
+            switch (room.Type)
             {
                 case RoomType.Spawn:
                     return new List<RoomTemplateGrid2D>()
                     {
                         roomTemplates["Spawn"],
                     };
+
+                case RoomType.Normal:
+                    return new List<RoomTemplateGrid2D>()
+                    {
+                        roomTemplates["Normal 1"],
+                        roomTemplates["Normal 2"],
+                        roomTemplates["Normal 3"],
+                        roomTemplates["Normal 4"],
+                        roomTemplates["Normal 5"],
+                        roomTemplates["Normal 6"],
+                        roomTemplates["Normal 7"],
+                    };
+
+                #region hidden:Handle other room types
 
                 case RoomType.Boss:
                     return new List<RoomTemplateGrid2D>()
@@ -124,29 +222,23 @@ namespace Edgar.Examples.Grid2D
                         roomTemplates["Hub 1"],
                     };
 
-                case RoomType.Normal:
-                    return new List<RoomTemplateGrid2D>()
-                    {
-                        roomTemplates["Normal 1"],
-                        roomTemplates["Normal 2"],
-                        roomTemplates["Normal 3"],
-                        roomTemplates["Normal 4"],
-                        roomTemplates["Normal 5"],
-                        roomTemplates["Normal 6"],
-                        roomTemplates["Normal 7"],
-                    };
-
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    throw new ArgumentOutOfRangeException(nameof(room.Type), room.Type, null);
+
+                #endregion
             }
         }
 
+        /// <summary>
+        /// Gets all available room templates for non-corridor rooms.
+        /// </summary>
+        /// <returns></returns>
         private Dictionary<string, RoomTemplateGrid2D> GetRoomTemplates()
         {
             return new List<RoomTemplateGrid2D>()
             {
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetRectangle(15, 18),
+                    PolygonGrid2D.GetRectangle(15, 19),
                     new SimpleDoorModeGrid2D(1, 2),
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Normal 1"
@@ -166,7 +258,7 @@ namespace Edgar.Examples.Grid2D
                         .AddPoint(-3, 0).AddPoint(-5, 0).AddPoint(-5, -1).AddPoint(-11, -1)
                         .Build(),
                     new SimpleDoorModeGrid2D(1, 2),
-                    repeatMode: RoomTemplateRepeatMode.NoRepeat,
+                    // repeatMode: RoomTemplateRepeatMode.NoRepeat,
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Normal 3"
                 ),
@@ -188,11 +280,11 @@ namespace Edgar.Examples.Grid2D
                         .AddPoint(-6, -6).AddPoint(8, -6).AddPoint(8, -13).AddPoint(-14, -13)
                         .Build(),
                     new SimpleDoorModeGrid2D(1, 2),
-                    repeatMode: RoomTemplateRepeatMode.NoRepeat,
+                    // repeatMode: RoomTemplateRepeatMode.NoRepeat,
                     name: "Normal 5"
                 ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetSquare(15), 
+                    PolygonGrid2D.GetSquare(13), 
                     new SimpleDoorModeGrid2D(1, 2),
                     name: "Normal 6"
                 ),
@@ -201,16 +293,16 @@ namespace Edgar.Examples.Grid2D
                     new SimpleDoorModeGrid2D(1, 2),
                     name: "Spawn"
                 ),
-                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(16, 20), 
-                    new SimpleDoorModeGrid2D(1, 4),
-                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
-                    name: "Hub 1"
-                ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetRectangle(22, 22),
+                    PolygonGrid2D.GetRectangle(26, 26),
                     new SimpleDoorModeGrid2D(1, 4),
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Boss"
+                ),
+                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(20, 26), 
+                    new SimpleDoorModeGrid2D(1, 4),
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations(),
+                    name: "Hub 1"
                 ),
                 new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
@@ -259,109 +351,79 @@ namespace Edgar.Examples.Grid2D
             }.ToDictionary(x => x.Name, x => x);
         }
 
+        /// <summary>
+        /// Gets all available room templates for corridor rooms.
+        /// </summary>
         private List<RoomTemplateGrid2D> GetCorridorRoomTemplates()
         {
             return new List<RoomTemplateGrid2D>()
             {
                 new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-4, 1).AddPoint(0, 1).AddPoint(0, -2).AddPoint(-4, -2)
-                        .Build(),
+                    PolygonGrid2D.GetRectangle(4, 3),
                     new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                         {
-                        new DoorGrid2D(new Vector2Int(-4, 0), new Vector2Int(-4, -1)),
-                        new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, -1)),
+                            new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)),
+                            new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 2)),
                         }
-                    )
+                    ),
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
                 ),
                 new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-4, 1).AddPoint(2, 1).AddPoint(2, -2).AddPoint(-4, -2)
-                        .Build(),
+                    PolygonGrid2D.GetRectangle(6, 3),
                     new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                         {
-                        new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(2, -1)),
-                        new DoorGrid2D(new Vector2Int(-4, 0), new Vector2Int(-4, -1)),
+                            new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)),
+                            new DoorGrid2D(new Vector2Int(6, 1), new Vector2Int(6, 2)),
                         }
-                    )
+                    ),
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
                 ),
                 new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-4, 1).AddPoint(4, 1).AddPoint(4, -2).AddPoint(-4, -2)
-                        .Build(),
+                    PolygonGrid2D.GetRectangle(8, 3),
                     new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                         {
-                        new DoorGrid2D(new Vector2Int(4, 0), new Vector2Int(4, -1)),
-                        new DoorGrid2D(new Vector2Int(-4, 0), new Vector2Int(-4, -1)),
+                            new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)),
+                            new DoorGrid2D(new Vector2Int(8, 1), new Vector2Int(8, 2)),
                         }
-                    )
+                    ),
+                    allowedTransformations: TransformationGrid2DHelper.GetRotations()
                 ),
-                new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-3, 2).AddPoint(0, 2).AddPoint(0, -2).AddPoint(-3, -2)
-                        .Build(),
-                    new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-                        {
-                        new DoorGrid2D(new Vector2Int(-2, -2), new Vector2Int(-1, -2)),
-                        new DoorGrid2D(new Vector2Int(-2, 2), new Vector2Int(-1, 2)),
-                        }
-                    )
-                ),
-                new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-3, 4).AddPoint(0, 4).AddPoint(0, -2).AddPoint(-3, -2)
-                        .Build(),
-                    new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-                        {
-                        new DoorGrid2D(new Vector2Int(-2, -2), new Vector2Int(-1, -2)),
-                        new DoorGrid2D(new Vector2Int(-2, 4), new Vector2Int(-1, 4)),
-                        }
-                    )
-                ),
-                new RoomTemplateGrid2D(
-                    new PolygonGrid2DBuilder()
-                        .AddPoint(-3, 6).AddPoint(0, 6).AddPoint(0, -2).AddPoint(-3, -2)
-                        .Build(),
-                    new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-                        {
-                        new DoorGrid2D(new Vector2Int(-2, -2), new Vector2Int(-1, -2)),
-                        new DoorGrid2D(new Vector2Int(-2, 6), new Vector2Int(-1, 6)),
-                        }
-                    )
-                ),
-            };;
+            };
         }
 
-        private IGraph<Room> GetGraph2()
+        /// <summary>
+        /// Gets the graph of rooms.
+        /// </summary>
+        private IGraph<Room> GetGraph()
         {
-            var roomTemplateNames = new List<string>()
+            //md First, we create a list of all the rooms.
+
+            var rooms = new List<Room>
             {
-                "Normal 1",
-                "Normal 1 - duplicate",
-                "Normal 2",
-                "Normal 3",
-                "Normal 4",
-                "Normal 5",
-                "Normal 6",
-                "Spawn",
-                "Hub 1",
-                "Hub 3 - duplicate 1",
-                "Hub 3 - duplicate 2",
-                "Reward",
-                "Normal 7 small",
-                "Normal 8",
-                "Normal 7 small - duplicate",
-                "Reward - duplicate",
-                "Secret",
+                new Room("Spawn", RoomType.Spawn),
+                new Room("Normal 1", RoomType.Normal),
+                new Room("Normal 2", RoomType.Normal),
+                new Room("Normal 3", RoomType.Normal),
+                new Room("Normal 4", RoomType.Normal),
+                new Room("Boss", RoomType.Boss),
+                new Room("Exit", RoomType.Exit),
+
+                new Room("Normal 5", RoomType.Normal),
+                new Room("Shop 1", RoomType.Shop),
+                new Room("Normal 6", RoomType.Normal),
+                new Room("Reward 1", RoomType.Reward),
+
+                new Room("Hub 1", RoomType.Hub),
+                new Room("Reward 2", RoomType.Reward),
+                new Room("Normal 7", RoomType.Normal),
+                new Room("Normal 8", RoomType.Normal),
             };
 
-            var rooms = new List<Room>();
+            //md We also create a mapping from the name of the room to the instance of the room so we can refer to the rooms later by their names.
 
-            foreach (var roomName in roomTemplateNames)
-            {
-                rooms.Add(new Room(RoomType.Normal));
-                // rooms.Last().Name = roomName;
-            }
+            var nameToRoomMapping = rooms.ToDictionary(x => x.Name, x => x);
+
+            //md Now we can add all the rooms to the graph.
 
             var graph = new UndirectedAdjacencyListGraph<Room>();
 
@@ -370,131 +432,77 @@ namespace Edgar.Examples.Grid2D
                 graph.AddVertex(room);
             }
 
-            for (int i = 1; i < roomTemplateNames.Count; i++)
-            {
-                graph.AddEdge(rooms[i - 1], rooms[i]);
-            }
+            //md In the previous examples, we created rather random graphs that would probably not make sense in a real video game. We will now attempt to create a more reasonable graph.
 
-            return graph;
-        }
-
-        private IGraph<Room> GetGraph()
-        {
-            var rooms = new Dictionary<string, Room>
-            {
-                {"Spawn", new Room(RoomType.Spawn)},
-                {"Normal 1", new Room(RoomType.Normal)},
-                {"Normal 2", new Room(RoomType.Normal)},
-                {"Normal 3", new Room(RoomType.Normal)},
-                {"Normal 4", new Room(RoomType.Normal)},
-                {"Boss", new Room(RoomType.Boss)},
-                {"Exit", new Room(RoomType.Exit)},
-
-                {"Normal 5", new Room(RoomType.Normal)},
-                {"Shop 1", new Room(RoomType.Shop)},
-                {"Normal 6", new Room(RoomType.Normal)},
-                {"Reward 1", new Room(RoomType.Reward)},
-
-                {"Hub 1", new Room(RoomType.Hub)},
-                {"Reward 2", new Room(RoomType.Reward)},
-                {"Normal 7", new Room(RoomType.Normal)},
-                {"Normal 8", new Room(RoomType.Normal)},
-                
-            };
-
-            var graph = new UndirectedAdjacencyListGraph<Room>();
-
-            foreach (var room in rooms.Values)
-            {
-                graph.AddVertex(room);
-            }
+            //md First, we create the main path from the spawn room to the boss room.
 
             // Main path to boss room
-            graph.AddEdge(rooms["Spawn"], rooms["Normal 1"]);
-            graph.AddEdge(rooms["Normal 1"], rooms["Normal 2"]);
-            graph.AddEdge(rooms["Normal 2"], rooms["Normal 3"]);
-            graph.AddEdge(rooms["Normal 3"], rooms["Normal 4"]);
-            graph.AddEdge(rooms["Normal 4"], rooms["Boss"]);
-            graph.AddEdge(rooms["Boss"], rooms["Exit"]);
+            graph.AddEdge(nameToRoomMapping["Spawn"], nameToRoomMapping["Normal 1"]);
+            graph.AddEdge(nameToRoomMapping["Normal 1"], nameToRoomMapping["Normal 2"]);
+            graph.AddEdge(nameToRoomMapping["Normal 2"], nameToRoomMapping["Normal 3"]);
+            graph.AddEdge(nameToRoomMapping["Normal 3"], nameToRoomMapping["Normal 4"]);
+            graph.AddEdge(nameToRoomMapping["Normal 4"], nameToRoomMapping["Boss"]);
+            graph.AddEdge(nameToRoomMapping["Boss"], nameToRoomMapping["Exit"]);
+
+            //md Then we create a loop that contains a shop and a reward room.
 
             // Branch 1
-            graph.AddEdge(rooms["Normal 2"], rooms["Normal 5"]);
-            graph.AddEdge(rooms["Normal 5"], rooms["Shop 1"]);
-            graph.AddEdge(rooms["Shop 1"], rooms["Normal 6"]);
-            graph.AddEdge(rooms["Normal 6"], rooms["Reward 1"]);
-            graph.AddEdge(rooms["Reward 1"], rooms["Normal 5"]);
+            graph.AddEdge(nameToRoomMapping["Normal 2"], nameToRoomMapping["Normal 5"]);
+            graph.AddEdge(nameToRoomMapping["Normal 5"], nameToRoomMapping["Shop 1"]);
+            graph.AddEdge(nameToRoomMapping["Shop 1"], nameToRoomMapping["Normal 6"]);
+            graph.AddEdge(nameToRoomMapping["Normal 6"], nameToRoomMapping["Reward 1"]);
+            graph.AddEdge(nameToRoomMapping["Reward 1"], nameToRoomMapping["Normal 5"]);
+
+            //md And finally we create a loop that contains another reward room.
 
             // Branch 2
-            graph.AddEdge(rooms["Normal 3"], rooms["Hub 1"]);
-            graph.AddEdge(rooms["Hub 1"], rooms["Reward 2"]);
-            graph.AddEdge(rooms["Reward 2"], rooms["Normal 7"]);
-            graph.AddEdge(rooms["Normal 7"], rooms["Normal 8"]);
-            graph.AddEdge(rooms["Normal 8"], rooms["Hub 1"]);
+            graph.AddEdge(nameToRoomMapping["Normal 3"], nameToRoomMapping["Hub 1"]);
+            graph.AddEdge(nameToRoomMapping["Hub 1"], nameToRoomMapping["Reward 2"]);
+            graph.AddEdge(nameToRoomMapping["Reward 2"], nameToRoomMapping["Normal 7"]);
+            graph.AddEdge(nameToRoomMapping["Normal 7"], nameToRoomMapping["Normal 8"]);
+            graph.AddEdge(nameToRoomMapping["Normal 8"], nameToRoomMapping["Hub 1"]);
 
 
             return graph;
         }
 
-        public void Run()
-        {
-            var levelDescription = GetLevelDescription();
-            var generator = new GraphBasedGeneratorGrid2D<Room>(levelDescription);
-            var layout = generator.GenerateLayout();
-
-            var drawer = new DungeonDrawer<Room>();
-            drawer.DrawLayoutAndSave(layout, "basics.png", new DungeonDrawerOptions()
-            {
-                Width = 1000,
-                Height = 1000,
-            });
-
-            #region no-clean
-
-            var roomTemplates = levelDescription
-                .GetGraph().Vertices
-                .Select(levelDescription.GetRoomDescription)
-                .Where(x => x.IsCorridor == false)
-                .SelectMany(x => x.RoomTemplates)
-                .Distinct()
-                .ToList();
-            var roomTemplatesDrawer = new RoomTemplateDrawer();
-            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, new DungeonDrawerOptions()
-            {
-                Width = 1000,
-                Height = 1000,
-                PaddingPercentage = 0.05f,
-                FontSize = 3,
-            });
-            roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
-
-            #endregion
-        }
+        #region no-clean
 
         public IEnumerable<LevelDescriptionGrid2D<Room>> GetResults()
         {
+            //md Below you can see some of the results generated from this example:
+
             yield return GetLevelDescription();
         }
 
+        #endregion
+
         /// <summary>
-        /// Test
+        /// Custom room type that we will use when choosing room templates for a given room.
         /// </summary>
         public enum RoomType
         {
-            Normal, Spawn, Boss, Corridor, Exit, Reward, Shop, Hub
+            Normal, Hub, Spawn, Boss, Corridor, Exit, Reward, Shop, 
         }
 
+        /// <summary>
+        /// Custom room class that holds the name and the type of a room.
+        /// </summary>
         public class Room
         {
+            public string Name { get; }
+
             public RoomType Type { get; }
 
-            public Room(RoomType type)
+            public Room(string name, RoomType type)
             {
                 Type = type;
+                Name = name;
             }
 
             public override string ToString()
             {
-                return Type.ToString();
+                return Name;
             }
         }
     }

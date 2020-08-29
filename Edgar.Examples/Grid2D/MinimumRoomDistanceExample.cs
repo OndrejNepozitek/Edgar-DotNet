@@ -23,7 +23,7 @@ namespace Edgar.Examples.Grid2D
             //md ## Setup
             //md We will use the level description from the [Corridors](corridors) example:
 
-            // Replace this with your own level description
+            // Replace this with your own level description if you want to run this locally
             var levelDescription = new CorridorsExample().GetLevelDescription();
 
             //md And set the minimum room distance to an integer value that is passed to the example as a parameter:
@@ -64,7 +64,13 @@ namespace Edgar.Examples.Grid2D
 
             yield return GetLevelDescription(2);
 
-            //md It is not possible to set the minimum room distance to more than 2 because we would have to use longer corridors in order to be able to generate such levels.
+            //md Levels with the minimum room distance set to 4:
+
+            yield return GetLevelDescription(4);
+            
+            //md We can see that performance difference between values 2 and 4 is quite significant.
+
+            //md It is not possible to set the minimum room distance to more than 4 because we would have to use longer corridors in order to be able to generate such levels.
         }
 
         #endregion

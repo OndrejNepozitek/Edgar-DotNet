@@ -32,6 +32,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             bitmap = new Bitmap(width, height);
             graphics = Graphics.FromImage(bitmap);
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             using (SolidBrush brush = new SolidBrush(Color.FromArgb(248, 248, 244)))
             {
@@ -51,20 +52,25 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             };
 
             var rooms = layout.Rooms.ToList();
-            var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Outline + x.Position).Min(x => x.BoundingRectangle.Width);
 
             graphics.TranslateTransform(offset.X, offset.Y);
             graphics.ScaleTransform(scale, scale);
-            
-            foreach (var room in rooms)
+
+            if (options.EnableShading)
             {
-                DrawShading(GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), shadePen);
+                foreach (var room in rooms)
+                {
+                    DrawShading(GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), shadePen);
+                }
             }
 
-            var hatchingUsedPoints = new List<Vector2>();
-            foreach (var room in rooms)
+            if (options.EnableHatching)
             {
-                DrawHatching(room.Outline + room.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                var hatchingUsedPoints = new List<Vector2>();
+                foreach (var room in rooms)
+                {
+                    DrawHatching(room.Outline + room.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                }
             }
 
             foreach (var room in rooms)

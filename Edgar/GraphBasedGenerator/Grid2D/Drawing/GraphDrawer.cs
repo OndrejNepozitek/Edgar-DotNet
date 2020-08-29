@@ -21,6 +21,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             bitmap = new Bitmap(width, height);
             graphics = Graphics.FromImage(bitmap);
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             using (SolidBrush brush = new SolidBrush(Color.FromArgb(248, 248, 244)))
             {

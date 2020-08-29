@@ -11,7 +11,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
     {
         public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options)
         {
-            var configurations = GetRoomTemplateConfigurations(roomTemplates, options.Width.Value / (double) options.Height.Value);
+            var configurations = GetRoomTemplateConfigurations(roomTemplates, options.Width.Value / (double) options.Height.Value, options);
 
             var outlines = configurations.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
             var boundingBox = DrawingUtils.GetBoundingBox(outlines);
@@ -20,6 +20,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             bitmap = new Bitmap(width, height);
             graphics = Graphics.FromImage(bitmap);
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
 
             using (SolidBrush brush = new SolidBrush(Color.FromArgb(248, 248, 244)))
             {
@@ -40,17 +41,22 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             graphics.TranslateTransform(offset.X, offset.Y);
             graphics.ScaleTransform(scale, scale);
-            
 
-            foreach (var roomTemplate in configurations)
+            if (options.EnableShading)
             {
-                DrawShading(GetOutline(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position), shadePen);
+                foreach (var roomTemplate in configurations)
+                {
+                    DrawShading(GetOutline(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position), shadePen);
+                }
             }
 
-            var hatchingUsedPoints = new List<Vector2>();
-            foreach (var roomTemplate in configurations)
+            if (options.EnableHatching)
             {
-                DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                var hatchingUsedPoints = new List<Vector2>();
+                foreach (var roomTemplate in configurations)
+                {
+                    DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                }
             }
 
             foreach (var roomTemplate in configurations)
@@ -135,12 +141,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             }
         }
 
-        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates, double expectedRatio)
+        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates, double expectedRatio, DungeonDrawerOptions options)
         {
             var orderedRoomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Width).ToList();
             var minDistance = 3;
 
             var bestRatio = double.MaxValue;
+            var bestScale = double.MinValue;
             List<RoomTemplateConfiguration> bestConfigurations = null;
             List<List<RoomTemplateGrid2D>> lastRows = null;
 
@@ -162,11 +169,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 var ratio = GetWidthHeightRatio(configurations);
                 var emptySpaceRatio = GetEmptySpaceRatio(rows, rowWidth);
 
-                if (Math.Abs(expectedRatio - ratio) < Math.Abs(expectedRatio - bestRatio))
+                var outlines = configurations.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
+                var boundingBox = DrawingUtils.GetBoundingBox(outlines);
+                var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+
+                if (scale > bestScale)
                 {
                     bestConfigurations = configurations;
-                    bestRatio = ratio;
+                    bestScale = scale;
                 }
+
+                //if (Math.Abs(expectedRatio - ratio) < Math.Abs(expectedRatio - bestRatio))
+                //{
+                //    bestConfigurations = configurations;
+                //    bestRatio = ratio;
+                //}
 
                 lastRows = rows;
 

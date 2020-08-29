@@ -89,8 +89,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         protected void DrawHatching(PolygonGrid2D outline, List<Vector2> usedPoints, Range<float> hatchingClusterOffset, Range<float> hatchingLength)
         {
             var pen = new Pen(Color.FromArgb(50, 50, 50), 0.05f);
-            graphics.SmoothingMode = SmoothingMode.HighQuality;
-
+            
             var usedPointsAdd = new List<Vector2>();
 
             foreach (var line in outline.GetLines())

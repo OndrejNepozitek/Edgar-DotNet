@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,9 +58,9 @@ namespace Edgar.Examples
 
         public void Run()
         {
-            GenerateExample(new BasicsExample());
-            GenerateExample(new CorridorsExample());
-            GenerateExample(new MinimumRoomDistanceExample());
+            //GenerateExample(new BasicsExample());
+            //GenerateExample(new CorridorsExample());
+            //GenerateExample(new MinimumRoomDistanceExample());
             GenerateExample(new RealLifeExample());
         }
 
@@ -74,6 +76,8 @@ namespace Edgar.Examples
             var stringBuilder = new StringBuilder();
             var insideCodeBlock = false;
 
+            var results = example.GetResults().ToList();
+
 
             stringBuilder.AppendLine("---");
             stringBuilder.AppendLine($"title: {example.Name}");
@@ -82,8 +86,7 @@ namespace Edgar.Examples
             stringBuilder.AppendLine("import { Gallery, GalleryImage } from \"@theme/Gallery\";");
             stringBuilder.AppendLine();
 
-            stringBuilder.AppendLine(
-                $"> The source code for this example can be found at the end of this page.");
+            // stringBuilder.AppendLine($"> The source code for this example can be found at the end of this page.");
             stringBuilder.AppendLine();
 
             AddContent(sourceCode, stringBuilder);
@@ -127,6 +130,46 @@ namespace Edgar.Examples
                         insideCodeBlock = false;
                     }
 
+                    var levelDescription = results[resultsCounter];
+                    var initStopwatch = new Stopwatch();
+                    initStopwatch.Start();
+                    var generator = new GraphBasedGeneratorGrid2D<TRoom>(levelDescription);
+                    generator.InjectRandomGenerator(new Random(0));
+                    initStopwatch.Stop();
+                
+                    var layoutDrawer = new GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TRoom>();
+                    var oldMapDrawer = new DungeonDrawer<TRoom>();
+
+                    var times = new List<long>();
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        var generatorStopwatch = new Stopwatch();
+                        generatorStopwatch.Start();
+                        var level = generator.GenerateLayout();
+                        generatorStopwatch.Stop();
+
+                        times.Add(generatorStopwatch.ElapsedMilliseconds);
+
+                        Console.WriteLine(generatorStopwatch.ElapsedMilliseconds + initStopwatch.ElapsedMilliseconds);
+
+                        var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true, fixedFontSize: 30);
+                        File.WriteAllText(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.svg"),
+                            svg);
+
+                        var bitmap = oldMapDrawer.DrawLayout(level, new DungeonDrawerOptions()
+                        {
+                            Width = 2000,
+                            Height = 2000,
+                            PaddingPercentage = 0.1f,
+                        });
+                        bitmap.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.png"));
+                    }
+
+                    var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
+                    var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
+                    summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
+
                     stringBuilder.AppendLine();
                     stringBuilder.AppendLine("<Gallery cols={2}>");
                     for (int i = 0; i < 4; i++)
@@ -136,7 +179,15 @@ namespace Edgar.Examples
                     }
 
                     stringBuilder.AppendLine("</Gallery>");
+
                     stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("<div style={{ textAlign: 'center', marginTop: '-15px' }}>");
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine($"*Average time to generate the level: {((times.Average() + initStopwatch.ElapsedMilliseconds) / 1000).ToString("F", CultureInfo.InvariantCulture)}s ({((initStopwatch.ElapsedMilliseconds) / 1000d).ToString("F", CultureInfo.InvariantCulture)}s init, {((times.Average()) / 1000).ToString("F", CultureInfo.InvariantCulture)}s generation itself)*");
+                    stringBuilder.AppendLine();
+                    stringBuilder.AppendLine("</div>");
+                    stringBuilder.AppendLine();
+
                     resultsCounter++;
                 }
                 else if (insideCodeBlock)
@@ -164,35 +215,9 @@ namespace Edgar.Examples
 
             example.Run();
 
-            resultsCounter = 0;
             foreach (var levelDescription in example.GetResults())
             {
-                var generator = new GraphBasedGeneratorGrid2D<TRoom>(levelDescription);
-                generator.InjectRandomGenerator(new Random(0));
 
-                var layoutDrawer = new GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TRoom>();
-                var oldMapDrawer = new DungeonDrawer<TRoom>();
-
-                for (int i = 0; i < 4; i++)
-                {
-                    var level = generator.GenerateLayout();
-                    var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true, fixedFontSize: 30);
-                    File.WriteAllText(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.svg"),
-                        svg);
-
-                    var bitmap = oldMapDrawer.DrawLayout(level, new DungeonDrawerOptions()
-                    {
-                        Width = 2000,
-                        Height = 2000,
-                    });
-                    bitmap.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.png"));
-                }
-
-                var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
-                var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
-                summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
-
-                resultsCounter++;
             }
         }
 
@@ -378,7 +403,7 @@ namespace Edgar.Examples
 
                     var description = trimmed.Replace("#region hidden:", "");
 
-                    if (description != "" && trimmed.Contains("region:"))
+                    if (description != "" && trimmed.Contains("hidden:"))
                     {
                         output.AppendLine();
                         output.AppendLine(line.Replace("#region hidden:", "/* ") + " */");

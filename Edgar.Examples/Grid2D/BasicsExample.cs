@@ -24,18 +24,18 @@ namespace Edgar.Examples.Grid2D
             //md In this example, we will generate a very simple level consisting of 5 rooms with rectangular shapes.
 
             //md ## Room templates
-            //md First, we will create our room templates. We must create an instance of the `RoomTemplateGrid2D` class for each room template. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
+            //md First, we will create our room templates. To do that, we need to create a *polygon* that defines the outline of the room template and also provide a list of possible door positions.
 
             //md ### Outline
-            //md In the Grid 2D setting, the outline of a room template is an orthogonal polygon where each point has integer coordinates. In other words, it is a polygon that we can draw on an integer grid using 1x1 square tiles.
+            //md In the *Grid2D* setting, the outline of a room template is an orthogonal polygon where each point has integer coordinates. In other words, it is a polygon that we can draw on an integer grid using 1x1 square tiles.
             
-            //md The first outline that we create is an 8x8 square:
+            //md The first outline that we create is a 6x10 rectangle:
 
             var squareRoomOutline = new PolygonGrid2DBuilder()
                 .AddPoint(0, 0)
-                .AddPoint(0, 8)
-                .AddPoint(8, 8)
-                .AddPoint(8, 0)
+                .AddPoint(0, 10)
+                .AddPoint(6, 10)
+                .AddPoint(6, 0)
                 .Build();
 
             //md > **Note:** Orthogonal (or rectilinear) polygon is a polygon of whose edge intersections are at right angles. When on an integer grid, each side of an orthogonal polygon is aligned with one of the axes.
@@ -47,14 +47,14 @@ namespace Edgar.Examples.Grid2D
             //md    - or the `PolygonGrid2D(IEnumerable<Vector2Int> points)` constructor
 
             //md ### Doors
-            //md `IDoorModeGrid2D` is an interface that specifies door positions of a given room template. The most simple *door mode* is the `SimpleDoorModeGrid2D` - it lets us specify the length of doors and how far from corners they must be. In this tutorial, we will use doors with length of 1 tile and at least 1 tile away from corners.
+            //md In order to tell the generator how it can connect individual room templates, we need to specify all the available door positions. The main idea is that the more door positions we provide, the easier it is for the generator to find a valid layout. To define door positions, we use the `IDoorModeGrid2D` interface. The most simple *door mode* is the `SimpleDoorModeGrid2D` - it lets us specify the length of doors and how far from corners of the outline they must be. In this tutorial, we will use doors with length of 1 tile and at least 1 tile away from corners.
             
             var doors = new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1);
 
             //md > **Note:** There is also an additional door mode available - `ManualDoorModeGrid2D`. This mode lets you specify exactly which door positions are available. It is useful for example when we want to have doors only on the two opposite sides of a corridor.
 
             //md ### Allowed transformations
-            //md Optionally, it is also possible to let the algorithm apply some transformations to the room, e.g. rotate it by 90 degrees or mirror it by the X axis. The algorithm then also handles all the door positions automatically.
+            //md Optionally, it is also possible to let the generator apply some transformations to the room, e.g. rotate it by 90 degrees or mirror it by the X axis. An advantage of this approach is that the algorithm automatically handles door positions and we do not have to manually define all the variations of the room template.
 
             var transformations = new List<TransformationGrid2D>()
             {
@@ -63,41 +63,42 @@ namespace Edgar.Examples.Grid2D
             };
 
             //md ### Putting it all together
-            //md We can now combine the *outline*, *door mode* and *allowed transformations* together to create our first room template.
+            //md We can now combine the *outline*, *door mode* and *allowed transformations* together to create our first room template. We also provide a *name* which is optional but it may come in handy if we need to debug something.
 
-            var squareRoom = new RoomTemplateGrid2D(
+            var rectangleRoom = new RoomTemplateGrid2D(
                 squareRoomOutline,
                 doors,
-                name: "Square 8x8",
-                allowedTransformations: transformations
+                allowedTransformations: transformations,
+                name: "Rectangle 6x10"
             );
 
             //md We can also create a room template in-place with a single expression.
 
-            var rectangleRoom = new RoomTemplateGrid2D(
-                PolygonGrid2D.GetRectangle(6, 10),
+            var squareRoom = new RoomTemplateGrid2D(
+                PolygonGrid2D.GetSquare(8),
                 new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1),
-                name: "Rectangle 6x10",
-                allowedTransformations: new List<TransformationGrid2D>()
-                {
-                    TransformationGrid2D.Identity,
-                    TransformationGrid2D.Rotate90
-                }
+                name: "Square 8x8"
             );
+
+            //md Below we can see a visualization of the two room templates. Individual door positions are shown in red.
 
             //md ![](./basics/room_templates.png)
 
             //md ## Room description
-            //md When we have our room templates ready, we need to create an instance of the `RoomDescriptionGrid2D` which describes the properties of individual rooms in the level. In this tutorial, all the rooms use the same pool of room templates, so we can create only a single room description and reuse it. However, it is also possible to use different room description for different types of rooms. For example, we may want to have a boss room and a spawn room that should use different room templates than other rooms.
+            //md When we have our room templates ready, we need to create an instance of the `RoomDescriptionGrid2D` class which describes the properties of individual rooms in the level. In this tutorial, all the rooms use the same pool of room templates, so we can create only a single room description and reuse it. However, it is also possible to use different room description for different types of rooms. For example, we may want to have a boss room and a spawn room that should use different room templates than normal rooms.
 
             var roomDescription = new RoomDescriptionGrid2D
             (
                 isCorridor: false,
-                roomTemplates: new List<RoomTemplateGrid2D>() { squareRoom, rectangleRoom }
+                roomTemplates: new List<RoomTemplateGrid2D>() { rectangleRoom, squareRoom }
             );
 
             //md ## Level description
-            //md The final step is to describe the structure of the level. First, we have to create an instance of the `LevelDescriptionGrid2D<TRoom>` class. For simplicity, We will use `integers` to identify individual rooms. But it is also possible to use a custom room type by using a different generic type parameter.
+            //md The final step is to describe the structure of the level. We will use a very simple graph of rooms that we can see below:
+
+            //md ![](./basics/graph.png)
+            
+            //md First, we have to create an instance of the `LevelDescriptionGrid2D<TRoom>` class. For simplicity, We will use `integers` to identify individual rooms. But it is also possible to use a custom room type by using a different generic type parameter.
             
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
@@ -117,9 +118,6 @@ namespace Edgar.Examples.Grid2D
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
 
-            //md The graph that we created can be seen below:
-            //md
-            //md ![](./basics/graph.png)
 
             //md_sc method_content:Run
 
@@ -127,7 +125,7 @@ namespace Edgar.Examples.Grid2D
         }
 
         /// <summary>
-        /// Run the generator.
+        /// Run the generator and export the result.
         /// </summary>
         public void Run()
         {
@@ -142,16 +140,16 @@ namespace Edgar.Examples.Grid2D
 
             var layout = generator.GenerateLayout();
 
-            //md The result contains information about all the rooms in the level such as outline of a room or its position.
+            //md The result contains information about all the rooms in the level such as outline of the room or its position.
 
             //md ## Saving the result
-            //md If we want to quickly visualize the result, we can use the `DungeonDrawer<TRoom>` class and export the layout as PNG.
+            //md If we want to quickly visualize the result, we can use the `DungeonDrawer<TRoom>` class and export the layout as a PNG image.
 
             var drawer = new DungeonDrawer<int>();
             drawer.DrawLayoutAndSave(layout, "basics.png", new DungeonDrawerOptions()
             {
-                Width = 1000,
-                Height = 1000,
+                Width = 2000,
+                Height = 2000,
             });
 
             #region hidden no-clean 
@@ -168,8 +166,9 @@ namespace Edgar.Examples.Grid2D
             {
                 Width = 1200,
                 Height = 600,
-                PaddingPercentage = 0.1f,
+                PaddingAbsolute = 100,
                 FontSize = 1,
+                EnableHatching = false
             });
             roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
 
@@ -177,8 +176,8 @@ namespace Edgar.Examples.Grid2D
             var graphBitmap = graphDrawer.DrawGraph(levelDescription, new Dictionary<int, Vector2Int>()
             {
                 { 0, new Vector2Int(0, 0) },
-                { 1, new Vector2Int(0, 1) },
-                { 2, new Vector2Int(1, 1) },
+                { 1, new Vector2Int(0, -1) },
+                { 2, new Vector2Int(1, -1) },
                 { 3, new Vector2Int(1, 0) },
                 { 4, new Vector2Int(-1, 0) },
             }, new DungeonDrawerOptions()

@@ -38,7 +38,7 @@
         public int? PaddingAbsolute { get; set; }
 
         /// <summary>
-        /// The size (fraction of the width of the drawing) of the padding on each side of the drawing.
+        /// The size (fraction of the minimum of width and height of the drawing) of the padding on each side of the drawing.
         /// </summary>
         /// <remarks>
         /// This property is only used when <see cref="PaddingAbsolute"/> is null.
@@ -46,7 +46,7 @@
         /// parts of shading might be outside of the picture. At least 10% of the width of the drawing is recommended.
         /// </remarks>
         /// <example>
-        /// Value 0.1f and width set to 1000px: There will be 100px (10% of 1000px) gap on each side of the drawing.
+        /// Value 0.1f and width set to 1000px and height set to 500px: There will be 50px (10% of 500px) gap on each side of the drawing.
         /// </example>
         public float PaddingPercentage { get; set; } = 0.15f;
 
@@ -65,6 +65,16 @@
         /// Value x: The font will have approximately the same height as x tiles in the image.
         /// </example>
         public float FontSize { get; set; } = 2;
+
+        /// <summary>
+        /// Whether to enable shading.
+        /// </summary>
+        public bool EnableShading { get; set; } = true;
+
+        /// <summary>
+        /// Whether to enable hatching.
+        /// </summary>
+        public bool EnableHatching { get; set; } = true;
 
         public Range<float> HatchingLength { get; set; } = new Range<float>(0.5f, 0.6f);
 
