@@ -7,6 +7,40 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      # Checkout this repository
+      - name: Checkout this repository
+        uses: actions/checkout@v2
+
+      # Prepare version
+      - name: Prepare version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          ref="${GITHUB_REF}"
+          ref="${ref/refs\/tags\/v/}"
+          echo "::set-output name=VERSION::${ref}"
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        id: get_version
+
+      # Publish nuget package
+      - name: Publish nuget package
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: Edgar/Edgar.csproj
+          PACKAGE_NAME: Edgar-DotNet          
+          VERSION_STATIC: ${{ steps.get_version.outputs.VERSION }}
+          TAG_COMMIT: false
+          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+
+      # Release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Trigger api docs build
       - name: Trigger api docs build

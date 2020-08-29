@@ -9,7 +9,7 @@
     <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	<PackageId>Edgar-DotNet</PackageId>
-	<Version>2.0.0-alpha.0</Version>
+	<Version>2.0.0-prealpha.0</Version>
 	<Authors>Ondřej Nepožitek</Authors>
 	<Company />
 	<RepositoryUrl>https://github.com/OndrejNepozitek/Edgar-DotNet</RepositoryUrl>
