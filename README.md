@@ -58,25 +58,9 @@ The appearance of individual rooms is controlled with so-called room templates. 
 - Describe the structure of levels with a graph of rooms and connections 
 - Control the appearance of rooms with handmade room templates 
 - Connect rooms either directly with doors or with short corridors
-- Easy to customize with custom post-processing logic
-- Supports Unity 2018.4 and newer
+- Supports .NET Standard 2.0
 - Currently works only in 2D but may support 3D in future
-- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/)
-- Multiple example scenes included
-
-## PRO version
-
-There are two versions of this asset - free version and PRO version. The free version contains the core functions of the generator and should be fine for simple procedural dungeons. The PRO version can be bought at [itch.io](https://ondrejnepozitek.itch.io/edgar-pro) and contains some additional features. As of now, the PRO version contains features like platformer generator or isometric levels and also two advanced example scenes. If you like this asset, please consider buying the PRO version to support the development.
-
-- Coroutines - Call the generator as a coroutine so that the game does not freeze when generating a level ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/dungeon-generator#pro-with-coroutines))
-- Custom rooms - It is possible to add additional fields to rooms and connections in a level graph ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/basics/level-graphs#pro-custom-rooms-and-connections))      
-- Platformers - Generator that is able to produce platformer levels ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/platformer-generator), [example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/platformer-1))
-- Isometric - Simple example of isometric levels ([example](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/isometric-1))
-- Dead Cells - Tutorial on how to generate levels that are similar to Dead Cells ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/dead-cells))
-- Enter the Gungeon - Tutorial on how to generate levels that are similar to Enter the Gungeon ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/examples/enter-the-gungeon/))
-- Custom input - Modify a level graph before it is used in the generator (e.g. add a random secret room) ([docs](https://ondrejnepozitek.github.io/Edgar-Unity/docs/generators/custom-input))
-- (Planned) Fog of War
-- (Planned) Additional generators
+- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
 
 ## Limitations
 
@@ -91,39 +75,7 @@ Install the asset (instructions are below) and head to the [documentation](https
                       
 ## Installation
 
-There are several ways of installing the plugin:
-
-### via Package Manager
-Add the following line to the `packages/manifest.json` file under the `dependencies` section (you must have git installed):
-```
- "com.ondrejnepozitek.procedurallevelgenerator": "https://github.com/OndrejNepozitek/ProceduralLevelGenerator-Unity.git#upm"
-```
-To try the examples, go to the Package Manager, find this plugin in the list of installed assets and import examples.
-
-> Note: When importing the package, I've got some weird "DirectoryNotFoundException: Could not find a part of the path" errors even though all the files are there. If that happens to you, just ignore that.
-
-#### How to update
-After installing the package, Unity adds something like this to your `manifest.json`:
-
-```
-  "lock": {
-    "com.ondrejnepozitek.procedurallevelgenerator": {
-      "hash": "fc2e2ea5a50ec4d1d23806e30b87d13cf74af04e",
-      "revision": "upm"
-    }
-  }
-```
-
-Remove it to let Unity download a new version of the plugin.
-
-### via .unitypackage
-
-Go to Releases and download the unitypackage that's included in every release. Then import the package to Unity project (*Assets -> Import package -> Custom package*).
-
-#### How to update
-In order to be able to download a new version of the plugin, **we recommend to not change anything inside the Assets/ProceduralLevelGenerator folder**. At this stage of the project, files are often moved, renamed or deleted, and Unity does not handle that very well.
-
-The safest way to update to the new version is to completely remove the old version (*Assets/ProceduralLevelGenerator* directory) and then import the new version. (Make sure to backup your project before deleting anything.)                                                         
+Download the latest version from [Nuget](https://www.nuget.org/packages/Edgar-DotNet).                                                
                                                              
 ## Example
 
