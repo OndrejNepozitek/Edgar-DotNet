@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/"><img src="https://img.shields.io/badge/online-docs-important" /></a>
-  <a href="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-Unity/workflows/Build/badge.svg" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg" /></a>
   <a href="https://www.nuget.org/packages/Edgar-DotNet"><img src="https://img.shields.io/nuget/vpre/Edgar-DotNet" /></a>
   <a href="https://github.com/OndrejNepozitek/Edgar-Unity"><img src="https://img.shields.io/badge/see also-Unity%20plugin-important" /></a>
 </p>
