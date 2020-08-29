@@ -37,9 +37,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         private readonly LevelDescriptionGrid2D<TRoom> levelDescription;
         private readonly GraphBasedGeneratorConfiguration<TRoom> configuration;
         private ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, LayoutGrid2D<TRoom>, RoomNode<TRoom>> generator;
-
-        public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
-
+        
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnPerturbedInternal;
 
@@ -254,7 +252,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         }
 
         /// <summary>
-        /// Generates a level.
+        /// Generates a layout.
         /// </summary>
         /// <returns></returns>
         public LayoutGrid2D<TRoom> GenerateLayout()
@@ -300,11 +298,19 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                    configuration.EarlyStopIfTimeExceeded.HasValue;
         }
 
+        /// <summary>
+        /// Injects an instance of the Random class. This makes it possible to get always the same results.
+        /// </summary>
+        /// <param name="random">Random numbers generator.</param>
         public void InjectRandomGenerator(Random random)
         {
             generator.InjectRandomGenerator(random);
         }
 
+        /// <summary>
+        /// Sets a cancellation token.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
         public void SetCancellationToken(CancellationToken? cancellationToken)
         {
             if (configuration.EarlyStopIfIterationsExceeded.HasValue || configuration.EarlyStopIfTimeExceeded.HasValue)
@@ -318,5 +324,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         public event Action<LayoutGrid2D<TRoom>> OnPerturbed;
         public event Action<LayoutGrid2D<TRoom>> OnPartialValid;
         public event Action<LayoutGrid2D<TRoom>> OnValid;
+        public event EventHandler<SimulatedAnnealingEventArgs> OnSimulatedAnnealingEvent;
     }
 }
