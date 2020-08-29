@@ -4,10 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>MapGeneration</AssemblyTitle>
-    <Product>MapGeneration</Product>
-    <Copyright>Copyright ©  2017</Copyright>
+    <Product>Edgar-DotNet</Product>
+    <Copyright>Copyright ©  2020</Copyright>
     <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<PackageId>Edgar-DotNet</PackageId>
+	<Version>2.0.0-alpha.0</Version>
+	<Authors>Ondřej Nepožitek</Authors>
+	<Company />
+	<RepositoryUrl>https://github.com/OndrejNepozitek/Edgar-DotNet</RepositoryUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Description>Graph-based procedural level generator.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\Users\ondra\OneDrive\Dokumenty\Visual Studio 2017\Projects\MapGeneration\Edgar\Edgar.xml</DocumentationFile>
