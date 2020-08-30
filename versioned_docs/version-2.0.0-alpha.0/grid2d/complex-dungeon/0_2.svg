@@ -1,0 +1,79 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="344,655 344,585 415,585 415,655 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 415 610 L 415 655 L 344 655 L 344 585 L 415 585 L 415 604 M 415 610 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="379" y="620" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Spawn</text>
+    <polygon points="453,623 453,540 537,540 537,623 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 537 540 L 537 623 L 453 623 L 453 610 M 453 604 L 453 540 L 505 540 M 511 540 L 537 540 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="495" y="582" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 1</text>
+    <polygon points="556,404 556,501 473,501 473,404 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 473 443 L 473 404 L 537 404 M 543 404 L 556 404 L 556 501 L 511 501 M 505 501 L 473 501 L 473 449 M 473 443 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="514" y="453" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 2</text>
+    <polygon points="357,430 357,443 415,443 415,430 447,430 447,514 415,514 415,501 357,501 357,514 325,514 325,430 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 325 443 L 325 430 L 357 430 L 357 443 L 415 443 L 415 430 L 428 430 M 434 430 L 447 430 L 447 443 M 447 449 L 447 514 L 415 514 L 415 501 L 357 501 L 357 514 L 325 514 L 325 449 M 325 443 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="386" y="472" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 3</text>
+    <polygon points="157,488 247,488 247,475 157,475 157,430 299,430 299,533 209,533 209,546 299,546 299,591 157,591 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 299 591 L 157 591 L 157 488 L 247 488 L 247 475 L 157 475 L 157 430 L 170 430 M 176 430 L 299 430 L 299 443 M 299 449 L 299 533 L 209 533 L 209 546 L 299 546 L 299 591 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="228" y="569" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 4</text>
+    <polygon points="35,404 35,237 202,237 202,404 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 202 237 L 202 404 L 176 404 M 170 404 L 125 404 M 119 404 L 35 404 L 35 237 L 202 237 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="118" y="321" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Boss</text>
+    <polygon points="99,430 144,430 144,462 99,462 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 144 462 L 99 462 L 99 430 L 119 430 M 125 430 L 144 430 L 144 462 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="121" y="446" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Exit</text>
+    <polygon points="646,379 524,379 524,282 646,282 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 524 282 L 646 282 L 646 295 M 646 301 L 646 379 L 621 379 M 614 379 L 543 379 M 537 379 L 524 379 L 524 282 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="585" y="331" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 5</text>
+    <polygon points="685,256 691,256 691,250 756,250 756,256 762,256 762,321 756,321 756,327 691,327 691,321 685,321 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 691 321 L 685 321 L 685 301 M 685 295 L 685 256 L 691 256 L 691 250 L 756 250 L 756 256 L 762 256 L 762 321 L 756 321 L 756 327 L 724 327 M 717 327 L 691 327 L 691 321 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="723" y="289" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Shop 1</text>
+    <polygon points="679,488 679,379 756,379 756,488 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 756 379 L 756 488 L 679 488 L 679 449 M 679 443 L 679 379 L 717 379 M 724 379 L 756 379 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="717" y="434" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 6</text>
+    <polygon points="576,411 582,411 582,404 646,404 646,411 653,411 653,475 646,475 646,482 582,482 582,475 576,475 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 582 475 L 576 475 L 576 411 L 582 411 L 582 404 L 614 404 M 621 404 L 646 404 L 646 411 L 653 411 L 653 443 M 653 449 L 653 475 L 646 475 L 646 482 L 582 482 L 582 475 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="614" y="443" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Reward 1</text>
+    <polygon points="344,250 511,250 511,379 344,379 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 428 379 L 344 379 L 344 340 M 344 334 L 344 250 L 408 250 M 415 250 L 511 250 L 511 379 L 434 379 M 428 379 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="427" y="315" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Hub 1</text>
+    <polygon points="241,301 247,301 247,295 312,295 312,301 318,301 318,366 312,366 312,372 247,372 247,366 241,366 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 247 366 L 241 366 L 241 301 L 247 301 L 247 295 L 260 295 M 267 295 L 312 295 L 312 301 L 318 301 L 318 334 M 318 340 L 318 366 L 312 366 L 312 372 L 247 372 L 247 366 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="279" y="334" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Reward 2</text>
+    <polygon points="215,256 215,147 292,147 292,256 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 292 198 L 292 256 L 267 256 M 260 256 L 215 256 L 215 147 L 292 147 L 292 192 M 292 198 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="253" y="202" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 7</text>
+    <polygon points="344,166 382,166 382,173 395,173 395,166 428,166 428,173 440,173 440,166 479,166 479,211 440,211 440,205 428,205 428,211 395,211 395,205 382,205 382,211 344,211 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 382 211 L 344 211 L 344 198 M 344 192 L 344 166 L 382 166 L 382 173 L 395 173 L 395 166 L 428 166 L 428 173 L 440 173 L 440 166 L 479 166 L 479 211 L 440 211 L 440 205 L 428 205 L 428 211 L 415 211 M 408 211 L 395 211 L 395 205 L 382 205 L 382 211 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="411" y="189" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">Normal 8</text>
+    <polygon points="453,597 453,617 415,617 415,597 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 415 604 L 415 597 L 453 597 L 453 604 M 453 610 L 453 617 L 415 617 L 415 610 M 415 604 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="518,540 498,540 498,501 518,501 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 511 501 L 518 501 L 518 540 L 511 540 M 505 540 L 498 540 L 498 501 L 505 501 M 511 501 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="473,437 473,456 447,456 447,437 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 447 443 L 447 437 L 473 437 L 473 443 M 473 449 L 473 456 L 447 456 L 447 449 M 447 443 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="530,379 550,379 550,404 530,404 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 537 404 L 530 404 L 530 379 L 537 379 M 543 379 L 550 379 L 550 404 L 543 404 M 537 404 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="325,437 325,456 299,456 299,437 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 299 443 L 299 437 L 325 437 L 325 443 M 325 449 L 325 456 L 299 456 L 299 449 M 299 443 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="421,379 440,379 440,430 421,430 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 428 430 L 421 430 L 421 379 L 428 379 M 434 379 L 440 379 L 440 430 L 434 430 M 428 430 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="183,430 164,430 164,404 183,404 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 176 404 L 183 404 L 183 430 L 176 430 M 170 430 L 164 430 L 164 404 L 170 404 M 176 404 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="112,404 131,404 131,430 112,430 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 119 430 L 112 430 L 112 404 L 119 404 M 125 404 L 131 404 L 131 430 L 125 430 M 119 430 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="685,289 685,308 646,308 646,289 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 646 295 L 646 289 L 685 289 L 685 295 M 685 301 L 685 308 L 646 308 L 646 301 M 646 295 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="627,404 608,404 608,379 627,379 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 621 379 L 627 379 L 627 404 L 621 404 M 614 404 L 608 404 L 608 379 L 614 379 M 621 379 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="711,327 730,327 730,379 711,379 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 717 379 L 711 379 L 711 327 L 717 327 M 724 327 L 730 327 L 730 379 L 724 379 M 717 379 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="679,437 679,456 653,456 653,437 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 653 443 L 653 437 L 679 437 L 679 443 M 679 449 L 679 456 L 653 456 L 653 449 M 653 443 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="318,346 318,327 344,327 344,346 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 344 340 L 344 346 L 318 346 L 318 340 M 318 334 L 318 327 L 344 327 L 344 334 M 344 340 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="421,250 402,250 402,211 421,211 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 415 211 L 421 211 L 421 250 L 415 250 M 408 250 L 402 250 L 402 211 L 408 211 M 415 211 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="254,256 273,256 273,295 254,295 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 260 295 L 254 295 L 254 256 L 260 256 M 267 256 L 273 256 L 273 295 L 267 295 M 260 295 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <polygon points="344,186 344,205 292,205 292,186 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 292 192 L 292 186 L 344 186 L 344 192 M 344 198 L 344 205 L 292 205 L 292 198 M 292 192 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+</svg>

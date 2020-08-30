@@ -1,0 +1,17 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="300,731 300,400 498,400 498,731 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 498 500 L 498 731 L 300 731 L 300 665 M 300 632 L 300 400 L 333 400 M 366 400 L 498 400 L 498 467 M 498 500 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="399" y="566" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">0</text>
+    <polygon points="135,400 135,136 399,136 399,400 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 399 202 L 399 400 L 366 400 M 333 400 L 135 400 L 135 136 L 399 136 L 399 169 M 399 202 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="267" y="268" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">1</text>
+    <polygon points="399,70 730,70 730,268 399,268 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 597 268 L 399 268 L 399 202 M 399 169 L 399 70 L 730 70 L 730 268 L 630 268 M 597 268 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="564" y="169" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">2</text>
+    <polygon points="498,533 498,268 763,268 763,533 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 763 268 L 763 533 L 498 533 L 498 500 M 498 467 L 498 268 L 597 268 M 630 268 L 763 268 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="630" y="401" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">3</text>
+    <polygon points="35,731 35,467 300,467 300,731 " style="fill:rgb(211,211,211);stroke:rgb(211,211,211)" />
+    <path d="M 300 665 L 300 731 L 35 731 L 35 467 L 300 467 L 300 632 M 300 665 " fill="none" stroke="black" stroke-linecap="square" stroke-width="2" />
+    <text x="167" y="599" alignment-baseline="middle" text-anchor="middle" style="font-family: arial;" font-size="36">4</text>
+</svg>

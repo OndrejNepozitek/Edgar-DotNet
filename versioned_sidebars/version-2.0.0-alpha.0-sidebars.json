@@ -1,0 +1,65 @@
+{
+  "version-2.0.0-alpha.0/docs": [
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Introduction",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/motivation"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/installation"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Guides",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/introduction"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/basics"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/corridors"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/minimum-room-distance"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/complex-dungeon"
+        },
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/grid2d/save-load"
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "type": "category",
+      "label": "Other",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-2.0.0-alpha.0/other/performance-tips"
+        }
+      ]
+    }
+  ]
+}
