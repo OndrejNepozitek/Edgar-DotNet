@@ -1,14 +1,15 @@
-﻿using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
-using Edgar.Legacy.Core.MapDescriptions.Interfaces;
+﻿using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
 using Edgar.Legacy.Core.MapLayouts;
 
-namespace GUI
+namespace Edgar.GUI.New
 {
     public class GeneratorSettings
 	{
-		public IMapDescription<int> MapDescription { get; set; }
+		public LevelDescriptionGrid2D<int> LevelDescription { get; set; }
 
-		public IObservableGenerator<MapLayout<int>> LayoutGenerator { get; set; }
+		public IObservableGenerator<LayoutGrid2D<int>> LayoutGenerator { get; set; }
 
 		public int NumberOfLayouts { get; set; } = 10;
 

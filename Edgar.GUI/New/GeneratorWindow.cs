@@ -1,24 +1,25 @@
-﻿using Edgar.Geometry;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapLayouts;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils.Interfaces;
 using Edgar.Legacy.Utils.MapDrawing;
 using Edgar.Legacy.Utils.Serialization;
+using GUI.MapDrawing;
 
-namespace GUI
+namespace Edgar.GUI.New
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Diagnostics;
-	using System.Drawing;
-	using System.IO;
-	using System.Linq;
-	using System.Threading;
-	using System.Threading.Tasks;
-	using System.Windows.Forms;
-    using MapDrawing;
-
     /// <summary>
 	/// Window that shows progress of the layout generator. 
 	/// </summary>
@@ -39,9 +40,9 @@ namespace GUI
 		private int iterationsCount;
 		private readonly Stopwatch infoStopwatch = new Stopwatch();
 
-		private MapLayout<int> layoutToDraw;
-		private MapLayout<int> firstChainToDraw;
-		private List<MapLayout<int>> generatedLayouts;
+		private LayoutGrid2D<int> layoutToDraw;
+		private LayoutGrid2D<int> firstChainToDraw;
+		private List<LayoutGrid2D<int>> generatedLayouts;
 		private int slideshowIndex;
 		private int slideshowTaskId;
 
@@ -61,6 +62,7 @@ namespace GUI
 			this.settings = settings;
 
 			InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
 
 			showFinalLayouts.Checked = settings.ShowFinalLayouts;
 			showFinalLayoutsTime.Value = settings.ShowFinalLayoutsTime;
@@ -103,7 +105,7 @@ namespace GUI
 
 					if (layoutGenerator == null)
 					{
-						var defaultGenerator = new DungeonGenerator<int>(settings.MapDescription);
+						var defaultGenerator = new GraphBasedGeneratorGrid2D<int>(settings.LevelDescription);
 						defaultGenerator.InjectRandomGenerator(new Random(settings.RandomGeneratorSeed));
                         layoutGenerator = defaultGenerator;
                     }
@@ -174,7 +176,7 @@ namespace GUI
 						infoStopwatch.Restart();
 					};
 
-					generatedLayouts = new List<MapLayout<int>>() { };
+					generatedLayouts = new List<LayoutGrid2D<int>>() { };
 
                     for (int i = 0; i < settings.NumberOfLayouts; i++)
                     {
@@ -259,24 +261,36 @@ namespace GUI
 
 			if (useOldPaperStyle)
 			{
-				var bitmap = oldMapDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
-				e.Graphics.DrawImage(bitmap, new Point(0, 0));
+				//var bitmap = oldMapDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
+				//e.Graphics.DrawImage(bitmap, new Point(0, 0));
+				throw new NotSupportedException();
 			}
 			else
 			{
-				Bitmap bitmap;
+				//Bitmap bitmap;
 
-				if (fixedPositionsAndScaleCheckbox.Checked)
-				{
-					bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize, fixedScale, fixedOffset);
-				}
-				else
-				{
-					bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
-				}
-				 
+				//if (fixedPositionsAndScaleCheckbox.Checked)
+				//{
+				//	bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize, fixedScale, fixedOffset);
+				//}
+				//else
+				//{
+				//	bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
+				//}
+
+				var layoutDrawer = new DungeonDrawer<int>();
+				var bitmap = layoutDrawer.DrawLayout(layoutToDraw, new DungeonDrawerOptions()
+                {
+					Width = mainPictureBox.Width,
+					Height = mainPictureBox.Height,
+					ShowRoomNames = showNames,
+					PaddingPercentage = 0.05f,
+					EnableHatching = true,
+                });
+
+                // e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
 				e.Graphics.DrawImage(bitmap, new Point(0, 0));
-			}
+            }
 		}
 
 		private void RecomputeFixedScaleAndOffset()
@@ -286,7 +300,7 @@ namespace GUI
 			if (layout == null)
 				return;
 
-			var polygons = layout.Rooms.Select(x => x.Shape + x.Position).ToList();
+			var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
 			var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
 			var minx = points.Min(x => x.X);
@@ -445,8 +459,9 @@ namespace GUI
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-						var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
-						sw.Write(data);
+						throw new NotSupportedException();
+						//var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
+						//sw.Write(data);
 					}
 				}
 			}
@@ -476,8 +491,8 @@ namespace GUI
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-
-                        jsonSerializer.Serialize(layoutToDraw, sw);
+                        throw new NotSupportedException();
+                        // jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}
@@ -495,7 +510,8 @@ namespace GUI
 				{
 					using (var sw = new StreamWriter(fs))
 					{
-                        jsonSerializer.Serialize(layoutToDraw, sw);
+                        throw new NotSupportedException();
+                        // jsonSerializer.Serialize(layoutToDraw, sw);
 					}
 				}
 			}
@@ -513,8 +529,9 @@ namespace GUI
 			{
 				using (var sw = new StreamWriter(fs))
 				{
-					var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
-					sw.Write(data);
+                    throw new NotSupportedException();
+					//var data = svgLayoutDrawer.DrawLayout(layoutToDraw, width, showRoomNamesCheckbox.Checked, fixedFontSize, fixedSquareExportCheckbox.Checked);
+					//sw.Write(data);
 				}
 			}
 		}
@@ -536,16 +553,18 @@ namespace GUI
 			{
 				Bitmap bitmap;
 
-				if (useOldPaperStyle)
-				{
-					bitmap = oldMapDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
-				}
-				else
-				{
-					bitmap = wfLayoutDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
-				}
+                throw new NotSupportedException();
 
-				bitmap.Save($"{folder}/{i}.jpg");
+				//if (useOldPaperStyle)
+				//{
+				//	bitmap = oldMapDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
+				//}
+				//else
+				//{
+				//	bitmap = wfLayoutDrawer.DrawLayout(generatedLayouts[i], width, height, showNames, fixedFontSize);
+				//}
+
+				//bitmap.Save($"{folder}/{i}.jpg");
 			}
 
 			MessageBox.Show($"Images were saved to {folder}", "Images saved", MessageBoxButtons.OK, MessageBoxIcon.Information);

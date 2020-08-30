@@ -52,7 +52,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             if (options.EnableHatching)
             {
-                var hatchingUsedPoints = new List<Vector2>();
+                var hatchingUsedPoints = new List<Tuple<RectangleGrid2D, List<Vector2>>>();
                 foreach (var roomTemplate in configurations)
                 {
                     DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);

@@ -1,4 +1,4 @@
-﻿namespace GUI
+﻿namespace Edgar.GUI.Legacy
 {
 	partial class GeneratorWindow
 	{

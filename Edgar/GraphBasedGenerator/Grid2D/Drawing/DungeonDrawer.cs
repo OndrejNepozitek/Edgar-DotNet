@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using Edgar.Geometry;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
@@ -73,7 +75,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             if (options.EnableHatching)
             {
-                var hatchingUsedPoints = new List<Vector2>();
+                var hatchingUsedPoints = new List<Tuple<RectangleGrid2D, List<Vector2>>>();
                 foreach (var room in rooms)
                 {
                     DrawHatching(room.Outline + room.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);

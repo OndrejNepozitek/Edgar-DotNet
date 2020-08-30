@@ -1,13 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Utils.ConfigParsing;
 
-namespace GUI
+namespace Edgar.GUI.Legacy
 {
-	using System;
-	using System.IO;
-    using System.Windows.Forms;
-
     /// <summary>
 	/// Windows that shows main settings of the layout generator.
 	/// </summary>

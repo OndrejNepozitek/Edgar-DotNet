@@ -16,6 +16,8 @@ namespace Edgar.Examples.Grid2D
 
         public string DocsFileName => "real-life";
 
+        public string EntryPointMethod => nameof(GetLevelDescription);
+
         #endregion
 
         /// <summary>

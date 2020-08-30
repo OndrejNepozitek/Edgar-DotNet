@@ -1,4 +1,4 @@
-﻿namespace GUI
+﻿namespace Edgar.GUI.New
 {
 	partial class MainSettings
 	{

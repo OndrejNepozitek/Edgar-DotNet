@@ -1,4 +1,7 @@
-﻿namespace GUI
+﻿using Edgar.GUI.Legacy;
+using MainSettings = Edgar.GUI.New.MainSettings;
+
+namespace GUI
 {
 	using System;
 	using System.Windows.Forms;

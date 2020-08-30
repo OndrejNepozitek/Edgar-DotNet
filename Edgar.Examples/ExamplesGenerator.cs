@@ -74,7 +74,7 @@ namespace Edgar.Examples
             var className = example.GetType().Name;
             sourceCodeParser = new SourceCodeParser(Path.Combine(sourceFolder, $"{className}.cs"));
 
-            var sourceCode = sourceCodeParser.GetMethod("GetLevelDescription", false);
+            var sourceCode = sourceCodeParser.GetMethod(example.EntryPointMethod, false);
             var stringBuilder = new StringBuilder();
             var insideCodeBlock = false;
 

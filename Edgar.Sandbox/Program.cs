@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GUI.New;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
 using Edgar.Legacy.Benchmarks.Interfaces;
@@ -13,11 +15,14 @@ using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
+using Edgar.Legacy.Utils.ConfigParsing;
 using Edgar.Legacy.Utils.MapDrawing;
 using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 using Edgar.Legacy.Utils.MetaOptimization.Visualizations;
 using Sandbox.Examples;
 using Sandbox.Features;
+using GeneratorSettings = Edgar.GUI.Legacy.GeneratorSettings;
+using GeneratorWindow = Edgar.GUI.Legacy.GeneratorWindow;
 
 namespace Sandbox
 {
@@ -52,7 +57,8 @@ namespace Sandbox
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
-            RunExample();
+            // RunExample();
+            RunExampleNew();
             // ConvertToXml();
 
             // new Profiler().Run();
@@ -176,6 +182,38 @@ namespace Sandbox
             };
 
             Application.Run(new GeneratorWindow(settings));
+        }
+
+        public static void RunExampleNew()
+        {
+            var configLoader = new ConfigLoader();
+            var mapDescription = configLoader.LoadMapDescriptionFromResources("dragonAge.yml");
+            var levelDescription = mapDescription.GetLevelDescription();
+            levelDescription.MinimumRoomDistance = 1;
+
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+            generator.InjectRandomGenerator(new Random(0));
+
+            var settings = new Edgar.GUI.New.GeneratorSettings()
+            {
+                LevelDescription = levelDescription,
+                LayoutGenerator = generator,
+
+                NumberOfLayouts = 30,
+
+                ShowPartialValidLayouts = false,
+                ShowPartialValidLayoutsTime = 500,
+
+                ShowFinalLayouts = true,
+                ShowFinalLayoutsTime = 750,
+                ShowRoomNames = false,
+
+                FixedFontSize = true,
+                FixedFontSizeValue = 26,
+                FidexSquareExport = true,
+            };
+
+            Application.Run(new Edgar.GUI.New.GeneratorWindow(settings));
         }
 
         /// <summary>

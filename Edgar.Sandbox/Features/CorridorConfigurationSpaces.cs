@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Edgar.Geometry;
+using Edgar.GUI.Legacy;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.AdditionalData;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
@@ -19,6 +20,7 @@ using Edgar.Legacy.Utils.MetaOptimization.Visualizations;
 using GUI;
 using Newtonsoft.Json;
 using Sandbox.Utils;
+using GeneratorWindow = Edgar.GUI.Legacy.GeneratorWindow;
 
 namespace Sandbox.Features
 {

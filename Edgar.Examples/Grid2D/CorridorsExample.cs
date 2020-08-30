@@ -15,6 +15,8 @@ namespace Edgar.Examples.Grid2D
 
         public string DocsFileName => "corridors";
 
+        public string EntryPointMethod => nameof(GetLevelDescription);
+
         #endregion
 
         /// <summary>

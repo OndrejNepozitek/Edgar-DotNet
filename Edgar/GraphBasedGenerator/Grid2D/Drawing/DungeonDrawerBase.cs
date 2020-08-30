@@ -89,7 +89,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return (x%m + m)%m;
         }
 
-        protected void DrawHatching(PolygonGrid2D outline, List<Vector2> usedPoints, Range<float> hatchingClusterOffset, Range<float> hatchingLength)
+        protected void DrawHatching(PolygonGrid2D outline, List<Tuple<RectangleGrid2D, List<Vector2>>> usedPoints, Range<float> hatchingClusterOffset, Range<float> hatchingLength)
         {
             var pen = new Pen(Color.FromArgb(50, 50, 50), 0.05f);
             
@@ -129,7 +129,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
                             var c = point + offsetLength * directionPerpendicular;
 
-                            if (usedPoints.Any(x => Vector2.EuclideanDistance(x, c) < 0.5f))
+                            // TODO: very ugly
+                            if (usedPoints.Any(x => Vector2.MaxDistance(x.Item1.Center, c) < Math.Max(x.Item1.Width, x.Item1.Height) + 5 && x.Item2.Any(y => Vector2.EuclideanDistance(y, c) < 0.5f)))
                             {
                                 continue;
                             }
@@ -157,7 +158,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 }
             }
 
-            usedPoints.AddRange(usedPointsAdd);
+            usedPoints.Add(new Tuple<RectangleGrid2D, List<Vector2>>(outline.BoundingRectangle, usedPointsAdd));
         }
 
         private float GetRandomFromRange(Range<float> range)

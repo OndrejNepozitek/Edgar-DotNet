@@ -5,5 +5,7 @@
         public string Name { get; }
 
         public string DocsFileName { get; }
+
+        public string EntryPointMethod { get; }
     }
 }

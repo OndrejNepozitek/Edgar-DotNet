@@ -11,6 +11,8 @@ namespace Edgar.Examples.Grid2D
 
         public string DocsFileName => "simple";
 
+        public string EntryPointMethod => nameof(Run);
+
         public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
         {
             yield break;
