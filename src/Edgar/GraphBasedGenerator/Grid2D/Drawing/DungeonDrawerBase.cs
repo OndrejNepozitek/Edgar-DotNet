@@ -233,14 +233,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         
         protected List<OutlineSegment> GetOutline(PolygonGrid2D polygon, List<OrthogonalLineGrid2D> doorLines, Vector2Int offset = default)
         {
-            var old = GetOutlineOld(polygon + offset, doorLines);
+            var old = GetOutlineOld(polygon, doorLines);
             var outline = new List<OutlineSegment>();
 
             for (int i = 0; i < old.Count; i++)
             {
                 var current = old[i];
                 var previous = old[Mod(i - 1, old.Count)];
-                outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1, current.Item1), current.Item2 == false));
+                outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
             }
 
             return outline;

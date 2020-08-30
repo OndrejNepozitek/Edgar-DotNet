@@ -24,18 +24,12 @@ namespace MapGeneration.Utils
         /// <param name="point">Point to be transformed to the new position</param>
         /// <param name="transformation">Transformation to be used. It must be one of the room.Transformations. Defaults to room.Transformation.</param>
         /// <returns></returns>
-        //public static Vector2Int TransformPointToNewPosition<TRoom>(this LayoutRoomGrid2D<TRoom> room, Vector2Int point, TransformationGrid2D? transformation = null)
+        //public static Vector2Int TransformPointToNewPosition<TRoom>(this LayoutRoomGrid2D<TRoom> room, Vector2Int point)
         //{
-        //    if (transformation != null && room.Transformations.Contains(transformation.Value))
-        //    {
-        //        throw new ArgumentException("Transformation must be one of the possible room transformations", nameof(transformation));
-        //    }
+        //    var transformation = room.Transformation;
+        //    var outline = room.Outline.Transform(transformation);
 
-        //    transformation = transformation ?? room.Transformation;
-
-        //    var transformedShape = room.RoomDescription.Shape.Transform(transformation.Value);
-
-        //    return (point.Transform(transformation.Value) - transformedShape.BoundingRectangle.A) + room.Position;
+        //    return (point.Transform(transformation) - outline.BoundingRectangle.A) + room.Position;
         //}
     }
 }

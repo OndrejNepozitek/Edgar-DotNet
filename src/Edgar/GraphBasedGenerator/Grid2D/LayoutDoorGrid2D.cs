@@ -20,6 +20,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// <summary>
 		/// Line containing all the door points.
 		/// </summary>
+		/// <remarks>
+		/// This lines is in the local space of the room. To get the world position, the position of the <see cref="FromRoom"/> must be added to the line.
+		/// </remarks>
 		public OrthogonalLineGrid2D DoorLine { get; }
 
 		/// <param name="fromRoom">See the <see cref="FromRoom"/> property.</param>
