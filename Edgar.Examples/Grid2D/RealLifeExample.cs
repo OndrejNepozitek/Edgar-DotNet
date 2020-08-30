@@ -18,6 +18,13 @@ namespace Edgar.Examples.Grid2D
 
         public string EntryPointMethod => nameof(GetLevelDescription);
 
+        public ExampleOptions Options => new ExampleOptions()
+        {
+            Name = "Real-life example",
+            DocsFileName = "real-life",
+            EntryPointMethod = nameof(GetLevelDescription),
+        };
+
         #endregion
 
         /// <summary>

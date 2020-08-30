@@ -3,6 +3,13 @@
     /// <summary>
     /// Options for the <see cref="DungeonDrawer{TRoom}"/> class.
     /// </summary>
+    /// <remarks>
+    /// It is possible to omit some of the <see cref="Width"/>, <see cref="Height"/> and <see cref="Scale"/> properties.
+    /// 
+    /// The drawer works like this: <br />
+    /// If the width is set and the height is not set (and vice versa), the height is computed automatically based on the width/height ratio of the layout. <br />
+    /// If the scale is not set, it is computed automatically in a way that the layout fits the image.
+    /// </remarks>
     public class DungeonDrawerOptions
     {
         /// <summary>

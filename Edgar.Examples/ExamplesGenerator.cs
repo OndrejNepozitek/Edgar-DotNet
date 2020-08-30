@@ -60,29 +60,26 @@ namespace Edgar.Examples
         {
             new SimpleExample().Run();
 
-            //GenerateExample(new BasicsExample());
-            //GenerateExample(new CorridorsExample());
-            //GenerateExample(new MinimumRoomDistanceExample());
+            GenerateExample(new SaveLoadExample());
+            GenerateExample(new BasicsExample());
+            GenerateExample(new CorridorsExample());
+            GenerateExample(new MinimumRoomDistanceExample());
             GenerateExample(new RealLifeExample());
         }
 
         private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
         {
-            AssetsFolder = Path.Combine(outputFolder, example.DocsFileName);
+            AssetsFolder = Path.Combine(outputFolder, example.Options.DocsFileName);
             Directory.CreateDirectory(AssetsFolder);
 
             var className = example.GetType().Name;
             sourceCodeParser = new SourceCodeParser(Path.Combine(sourceFolder, $"{className}.cs"));
 
-            var sourceCode = sourceCodeParser.GetMethod(example.EntryPointMethod, false);
+            var sourceCode = sourceCodeParser.GetMethod(example.Options.EntryPointMethod, false);
             var stringBuilder = new StringBuilder();
-            var insideCodeBlock = false;
-
-            var results = example.GetResults().ToList();
-
 
             stringBuilder.AppendLine("---");
-            stringBuilder.AppendLine($"title: {example.Name}");
+            stringBuilder.AppendLine($"title: {example.Options.Name}");
             stringBuilder.AppendLine("---");
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("import { Gallery, GalleryImage } from \"@theme/Gallery\";");
@@ -93,23 +90,41 @@ namespace Edgar.Examples
 
             AddContent(sourceCode, stringBuilder);
 
-            stringBuilder.AppendLine("## Results");
-            stringBuilder.AppendLine();
+            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"), stringBuilder.ToString());
+
+            if (example.Options.IncludeResults)
+            {
+                AddResults(stringBuilder, example);
+            }
+
+            if (example.Options.IncludeSourceCode)
+            {
+                AddSourceCode(stringBuilder);
+            }
+            
+            Console.WriteLine(stringBuilder.ToString());
+            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"), stringBuilder.ToString());
+
+            example.Run();
+        }
+
+        private void AddResults<TRoom>(StringBuilder output, IExampleGrid2D<TRoom> example)
+        {
+            var sourceCode = sourceCodeParser.GetMethod("GetResults", false);
+            var results = example.GetResults().ToList();
+            var codeBlockHandler = new CodeBlockHandler(output);
+
+            output.AppendLine("## Results");
+            output.AppendLine();
 
             var resultsCounter = 0;
-            foreach (var line in GetSourceCode(example, "GetResults"))
+            foreach (var line in sourceCode)
             {
                 var trimmed = line.Trim();
 
                 if (trimmed.StartsWith("//md"))
                 {
-                    if (insideCodeBlock)
-                    {
-                        stringBuilder.AppendLine();
-                        stringBuilder.AppendLine("```");
-                        stringBuilder.AppendLine();
-                        insideCodeBlock = false;
-                    }
+                    codeBlockHandler.Exit();
 
                     if (trimmed.Length > 5)
                     {
@@ -120,17 +135,11 @@ namespace Edgar.Examples
                         trimmed = trimmed.Remove(0, 4);
                     }
 
-                    stringBuilder.AppendLine(trimmed);
+                    output.AppendLine(trimmed);
                 }
-                else if (trimmed.Contains("yield"))
+                else if (trimmed.Contains("yield") && !trimmed.Contains("yield break"))
                 {
-                    if (insideCodeBlock)
-                    {
-                        stringBuilder.AppendLine();
-                        stringBuilder.AppendLine("```");
-                        stringBuilder.AppendLine();
-                        insideCodeBlock = false;
-                    }
+                    codeBlockHandler.Exit();
 
                     var levelDescription = results[resultsCounter];
                     var initStopwatch = new Stopwatch();
@@ -172,55 +181,42 @@ namespace Edgar.Examples
                     var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
                     summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
 
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("<Gallery cols={2}>");
+                    output.AppendLine();
+                    output.AppendLine("<Gallery cols={2}>");
                     for (int i = 0; i < 4; i++)
                     {
-                        stringBuilder.AppendLine(
-                            $"<GalleryImage src={{require('./{example.DocsFileName}/{resultsCounter}_{i}.png').default}} />");
+                        output.AppendLine(
+                            $"<GalleryImage src={{require('./{example.Options.DocsFileName}/{resultsCounter}_{i}.png').default}} />");
                     }
 
-                    stringBuilder.AppendLine("</Gallery>");
+                    output.AppendLine("</Gallery>");
 
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("<div style={{ textAlign: 'center', marginTop: '-15px' }}>");
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine($"*Average time to generate the level: {((times.Average() + initStopwatch.ElapsedMilliseconds) / 1000).ToString("F", CultureInfo.InvariantCulture)}s ({((initStopwatch.ElapsedMilliseconds) / 1000d).ToString("F", CultureInfo.InvariantCulture)}s init, {((times.Average()) / 1000).ToString("F", CultureInfo.InvariantCulture)}s generation itself)*");
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("</div>");
-                    stringBuilder.AppendLine();
+                    output.AppendLine();
+                    output.AppendLine("<div style={{ textAlign: 'center', marginTop: '-15px' }}>");
+                    output.AppendLine();
+                    output.AppendLine($"*Average time to generate the level: {((times.Average() + initStopwatch.ElapsedMilliseconds) / 1000).ToString("F", CultureInfo.InvariantCulture)}s ({((initStopwatch.ElapsedMilliseconds) / 1000d).ToString("F", CultureInfo.InvariantCulture)}s init, {((times.Average()) / 1000).ToString("F", CultureInfo.InvariantCulture)}s generation itself)*");
+                    output.AppendLine();
+                    output.AppendLine("</div>");
+                    output.AppendLine();
 
                     resultsCounter++;
                 }
-                else if (insideCodeBlock)
+                else if (codeBlockHandler.IsInside)
                 {
-                    stringBuilder.AppendLine(line);
+                    output.AppendLine(line);
                 }
                 else if (!string.IsNullOrEmpty(trimmed))
                 {
-                    insideCodeBlock = true;
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine("```");
-                    stringBuilder.AppendLine();
-                    stringBuilder.AppendLine(line);
+                    codeBlockHandler.Enter();
+                    output.AppendLine(line);
                 }
                 else
                 {
-                    stringBuilder.AppendLine();
+                    output.AppendLine();
                 }
             }
 
-            AddSourceCode(stringBuilder);
-
-            Console.WriteLine(stringBuilder.ToString());
-            File.WriteAllText(Path.Combine(outputFolder, $"{example.DocsFileName}.md"), stringBuilder.ToString());
-
-            example.Run();
-
-            foreach (var levelDescription in example.GetResults())
-            {
-
-            }
+            codeBlockHandler.Exit();
         }
 
         private void AddSourceCode(StringBuilder output)

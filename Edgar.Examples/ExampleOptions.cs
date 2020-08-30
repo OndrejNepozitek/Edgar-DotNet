@@ -7,5 +7,9 @@
         public string DocsFileName { get; set; }
 
         public string EntryPointMethod { get; set; }
+
+        public bool IncludeResults { get; set; } = true;
+
+        public bool IncludeSourceCode { get; set; } = true;
     }
 }

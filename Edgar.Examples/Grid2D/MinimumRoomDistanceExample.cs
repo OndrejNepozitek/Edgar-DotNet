@@ -14,6 +14,13 @@ namespace Edgar.Examples.Grid2D
 
         public string EntryPointMethod => nameof(GetLevelDescription);
 
+        public ExampleOptions Options => new ExampleOptions()
+        {
+            Name = "Minimum room distance",
+            DocsFileName = "minimum-room-distance",
+            EntryPointMethod = nameof(GetLevelDescription),
+        };
+
         #endregion
 
         public LevelDescriptionGrid2D<int> GetLevelDescription(int minimumRoomDistance = 0)
