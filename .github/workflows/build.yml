@@ -27,7 +27,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: rohith/publish-nuget@v2
         with:
-          PROJECT_FILE_PATH: Edgar/Edgar.csproj
+          PROJECT_FILE_PATH: src/Edgar/Edgar.csproj
           PACKAGE_NAME: Edgar-DotNet          
           VERSION_STATIC: ${{ steps.get_version.outputs.VERSION }}
           TAG_COMMIT: false
