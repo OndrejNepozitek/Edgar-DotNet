@@ -1,52 +1,147 @@
-# ProceduralLevelGenerator
+<h1 align="center">
+  <br>
+  Edgar for .NET
+  <br>
+</h1>
 
-[![Gitter chat](https://badges.gitter.im/OndrejNepozitek/ProceduralLevelGenerator.png)](https://gitter.im/ProceduralLevelGenerator/community)
+<h4 align="center">Graph-based procedural 2D layout generator</h4>
 
-This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
+<p align="center">
+  <a href="https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/"><img src="https://img.shields.io/badge/online-docs-important" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg" /></a>
+  <a href="https://www.nuget.org/packages/Edgar-DotNet"><img src="https://img.shields.io/nuget/vpre/Edgar-DotNet" /></a>
+  <a href="https://github.com/OndrejNepozitek/Edgar-Unity"><img src="https://img.shields.io/badge/see also-Unity%20plugin-important" /></a>
+</p>
 
-To produce a game level, the algorithm takes a set of polygonal building blocks and a level connectivity graph (the level topology) as an input. Nodes in the graph represent rooms, and edges define connectivities between them. The graph has to be planar. The goal of the algorithm is to assign a room shape and a position to each node in the graph in a way that no two room shapes intersect and every pair of neighbouring room shapes can be connected by doors.
+<p align="center">
+  <a href="#introduction">Introduction</a> |
+  <a href="#key-features">Key features</a> |
+  <a href="#limitations">Limitations</a> |
+  <a href="#getting-started">Getting started</a> |
+  <a href="#installation">Installation</a> |
+  <a href="#workflow">Example</a> |
+  <a href="#get-in-touch">Get in touch</a>
+</p>
 
-## See the documentation [here](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/introduction)
+<!--
+<p align="center">
+  <a href="https://ondrejnepozitek.github.io/Edgar-Unity/">Website</a> |
+  <a href="https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/">Documentation</a> |
+  <a href="https://github.com/OndrejNepozitek/Edgar-Unity/releases">Releases</a> |
+  <a href="https://ondrejnepozitek.itch.io/edgar-pro">PRO version on itch.io</a> |
+</p>
+-->
 
-## Features
-- Any planar connected graph can be used as an input
-- Any orthogonal polygon can be used as a room shape
-- Complete control over shapes of individual rooms
-- Complete control over door positions of individual room shapes
-- Rooms either directly connected by doors or connected by corridors
-- Export to JSON, SVG, JPG
-- Majority of features available through a GUI and YAML config files
+<!--
+<p align="center">
+  Need info? Check the <a href="https://ondrejnepozitek.github.io/Edgar-Unity/docs/introduction/">docs</a> or <a href="https://ondrejnepozitek.github.io/Edgar-Unity/">website</a> |
+  Or <a href="https://github.com/OndrejNepozitek/Edgar-Unity/issues/new">create an issue</a>
+</p>
+-->
+
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="32%" />
+
+<p align="center"><i>(Design of exported levels inspired by <a href="https://watabou.itch.io/one-page-dungeon">Watabou's One Page Dungeon</a>)</i></p>
+                                                   
+## Introduction
+
+This project is a .NET library for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. If you are using Unity, make sure to check out [Edgar for Unity](https://github.com/OndrejNepozitek/Edgar-Unity) - Unity plugin based on this library. And I have also written a post about the graph-based approach on [my blog](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
+
+### Graph-based approach
+
+You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces layouts that follow exactly that structure. Do you want a boss room at the end of each level? Or a shop room halfway through the level? Everything is possible with a graph-based approach.
+
+### Handmade room templates
+
+The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a layout. Each room template consists of an outline polygon and a set of available door positions. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+
+## CAUTION!
+
+The library is currently being refactored to make the API nicer and make it easier to add new features in the future. As a result, only the most important logic is documented and I would not recommend looking into the insides of the algorithm. If you want to know how the algorithm works, check out my [blog post](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
+
+## Key features
+
+- Procedural dungeon generator
+- Describe the structure of levels with a graph of rooms and connections 
+- Control the appearance of rooms with handmade room templates 
+- Connect rooms either directly with doors or with short corridors
+- Export to JSON or PNG
+- Supports .NET Standard 2.0
+- Currently works only on the 2D grid but may support 3D in future
+- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
 - Implicit support for keys and locks - just define the connectivity graph hovewer you like
 
-## Current state of the project
-The library should be functional, but is far from perfect. There are quite a few places that I know need an improvement and I have a bunch of new features in mind that will hopefully get implemented in not too distant future. I would also love to get any **feedback** - either on the features of the algorithm or on how usable it is from a programmer's point of view. If you have any questions or suggestions, you can either create an issue or contact me on [gitter](https://gitter.im/OndrejNepozitek/ProceduralLevelGenerator).
+## Limitations
 
-## Bachelor thesis and paper
-This library was created as a part of my bachelor thesis. Text of the thesis can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/bachelor_thesis.pdf). After completing the thesis, we decided to transform it to a paper and submit it to the Game-On 2018 conference. The extended version of the paper can be found [here](https://github.com/OndrejNepozitek/ProceduralLevelGenerator/blob/text/extended_paper.pdf). This version also contains a practical use-case of the algorithm, which is not present in the regular version due to length limitations.
+- The library is currently being refactored - see the caution above.
+- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/basics/performance-tips)
+- The graph-based approach is not suitable for large levels - we recommend less than 30 rooms
+                      
+## Getting started
 
-## Inspiration
-The main idea of the algorithm used in this library comes from a [paper](http://chongyangma.com/publications/gl/index.html) written by **Chongyang Ma** and colleagues so be sure to check their work out.
+Install the asset (instructions are below) and head to the [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction). The documentation describes all the basics and provides multiple examples.
+                      
+## Installation
 
-Some things in this library are done differently and/or improved:
-- **Integer coordinates** are used instead of reals - room shapes are therefore only orthogonal polygons.
-- With integer coordinates, **optimized polygon operations** (intersections, etc..) were implemented with a complete control over the process.
-- User has a complete control over door positions of rooms.
-- The algorithm was optimized to generate a layout as fast as possible.
-- A specialized version of the generator was implemented to support **adding (usally) short corridors** between rooms to the layout without sacrificing most of the convergence speed. (Average number of iterations usually stays the same but iterations themselves are slower.)
+Download the latest version from [Nuget](https://www.nuget.org/packages/Edgar-DotNet).                                                
+                                                             
+## Example
 
-## Examples
+Below is a very simple setup of the generator. We create two rectangular room templates, add 4 rooms to the level description and connect the rooms so that they form a cycle. Be sure to check the [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction) to see multiple commented examples.
 
-### Input
+```csharp
+// Create square room template
+var squareRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetSquare(8),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-![alt-text](https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/introduction.svg)
+// Create rectangle room template
+var rectangleRoomTemplate = new RoomTemplateGrid2D(
+    PolygonGrid2D.GetRectangle(6, 10),
+    new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1)
+);
 
-### Results
+// Create a room description which says that the room is not a corridor and that it can use the two room templates
+var roomDescription = new RoomDescriptionGrid2D(
+    isCorridor: false,
+    roomTemplates: new List<RoomTemplateGrid2D>() { squareRoomTemplate, rectangleRoomTemplate }
+);
 
-<div class="results">
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/0.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/0.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/1.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/1.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/2.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/2.jpg" alt="result"></a>
-  <a href="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/3.jpg" target="_blank"><img width="24%" src="https://ondrejnepozitek.github.io/ProceduralLevelGenerator/docs/assets/introduction/3.jpg" alt="result"></a>
-</div>
+// Create an instance of the level description
+var levelDescription = new LevelDescriptionGrid2D<int>();
 
-**Note:** Click on images to see them in a full size.
+// Add 4 rooms to the level, use the room description that we created beforehand
+levelDescription.AddRoom(0, roomDescription);
+levelDescription.AddRoom(1, roomDescription);
+levelDescription.AddRoom(2, roomDescription);
+levelDescription.AddRoom(3, roomDescription);
+
+// Add connections between the rooms - the level graph will be a cycle with 4 vertices
+levelDescription.AddConnection(0, 1);
+levelDescription.AddConnection(0, 3);
+levelDescription.AddConnection(1, 2);
+levelDescription.AddConnection(2, 3);
+
+// Create an instance of the generate and generate a layout
+var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+var layout = generator.GenerateLayout();
+
+// Export the resulting layout as PNG
+var drawer = new DungeonDrawer<int>();
+drawer.DrawLayoutAndSave(layout, "layout.png", new DungeonDrawerOptions()
+{
+    Width = 2000,
+    Height = 2000,
+});
+```
+
+Here are two layouts that were produced from this example:
+
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout.png" width="49%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/simple_layout_2.png" width="49%" />
+
+## Get in touch
+
+If you have any questions, let me know at ondra-at-nepozitek.cz, on Twitter at @OndrejNepozitek or create an issue here on github.
+
+

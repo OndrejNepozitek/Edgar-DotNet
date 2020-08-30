@@ -1,0 +1,2159 @@
+{
+  "$id": "1",
+  "roomDescriptions": {
+    "$id": "2",
+    "0": {
+      "$id": "3",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "4",
+        "$values": [
+          {
+            "$id": "5",
+            "Shape": {
+              "$id": "6",
+              "points": {
+                "$id": "7",
+                "$values": [
+                  {
+                    "$id": "8",
+                    "X": -10,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "9",
+                    "X": 5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "10",
+                    "X": 5,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "11",
+                    "X": -10,
+                    "Y": -13
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "12",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "13",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "14",
+            "Shape": {
+              "$id": "15",
+              "points": {
+                "$id": "16",
+                "$values": [
+                  {
+                    "$id": "17",
+                    "X": -10,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "18",
+                    "X": 5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "19",
+                    "X": 5,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "20",
+                    "X": -10,
+                    "Y": -13
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "21",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "22",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "23",
+            "Shape": {
+              "$id": "24",
+              "points": {
+                "$id": "25",
+                "$values": [
+                  {
+                    "$id": "26",
+                    "X": -12,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "27",
+                    "X": 3,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "28",
+                    "X": 3,
+                    "Y": -14
+                  },
+                  {
+                    "$id": "29",
+                    "X": -12,
+                    "Y": -14
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "30",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "31",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "32",
+            "Shape": {
+              "$id": "33",
+              "points": {
+                "$id": "34",
+                "$values": [
+                  {
+                    "$id": "35",
+                    "X": -11,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "36",
+                    "X": -5,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "37",
+                    "X": -5,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "38",
+                    "X": -3,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "39",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "40",
+                    "X": 2,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "41",
+                    "X": 2,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "42",
+                    "X": 4,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "43",
+                    "X": 4,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "44",
+                    "X": 10,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "45",
+                    "X": 10,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "46",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "47",
+                    "X": 4,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "48",
+                    "X": 2,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "49",
+                    "X": 2,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "50",
+                    "X": -3,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "51",
+                    "X": -3,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "52",
+                    "X": -5,
+                    "Y": 0
+                  },
+                  {
+                    "$id": "53",
+                    "X": -5,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "54",
+                    "X": -11,
+                    "Y": -1
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "55",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "56",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "57",
+            "Shape": {
+              "$id": "58",
+              "points": {
+                "$id": "59",
+                "$values": [
+                  {
+                    "$id": "60",
+                    "X": -39,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "61",
+                    "X": -37,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "62",
+                    "X": -37,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "63",
+                    "X": -39,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "64",
+                    "X": -39,
+                    "Y": 15
+                  },
+                  {
+                    "$id": "65",
+                    "X": -26,
+                    "Y": 15
+                  },
+                  {
+                    "$id": "66",
+                    "X": -26,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "67",
+                    "X": -28,
+                    "Y": 10
+                  },
+                  {
+                    "$id": "68",
+                    "X": -28,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "69",
+                    "X": -26,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "70",
+                    "X": -26,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "71",
+                    "X": -39,
+                    "Y": -4
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "72",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "73",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "74",
+            "Shape": {
+              "$id": "75",
+              "points": {
+                "$id": "76",
+                "$values": [
+                  {
+                    "$id": "77",
+                    "X": -14,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "78",
+                    "X": 0,
+                    "Y": 3
+                  },
+                  {
+                    "$id": "79",
+                    "X": 0,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "80",
+                    "X": -14,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "81",
+                    "X": -14,
+                    "Y": 12
+                  },
+                  {
+                    "$id": "82",
+                    "X": 8,
+                    "Y": 12
+                  },
+                  {
+                    "$id": "83",
+                    "X": 8,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "84",
+                    "X": -6,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "85",
+                    "X": -6,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "86",
+                    "X": 8,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "87",
+                    "X": 8,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "88",
+                    "X": -14,
+                    "Y": -13
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "89",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "90",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "91",
+            "Shape": {
+              "$id": "92",
+              "points": {
+                "$id": "93",
+                "$values": [
+                  {
+                    "$id": "94",
+                    "X": -10,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "95",
+                    "X": 5,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "96",
+                    "X": 5,
+                    "Y": -13
+                  },
+                  {
+                    "$id": "97",
+                    "X": -10,
+                    "Y": -13
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "98",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "99",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "1": {
+      "$id": "100",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "101",
+        "$values": [
+          {
+            "$id": "102",
+            "Shape": {
+              "$id": "103",
+              "points": {
+                "$id": "104",
+                "$values": [
+                  {
+                    "$id": "105",
+                    "X": 1,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "106",
+                    "X": 12,
+                    "Y": 5
+                  },
+                  {
+                    "$id": "107",
+                    "X": 12,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "108",
+                    "X": 1,
+                    "Y": -6
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "109",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "110",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "2": {
+      "$id": "111",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "112",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "3": {
+      "$id": "113",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "114",
+        "$values": [
+          {
+            "$id": "115",
+            "Shape": {
+              "$id": "116",
+              "points": {
+                "$id": "117",
+                "$values": [
+                  {
+                    "$id": "118",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "119",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "120",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "121",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "122",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "123",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "124",
+            "Shape": {
+              "$id": "125",
+              "points": {
+                "$id": "126",
+                "$values": [
+                  {
+                    "$id": "127",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "128",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "129",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "130",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "131",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "132",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "133",
+            "Shape": {
+              "$id": "134",
+              "points": {
+                "$id": "135",
+                "$values": [
+                  {
+                    "$id": "136",
+                    "X": -3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "137",
+                    "X": 17,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "138",
+                    "X": 17,
+                    "Y": -9
+                  },
+                  {
+                    "$id": "139",
+                    "X": -3,
+                    "Y": -9
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "140",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 4
+            },
+            "AllowedTransformations": {
+              "$id": "141",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "4": {
+      "$id": "142",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "143",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "5": {
+      "$id": "144",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "145",
+        "$values": [
+          {
+            "$id": "146",
+            "Shape": {
+              "$id": "147",
+              "points": {
+                "$id": "148",
+                "$values": [
+                  {
+                    "$id": "149",
+                    "X": -8,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "150",
+                    "X": -7,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "151",
+                    "X": -7,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "152",
+                    "X": 3,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "153",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "154",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "155",
+                    "X": 4,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "156",
+                    "X": 3,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "157",
+                    "X": 3,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "158",
+                    "X": -7,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "159",
+                    "X": -7,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "160",
+                    "X": -8,
+                    "Y": -3
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "161",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "162",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "6": {
+      "$id": "163",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "164",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "7": {
+      "$id": "165",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "166",
+        "$values": [
+          {
+            "$id": "167",
+            "Shape": {
+              "$id": "168",
+              "points": {
+                "$id": "169",
+                "$values": [
+                  {
+                    "$id": "170",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "171",
+                    "X": 4,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "172",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "173",
+                    "X": -3,
+                    "Y": -1
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "174",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "175",
+                "$values": [
+                  {
+                    "$id": "176",
+                    "From": {
+                      "$id": "177",
+                      "X": 4,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "178",
+                      "X": 4,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "179",
+                    "From": {
+                      "$id": "180",
+                      "X": -3,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "181",
+                      "X": -3,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "182",
+                    "From": {
+                      "$id": "183",
+                      "X": 0,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "184",
+                      "X": 1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "185",
+                    "From": {
+                      "$id": "186",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "To": {
+                      "$id": "187",
+                      "X": 1,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "188",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "8": {
+      "$id": "189",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "190",
+        "$values": [
+          {
+            "$id": "191",
+            "Shape": {
+              "$id": "192",
+              "points": {
+                "$id": "193",
+                "$values": [
+                  {
+                    "$id": "194",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "195",
+                    "X": 14,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "196",
+                    "X": 14,
+                    "Y": -6
+                  },
+                  {
+                    "$id": "197",
+                    "X": -3,
+                    "Y": -6
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "198",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 3
+            },
+            "AllowedTransformations": {
+              "$id": "199",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "9": {
+      "$id": "200",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "201",
+        "$values": [
+          {
+            "$id": "202",
+            "Shape": {
+              "$id": "203",
+              "points": {
+                "$id": "204",
+                "$values": [
+                  {
+                    "$id": "205",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "206",
+                    "X": 4,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "207",
+                    "X": 4,
+                    "Y": -1
+                  },
+                  {
+                    "$id": "208",
+                    "X": -3,
+                    "Y": -1
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "209",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "210",
+                "$values": [
+                  {
+                    "$id": "211",
+                    "From": {
+                      "$id": "212",
+                      "X": 4,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "213",
+                      "X": 4,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "214",
+                    "From": {
+                      "$id": "215",
+                      "X": -3,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "216",
+                      "X": -3,
+                      "Y": 1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "217",
+                    "From": {
+                      "$id": "218",
+                      "X": 0,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "219",
+                      "X": 1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "220",
+                    "From": {
+                      "$id": "221",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "To": {
+                      "$id": "222",
+                      "X": 1,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "223",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "10": {
+      "$id": "224",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "225",
+        "$values": [
+          {
+            "$ref": "115"
+          },
+          {
+            "$ref": "124"
+          },
+          {
+            "$ref": "133"
+          }
+        ]
+      }
+    },
+    "11": {
+      "$id": "226",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "227",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "12": {
+      "$id": "228",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "229",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "13": {
+      "$id": "230",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "231",
+        "$values": [
+          {
+            "$ref": "146"
+          }
+        ]
+      }
+    },
+    "14": {
+      "$id": "232",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "233",
+        "$values": [
+          {
+            "$ref": "5"
+          },
+          {
+            "$ref": "14"
+          },
+          {
+            "$ref": "23"
+          },
+          {
+            "$ref": "32"
+          },
+          {
+            "$ref": "57"
+          },
+          {
+            "$ref": "74"
+          },
+          {
+            "$ref": "91"
+          }
+        ]
+      }
+    },
+    "15": {
+      "$id": "234",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "235",
+        "$values": [
+          {
+            "$id": "236",
+            "Shape": {
+              "$id": "237",
+              "points": {
+                "$id": "238",
+                "$values": [
+                  {
+                    "$id": "239",
+                    "X": -8,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "240",
+                    "X": -7,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "241",
+                    "X": -7,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "242",
+                    "X": 3,
+                    "Y": 8
+                  },
+                  {
+                    "$id": "243",
+                    "X": 3,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "244",
+                    "X": 4,
+                    "Y": 7
+                  },
+                  {
+                    "$id": "245",
+                    "X": 4,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "246",
+                    "X": 3,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "247",
+                    "X": 3,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "248",
+                    "X": -7,
+                    "Y": -4
+                  },
+                  {
+                    "$id": "249",
+                    "X": -7,
+                    "Y": -3
+                  },
+                  {
+                    "$id": "250",
+                    "X": -8,
+                    "Y": -3
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "251",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "252",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "16": {
+      "$id": "253",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.CorridorRoomDescription, Edgar",
+      "Stage": 2,
+      "RoomTemplates": {
+        "$id": "254",
+        "$values": [
+          {
+            "$id": "255",
+            "Shape": {
+              "$id": "256",
+              "points": {
+                "$id": "257",
+                "$values": [
+                  {
+                    "$id": "258",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "259",
+                    "X": 0,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "260",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "261",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "262",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "263",
+                "$values": [
+                  {
+                    "$id": "264",
+                    "From": {
+                      "$id": "265",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "266",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "267",
+                    "From": {
+                      "$id": "268",
+                      "X": 0,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "269",
+                      "X": 0,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "270",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "271",
+            "Shape": {
+              "$id": "272",
+              "points": {
+                "$id": "273",
+                "$values": [
+                  {
+                    "$id": "274",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "275",
+                    "X": 2,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "276",
+                    "X": 2,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "277",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "278",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "279",
+                "$values": [
+                  {
+                    "$id": "280",
+                    "From": {
+                      "$id": "281",
+                      "X": 2,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "282",
+                      "X": 2,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "283",
+                    "From": {
+                      "$id": "284",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "285",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "286",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "287",
+            "Shape": {
+              "$id": "288",
+              "points": {
+                "$id": "289",
+                "$values": [
+                  {
+                    "$id": "290",
+                    "X": -4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "291",
+                    "X": 4,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "292",
+                    "X": 4,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "293",
+                    "X": -4,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "294",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "295",
+                "$values": [
+                  {
+                    "$id": "296",
+                    "From": {
+                      "$id": "297",
+                      "X": 4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "298",
+                      "X": 4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "299",
+                    "From": {
+                      "$id": "300",
+                      "X": -4,
+                      "Y": 0
+                    },
+                    "To": {
+                      "$id": "301",
+                      "X": -4,
+                      "Y": -1
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "302",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "303",
+            "Shape": {
+              "$id": "304",
+              "points": {
+                "$id": "305",
+                "$values": [
+                  {
+                    "$id": "306",
+                    "X": -3,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "307",
+                    "X": 0,
+                    "Y": 2
+                  },
+                  {
+                    "$id": "308",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "309",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "310",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "311",
+                "$values": [
+                  {
+                    "$id": "312",
+                    "From": {
+                      "$id": "313",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "314",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "315",
+                    "From": {
+                      "$id": "316",
+                      "X": -2,
+                      "Y": 2
+                    },
+                    "To": {
+                      "$id": "317",
+                      "X": -1,
+                      "Y": 2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "318",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "319",
+            "Shape": {
+              "$id": "320",
+              "points": {
+                "$id": "321",
+                "$values": [
+                  {
+                    "$id": "322",
+                    "X": -3,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "323",
+                    "X": 0,
+                    "Y": 4
+                  },
+                  {
+                    "$id": "324",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "325",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "326",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "327",
+                "$values": [
+                  {
+                    "$id": "328",
+                    "From": {
+                      "$id": "329",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "330",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "331",
+                    "From": {
+                      "$id": "332",
+                      "X": -2,
+                      "Y": 4
+                    },
+                    "To": {
+                      "$id": "333",
+                      "X": -1,
+                      "Y": 4
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "334",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          },
+          {
+            "$id": "335",
+            "Shape": {
+              "$id": "336",
+              "points": {
+                "$id": "337",
+                "$values": [
+                  {
+                    "$id": "338",
+                    "X": -3,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "339",
+                    "X": 0,
+                    "Y": 6
+                  },
+                  {
+                    "$id": "340",
+                    "X": 0,
+                    "Y": -2
+                  },
+                  {
+                    "$id": "341",
+                    "X": -3,
+                    "Y": -2
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "342",
+              "$type": "Edgar.Legacy.Core.Doors.ManualMode.ManualDoorMode, Edgar",
+              "DoorPositions": {
+                "$id": "343",
+                "$values": [
+                  {
+                    "$id": "344",
+                    "From": {
+                      "$id": "345",
+                      "X": -2,
+                      "Y": -2
+                    },
+                    "To": {
+                      "$id": "346",
+                      "X": -1,
+                      "Y": -2
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  },
+                  {
+                    "$id": "347",
+                    "From": {
+                      "$id": "348",
+                      "X": -2,
+                      "Y": 6
+                    },
+                    "To": {
+                      "$id": "349",
+                      "X": -1,
+                      "Y": 6
+                    },
+                    "degeneratedDirection": 0,
+                    "Length": 1
+                  }
+                ]
+              }
+            },
+            "AllowedTransformations": {
+              "$id": "350",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "17": {
+      "$ref": "253"
+    },
+    "18": {
+      "$ref": "253"
+    },
+    "19": {
+      "$ref": "253"
+    },
+    "20": {
+      "$ref": "253"
+    },
+    "21": {
+      "$ref": "253"
+    },
+    "22": {
+      "$ref": "253"
+    },
+    "23": {
+      "$ref": "253"
+    },
+    "24": {
+      "$ref": "253"
+    },
+    "25": {
+      "$ref": "253"
+    },
+    "26": {
+      "$ref": "253"
+    },
+    "27": {
+      "$ref": "253"
+    },
+    "28": {
+      "$ref": "253"
+    },
+    "29": {
+      "$ref": "253"
+    },
+    "30": {
+      "$ref": "253"
+    },
+    "31": {
+      "$ref": "253"
+    },
+    "32": {
+      "$ref": "253"
+    },
+    "33": {
+      "$id": "351",
+      "$type": "Edgar.Legacy.Core.MapDescriptions.BasicRoomDescription, Edgar",
+      "Stage": 1,
+      "RoomTemplates": {
+        "$id": "352",
+        "$values": [
+          {
+            "$id": "353",
+            "Shape": {
+              "$id": "354",
+              "points": {
+                "$id": "355",
+                "$values": [
+                  {
+                    "$id": "356",
+                    "X": -6,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "357",
+                    "X": 3,
+                    "Y": 1
+                  },
+                  {
+                    "$id": "358",
+                    "X": 3,
+                    "Y": -8
+                  },
+                  {
+                    "$id": "359",
+                    "X": -6,
+                    "Y": -8
+                  }
+                ]
+              }
+            },
+            "DoorsMode": {
+              "$id": "360",
+              "$type": "Edgar.Legacy.Core.Doors.SimpleMode.SimpleDoorMode, Edgar",
+              "DoorLength": 1,
+              "CornerDistance": 2
+            },
+            "AllowedTransformations": {
+              "$id": "361",
+              "$values": [
+                0
+              ]
+            },
+            "RepeatMode": 0,
+            "Name": "Room template"
+          }
+        ]
+      }
+    },
+    "34": {
+      "$ref": "253"
+    }
+  },
+  "passages": {
+    "$id": "362",
+    "$values": [
+      {
+        "$id": "363",
+        "Room1": 0,
+        "Room2": 16
+      },
+      {
+        "$id": "364",
+        "Room1": 0,
+        "Room2": 17
+      },
+      {
+        "$id": "365",
+        "Room1": 0,
+        "Room2": 21
+      },
+      {
+        "$id": "366",
+        "Room1": 1,
+        "Room2": 16
+      },
+      {
+        "$id": "367",
+        "Room1": 2,
+        "Room2": 17
+      },
+      {
+        "$id": "368",
+        "Room1": 2,
+        "Room2": 18
+      },
+      {
+        "$id": "369",
+        "Room1": 3,
+        "Room2": 18
+      },
+      {
+        "$id": "370",
+        "Room1": 3,
+        "Room2": 19
+      },
+      {
+        "$id": "371",
+        "Room1": 3,
+        "Room2": 22
+      },
+      {
+        "$id": "372",
+        "Room1": 4,
+        "Room2": 19
+      },
+      {
+        "$id": "373",
+        "Room1": 4,
+        "Room2": 20
+      },
+      {
+        "$id": "374",
+        "Room1": 5,
+        "Room2": 20
+      },
+      {
+        "$id": "375",
+        "Room1": 5,
+        "Room2": 21
+      },
+      {
+        "$id": "376",
+        "Room1": 6,
+        "Room2": 22
+      },
+      {
+        "$id": "377",
+        "Room1": 6,
+        "Room2": 23
+      },
+      {
+        "$id": "378",
+        "Room1": 6,
+        "Room2": 26
+      },
+      {
+        "$id": "379",
+        "Room1": 6,
+        "Room2": 34
+      },
+      {
+        "$id": "380",
+        "Room1": 7,
+        "Room2": 23
+      },
+      {
+        "$id": "381",
+        "Room1": 7,
+        "Room2": 24
+      },
+      {
+        "$id": "382",
+        "Room1": 8,
+        "Room2": 24
+      },
+      {
+        "$id": "383",
+        "Room1": 8,
+        "Room2": 25
+      },
+      {
+        "$id": "384",
+        "Room1": 9,
+        "Room2": 25
+      },
+      {
+        "$id": "385",
+        "Room1": 10,
+        "Room2": 26
+      },
+      {
+        "$id": "386",
+        "Room1": 10,
+        "Room2": 27
+      },
+      {
+        "$id": "387",
+        "Room1": 10,
+        "Room2": 30
+      },
+      {
+        "$id": "388",
+        "Room1": 10,
+        "Room2": 31
+      },
+      {
+        "$id": "389",
+        "Room1": 11,
+        "Room2": 27
+      },
+      {
+        "$id": "390",
+        "Room1": 11,
+        "Room2": 28
+      },
+      {
+        "$id": "391",
+        "Room1": 12,
+        "Room2": 28
+      },
+      {
+        "$id": "392",
+        "Room1": 12,
+        "Room2": 29
+      },
+      {
+        "$id": "393",
+        "Room1": 13,
+        "Room2": 29
+      },
+      {
+        "$id": "394",
+        "Room1": 13,
+        "Room2": 30
+      },
+      {
+        "$id": "395",
+        "Room1": 14,
+        "Room2": 31
+      },
+      {
+        "$id": "396",
+        "Room1": 14,
+        "Room2": 32
+      },
+      {
+        "$id": "397",
+        "Room1": 15,
+        "Room2": 32
+      },
+      {
+        "$id": "398",
+        "Room1": 33,
+        "Room2": 34
+      }
+    ]
+  }
+}

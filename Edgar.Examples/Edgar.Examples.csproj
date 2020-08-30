@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\ondra\OneDrive\Dokumenty\Visual Studio 2017\Projects\MapGeneration\Edgar.Examples\Edgar.Examples.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.7.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0-preview.7.20364.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
+  </ItemGroup>
+
+  <Target Name="CopyResources" AfterTargets="Build">
+    <ItemGroup>
+      <GeneratorResources Include="..\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="false" />
+  </Target>
+</Project>

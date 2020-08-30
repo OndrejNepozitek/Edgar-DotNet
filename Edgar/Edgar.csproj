@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AssemblyTitle>MapGeneration</AssemblyTitle>
+    <Product>Edgar-DotNet</Product>
+    <Copyright>Copyright ©  2020</Copyright>
+    <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<PackageId>Edgar-DotNet</PackageId>
+	<Version>2.0.0-prealpha.2</Version>
+	<Authors>Ondřej Nepožitek</Authors>
+	<Company />
+	<RepositoryUrl>https://github.com/OndrejNepozitek/Edgar-DotNet</RepositoryUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Description>Graph-based procedural level generator.</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\ondra\OneDrive\Dokumenty\Visual Studio 2017\Projects\MapGeneration\Edgar\Edgar.xml</DocumentationFile>
+  </PropertyGroup>
+  <Target Name="CopyResources" AfterTargets="Build">
+    <ItemGroup>
+      <GeneratorResources Include="..\Resources\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="false" />
+  </Target>
+  <ItemGroup>
+    <Compile Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
+    <EmbeddedResource Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
+    <None Remove="Legacy\Core\LayoutConverters\CorridorNodesCreators\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BenchmarkUtils" Version="1.2.2" />
+    <PackageReference Include="GraphPlanarityTesting" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="RangeTree" Version="1.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="YamlDotNet" Version="8.1.0" />
+  </ItemGroup>
+</Project>

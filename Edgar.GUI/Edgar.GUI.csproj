@@ -1,0 +1,119 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net471</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AssemblyTitle>GUI</AssemblyTitle>
+    <Product>GUI</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <BuildDependsOn>$(BuildDependsOn);CopyResources</BuildDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|AnyCPU'">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x86|x86'">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Target Name="CopyResources" AfterTargets="Build">
+    <ItemGroup>
+      <GeneratorResources Include="..\Resources\**\*.*" />
+      <DestinationResources Include="$(TargetDir)\Resources\**\*.*" />
+    </ItemGroup>
+    <Delete Files="@(DestinationResources)" />
+    <Copy SourceFiles="@(GeneratorResources)" DestinationFolder="$(TargetDir)\Resources\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <ItemGroup>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="GeneratorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Legacy\GeneratorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Legacy\GeneratorWindow.Designer.cs">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Legacy\MainSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Legacy\MainSettings.Designer.cs">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Update="New\GeneratorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="New\GeneratorWindow.Designer.cs">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Update="New\MainSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="New\MainSettings.Designer.cs">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Legacy\GeneratorWindow.resx">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Legacy\MainSettings.resx">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="New\GeneratorWindow.resx">
+      <DependentUpon>GeneratorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="New\MainSettings.resx">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
+  </ItemGroup>
+</Project>
