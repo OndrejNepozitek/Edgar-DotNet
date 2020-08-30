@@ -1,4 +1,8 @@
-﻿namespace MapGeneration.Utils
+﻿using System;
+using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
+
+namespace MapGeneration.Utils
 {
     public static class RoomExtensions
     {
@@ -15,12 +19,12 @@
         /// all such transformations are contained in the room.Transformation collection. All these transformations
         /// can be used for the "transformation" parameter if we do not want to use the room.Transformation transformation.
         /// </remarks>
-        /// <typeparam name="TNode"></typeparam>
+        /// <typeparam name="TRoom"></typeparam>
         /// <param name="room"></param>
         /// <param name="point">Point to be transformed to the new position</param>
         /// <param name="transformation">Transformation to be used. It must be one of the room.Transformations. Defaults to room.Transformation.</param>
         /// <returns></returns>
-        //public static IntVector2 TransformPointToNewPosition<TNode>(this IRoom<TNode> room, IntVector2 point, Transformation? transformation = null)
+        //public static Vector2Int TransformPointToNewPosition<TRoom>(this LayoutRoomGrid2D<TRoom> room, Vector2Int point, TransformationGrid2D? transformation = null)
         //{
         //    if (transformation != null && room.Transformations.Contains(transformation.Value))
         //    {
