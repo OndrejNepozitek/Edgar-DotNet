@@ -47,6 +47,7 @@ blockquote {
   background-color: rgba(255,229,100,.3);
   border-left: 8px solid #ffe564;
   padding: 15px 30px 15px 15px;
+  text-align: justify;
 }
 
 .menu>ul.menu__list>li.menu__list-item div.title {

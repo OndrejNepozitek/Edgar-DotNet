@@ -18,22 +18,17 @@ module.exports = {
     {
       type: "category",
       label: "Introduction",
-      items: ["introduction", "installation"]
+      items: ["introduction", "motivation", "installation"]
     },
     {
       type: "category",
       label: "Guides",
-      items: ["guides/introduction", "guides/basics", "guides/different-room-descriptions", "guides/corridors", "guides/export"]
+      items: ["grid2d/introduction", "grid2d/basics", /*"examples/repeating-room-templates",*/ "grid2d/corridors", "grid2d/minimum-room-distance", "grid2d/complex-dungeon", "grid2d/save-load"]
     },
     {
       type: "category",
-      label: "Guides",
-      items: ["grid2d/introduction", "grid2d/basics", /*"examples/repeating-room-templates",*/ "grid2d/corridors", "grid2d/minimum-room-distance", "grid2d/real-life"]
-    },
-    {
-      type: "category",
-      label: "API reference",
-      items: ["api/dungeon-generator"]
+      label: "Other",
+      items: ["other/performance-tips"]
     }
   ]
 };

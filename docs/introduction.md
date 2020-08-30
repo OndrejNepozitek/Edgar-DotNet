@@ -6,46 +6,49 @@ sidebar_label: Introduction
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { Gallery, GalleryImage } from "@theme/Gallery";
 
-This project is a library for procedural generation of 2D layouts based on a graph of rooms connections.
+<img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_1.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_2.png" width="32%" /> <img src="https://ondrejnepozitek.github.io/Edgar-DotNet/readme/example_3.png" width="32%" />
 
-To produce a game level, the algorithm takes a set of polygonal building blocks and a level connectivity graph (the level topology) as an input. Nodes in the graph represent rooms, and edges define connectivities between them. The graph has to be planar. The goal of the algorithm is to assign a room shape and a position to each node in the graph in a way that no two room shapes intersect and every pair of neighbouring room shapes can be connected by doors.
+<p style={{ textAlign: 'center'}}><i>(Design of exported levels inspired by <a href="https://watabou.itch.io/one-page-dungeon">Watabou's One Page Dungeon</a>)</i></p>
 
-## Features
+This project is a .NET library for procedural generation of 2D dungeons (and platformers) and aims to give game designers a **complete control** over generated levels. It combines **graph-based approach** to procedural generation with **handmade room templates** to generate levels with a **feeling of consistency**. If you are using Unity, make sure to check out [Edgar for Unity](https://github.com/OndrejNepozitek/Edgar-Unity) - Unity plugin based on this library. And I have also written a post about the graph-based approach on [my blog](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
 
-- Any planar connected graph can be used as an input
-- Any orthogonal polygon can be used as a room shape
-- Complete control over shapes of individual rooms
-- Complete control over door positions of individual room shapes
-- Rooms either directly connected by doors or connected by corridors
-- Export to JSON, SVG, JPG
-- Majority of features available through a GUI and YAML config files
+### Graph-based approach
+
+You decide exactly how many rooms you want in a level and how they should be connected, and the generator produces layouts that follow exactly that structure. Do you want a boss room at the end of each level? Or a shop room halfway through the level? Everything is possible with a graph-based approach.
+
+### Handmade room templates
+
+The appearance of individual rooms is controlled with so-called room templates. These are pre-authored building blocks from which the algorithm chooses when generating a layout. Each room template consists of an outline polygon and a set of available door positions. You can also assign different room templates to different types of rooms. For example, a spawn room should probably look different than a boss room.
+
+## CAUTION!
+
+The library is currently being refactored to make the API nicer and make it easier to add new features in the future. As a result, only the most important logic is documented and I would not recommend looking into the insides of the algorithm. If you want to know how the algorithm works, check out my [blog post](https://ondra.nepozitek.cz/blog/42/dungeon-generator-part-1-node-based-approach/).
+
+## Key features
+
+- Procedural dungeon generator
+- Describe the structure of levels with a graph of rooms and connections 
+- Control the appearance of rooms with handmade room templates 
+- Connect rooms either directly with doors or with short corridors
+- Export to JSON or PNG
+- Supports .NET Standard 2.0
+- Currently works only on the 2D grid but may support 3D in future
+- Comprehensive [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction/) with multiple examples
 - Implicit support for keys and locks - just define the connectivity graph hovewer you like
 
-## Inspiration
+## Limitations
 
-The main idea of the algorithm used in this library comes from a [paper](http://chongyangma.com/publications/gl/index.html) written by **Chongyang Ma** and colleagues so be sure to check their work out.
-
-Some things in this library are done differently and/or improved:
-
-- **Integer coordinates** are used instead of reals - room shapes are therefore only orthogonal polygons.
-- With integer coordinates, **optimized polygon operations** (intersections, etc..) were implemented with a complete control over the process.
-- User has a complete control over door positions of rooms.
-- The algorithm was optimized to generate a layout as fast as possible.
-- A specialized version of the generator was implemented to support **adding (usally) short corridors** between rooms to the layout without sacrificing most of the convergence speed. (Average number of iterations usually stays the same but iterations themselves are slower.)
+- The library is currently being refactored - see the caution above.
+- Some level graphs may be too hard for the generator - see the [guidelines](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/basics/performance-tips)
+- The graph-based approach is not suitable for large levels - we recommend less than 30 rooms
 
 ## Examples
 
-### Input
-
-<img src={useBaseUrl('img/introduction/introduction.svg')} />;
-
-### Results
-
 <Gallery cols={2}>
-  <GalleryImage src="img/introduction/0.jpg" />
-  <GalleryImage src="img/introduction/1.jpg" />
-  <GalleryImage src="img/introduction/2.jpg" />
-  <GalleryImage src="img/introduction/3.jpg" />
+  <GalleryImage src={require('./grid2d/basics/0_0.png').default} />
+  <GalleryImage src={require('./grid2d/basics/0_1.png').default} />
+  <GalleryImage src={require('./grid2d/minimum-room-distance/2_0.png').default} />
+  <GalleryImage src={require('./grid2d/minimum-room-distance/2_1.png').default} />
+  <GalleryImage src={require('./grid2d/complex-dungeon/0_0.png').default} />
+  <GalleryImage src={require('./grid2d/complex-dungeon/0_1.png').default} />
 </Gallery>
-
-**Note:** Click on images to see them in full size.

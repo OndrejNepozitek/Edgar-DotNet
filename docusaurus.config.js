@@ -1,5 +1,11 @@
+const versions = require('./versions.json');
+const getBookmarks = require("./src/bookmarks")
+const [latestVersion] = require('./versions.json');
+const remarkBookmarks = require('remark-bookmarks')
+const path = require('path');
+
 module.exports = {
-  title: "Procedural level generator",
+  title: "Edgar for .NET",
   tagline:
     "Library for procedural generation of 2D levels based on a graph of room connections.",
   url: "https://ondrejnepozitek.github.io",
@@ -7,16 +13,38 @@ module.exports = {
   favicon: "img/favicon.ico",
   organizationName: "OndrejNepozitek", // Usually your GitHub org/user name.
   projectName: "Edgar-DotNet", // Usually your repo name.
+  onBrokenLinks: "warn",
   themeConfig: {
     sidebarCollapsible: false,
     navbar: {
       title: "Edgar-DotNet",
       items: [
-        { to: "versions", label: "v1.0.6", position: "left" },
-        { to: "docs/introduction", label: "Docs", position: "right" },
+        { to: "versions", label: `v${latestVersion}`, position: "left" },
+        {
+          label: 'Docs',
+          to: 'docs', // "fake" link
+          position: 'right',
+          activeBaseRegex: `docs/(?!next/(support|team|resources))`,
+          items: [
+            {
+              label: versions[0],
+              to: 'docs/introduction',
+              activeBaseRegex: `docs/(?!${versions.join('|')}|next)`,
+            },
+            ...versions.slice(1).map((version) => ({
+              label: version,
+              to: `docs/${version}/introduction`,
+            })),
+            {
+              label: 'Master/Unreleased',
+              to: 'docs/next/introduction',
+              activeBaseRegex: `docs/next/(?!support|team|resources)`,
+            },
+          ],
+        },
         {
           href: "https://github.com/OndrejNepozitek/Edgar-DotNet/",
-          label: "GitHub",
+          label: "GitHub", 
           position: "right"
         }
       ]
@@ -69,7 +97,14 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/OndrejNepozitek/Edgar-DotNet/tree/docusaurus"
+          editUrl: "https://github.com/OndrejNepozitek/Edgar-DotNet/tree/docusaurus",
+          remarkPlugins: [
+            [
+              remarkBookmarks, { 
+                bookmarks: getBookmarks(),
+              }
+            ]
+          ],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")

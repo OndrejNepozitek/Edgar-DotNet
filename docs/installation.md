@@ -4,10 +4,8 @@ sidebar_label: Installation
 ---
 
 ### Prerequisites
-- .NET 4.6.1 installed
+- .NET Standard 2.0
 
-### Using the precompiled binaries on Windows
-Place all the DLLs next to the main exe file of your _.NET_ application and then include all dlls in your project to use the generator from your application.
+### Using Nuget
 
-### Compiling the source code
-Open the _MapGeneration.sln_ file in Visual Studio. Compile the _MapGeneration_ project to get the layout generator as a _DLL_.
+Download the latest version from [Nuget](https://www.nuget.org/packages/Edgar-DotNet).

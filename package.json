@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start": "node getApiUrls.js && docusaurus start",
+    "build": "node getApiUrls.js && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "version": "docusaurus docs:version",
-    "deploy": "docusaurus deploy"
+    "deploy": "node getApiUrls.js && docusaurus deploy"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.61",
@@ -15,7 +15,8 @@
     "classnames": "^2.2.6",
     "prismjs": "^1.19.0",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "remark-bookmarks": "^3.0.0"
   },
   "browserslist": {
     "production": [
