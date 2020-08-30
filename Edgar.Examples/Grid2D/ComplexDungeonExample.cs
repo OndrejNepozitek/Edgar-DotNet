@@ -8,20 +8,14 @@ using Edgar.Graphs;
 
 namespace Edgar.Examples.Grid2D
 {
-    public class RealLifeExample : IExampleGrid2D<RealLifeExample.Room>
+    public class ComplexDungeonExample : IExampleGrid2D<ComplexDungeonExample.Room>
     {
         #region no-clean
 
-        public string Name => "Real-life example";
-
-        public string DocsFileName => "real-life";
-
-        public string EntryPointMethod => nameof(GetLevelDescription);
-
         public ExampleOptions Options => new ExampleOptions()
         {
-            Name = "Real-life example",
-            DocsFileName = "real-life",
+            Name = "Complex dungeon setup",
+            DocsFileName = "complex-dungeon",
             EntryPointMethod = nameof(GetLevelDescription),
         };
 
@@ -55,7 +49,7 @@ namespace Edgar.Examples.Grid2D
 
             //md Below we can see a visualization of all the room templates:
 
-            //md ![](./real-life/room_templates.png)
+            //md ![](./complex-dungeon/room_templates.png)
 
             //md The last thing we have to do is to create a mapping from `RoomType` to its room templates.
 
@@ -64,7 +58,7 @@ namespace Edgar.Examples.Grid2D
             //md ## Corridor room templates
             //md We will use corridors of 3 different sizes:
 
-            //md ![](./real-life/corridor_room_templates.png)
+            //md ![](./complex-dungeon/corridor_room_templates.png)
 
             //md ## Graph of rooms
 

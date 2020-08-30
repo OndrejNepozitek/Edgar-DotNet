@@ -64,7 +64,7 @@ namespace Edgar.Examples
             GenerateExample(new BasicsExample());
             GenerateExample(new CorridorsExample());
             GenerateExample(new MinimumRoomDistanceExample());
-            GenerateExample(new RealLifeExample());
+            GenerateExample(new ComplexDungeonExample());
         }
 
         private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
