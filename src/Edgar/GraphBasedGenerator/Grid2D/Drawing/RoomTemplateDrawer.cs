@@ -9,9 +9,20 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     public class RoomTemplateDrawer : DungeonDrawerBase
     {
-        public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options)
+        public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options, List<Vector2Int> positions = null)
         {
             var configurations = GetRoomTemplateConfigurations(roomTemplates, options.Width.Value / (double) options.Height.Value, options);
+
+            if (positions != null)
+            {
+                configurations = new List<RoomTemplateConfiguration>();
+
+                for (var i = 0; i < roomTemplates.Count; i++)
+                {
+                    var roomTemplate = roomTemplates[i];
+                    configurations.Add(new RoomTemplateConfiguration(roomTemplate, positions[i]));
+                }
+            }
 
             var outlines = configurations.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
             var boundingBox = DrawingUtils.GetBoundingBox(outlines);
@@ -74,6 +85,59 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name, options.FontSize);
                 }
             }
+
+            shadePen.Dispose();
+            outlinePen.Dispose();
+
+            return bitmap;
+        }
+        
+        public Bitmap DrawRoomTemplates(List<PolygonGrid2D> polygons, DungeonDrawerOptions options)
+        {
+            var outlines = polygons;
+            var boundingBox = DrawingUtils.GetBoundingBox(outlines);
+            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+            var offset = DrawingUtils.GetOffset(boundingBox, width, height, scale);
+
+            bitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(bitmap);
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb(248, 248, 244)))
+            {
+                graphics.FillRectangle(brush, 0, 0, width, height);
+            }
+            
+            var outlinePen = new Pen(Color.FromArgb(50, 50, 50), 0.2f)
+            {
+                EndCap = LineCap.Round,
+                StartCap = LineCap.Round
+            };
+
+            var shadePen = new Pen(Color.FromArgb(204, 206, 206), 1.3f)
+            {
+                EndCap = LineCap.Round,
+                StartCap = LineCap.Round
+            };
+
+            graphics.TranslateTransform(offset.X, offset.Y);
+            graphics.ScaleTransform(scale, scale);
+
+            foreach (var polygon in polygons)
+            {
+                DrawRoomBackground(polygon);
+                DrawGrid(polygon);
+                DrawOutline(polygon, GetOutline(polygon, null), outlinePen);
+                // DrawDoors(roomTemplate);
+            }
+
+            //foreach (var roomTemplate in configurations)
+            //{
+            //    if (options.ShowRoomNames)
+            //    {
+            //        DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name, options.FontSize);
+            //    }
+            //}
 
             shadePen.Dispose();
             outlinePen.Dispose();

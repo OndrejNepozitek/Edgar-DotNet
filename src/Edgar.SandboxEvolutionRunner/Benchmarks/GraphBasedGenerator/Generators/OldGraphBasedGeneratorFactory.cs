@@ -44,6 +44,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 throw new ArgumentException("Default repeat mode not supported");
             }
 
+            if (levelDescription.UsePathfinding)
+            {
+                throw new ArgumentException("Pathfinding not supported");
+            }
+
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
             var layoutGenerator = new DungeonGenerator<TNode>(mapDescription, configuration);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
@@ -184,14 +185,14 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			var movingDecomposition = GetDecomposition(movingPolygon).Select(x => x.Rotate(rotation)).ToList();
 			var fixedDecomposition = GetDecomposition(fixedPolygon).Select(x => x.Rotate(rotation)).ToList();
 
-			var smallestX = movingDecomposition.Min(x => x.A.X);
-			var events = new List<Tuple<Vector2Int, bool>>();
+            var events = new List<Tuple<Vector2Int, bool>>();
 
-			// Compute the overlap for every rectangle in the decomposition of the moving polygon
+            // Compute the overlap for every rectangle in the decomposition of the moving polygon
 			foreach (var movingRectangle in movingDecomposition)
 			{
-				var newEvents = OverlapAlongLine(movingRectangle, fixedDecomposition, rotatedLine, movingRectangle.A.X - smallestX);
-				events = MergeEvents(events, newEvents, rotatedLine);
+				var newEvents = OverlapAlongLine(movingRectangle, fixedDecomposition, rotatedLine, movingRectangle.A.X);
+
+                events = MergeEvents(events, newEvents, rotatedLine);
 			}
 
 			if (reverse)
@@ -250,20 +251,35 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 
 			var events = new List<Tuple<Vector2Int, bool>>();
 
-			if (fixedRectangle.A.X - movingRectangle.Width - movingRectangleOffset  <= line.From.X)
-			{
-				events.Add(Tuple.Create(line.From, true));
-			}
+			if (fixedRectangle.A.X <= line.From.X + movingRectangle.Width + movingRectangleOffset)
+            {
+                var x = line.From.X;
+
+                if (x <= line.To.X)
+                {
+                    events.Add(Tuple.Create(line.From, true));
+                }
+            }
 
 			if (fixedRectangle.A.X > line.From.X + movingRectangle.Width + movingRectangleOffset)
 			{
-				events.Add(Tuple.Create(new Vector2Int(fixedRectangle.A.X - movingRectangle.Width + 1 - movingRectangleOffset, line.From.Y), true));
-			}
+                var x = fixedRectangle.A.X - movingRectangle.Width + 1 - movingRectangleOffset;
 
-			if (fixedRectangle.B.X - movingRectangleOffset < line.To.X)
-			{
-				events.Add(Tuple.Create(new Vector2Int(fixedRectangle.B.X - movingRectangleOffset, line.From.Y), false));
-			}
+                if (x <= line.To.X)
+                {
+                    events.Add(Tuple.Create(new Vector2Int(x, line.From.Y), true));
+                }
+            }
+
+			if (fixedRectangle.B.X < line.To.X + movingRectangleOffset)
+            {
+                var x = fixedRectangle.B.X - movingRectangleOffset;
+
+                if (x > line.From.X)
+                {
+                    events.Add(Tuple.Create(new Vector2Int(x, line.From.Y), false));
+                }
+            }
 
 			return events;
 		}
@@ -369,7 +385,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 				{
 					var pair = events1[counter1];
 
-					if (merged.Last().Item2 != pair.Item2)
+					if (merged.Count == 0 || merged.Last().Item2 != pair.Item2)
 					{
 						merged.Add(pair);
 					}
@@ -385,7 +401,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 				{
 					var pair = events2[counter2];
 
-					if (merged.Last().Item2 != pair.Item2)
+					if (merged.Count == 0 || merged.Last().Item2 != pair.Item2)
 					{
 						merged.Add(pair);
 					}

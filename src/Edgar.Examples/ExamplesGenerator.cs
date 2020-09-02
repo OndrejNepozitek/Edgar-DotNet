@@ -60,11 +60,13 @@ namespace Edgar.Examples
         {
             new SimpleExample().Run();
 
-            GenerateExample(new SaveLoadExample());
-            GenerateExample(new BasicsExample());
-            GenerateExample(new CorridorsExample());
-            GenerateExample(new MinimumRoomDistanceExample());
-            GenerateExample(new ComplexDungeonExample());
+            //GenerateExample(new SaveLoadExample());
+            //GenerateExample(new BasicsExample());
+            //GenerateExample(new CorridorsExample());
+            //GenerateExample(new MinimumRoomDistanceExample());
+            //GenerateExample(new ComplexDungeonExample());
+
+            GenerateExample(new PathfindingExample());
         }
 
         private void GenerateExample<TRoom>(IExampleGrid2D<TRoom> example)
@@ -177,9 +179,9 @@ namespace Edgar.Examples
                         bitmap.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.png"));
                     }
 
-                    var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
-                    var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
-                    summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
+                    //var summaryDrawer = new GeneratorSummaryDrawer<TRoom>();
+                    //var summary = summaryDrawer.Draw(levelDescription, 5000, generator);
+                    //summary.Save(Path.Combine(AssetsFolder, $"{resultsCounter}_summary.png"));
 
                     output.AppendLine();
                     output.AppendLine("<Gallery cols={2}>");

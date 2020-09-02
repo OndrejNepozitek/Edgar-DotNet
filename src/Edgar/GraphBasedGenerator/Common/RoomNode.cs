@@ -11,5 +11,10 @@
             Id = id;
             Room = room;
         }
+
+        public override string ToString()
+        {
+            return $"Room: {Room}, Id: {Id}";
+        }
     }
 }

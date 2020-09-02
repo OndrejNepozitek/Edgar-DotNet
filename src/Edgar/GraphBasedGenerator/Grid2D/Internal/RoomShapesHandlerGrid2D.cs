@@ -122,7 +122,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             foreach (var configuration in layout.GetAllConfigurations())
             {
-                if (configuration.Room.Equals(node))
+                // TODO: make better
+                if (configuration.Room.Equals(node) || mapDescription.GetRoomDescription(configuration.Room).IsCorridor)
                 {
                     continue;
                 }

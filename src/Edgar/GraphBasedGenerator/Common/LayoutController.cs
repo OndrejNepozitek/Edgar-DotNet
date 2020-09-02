@@ -5,7 +5,11 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.Constraints;
+using Edgar.GraphBasedGenerator.Common.Corridors;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
+using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
+using Edgar.GraphBasedGenerator.Grid2D.Internal;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.LayoutOperations.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
@@ -26,12 +30,13 @@ namespace Edgar.GraphBasedGenerator.Common
         private readonly ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator;
         private readonly bool throwIfRepeatModeNotSatisfied;
         private readonly IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces;
+        private readonly ICorridorsHandler<TLayout, TNode> corridorsHandler;
 
         public LayoutController(
             int averageSize,
             ILevelDescription<TNode> levelDescription,
             ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator,
-            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
+            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry, ICorridorsHandler<TLayout, TNode> corridorsHandler)
             : base(averageSize,
             levelDescription,
             roomShapesHandler,
@@ -40,6 +45,7 @@ namespace Edgar.GraphBasedGenerator.Common
             this.constraintsEvaluator = constraintsEvaluator;
             this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
             this.simpleConfigurationSpaces = simpleConfigurationSpaces;
+            this.corridorsHandler = corridorsHandler;
         }
 
         /// <summary>
@@ -250,11 +256,29 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// <returns></returns>
 		public override bool TryCompleteChain(TLayout layout, IList<TNode> chain)
 		{
-			if (AddCorridors(layout, chain))
-			{
-				UpdateLayout(layout);
-				return true;
-			}
+            if (corridorsHandler == null)
+            {
+                if (AddCorridors(layout, chain))
+                {
+                    UpdateLayout(layout);
+                    return true;
+                }
+            }
+            else
+            {
+                if (corridorsHandler.AddCorridors(layout, chain))
+                {
+                    UpdateLayout(layout);
+
+                    // TODO: remove later
+                    //if (!IsLayoutValid(layout))
+                    //{
+                    //    throw new ArgumentException();
+                    //}
+
+                    return true;
+                }
+            }
 
 			return false;
 		}

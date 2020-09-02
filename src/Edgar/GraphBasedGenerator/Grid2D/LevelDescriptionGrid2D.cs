@@ -27,6 +27,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </remarks>
         public int MinimumRoomDistance { get; set; } = 0;
 
+        public bool UsePathfinding { get; set; } = false;
+
         /// <summary>
         /// Default room template repeat mode that is used if there is no repeat mode specified on the room template itself.
         /// </summary>

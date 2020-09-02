@@ -55,6 +55,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
             levelDescription.MinimumRoomDistance = 0;
+            levelDescription.RoomTemplateRepeatModeDefault = null;
 
             var graph = namedGraph.Graph;
 

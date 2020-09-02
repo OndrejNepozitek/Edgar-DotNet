@@ -307,6 +307,40 @@ namespace GeneralAlgorithms.Tests.Algorithms.Polygons
 			Assert.IsTrue(expected.SequenceEqual(result));
 		}
 
+        [Test]
+        public void OverlapAlongLine_SquareAndL4()
+        {
+            var p1 = PolygonGrid2D.GetSquare(6) + new Vector2Int(1, 0);
+            var p2 = GetLShape();
+            var line = new OrthogonalLineGrid2D(new Vector2Int(-2, 3), new Vector2Int(5, 3));
+
+            var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+            var expected = new List<Tuple<Vector2Int, bool>>()
+            {
+                Tuple.Create(new Vector2Int(-2, 3), true),
+                Tuple.Create(new Vector2Int(2, 3), false),
+            };
+
+            Assert.IsTrue(expected.SequenceEqual(result));
+        }
+
+        //[Test]
+        //public void OverlapAlongLine5()
+        //{
+        //    var p1 = new PolygonGrid2DBuilder().AddPoint(0,2).AddPoint(1, 2).AddPoint(1,1).AddPoint(5, 1).AddPoint(5, 4).AddPoint(6, 4).AddPoint(6, 0).AddPoint(0, 0).Build();
+        //    var p2 = PolygonGrid2D.GetRectangle(6, 10);
+        //    var line = new OrthogonalLineGrid2D(new Vector2Int(1, -2), new Vector2Int(4, -2));
+
+        //    var result = polygonOverlap.OverlapAlongLine(p1, p2, line);
+        //    var expected = new List<Tuple<Vector2Int, bool>>()
+        //    {
+        //        Tuple.Create(new Vector2Int(-2, 3) + new Vector2Int(1, 0), true),
+        //        Tuple.Create(new Vector2Int(3, 3) + new Vector2Int(1, 0), false),
+        //    };
+
+        //    Assert.IsTrue(expected.SequenceEqual(result));
+        //}
+
 		[Test]
 		public void OverlapAlongLine_SquareAndL2()
 		{

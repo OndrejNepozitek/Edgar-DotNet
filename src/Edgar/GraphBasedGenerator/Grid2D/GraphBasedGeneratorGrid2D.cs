@@ -10,6 +10,7 @@ using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
 using Edgar.GraphBasedGenerator.Grid2D.Internal;
+using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Constraints.Interfaces;
@@ -210,8 +211,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 levelDescription.RoomTemplateRepeatModeDefault
             );
 
+            var corridorsHandler = new PathfindingCorridorsHandlerGrid2D<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped, intAliasMapping.Values.Max(x => x.Alias) + 1);
+
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
+            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, levelDescription.UsePathfinding ? corridorsHandler : null);
 
             var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
             var layoutConverter =
