@@ -9,7 +9,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     public class RoomTemplateDrawer : DungeonDrawerBase
     {
-        public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options, List<Vector2Int> positions = null)
+        public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options, List<Vector2Int> positions = null, bool showOrigin = false)
         {
             var configurations = GetRoomTemplateConfigurations(roomTemplates, options.Width.Value / (double) options.Height.Value, options);
 
@@ -50,8 +50,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 StartCap = LineCap.Round
             };
 
-            graphics.TranslateTransform(offset.X, offset.Y);
+            graphics.TranslateTransform(offset.X, height - offset.Y);
             graphics.ScaleTransform(scale, scale);
+            graphics.ScaleTransform(1, -1);
 
             if (options.EnableShading)
             {
@@ -84,6 +85,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 {
                     DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name, options.FontSize);
                 }
+            }
+
+            if (showOrigin)
+            {
+                var radius = 0.33f;
+                graphics.DrawEllipse(outlinePen, -radius, -radius, 2 * radius, 2 * radius);
             }
 
             shadePen.Dispose();
@@ -145,7 +152,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return bitmap;
         }
 
-        private void DrawDoors(RoomTemplateConfiguration configuration)
+        protected void DrawDoors(RoomTemplateConfiguration configuration)
         {
             var roomTemplate = configuration.RoomTemplate;
             var position = configuration.Position;
@@ -390,7 +397,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return rows;
         }
 
-        private class RoomTemplateConfiguration
+        protected class RoomTemplateConfiguration
         {
             public RoomTemplateGrid2D RoomTemplate { get; }
 
