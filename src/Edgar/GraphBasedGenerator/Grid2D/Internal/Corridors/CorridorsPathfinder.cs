@@ -31,10 +31,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             var fromDoors = fromConfiguration.RoomShape.DoorLines;
             var toDoors = toConfiguration.RoomShape.DoorLines;
 
-            if (fromDoors.Any(x => x.Length != 1) || toDoors.Any(x => x.Length != 1))
-            {
-                throw new ArgumentException("Only door length 1 is currently supported");
-            }
+            //if (fromDoors.Any(x => x.Length != 1) || toDoors.Any(x => x.Length != 1))
+            //{
+            //    throw new ArgumentException("Only door length 1 is currently supported");
+            //}
 
             if (fromDoors.Any(x => x.DoorSocket != null) || toDoors.Any(x => x.DoorSocket != null))
             {
@@ -44,10 +44,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             tilemap = GetTilemap(layout);
 
             var fromDoorMapping = fromDoors
+                .Where(IsDoorCorrectLength)
                 .Select(x => x.Line + fromConfiguration.Position)
                 .SelectMany(x => GetModifiedDoorLine(x).GetPoints().Select(y => (x, y)))
                 .ToDictionary(x => x.y, x => x.x);
             var toDoorMapping = toDoors
+                .Where(IsDoorCorrectLength)
                 .Select(x => x.Line + toConfiguration.Position)
                 .SelectMany(x => GetModifiedDoorLine(x).GetPoints().Select(y => (x, y)))
                 .ToDictionary(x => x.y, x => x.x);
@@ -64,6 +66,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             corridor.Costs = costs;
 
             return corridor;
+        }
+
+        private bool IsDoorCorrectLength(DoorLineGrid2D doorLine)
+        {
+            if (doorLine.Line.GetDirectionVector().X != 0)
+            {
+                return doorLine.Length == corridorShape.Width;
+            }
+
+            return doorLine.Length == corridorShape.Height;
         }
 
         private (List<Vector2Int> path, Dictionary<Vector2Int, int> costs) FindPath(List<Vector2Int> startPoints, List<Vector2Int> goalPoints, Dictionary<Vector2Int, OrthogonalLineGrid2D> fromDoorMapping, Dictionary<Vector2Int, OrthogonalLineGrid2D> toDoorMapping)
@@ -246,7 +258,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
         private DoorGrid2D GetDoor(Vector2Int from, OrthogonalLineGrid2D line, Vector2Int diff)
         {
             from += -1 * diff;
-            var to = from + line.GetDirectionVector();
+
+            var length = line.GetDirectionVector().X != 0 ? corridorShape.Width : corridorShape.Height;
+
+
+            var to = from + length * line.GetDirectionVector();
 
             return new DoorGrid2D(from, to);
         }
@@ -282,13 +298,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             switch (line.GetDirection())
             {
                 case OrthogonalLineGrid2D.Direction.Bottom:
-                    return line + new Vector2Int(0, -1);
+                    return line + new Vector2Int(0, -corridorShape.Height);
 
                 case OrthogonalLineGrid2D.Direction.Left:
-                    return line + new Vector2Int(-1, -1);
+                    return line + new Vector2Int(-corridorShape.Width, -corridorShape.Height);
 
                 case OrthogonalLineGrid2D.Direction.Top:
-                    return line + new Vector2Int(-1, 0);
+                    return line + new Vector2Int(-corridorShape.Width, 0);
 
                 case OrthogonalLineGrid2D.Direction.Right:
                     return line;
@@ -339,9 +355,19 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             foreach (var point in points)
             {
                 list.Add(point);
-                list.Add(point + new Vector2Int(-1, 0));
-                list.Add(point + new Vector2Int(-1, -1));
-                list.Add(point + new Vector2Int(0, -1));
+
+                for (int i = 1; i <= corridorShape.Width; i++)
+                {
+                    list.Add(point + new Vector2Int(-i, 0));
+
+                    for (int j = 1; j <= corridorShape.Height; j++)
+                    {
+                        list.Add(point + new Vector2Int(-i, -j));
+
+                        // TODO: not optimal, added multiple times
+                        list.Add(point + new Vector2Int(0, -j));
+                    }
+                }
             }
 
             foreach (var point in list)
