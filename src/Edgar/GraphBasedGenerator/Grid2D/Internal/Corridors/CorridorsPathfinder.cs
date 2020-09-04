@@ -16,11 +16,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
         private readonly RectangleGrid2D corridorShape;
         private ITilemap<Vector2Int> tilemap;
         private readonly int minimumRoomDistance;
+        private readonly DoorGrid2D horizontalDoor;
+        private readonly DoorGrid2D verticalDoor;
 
-        public CorridorsPathfinder(int corridorWidth, int corridorHeight, int minimumRoomDistance)
+        public CorridorsPathfinder(int corridorWidth, int corridorHeight, int minimumRoomDistance, DoorGrid2D horizontalDoor, DoorGrid2D verticalDoor)
         {
             this.corridorShape = new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(corridorWidth, corridorHeight));
             this.minimumRoomDistance = minimumRoomDistance;
+            this.horizontalDoor = horizontalDoor ?? new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(corridorWidth, 0));
+            this.verticalDoor = verticalDoor ?? new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, corridorHeight));
         }
 
         public PathfindingResult FindPath(TLayout layout, TRoom fromRoom, TRoom toRoom)
@@ -59,11 +63,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             // No path was found
             if (path == null)
             {
-                return null;
+                var result = new PathfindingResult(false, null, null, null);
+                result.Costs = costs;
+                result.Tilemap = tilemap;
+
+                return result;
             }
 
             var corridor = GetCorridorFromPath(path, fromDoorMapping[path[0]], toDoorMapping[path.Last()]);
             corridor.Costs = costs;
+            corridor.Tilemap = tilemap;
 
             return corridor;
         }
@@ -72,10 +81,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
         {
             if (doorLine.Line.GetDirectionVector().X != 0)
             {
-                return doorLine.Length == corridorShape.Width;
+                return doorLine.Length == horizontalDoor.GetLine().Length;
             }
 
-            return doorLine.Length == corridorShape.Height;
+            return doorLine.Length == verticalDoor.GetLine().Length;
         }
 
         private (List<Vector2Int> path, Dictionary<Vector2Int, int> costs) FindPath(List<Vector2Int> startPoints, List<Vector2Int> goalPoints, Dictionary<Vector2Int, OrthogonalLineGrid2D> fromDoorMapping, Dictionary<Vector2Int, OrthogonalLineGrid2D> toDoorMapping)
@@ -252,14 +261,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             var startDoor = GetDoor(path[0], fromDoorLine, fromDiff);
             var endDoor = GetDoor(path[path.Count - 1], toDoorLine, toDiff);
 
-            return new PathfindingResult(polygon, startDoor, endDoor);
+            return new PathfindingResult(true, polygon, startDoor, endDoor);
         }
 
         private DoorGrid2D GetDoor(Vector2Int from, OrthogonalLineGrid2D line, Vector2Int diff)
         {
             from += -1 * diff;
 
-            var length = line.GetDirectionVector().X != 0 ? corridorShape.Width : corridorShape.Height;
+            var length = line.GetDirectionVector().X != 0 ? horizontalDoor.GetLine().Length : verticalDoor.GetLine().Length;
 
 
             var to = from + length * line.GetDirectionVector();
@@ -298,16 +307,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             switch (line.GetDirection())
             {
                 case OrthogonalLineGrid2D.Direction.Bottom:
-                    return line + new Vector2Int(0, -corridorShape.Height);
+                    return line + new Vector2Int(0, -corridorShape.Height + verticalDoor.From.Y);
 
                 case OrthogonalLineGrid2D.Direction.Left:
-                    return line + new Vector2Int(-corridorShape.Width, -corridorShape.Height);
+                    return line + new Vector2Int(-corridorShape.Width + horizontalDoor.From.X, -corridorShape.Height);
 
                 case OrthogonalLineGrid2D.Direction.Top:
-                    return line + new Vector2Int(-corridorShape.Width, 0);
+                    return line + new Vector2Int(-corridorShape.Width, -verticalDoor.From.Y);
 
                 case OrthogonalLineGrid2D.Direction.Right:
-                    return line;
+                    return line + new Vector2Int(-horizontalDoor.From.X, 0);
 
                 default:
                     throw new ArgumentException();
@@ -335,15 +344,120 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
                 var perpendicularOutside = line.GetDirectionVector().RotateAroundCenter(270);
                 var doubleWall = line + line.GetDirectionVector().RotateAroundCenter(90);
 
-                if (doubleWall.Length > 2)
-                {
-                    AddPointsToTilemap(tilemap, doubleWall.Shrink(1, 1).GetPoints());
-                }
+                //if (doubleWall.Length > 2)
+                //{
+                //    var smaller = doubleWall.Shrink(1, 1);
+                //    AddPointsToTilemap(tilemap, smaller.GetPoints());
+                //}
+
+                //AddPointsToTilemap(tilemap, line.GetPoints());
+
+                AddLineToTilemap(tilemap, line);
                 
-                for (int i = 0; i < minimumRoomDistance; i++)
+                //for (int i = 0; i < minimumRoomDistance; i++)
+                //{
+                //    var wall = line + i * perpendicularOutside;
+                //    AddPointsToTilemap(tilemap, wall.GetPoints());
+                //}
+            }
+        }
+
+        private void AddLineToTilemap(ITilemap<Vector2Int> tilemap, OrthogonalLineGrid2D line)
+        {
+            var points = new List<Vector2Int>();
+
+            if (line.GetDirection() == OrthogonalLineGrid2D.Direction.Top)
+            {
+                var offsetDirection = new Vector2Int(-1, -1);
+
+                var from = line.From + offsetDirection.ElementWiseProduct(corridorShape.B) + (minimumRoomDistance - 1) * offsetDirection;
+                var to = line.To + new Vector2Int(0, minimumRoomDistance - 1);
+
+                points.AddRange(GetRectanglePoints(from, to));
+            } 
+            else if (line.GetDirection() == OrthogonalLineGrid2D.Direction.Bottom)
+            {
                 {
-                    var wall = line + i * perpendicularOutside;
-                    AddPointsToTilemap(tilemap, wall.GetPoints());
+                    var offsetDirection = new Vector2Int(-1, -1);
+
+                    var from = line.To + offsetDirection.ElementWiseProduct(corridorShape.B) + (minimumRoomDistance - 1) * offsetDirection;
+                    var to = line.From + new Vector2Int(minimumRoomDistance - 1, minimumRoomDistance - 1);
+
+                    points.AddRange(GetRectanglePoints(from, to));
+                }
+
+                {
+                    var from = line.To + new Vector2Int(-1, 0);
+                    var to = line.From + new Vector2Int(-1, -1);
+
+                    points.AddRange(GetRectanglePoints(from, to));
+                }
+
+            }
+            else if (line.GetDirection() == OrthogonalLineGrid2D.Direction.Right)
+            {
+                if (minimumRoomDistance > 0)
+                {
+                    var from = line.From + new Vector2Int(0, -1);
+                    var to = line.To + new Vector2Int(0, minimumRoomDistance - 1);
+
+                    points.AddRange(GetRectanglePoints(from, to));
+                }
+
+                {
+                    var from = line.From + new Vector2Int(0, -1);
+                    var to = line.To + new Vector2Int(-1, -1);
+
+                    points.AddRange(GetRectanglePoints(from, to));
+                }
+            }
+            else if (line.GetDirection() == OrthogonalLineGrid2D.Direction.Left)
+            {
+                var from = line.To + new Vector2Int(0, - corridorShape.Height - minimumRoomDistance + 1);
+                var to = line.From + new Vector2Int(-1, 0);
+
+                points.AddRange(GetRectanglePoints(from, to));
+            }
+
+            
+            foreach (var point in points)
+            {
+                tilemap.AddPoint(point);
+            }
+
+            List<Vector2Int> GetRectanglePoints(Vector2Int from, Vector2Int to)
+            {
+                var rectanglePoints = new List<Vector2Int>();
+
+                for (int i = 0; i <= to.X - from.X; i++)
+                {
+                    for (int j = 0; j <=  to.Y - from.Y; j++)
+                    {
+                        rectanglePoints.Add(from + new Vector2Int(i, j));
+                    }
+                }
+
+                return rectanglePoints;
+            }
+
+            Vector2Int GetOffset()
+            {
+                switch (line.GetDirection())
+                {
+                    case OrthogonalLineGrid2D.Direction.Bottom:
+                        return new Vector2Int(0, -corridorShape.Height) + new Vector2Int(minimumRoomDistance, -minimumRoomDistance);
+
+                    case OrthogonalLineGrid2D.Direction.Left:
+                        return new Vector2Int(-corridorShape.Width, -corridorShape.Height) + new Vector2Int(-minimumRoomDistance, -minimumRoomDistance);
+
+                    case OrthogonalLineGrid2D.Direction.Top:
+                        return new Vector2Int(-corridorShape.Width, -corridorShape.Height);
+
+                    case OrthogonalLineGrid2D.Direction.Right:
+                        return new Vector2Int(-horizontalDoor.From.X, 0);
+
+                    default:
+                        throw new ArgumentException();
                 }
             }
         }
@@ -354,18 +468,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
             foreach (var point in points)
             {
-                list.Add(point);
-
-                for (int i = 1; i <= corridorShape.Width; i++)
+                for (int i = 1; i <= corridorShape.Width + minimumRoomDistance - 1; i++)
                 {
-                    list.Add(point + new Vector2Int(-i, 0));
-
-                    for (int j = 1; j <= corridorShape.Height; j++)
-                    {
+                    for (int j = 1; j <= corridorShape.Height + minimumRoomDistance - 1; j++)
+                    { 
                         list.Add(point + new Vector2Int(-i, -j));
-
-                        // TODO: not optimal, added multiple times
-                        list.Add(point + new Vector2Int(0, -j));
                     }
                 }
             }
@@ -380,6 +487,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
         public class PathfindingResult
         {
+            public bool IsSuccessful { get; }
+
             public PolygonGrid2D Outline { get; }
 
             public DoorGrid2D DoorFrom { get; }
@@ -388,11 +497,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
             public Dictionary<Vector2Int, int> Costs { get; set; }
 
-            public PathfindingResult(PolygonGrid2D outline, DoorGrid2D doorFrom, DoorGrid2D doorTo)
+            public ITilemap<Vector2Int> Tilemap { get; set; }
+
+            public PathfindingResult(bool isSuccessful, PolygonGrid2D outline, DoorGrid2D doorFrom, DoorGrid2D doorTo)
             {
                 Outline = outline;
                 DoorFrom = doorFrom;
                 DoorTo = doorTo;
+                IsSuccessful = isSuccessful;
             }
         }
     }

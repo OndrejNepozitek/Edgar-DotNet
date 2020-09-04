@@ -52,6 +52,32 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
         }
 
         [Test]
+        public void SquareAndThinRectangle_NextToEachOther_NoObstacles()
+        {
+            var config = new Config(1, 1, 0);
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var rectangle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(1, 3), new SimpleDoorModeGrid2D(1, 1));
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, rectangle, new Vector2Int(7, 0)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(3, 1)
+                    .AddPoint(3, 2)
+                    .AddPoint(7, 2)
+                    .AddPoint(7, 1)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2)),
+                new DoorGrid2D(new Vector2Int(7, 2), new Vector2Int(7, 1))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
         public void TwoSquares_NextToEachOther_NoObstacles_WidthTwo()
         {
             var config = new Config(2, 2, 0);
@@ -71,6 +97,43 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     .Build(),
                 new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 3)),
                 new DoorGrid2D(new Vector2Int(7, 1), new Vector2Int(7, 3))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_SmallObstacle_WidthTwo()
+        {
+            var config = new Config(2, 2, 0);
+
+            var square1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 3))
+            }));
+            var square2 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 3))
+            }));
+            var obstacle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(1, 10),  new SimpleDoorModeGrid2D(1, 3));
+
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square1, new Vector2Int(0, 0)),
+                GetConfiguration(1, square2, new Vector2Int(10, 0)),
+                GetConfiguration(2, obstacle, new Vector2Int(9, -6)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(1, 4)
+                    .AddPoint(1, 6)
+                    .AddPoint(13, 6)
+                    .AddPoint(13, 4)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(11, 4), new Vector2Int(13, 4))
             );
 
             CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
@@ -99,6 +162,38 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     .AddPoint(13, 3)
                     .AddPoint(12, 3)
                     .AddPoint(12, 4)
+                    .AddPoint(2, 4)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(2, 3), new Vector2Int(1, 3)),
+                new DoorGrid2D(new Vector2Int(13, 3), new Vector2Int(12, 3))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_WithObstacle_CustomDoor()
+        {
+            var config = new Config(2, 1, 0, horizontalDoor: new DoorGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)));
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var rectangle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(2, 10), new SimpleDoorModeGrid2D(1, 1));
+
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, square, new Vector2Int(11, 0)),
+                GetConfiguration(2, rectangle, new Vector2Int(6, -6)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(2, 3)
+                    .AddPoint(0, 3)
+                    .AddPoint(0,5)
+                    .AddPoint(13, 5)
+                    .AddPoint(13, 3)
+                    .AddPoint(11, 3)
+                    .AddPoint(11, 4)
                     .AddPoint(2, 4)
                     .Build(),
                 new DoorGrid2D(new Vector2Int(2, 3), new Vector2Int(1, 3)),
@@ -174,7 +269,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
         [Test]
         public void TwoSquares_NextToEachOther_WithObstacle_MinimumRoomDistanceOne()
         {
-            var config = new Config(1, 1, 0);
+            var config = new Config(1, 1, 1);
 
             var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
             var rectangle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(2, 10), new SimpleDoorModeGrid2D(1, 1));
@@ -203,42 +298,6 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod(), true);
         }
 
-        //private void CheckResult(CorridorsPathfinder<Layout, int, Configuration> pathfinder, List<Configuration> configurations, int fromRoom, int toRoom, CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult expectedResult, string name, bool addRotations = true)
-        //{
-        //    var rotations = addRotations ? new List<int>() {0, 90, 180, 270} : new List<int>(){0};
-        //    var layout = new Layout(configurations);
-
-        //    foreach (var rotation in rotations)
-        //    {
-        //        var transformedLayout = GetTransformedLayout(layout, rotation);
-        //        var expectedResultRotated = expectedResult == null ? null : GetTransformedResult(expectedResult, rotation);
-
-        //        if (expectedResult != null)
-        //        {
-        //            SaveImage(transformedLayout, expectedResultRotated, $"{name}_{rotation}_0_expected");
-        //        }
-
-        //        var result = pathfinder.FindPath(transformedLayout, fromRoom, toRoom);
-
-        //        if (result != null)
-        //        {
-        //            SaveImage(transformedLayout, result, $"{name}_{rotation}_1_actual");
-        //        }
-
-        //        if (expectedResult == null)
-        //        {
-        //            Assert.That(result, Is.Null);
-        //        }
-        //        else
-        //        {
-        //            Assert.That(result, Is.Not.Null);
-        //            Assert.That(result.Outline.GetPoints(), Is.EquivalentTo(expectedResultRotated.Outline.GetPoints()));
-        //            Assert.That(new List<Vector2Int>() { result.DoorFrom.From, result.DoorFrom.To }, Is.EquivalentTo(new List<Vector2Int>() { expectedResultRotated.DoorFrom.From, expectedResultRotated.DoorFrom.To }));
-        //            Assert.That(new List<Vector2Int>() { result.DoorTo.From, result.DoorTo.To }, Is.EquivalentTo(new List<Vector2Int>() { expectedResultRotated.DoorTo.From, expectedResultRotated.DoorTo.To }));
-        //        }
-        //    }
-        //}
-
         private void CheckResult(Config config, List<Configuration> configurations, int fromRoom, int toRoom, CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult expectedResult, string name, bool addRotations = true)
         {
             var rotations = addRotations ? new List<int>() {0, 90, 180, 270} : new List<int>(){0};
@@ -249,18 +308,12 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                 var transformedLayout = GetTransformedLayout(layout, rotation);
                 var expectedResultRotated = expectedResult == null ? null : GetTransformedResult(expectedResult, rotation);
 
-                if (expectedResult != null)
-                {
-                    SaveImage(transformedLayout, expectedResultRotated, $"{name}_{rotation}_0_expected");
-                }
+                SaveImage(transformedLayout, expectedResultRotated, $"{name}_{rotation}_0_expected");
 
                 var pathfinder = config.Rotate(rotation).GetPathfinder();
                 var result = pathfinder.FindPath(transformedLayout, fromRoom, toRoom);
 
-                if (result != null)
-                {
-                    SaveImage(transformedLayout, result, $"{name}_{rotation}_1_actual");
-                }
+                SaveImage(transformedLayout, result, $"{name}_{rotation}_1_actual");
 
                 if (expectedResult == null)
                 {
@@ -269,6 +322,8 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                 else
                 {
                     Assert.That(result, Is.Not.Null);
+                    Assert.That(result.IsSuccessful, Is.True);
+
                     Assert.That(result.Outline.GetPoints(), Is.EquivalentTo(expectedResultRotated.Outline.GetPoints()));
                     Assert.That(new List<Vector2Int>() { result.DoorFrom.From, result.DoorFrom.To }, Is.EquivalentTo(new List<Vector2Int>() { expectedResultRotated.DoorFrom.From, expectedResultRotated.DoorFrom.To }));
                     Assert.That(new List<Vector2Int>() { result.DoorTo.From, result.DoorTo.To }, Is.EquivalentTo(new List<Vector2Int>() { expectedResultRotated.DoorTo.From, expectedResultRotated.DoorTo.To }));
@@ -305,7 +360,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var doorFrom = new DoorGrid2D(expectedResult.DoorFrom.From.RotateAroundCenter(rotation), expectedResult.DoorFrom.To.RotateAroundCenter(rotation));
             var doorTo = new DoorGrid2D(expectedResult.DoorTo.From.RotateAroundCenter(rotation), expectedResult.DoorTo.To.RotateAroundCenter(rotation));
 
-            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(expectedResult.Outline.Rotate(rotation), doorFrom, doorTo);
+            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(expectedResult.IsSuccessful, expectedResult.Outline.Rotate(rotation), doorFrom, doorTo);
         }
 
         private RoomTemplateGrid2D RotateRoomTemplate(RoomTemplateGrid2D roomTemplate, int rotation)
@@ -332,17 +387,19 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                 positions.Add(configuration.Position);   
             }
 
-            var corridorRoomTemplate = new RoomTemplateGrid2D(
-                outline: result.Outline,
-                doors: new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-                {
-                    result.DoorFrom,
-                    result.DoorTo,
-                })
-            );
-
-            roomTemplates.Add(corridorRoomTemplate);
-            positions.Add(new Vector2Int());
+            if (result != null && result.IsSuccessful)
+            {
+                var corridorRoomTemplate = new RoomTemplateGrid2D(
+                    outline: result.Outline,
+                    doors: new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+                    {
+                        result.DoorFrom,
+                        result.DoorTo,
+                    })
+                );
+                roomTemplates.Add(corridorRoomTemplate);
+                positions.Add(new Vector2Int());
+            }
 
             Directory.CreateDirectory("tests");
             var roomTemplateDrawer = new CustomDrawer();
@@ -352,7 +409,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                 Height = 2000,
                 ShowRoomNames = false,
                 EnableHatching = false,
-            }, positions, null).Save(Path.Combine("tests", $"{name}.png"));
+            }, positions, null, null).Save(Path.Combine("tests", $"{name}.png"));
 
             if (result.Costs != null)
             {
@@ -363,7 +420,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     ShowRoomNames = false,
                     EnableHatching = false,
                     PaddingPercentage = 0.3f,
-                }, positions, result.Costs).Save(Path.Combine("tests", $"{name}_costs.png"));
+                }, positions, result.Costs, result.Tilemap).Save(Path.Combine("tests", $"{name}_costs.png"));
             }
         }
 
@@ -378,7 +435,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
 
         private CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult GetExpectedResult(PolygonGrid2D outline, DoorGrid2D fromDoor, DoorGrid2D toDoor)
         {
-            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(outline, fromDoor, toDoor);
+            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(true, outline, fromDoor, toDoor);
         }
 
         private static Configuration GetConfiguration(int room, RoomTemplateGrid2D roomTemplate, Vector2Int position)
@@ -399,11 +456,17 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
 
             public int MinimumRoomDistance { get; }
 
-            public Config(int corridorWidth, int corridorHeight, int minimumRoomDistance)
+            public DoorGrid2D HorizontalDoor { get; }
+
+            public DoorGrid2D VerticalDoor { get; }
+
+            public Config(int corridorWidth, int corridorHeight, int minimumRoomDistance, DoorGrid2D horizontalDoor = null, DoorGrid2D verticalDoor = null)
             {
                 CorridorWidth = corridorWidth;
                 CorridorHeight = corridorHeight;
                 MinimumRoomDistance = minimumRoomDistance;
+                HorizontalDoor = horizontalDoor;
+                VerticalDoor = verticalDoor;
             }
 
             public Config Rotate(int degrees)
@@ -413,12 +476,19 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     return this;
                 }
 
-                return new Config(CorridorHeight, CorridorWidth, MinimumRoomDistance);
+                var horizontalDoor = VerticalDoor == null
+                    ? null
+                    : new DoorGrid2D(new Vector2Int(VerticalDoor.From.Y, 0), new Vector2Int(VerticalDoor.To.Y, 0));
+                var verticalDoor = HorizontalDoor == null
+                    ? null
+                    : new DoorGrid2D(new Vector2Int(0, HorizontalDoor.From.X), new Vector2Int(0, HorizontalDoor.To.X));
+
+                return new Config(CorridorHeight, CorridorWidth, MinimumRoomDistance, horizontalDoor, verticalDoor);
             }
 
             public CorridorsPathfinder<Layout, int, Configuration> GetPathfinder()
             {
-                return new CorridorsPathfinder<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance);
+                return new CorridorsPathfinder<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance, HorizontalDoor, VerticalDoor);
             }
         }
 
@@ -472,7 +542,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
         public class CustomDrawer : RoomTemplateDrawer
         {
             public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options,
-                List<Vector2Int> positions, Dictionary<Vector2Int, int> costs)
+                List<Vector2Int> positions, Dictionary<Vector2Int, int> costs, ITilemap<Vector2Int> tilemap)
             {
             var configurations = new List<RoomTemplateConfiguration>();
 
@@ -549,6 +619,22 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             {
                 var radius = 0.33f;
                 graphics.DrawEllipse(outlinePen, -radius, -radius, 2 * radius, 2 * radius);
+            }
+
+            if (tilemap != null)
+            {
+                var radius = 0.05f;
+
+                var tilemapPen = new Pen(Color.Red, 0.2f)
+                {
+                    EndCap = LineCap.Round,
+                    StartCap = LineCap.Round
+                };
+
+                foreach (var point in tilemap.GetPoints())
+                {
+                    graphics.DrawEllipse(tilemapPen, point.X - radius, point.Y - radius, 2 * radius, 2 * radius);
+                }
             }
 
             if (costs != null)

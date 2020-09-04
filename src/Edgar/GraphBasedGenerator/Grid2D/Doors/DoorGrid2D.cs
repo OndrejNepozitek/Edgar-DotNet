@@ -32,5 +32,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             To = to;
             Socket = socket;
         }
+
+        /// <summary>
+        /// Gets a line from the From point to the To point.
+        /// </summary>
+        /// <returns></returns>
+        public OrthogonalLineGrid2D GetLine()
+        {
+            return new OrthogonalLineGrid2D(From, To);
+        }
     }
 }
