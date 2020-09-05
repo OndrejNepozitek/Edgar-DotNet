@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Graphs;
 
 namespace Edgar.Examples.Grid2D
@@ -39,11 +40,11 @@ namespace Edgar.Examples.Grid2D
                 }
             );
             var corridorRoomTemplateLonger = new RoomTemplateGrid2D(
-                PolygonGrid2D.GetRectangle(4, 1),
+                PolygonGrid2D.GetRectangle(10, 1),
                 new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                     {
                         new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
-                        new DoorGrid2D(new Vector2Int(4, 0), new Vector2Int(4, 1))
+                        new DoorGrid2D(new Vector2Int(10, 0), new Vector2Int(10, 1))
                     }
                 ),
                 allowedTransformations: new List<TransformationGrid2D>()
@@ -60,8 +61,22 @@ namespace Edgar.Examples.Grid2D
             var basicRoomDescription = GetBasicRoomDescription();
             var levelDescription = new LevelDescriptionGrid2D<int>();
             var graph = new UndirectedAdjacencyListGraph<int>();
-            graph.AddVerticesRange(0, 2);
+
+            graph.AddVerticesRange(0, 13);
+
             graph.AddEdge(0, 1);
+            graph.AddEdge(0, 2);
+            graph.AddEdge(0, 8);
+            graph.AddEdge(1, 3);
+            graph.AddEdge(1, 4);
+            graph.AddEdge(1, 5);
+            graph.AddEdge(2, 6);
+            graph.AddEdge(2, 7);
+            graph.AddEdge(5, 9);
+            graph.AddEdge(6, 9);
+            graph.AddEdge(8, 10);
+            graph.AddEdge(8, 11);
+            graph.AddEdge(8, 12);
 
             foreach (var room in graph.Vertices)
             {
@@ -120,8 +135,10 @@ namespace Edgar.Examples.Grid2D
         public IEnumerable<LevelDescriptionGrid2D<int>> GetResults()
         {
             var levelDescription = GetLevelDescription();
-            levelDescription = new CorridorsExample().GetLevelDescription();
+            // levelDescription = new CorridorsExample().GetLevelDescription();
             levelDescription.UsePathfinding = true;
+            levelDescription.PathfindingConfiguration = new CorridorsPathfindingConfiguration(1, 1);
+            levelDescription.MinimumRoomDistance = 1;
 
             yield return levelDescription;
 

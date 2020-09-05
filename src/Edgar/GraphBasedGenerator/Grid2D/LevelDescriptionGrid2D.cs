@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,6 +29,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         public int MinimumRoomDistance { get; set; } = 0;
 
         public bool UsePathfinding { get; set; } = false;
+
+        public CorridorsPathfindingConfiguration PathfindingConfiguration { get; set; } = null;
 
         /// <summary>
         /// Default room template repeat mode that is used if there is no repeat mode specified on the room template itself.

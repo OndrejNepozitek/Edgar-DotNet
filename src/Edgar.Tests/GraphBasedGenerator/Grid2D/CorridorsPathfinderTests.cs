@@ -7,17 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Edgar.Geometry;
-using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.GraphBasedGenerator.Grid2D.Internal;
 using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Graphs;
-using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.Layouts.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
-using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.Utils.Interfaces;
 using NUnit.Framework;
 
@@ -478,7 +474,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod(), true);
         }
 
-        private void CheckResult(Config config, List<Configuration> configurations, int fromRoom, int toRoom, CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult expectedResult, string name, bool addRotations = true)
+        private void CheckResult(Config config, List<Configuration> configurations, int fromRoom, int toRoom, CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult expectedResult, string name, bool addRotations = true)
         {
             var rotations = addRotations ? new List<int>() {0, 90, 180, 270} : new List<int>(){0};
             var layout = new Layout(configurations);
@@ -535,12 +531,12 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             return new Layout(configurations);
         }
 
-        private CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult GetTransformedResult(CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult expectedResult, int rotation)
+        private CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult GetTransformedResult(CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult expectedResult, int rotation)
         {
             var doorFrom = new DoorGrid2D(expectedResult.DoorFrom.From.RotateAroundCenter(rotation), expectedResult.DoorFrom.To.RotateAroundCenter(rotation));
             var doorTo = new DoorGrid2D(expectedResult.DoorTo.From.RotateAroundCenter(rotation), expectedResult.DoorTo.To.RotateAroundCenter(rotation));
 
-            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(expectedResult.IsSuccessful, expectedResult.Outline.Rotate(rotation), doorFrom, doorTo);
+            return new CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult(expectedResult.IsSuccessful, expectedResult.Outline.Rotate(rotation), doorFrom, doorTo);
         }
 
         private RoomTemplateGrid2D RotateRoomTemplate(RoomTemplateGrid2D roomTemplate, int rotation)
@@ -556,7 +552,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             return new RoomTemplateGrid2D(outline, doors);
         }
 
-        private void SaveImage(Layout layout, CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult result, string name)
+        private void SaveImage(Layout layout, CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult result, string name)
         {
             var roomTemplates = new List<RoomTemplateGrid2D>();
             var positions = new List<Vector2Int>();
@@ -613,9 +609,9 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             return sf.GetMethod().Name;
         }
 
-        private CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult GetExpectedResult(PolygonGrid2D outline, DoorGrid2D fromDoor, DoorGrid2D toDoor)
+        private CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult GetExpectedResult(PolygonGrid2D outline, DoorGrid2D fromDoor, DoorGrid2D toDoor)
         {
-            return new CorridorsPathfinder<Layout, int, Configuration>.PathfindingResult(true, outline, fromDoor, toDoor);
+            return new CorridorsPathfinding<Layout, int, Configuration>.PathfindingResult(true, outline, fromDoor, toDoor);
         }
 
         private static Configuration GetConfiguration(int room, RoomTemplateGrid2D roomTemplate, Vector2Int position)
@@ -666,9 +662,9 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                 return new Config(CorridorHeight, CorridorWidth, MinimumRoomDistance, horizontalDoor, verticalDoor);
             }
 
-            public CorridorsPathfinder<Layout, int, Configuration> GetPathfinder()
+            public CorridorsPathfinding<Layout, int, Configuration> GetPathfinder()
             {
-                return new CorridorsPathfinder<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance, HorizontalDoor, VerticalDoor);
+                return new CorridorsPathfinding<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance, HorizontalDoor, VerticalDoor);
             }
         }
 

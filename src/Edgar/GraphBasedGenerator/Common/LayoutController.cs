@@ -271,10 +271,10 @@ namespace Edgar.GraphBasedGenerator.Common
                     UpdateLayout(layout);
 
                     // TODO: remove later
-                    //if (!IsLayoutValid(layout))
-                    //{
-                    //    throw new ArgumentException();
-                    //}
+                    if (!IsLayoutValid(layout))
+                    {
+                        throw new ArgumentException();
+                    }
 
                     return true;
                 }

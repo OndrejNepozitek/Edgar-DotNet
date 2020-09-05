@@ -15,7 +15,7 @@ using Priority_Queue;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 {
-    public class PathfindingCorridorsHandlerGrid2D<TLayout, TRoom, TConfiguration> : ICorridorsHandler<TLayout, TRoom>
+    public class PathfindingCorridorsHandlerGrid2DOld<TLayout, TRoom, TConfiguration> : ICorridorsHandler<TLayout, TRoom>
         where TLayout : ILayout<TRoom, TConfiguration>, ISmartCloneable<TLayout> // TODO: is this necessary?
         where TConfiguration : IConfiguration<RoomTemplateInstanceGrid2D, Vector2Int, TRoom>, new()
     {
@@ -26,7 +26,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
         private ITilemap<Vector2Int> tilemap;
 
-        public PathfindingCorridorsHandlerGrid2D(ILevelDescription<TRoom> levelDescription, int aliasCounter)
+        public PathfindingCorridorsHandlerGrid2DOld(ILevelDescription<TRoom> levelDescription, int aliasCounter)
         {
             this.levelDescription = levelDescription;
             this.aliasCounter = aliasCounter;
@@ -442,7 +442,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
             foreach (var point in list)
             {
-                tilemap.AddPoint(point);
+                throw new NotImplementedException();
+                // tilemap.AddPoint(point);
             }
 
             // // Console.WriteLine($"Add points: {string.Join(", ", list.Select(x => x.ToStringShort()))}");

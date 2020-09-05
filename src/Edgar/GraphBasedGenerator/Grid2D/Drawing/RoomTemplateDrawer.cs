@@ -52,7 +52,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             graphics.TranslateTransform(offset.X, height - offset.Y);
             graphics.ScaleTransform(scale, scale);
-            graphics.ScaleTransform(1, -1);
 
             if (options.EnableShading)
             {

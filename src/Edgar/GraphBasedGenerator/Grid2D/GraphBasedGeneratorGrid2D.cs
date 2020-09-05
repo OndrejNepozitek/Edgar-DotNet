@@ -211,7 +211,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 levelDescription.RoomTemplateRepeatModeDefault
             );
 
-            var corridorsHandler = new PathfindingCorridorsHandlerGrid2D<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped, intAliasMapping.Values.Max(x => x.Alias) + 1);
+            //var corridorsHandler = new PathfindingCorridorsHandlerGrid2DOld<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped, intAliasMapping.Values.Max(x => x.Alias) + 1);
+
+            var corridorsHandler = levelDescription.UsePathfinding ? new CorridorsPathfindingHandlerGrid2D<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped, intAliasMapping.Values.Max(x => x.Alias) + 1, levelDescription.PathfindingConfiguration, levelDescription.MinimumRoomDistance) : null;
 
             // Create layout operations
             var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, levelDescription.UsePathfinding ? corridorsHandler : null);

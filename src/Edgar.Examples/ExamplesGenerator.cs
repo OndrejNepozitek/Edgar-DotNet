@@ -58,13 +58,13 @@ namespace Edgar.Examples
 
         public void Run()
         {
-            new SimpleExample().Run();
+            //new SimpleExample().Run();
 
             //GenerateExample(new SaveLoadExample());
             //GenerateExample(new BasicsExample());
             //GenerateExample(new CorridorsExample());
             //GenerateExample(new MinimumRoomDistanceExample());
-            //GenerateExample(new ComplexDungeonExample());
+            // GenerateExample(new ComplexDungeonExample());
 
             GenerateExample(new PathfindingExample());
         }

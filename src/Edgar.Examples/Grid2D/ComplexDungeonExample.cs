@@ -4,6 +4,7 @@ using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
+using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Graphs;
 
 namespace Edgar.Examples.Grid2D
@@ -106,6 +107,9 @@ namespace Edgar.Examples.Grid2D
                 levelDescription.AddConnection(edge.From, corridorRoom);
                 levelDescription.AddConnection(edge.To, corridorRoom);
             }
+
+            //levelDescription.UsePathfinding = true;
+            //levelDescription.PathfindingConfiguration = new CorridorsPathfindingConfiguration(3, 3, new DoorGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)), new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)));
 
             return levelDescription;
         }
