@@ -52,6 +52,81 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
         }
 
         [Test]
+        public void TwoSquares_NextToEachOther_NoObstacles_MinimumRoomDistanceOne()
+        {
+            var config = new Config(1, 1, 1);
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, square, new Vector2Int(6, 0)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(3, 1)
+                    .AddPoint(3, 2)
+                    .AddPoint(6, 2)
+                    .AddPoint(6, 1)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2)),
+                new DoorGrid2D(new Vector2Int(6, 2), new Vector2Int(6, 1))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_NoObstacles_MinimumRoomDistanceOne_TooClose()
+        {
+            var config = new Config(1, 1, 1);
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, square, new Vector2Int(5, 0)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(3, 1)
+                    .AddPoint(3, 2)
+                    .AddPoint(5, 2)
+                    .AddPoint(5, 1)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2)),
+                new DoorGrid2D(new Vector2Int(5, 2), new Vector2Int(5, 1))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_NoObstacles_MinimumRoomDistanceOne_EvenCloser()
+        {
+            var config = new Config(1, 1, 1);
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, square, new Vector2Int(4, 0)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(3, 1)
+                    .AddPoint(3, 2)
+                    .AddPoint(4, 2)
+                    .AddPoint(4, 1)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2)),
+                new DoorGrid2D(new Vector2Int(4, 2), new Vector2Int(4, 1))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
         public void SquareAndThinRectangle_NextToEachOther_NoObstacles()
         {
             var config = new Config(1, 1, 0);
@@ -134,6 +209,79 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     .Build(),
                 new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
                 new DoorGrid2D(new Vector2Int(11, 4), new Vector2Int(13, 4))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_NoObstacles_WidthTwo_TooClose()
+        {
+            var config = new Config(2, 2, 0);
+
+            var square1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 3))
+            }));
+            var square2 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 3))
+            }));
+            
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square1, new Vector2Int(0, 0)),
+                GetConfiguration(1, square2, new Vector2Int(5, 0)),
+
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(4, 1)
+                    .AddPoint(4, 3)
+                    .AddPoint(5, 3)
+                    .AddPoint(5, 1)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 3)),
+                new DoorGrid2D(new Vector2Int(5, 1), new Vector2Int(5, 3))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_SmallObstacle_WidthTwo_TooClose()
+        {
+            var config = new Config(2, 2, 0);
+
+            var square1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(4, 1), new Vector2Int(4, 3))
+            }));
+            var square2 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(4), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            {
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 3))
+            }));
+            var obstacle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(1, 4),  new SimpleDoorModeGrid2D(1, 3));
+
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square1, new Vector2Int(0, 0)),
+                GetConfiguration(1, square2, new Vector2Int(5, 0)),
+                GetConfiguration(2, obstacle, new Vector2Int(4, 0)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(1, 4)
+                    .AddPoint(1, 6)
+                    .AddPoint(8, 6)
+                    .AddPoint(8, 4)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(1, 4), new Vector2Int(3, 4)),
+                new DoorGrid2D(new Vector2Int(6, 4), new Vector2Int(8, 4))
             );
 
             CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod());
@@ -290,6 +438,38 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
                     .AddPoint(12, 3)
                     .AddPoint(12, 5)
                     .AddPoint(2, 5)
+                    .Build(),
+                new DoorGrid2D(new Vector2Int(2, 3), new Vector2Int(1, 3)),
+                new DoorGrid2D(new Vector2Int(13, 3), new Vector2Int(12, 3))
+            );
+
+            CheckResult(config, configurations, 0, 1,expectedResult, GetCurrentMethod(), true);
+        }
+
+        [Test]
+        public void TwoSquares_NextToEachOther_WithObstacle_MinimumRoomDistanceOne_2()
+        {
+            var config = new Config(1, 1, 1);
+
+            var square = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new SimpleDoorModeGrid2D(1, 1));
+            var rectangle = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(2, 10), new SimpleDoorModeGrid2D(1, 1));
+
+            var configurations = new List<Configuration>()
+            {
+                GetConfiguration(0, square, new Vector2Int(0, 0)),
+                GetConfiguration(1, square, new Vector2Int(11, 0)),
+                GetConfiguration(2, rectangle, new Vector2Int(6, -8)),
+            };
+            var expectedResult = GetExpectedResult(
+                new PolygonGrid2DBuilder()
+                    .AddPoint(2, 3)
+                    .AddPoint(1, 3)
+                    .AddPoint(1, 5)
+                    .AddPoint(13, 5)
+                    .AddPoint(13, 3)
+                    .AddPoint(12, 3)
+                    .AddPoint(12, 4)
+                    .AddPoint(2, 4)
                     .Build(),
                 new DoorGrid2D(new Vector2Int(2, 3), new Vector2Int(1, 3)),
                 new DoorGrid2D(new Vector2Int(13, 3), new Vector2Int(12, 3))
@@ -542,7 +722,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
         public class CustomDrawer : RoomTemplateDrawer
         {
             public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options,
-                List<Vector2Int> positions, Dictionary<Vector2Int, int> costs, ITilemap<Vector2Int> tilemap)
+                List<Vector2Int> positions, Dictionary<Vector2Int, int> costs, ITilemap<Vector2Int, int> tilemap)
             {
             var configurations = new List<RoomTemplateConfiguration>();
 

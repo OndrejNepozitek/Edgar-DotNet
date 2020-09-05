@@ -404,16 +404,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
         private ITilemap<Vector2Int> GetTilemap(TLayout layout)
         {
-            var tilemap = new HashSetTilemap<Vector2Int>();
+            throw new NotImplementedException();
+            //var tilemap = new HashSetTilemap<Vector2Int>();
 
-            foreach (var configuration in layout.GetAllConfigurations())
-            {
-                var outline = configuration.RoomShape.RoomShape + configuration.Position;
+            //foreach (var configuration in layout.GetAllConfigurations())
+            //{
+            //    var outline = configuration.RoomShape.RoomShape + configuration.Position;
 
-                AddPolygonToTilemap(tilemap, outline);
-            }
+            //    AddPolygonToTilemap(tilemap, outline);
+            //}
 
-            return tilemap;
+            //return tilemap;
         }
 
         private void AddPolygonToTilemap(ITilemap<Vector2Int> tilemap, PolygonGrid2D polygon)
