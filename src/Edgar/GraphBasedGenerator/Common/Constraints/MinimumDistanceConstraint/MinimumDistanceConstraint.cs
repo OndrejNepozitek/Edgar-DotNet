@@ -26,10 +26,6 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint
 		/// <inheritdoc />
 		public bool ComputeEnergyData(ILayout<TNode, TConfiguration> layout, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			// TODO: why this?
-			if (mapDescription.GetRoomDescription(node).IsCorridor)
-				return true;
-
 			var wrongDistanceCount = 0;
 
 			foreach (var vertex in layout.Graph.Vertices)
@@ -40,10 +36,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint
 				if (!layout.GetConfiguration(vertex, out var c))
 					continue;
 
-                if (mapDescription.GetRoomDescription(vertex).IsCorridor)
-                    continue;
-
-				if (AreNeighbours(node, vertex))
+                if (AreNeighbours(node, vertex))
 					continue;
 
 				if (!HaveMinimumDistance(configuration, c))
@@ -62,9 +55,6 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> layout, TNode perturbedNode, TConfiguration oldConfiguration,
 			TConfiguration newConfiguration, TNode node, TConfiguration configuration, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).IsCorridor || mapDescription.GetRoomDescription(perturbedNode).IsCorridor)
-				return true;
-
 			var wrongDistanceOld = 0;
 			var wrongDistanceNew = 0;
 
@@ -85,9 +75,6 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint
 		/// <inheritdoc />
 		public bool UpdateEnergyData(ILayout<TNode, TConfiguration> oldLayout, ILayout<TNode, TConfiguration> newLayout, TNode node, ref TEnergyData energyData)
 		{
-			if (mapDescription.GetRoomDescription(node).IsCorridor)
-				return true;
-
 			oldLayout.GetConfiguration(node, out var oldConfiguration);
 			var wrongDistanceNew = oldConfiguration.EnergyData.MinimumDistanceConstraintData.WrongDistanceCount;
 
