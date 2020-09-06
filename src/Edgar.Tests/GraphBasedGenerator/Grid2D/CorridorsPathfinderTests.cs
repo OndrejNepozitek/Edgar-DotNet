@@ -664,7 +664,7 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
 
             public CorridorsPathfinding<Layout, int, Configuration> GetPathfinder()
             {
-                return new CorridorsPathfinding<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance, HorizontalDoor, VerticalDoor);
+                return new CorridorsPathfinding<Layout, int, Configuration>(CorridorWidth, CorridorHeight, MinimumRoomDistance, HorizontalDoor, VerticalDoor, int.MaxValue);
             }
         }
 

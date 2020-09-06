@@ -15,17 +15,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
     /// <summary>
     /// Class responsible for generating configuration spaces.
     /// </summary>
-    public class ConfigurationSpacesGenerator
+    public class ConfigurationSpacesGeneratorGrid2D
     {
         private readonly IPolygonOverlap<PolygonGrid2D> polygonOverlap;
-        private readonly IDoorHandler doorHandler;
         private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
         private readonly IPolygonUtils<PolygonGrid2D> polygonUtils;
 
-        public ConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, IDoorHandler doorHandler, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, IPolygonUtils<PolygonGrid2D> polygonUtils)
+        public ConfigurationSpacesGeneratorGrid2D(IPolygonOverlap<PolygonGrid2D> polygonOverlap, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, IPolygonUtils<PolygonGrid2D> polygonUtils)
         {
             this.polygonOverlap = polygonOverlap;
-            this.doorHandler = doorHandler;
             this.lineIntersection = lineIntersection;
             this.polygonUtils = polygonUtils;
         }
@@ -72,6 +70,18 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             {
                 Lines = configurationSpaceLines,
             };
+        }
+
+        public ConfigurationSpaceGrid2D GetConfigurationSpaceForPathfinding(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, int minimumRoomDistance, int maximumRoomDistance)
+        {
+            var offsets = new List<int>();
+
+            for (int i = minimumRoomDistance; i <= maximumRoomDistance; i++)
+            {
+                offsets.Add(i);
+            }
+
+            return GetConfigurationSpace(roomTemplateInstance, fixedRoomTemplateInstance, offsets, maximumRoomDistance);
         }
 
         public ConfigurationSpace GetConfigurationSpaceOverCorridor(PolygonGrid2D polygon, IDoorModeGrid2D doorsMode,
@@ -132,7 +142,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             };
         }
 
-        private ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, List<DoorLineGrid2D> doorLines, PolygonGrid2D fixedCenter, List<DoorLineGrid2D> doorLinesFixed, List<int> offsets = null)
+        private ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, List<DoorLineGrid2D> doorLines, PolygonGrid2D fixedCenter, List<DoorLineGrid2D> doorLinesFixed, List<int> offsets = null, int sidewaysOffset = 0)
 		{
 			if (offsets != null && offsets.Count == 0)
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
@@ -171,14 +181,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				{
 					var cline = cDoorLine.Line;
 					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new Vector2Int(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
-					var to = new Vector2Int(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
+					var from = new Vector2Int(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length) + sidewaysOffset, y);
+					var to = new Vector2Int(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length) - sidewaysOffset, y);
 
 					if (from.X < to.X) continue;
 
 					if (offsets == null)
 					{
 						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
+
 						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket)));
 						configurationSpaceLines.Add(resultLine);
 					}
@@ -214,18 +225,18 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 		/// <param name="offsets"></param>
 		/// <returns></returns>
 		public ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, IDoorModeGrid2D doorsMode, PolygonGrid2D fixedCenter,
-			IDoorModeGrid2D fixedDoorsMode, List<int> offsets = null)
+			IDoorModeGrid2D fixedDoorsMode, List<int> offsets = null, int sidewaysOffset = 0)
 		{
 			var doorLinesFixed = fixedDoorsMode.GetDoors(fixedCenter);
 			var doorLines = doorsMode.GetDoors(polygon);
 
-			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offsets);
+			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offsets, sidewaysOffset);
 		}
 
-        public ConfigurationSpaceGrid2D GetConfigurationSpace(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<int> offsets = null)
+        public ConfigurationSpaceGrid2D GetConfigurationSpace(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<int> offsets = null, int sidewaysOffset = 0)
         {
             return GetConfigurationSpace(roomTemplateInstance.RoomShape, roomTemplateInstance.DoorLines,
-                fixedRoomTemplateInstance.RoomShape, fixedRoomTemplateInstance.DoorLines, offsets);
+                fixedRoomTemplateInstance.RoomShape, fixedRoomTemplateInstance.DoorLines, offsets, sidewaysOffset);
         }
 
         /// <summary>

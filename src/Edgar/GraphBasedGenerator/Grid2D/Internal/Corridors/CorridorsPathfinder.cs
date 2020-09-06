@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 using Priority_Queue;
@@ -7,7 +8,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 {
     public class CorridorsPathfinder
     {
-        public (List<Vector2Int> path, Dictionary<Vector2Int, int> costs) FindPath(List<Vector2Int> startPoints, List<Vector2Int> goalPoints, Dictionary<Vector2Int, OrthogonalLineGrid2D> fromDoorMapping, Dictionary<Vector2Int, OrthogonalLineGrid2D> toDoorMapping, ITilemap<Vector2Int> tilemap, int? maxLength = null, bool canChangeDirection = true)
+        public (List<Vector2Int> path, Dictionary<Vector2Int, int> costs) FindPath(List<Vector2Int> startPoints, List<Vector2Int> goalPoints, Dictionary<Vector2Int, OrthogonalLineGrid2D> fromDoorMapping, Dictionary<Vector2Int, OrthogonalLineGrid2D> toDoorMapping, Func<Vector2Int, bool> isEmptyFunc, int? maxLength = null, bool canChangeDirection = true)
         {
             var queue = new SimplePriorityQueue<Vector2Int>();
 
@@ -15,9 +16,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
             var previousDirection = new Dictionary<Vector2Int, Vector2Int>();
             var costSoFar = new Dictionary<Vector2Int, int>();
 
+            if (startPoints.Count == 0 || goalPoints.Count == 0)
+            {
+                return (null, costSoFar);
+            }
+
             foreach (var point in startPoints)
             {
-                if (tilemap.IsEmpty(point))
+                if (isEmptyFunc(point))
                 {
                     
                     // TODO: slow
@@ -40,7 +46,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
 
                 foreach (var neighbor in item.GetAdjacentVectors())
                 {
-                    if (tilemap.IsEmpty(neighbor))
+                    if (isEmptyFunc(neighbor))
                     {
                         var cost = costSoFar[item] + 1;
                         var direction = neighbor - item;

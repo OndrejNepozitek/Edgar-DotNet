@@ -41,7 +41,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint
 				if (!layout.GetConfiguration(vertex, out var c))
 					continue;
 
-				var area = ComputeOverlap(configuration, c);
+                var area = ComputeOverlap(configuration, c);
 
 				if (area != 0)
 				{

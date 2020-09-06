@@ -13,15 +13,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
     {
         private readonly RectangleGrid2D corridorShape;
         private readonly int minimumRoomDistance;
+        private readonly int maximumPathCost;
         private readonly DoorGrid2D horizontalDoor;
         private readonly DoorGrid2D verticalDoor;
 
         private readonly CorridorsPathfinder corridorsPathfinder = new CorridorsPathfinder();
 
-        public CorridorsPathfinding(int corridorWidth, int corridorHeight, int minimumRoomDistance, DoorGrid2D horizontalDoor, DoorGrid2D verticalDoor)
+        public CorridorsPathfinding(int corridorWidth, int corridorHeight, int minimumRoomDistance, DoorGrid2D horizontalDoor, DoorGrid2D verticalDoor, int maximumPathCost)
         {
             this.corridorShape = new RectangleGrid2D(new Vector2Int(0, 0), new Vector2Int(corridorWidth, corridorHeight));
             this.minimumRoomDistance = minimumRoomDistance;
+            this.maximumPathCost = maximumPathCost;
             this.horizontalDoor = horizontalDoor ?? new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(corridorWidth, 0));
             this.verticalDoor = verticalDoor ?? new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, corridorHeight));
         }
@@ -69,14 +71,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors
                 .SelectMany(x => GetModifiedDoorLine(x).GetPoints().Select(y => (x, y)))
                 .ToDictionary(x => x.y, x => x.x);
 
-            var (path, costs) = corridorsPathfinder.FindPath(fromDoorMapping.Keys.ToList(), toDoorMapping.Keys.ToList(), fromDoorMapping, toDoorMapping, tilemapWithoutRoomDistance, 2 * minimumRoomDistance, false);
+            var (path, costs) = corridorsPathfinder.FindPath(fromDoorMapping.Keys.ToList(), toDoorMapping.Keys.ToList(), fromDoorMapping, toDoorMapping,
+                (point) => IsEmpty(point, new List<TRoom>() { fromRoom, toRoom }, tilemap, tilemapWithoutRoomDistance), Math.Min(2 * minimumRoomDistance, maximumPathCost), false);
 
             if (path == null)
             {
                 var (fromPoints, fromShortcuts) = GetEndPoints(fromDoorMapping, fromRoom, tilemap, tilemapWithoutRoomDistance);
                 var (toPoints, toShortcuts) = GetEndPoints(toDoorMapping, toRoom, tilemap, tilemapWithoutRoomDistance, true);
 
-                (path, costs) = corridorsPathfinder.FindPath(fromPoints, toPoints, fromDoorMapping, toDoorMapping, tilemap);
+                (path, costs) = corridorsPathfinder.FindPath(fromPoints, toPoints, fromDoorMapping, toDoorMapping, tilemap.IsEmpty, maximumPathCost);
 
                 if (path != null)
                 {

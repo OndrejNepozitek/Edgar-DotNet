@@ -5,6 +5,7 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
+using Edgar.GraphBasedGenerator.Grid2D.Internal.Corridors;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
@@ -19,7 +20,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
     {
         private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
         private readonly ILevelDescription<TNode> levelDescription; // TODO: replace with LevelDescription when possible
-        private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
+        private readonly bool usePathfinding;
+        private readonly CorridorsPathfindingConfiguration pathfindingConfiguration;
+        private readonly ConfigurationSpacesGeneratorGrid2D configurationSpacesGenerator;
         private Random random;
 
         private Dictionary<Tuple<TNode, TNode>, IRoomDescription> nodesToCorridorMapping;
@@ -27,11 +30,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         // TODO: far from ideal
         private readonly Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D> corridorToConfigurationSpaceMapping = new Dictionary<Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>, ConfigurationSpaceGrid2D>();
 
-        public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLineGrid2D> lineIntersection = null)
+        public ConfigurationSpacesGrid2D(ILevelDescription<TNode> levelDescription, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, bool usePathfinding, CorridorsPathfindingConfiguration pathfindingConfiguration)
         {
             this.levelDescription = levelDescription;
+            this.usePathfinding = usePathfinding;
+            this.pathfindingConfiguration = pathfindingConfiguration;
             this.lineIntersection = lineIntersection ?? new OrthogonalLineIntersection();
-            configurationSpacesGenerator = new ConfigurationSpacesGenerator(new PolygonOverlap(), DoorHandler.DefaultHandler, this.lineIntersection, new GridPolygonUtils());
+            configurationSpacesGenerator = new ConfigurationSpacesGeneratorGrid2D(new PolygonOverlap(), this.lineIntersection, new GridPolygonUtils());
             Initialize();
         }
 
@@ -63,6 +68,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             // If is over corridor
             if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)))
             {
+                if (usePathfinding)
+                {
+                    return GetCorridorPathfindingConfigurationSpace(configuration1, configuration2);
+                }
+
                 var roomDescription = (RoomDescriptionGrid2D) nodesToCorridorMapping[new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)];
                 var selector = Tuple.Create(configuration1.RoomShape, configuration2.RoomShape, roomDescription);
 
@@ -93,6 +103,24 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                 return configurationSpace;
             }
+        }
+
+        private ConfigurationSpaceGrid2D GetCorridorPathfindingConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
+        {
+            var selector = new Tuple<RoomTemplateInstanceGrid2D, RoomTemplateInstanceGrid2D, RoomDescriptionGrid2D>(configuration1.RoomShape, configuration2.RoomShape, null);
+
+            if (corridorToConfigurationSpaceMapping.TryGetValue(selector, out var cachedConfigurationSpace))
+            {
+                return cachedConfigurationSpace;
+            }
+
+            var configurationSpace = configurationSpacesGenerator.GetConfigurationSpaceForPathfinding(
+                configuration1.RoomShape, configuration2.RoomShape, pathfindingConfiguration.MinimumPlacementDistance,
+                pathfindingConfiguration.MaximumPlacementDistance);
+
+            corridorToConfigurationSpaceMapping[selector] = configurationSpace;
+
+            return configurationSpace;
         }
 
         public IConfigurationSpace<Vector2Int> GetMaximumIntersection(TConfiguration mainConfiguration, IEnumerable<TConfiguration> configurations)

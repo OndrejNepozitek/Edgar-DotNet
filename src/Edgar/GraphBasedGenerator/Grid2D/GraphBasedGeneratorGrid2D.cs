@@ -25,7 +25,6 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
-using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.ConfigurationSpacesGenerator;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -85,14 +84,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);
 
             // Create configuration spaces
-            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+            var configurationSpacesGenerator = new ConfigurationSpacesGeneratorGrid2D(
                 new PolygonOverlap(),
-                DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
 
             // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
-            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped);
+            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, levelDescription.UsePathfinding, levelDescription.PathfindingConfiguration);
 
             // Needlessly complex for backwards compatibility
 

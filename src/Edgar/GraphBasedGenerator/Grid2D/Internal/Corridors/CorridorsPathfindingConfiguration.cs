@@ -2,23 +2,20 @@
 {
     public class CorridorsPathfindingConfiguration
     {
-        public int CorridorWidth { get; }
+        public int CorridorWidth { get; set; }
         
-        public int CorridorHeight { get; }
+        public int CorridorHeight { get; set; }
 
-        public DoorGrid2D HorizontalDoor { get; }
+        public DoorGrid2D HorizontalDoor { get; set; }
 
-        public DoorGrid2D VerticalDoor { get; }
+        public DoorGrid2D VerticalDoor { get; set; }
 
-        public int? MinimumRoomDistance { get; }
+        public int? MinimumRoomDistance { get; set; }
 
-        public CorridorsPathfindingConfiguration(int corridorWidth, int corridorHeight, DoorGrid2D horizontalDoor = null, DoorGrid2D verticalDoor = null, int? minimumRoomDistance = null)
-        {
-            CorridorWidth = corridorWidth;
-            CorridorHeight = corridorHeight;
-            HorizontalDoor = horizontalDoor;
-            VerticalDoor = verticalDoor;
-            MinimumRoomDistance = minimumRoomDistance;
-        }
+        public int MinimumPlacementDistance { get; set; }
+
+        public int MaximumPlacementDistance { get; set; }
+
+        public int MaximumPathCost { get; set; } = int.MaxValue;
     }
 }
