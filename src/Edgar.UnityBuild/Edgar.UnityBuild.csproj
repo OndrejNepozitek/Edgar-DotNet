@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
+  </ItemGroup>
+
+  <Target Name="CustomAfterBuild" AfterTargets="Build">
+    <ItemGroup>
+      <CopyItems Include="$(SolutionDir)src\Edgar\bin\$(Configuration)\netstandard2.0\*.*" />
+    </ItemGroup>
+    <RemoveDir Directories="$(TargetDir)\Edgar" />
+    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)\Edgar" />
+
+    <PropertyGroup>
+      <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
+    </PropertyGroup>
+
+    <ILRepack 
+      OutputType="$(OutputType)" 
+      MainAssembly="$(WorkingDirectory)\Edgar\Edgar.dll" 
+      OutputAssembly="$(WorkingDirectory)\EdgarSingleFile\EdgarSingleFile.dll" 
+      InputAssemblies="$(WorkingDirectory)\Edgar\*.dll" 
+      WilcardInputAssemblies="true"
+      WorkingDirectory="$(WorkingDirectory)" />
+  </Target>
+
+</Project>
