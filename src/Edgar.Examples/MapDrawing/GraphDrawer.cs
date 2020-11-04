@@ -59,7 +59,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             foreach (var configuration in configurations)
             {
-                DrawRoomBackground(configuration.Outline + configuration.Position);
+                DrawRoomBackground(configuration.Outline + configuration.Position, options.RoomBackgroundColor);
                 DrawGrid(configuration.Outline + configuration.Position);
                 DrawOutline(configuration.Outline + configuration.Position, GetOutline(configuration.Outline, null, configuration.Position), outlinePen);
             }

@@ -43,7 +43,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             graphics = Graphics.FromImage(bitmap);
             graphics.SmoothingMode = SmoothingMode.HighQuality;
 
-            using (SolidBrush brush = new SolidBrush(Color.FromArgb(248, 248, 244)))
+            using (SolidBrush brush = new SolidBrush(options.BackgroundColor))
             {
                 graphics.FillRectangle(brush, 0, 0, width, height);
             }
@@ -84,8 +84,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             foreach (var room in rooms)
             {
-                DrawRoomBackground(room.Outline + room.Position);
-                DrawGrid(room.Outline + room.Position);
+                DrawRoomBackground(room.Outline + room.Position, options.RoomBackgroundColor);
+
+                if (options.EnableGridLines)
+                {
+                    DrawGrid(room.Outline + room.Position);
+                }
+
                 DrawOutline(room.Outline + room.Position, GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
             }
 

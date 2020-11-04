@@ -1,4 +1,6 @@
-﻿namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
+﻿using System.Drawing;
+
+namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
     /// Options for the <see cref="DungeonDrawer{TRoom}"/> class.
@@ -85,6 +87,21 @@
         /// Whether to enable hatching.
         /// </summary>
         public bool EnableHatching { get; set; } = true;
+
+        /// <summary>
+        /// Whether to enable grid lines.
+        /// </summary>
+        public bool EnableGridLines { get; set; } = true;
+
+        /// <summary>
+        /// Background color of individual rooms.
+        /// </summary>
+        public Color RoomBackgroundColor { get; set; } = Color.FromArgb(248, 248, 244);
+
+        /// <summary>
+        /// Background color of the image.
+        /// </summary>
+        public Color BackgroundColor { get; set; } = Color.FromArgb(248, 248, 244);
 
         public Range<float> HatchingLength { get; set; } = new Range<float>(0.5f, 0.6f);
 

@@ -57,11 +57,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             }
         }
 
-        protected void DrawRoomBackground(PolygonGrid2D polygon)
+        protected void DrawRoomBackground(PolygonGrid2D polygon, Color color)
         {
             var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
 
-            graphics.FillPolygon(new SolidBrush(Color.FromArgb(248, 248, 244)), polyPoints.ToArray());
+            graphics.FillPolygon(new SolidBrush(color), polyPoints.ToArray());
+            graphics.DrawPolygon(new Pen(color, 0.1f), polyPoints.ToArray());
         }
 
         protected void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments, Pen outlinePen)
