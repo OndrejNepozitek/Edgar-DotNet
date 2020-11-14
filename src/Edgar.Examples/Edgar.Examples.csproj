@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>$(MSBuildThisFileDirectory)\bin\$(Configuration)\$(TargetFramework)\Edgar.Examples.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

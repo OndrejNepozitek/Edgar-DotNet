@@ -18,7 +18,7 @@
 	<Description>Graph-based procedural level generator.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>$(MSBuildThisFileDirectory)\bin\$(Configuration)\$(TargetFramework)\Edgar.xml</DocumentationFile>
   </PropertyGroup>
   <Target Name="CopyResources" AfterTargets="Build">
     <ItemGroup>
