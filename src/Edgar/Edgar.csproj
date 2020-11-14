@@ -18,7 +18,7 @@
 	<Description>Graph-based procedural level generator.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\ondra\OneDrive\Dokumenty\Visual Studio 2017\Projects\MapGeneration\Edgar\Edgar.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <Target Name="CopyResources" AfterTargets="Build">
     <ItemGroup>
