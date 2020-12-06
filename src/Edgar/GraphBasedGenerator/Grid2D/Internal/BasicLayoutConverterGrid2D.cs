@@ -90,10 +90,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 							if (layout.GetConfiguration(neighbourAlias, out var neighbourConfiguration) && !generatedDoors.Contains(Tuple.Create(neighbour, vertex)))
 							{
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
-								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, randomChoice + -1 * roomsDict[vertex].Position));
-								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, randomChoice + -1 * roomsDict[neighbour].Position));
+								var door = doorChoices.GetRandom(Random);
+                                var doorFlipped = door.SwitchOrientation();
+
+                                roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, door + -1 * roomsDict[vertex].Position));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, doorFlipped + -1 * roomsDict[neighbour].Position));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}
