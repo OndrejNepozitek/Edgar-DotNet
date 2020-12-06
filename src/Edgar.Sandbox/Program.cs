@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.GridPseudo3D;
+using Edgar.GraphBasedGenerator.GridPseudo3D.Doors;
 using Edgar.GUI.New;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
@@ -182,6 +184,23 @@ namespace Sandbox
             };
 
             Application.Run(new GeneratorWindow(settings));
+        }
+
+        public static void RunPseudo3D()
+        {
+            var room1 = new RoomTemplateGridPseudo3D(PolygonGrid2D.GetSquare(10), new SimpleDoorModeGrid3D(1, 1, 0));
+            var room2 = new RoomTemplateGridPseudo3D(PolygonGrid2D.GetSquare(10), new SimpleDoorModeGrid3D(1, 1, 10));
+
+            var roomDescription1 = new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { room1 });
+            var roomDescription2 = new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { room2 });
+
+            var levelDescription = new LevelDescriptionGrid2D<int>();
+            levelDescription.AddRoom(0, roomDescription1);
+            levelDescription.AddRoom(1, roomDescription2);
+            levelDescription.AddConnection(0, 1);
+
+            var generator = new GraphBasedGeneratorGridPseudo3D<int>(levelDescription);
+            var layout = generator.GenerateLayout();
         }
 
         public static void RunExampleNew()
