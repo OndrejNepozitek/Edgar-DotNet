@@ -13,7 +13,11 @@ namespace Edgar.UnityBuild
             var sourceDir = "EdgarSingleFile";
             var targetDir = "EdgarSingleFileModified";
 
-            Directory.Delete(targetDir, true);
+            if (File.Exists(targetDir))
+            {
+                Directory.Delete(targetDir, true);
+            }
+            
             Directory.CreateDirectory(targetDir);
 
             CopyFilesRecursively(new DirectoryInfo(sourceDir), new DirectoryInfo(targetDir));
