@@ -69,7 +69,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 foreach (var room in rooms)
                 {
-                    DrawShading(GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), shadePen);
+                    DrawShading(GetOutline(room.Outline, room.Doors?.Select(x => x.DoorLine).ToList(), room.Position), shadePen);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     DrawGrid(room.Outline + room.Position);
                 }
 
-                DrawOutline(room.Outline + room.Position, GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
+                DrawOutline(room.Outline + room.Position, GetOutline(room.Outline, room.Doors?.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
             }
 
             foreach (var room in rooms)

@@ -267,29 +267,32 @@ namespace Edgar.GUI.New
 			}
 			else
 			{
-				//Bitmap bitmap;
+                Bitmap bitmap;
 
-				//if (fixedPositionsAndScaleCheckbox.Checked)
-				//{
-				//	bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize, fixedScale, fixedOffset);
-				//}
-				//else
-				//{
-				//	bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
-				//}
-
-				var layoutDrawer = new DungeonDrawer<int>();
-				var bitmap = layoutDrawer.DrawLayout(layoutToDraw, new DungeonDrawerOptions()
+                if (fixedPositionsAndScaleCheckbox.Checked)
                 {
-					Width = mainPictureBox.Width,
-					Height = mainPictureBox.Height,
-					ShowRoomNames = showNames,
-					PaddingPercentage = 0.05f,
-					EnableHatching = true,
-                });
+                    bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize, fixedScale, fixedOffset);
+                }
+                else
+                {
+                    bitmap = wfLayoutDrawer.DrawLayout(layoutToDraw, mainPictureBox.Width, mainPictureBox.Height, showNames, fixedFontSize);
+                }
+
+                //var layoutDrawer = new DungeonDrawer<int>();
+                //bitmap = layoutDrawer.DrawLayout(layoutToDraw, new DungeonDrawerOptions()
+                //{
+                //    Width = mainPictureBox.Width,
+                //    Height = mainPictureBox.Height,
+                //    ShowRoomNames = showNames,
+                //    PaddingPercentage = 0.05f,
+                //    EnableHatching = false,
+                //    EnableGridLines = false,
+                //    EnableShading = true,
+                //    RoomBackgroundColor = Color.LightGray,
+                //});
 
                 // e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-				e.Graphics.DrawImage(bitmap, new Point(0, 0));
+                e.Graphics.DrawImage(bitmap, new Point(0, 0));
             }
 		}
 

@@ -40,6 +40,22 @@ namespace Edgar.Legacy.Utils.MapDrawing
 			DrawLayout(layout, scale, offset, withNames, fixedFontSize);
 		}
 
+        protected void DrawLayout(LayoutGrid2D<TNode> layout, int width, int height, bool withNames, int? fixedFontSize = null, float borderSize = 0.2f)
+        {
+            var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
+            var points = polygons.SelectMany(x => x.GetPoints()).ToList();
+
+            var minx = points.Min(x => x.X);
+            var miny = points.Min(x => x.Y);
+            var maxx = points.Max(x => x.X);
+            var maxy = points.Max(x => x.Y);
+
+            var scale = GetScale(minx, miny, maxx, maxy, width, height, borderSize);
+            var offset = GetOffset(minx, miny, maxx, maxy, width, height, scale);
+
+            DrawLayout(layout, scale, offset, withNames, fixedFontSize);
+        }
+
 		/// <summary>
 		/// Draws a given layout to an output using a given scale and offset. 
 		/// </summary>
@@ -79,6 +95,35 @@ namespace Edgar.Legacy.Utils.MapDrawing
 				}
 			}
 		}
+
+        protected void DrawLayout(LayoutGrid2D<TNode> layout, float scale, Vector2Int offset, bool withNames, int? fixedFontSize = null)
+        {
+            var polygons = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
+            var rooms = layout.Rooms.ToList();
+            var minWidth = layout.Rooms.Where(x => !x.IsCorridor).Select(x => x.Outline + x.Position).Min(x => x.BoundingRectangle.Width);
+
+            for (var i = 0; i < rooms.Count; i++)
+            {
+                var room = rooms[i];
+                var outline = GetOutlineOld(polygons[i], room.Doors?.Select(x => x.DoorLine + room.Position).ToList())
+                    .Select(x => Tuple.Create(TransformPoint(x.Item1, scale, offset), x.Item2)).ToList();
+
+                var transformedPoints = polygons[i].GetPoints().Select(point => TransformPoint(point, scale, offset)).ToList();
+
+                if (transformedPoints.All(x => x == new Vector2Int(0, 0)))
+                {
+                    throw new InvalidOperationException("One of the polygons could not be drawn because the canvas size is too small.");
+                }
+
+                var polygon = new PolygonGrid2D(transformedPoints);
+                DrawRoom(polygon, outline, 2);
+
+                if (withNames && !room.IsCorridor)
+                {
+                    DrawTextOntoPolygon(polygon, room.Room.ToString(), fixedFontSize ?? 2.5f * minWidth);
+                }
+            }
+        }
 
 		/// <summary>
 		/// Both coordinates are first multiplied by the scale factor and then the offset is added.
@@ -156,6 +201,60 @@ namespace Edgar.Legacy.Utils.MapDrawing
 		/// <param name="text"></param>
 		/// <param name="penWidth"></param>
 		protected abstract void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth);
+
+        private List<Tuple<Vector2Int, bool>> GetOutlineOld(PolygonGrid2D polygon, List<OrthogonalLineGrid2D> doorLines)
+        {
+            var outline = new List<Tuple<Vector2Int, bool>>();
+            doorLines = doorLines?.ToList();
+
+            foreach (var line in polygon.GetLines())
+            {
+                AddToOutline(Tuple.Create(line.From, true));
+
+                if (doorLines == null)
+                    continue;
+
+                var doorDistances = doorLines.Select(x =>
+                    new Tuple<OrthogonalLineGrid2D, int>(x, Math.Min(line.Contains(x.From), line.Contains(x.To)))).ToList();
+                doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
+
+                foreach (var pair in doorDistances)
+                {
+                    if (pair.Item2 == -1)
+                        continue;
+
+                    var doorLine = pair.Item1;
+
+                    if (line.Contains(doorLine.From) != pair.Item2)
+                    {
+                        doorLine = doorLine.SwitchOrientation();
+                    }
+
+                    doorLines.Remove(pair.Item1);
+
+                    AddToOutline(Tuple.Create(doorLine.From, true));
+                    AddToOutline(Tuple.Create(doorLine.To, false));
+                }
+            }
+
+            return outline;
+
+            void AddToOutline(Tuple<Vector2Int, bool> point)
+            {
+                if (outline.Count == 0)
+                {
+                    outline.Add(point);
+                    return;
+                }
+
+                var lastPoint = outline[outline.Count - 1];
+
+                if (!lastPoint.Item2 && point.Item2 && lastPoint.Item1 == point.Item1)
+                    return;
+
+                outline.Add(point);
+            }
+        }
 
 		/// <summary>
 		/// Computes the outline of a given polygon and its door lines.

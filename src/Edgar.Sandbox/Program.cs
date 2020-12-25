@@ -44,6 +44,8 @@ namespace Sandbox
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+            new SimpleApi().Run();
+
             // new RandomGraphs().Run();
             // CompareWithReference();
 
@@ -58,7 +60,7 @@ namespace Sandbox
             // task.Wait();
             // CompareOldAndNew();
             // RunExample();
-            RunExampleNew();
+            // RunExampleNew();
             // ConvertToXml();
 
             // new Profiler().Run();

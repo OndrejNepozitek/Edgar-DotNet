@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Edgar.Graphs
 {
@@ -22,6 +23,19 @@ namespace Edgar.Graphs
 		public int VerticesCount => adjacencyLists.Count;
 
 		private readonly Dictionary<T, List<T>> adjacencyLists = new Dictionary<T, List<T>>();
+
+        public UndirectedAdjacencyListGraph() { }
+
+        // TODO: how to handle properly?
+        public UndirectedAdjacencyListGraph(UndirectedAdjacencyListGraph<T> graph)
+        {
+            adjacencyLists = new Dictionary<T, List<T>>();
+
+            foreach (var pair in graph.adjacencyLists)
+            {
+                adjacencyLists[pair.Key] = pair.Value.ToList();
+            }
+        }
 
 		/// <inheritdoc />
 		public void AddVertex(T vertex)
@@ -65,6 +79,11 @@ namespace Edgar.Graphs
 
 			return false;
 		}
+
+        public bool HasVertex(T vertex)
+        {
+            return adjacencyLists.ContainsKey(vertex);
+        }
 
 		private IEnumerable<IEdge<T>> GetEdges()
 		{

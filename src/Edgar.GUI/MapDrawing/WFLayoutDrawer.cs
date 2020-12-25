@@ -1,4 +1,5 @@
 ﻿using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.MapLayouts;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
@@ -53,6 +54,28 @@ namespace GUI.MapDrawing
 
 			return bitmap;
 		}
+
+        public Bitmap DrawLayout(LayoutGrid2D<TNode> layout, int width, int height, bool withNames = true, int? fixedFontSize = null, float? scale = null, Vector2Int? offset = null)
+        {
+            bitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(bitmap);
+
+            if (scale != null || offset != null)
+            {
+                if (scale == null || offset == null)
+                {
+                    throw new ArgumentException("Scale and offset must either both be null or not-null");
+                }
+
+                base.DrawLayout(layout, scale.Value, offset.Value, withNames, fixedFontSize);
+            }
+            else
+            {
+                base.DrawLayout(layout, width, height, withNames, fixedFontSize);
+            }
+
+            return bitmap;
+        }
 
 		protected override void DrawRoom(PolygonGrid2D polygon, List<Tuple<Vector2Int, bool>> outline, float penWidth)
 		{
