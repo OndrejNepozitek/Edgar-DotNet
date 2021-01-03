@@ -11,7 +11,7 @@
   <a href="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg"><img src="https://github.com/OndrejNepozitek/Edgar-DotNet/workflows/Build/badge.svg" /></a>
   <a href="https://www.nuget.org/packages/Edgar-DotNet"><img src="https://img.shields.io/nuget/vpre/Edgar-DotNet" /></a>
   <a href="https://github.com/OndrejNepozitek/Edgar-Unity"><img src="https://img.shields.io/badge/see also-Unity%20plugin-important" /></a>
-  <a href="https://discord.gg/S77kw2aK"><img src="https://img.shields.io/discord/795301453131415554?label=discord" /></a>
+  <a href="https://discord.gg/syktZ6VWq9"><img src="https://img.shields.io/discord/795301453131415554?label=discord" /></a>
 </p>
 
 <p align="center">
@@ -143,6 +143,6 @@ Here are two layouts that were produced from this example:
 
 ## Get in touch
 
-If you have any questions, let me know at ondra-at-nepozitek.cz, on Twitter at @OndrejNepozitek or create an issue here on github.
+If you have any questions or want to show off what you created with Edgar, come chat with us in our [discord server](https://discord.gg/syktZ6VWq9). Or if you want to contact me personally, use my email ondra-at-nepozitek.cz or send me a message on Twitter at @OndrejNepozitek.
 
 
