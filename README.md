@@ -87,7 +87,7 @@ Download the latest version from [Nuget](https://www.nuget.org/packages/Edgar-Do
                                                              
 ## Example
 
-Below is a very simple setup of the generator. We create two rectangular room templates, add 4 rooms to the level description and connect the rooms so that they form a cycle.
+Below is a very simple setup of the generator. We create two rectangular room templates, add 4 rooms to the level description and connect the rooms so that they form a cycle. Be sure to check the [documentation](https://ondrejnepozitek.github.io/Edgar-DotNet/docs/introduction) to see multiple commented examples.
 
 ```csharp
 // Create square room template
