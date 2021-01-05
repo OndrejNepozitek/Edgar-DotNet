@@ -30,7 +30,10 @@ namespace Edgar.Legacy.Core.LayoutGenerators
         protected CancellationToken? CancellationToken;
 
         public event Action<Random> OnRandomInjected; 
-        public event Action<CancellationToken> OnCancellationTokenInjected; 
+        public event Action<CancellationToken> OnCancellationTokenInjected;
+
+        // TODO: Remove when possible
+        public TLayout LastLayout;
 
         public ChainBasedGenerator(TLayout initialLayout, IGeneratorPlanner<TLayout, TNode> generatorPlanner, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver, ILayoutConverter<TLayout, TOutputLayout> layoutConverter)
         {
@@ -75,6 +78,8 @@ namespace Edgar.Legacy.Core.LayoutGenerators
             }
 
             var convertedLayout = layout != null ? layoutConverter.Convert(layout, true) : default(TOutputLayout);
+
+            LastLayout = layout;
 
             return convertedLayout;
         }

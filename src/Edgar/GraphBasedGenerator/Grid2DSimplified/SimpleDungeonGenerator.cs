@@ -45,6 +45,101 @@ namespace MapGeneration.Simplified
             levelBuilder = new LevelBuilder<int>(levelGeometry);
             levelBuilder.InjectRandomGenerator(random);
 
+            var roomTemplates = new List<RoomTemplateGrid2D>
+            {
+                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(12, 15), new SimpleDoorModeGrid2D(2, 2),
+                    name: "Rectangle 12x15"),
+                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(6), new SimpleDoorModeGrid2D(2, 1), name: "Square 6x6"),
+            };
+
+            var corridorRoomTemplates = MapDescriptionUtils.GetNewCorridorRoomTemplates(new List<int>() { 2, 4, 6 }, 2);
+
+            var levelDescription = new LevelDescriptionGrid2D<int>();
+            var roomsCount = 20;
+            var corridorsCounter = -100;
+            for (int i = 0; i < roomsCount + 1; i++)
+            {
+                if (i < roomsCount)
+                {
+                    if (i == 0)
+                    {
+                        levelDescription.AddRoom(i, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>()
+                        {
+                            roomTemplates[0]
+                        }));
+                    }
+                    else
+                    {
+                        levelDescription.AddRoom(i, new RoomDescriptionGrid2D(false, roomTemplates));
+                    }
+                }
+
+                if (i > 0)
+                {
+                    var corridorRoom = corridorsCounter++;
+                    levelDescription.AddRoom(corridorRoom, new RoomDescriptionGrid2D(true, corridorRoomTemplates));
+                    levelDescription.AddConnection(i - 1, corridorRoom);
+                    levelDescription.AddConnection(i == roomsCount ? 0 : i, corridorRoom);
+                }
+            }
+
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription);
+            var layout1 = generator.GenerateLayout();
+            var layout2 = generator.LastLayout;
+
+            var layout = new SimpleLayout<int, SimpleConfiguration<int>>();
+
+
+            foreach (var configuration in layout2.GetAllConfigurations())
+            {
+                var newConfiguration = new SimpleConfiguration<int>()
+                {
+                    Position = configuration.Position,
+                    Room = configuration.Room.Room,
+                    RoomShape = configuration.RoomShape,
+                };
+
+                layout.AddRoom(configuration.Room.Room, newConfiguration);
+                OnPartialValid?.Invoke(levelGeometry.ConvertLayout(layout));
+            }
+
+            foreach (var edge in levelDescription.GetGraph().Edges)
+            {
+                layout.AddConnection(edge.From, edge.To);
+            }
+
+            roomTemplateInstances = roomTemplates
+                .SelectMany(levelGeometry.GetRoomTemplateInstances)
+                .ToList();
+            corridorRoomTemplateInstances = corridorRoomTemplates
+                .SelectMany(levelGeometry.GetRoomTemplateInstances)
+                .ToList();
+
+            roomCounter = 100;
+
+            while (layout.Graph.VerticesCount < 100)
+            {
+                if (cancellationToken.HasValue && cancellationToken.Value.IsCancellationRequested)
+                {
+                    return null;
+                }
+
+                ExpandLayout(layout);
+            }
+
+            OnValid?.Invoke(levelGeometry.ConvertLayout(layout));
+
+            return levelGeometry.ConvertLayout(layout);
+        }
+
+        public LayoutGrid2D<int> GenerateLayout2()
+        {
+            levelGeometry = new LevelGeometry<int>();
+            levelGeometry.InjectRandomGenerator(random);
+
+            levelBuilder = new LevelBuilder<int>(levelGeometry);
+            levelBuilder.InjectRandomGenerator(random);
+
             roomCounter = 0;
 
             var roomTemplates = new List<RoomTemplateGrid2D>()

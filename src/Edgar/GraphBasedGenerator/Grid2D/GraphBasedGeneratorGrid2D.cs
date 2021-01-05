@@ -41,6 +41,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnPerturbedInternal;
 
+        // TODO: Remove when possible
+        public Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>> LastLayout;
+
         /// <summary>
         /// Creates an instance of the generator.
         /// </summary>
@@ -261,6 +264,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             OnPerturbedInternal += earlyStoppingHandler;
             var layout = generator.GenerateLayout();
+            LastLayout = generator.LastLayout;
             OnPerturbedInternal -= earlyStoppingHandler;
 
             return layout;
