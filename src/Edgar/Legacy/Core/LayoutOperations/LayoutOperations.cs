@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common.Exceptions;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.ConfigurationSpaces;
@@ -229,7 +230,7 @@ namespace Edgar.Legacy.Core.LayoutOperations
 
 			if (bestEnergy == float.MaxValue)
 			{
-				throw new ArgumentException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)");
+				throw new NoSuitableShapeForRoomException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)", node);
 			}
 
 			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);

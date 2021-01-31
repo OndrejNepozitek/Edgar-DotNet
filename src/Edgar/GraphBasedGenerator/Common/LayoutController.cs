@@ -5,6 +5,7 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.Constraints;
+using Edgar.GraphBasedGenerator.Common.Exceptions;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.LayoutOperations.Interfaces;
@@ -179,9 +180,9 @@ namespace Edgar.GraphBasedGenerator.Common
             }
 
 			if (bestEnergy == float.MaxValue)
-			{
-				throw new ArgumentException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)");
-			}
+            {
+                throw new NoSuitableShapeForRoomException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)", node, neighborsConfigurations.Select(x => x.RoomShape).Cast<object>().ToList());
+            }
 
 			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
 			layout.SetConfiguration(node, newConfiguration);

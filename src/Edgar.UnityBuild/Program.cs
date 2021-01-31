@@ -13,7 +13,7 @@ namespace Edgar.UnityBuild
             var sourceDir = "EdgarSingleFile";
             var targetDir = "EdgarSingleFileModified";
 
-            if (File.Exists(targetDir))
+            if (Directory.Exists(targetDir))
             {
                 Directory.Delete(targetDir, true);
             }
