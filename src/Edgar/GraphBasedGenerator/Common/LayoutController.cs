@@ -421,7 +421,6 @@ namespace Edgar.GraphBasedGenerator.Common
 
 
             var configurationSpace = simpleConfigurationSpaces.GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
-            var newPosition = configurationSpace.GetRandomPosition(Random);
 
             // var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
 
@@ -432,6 +431,8 @@ namespace Edgar.GraphBasedGenerator.Common
                 PerturbShape(layout, node, updateLayout);
                 return;
             }
+
+            var newPosition = configurationSpace.GetRandomPosition(Random);
 
             var newConfiguration = mainConfiguration.SmartClone();
             newConfiguration.Position = newPosition;
