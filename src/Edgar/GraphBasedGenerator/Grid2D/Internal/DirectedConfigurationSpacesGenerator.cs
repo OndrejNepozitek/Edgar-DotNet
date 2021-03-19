@@ -115,12 +115,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
 
 			doorLines = doorLines.Where(x =>
-                x.Type == DoorType.Any ||
+                x.Type == DoorType.Undirected ||
                 (direction == ConfigurationSpaceDirection.FromFixedToMoving && x.Type == DoorType.Entrance) ||
                 (direction == ConfigurationSpaceDirection.FromMovingToFixed && x.Type == DoorType.Exit)
             ).ToList();
             doorLinesFixed = doorLinesFixed.Where(x =>
-                x.Type == DoorType.Any || 
+                x.Type == DoorType.Undirected || 
                 (direction == ConfigurationSpaceDirection.FromFixedToMoving && x.Type == DoorType.Exit) ||
                 (direction == ConfigurationSpaceDirection.FromMovingToFixed && x.Type == DoorType.Entrance)
                 ).ToList();

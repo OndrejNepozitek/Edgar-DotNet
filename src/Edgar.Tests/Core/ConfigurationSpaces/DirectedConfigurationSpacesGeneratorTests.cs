@@ -33,7 +33,7 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
             {
                 new DoorGrid2D(new Vector2Int(5, 2), new Vector2Int(5, 3), type: DoorType.Exit),
                 new DoorGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3), type: DoorType.Entrance),
-                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Any),
+                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Undirected),
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
@@ -66,7 +66,7 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
             {
                 new DoorGrid2D(new Vector2Int(5, 2), new Vector2Int(5, 3), type: DoorType.Exit),
                 new DoorGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3), type: DoorType.Entrance),
-                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Any),
+                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Undirected),
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
@@ -99,7 +99,7 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
             {
                 new DoorGrid2D(new Vector2Int(5, 2), new Vector2Int(5, 3), type: DoorType.Exit),
                 new DoorGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3), type: DoorType.Entrance),
-                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Any),
+                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Undirected),
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
@@ -139,7 +139,7 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
             {
                 new DoorGrid2D(new Vector2Int(5, 2), new Vector2Int(5, 3), type: DoorType.Exit),
                 new DoorGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3), type: DoorType.Entrance),
-                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Any),
+                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Undirected),
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
@@ -167,15 +167,15 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
             var roomShape = PolygonGrid2D.GetSquare(5);
             var roomDoorsMode = new ManualDoorModeGrid2D(new List<DoorGrid2D>()
             {
-                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Any), // Top
-                new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Any), // Bottom
+                new DoorGrid2D(new Vector2Int(2, 5), new Vector2Int(3, 5), type: DoorType.Undirected), // Top
+                new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Undirected), // Bottom
             });
 
             var corridorShape = PolygonGrid2D.GetRectangle(1, 3);
             var corridorDoorsMode = new ManualDoorModeGrid2D(new List<DoorGrid2D>()
             {
-                new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0), type: DoorType.Any),
-                new DoorGrid2D(new Vector2Int(0, 3), new Vector2Int(1, 3), type: DoorType.Any),
+                new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0), type: DoorType.Undirected),
+                new DoorGrid2D(new Vector2Int(0, 3), new Vector2Int(1, 3), type: DoorType.Undirected),
             });
 
             var expectedLines = new List<OrthogonalLineGrid2D>() {
