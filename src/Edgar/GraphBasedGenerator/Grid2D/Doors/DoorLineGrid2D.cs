@@ -29,14 +29,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 		/// </summary>
         public IDoorSocket DoorSocket { get; }
 
+        public DoorType Type { get; }
+
 		/// <param name="line">See the <see cref="Line"/> property.</param>
 		/// <param name="length">See the <see cref="Length"/> property.</param>
 		/// <param name="doorSocket">See the <see cref="DoorSocket"/> property.</param>
-        public DoorLineGrid2D(OrthogonalLineGrid2D line, int length, IDoorSocket doorSocket)
+		public DoorLineGrid2D(OrthogonalLineGrid2D line, int length, IDoorSocket doorSocket, DoorType type)
 		{
 			Line = line;
 			Length = length;
             DoorSocket = doorSocket;
+            Type = type;
         }
 
 		/// <inheritdoc />

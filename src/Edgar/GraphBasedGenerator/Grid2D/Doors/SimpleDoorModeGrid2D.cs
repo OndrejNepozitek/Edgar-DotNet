@@ -49,7 +49,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 if (line.Length < 2 * CornerDistance + DoorLength)
                     continue;
 				
-                lines.Add(new DoorLineGrid2D(line.Shrink(CornerDistance, CornerDistance + DoorLength), DoorLength, DoorSocket));
+                lines.Add(new DoorLineGrid2D(line.Shrink(CornerDistance, CornerDistance + DoorLength), DoorLength, DoorSocket, DoorType.Undirected));
             }
 
             return lines;

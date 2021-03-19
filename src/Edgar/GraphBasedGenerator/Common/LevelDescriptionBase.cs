@@ -8,13 +8,12 @@ using Newtonsoft.Json;
 
 namespace Edgar.GraphBasedGenerator.Common
 {
-    public abstract class LevelDescription<TRoom, TRoomDescription> : ILevelDescription<TRoom>
+    public abstract class LevelDescriptionBase<TRoom, TRoomDescription> : ILevelDescription<TRoom>
         where TRoomDescription : IRoomDescription
     {
         private Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
 
         [JsonProperty]
-        // ReSharper disable once InconsistentNaming
         private List<KeyValuePair<TRoom, TRoomDescription>> roomDescriptionsList;
 
         [JsonProperty]
@@ -76,9 +75,10 @@ namespace Edgar.GraphBasedGenerator.Common
         /// Gets the graph of rooms with all rooms (including corridor rooms)
         /// </summary>
         /// <returns></returns>
-        public IGraph<TRoom> GetGraph()
+        protected IGraph<TRoom> GetGraph<TGraph>()
+            where TGraph : IGraph<TRoom>, new()
         {
-            var graph = new UndirectedAdjacencyListGraph<TRoom>();
+            var graph = new TGraph();
 
             foreach (var room in roomDescriptions.Keys)
             {
@@ -95,10 +95,10 @@ namespace Edgar.GraphBasedGenerator.Common
             return graph;
         }
 
-        public IGraph<TRoom> GetGraphWithoutCorridors()
+        protected IGraph<TRoom> GetGraphWithoutCorridors<TGraph>(bool isDirected) where TGraph : IGraph<TRoom>, new()
         {
-            var graph = GetGraph();
-            var stageOneGraph = new UndirectedAdjacencyListGraph<TRoom>();
+            var graph = GetGraph<TGraph>();
+            var stageOneGraph = new TGraph();
 
             foreach (var room in graph.Vertices)
             {
@@ -115,7 +115,27 @@ namespace Edgar.GraphBasedGenerator.Common
                 if (roomDescription.IsCorridor)
                 {
                     var neighbors = graph.GetNeighbours(room).ToList();
-                    stageOneGraph.AddEdge(neighbors[0], neighbors[1]);
+
+                    if (isDirected)
+                    {
+                        if (graph.HasEdge(neighbors[0], room) && graph.HasEdge(room, neighbors[1]))
+                        {
+                            stageOneGraph.AddEdge(neighbors[0], neighbors[1]);
+                        }
+                        else if (graph.HasEdge(neighbors[1], room) && graph.HasEdge(room, neighbors[0]))
+                        {
+                            stageOneGraph.AddEdge(neighbors[1], neighbors[0]);
+                        }
+                        else
+                        {
+                            throw new ArgumentException(
+                                $"The orientation of edges between rooms {room}, {neighbors[0]} and {neighbors[1]} is incorrect. The orientation must be either Room1 -> Corridor -> Room2 or Room2 -> Corridor -> Room1. The orientation of edges is only relevant");
+                        }
+                    }
+                    else
+                    {
+                        stageOneGraph.AddEdge(neighbors[0], neighbors[1]);
+                    }
                 }
             }
 
@@ -133,19 +153,55 @@ namespace Edgar.GraphBasedGenerator.Common
             return stageOneGraph;
         }
 
-        IRoomDescription ILevelDescription<TRoom>.GetRoomDescription(TRoom node)
+        public IGraph<TRoom> GetGraph()
         {
-            return GetRoomDescription(node);
+            return GetGraph(false, false);
+        }
+
+        public IGraph<TRoom> GetGraphWithoutCorridors()
+        {
+            return GetGraph(true, false);
+        }
+
+        public IGraph<TRoom> GetGraph(bool withoutCorridors, bool directed)
+        {
+            if (withoutCorridors)
+            {
+                if (directed)
+                {
+                    return GetGraphWithoutCorridors<BagOfEdgesGraph<TRoom>>(true);
+                }
+                else
+                {
+                    return GetGraphWithoutCorridors<UndirectedAdjacencyListGraph<TRoom>>(false);
+                }
+            }
+            else
+            {
+                if (directed)
+                {
+                    return GetGraph<BagOfEdgesGraph<TRoom>>();
+                }
+                else
+                {
+                    return GetGraph<UndirectedAdjacencyListGraph<TRoom>>();
+                }
+            }
+        }
+
+        IRoomDescription ILevelDescription<TRoom>.GetRoomDescription(TRoom room)
+        {
+            return GetRoomDescription(room);
         }
 
         /// <summary>
         /// Get room description of a given room.
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="room"></param>
         /// <returns></returns>
-        public TRoomDescription GetRoomDescription(TRoom node)
+        public TRoomDescription GetRoomDescription(TRoom room)
         {
-            return roomDescriptions[node];
+            return roomDescriptions[room];
         }
 
         private void CheckIfValid(IGraph<TRoom> graph)

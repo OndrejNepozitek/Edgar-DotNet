@@ -51,7 +51,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 var from = isGoodDirection ? doorLine.From : doorLine.To;
 
                 found = true;
-                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, from, side.GetDirection()), doorLine.Length, door.Socket);
+                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, from, side.GetDirection()), doorLine.Length, door.Socket, door.Type);
             }
 
             if (found == false)

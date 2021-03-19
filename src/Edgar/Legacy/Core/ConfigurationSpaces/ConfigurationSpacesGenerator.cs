@@ -356,7 +356,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket));
+				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
 
 				foreach (var cDoorLine in correspondingLines)
 				{
@@ -370,7 +370,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 					if (offsets == null)
 					{
 						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket)));
+						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
 						configurationSpaceLines.Add(resultLine);
 					}
 					else
@@ -379,7 +379,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 						{
 							var offsetVector = new Vector2Int(0, offset);
 							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-							reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket)));
+							reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
 							configurationSpaceLines.Add(resultLine);
 						}
 					}
@@ -527,7 +527,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
                 transformedShape = polygonUtils.NormalizePolygon(transformedShape);
                 var transformedDoorLines = doorLines
                     .Select(x => DoorUtils.TransformDoorLine(x, transformation))
-                    .Select(x => new DoorLineGrid2D(x.Line + (-1 * smallestPoint), x.Length, x.DoorSocket))
+                    .Select(x => new DoorLineGrid2D(x.Line + (-1 * smallestPoint), x.Length, x.DoorSocket, x.Type))
                     .ToList();
 
                 // Check if we already have the same room shape (together with door lines)

@@ -23,13 +23,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </summary>
         public IDoorSocket Socket { get; }
 
+        public DoorType Type { get; }
+
         /// <param name="from">See the <see cref="From"/> property.</param>
         /// <param name="to">See the <see cref="To"/> property.</param>
         /// <param name="socket">See the <see cref="Socket"/> property.</param>
-        public DoorGrid2D(Vector2Int from, Vector2Int to, IDoorSocket socket = null)
+        public DoorGrid2D(Vector2Int from, Vector2Int to, IDoorSocket socket = null, DoorType type = DoorType.Undirected)
         {
             From = from;
             To = to;
+            Type = type;
             Socket = socket;
         }
     }

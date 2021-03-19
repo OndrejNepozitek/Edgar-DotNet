@@ -55,5 +55,5 @@ namespace Edgar.Graphs
 		/// <param name="to"></param>
 		/// <returns></returns>
 		bool HasEdge(T from, T to);
-	}
+    }
 }

@@ -72,7 +72,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
                 {
                     levelDescription.AddRoom(counter, corridorRoomDescription);
                     levelDescription.AddConnection(connection.From, counter);
-                    levelDescription.AddConnection(connection.To, counter);
+                    levelDescription.AddConnection(counter, connection.To);
                     counter++;
                 }
                 else

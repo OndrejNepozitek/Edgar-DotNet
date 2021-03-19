@@ -153,5 +153,5 @@ namespace Edgar.Graphs
 		{
 			return graphAlias.HasEdge(from, to);
 		}
-	}
+    }
 }

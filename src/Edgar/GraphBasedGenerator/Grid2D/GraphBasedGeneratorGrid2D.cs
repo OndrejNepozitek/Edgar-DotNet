@@ -9,6 +9,7 @@ using Edgar.GraphBasedGenerator.Common.Constraints;
 using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
+using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.GraphBasedGenerator.Grid2D.Internal;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ConfigurationSpaces;
@@ -90,9 +91,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
 
-            // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
-            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped);
-
             // Needlessly complex for backwards compatibility
 
             #region IntAliasMapping
@@ -166,7 +164,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             #endregion
 
+            var isGraphDirected = roomTemplateInstances
+                .Values.SelectMany(x => x)
+                .SelectMany(x => x.DoorLines)
+                .Any(x => x.Type != DoorType.Undirected);
 
+            // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
+            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, isGraphDirected);
 
             // var averageSize = configurationSpaces.GetAverageSize();
 
