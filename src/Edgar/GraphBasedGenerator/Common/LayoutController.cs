@@ -181,7 +181,9 @@ namespace Edgar.GraphBasedGenerator.Common
 
 			if (bestEnergy == float.MaxValue)
             {
-                throw new NoSuitableShapeForRoomException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)", node, neighborsConfigurations.Select(x => x.RoomShape).Cast<object>().ToList());
+                //throw new NoSuitableShapeForRoomException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)", node, neighborsConfigurations.Select(x => x.RoomShape).Cast<object>().ToList());
+
+                bestShape = shapes[0];
             }
 
 			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);

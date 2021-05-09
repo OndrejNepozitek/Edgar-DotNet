@@ -109,7 +109,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 //}
             } else if (roomTemplate.Doors is ManualDoorModeGrid2D manualDoorMode)
             {
-                doors = manualDoorMode.GetDoors(roomTemplate.Outline).Select(x => new DoorLineGrid2D(x.Line + position, x.Length, x.DoorSocket)).ToList();
+                doors = manualDoorMode.GetDoors(roomTemplate.Outline).Select(x => new DoorLineGrid2D(x.Line + position, x.Length, x.DoorSocket, x.Type)).ToList();
             }
 
             if (doors != null)
