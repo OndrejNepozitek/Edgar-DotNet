@@ -42,7 +42,7 @@ namespace Edgar.Graphs
 		void AddEdge(T from, T to);
 
 		/// <summary>
-		/// Gets all neighbours of a given vertex.
+		/// Gets all neighbors of a given vertex.
 		/// </summary>
 		/// <param name="vertex"></param>
 		/// <returns></returns>

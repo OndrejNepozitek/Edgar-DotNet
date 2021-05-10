@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Graphs;
+using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.Utils.Logging;
 
-namespace Edgar.Legacy.Core.ChainDecompositions
+namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     /// <summary>
     /// Breadth-first search guided chain decomposition

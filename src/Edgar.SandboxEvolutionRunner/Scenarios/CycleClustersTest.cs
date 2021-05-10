@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;

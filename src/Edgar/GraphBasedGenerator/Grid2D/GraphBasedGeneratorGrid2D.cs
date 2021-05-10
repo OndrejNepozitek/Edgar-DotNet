@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.Constraints;
 using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
@@ -73,7 +74,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Create chain decomposition
             if (chainsGeneric == null)
             {
-                var chainDecomposition = new Common.TwoStageChainDecomposition<TRoom>(levelDescription, new BreadthFirstChainDecomposition<TRoom>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                var chainDecomposition = new Common.ChainDecomposition.TwoStageChainDecomposition<TRoom>(levelDescription, new BreadthFirstChainDecomposition<TRoom>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
                 chainsGeneric = chainDecomposition.GetChains(levelDescription.GetGraph());
             }
 

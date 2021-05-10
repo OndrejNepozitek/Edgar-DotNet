@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.Utils.Interfaces;
+﻿using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.Legacy.Core.ChainDecompositions
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 using Edgar.Legacy.Utils.Interfaces;
@@ -53,7 +54,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
             };
 
             var chains =
-                new TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(configuration))
+                new Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(configuration))
                     .GetChains(mapDescription.GetGraph()).ToList();
 
             return new ChainDecompositionMutation<TConfiguration, TNode>(priority, chains, maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy);

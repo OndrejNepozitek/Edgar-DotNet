@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.Configurations;
 using Edgar.Legacy.Core.Configurations.EnergyData;
@@ -70,7 +71,7 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
             // Create chain decomposition
             if (chainsGeneric == null)
             {
-                var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescriptionOriginal, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                var chainDecomposition = new ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescriptionOriginal, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
                 chainsGeneric = chainDecomposition.GetChains(mapDescriptionOriginal.GetGraph());
             }
 

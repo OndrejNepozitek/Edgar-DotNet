@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
 

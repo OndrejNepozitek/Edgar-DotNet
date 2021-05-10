@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Graphs;
 using Edgar.Legacy.Core.ChainDecompositions;
-using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Common
+namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     /// <inheritdoc />
 	/// <summary>
@@ -14,12 +13,12 @@ namespace Edgar.GraphBasedGenerator.Common
     /// <typeparam name="TNode"></typeparam>
 	public class TwoStageChainDecomposition<TNode> : IChainDecomposition<TNode>
 	{
-		private readonly ILevelDescription<TNode> mapDescription;
+		private readonly ILevelDescription<TNode> levelDescription;
 		private readonly IChainDecomposition<TNode> decomposition;
 
-		public TwoStageChainDecomposition(ILevelDescription<TNode> mapDescription, IChainDecomposition<TNode> decomposition)
+		public TwoStageChainDecomposition(ILevelDescription<TNode> levelDescription, IChainDecomposition<TNode> decomposition)
 		{
-			this.mapDescription = mapDescription;
+			this.levelDescription = levelDescription;
 			this.decomposition = decomposition;
 		}
 
@@ -27,11 +26,11 @@ namespace Edgar.GraphBasedGenerator.Common
 		public List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{
             // Get all the faces from the stage one graph
-			var stageOneGraph = mapDescription.GetGraphWithoutCorridors();
+			var stageOneGraph = levelDescription.GetGraphWithoutCorridors();
 			var faces = decomposition.GetChains(stageOneGraph);
 
 			var usedVertices = new HashSet<TNode>();
-			var notUsedStageTwoRooms = graph.Vertices.Where(x => mapDescription.GetRoomDescription(x).IsCorridor).ToList();
+			var notUsedStageTwoRooms = graph.Vertices.Where(x => levelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
             // Iterate through all the faces, marking all the seen vertices
             // As soon as all the neighbors of a stage two room are used, add the stage two room to the current face

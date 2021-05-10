@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Graphs;
-using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 
 namespace Edgar.Legacy.Core.ChainDecompositions

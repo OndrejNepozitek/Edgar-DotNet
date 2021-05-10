@@ -1,4 +1,5 @@
-﻿using Edgar.Legacy.Core.ChainDecompositions;
+﻿using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using SandboxEvolutionRunner.Utils;
@@ -29,7 +30,7 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetChainsConfiguration(NamedMapDescription namedMapDescription)
         {
             var chainDecompositionOld = new BreadthFirstChainDecomposition<int>(new ChainDecompositionConfiguration());
-            var chainDecomposition = new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition = new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
 
             var configuration = GetOldConfiguration(namedMapDescription);
             configuration.Chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());
@@ -40,7 +41,7 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription)
         {
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            var chainDecomposition = new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition = new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
 
             var configuration = GetBasicConfiguration(namedMapDescription);
             configuration.Chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Graphs;
-using Edgar.Legacy.Core.ChainDecompositions.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
 
-namespace Edgar.Legacy.Core.ChainDecompositions
+namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     /// <inheritdoc />
 	/// <summary>

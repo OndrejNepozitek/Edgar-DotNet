@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Utils.Interfaces;
 using Edgar.Legacy.Utils.MetaOptimization.Configurations;
