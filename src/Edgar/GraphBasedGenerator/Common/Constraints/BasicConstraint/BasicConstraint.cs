@@ -31,7 +31,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint
 
             var overlap = 0;
 			var distance = 0;
-			var neighbors = layout.Graph.GetNeighbours(node).ToList();
+			var neighbors = layout.Graph.GetNeighbors(node).ToList();
 
 			foreach (var vertex in layout.Graph.Vertices)
 			{

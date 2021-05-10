@@ -89,7 +89,7 @@ namespace Edgar.Legacy.Core.LayoutConverters
 
 					if (layout.GetConfiguration(vertexAlias, out var configuration))
 					{
-						var neighbours = layout.Graph.GetNeighbours(vertexAlias);
+						var neighbours = layout.Graph.GetNeighbors(vertexAlias);
 
 						foreach (var neighbourAlias in neighbours)
 						{

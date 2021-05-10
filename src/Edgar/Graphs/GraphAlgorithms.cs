@@ -32,7 +32,7 @@ namespace Edgar.Graphs
             {
                 var node = queue.Dequeue();
 
-                foreach (var neighbor in graph.GetNeighbours(node))
+                foreach (var neighbor in graph.GetNeighbors(node))
                 {
                     if (previous.ContainsKey(neighbor))
                     {

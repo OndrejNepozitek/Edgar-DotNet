@@ -34,7 +34,7 @@ namespace Edgar.GraphBasedGenerator.Common
             throw new NotSupportedException("The graph cannot be modified once constructed");
         }
 
-        public IEnumerable<RoomNode<TRoom>> GetNeighbours(RoomNode<TRoom> vertex)
+        public IEnumerable<RoomNode<TRoom>> GetNeighbors(RoomNode<TRoom> vertex)
         {
             throw new NotImplementedException();
         }

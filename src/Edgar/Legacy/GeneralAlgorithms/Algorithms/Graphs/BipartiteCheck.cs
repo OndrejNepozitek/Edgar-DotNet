@@ -72,7 +72,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
 				var vertex = queue.Dequeue();
 				var oppositeColor = coloring[vertex] == 0 ? 1 : 0;
 
-				foreach (var neighbour in graph.GetNeighbours(vertex))
+				foreach (var neighbour in graph.GetNeighbors(vertex))
 				{
 					if (coloring.TryGetValue(neighbour, out var color))
 					{

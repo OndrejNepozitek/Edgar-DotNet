@@ -176,7 +176,7 @@ namespace GeneralAlgorithms.Tests.Algorithms.Graphs
 
 			foreach (var vertex in graph.Vertices)
 			{
-				Assert.IsTrue(graph.GetNeighbours(vertex).All(x => coloring[x] != coloring[vertex])); 
+				Assert.IsTrue(graph.GetNeighbors(vertex).All(x => coloring[x] != coloring[vertex])); 
 			}
 		}
 	}

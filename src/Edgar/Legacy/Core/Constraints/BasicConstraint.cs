@@ -43,7 +43,7 @@ namespace Edgar.Legacy.Core.Constraints
 		{
 			var overlap = 0;
 			var distance = 0;
-			var neighbours = layout.Graph.GetNeighbours(node).ToList();
+			var neighbours = layout.Graph.GetNeighbors(node).ToList();
 
 			foreach (var vertex in layout.Graph.Vertices)
 			{

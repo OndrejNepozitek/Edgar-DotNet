@@ -81,7 +81,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
 					if (layout.GetConfiguration(vertexAlias, out var configuration))
 					{
-						var neighbours = layout.Graph.GetNeighbours(vertexAlias);
+						var neighbours = layout.Graph.GetNeighbors(vertexAlias);
 
 						foreach (var neighbourAlias in neighbours)
 						{

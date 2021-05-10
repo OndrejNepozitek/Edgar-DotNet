@@ -41,7 +41,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
 				foreach (var stageTwoRoom in notUsedStageTwoRooms.ToList())
 				{
-					var neighbors = graph.GetNeighbours(stageTwoRoom).ToList();
+					var neighbors = graph.GetNeighbors(stageTwoRoom).ToList();
 
                     if (neighbors.TrueForAll(x => usedVertices.Contains(x)))
                     {

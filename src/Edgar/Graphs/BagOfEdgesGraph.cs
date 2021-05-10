@@ -31,7 +31,7 @@ namespace Edgar.Graphs
             edges.Add(new Edge<T>(from, to));
         }
 
-        public IEnumerable<T> GetNeighbours(T vertex)
+        public IEnumerable<T> GetNeighbors(T vertex)
         {
             foreach (var edge in edges)
             {

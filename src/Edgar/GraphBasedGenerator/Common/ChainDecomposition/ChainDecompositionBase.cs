@@ -46,7 +46,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 		/// <returns></returns>
 		protected int SmallestCoveredNeighbourDepth(TNode node)
 		{
-			var neighbours = Graph.GetNeighbours(node);
+			var neighbours = Graph.GetNeighbors(node);
 			var smallestDepth = int.MaxValue;
 
 			foreach (var neighbour in neighbours)
@@ -99,7 +99,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 		/// <returns></returns>
 		protected int UncoveredNeighboursCount(TNode node)
 		{
-			var neighbours = Graph.GetNeighbours(node);
+			var neighbours = Graph.GetNeighbors(node);
 
 			return neighbours.Count(x => !IsCovered(x));
 		}

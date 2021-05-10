@@ -42,7 +42,7 @@ namespace Edgar.Legacy.Core.Constraints
 				return true;
 
 			var distance = 0;
-			var neighbours = stageOneGraph.GetNeighbours(node).ToList();
+			var neighbours = stageOneGraph.GetNeighbors(node).ToList();
 
 			foreach (var vertex in neighbours)
 			{

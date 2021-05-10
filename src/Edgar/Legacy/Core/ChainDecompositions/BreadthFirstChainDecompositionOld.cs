@@ -95,7 +95,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 				var face = Faces[i];
 
 				// Check nodes in the face and also all neighbouring nodes
-				var nodesToCheck = face.Concat(face.SelectMany(x => Graph.GetNeighbours(x))).Where(IsCovered).ToList();
+				var nodesToCheck = face.Concat(face.SelectMany(x => Graph.GetNeighbors(x))).Where(IsCovered).ToList();
 
 				// If nodesToCheck is empty, it does not neighbour with any covered node and therefore we skip it
 				if (nodesToCheck.Count == 0)
@@ -132,7 +132,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 			{
 				var vertex = nextFace[i];
 
-				if (Graph.GetNeighbours(vertex).Any(IsCovered))
+				if (Graph.GetNeighbors(vertex).Any(IsCovered))
 				{
 					firstVertexIndex = i;
 					break;
@@ -193,7 +193,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 			{
 				foreach (var node in Graph.Vertices.Where(x => !IsCovered(x)))
 				{
-					var coveredNeighbours = Graph.GetNeighbours(node).Where(IsCovered).ToList();
+					var coveredNeighbours = Graph.GetNeighbors(node).Where(IsCovered).ToList();
 
 					if (coveredNeighbours.Count == 0)
 						continue;
@@ -215,7 +215,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 			else
 			{
 				// If there are no covered nodes, find a one that is a leaf
-				firstVertex = Graph.Vertices.First(x => Graph.GetNeighbours(x).Count() == 1);
+				firstVertex = Graph.Vertices.First(x => Graph.GetNeighbors(x).Count() == 1);
 				foundFirst = true;
 			}
 
@@ -246,7 +246,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 			while (true)
 			{
 				var lastNode = chain[chain.Count - 1];
-				var neighbours = Graph.GetNeighbours(lastNode).Where(x => !IsCovered(x)).ToList();
+				var neighbours = Graph.GetNeighbors(lastNode).Where(x => !IsCovered(x)).ToList();
 
 				// Break if there are not neigbours
 				if (neighbours.Count == 0)
@@ -305,7 +305,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 			var soloNeighbours = new List<TNode>();
 			nodeInFaces = false;
 
-			foreach (var neighbour in Graph.GetNeighbours(node).Where(x => !IsCovered(x)))
+			foreach (var neighbour in Graph.GetNeighbors(node).Where(x => !IsCovered(x)))
 			{
 				if (UncoveredNeighboursCount(neighbour) == 0)
 				{

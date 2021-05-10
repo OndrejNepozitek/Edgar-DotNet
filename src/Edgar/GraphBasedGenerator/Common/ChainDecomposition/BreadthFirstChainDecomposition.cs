@@ -100,7 +100,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                 return decomposition.AddChain(cycleComponent.Nodes, true);
             }
 
-            var startingNode = Graph.Vertices.First(x => Graph.GetNeighbours(x).Count() == 1);
+            var startingNode = Graph.Vertices.First(x => Graph.GetNeighbors(x).Count() == 1);
             var treeComponent = GetTreeComponent(decomposition, startingNode);
 
             logger.WriteLine("Starting with tree");
@@ -117,7 +117,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
             foreach (var node in decomposition.GetAllCoveredVertices())
             {
-                var neighbors = Graph.GetNeighbours(node);
+                var neighbors = Graph.GetNeighbors(node);
                 var notCoveredNeighbors = neighbors.Where(x => !decomposition.IsCovered(x));
                 var treeStartingNodes = new List<TNode>();
 
@@ -265,7 +265,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                     continue;
                 }
 
-                var neighbors = Graph.GetNeighbours(node);
+                var neighbors = Graph.GetNeighbors(node);
 
                 foreach (var neighbor in neighbors)
                 {
@@ -310,7 +310,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                     continue;
                 }
 
-                var neighbors = Graph.GetNeighbours(node);
+                var neighbors = Graph.GetNeighbors(node);
 
                 foreach (var neighbor in neighbors)
                 {
@@ -338,7 +338,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
         private int GetMinimumNeighborChainNumber(PartialDecomposition decomposition, List<TNode> nodes)
         {
             var coveredNeighbors = nodes
-                .SelectMany(Graph.GetNeighbours)
+                .SelectMany(Graph.GetNeighbors)
                 .Where(decomposition.IsCovered)
                 .ToList();
 
@@ -361,7 +361,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                 var nodeIndex = notCoveredNodes
                     .MinBy(
                         x => Graph
-                            .GetNeighbours(x)
+                            .GetNeighbors(x)
                             .Min(y =>
                                 decomposition.IsCovered(y) 
                                     ? -1 

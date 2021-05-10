@@ -46,7 +46,7 @@ namespace Edgar.Graphs
 		/// </summary>
 		/// <param name="vertex"></param>
 		/// <returns></returns>
-		IEnumerable<T> GetNeighbours(T vertex);
+		IEnumerable<T> GetNeighbors(T vertex);
 
 		/// <summary>
 		/// Checks whether there exists a given edge.

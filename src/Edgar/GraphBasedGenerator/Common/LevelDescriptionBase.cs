@@ -114,7 +114,7 @@ namespace Edgar.GraphBasedGenerator.Common
 
                 if (roomDescription.IsCorridor)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
 
                     if (isDirected)
                     {
@@ -212,7 +212,7 @@ namespace Edgar.GraphBasedGenerator.Common
 
                 if (roomDescription.IsCorridor)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
 
                     if (neighbors.Count != 2)
                     {

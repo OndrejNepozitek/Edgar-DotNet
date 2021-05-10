@@ -135,7 +135,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
 			if (vertex == Nil)
 				return convertedGraph.Vertices;
 
-			return convertedGraph.GetNeighbours(vertex);
+			return convertedGraph.GetNeighbors(vertex);
 		}
 
 		private bool DFS(int u)

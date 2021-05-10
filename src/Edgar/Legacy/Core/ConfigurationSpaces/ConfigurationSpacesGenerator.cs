@@ -143,7 +143,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
                 if (roomDescription is CorridorRoomDescription corridorRoomDescription)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), corridorRoomDescription);
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), corridorRoomDescription);
                 }
@@ -165,7 +165,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 
                 if (roomDescription.IsCorridor)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), roomDescription);
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), roomDescription);
                 }

@@ -114,7 +114,7 @@ namespace Edgar.Legacy.Core.LayoutOperations
         {
             iterationsCount = 0;
 			var neighborsConfigurations = new List<TConfiguration>();
-			var neighbors = MapDescription.GetStageOneGraph().GetNeighbours(node);
+			var neighbors = MapDescription.GetStageOneGraph().GetNeighbors(node);
 
 			foreach (var neighbor in neighbors)
 			{
@@ -358,7 +358,7 @@ namespace Edgar.Legacy.Core.LayoutOperations
 		public bool AddCorridorGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
-			var neighbors = layout.Graph.GetNeighbours(node);
+			var neighbors = layout.Graph.GetNeighbors(node);
 
 			foreach (var neighbor in neighbors)
 			{

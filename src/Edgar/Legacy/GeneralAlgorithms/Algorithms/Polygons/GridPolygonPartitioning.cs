@@ -528,7 +528,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 		private void Alternate(int u, IGraph<int> graph, bool[] visitU, bool[] visitV, int?[] matchV)
 		{
 			visitU[u] = true;
-			foreach (var v in graph.GetNeighbours(u))
+			foreach (var v in graph.GetNeighbors(u))
 			{
 				if (!visitV[v])
 				{

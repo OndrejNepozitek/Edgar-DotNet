@@ -35,7 +35,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint
 				return true;
 
 			var distance = 0;
-			var neighbours = graphWithoutCorridors.GetNeighbours(node).ToList();
+			var neighbours = graphWithoutCorridors.GetNeighbors(node).ToList();
 
 			foreach (var vertex in neighbours)
 			{

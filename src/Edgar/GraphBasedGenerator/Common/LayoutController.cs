@@ -110,7 +110,7 @@ namespace Edgar.GraphBasedGenerator.Common
         {
             iterationsCount = 0;
 			var neighborsConfigurations = new List<TConfiguration>();
-			var neighbors = LevelDescription.GetGraphWithoutCorridors().GetNeighbours(node);
+			var neighbors = LevelDescription.GetGraphWithoutCorridors().GetNeighbors(node);
 
 			foreach (var neighbor in neighbors)
 			{
@@ -320,7 +320,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		public bool AddCorridorGreedily(TLayout layout, TNode node)
 		{
 			var configurations = new List<TConfiguration>();
-			var neighbors = layout.Graph.GetNeighbours(node);
+			var neighbors = layout.Graph.GetNeighbors(node);
 
 			foreach (var neighbor in neighbors)
 			{
@@ -410,7 +410,7 @@ namespace Edgar.GraphBasedGenerator.Common
         {
             var configurations = new List<TConfiguration>();
 
-            foreach (var neighbor in StageOneGraph.GetNeighbours(node))
+            foreach (var neighbor in StageOneGraph.GetNeighbors(node))
             {
                 if (layout.GetConfiguration(neighbor, out var configuration))
                 {

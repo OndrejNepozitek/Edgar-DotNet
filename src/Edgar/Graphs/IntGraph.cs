@@ -143,9 +143,9 @@ namespace Edgar.Graphs
 		}
 
 		/// <inheritdoc />
-		public IEnumerable<int> GetNeighbours(int vertex)
+		public IEnumerable<int> GetNeighbors(int vertex)
 		{
-			return graphAlias.GetNeighbours(vertex);
+			return graphAlias.GetNeighbors(vertex);
 		}
 
 		/// <inheritdoc />

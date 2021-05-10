@@ -105,7 +105,7 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
                 if (roomDescription.Stage == 2)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
                     stageOneGraph.AddEdge(neighbors[0], neighbors[1]);
                 }
             }
@@ -142,7 +142,7 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
                 if (roomDescription.Stage == 2)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
 
                     if (neighbors.Count != 2)
                     {

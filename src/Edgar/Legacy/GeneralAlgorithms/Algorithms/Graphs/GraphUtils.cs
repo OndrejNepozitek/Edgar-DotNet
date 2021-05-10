@@ -38,7 +38,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs
 			{
 				var vertex = queue.Dequeue();
 
-				foreach (var neighbour in graph.GetNeighbours(vertex))
+				foreach (var neighbour in graph.GetNeighbors(vertex))
 				{
 					if (!foundVertices.Contains(neighbour))
 					{

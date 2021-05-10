@@ -109,7 +109,7 @@ namespace Edgar.Legacy.Core.LayoutOperations
 		{
 			var configurations = new List<TConfiguration>();
 
-			foreach (var neighbor in StageOneGraph.GetNeighbours(node))
+			foreach (var neighbor in StageOneGraph.GetNeighbors(node))
 			{
 				if (layout.GetConfiguration(neighbor, out var configuration))
 				{

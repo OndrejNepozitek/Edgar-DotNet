@@ -164,7 +164,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
                     break;
                 case RoomTemplatesSet.Smart:
                 {
-                    if (graph.GetNeighbours(vertex).Count() <= 2)
+                    if (graph.GetNeighbors(vertex).Count() <= 2)
                     {
                         roomTemplates.AddRange(roomTemplatesSmall);
                     }

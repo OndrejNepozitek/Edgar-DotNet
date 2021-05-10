@@ -43,7 +43,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                 if (roomDescription.IsCorridor)
                 {
-                    var neighbors = graph.GetNeighbours(room).ToList();
+                    var neighbors = graph.GetNeighbors(room).ToList();
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[0], neighbors[1]), roomDescription);
                     mapping.Add(new Tuple<TNode, TNode>(neighbors[1], neighbors[0]), roomDescription);
                 }

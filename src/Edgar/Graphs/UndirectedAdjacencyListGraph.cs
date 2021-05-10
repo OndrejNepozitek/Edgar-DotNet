@@ -46,7 +46,7 @@ namespace Edgar.Graphs
 		}
 
 		/// <inheritdoc />
-		public IEnumerable<T> GetNeighbours(T vertex)
+		public IEnumerable<T> GetNeighbors(T vertex)
 		{
 			if (!adjacencyLists.TryGetValue(vertex, out var neighbours))
 				throw new ArgumentException("The vertex does not exist");
@@ -57,7 +57,7 @@ namespace Edgar.Graphs
 		/// <inheritdoc />
 		public bool HasEdge(T from, T to)
 		{
-			foreach (var neighbour in GetNeighbours(from))
+			foreach (var neighbour in GetNeighbors(from))
 			{
 				if (neighbour.Equals(to))
 					return true;
