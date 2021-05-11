@@ -11,6 +11,7 @@ using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
 using Edgar.GraphBasedGenerator.Common.Doors;
+using Edgar.GraphBasedGenerator.Common.LayoutControllers;
 using Edgar.GraphBasedGenerator.Grid2D.Internal;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.ConfigurationSpaces;

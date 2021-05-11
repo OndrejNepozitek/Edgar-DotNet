@@ -5,25 +5,32 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.Constraints;
-using Edgar.GraphBasedGenerator.Common.Exceptions;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
 using Edgar.Legacy.Core.LayoutOperations.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
 
-namespace Edgar.GraphBasedGenerator.Common
+namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 {
     /// <summary>
 	/// Layout operations that compute energy based on given constraints.
 	/// </summary>
-	public class LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : AbstractLayoutController<TLayout, TNode, TConfiguration, TShapeContainer>
-		where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
+	public class LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : IChainBasedLayoutOperations<TLayout, TNode>, IRandomInjectable
+        where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
 		where TConfiguration : IConfiguration<TShapeContainer, Vector2Int, TNode>, /*IMutableConfiguration<TShapeContainer, TNode>,*/ ISmartCloneable<TConfiguration>, IEnergyConfiguration<TEnergyData>, new()
 		where TEnergyData : IEnergyData, new()
     {
+        private Random random;
+        private readonly float differenceFromAverageScale = 0.4f;
+        private readonly int averageSize;
+        private readonly ILevelDescription<TNode> levelDescription;
+        private readonly IGraph<TNode> stageOneGraph;
+        private readonly IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler;
+        private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
+
         private readonly ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator;
         private readonly bool throwIfRepeatModeNotSatisfied;
         private readonly IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces;
@@ -33,14 +40,20 @@ namespace Edgar.GraphBasedGenerator.Common
             ILevelDescription<TNode> levelDescription,
             ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator,
             IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
-            : base(averageSize,
-            levelDescription,
-            roomShapesHandler,
-            roomShapeGeometry)
         {
             this.constraintsEvaluator = constraintsEvaluator;
             this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
             this.simpleConfigurationSpaces = simpleConfigurationSpaces;
+            this.averageSize = averageSize;
+            this.levelDescription = levelDescription;
+            this.roomShapeGeometry = roomShapeGeometry;
+            this.roomShapesHandler = roomShapesHandler;
+            stageOneGraph = levelDescription.GetGraphWithoutCorridors();
+        }
+
+        public void InjectRandomGenerator(Random random)
+        {
+            this.random = random;
         }
 
         /// <summary>
@@ -49,7 +62,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <returns></returns>
-		public override bool IsLayoutValid(TLayout layout)
+		public bool IsLayoutValid(TLayout layout)
 		{
 			if (layout.GetAllConfigurations().Any(x => !x.EnergyData.IsValid))
 				return false;
@@ -65,7 +78,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		public override bool IsLayoutValid(TLayout layout, IList<TNode> chain)
+		public bool IsLayoutValid(TLayout layout, IList<TNode> chain)
 		{
 			return IsLayoutValid(layout);
 		}
@@ -75,7 +88,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <returns></returns>
-		public override float GetEnergy(TLayout layout)
+		public float GetEnergy(TLayout layout)
 		{
 			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy);
 		}
@@ -87,7 +100,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// Energies are computed from constraints.
 		/// </remarks>
 		/// <param name="layout"></param>
-		public override void UpdateLayout(TLayout layout)
+		public void UpdateLayout(TLayout layout)
 		{
 			foreach (var node in layout.Graph.Vertices)
 			{
@@ -106,11 +119,11 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// </summary>
 		/// <param name="layout"></param>
 		/// <param name="node"></param>
-		public override void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount)
+		public void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount)
         {
             iterationsCount = 0;
 			var neighborsConfigurations = new List<TConfiguration>();
-			var neighbors = LevelDescription.GetGraphWithoutCorridors().GetNeighbors(node);
+			var neighbors = levelDescription.GetGraphWithoutCorridors().GetNeighbors(node);
 
 			foreach (var neighbor in neighbors)
 			{
@@ -123,7 +136,7 @@ namespace Edgar.GraphBasedGenerator.Common
 			// The first node is set to have a random shape and [0,0] position
 			if (neighborsConfigurations.Count == 0)
 			{
-				layout.SetConfiguration(node, CreateConfiguration(RoomShapesHandler.GetRandomShapeWithoutConstraintsDoNotUse(node), new Vector2Int(), node));
+				layout.SetConfiguration(node, CreateConfiguration(roomShapesHandler.GetRandomShapeWithoutConstraintsDoNotUse(node), new Vector2Int(), node));
                 iterationsCount++;
 				return;
 			}
@@ -132,7 +145,7 @@ namespace Edgar.GraphBasedGenerator.Common
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new Vector2Int();
 
-            var shapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
+            var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
 
 			if (shapes.Count == 0)
             {
@@ -146,7 +159,7 @@ namespace Edgar.GraphBasedGenerator.Common
                 }
             }
 
-			shapes.Shuffle(Random);
+			shapes.Shuffle(random);
 
 			// Try all shapes
 			foreach (var shape in shapes)
@@ -158,7 +171,7 @@ namespace Edgar.GraphBasedGenerator.Common
 					continue;
 
                 const int maxPoints = 20;
-                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, Random))
+                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, random))
                 {
                     iterationsCount++;
 
@@ -190,7 +203,7 @@ namespace Edgar.GraphBasedGenerator.Common
 			layout.SetConfiguration(node, newConfiguration);
 		}
 
-        protected override void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
+        protected void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
         {
             // Prepare new layout with temporary configuration to compute energies
             var graph = layout.Graph;
@@ -251,7 +264,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		/// <param name="layout"></param>
 		/// <param name="chain"></param>
 		/// <returns></returns>
-		public override bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+		public bool TryCompleteChain(TLayout layout, IList<TNode> chain)
 		{
 			if (AddCorridors(layout, chain))
 			{
@@ -271,7 +284,7 @@ namespace Edgar.GraphBasedGenerator.Common
 		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
 		{
 			var clone = layout.SmartClone();
-			var corridors = chain.Where(x => LevelDescription.GetRoomDescription(x).IsCorridor).ToList();
+			var corridors = chain.Where(x => levelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
 			foreach (var corridor in corridors)
 			{
@@ -294,10 +307,10 @@ namespace Edgar.GraphBasedGenerator.Common
         /// <param name="layout"></param>
         /// <param name="chain"></param>
         /// <param name="updateLayout"></param>
-        public override void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount)
+        public void AddChain(TLayout layout, IList<TNode> chain, bool updateLayout, out int iterationsCount)
         {
             iterationsCount = 0;
-            var rooms = chain.Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor);
+            var rooms = chain.Where(x => !levelDescription.GetRoomDescription(x).IsCorridor);
 
             foreach (var room in rooms)
             {
@@ -339,8 +352,8 @@ namespace Edgar.GraphBasedGenerator.Common
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new Vector2Int();
 
-            var shapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, false);
-			shapes.Shuffle(Random);
+            var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, false);
+			shapes.Shuffle(random);
 
             foreach (var shape in shapes)
             {
@@ -355,7 +368,7 @@ namespace Edgar.GraphBasedGenerator.Common
 
                 const int maxPoints = 20;
 
-                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, Random))
+                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, random))
                 {
                     var energyData =
                         constraintsEvaluator.ComputeNodeEnergy(layout, node,
@@ -389,28 +402,28 @@ namespace Edgar.GraphBasedGenerator.Common
         /// <param name="layout"></param>
         /// <param name="chain"></param>
         /// <param name="updateLayout"></param>
-        public override void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
+        public void PerturbLayout(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
             // TODO: change
-            var nonCorridors = chain.Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor).ToList();
+            var nonCorridors = chain.Where(x => !levelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
-            if (Random.NextDouble() < 0.4f)
+            if (random.NextDouble() < 0.4f)
             {
                 PerturbShape(layout, nonCorridors, updateLayout);
             }
             else
             {
-                var random = nonCorridors.GetRandom(Random);
+                var random = nonCorridors.GetRandom(this.random);
                 PerturbPosition(layout, random, updateLayout);
             }
         }
 
 		// NEW
-        public override void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
+        public void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
         {
             var configurations = new List<TConfiguration>();
 
-            foreach (var neighbor in StageOneGraph.GetNeighbors(node))
+            foreach (var neighbor in stageOneGraph.GetNeighbors(node))
             {
                 if (layout.GetConfiguration(neighbor, out var configuration))
                 {
@@ -434,7 +447,7 @@ namespace Edgar.GraphBasedGenerator.Common
                 return;
             }
 
-            var newPosition = configurationSpace.GetRandomPosition(Random);
+            var newPosition = configurationSpace.GetRandomPosition(random);
 
             var newConfiguration = mainConfiguration.SmartClone();
             newConfiguration.Position = newPosition;
@@ -450,38 +463,38 @@ namespace Edgar.GraphBasedGenerator.Common
         }
 
         // NEW
-        public override void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
+        public void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
             var canBePerturbed = chain
-                .Where(x => !LevelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
-                .Where(x => RoomShapesHandler.CanPerturbShapeDoNotUse(x))
+                .Where(x => !levelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
+                .Where(x => roomShapesHandler.CanPerturbShapeDoNotUse(x))
                 .ToList();
 
             if (canBePerturbed.Count == 0)
                 return;
 
-            PerturbShape(layout, canBePerturbed.GetRandom(Random), updateLayout);
+            PerturbShape(layout, canBePerturbed.GetRandom(random), updateLayout);
         }
 
         // NEW
-        public override void PerturbShape(TLayout layout, TNode node, bool updateLayout)
+        public void PerturbShape(TLayout layout, TNode node, bool updateLayout)
         {
             layout.GetConfiguration(node, out var configuration);
 
             // Return the current layout if a given node cannot be shape-perturbed
-            if (!RoomShapesHandler.CanPerturbShapeDoNotUse(node))
+            if (!roomShapesHandler.CanPerturbShapeDoNotUse(node))
             {
                 return;
             }
             
-            var possibleShapes = RoomShapesHandler.GetPossibleShapesForNode(layout, node, false);
+            var possibleShapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, false);
 
             if (possibleShapes.Count == 0)
             {
                 return;
             }
 
-            var shape = possibleShapes.GetRandom(Random);
+            var shape = possibleShapes.GetRandom(random);
             var newConfiguration = configuration.SmartClone();
             // newConfiguration.ShapeContainer = shape;
             newConfiguration.RoomShape = shape;
@@ -494,5 +507,59 @@ namespace Edgar.GraphBasedGenerator.Common
 
             layout.SetConfiguration(node, newConfiguration);
         }
-	}
+
+        public virtual void PerturbPosition(TLayout layout, IList<TNode> chain, bool updateLayout)
+        {
+            var canBePerturbed = GetRoomsForPerturbPosition(layout, chain);
+
+            if (canBePerturbed.Count == 0)
+                return;
+
+            PerturbPosition(layout, canBePerturbed.GetRandom(random), updateLayout);
+        }
+
+        protected List<TNode> GetRoomsForPerturbPosition(TLayout layout, IList<TNode> chain)
+        {
+            // TODO: check what would happen if only invalid nodes could be perturbed
+            var canBePerturbed = chain
+                .Where(x => !levelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle
+                .ToList();
+
+            return canBePerturbed;
+        }
+
+        public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2)
+        {
+            return AreDifferentEnough(layout1, layout2, layout1.Graph.Vertices.ToList());
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Checks if two layouts are different enough by comparing positions of corresponding nodes.
+        /// </summary>
+        public virtual bool AreDifferentEnough(TLayout layout1, TLayout layout2, IList<TNode> chain)
+        {
+            // TODO: make better
+            var diff = 0d;
+
+            foreach (var node in chain)
+            {
+                if (layout1.GetConfiguration(node, out var c1) && layout2.GetConfiguration(node, out var c2))
+                {
+                    // Changed
+
+                    //diff += (float)(Math.Pow(
+                    //	                5 * IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
+                    //		                c2.Shape.BoundingRectangle.Center + c2.Position) / (float)AverageSize, 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
+
+                    diff += (float)(Math.Pow(
+                        5 * roomShapeGeometry.GetCenterDistance(c1, c2) / (float)averageSize, 2) * (ReferenceEquals(c1.RoomShape, c2.RoomShape) ? 1 : 4));
+                }
+            }
+
+            diff = diff / (chain.Count());
+
+            return differenceFromAverageScale * diff >= 1;
+        }
+    }
 }
