@@ -9,6 +9,7 @@ using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.Constraints;
 using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
+using Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
 using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.GraphBasedGenerator.Common.LayoutControllers;
@@ -216,8 +217,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 levelDescription.RoomTemplateRepeatModeDefault
             );
 
+            var fixedConfigurationConstraint =
+                GetFixedConfigurationConstraint(levelDescription.Constraints, roomTemplateInstances);
+
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry);
+            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
 
             var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
             var layoutConverter =
@@ -255,6 +259,54 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbedInternal?.Invoke(layout);
             layoutEvolver.OnValid += (sender, layout) => OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
             generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
+        }
+
+        private FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom> GetFixedConfigurationConstraint(List<IGeneratorConstraintGrid2D<TRoom>> constraints, Dictionary<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> roomTemplateInstancesMapping)
+        {
+            var fixedPositions = new Dictionary<RoomNode<TRoom>, Vector2Int>();
+            var fixedShapes = new Dictionary<RoomNode<TRoom>, RoomTemplateInstanceGrid2D>();
+            var mapping = levelDescriptionMapped.GetMapping();
+
+            // TODO: check for duplicate room constraints
+            if (constraints != null)
+            {
+                foreach (var constraint in constraints)
+                {
+                    if (constraint is FixedConfigurationConstraint<TRoom> fixedConfigurationConstraint)
+                    {
+                        if (!mapping.TryGetValue(fixedConfigurationConstraint.Room, out var roomNode))
+                        {
+                            throw new InvalidOperationException(
+                                $"FixedConfigurationConstraint contained a room that is not present in the level description. The room was: {fixedConfigurationConstraint.Room}");
+                        }
+
+                        if (levelDescriptionMapped.GetRoomDescription(roomNode).IsCorridor)
+                        {
+                            throw new InvalidOperationException(
+                                $"FixedConfigurationConstraint currently works only for non-corridor rooms.");
+                        }
+
+                        if (fixedConfigurationConstraint.Position.HasValue)
+                        {
+                            fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value;
+                        }
+
+                        // TODO: check for not existing room template instance
+                        if (fixedConfigurationConstraint.RoomTemplate != null)
+                        {
+                            // TODO: handle transformations
+                            var roomTemplateInstance =
+                                roomTemplateInstancesMapping[fixedConfigurationConstraint.RoomTemplate].Single(x =>
+                                    x.Transformations.Contains(TransformationGrid2D.Identity));
+
+                            fixedShapes[roomNode] = roomTemplateInstance;
+                        }
+                    }
+                }
+            }
+
+            return new FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom>(
+                mapping.Count, fixedShapes, fixedPositions);
         }
 
         /// <summary>

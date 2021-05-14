@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -26,6 +23,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// n > 0 - the manhattan distance of 2 outline points of different rooms must be at least n.
         /// </remarks>
         public int MinimumRoomDistance { get; set; } = 0;
+
+        // TODO: comment
+        public List<IGeneratorConstraintGrid2D<TRoom>> Constraints { get; set; }
 
         /// <summary>
         /// Default room template repeat mode that is used if there is no repeat mode specified on the room template itself.

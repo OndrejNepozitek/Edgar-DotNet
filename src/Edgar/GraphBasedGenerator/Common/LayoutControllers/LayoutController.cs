@@ -5,6 +5,7 @@ using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.Constraints;
+using Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstraint;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
 using Edgar.Graphs;
 using Edgar.Legacy.Core.Configurations.Interfaces.EnergyData;
@@ -30,6 +31,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         private readonly IGraph<TNode> stageOneGraph;
         private readonly IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler;
         private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
+        private readonly IFixedConfigurationConstraint<TShapeContainer, Vector2Int, TNode> fixedConfigurationConstraint;
 
         private readonly ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator;
         private readonly bool throwIfRepeatModeNotSatisfied;
@@ -39,7 +41,12 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             int averageSize,
             ILevelDescription<TNode> levelDescription,
             ConstraintsEvaluator<TNode, TConfiguration, TEnergyData> constraintsEvaluator,
-            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler, bool throwIfRepeatModeNotSatisfied, IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
+            IRoomShapesHandler<TLayout, TNode, TShapeContainer> roomShapesHandler,
+            bool throwIfRepeatModeNotSatisfied,
+            IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces,
+            IRoomShapeGeometry<TConfiguration> roomShapeGeometry,
+            IFixedConfigurationConstraint<TShapeContainer, Vector2Int, TNode> fixedConfigurationConstraint
+            )
         {
             this.constraintsEvaluator = constraintsEvaluator;
             this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
@@ -47,6 +54,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             this.averageSize = averageSize;
             this.levelDescription = levelDescription;
             this.roomShapeGeometry = roomShapeGeometry;
+            this.fixedConfigurationConstraint = fixedConfigurationConstraint;
             this.roomShapesHandler = roomShapesHandler;
             stageOneGraph = levelDescription.GetGraphWithoutCorridors();
         }
@@ -135,8 +143,17 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 
 			// The first node is set to have a random shape and [0,0] position
 			if (neighborsConfigurations.Count == 0)
-			{
-				layout.SetConfiguration(node, CreateConfiguration(roomShapesHandler.GetRandomShapeWithoutConstraintsDoNotUse(node), new Vector2Int(), node));
+            {
+                var initialPosition =
+                    fixedConfigurationConstraint.TryGetFixedPosition(node, out var fixedInitialPosition)
+                        ? fixedInitialPosition
+                        : new Vector2Int();
+
+                var initialShape = fixedConfigurationConstraint.TryGetFixedShape(node, out var fixedInitialShape)
+                    ? fixedInitialShape
+                    : roomShapesHandler.GetRandomShapeWithoutConstraintsDoNotUse(node);
+
+                layout.SetConfiguration(node, CreateConfiguration(initialShape, initialPosition, node));
                 iterationsCount++;
 				return;
 			}
@@ -145,9 +162,11 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 			var bestShape = default(TShapeContainer);
 			var bestPosition = new Vector2Int();
 
-            var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
+            var shapes = fixedConfigurationConstraint.TryGetFixedShape(node, out var fixedShape)
+                ? new List<TShapeContainer>() { fixedShape } 
+                : roomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
 
-			if (shapes.Count == 0)
+            if (shapes.Count == 0)
             {
                 if (throwIfRepeatModeNotSatisfied)
                 {
@@ -163,15 +182,26 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 
 			// Try all shapes
 			foreach (var shape in shapes)
-			{
-                // var intersection = ConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new IntVector2(), node), neighborsConfigurations);
-                var intersection = simpleConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new Vector2Int(), node), neighborsConfigurations, out var configurationsSatisfied);
+            {
+                IEnumerable<Vector2Int> positionsToTry;
+                if (fixedConfigurationConstraint.TryGetFixedPosition(node, out var fixedPosition))
+                {
+                    positionsToTry = new List<Vector2Int>() {fixedPosition};
+                }
+                else
+                {
+                    var intersection = simpleConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new Vector2Int(), node), neighborsConfigurations, out var configurationsSatisfied);
 
-                if (configurationsSatisfied == 0)
-					continue;
+                    if (configurationsSatisfied == 0)
+                        continue;
 
-                const int maxPoints = 20;
-                foreach (var position in intersection.ShuffleAndSamplePositions(maxPoints, random))
+                    const int maxPoints = 20;
+
+                    positionsToTry = intersection.ShuffleAndSamplePositions(maxPoints, random);
+                }
+
+
+                foreach (var position in positionsToTry)
                 {
                     iterationsCount++;
 
@@ -239,15 +269,6 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 		/// <returns></returns>
 		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, Vector2Int position, TNode node)
 		{
-			//var configuration = new TConfiguration
-			//{
-			//	ShapeContainer = shapeContainer,
-			//	// Position = position,
-			//	Node = node,
-			//};
-
-   //         ((IMutableConfiguration<TShapeContainer, TNode>) configuration).Position = position;
-
             var configuration = new TConfiguration()
             {
                 RoomShape = shapeContainer,
@@ -465,15 +486,23 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         // NEW
         public void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
-            var canBePerturbed = chain
-                .Where(x => !levelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
-                .Where(x => roomShapesHandler.CanPerturbShapeDoNotUse(x))
-                .ToList();
+            var canBePerturbed = GetRoomsForPerturbShape(layout, chain);
 
             if (canBePerturbed.Count == 0)
                 return;
 
             PerturbShape(layout, canBePerturbed.GetRandom(random), updateLayout);
+        }
+
+        private List<TNode> GetRoomsForPerturbShape(TLayout layout, IList<TNode> chain)
+        {
+            var canBePerturbed = chain
+                .Where(x => !levelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle better
+                .Where(x => roomShapesHandler.CanPerturbShapeDoNotUse(x))
+                .Where(x => fixedConfigurationConstraint.IsFixedShape(x) == false)
+                .ToList();
+
+            return canBePerturbed;
         }
 
         // NEW
@@ -518,11 +547,12 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             PerturbPosition(layout, canBePerturbed.GetRandom(random), updateLayout);
         }
 
-        protected List<TNode> GetRoomsForPerturbPosition(TLayout layout, IList<TNode> chain)
+        private List<TNode> GetRoomsForPerturbPosition(TLayout layout, IList<TNode> chain)
         {
             // TODO: check what would happen if only invalid nodes could be perturbed
             var canBePerturbed = chain
                 .Where(x => !levelDescription.GetRoomDescription(x).IsCorridor) // TODO: handle
+                .Where(x => fixedConfigurationConstraint.IsFixedPosition(x) == false)
                 .ToList();
 
             return canBePerturbed;
