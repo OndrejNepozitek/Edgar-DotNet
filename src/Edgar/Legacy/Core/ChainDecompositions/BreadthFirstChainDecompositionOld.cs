@@ -55,10 +55,7 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(new Chain<TNode>(chain, chains.Count)
-                {
-					IsFromFace = isFromCycle,
-                });
+				chains.Add(new Chain<TNode>(chain, chains.Count, isFromCycle));
 			}
 
 			// Add remaining nodes
@@ -70,11 +67,8 @@ namespace Edgar.Legacy.Core.ChainDecompositions
 				if (chain == null)
 					throw new InvalidOperationException();
 
-				chains.Add(new Chain<TNode>(chain, chains.Count)
-                {
-					IsFromFace = false,
-                });
-			}
+                chains.Add(new Chain<TNode>(chain, chains.Count, false));
+            }
 
 			return chains;
 		}

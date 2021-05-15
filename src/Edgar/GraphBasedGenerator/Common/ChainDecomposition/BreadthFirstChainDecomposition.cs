@@ -426,11 +426,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                     .Where(face => face.Any(node => !coveredVertices.ContainsKey(node)))
                     .ToList();
 
-                chains = oldDecomposition.chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number){ IsFromFace = x.IsFromFace}).ToList();
-                chains.Add(new Chain<TNode>(chain, chains.Count)
-                {
-                    IsFromFace = isFromFace,
-                });
+                chains = oldDecomposition.chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number, x.IsFromFace)).ToList();
+                chains.Add(new Chain<TNode>(chain, chains.Count, isFromFace));
             }
 
             public PartialDecomposition AddChain(List<TNode> chain, bool isFromFace)

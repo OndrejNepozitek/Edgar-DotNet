@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
@@ -22,12 +23,20 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
         /// <summary>
         /// Whether it was created from a face or from an acyclic component.
         /// </summary>
-        public bool IsFromFace { get; set; }
+        public bool IsFromFace { get; }
 
+        [Obsolete]
         public Chain(List<TNode> nodes, int number)
         {
             Nodes = nodes;
             Number = number;
+        }
+
+        public Chain(List<TNode> nodes, int number, bool isFromFace)
+        {
+            Nodes = nodes;
+            Number = number;
+            IsFromFace = isFromFace;
         }
 
         #region Equals

@@ -70,19 +70,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
         private void SetupGenerator()
         {
-            var mapping = levelDescriptionMapped.GetMapping();
-            var chainsGeneric = configuration.Chains;
+            var roomToAliasMapping = levelDescriptionMapped.GetMapping();
 
-            // Create chain decomposition
-            if (chainsGeneric == null)
-            {
-                var chainDecomposition = new Common.ChainDecomposition.TwoStageChainDecomposition<TRoom>(levelDescription, new BreadthFirstChainDecomposition<TRoom>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
-                chainsGeneric = chainDecomposition.GetChains(levelDescription.GetGraph());
-            }
-
-            var chains = chainsGeneric
-                .Select(x => new Chain<RoomNode<TRoom>>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number) { IsFromFace = x.IsFromFace })
-                .ToList();
+            // Compute chain decomposition
+            var chainDecompositionConfiguration = configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
+            var chainDecomposition = new BreadthFirstChainDecomposition<RoomNode<TRoom>>(chainDecompositionConfiguration);
+            var twoStageChainDecomposition =  new Common.ChainDecomposition.TwoStageChainDecomposition<RoomNode<TRoom>>(
+                levelDescriptionMapped,
+                chainDecomposition
+            );
+            var chains = GraphBasedGeneratorUtils.GetChains(
+                twoStageChainDecomposition,
+                levelDescriptionMapped.GetGraph(),
+                roomToAliasMapping,
+                configuration.Chains
+            );
 
             // Create generator planner
             var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);

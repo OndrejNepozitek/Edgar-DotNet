@@ -76,7 +76,7 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
             }
 
             var chains = chainsGeneric
-                .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number){ IsFromFace = x.IsFromFace})
+                .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number, x.IsFromFace))
                 .ToList();
 
             // Create generator planner

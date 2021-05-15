@@ -7,6 +7,24 @@ namespace Edgar.Graphs
 {
     public static class GraphAlgorithms
     {
+        public static IGraph<TNode> GetInducedSubgraph<TNode>(IGraph<TNode> originalGraph, HashSet<TNode> nodes, IGraph<TNode> newGraph)
+        {
+            foreach (var node in nodes)
+            {
+                newGraph.AddVertex(node);
+            }
+
+            foreach (var edge in originalGraph.Edges)
+            {
+                if (nodes.Contains(edge.From) && nodes.Contains(edge.To))
+                {
+                    newGraph.AddEdge(edge.From, edge.To);
+                }
+            }
+
+            return newGraph;
+        }
+
         public static List<TNode> GetShortestPath<TNode>(IGraph<TNode> graph, TNode startNode, TNode goalNode)
         {
             return GetShortestPath(graph, new List<TNode>() {startNode}, goalNode);
