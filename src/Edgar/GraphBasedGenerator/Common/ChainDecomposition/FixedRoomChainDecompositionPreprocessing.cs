@@ -6,10 +6,10 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     public class FixedRoomChainDecompositionPreprocessing<TNode> : IChainDecomposition<TNode>
     {
-        private readonly HashSet<TNode> fixedRooms;
+        private readonly List<TNode> fixedRooms;
         private readonly IChainDecomposition<TNode> chainDecomposition;
 
-        public FixedRoomChainDecompositionPreprocessing(HashSet<TNode> fixedRooms, IChainDecomposition<TNode> chainDecomposition)
+        public FixedRoomChainDecompositionPreprocessing(List<TNode> fixedRooms, IChainDecomposition<TNode> chainDecomposition)
         {
             this.fixedRooms = fixedRooms;
             this.chainDecomposition = chainDecomposition;
@@ -22,7 +22,12 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
             foreach (var node in graph.Vertices)
             {
-                isWalkable[node] = !fixedRooms.Contains(node);
+                isWalkable[node] = true;
+            }
+
+            foreach (var node in fixedRooms)
+            {
+                isWalkable[node] = false;
             }
 
             // Make fixed nodes that border with non-fixed nodes walkable

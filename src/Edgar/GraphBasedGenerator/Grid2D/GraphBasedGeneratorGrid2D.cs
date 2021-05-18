@@ -72,6 +72,28 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         {
             var roomToAliasMapping = levelDescriptionMapped.GetMapping();
 
+            // Create configuration spaces generator
+            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
+                new PolygonOverlap(),
+                DoorHandler.DefaultHandler,
+                new OrthogonalLineIntersection(),
+                new GridPolygonUtils());
+
+            // Preprocess information about room templates
+            var geometryData = LevelGeometryData<RoomNode<TRoom>>.CreateBackwardsCompatible(
+                levelDescriptionMapped,
+                configurationSpacesGenerator.GetRoomTemplateInstances
+            );
+
+            // Compute which rooms have fixed configurations
+            var fixedConfigurationConstraint =
+                GetFixedConfigurationConstraint(levelDescription.Constraints, geometryData.RoomTemplateInstances);
+            var fixedRooms = levelDescriptionMapped
+                .GetGraphWithoutCorridors()
+                .Vertices
+                .Where(x => fixedConfigurationConstraint.IsFixedPosition(x) && fixedConfigurationConstraint.IsFixedShape(x))
+                .ToList();
+
             // Compute chain decomposition
             var chainDecompositionConfiguration = configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
             var chainDecomposition = new BreadthFirstChainDecomposition<RoomNode<TRoom>>(chainDecompositionConfiguration);
@@ -89,62 +111,34 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Create generator planner
             var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);
 
-            // Create configuration spaces
-            var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
-                new PolygonOverlap(),
-                DoorHandler.DefaultHandler,
-                new OrthogonalLineIntersection(),
-                new GridPolygonUtils());
+            // The graph is directed if any of the doors is not Undirected
+            var isGraphDirected = geometryData.RoomTemplateInstances
+                .Values
+                .SelectMany(x => x)
+                .SelectMany(x => x.DoorLines)
+                .Any(x => x.Type != DoorType.Undirected);
 
             // Needlessly complex for backwards compatibility
 
             #region IntAliasMapping
-
-            var roomDescriptions = levelDescriptionMapped.GetGraph().Vertices.ToDictionary(x => x, x => (RoomDescriptionGrid2D) levelDescriptionMapped.GetRoomDescription(x));
-            var roomTemplates = roomDescriptions.Values.SelectMany(x => x.RoomTemplates).Distinct().ToList();
-            var roomTemplateInstances = roomTemplates.ToDictionary(x => x, configurationSpacesGenerator.GetRoomTemplateInstances);
-            var roomTemplateInstancesMapping = roomTemplateInstances.SelectMany(x => x.Value).CreateIntMapping();
-            var intAliasMapping = new TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>>();
-
-            foreach (var shape1 in roomTemplateInstancesMapping.Keys)
-            {
-                foreach (var shape2 in roomTemplateInstancesMapping.Keys)
-                {
-                    if (!intAliasMapping.ContainsKey(shape1))
-                    {
-                        var newAlias = new IntAlias<PolygonGrid2D>(intAliasMapping.Count, shape1.RoomShape); 
-                        intAliasMapping.Add(shape1, newAlias);
-                        shape1.RoomShapeAlias = newAlias;
-                    }
-                    if (!intAliasMapping.ContainsKey(shape2))
-                    {
-                        var newAlias = new IntAlias<PolygonGrid2D>(intAliasMapping.Count, shape2.RoomShape); 
-                        intAliasMapping.Add(shape2, newAlias);
-                        shape2.RoomShapeAlias = newAlias;
-                    }
-                }
-            }
-
-            // TODO: remove when possible
-            foreach (var pair in intAliasMapping)
-            {
-                pair.Key.RoomShapeAlias = pair.Value;
-            }
 
             var shapesForNodes = new Dictionary<RoomNode<TRoom>, List<WeightedShape>>();
             foreach (var vertex in levelDescriptionMapped.GetGraph().Vertices)
             {
                 shapesForNodes.Add(vertex, new List<WeightedShape>());
                 // var roomDescription = levelDescriptionMapped.GetRoomDescription(vertex);
-                var roomDescription = roomDescriptions[vertex];
+                var roomDescription = geometryData.RoomDescriptions[vertex];
 
                 foreach (var roomTemplate in roomDescription.RoomTemplates)
                 {
-                    var instances = roomTemplateInstances[roomTemplate];
+                    var roomTemplateInstances = geometryData.RoomTemplateInstances[roomTemplate];
 
-                    foreach (var roomTemplateInstance in instances)
+                    foreach (var roomTemplateInstance in roomTemplateInstances)
                     {
-                        shapesForNodes[vertex].Add(new WeightedShape(intAliasMapping[roomTemplateInstance], 1d / instances.Count));
+                        shapesForNodes[vertex].Add(new WeightedShape(
+                            geometryData.RoomTemplateInstanceToPolygonMapping[roomTemplateInstance],
+                            1d / roomTemplateInstances.Count)
+                        );
                     }
                 }
             }
@@ -169,10 +163,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             #endregion
 
-            var isGraphDirected = roomTemplateInstances
-                .Values.SelectMany(x => x)
-                .SelectMany(x => x.DoorLines)
-                .Any(x => x.Type != DoorType.Undirected);
+
 
             // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
             var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, isGraphDirected);
@@ -212,15 +203,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var constraintsEvaluator = new ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(stageOneConstraints, energyUpdater);
 
             var roomShapesHandler = new RoomShapesHandlerGrid2D<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(
-                intAliasMapping,
+                geometryData.RoomTemplateInstanceToPolygonMapping,
                 levelDescriptionMapped,
                 shapesForNodes,
                 levelDescription.RoomTemplateRepeatModeOverride,
                 levelDescription.RoomTemplateRepeatModeDefault
             );
-
-            var fixedConfigurationConstraint =
-                GetFixedConfigurationConstraint(levelDescription.Constraints, roomTemplateInstances);
 
             // Create layout operations
             var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
@@ -229,7 +217,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var layoutConverter =
                 new BasicLayoutConverterGrid2D<TRoom,
                     ConfigurationGrid2D<TRoom, EnergyData>>(levelDescription, simpleConfigurationSpaces,
-                    intAliasMapping);
+                    geometryData.RoomTemplateInstanceToPolygonMapping);
 
             // Create simulated annealing evolver
             var layoutEvolver =
