@@ -15,7 +15,7 @@ namespace Edgar.Tests.Graphs
             graph.AddVertex(0);
 
             var shortestPath = GraphAlgorithms.GetShortestPath(graph, 0, 0);
-            var expectedPath = new List<int>() { 0 };
+            var expectedPath = new List<int>() {0};
 
             Assert.That(shortestPath, Is.EquivalentTo(expectedPath));
         }
@@ -56,7 +56,7 @@ namespace Edgar.Tests.Graphs
             graph.AddEdge(0, graph.VerticesCount - 1);
 
             var shortestPath = GraphAlgorithms.GetShortestPath(graph, 10, 14);
-            var expectedPath = new List<int>() { 10, 11, 12, 13, 14 };
+            var expectedPath = new List<int>() {10, 11, 12, 13, 14};
 
             Assert.That(shortestPath, Is.EquivalentTo(expectedPath));
         }
@@ -78,8 +78,8 @@ namespace Edgar.Tests.Graphs
 
             graph.AddEdge(0, graph.VerticesCount - 1);
 
-            var shortestPath = GraphAlgorithms.GetShortestPath(graph, new List<int>() { 6, 10 }, 14);
-            var expectedPath = new List<int>() { 10, 11, 12, 13, 14 };
+            var shortestPath = GraphAlgorithms.GetShortestPath(graph, new List<int>() {6, 10}, 14);
+            var expectedPath = new List<int>() {10, 11, 12, 13, 14};
 
             Assert.That(shortestPath, Is.EquivalentTo(expectedPath));
         }
@@ -111,7 +111,7 @@ namespace Edgar.Tests.Graphs
             graph.AddEdge(5, 6);
 
             var shortestPath = GraphAlgorithms.GetShortestMultiPath(graph, new List<int>() {0, 4, 6});
-            var expectedPath = new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
+            var expectedPath = new List<int>() {0, 1, 2, 3, 4, 5, 6};
 
             Assert.IsTrue(shortestPath.SequenceEqualWithoutOrder(expectedPath));
         }
@@ -153,8 +153,8 @@ namespace Edgar.Tests.Graphs
             graph.AddEdge(9, 10);
             graph.AddEdge(10, 6);
 
-            var shortestPath = GraphAlgorithms.GetShortestMultiPath(graph, new List<int>() { 0, 4, 6 });
-            var expectedPath = new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
+            var shortestPath = GraphAlgorithms.GetShortestMultiPath(graph, new List<int>() {0, 4, 6});
+            var expectedPath = new List<int>() {0, 1, 2, 3, 4, 5, 6};
 
             Assert.IsTrue(shortestPath.SequenceEqualWithoutOrder(expectedPath));
         }
@@ -190,10 +190,32 @@ namespace Edgar.Tests.Graphs
             // Shorter path from 4 to 7
             graph.AddEdge(4, 7);
 
-            var shortestPath = GraphAlgorithms.GetShortestMultiPath(graph, new List<int>() { 0, 4, 7 });
-            var expectedPath = new List<int>() { 0, 1, 2, 3, 4, 7};
+            var shortestPath = GraphAlgorithms.GetShortestMultiPath(graph, new List<int>() {0, 4, 7});
+            var expectedPath = new List<int>() {0, 1, 2, 3, 4, 7};
 
             Assert.IsTrue(shortestPath.SequenceEqualWithoutOrder(expectedPath));
+        }
+
+        [Test]
+        public void OrderNodesByDFSDistance_Path()
+        {
+            var graph = new UndirectedAdjacencyListGraph<int>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                graph.AddVertex(i);
+
+                if (i > 0)
+                {
+                    graph.AddEdge(i - 1, i);
+                }
+            }
+
+            var relevantNodes = new List<int>() {4, 5, 6, 7};
+            var expectedResult = new List<int>() {4, 5, 6, 7};
+            var result = GraphAlgorithms.OrderNodesByDFSDistance(graph, new List<int>() {4}, relevantNodes);
+
+            Assert.That(result, Is.EquivalentTo(expectedResult));
         }
     }
 }

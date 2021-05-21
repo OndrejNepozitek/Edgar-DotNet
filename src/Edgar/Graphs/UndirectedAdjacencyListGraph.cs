@@ -54,7 +54,12 @@ namespace Edgar.Graphs
 			return neighbours;
 		}
 
-		/// <inheritdoc />
+        public IEnumerable<T> GetNeighbours(T vertex)
+        {
+            return GetNeighbors(vertex);
+        }
+
+        /// <inheritdoc />
 		public bool HasEdge(T from, T to)
 		{
 			foreach (var neighbour in GetNeighbors(from))

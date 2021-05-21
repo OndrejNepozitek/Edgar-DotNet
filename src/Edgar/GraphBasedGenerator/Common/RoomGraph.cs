@@ -39,6 +39,11 @@ namespace Edgar.GraphBasedGenerator.Common
             throw new NotImplementedException();
         }
 
+        public IEnumerable<RoomNode<TRoom>> GetNeighbours(RoomNode<TRoom> vertex)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool HasEdge(RoomNode<TRoom> from, RoomNode<TRoom> to)
         {
             throw new NotImplementedException();

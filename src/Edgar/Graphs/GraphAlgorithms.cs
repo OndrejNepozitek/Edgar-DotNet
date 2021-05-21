@@ -2,14 +2,49 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Utils;
 
 namespace Edgar.Graphs
 {
     public static class GraphAlgorithms
     {
+        public static List<TNode> OrderNodesByDFSDistance<TNode>(IGraph<TNode> graph, List<TNode> startingNodes, List<TNode> nodes = null)
+        {
+            nodes = nodes ?? graph.Vertices.ToList();
+            var remainingNodes = nodes.ToHashSet();
+            var result = new List<TNode>();
+            var queue = new Queue<TNode>();
+
+            foreach (var node in startingNodes)
+            {
+                queue.Enqueue(node);
+                result.Add(node);
+                remainingNodes.Remove(node);
+            }
+
+            while (queue.Count != 0)
+            {
+                var node = queue.Dequeue();
+
+                foreach (var neighbor in graph.GetNeighbors(node))
+                {
+                    if (remainingNodes.Contains(neighbor))
+                    {
+                        queue.Enqueue(neighbor);
+                        result.Add(neighbor);
+                        remainingNodes.Remove(neighbor);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static IGraph<TNode> GetInducedSubgraph<TNode>(IGraph<TNode> originalGraph, HashSet<TNode> nodes, IGraph<TNode> newGraph)
         {
-            foreach (var node in nodes)
+            var originalVertices = originalGraph.Vertices.ToHashSet();
+
+            foreach (var node in nodes.Where(x => originalVertices.Contains(x)))
             {
                 newGraph.AddVertex(node);
             }
@@ -99,9 +134,14 @@ namespace Edgar.Graphs
 
         public static List<TNode> GetShortestMultiPath<TNode>(IGraph<TNode> graph, List<TNode> startNodes)
         {
-            if (startNodes.Count < 2 || startNodes.Count > 3)
+            if (startNodes.Count < 1 || startNodes.Count > 3)
             {
-                throw new InvalidOperationException("There must be between 2 and 3 nodes.");
+                throw new InvalidOperationException("There must be between 1 and 3 start nodes.");
+            }
+
+            if (startNodes.Count == 1)
+            {
+                return new List<TNode>() {startNodes[0]};
             }
 
             if (startNodes.Count == 2)

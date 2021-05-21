@@ -14,6 +14,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 	/// <typeparam name="TNode"></typeparam>
 	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
     {
+        private readonly List<TNode> fixedRooms;
         private readonly int maxTreeSize;
         private readonly bool mergeSmallChains;
         private readonly bool startTreeWithMultipleVertices;
@@ -30,8 +31,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             this.logger = logger ?? new Logger();
         }
 
-        public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null)
+        public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null, List<TNode> fixedRooms = null)
         {
+            this.fixedRooms = fixedRooms;
             this.maxTreeSize = configuration.MaxTreeSize;
             this.mergeSmallChains = configuration.MergeSmallChains;
             this.startTreeWithMultipleVertices = configuration.StartTreeWithMultipleVertices;
@@ -71,6 +73,13 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
         private PartialDecomposition GetFirstComponent(PartialDecomposition decomposition)
         {
+            var initialFixedChain = GetInitialFixedChain();
+
+            if (initialFixedChain != null)
+            {
+                return decomposition.AddChain(initialFixedChain, true);
+            }
+
             var faces = decomposition.GetRemainingFaces();
             if (Faces.Count != 0)
             {
@@ -107,6 +116,27 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             logger.WriteLine(treeComponent);
 
             return decomposition.AddChain(treeComponent.Nodes, false);
+        }
+
+        private List<TNode> GetInitialFixedChain()
+        {
+            if (fixedRooms == null)
+            {
+                return null;
+            }
+
+            // TODO: this is inefficient
+            var relevantFixedRooms = Graph.Vertices.Where(x => fixedRooms.Contains(x)).ToList();
+
+            if (relevantFixedRooms.Count == 0)
+            {
+                return null;
+            }
+
+            var chain = GraphAlgorithms.GetShortestMultiPath(Graph, relevantFixedRooms);
+            chain = GraphAlgorithms.OrderNodesByDFSDistance(Graph, chain);
+
+            return chain;
         }
 
         private PartialDecomposition ExtendDecomposition(PartialDecomposition decomposition)

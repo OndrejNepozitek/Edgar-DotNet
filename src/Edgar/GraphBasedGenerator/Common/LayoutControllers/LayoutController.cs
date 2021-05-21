@@ -434,8 +434,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             }
             else
             {
-                var random = nonCorridors.GetRandom(this.random);
-                PerturbPosition(layout, random, updateLayout);
+                PerturbPosition(layout, nonCorridors, updateLayout);
             }
         }
 
@@ -486,6 +485,8 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         // NEW
         public void PerturbShape(TLayout layout, IList<TNode> chain, bool updateLayout)
         {
+            // TODO: is this even used?
+
             var canBePerturbed = GetRoomsForPerturbShape(layout, chain);
 
             if (canBePerturbed.Count == 0)

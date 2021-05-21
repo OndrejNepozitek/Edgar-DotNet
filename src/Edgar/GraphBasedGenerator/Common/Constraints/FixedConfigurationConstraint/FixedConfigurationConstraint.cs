@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstraint
 {
@@ -46,6 +47,16 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstra
             return TryGetFixedShape(room, out _);
         }
 
+        public TRoomShape GetFixeShape(RoomNode<TRoom> room)
+        {
+            if (!TryGetFixedShape(room, out var shape))
+            {
+                throw new InvalidOperationException("The shape of the room is not fixed!");
+            }
+
+            return shape;
+        }
+
         public bool TryGetFixedShape(RoomNode<TRoom> room, out TRoomShape shape)
         {
             shape = default(TRoomShape);
@@ -69,6 +80,16 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstra
         public bool IsFixedPosition(RoomNode<TRoom> room)
         {
             return TryGetFixedPosition(room, out _);
+        }
+
+        public TPosition GetFixedPosition(RoomNode<TRoom> room)
+        {
+            if (!TryGetFixedPosition(room, out var position))
+            {
+                throw new InvalidOperationException("The position of the room is not fixed!");
+            }
+
+            return position;
         }
 
         public bool TryGetFixedPosition(RoomNode<TRoom> room, out TPosition position)

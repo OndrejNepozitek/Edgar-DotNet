@@ -148,7 +148,12 @@ namespace Edgar.Graphs
 			return graphAlias.GetNeighbors(vertex);
 		}
 
-		/// <inheritdoc />
+        public IEnumerable<int> GetNeighbours(int vertex)
+        {
+            return GetNeighbors(vertex);
+        }
+
+        /// <inheritdoc />
 		public bool HasEdge(int from, int to)
 		{
 			return graphAlias.HasEdge(from, to);

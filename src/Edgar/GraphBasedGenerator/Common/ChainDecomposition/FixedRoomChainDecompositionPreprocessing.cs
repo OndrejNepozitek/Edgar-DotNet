@@ -17,6 +17,11 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
         public List<Chain<TNode>> GetChains(IGraph<TNode> graph)
         {
+            if (fixedRooms.Count == 0)
+            {
+                return chainDecomposition.GetChains(graph);
+            }
+
             // Invert the logic: isFixed -> isWalkable
             var isWalkable = new Dictionary<TNode, bool>();
 
@@ -41,8 +46,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                 var nodes = new HashSet<TNode>();
                 component.ForEach(x => nodes.Add(x));
 
-                var subgraph = GraphAlgorithms.GetInducedSubgraph(graph, nodes, new BagOfEdgesGraph<TNode>());
-                var chains = chainDecomposition.GetChains(graph);
+                var subgraph = GraphAlgorithms.GetInducedSubgraph(graph, nodes, new UndirectedAdjacencyListGraph<TNode>());
+                var chains = chainDecomposition.GetChains(subgraph);
                 listsOfChains.Add(chains);
             }
 

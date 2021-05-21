@@ -46,6 +46,11 @@ namespace Edgar.Graphs
             }
         }
 
+        public IEnumerable<T> GetNeighbours(T vertex)
+        {
+            return GetNeighbors(vertex);
+        }
+
         public bool HasEdge(T @from, T to)
         {
             return edges.Contains(new Edge<T>(from, to));

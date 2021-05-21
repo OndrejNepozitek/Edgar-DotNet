@@ -26,8 +26,8 @@ using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Interfaces;
+using Edgar.Utils;
 using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.ConfigurationSpacesGenerator;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
@@ -88,25 +88,50 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Compute which rooms have fixed configurations
             var fixedConfigurationConstraint =
                 GetFixedConfigurationConstraint(levelDescription.Constraints, geometryData.RoomTemplateInstances);
-            var fixedRooms = levelDescriptionMapped
-                .GetGraphWithoutCorridors()
+            var fixedPositionRooms = levelDescriptionMapped
+                .GetGraph()
                 .Vertices
-                .Where(x => fixedConfigurationConstraint.IsFixedPosition(x) && fixedConfigurationConstraint.IsFixedShape(x))
+                .Where(x => fixedConfigurationConstraint.IsFixedPosition(x))
+                .ToList();
+            var fixedRooms = fixedPositionRooms
+                .Where(x => fixedConfigurationConstraint.IsFixedShape(x))
                 .ToList();
 
             // Compute chain decomposition
             var chainDecompositionConfiguration = configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
-            var chainDecomposition = new BreadthFirstChainDecomposition<RoomNode<TRoom>>(chainDecompositionConfiguration);
+            var chainDecomposition = new BreadthFirstChainDecomposition<RoomNode<TRoom>>(chainDecompositionConfiguration, fixedRooms:fixedPositionRooms);
             var twoStageChainDecomposition =  new Common.ChainDecomposition.TwoStageChainDecomposition<RoomNode<TRoom>>(
                 levelDescriptionMapped,
                 chainDecomposition
             );
+            var fixedRoomsChainDecomposition = new FixedRoomChainDecompositionPreprocessing<RoomNode<TRoom>>(fixedRooms, twoStageChainDecomposition);
             var chains = GraphBasedGeneratorUtils.GetChains(
-                twoStageChainDecomposition,
+                fixedRoomsChainDecomposition,
                 levelDescriptionMapped.GetGraph(),
                 roomToAliasMapping,
                 configuration.Chains
             );
+
+            // Find out which rooms are not included in any chain
+            // Such rooms must have both fixed shapes and position
+            // Set these configurations accordingly in the initial layout
+            var chainsSet = chains.SelectMany(x => x.Nodes).ToHashSet();
+            var roomsWithoutChain = levelDescriptionMapped
+                .GetGraph()
+                .Vertices
+                .Where(x => !chainsSet.Contains(x))
+                .ToList();
+            var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
+            foreach (var room in roomsWithoutChain)
+            {
+                initialLayout.SetConfiguration(room, new ConfigurationGrid2D<TRoom, EnergyData>()
+                {
+                    Position = fixedConfigurationConstraint.GetFixedPosition(room),
+                    RoomShape = fixedConfigurationConstraint.GetFixeShape(room),
+                    Room = room,
+                    EnergyData = new EnergyData(),
+                });
+            }
 
             // Create generator planner
             var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);
@@ -213,7 +238,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Create layout operations
             var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
 
-            var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
+            
             var layoutConverter =
                 new BasicLayoutConverterGrid2D<TRoom,
                     ConfigurationGrid2D<TRoom, EnergyData>>(levelDescription, simpleConfigurationSpaces,
@@ -260,20 +285,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // TODO: check for duplicate room constraints
             if (constraints != null)
             {
-                foreach (var constraint in constraints)
+                foreach (var constraintData in constraints)
                 {
-                    if (constraint is FixedConfigurationConstraint<TRoom> fixedConfigurationConstraint)
+                    if (constraintData is FixedConfigurationConstraint<TRoom> fixedConfigurationConstraint)
                     {
                         if (!mapping.TryGetValue(fixedConfigurationConstraint.Room, out var roomNode))
                         {
                             throw new InvalidOperationException(
                                 $"FixedConfigurationConstraint contained a room that is not present in the level description. The room was: {fixedConfigurationConstraint.Room}");
-                        }
-
-                        if (levelDescriptionMapped.GetRoomDescription(roomNode).IsCorridor)
-                        {
-                            throw new InvalidOperationException(
-                                $"FixedConfigurationConstraint currently works only for non-corridor rooms.");
                         }
 
                         if (fixedConfigurationConstraint.Position.HasValue)
@@ -295,8 +314,25 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 }
             }
 
-            return new FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom>(
+            var constraint = new FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom>(
                 mapping.Count, fixedShapes, fixedPositions);
+
+            var graph = levelDescriptionMapped.GetGraph();
+            foreach (var room in graph.Vertices)
+            {
+                if (levelDescriptionMapped.GetRoomDescription(room).IsCorridor && (constraint.IsFixedPosition(room) || constraint.IsFixedShape(room)))
+                {
+                    var neighbors = graph.GetNeighbors(room);
+
+                    if (neighbors.Any(x => !constraint.IsFixedPosition(x) || !constraint.IsFixedShape(x)))
+                    {
+                        throw new InvalidOperationException(
+                            "When a corridor room has a fixed configuration, all the neighboring rooms must have both fixed positions and shapes.");
+                    }
+                }
+            }
+
+            return constraint;
         }
 
         /// <summary>

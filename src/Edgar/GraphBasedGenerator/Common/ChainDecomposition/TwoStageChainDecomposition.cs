@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Graphs;
 using Edgar.Legacy.Core.ChainDecompositions;
+using Edgar.Utils;
 
 namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
@@ -25,8 +26,12 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 		/// <inheritdoc />
 		public List<Chain<TNode>> GetChains(IGraph<TNode> graph)
 		{
-            // Get all the faces from the stage one graph
-			var stageOneGraph = levelDescription.GetGraphWithoutCorridors();
+			// Get all the faces from the stage one graph
+			var stageOneGraph = GraphAlgorithms.GetInducedSubgraph(
+                levelDescription.GetGraphWithoutCorridors(), 
+                graph.Vertices.ToHashSet(),
+                new UndirectedAdjacencyListGraph<TNode>()
+            );
 			var faces = decomposition.GetChains(stageOneGraph);
 
 			var usedVertices = new HashSet<TNode>();

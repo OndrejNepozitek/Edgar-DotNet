@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Edgar.Graphs
 {
@@ -47,6 +48,14 @@ namespace Edgar.Graphs
 		/// <param name="vertex"></param>
 		/// <returns></returns>
 		IEnumerable<T> GetNeighbors(T vertex);
+
+        /// <summary>
+        /// Gets all neighbors of a given vertex.
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <returns></returns>
+        [Obsolete("Use GetNeighbors instead.")]
+		IEnumerable<T> GetNeighbours(T vertex);
 
 		/// <summary>
 		/// Checks whether there exists a given edge.
