@@ -27,7 +27,7 @@
 
         #region Equals
 
-        protected bool Equals(IntAlias<T> other)
+        private bool Equals(IntAlias<T> other)
         {
             return Alias == other.Alias;
         }

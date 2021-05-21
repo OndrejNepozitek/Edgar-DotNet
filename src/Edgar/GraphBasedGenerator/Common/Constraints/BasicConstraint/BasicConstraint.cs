@@ -3,6 +3,7 @@ using System.Linq;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Constraints.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
 
@@ -31,9 +32,10 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint
 
             var overlap = 0;
 			var distance = 0;
-			var neighbors = layout.Graph.GetNeighbors(node).ToList();
+			// var neighbors = layout.Graph.GetNeighbors(node).ToList();
+            var neighbors = ((IImmutableGraph<TNode>)layout.Graph).GetNeighbors(node);
 
-			foreach (var vertex in layout.Graph.Vertices)
+			foreach (var vertex in ((IImmutableGraph<TNode>) layout.Graph).Vertices)
 			{
 				if (vertex.Equals(node))
 					continue;
@@ -47,7 +49,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint
 				{
 					overlap += area;
 				}
-				else if (!isCorridor && neighbors.Contains(vertex))
+				else if (!isCorridor && neighbors.Contains(vertex)/* layout.Graph.HasEdge(node, vertex)*/)
 				{
 					if (!configurationSpaces.HaveValidPosition(configuration, c))
 					{

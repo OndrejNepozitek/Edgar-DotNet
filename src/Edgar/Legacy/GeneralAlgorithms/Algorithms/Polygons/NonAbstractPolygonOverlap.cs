@@ -3,18 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 {
-    /// <summary>
-	/// Base class for implementing the <see cref="IPolygonOverlap{TShape}"/> interface.
-	/// </summary>
-	/// <typeparam name="TShape"></typeparam>
-	public abstract class PolygonOverlapBase<TShape> : IPolygonOverlap<TShape>
-	{
+    public class NonAbstractPolygonOverlap : IPolygonOverlap<IntAlias<PolygonGrid2D>>
+    {
+        private readonly List<List<RectangleGrid2D>> decompositions = new List<List<RectangleGrid2D>>();
+        private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();
+
+        protected List<RectangleGrid2D> GetDecomposition(IntAlias<PolygonGrid2D> polygon)
+        {
+            var alias = polygon.Alias;
+
+            if (alias >= decompositions.Count)
+            {
+                while (alias >= decompositions.Count)
+                {
+                    decompositions.Add(null);
+                }
+            }
+
+            var decomposition = decompositions[alias];
+
+            if (decomposition == null)
+            {
+                decomposition = polygonPartitioning.GetPartitions(polygon.Value);
+                decompositions[alias] = decomposition;
+            }
+
+            return decomposition;
+        }
+
+        protected RectangleGrid2D GetBoundingRectangle(IntAlias<PolygonGrid2D> polygon)
+        {
+            return polygon.Value.BoundingRectangle;
+        }
+
 		/// <inheritdoc />
-		public bool DoOverlap(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
+		public bool DoOverlap(IntAlias<PolygonGrid2D> polygon1, Vector2Int position1, IntAlias<PolygonGrid2D> polygon2, Vector2Int position2)
 		{
 			// Polygons cannot overlap if their bounding rectangles do not overlap
 			if (!DoOverlap(GetBoundingRectangle(polygon1) + position1, GetBoundingRectangle(polygon2) + position2))
@@ -48,18 +74,18 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			return rectangle1.A.X < rectangle2.B.X && rectangle1.B.X > rectangle2.A.X && rectangle1.A.Y < rectangle2.B.Y && rectangle1.B.Y > rectangle2.A.Y;
 		}
 
-        public bool DoOverlap(RectangleGrid2D rectangle1, Vector2Int position1, RectangleGrid2D rectangle2, Vector2Int position2)
-        {
-            return (rectangle1.A.X + position1.X) < (rectangle2.B.X + position2.X) && (rectangle1.B.X + position1.X) > (rectangle2.A.X + position2.X) && (rectangle1.A.Y + position1.Y) < (rectangle2.B.Y + position2.Y) && (rectangle1.B.Y + position1.Y) > (rectangle2.A.Y + position2.Y);
-        }
+		public bool DoOverlap(RectangleGrid2D rectangle1, Vector2Int position1, RectangleGrid2D rectangle2, Vector2Int position2)
+		{
+			return (rectangle1.A.X + position1.X) < (rectangle2.B.X + position2.X) && (rectangle1.B.X + position1.X) > (rectangle2.A.X + position2.X) && (rectangle1.A.Y + position1.Y) < (rectangle2.B.Y + position2.Y) && (rectangle1.B.Y + position1.Y) > (rectangle2.A.Y + position2.Y);
+		}
 
 		/// <inheritdoc />
-		public int OverlapArea(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
-        {
-            var boundingRectangle1 = GetBoundingRectangle(polygon1);
-            var boundingRectangle2 = GetBoundingRectangle(polygon2);
-            var rect1 = boundingRectangle1 + position1;
-            var rect2 = boundingRectangle2 + position2;
+		public int OverlapArea(IntAlias<PolygonGrid2D> polygon1, Vector2Int position1, IntAlias<PolygonGrid2D> polygon2, Vector2Int position2)
+		{
+			var boundingRectangle1 = polygon1.Value.BoundingRectangle;
+			var boundingRectangle2 = polygon2.Value.BoundingRectangle;
+			var rect1 = boundingRectangle1 + position1;
+			var rect2 = boundingRectangle2 + position2;
 
 			// Polygons cannot overlap if their bounding rectangles do not overlap
 			if (!DoOverlap(rect1, rect2))
@@ -68,14 +94,22 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			//if (!DoOverlap(GetBoundingRectangle(polygon1), position1, GetBoundingRectangle(polygon2), position2))
 			//    return 0;
 
-			var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1).ToList();
-			var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2).ToList();
+			// var decomposition1 = GetDecomposition(polygon1).Select(AddRectangleAndPosition1).ToList();
+			// var decomposition2 = GetDecomposition(polygon2).Select(AddRectangleAndPosition2).ToList();
+			// var decomposition1 = GetDecompositionAndAddPosition(polygon1, position1);
+			// var decomposition2 = GetDecompositionAndAddPosition(polygon2, position2);
+			var decomposition1 = GetDecomposition(polygon1);
+			var decomposition2 = GetDecomposition(polygon2);
 			var area = 0;
 
-			foreach (var r1 in decomposition1)
+			foreach (var r1Temp in decomposition1)
 			{
-				foreach (var r2 in decomposition2)
+				var r1 = r1Temp + position1;
+				
+				foreach (var r2Temp in decomposition2)
 				{
+					var r2 = r2Temp + position2;
+					
 					var overlapX = System.Math.Max(0, System.Math.Min(r1.B.X, r2.B.X) - System.Math.Max(r1.A.X, r2.A.X));
 					var overlapY = System.Math.Max(0, System.Math.Min(r1.B.Y, r2.B.Y) - System.Math.Max(r1.A.Y, r2.A.Y));
 					area += overlapX * overlapY;
@@ -85,8 +119,21 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			return area;
 		}
 
+		private List<RectangleGrid2D> GetDecompositionAndAddPosition(IntAlias<PolygonGrid2D> polygon, Vector2Int position)
+		{
+			var decomposition = GetDecomposition(polygon);
+			var result = new List<RectangleGrid2D>(decomposition.Count);
+
+			foreach (var rectangle in decomposition)
+			{
+				result.Add(rectangle + position);
+			}
+
+			return result;
+		}
+
 		/// <inheritdoc />
-		public bool DoTouch(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2, int minimumLength = 0)
+		public bool DoTouch(IntAlias<PolygonGrid2D> polygon1, Vector2Int position1, IntAlias<PolygonGrid2D> polygon2, Vector2Int position2, int minimumLength = 0)
 		{
 			if (minimumLength < 0)
 				throw new ArgumentException("The minimum length must by at least 0.", nameof(minimumLength));
@@ -116,7 +163,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			return false;
 		}
 
-        protected bool DoTouch(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumLength)
+		protected bool DoTouch(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumLength)
 		{
 			var overlapX = System.Math.Max(-1, System.Math.Min(rectangle1.B.X, rectangle2.B.X) - System.Math.Max(rectangle1.A.X, rectangle2.A.X));
 			var overlapY = System.Math.Max(-1, System.Math.Min(rectangle1.B.Y, rectangle2.B.Y) - System.Math.Max(rectangle1.A.Y, rectangle2.A.Y));
@@ -129,52 +176,52 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			return false;
 		}
 
-        public bool DoHaveMinimumDistance(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2, int minimumDistance)
-        {
-            if (minimumDistance < 0)
-                throw new ArgumentException("The minimum distance must by at least 0.", nameof(minimumDistance));
+		public bool DoHaveMinimumDistance(IntAlias<PolygonGrid2D> polygon1, Vector2Int position1, IntAlias<PolygonGrid2D> polygon2, Vector2Int position2, int minimumDistance)
+		{
+			if (minimumDistance < 0)
+				throw new ArgumentException("The minimum distance must by at least 0.", nameof(minimumDistance));
 
-            var bounding1 = GetBoundingRectangle(polygon1) + position1;
-            var bounding2 = GetBoundingRectangle(polygon2) + position2;
+			var bounding1 = GetBoundingRectangle(polygon1) + position1;
+			var bounding2 = GetBoundingRectangle(polygon2) + position2;
 
-            if (DoHaveMinimumDistance(bounding1, bounding2, minimumDistance))
-            {
-                return true;
-            }
+			if (DoHaveMinimumDistance(bounding1, bounding2, minimumDistance))
+			{
+				return true;
+			}
 
-            var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1);
-            var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2);
+			var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1);
+			var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2);
 
-            foreach (var r1 in decomposition1)
-            {
-                foreach (var r2 in decomposition2)
-                {
-                    if (!DoHaveMinimumDistance(r1, r2, minimumDistance))
-                    {
-                        return false;
-                    }
-                }
-            }
+			foreach (var r1 in decomposition1)
+			{
+				foreach (var r2 in decomposition2)
+				{
+					if (!DoHaveMinimumDistance(r1, r2, minimumDistance))
+					{
+						return false;
+					}
+				}
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        protected bool DoHaveMinimumDistance(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumDistance)
-        {
-            var distanceX = System.Math.Max(rectangle2.A.X - rectangle1.B.X, rectangle1.A.X - rectangle2.B.X);
+		protected bool DoHaveMinimumDistance(RectangleGrid2D rectangle1, RectangleGrid2D rectangle2, int minimumDistance)
+		{
+			var distanceX = System.Math.Max(rectangle2.A.X - rectangle1.B.X, rectangle1.A.X - rectangle2.B.X);
 			var distanceY = System.Math.Max(rectangle2.A.Y - rectangle1.B.Y, rectangle1.A.Y - rectangle2.B.Y);
 
-            return distanceX >= minimumDistance || distanceY >= minimumDistance;
-        }
+			return distanceX >= minimumDistance || distanceY >= minimumDistance;
+		}
 
-        /// <inheritdoc />
-        public int GetDistance(TShape polygon1, Vector2Int position1, TShape polygon2, Vector2Int position2)
-        {
-            throw new NotImplementedException();
-        }
+		/// <inheritdoc />
+		public int GetDistance(IntAlias<PolygonGrid2D> polygon1, Vector2Int position1, IntAlias<PolygonGrid2D> polygon2, Vector2Int position2)
+		{
+			throw new NotImplementedException();
+		}
 
-        /// <inheritdoc />
-		public IList<Tuple<Vector2Int, bool>> OverlapAlongLine(TShape movingPolygon, TShape fixedPolygon, OrthogonalLineGrid2D line)
+		/// <inheritdoc />
+		public IList<Tuple<Vector2Int, bool>> OverlapAlongLine(IntAlias<PolygonGrid2D> movingPolygon, IntAlias<PolygonGrid2D> fixedPolygon, OrthogonalLineGrid2D line)
 		{
 			var reverse = line.GetDirection() == OrthogonalLineGrid2D.Direction.Bottom || line.GetDirection() == OrthogonalLineGrid2D.Direction.Left;
 
@@ -207,7 +254,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			return events.Select(x => Tuple.Create(x.Item1.RotateAroundCenter(-rotation), x.Item2)).ToList();
 		}
 
-        /// <summary>
+		/// <summary>
 		/// Computes the overlap along a line of a given moving rectangle and a set o fixed rectangles.
 		/// </summary>
 		/// <param name="movingRectangle"></param>
@@ -255,7 +302,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 
 			var events = new List<Tuple<Vector2Int, bool>>();
 
-			if (fixedRectangle.A.X - movingRectangle.Width - movingRectangleOffset  <= line.From.X)
+			if (fixedRectangle.A.X - movingRectangle.Width - movingRectangleOffset <= line.From.X)
 			{
 				events.Add(Tuple.Create(line.From, true));
 			}
@@ -401,19 +448,5 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 
 			return merged;
 		}
-
-		/// <summary>
-		/// Gets a decomposition of a given polygon.
-		/// </summary>
-		/// <param name="polygon"></param>
-		/// <returns></returns>
-		protected abstract List<RectangleGrid2D> GetDecomposition(TShape polygon);
-
-		/// <summary>
-		/// Gets the bounding rectangle for a given polygon.
-		/// </summary>
-		/// <param name="polygon"></param>
-		/// <returns></returns>
-		protected abstract RectangleGrid2D GetBoundingRectangle(TShape polygon);
-	}
+    }
 }

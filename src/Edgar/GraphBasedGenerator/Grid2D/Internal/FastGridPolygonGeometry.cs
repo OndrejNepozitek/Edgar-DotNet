@@ -2,13 +2,14 @@
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
+using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
     public class FastGridPolygonGeometry<TConfiguration, TNode> : IRoomShapeGeometry<TConfiguration>
         where TConfiguration : IShapeConfiguration<RoomTemplateInstanceGrid2D>, IPositionConfiguration<Vector2Int>
     {
-        private readonly FastPolygonOverlap polygonOverlap = new FastPolygonOverlap();
+        private readonly IPolygonOverlap<IntAlias<PolygonGrid2D>> polygonOverlap = new NonAbstractPolygonOverlap();
 
         public int GetOverlapArea(TConfiguration configuration1, TConfiguration configuration2)
         {

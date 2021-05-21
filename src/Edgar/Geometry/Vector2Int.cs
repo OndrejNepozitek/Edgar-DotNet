@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
@@ -9,7 +10,7 @@ namespace Edgar.Geometry
     /// <summary>
 	/// Integer vector with 2 elements. Represents a point in a 2D discrete space.
 	/// </summary>
-	public struct Vector2Int : IComparable<Vector2Int>, IEquatable<Vector2Int>
+	public readonly struct Vector2Int : IComparable<Vector2Int>, IEquatable<Vector2Int>
 	{
 		public readonly int X;
 
@@ -247,13 +248,13 @@ namespace Edgar.Geometry
 
 		public static bool operator ==(Vector2Int a, Vector2Int b)
 		{
-			return Equals(a, b);
+			return a.Equals(b);
 		}
 
 		public static bool operator !=(Vector2Int a, Vector2Int b)
 		{
 
-			return !Equals(a, b);
+			return !a.Equals(b);
 		}
 
 		public static bool operator <=(Vector2Int a, Vector2Int b)

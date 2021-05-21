@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
@@ -35,6 +36,17 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 				}
 			}
 		}
+		
+		private IEnumerable<OrthogonalLineGrid2D> GetIntersectionsLazy(IEnumerable<OrthogonalLineGrid2D> lines1, OrthogonalLineGrid2D line)
+		{
+			foreach (var line1 in lines1)
+			{
+				if (TryGetIntersection(line1, line, out var intersection))
+				{
+					yield return intersection;
+				}
+			}
+		}
 
 		/// <summary>
 		/// Like GetIntersections() but only reports if there is an intersection.
@@ -45,6 +57,19 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		public bool DoIntersect(IEnumerable<OrthogonalLineGrid2D> lines1, List<OrthogonalLineGrid2D> lines2)
 		{
 			return GetIntersectionsLazy(lines1, lines2).Any();
+		}
+		
+		public bool DoIntersect(ImmutableArray<OrthogonalLineGrid2D> lines, OrthogonalLineGrid2D line)
+		{
+			foreach (var otherLine in lines)
+			{
+				if (TryGetIntersection(otherLine, line, out var intersection))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/// <summary>

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Geometry
 {
-    public struct RectangleGrid2D
+    public readonly struct RectangleGrid2D
 	{
 		/// <summary>
 		/// Bottom-left corner of the rectangle.
@@ -74,6 +75,7 @@ namespace Edgar.Geometry
 		/// <param name="rectangle"></param>
 		/// <param name="offset"></param>
 		/// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static RectangleGrid2D operator +(RectangleGrid2D rectangle, Vector2Int offset)
 		{
 			return new RectangleGrid2D(rectangle.A + offset, rectangle.B + offset);

@@ -42,6 +42,9 @@ namespace Edgar.Geometry
 		{
 			this.points = new List<Vector2Int>(points);
 
+            hash = 0;
+            BoundingRectangle = new RectangleGrid2D();
+
             CheckIntegrity();
 
             hash = ComputeHash();

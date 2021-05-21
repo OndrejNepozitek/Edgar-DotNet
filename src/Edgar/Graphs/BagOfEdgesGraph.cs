@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Edgar.Graphs
 {
@@ -13,7 +14,7 @@ namespace Edgar.Graphs
 
         public IEnumerable<T> Vertices => vertices;
 
-        public IEnumerable<IEdge<T>> Edges => edges;
+        public IEnumerable<IEdge<T>> Edges => edges.Cast<IEdge<T>>();
 
         public int VerticesCount => vertices.Count;
 

@@ -42,4 +42,9 @@
   <ItemGroup>
     <Folder Include="Legacy\Core\ChainDecompositions\Interfaces\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\..\..\..\..\..\.nuget\packages\microsoft.netcore.app\2.0.0\ref\netcoreapp2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

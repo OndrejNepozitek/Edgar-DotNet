@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
@@ -22,6 +23,8 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="lines2"></param>
 		/// <returns></returns>
 		bool DoIntersect(IEnumerable<TLine> lines1, List<TLine> lines2);
+		
+		bool DoIntersect(ImmutableArray<TLine> lines1, TLine line);
 
 		/// <summary>
 		/// Gets intersection between two given lines.

@@ -68,7 +68,7 @@ namespace Edgar.Legacy.Core.MapDescriptions
             unchecked
             {
                 var hashCode = (RoomTemplate != null ? RoomTemplate.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (RoomShape != null ? RoomShape.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RoomShape.GetHashCode());
                 return hashCode;
             }
         }
