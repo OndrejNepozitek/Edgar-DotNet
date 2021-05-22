@@ -22,7 +22,25 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 			return GetIntersectionsLazy(lines1, lines2).ToList();
 		}
 
-		private IEnumerable<OrthogonalLineGrid2D> GetIntersectionsLazy(IEnumerable<OrthogonalLineGrid2D> lines1, IReadOnlyCollection<OrthogonalLineGrid2D> lines2)
+        public List<OrthogonalLineGrid2D> GetIntersections(ImmutableArray<OrthogonalLineGrid2D> lines1, List<OrthogonalLineGrid2D> lines2, Vector2Int offset)
+        {
+            var result = new List<OrthogonalLineGrid2D>();
+
+            foreach (var line1 in lines1)
+            {
+                foreach (var line2 in lines2)
+                {
+                    if (TryGetIntersection(line1 + offset, line2, out var intersection))
+                    {
+                        result.Add(intersection);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<OrthogonalLineGrid2D> GetIntersectionsLazy(IEnumerable<OrthogonalLineGrid2D> lines1, IReadOnlyCollection<OrthogonalLineGrid2D> lines2)
 		{
 			foreach (var line1 in lines1)
 			{

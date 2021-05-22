@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using Edgar.Geometry;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
@@ -15,6 +16,20 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="lines2"></param>
 		/// <returns></returns>
 		List<TLine> GetIntersections(List<TLine> lines1, List<TLine> lines2);
+
+		/// <summary>
+		/// Get all intersections where one line is from the first set and the other one from the second one.
+		/// </summary>
+		/// <remarks>
+		/// There may be duplicities in the output if the two sets have duplicities themselves.
+		/// The first parameter is an ImmutableArray because that is a very common use case
+        /// The offset parameter makes it possible to avoid unnecessary memory allocations caused by preprocessing the lines.
+		/// </remarks>
+		/// <param name="lines1">First set of lines</param>
+		/// <param name="lines2">Second set of lines</param>
+		/// <param name="offset">Offset that is added to lines1.</param>
+		/// <returns></returns>
+		List<TLine> GetIntersections(ImmutableArray<TLine> lines1, List<TLine> lines2, Vector2Int offset);
 
 		/// <summary>
 		/// Like GetIntersections() but only reports if there is an intersection.

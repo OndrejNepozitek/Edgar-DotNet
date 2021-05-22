@@ -207,11 +207,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                     foreach (var index in indices)
                     {
-                        var linesToIntersect = spaces[index].Item2.Lines.Select(x => x + spaces[index].Item1.Position)
-                            .ToList();
+                        var linesToIntersect = spaces[index].Item2.Lines;
+                        var offset = spaces[index].Item1.Position;
+
                         intersection = intersection != null
-                            ? lineIntersection.GetIntersections(linesToIntersect, intersection)
-                            : linesToIntersect;
+                            ? lineIntersection.GetIntersections(linesToIntersect, intersection, offset)
+                            : linesToIntersect.Select(x => x + offset).ToList();
 
                         if (intersection.Count == 0)
                         {
@@ -223,6 +224,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                     {
                         configurationsSatisfied = indices.Length;
 
+                        // TODO: this allocates new data because it creates an ImmutableArray
+                        // Consider having something like two variants of configuration spaces, e.g. mutable and immutable
                         return new ConfigurationSpaceGrid2D(intersection);
                     }
                 }
