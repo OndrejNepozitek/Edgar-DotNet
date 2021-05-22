@@ -57,11 +57,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
         {
             var space = GetConfigurationSpace(configuration1, configuration2);
-            var lines1 = new List<OrthogonalLineGrid2D>()
-                {new OrthogonalLineGrid2D(configuration1.Position, configuration1.Position)};
+            var line = new OrthogonalLineGrid2D(configuration1.Position - configuration2.Position, configuration1.Position - configuration2.Position);
 
-            return lineIntersection.DoIntersect(space.Lines.Select(x => FastAddition(x, configuration2.Position)),
-                lines1);
+            return lineIntersection.DoIntersect(space.Lines, line);
         }
 
         private OrthogonalLineGrid2D FastAddition(OrthogonalLineGrid2D line, Vector2Int position)

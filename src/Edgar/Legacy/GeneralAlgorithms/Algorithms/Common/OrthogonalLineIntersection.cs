@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Edgar.Geometry;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
@@ -47,7 +47,20 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 			return GetIntersectionsLazy(lines1, lines2).Any();
 		}
 
-		/// <summary>
+        public bool DoIntersect(ImmutableArray<OrthogonalLineGrid2D> lines, OrthogonalLineGrid2D line)
+        {
+            foreach (var otherLine in lines)
+            {
+                if (TryGetIntersection(otherLine, line, out var intersection))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+		}
+
+        /// <summary>
 		/// Gets intersection between two given lines.
 		/// </summary>
 		/// <param name="line1"></param>

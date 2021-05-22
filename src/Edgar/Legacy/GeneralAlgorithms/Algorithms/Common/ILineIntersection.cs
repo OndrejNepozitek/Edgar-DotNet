@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 {
@@ -22,6 +23,17 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 		/// <param name="lines2"></param>
 		/// <returns></returns>
 		bool DoIntersect(IEnumerable<TLine> lines1, List<TLine> lines2);
+
+		/// <summary>
+		/// Checks if a set of lines intersect with a given line.
+		/// </summary>
+		/// <remarks>
+		/// The ImmutableArray parameter is much faster than IEnumerable/IList if this function is called very often.
+		/// </remarks>
+		/// <param name="lines"></param>
+		/// <param name="line"></param>
+		/// <returns></returns>
+		bool DoIntersect(ImmutableArray<TLine> lines, TLine line);
 
 		/// <summary>
 		/// Gets intersection between two given lines.

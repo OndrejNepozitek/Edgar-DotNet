@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
@@ -12,7 +13,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
     {
         private readonly List<OrthogonalLineGrid2D> lines;
 
-        public IReadOnlyList<OrthogonalLineGrid2D> Lines { get; }
+        public ImmutableArray<OrthogonalLineGrid2D> Lines { get; }
 
         private readonly List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> reverseDoors;
 
@@ -22,7 +23,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         {
             this.lines = lines;
             this.reverseDoors = reverseDoors;
-            Lines = lines.AsReadOnly();
+            Lines = ImmutableArray.CreateRange(lines);
 
             if (reverseDoors != null)
             {
