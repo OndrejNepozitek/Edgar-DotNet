@@ -3,6 +3,7 @@ using System.Linq;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.RoomShapeGeometry;
+using Edgar.Graphs;
 using Edgar.Legacy.Core.Constraints.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
 
@@ -29,11 +30,18 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint
         {
             var isCorridor = optimizeCorridors && mapDescription.GetRoomDescription(node).IsCorridor;
 
+            var graph = layout.Graph as IImmutableGraph<TNode>;
+
+            if (graph == null)
+            {
+                throw new InvalidOperationException($"Layout.Graph must implement {nameof(IImmutableGraph<TNode>)}!");
+            }
+
             var overlap = 0;
 			var distance = 0;
-			var neighbors = layout.Graph.GetNeighbors(node).ToList();
+			var neighbors = graph.GetNeighbors(node);
 
-			foreach (var vertex in layout.Graph.Vertices)
+			foreach (var vertex in graph.Vertices)
 			{
 				if (vertex.Equals(node))
 					continue;

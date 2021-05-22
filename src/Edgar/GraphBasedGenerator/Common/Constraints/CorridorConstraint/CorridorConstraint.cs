@@ -15,8 +15,8 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint
 	{
 		private readonly ILevelDescription<TNode> mapDescription;
         private readonly IConfigurationSpaces<TConfiguration> configurationSpaces;
-		private readonly IGraph<TNode> graphWithoutCorridors;
-        private readonly IGraph<TNode> graph;
+		private readonly IImmutableGraph<TNode> graphWithoutCorridors;
+        private readonly IImmutableGraph<TNode> graph;
         private readonly IRoomShapeGeometry<TConfiguration> roomShapeGeometry;
 
 		public CorridorConstraint(ILevelDescription<TNode> mapDescription, IConfigurationSpaces<TConfiguration> configurationSpaces, IRoomShapeGeometry<TConfiguration> roomShapeGeometry)
@@ -24,8 +24,8 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint
 			this.mapDescription = mapDescription;
             this.configurationSpaces = configurationSpaces;
             this.roomShapeGeometry = roomShapeGeometry;
-            graphWithoutCorridors = mapDescription.GetGraphWithoutCorridors();
-            graph = mapDescription.GetGraph();
+            graphWithoutCorridors = mapDescription.GetGraphWithoutCorridors() as IImmutableGraph<TNode>;
+            graph = mapDescription.GetGraph() as IImmutableGraph<TNode>;
         }
 
 		/// <inheritdoc />
@@ -35,9 +35,10 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint
 				return true;
 
 			var distance = 0;
-			var neighbours = graphWithoutCorridors.GetNeighbors(node).ToList();
+            var neighbors = graphWithoutCorridors.GetNeighbors(node);
 
-			foreach (var vertex in neighbours)
+			foreach (var vertex in neighbors
+)
 			{
 				if (vertex.Equals(node))
 					continue;

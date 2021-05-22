@@ -26,10 +26,10 @@ namespace Edgar.GraphBasedGenerator.Common
             this.levelDescription = levelDescription;
             roomDescriptions = new IRoomDescription[levelDescription.GetGraph().VerticesCount];
 
-            DoMapping(levelDescription.GetGraph(), levelDescription.GetGraphWithoutCorridors(), mappedGraph, mappedStageOneGraph);
+            DoMapping(levelDescription.GetGraph(), levelDescription.GetGraphWithoutCorridors(), ref mappedGraph, ref mappedStageOneGraph);
         }
 
-        private void DoMapping(IGraph<TNode> graph, IGraph<TNode> stageOneGraph, IGraph<RoomNode<TNode>> mappedGraph, IGraph<RoomNode<TNode>> mappedStageOneGraph)
+        private void DoMapping(IGraph<TNode> graph, IGraph<TNode> stageOneGraph, ref IGraph<RoomNode<TNode>> mappedGraph, ref IGraph<RoomNode<TNode>> mappedStageOneGraph, bool isDirected = false)
         {
             foreach (var vertex in graph.Vertices)
             {
@@ -58,6 +58,12 @@ namespace Edgar.GraphBasedGenerator.Common
             foreach (var edge in stageOneGraph.Edges)
             {
                 mappedStageOneGraph.AddEdge(GetRoomNode(edge.From), GetRoomNode(edge.To));
+            }
+
+            if (!isDirected)
+            {
+                mappedGraph = new UndirectedImmutableGraph<RoomNode<TNode>>(mappedGraph);
+                mappedStageOneGraph = new UndirectedImmutableGraph<RoomNode<TNode>>(mappedStageOneGraph);
             }
         }
 
@@ -101,8 +107,9 @@ namespace Edgar.GraphBasedGenerator.Common
                     DoMapping(
                         levelDescription.GetGraph(false, true),
                         levelDescription.GetGraph(true, true),
-                        directedMappedGraph,
-                        directedMappedStageOneGraph);
+                        ref directedMappedGraph,
+                        ref directedMappedStageOneGraph,
+                        true);
                 }
 
                 if (withoutCorridors)
