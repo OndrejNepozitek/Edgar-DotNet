@@ -60,19 +60,21 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 			if (!DoOverlap(GetBoundingRectangle(polygon1) + position1, GetBoundingRectangle(polygon2) + position2))
 				return 0;
 
-			//if (!DoOverlap(GetBoundingRectangle(polygon1), position1, GetBoundingRectangle(polygon2), position2))
-			//    return 0;
-
-			var decomposition1 = GetDecomposition(polygon1).Select(x => x + position1).ToList();
-			var decomposition2 = GetDecomposition(polygon2).Select(x => x + position2).ToList();
+			// Profiling: there should be no lambda/linq expression here as this function is called very often
+            var decomposition1 = GetDecomposition(polygon1);
+            var decomposition2 = GetDecomposition(polygon2);
 			var area = 0;
 
 			foreach (var r1 in decomposition1)
-			{
+            {
+                var rectangle1 = r1 + position1;
+
 				foreach (var r2 in decomposition2)
 				{
-					var overlapX = System.Math.Max(0, System.Math.Min(r1.B.X, r2.B.X) - System.Math.Max(r1.A.X, r2.A.X));
-					var overlapY = System.Math.Max(0, System.Math.Min(r1.B.Y, r2.B.Y) - System.Math.Max(r1.A.Y, r2.A.Y));
+                    var rectangle2 = r2 + position2;
+
+					var overlapX = System.Math.Max(0, System.Math.Min(rectangle1.B.X, rectangle2.B.X) - System.Math.Max(rectangle1.A.X, rectangle2.A.X));
+					var overlapY = System.Math.Max(0, System.Math.Min(rectangle1.B.Y, rectangle2.B.Y) - System.Math.Max(rectangle1.A.Y, rectangle2.A.Y));
 					area += overlapX * overlapY;
 				}
 			}
