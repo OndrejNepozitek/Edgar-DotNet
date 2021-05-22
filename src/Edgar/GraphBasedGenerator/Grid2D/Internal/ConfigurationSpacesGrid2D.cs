@@ -27,7 +27,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         private readonly Dictionary<CacheKey, ConfigurationSpaceGrid2D> cache = new Dictionary<CacheKey, ConfigurationSpaceGrid2D>();
 
         private readonly bool isGraphDirected;
-        private Dictionary<Tuple<TNode, TNode>, IRoomDescription> nodesToCorridorMapping;
+        private Dictionary<CorridorSelector, IRoomDescription> nodesToCorridorMapping;
         private IGraph<TNode> directedGraph;
         private IGraph<TNode> directedGraphWithoutCorridors;
 
@@ -45,7 +45,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         private void Initialize()
         {
-            nodesToCorridorMapping = configurationSpacesGenerator.GetNodesToCorridorMapping(levelDescription);
+            nodesToCorridorMapping = configurationSpacesGenerator
+                .GetNodesToCorridorMapping(levelDescription)
+                .ToDictionary(
+                    x => new CorridorSelector(x.Key.Item1, x.Key.Item2),
+                    x => x.Value
+                );
 
             if (isGraphDirected)
             {
@@ -76,7 +81,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         public ConfigurationSpaceGrid2D GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
         {
             // If is over corridor
-            if (nodesToCorridorMapping.ContainsKey(new Tuple<TNode, TNode>(configuration1.Room, configuration2.Room)))
+            if (nodesToCorridorMapping.ContainsKey(new CorridorSelector(configuration1.Room, configuration2.Room)))
             {
                 return GetCorridorConfigurationSpace(configuration1, configuration2);
             }
@@ -135,7 +140,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         private ConfigurationSpaceGrid2D GetCorridorConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
         {
             var direction = GetDirection(configuration1, configuration2, true);
-            var corridorRoomDescription = (RoomDescriptionGrid2D)nodesToCorridorMapping[Tuple.Create(configuration1.Room, configuration2.Room)];
+            var corridorRoomDescription = (RoomDescriptionGrid2D)nodesToCorridorMapping[new CorridorSelector(configuration1.Room, configuration2.Room)];
             var cacheKey = new CacheKey(configuration1.RoomShape, configuration2.RoomShape, corridorRoomDescription, direction);
 
             if (cache.TryGetValue(cacheKey, out var configurationSpace))
@@ -240,7 +245,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             this.random = random;
         }
 
-        private struct CacheKey
+        private readonly struct CacheKey : IEquatable<CacheKey>
         {
             private readonly RoomTemplateInstanceGrid2D roomTemplate1;
 
@@ -277,7 +282,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                     var hashCode = (roomTemplate1 != null ? roomTemplate1.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ (roomTemplate2 != null ? roomTemplate2.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ (corridorRoomDescription != null ? corridorRoomDescription.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ direction.GetHashCode();
+                    hashCode = (hashCode * 397) ^ (int)direction;
                     return hashCode;
                 }
             }
@@ -288,6 +293,51 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             }
 
             public static bool operator !=(CacheKey left, CacheKey right)
+            {
+                return !left.Equals(right);
+            }
+
+            #endregion
+        }
+
+        private readonly struct CorridorSelector : IEquatable<CorridorSelector>
+        {
+            private readonly TNode room1;
+
+            private readonly TNode room2;
+
+            public CorridorSelector(TNode room1, TNode room2)
+            {
+                this.room1 = room1;
+                this.room2 = room2;
+            }
+
+            #region Equals
+
+            public bool Equals(CorridorSelector other)
+            {
+                return EqualityComparer<TNode>.Default.Equals(room1, other.room1) && EqualityComparer<TNode>.Default.Equals(room2, other.room2);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is CorridorSelector other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (EqualityComparer<TNode>.Default.GetHashCode(room1) * 397) ^ EqualityComparer<TNode>.Default.GetHashCode(room2);
+                }
+            }
+
+            public static bool operator ==(CorridorSelector left, CorridorSelector right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(CorridorSelector left, CorridorSelector right)
             {
                 return !left.Equals(right);
             }
