@@ -88,25 +88,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             // Compute which rooms have fixed configurations
             var fixedConfigurationConstraint =
                 GetFixedConfigurationConstraint(levelDescription.Constraints, geometryData.RoomTemplateInstances);
-            var fixedPositionRooms = levelDescriptionMapped
-                .GetGraph()
-                .Vertices
-                .Where(x => fixedConfigurationConstraint.IsFixedPosition(x))
-                .ToList();
-            var fixedRooms = fixedPositionRooms
-                .Where(x => fixedConfigurationConstraint.IsFixedShape(x))
-                .ToList();
 
-            // Compute chain decomposition
-            var chainDecompositionConfiguration = configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
-            var chainDecomposition = new BreadthFirstChainDecomposition<RoomNode<TRoom>>(chainDecompositionConfiguration, fixedRooms:fixedPositionRooms);
-            var twoStageChainDecomposition =  new Common.ChainDecomposition.TwoStageChainDecomposition<RoomNode<TRoom>>(
-                levelDescriptionMapped,
-                chainDecomposition
-            );
-            var fixedRoomsChainDecomposition = new FixedRoomChainDecompositionPreprocessing<RoomNode<TRoom>>(fixedRooms, twoStageChainDecomposition);
+            var chainDecomposition = GraphBasedGeneratorGrid2DUtils.GetChainDecomposition(levelDescriptionMapped,
+                fixedConfigurationConstraint, configuration.ChainDecompositionConfiguration);
+
             var chains = GraphBasedGeneratorUtils.GetChains(
-                fixedRoomsChainDecomposition,
+                chainDecomposition,
                 levelDescriptionMapped.GetGraph(),
                 roomToAliasMapping,
                 configuration.Chains
@@ -295,6 +282,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                                 $"FixedConfigurationConstraint contained a room that is not present in the level description. The room was: {fixedConfigurationConstraint.Room}");
                         }
 
+                        // TODO: should it be possible to lock the position without locking the shape?
                         if (fixedConfigurationConstraint.Position.HasValue)
                         {
                             fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value;
@@ -309,6 +297,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                                     x.Transformations.Contains(TransformationGrid2D.Identity));
 
                             fixedShapes[roomNode] = roomTemplateInstance;
+
+                            if (fixedConfigurationConstraint.Position.HasValue)
+                            {
+                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A - fixedConfigurationConstraint.RoomTemplate.Outline.BoundingRectangle.A;
+                                fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value - offset;
+                            }
                         }
                     }
                 }
