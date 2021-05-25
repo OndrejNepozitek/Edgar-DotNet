@@ -4,28 +4,18 @@ using System.Linq;
 using System.Threading;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
-using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.GraphBasedGenerator.Common.Configurations;
-using Edgar.GraphBasedGenerator.Common.Constraints;
-using Edgar.GraphBasedGenerator.Common.Constraints.BasicConstraint;
-using Edgar.GraphBasedGenerator.Common.Constraints.CorridorConstraint;
 using Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstraint;
-using Edgar.GraphBasedGenerator.Common.Constraints.MinimumDistanceConstraint;
 using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.GraphBasedGenerator.Common.LayoutControllers;
 using Edgar.GraphBasedGenerator.Grid2D.Internal;
-using Edgar.Legacy.Core.ChainDecompositions;
-using Edgar.Legacy.Core.ConfigurationSpaces;
-using Edgar.Legacy.Core.Constraints.Interfaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.GeneratorPlanners;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators;
 using Edgar.Legacy.Core.LayoutGenerators.Interfaces;
-using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
-using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.Utils.Interfaces;
 using Edgar.Utils;
 using ConfigurationSpacesGenerator = Edgar.GraphBasedGenerator.Grid2D.Internal.ConfigurationSpacesGenerator;
@@ -89,9 +79,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var fixedConfigurationConstraint =
                 GetFixedConfigurationConstraint(levelDescription.Constraints, geometryData.RoomTemplateInstances);
 
+            // Get chain decomposition algorithm
             var chainDecomposition = GraphBasedGeneratorGrid2DUtils.GetChainDecomposition(levelDescriptionMapped,
                 fixedConfigurationConstraint, configuration.ChainDecompositionConfiguration);
 
+            // Compute chains
             var chains = GraphBasedGeneratorUtils.GetChains(
                 chainDecomposition,
                 levelDescriptionMapped.GetGraph(),
@@ -130,89 +122,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 .SelectMany(x => x.DoorLines)
                 .Any(x => x.Type != DoorType.Undirected);
 
-            // Needlessly complex for backwards compatibility
 
-            #region IntAliasMapping
+            var shapesForNodes =
+                GraphBasedGeneratorGrid2DUtils.GetLegacyShapesForNodes(levelDescriptionMapped, geometryData);
 
-            var shapesForNodes = new Dictionary<RoomNode<TRoom>, List<WeightedShape>>();
-            foreach (var vertex in levelDescriptionMapped.GetGraph().Vertices)
-            {
-                shapesForNodes.Add(vertex, new List<WeightedShape>());
-                // var roomDescription = levelDescriptionMapped.GetRoomDescription(vertex);
-                var roomDescription = geometryData.RoomDescriptions[vertex];
-
-                foreach (var roomTemplate in roomDescription.RoomTemplates)
-                {
-                    var roomTemplateInstances = geometryData.RoomTemplateInstances[roomTemplate];
-
-                    foreach (var roomTemplateInstance in roomTemplateInstances)
-                    {
-                        shapesForNodes[vertex].Add(new WeightedShape(
-                            geometryData.RoomTemplateInstanceToPolygonMapping[roomTemplateInstance],
-                            1d / roomTemplateInstances.Count)
-                        );
-                    }
-                }
-            }
-
-            var usedShapes = new HashSet<int>();
-            var allShapes = new List<IntAlias<PolygonGrid2D>>();
-            foreach (var vertex in levelDescriptionMapped.GetGraph().Vertices)
-            {
-                var shapes = shapesForNodes[vertex];
-
-                foreach (var shape in shapes)
-                {
-                    if (!usedShapes.Contains(shape.Shape.Alias))
-                    {
-                        allShapes.Add(shape.Shape);
-                        usedShapes.Add(shape.Shape.Alias);
-                    }
-                }
-            }
-
-            var averageSize = (int) allShapes.Select(x => x.Value.BoundingRectangle).Average(x => (x.Width + x.Height) / 2);
-
-            #endregion
+            var averageRoomSize =
+                GraphBasedGeneratorGrid2DUtils.GetLegacyAverageSize(levelDescriptionMapped, shapesForNodes);
 
 
+            var configurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, isGraphDirected);
 
-            // var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<ConfigurationNew2<CorridorsDataNew>>(mapDescription);
-            var simpleConfigurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, isGraphDirected);
-
-            // var averageSize = configurationSpaces.GetAverageSize();
-
-            var energyUpdater = new BasicEnergyUpdater<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(10 * averageSize);
             var roomShapeGeometry = new FastGridPolygonGeometry<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>();
 
-            // Create generator constraints
-            var stageOneConstraints =
-                new List<INodeConstraint<ILayout<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>,
-                    EnergyData>>
-                {
-                    new BasicConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
-                        roomShapeGeometry,
-                        simpleConfigurationSpaces,
-                        levelDescriptionMapped,
-                        configuration.OptimizeCorridorConstraints
-                    ),
-                    new CorridorConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
-                        levelDescriptionMapped,
-                        simpleConfigurationSpaces,
-                        roomShapeGeometry
-                    ),
-                };
-
-            if (levelDescription.MinimumRoomDistance > 0)
-            {
-                stageOneConstraints.Add(new MinimumDistanceConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
-                    levelDescriptionMapped,
-                    roomShapeGeometry,
-                    levelDescription.MinimumRoomDistance
-                ));
-            }
-
-            var constraintsEvaluator = new ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(stageOneConstraints, energyUpdater);
+            var constraintsEvaluator = GraphBasedGeneratorGrid2DUtils.GetConstraintsEvaluator(levelDescriptionMapped,
+                roomShapeGeometry, configurationSpaces, averageRoomSize, levelDescription.MinimumRoomDistance,
+                configuration.OptimizeCorridorConstraints);
 
             var roomShapesHandler = new RoomShapesHandlerGrid2D<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(
                 geometryData.RoomTemplateInstanceToPolygonMapping,
@@ -223,12 +147,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             );
 
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, simpleConfigurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
+            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageRoomSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, configurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
 
             
             var layoutConverter =
                 new BasicLayoutConverterGrid2D<TRoom,
-                    ConfigurationGrid2D<TRoom, EnergyData>>(levelDescription, simpleConfigurationSpaces,
+                    ConfigurationGrid2D<TRoom, EnergyData>>(levelDescription, configurationSpaces,
                     geometryData.RoomTemplateInstanceToPolygonMapping);
 
             // Create simulated annealing evolver
@@ -246,7 +170,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
                 ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
-                ((IRandomInjectable)simpleConfigurationSpaces).InjectRandomGenerator(random);
+                ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
                 ((IRandomInjectable)roomShapesHandler).InjectRandomGenerator(random);
             };
 
