@@ -207,26 +207,34 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                         }
 
                         // TODO: should it be possible to lock the position without locking the shape?
-                        if (fixedConfigurationConstraint.Position.HasValue)
-                        {
-                            fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value;
-                        }
+                        //if (fixedConfigurationConstraint.Position.HasValue)
+                        //{
+                        //    fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value;
+                        //}
 
                         // TODO: check for not existing room template instance
                         if (fixedConfigurationConstraint.RoomTemplate != null)
                         {
                             // TODO: handle transformations
+                            // TODO: handle transformation not exists
                             var roomTemplateInstance =
                                 roomTemplateInstancesMapping[fixedConfigurationConstraint.RoomTemplate].Single(x =>
-                                    x.Transformations.Contains(TransformationGrid2D.Identity));
+                                    x.Transformations.Contains(fixedConfigurationConstraint.Transformation));
 
                             fixedShapes[roomNode] = roomTemplateInstance;
 
                             if (fixedConfigurationConstraint.Position.HasValue)
                             {
-                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A - fixedConfigurationConstraint.RoomTemplate.Outline.BoundingRectangle.A;
+                                var transformedShape = roomTemplateInstance.RoomTemplate.Outline.Transform(fixedConfigurationConstraint.Transformation);
+                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A - transformedShape.BoundingRectangle.A;
                                 fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value - offset;
                             }
+                        }
+                        else
+                        {
+                            // TODO: improve
+                            throw new InvalidOperationException(
+                                $"RoomTemplate must not be null");
                         }
                     }
                 }

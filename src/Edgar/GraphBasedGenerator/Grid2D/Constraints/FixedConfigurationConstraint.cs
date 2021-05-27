@@ -10,5 +10,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         public Vector2Int? Position { get; set; }
 
         public RoomTemplateGrid2D RoomTemplate { get; set; }
+
+        public TransformationGrid2D Transformation { get; set; }
     }
 }

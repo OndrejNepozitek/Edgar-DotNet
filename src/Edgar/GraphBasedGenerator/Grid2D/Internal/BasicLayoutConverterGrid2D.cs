@@ -42,6 +42,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 		{
 			var rooms = new List<LayoutRoomGrid2D<TNode>>();
 			var roomsDict = new Dictionary<TNode, LayoutRoomGrid2D<TNode>>();
+            var fixedRoomConstraints = MapDescription
+                .Constraints?
+                .Where(x => x is FixedConfigurationConstraint<TNode>)
+                .Cast<FixedConfigurationConstraint<TNode>>()
+                .ToDictionary(x => x.Room, x => x);
 
             foreach (var vertexAlias in layout.Graph.Vertices)
 			{
@@ -50,10 +55,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                     var vertex = vertexAlias.Room;
                     var roomTemplateInstance = configuration.RoomShape;
 
-					// Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
+                    // Make sure that the returned shape has the same position as the original room template shape and is not moved to (0,0)
 					// TODO: maybe make a unit/integration test?
-                    var transformation = roomTemplateInstance.Transformations.GetRandom(Random);
-                    var shape = configuration.RoomShape.RoomShape;
+					// Do not choose random transformation if the transformation is fixed
+                    var transformation = fixedRoomConstraints != null && fixedRoomConstraints.ContainsKey(vertex)
+						? fixedRoomConstraints[vertex].Transformation
+						: roomTemplateInstance.Transformations.GetRandom(Random);
+
+					var shape = configuration.RoomShape.RoomShape;
                     var originalShape = roomTemplateInstance.RoomTemplate.Outline;
                     var transformedShape = originalShape.Transform(transformation);
                     var offset = transformedShape.BoundingRectangle.A - shape.BoundingRectangle.A;
