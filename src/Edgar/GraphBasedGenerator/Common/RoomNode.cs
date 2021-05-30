@@ -14,6 +14,11 @@ namespace Edgar.GraphBasedGenerator.Common
             Room = room;
         }
 
+        public override string ToString()
+        {
+            return $"{Id}: {Room}";
+        }
+
         //protected bool Equals(RoomNode<TRoom> other)
         //{
         //    return EqualityComparer<TRoom>.Default.Equals(Room, other.Room) && Id == other.Id;

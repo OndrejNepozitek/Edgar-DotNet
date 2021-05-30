@@ -120,10 +120,12 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         {
             var namedGraphs = new List<NamedGraph<string>>();
 
-            for (int i = 0; i < numberOfClusters; i++)
-            {
-                namedGraphs.Add(GetGraph(i + 1, verticesPerCluster, new Random(0), 4, nonTreeEdges));
-            }
+            //for (int i = 0; i < numberOfClusters; i++)
+            //{
+            //    namedGraphs.Add(GetGraph(i + 1, verticesPerCluster, new Random(0), 4, nonTreeEdges));
+            //}
+
+            namedGraphs.Add(GetGraph(3, verticesPerCluster, new Random(0), 4, nonTreeEdges));
 
             var levelDescriptionLoader = new LevelDescriptionLoader<string>(RoomTemplatesSet.Medium, new Vector2Int(1, 1), getCorridorNameFunc: x => $"c_{x}");
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
