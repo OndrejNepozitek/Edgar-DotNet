@@ -8,7 +8,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
     public class BenchmarkRunner
     {
         public static BenchmarkScenarioResult Run<TNode>(
-            BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> levelGeneratorFactory, int repeats, Legacy.Benchmarks.BenchmarkOptions options = null)
+            BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> levelGeneratorFactory, int repeats, Legacy.Benchmarks.BenchmarkOptions options = null, bool includeUnsuccessful = false)
         {
             if (options == null)
             {
@@ -31,7 +31,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             {
                 var runner = levelGeneratorFactory.GetGeneratorRunner(input);
 
-                benchmarkJobs.Add(new BenchmarkJob(runner, input.Name, repeats, 0.8));
+                benchmarkJobs.Add(new BenchmarkJob(runner, input.Name, repeats, 0.8, includeUnsuccessful));
             }
 
             var benchmarkJobResults = benchmark.Run(benchmarkJobs.ToArray(), $"{scenario.Name} - {levelGeneratorFactory.Name}");

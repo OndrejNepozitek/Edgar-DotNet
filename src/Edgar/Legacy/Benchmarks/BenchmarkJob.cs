@@ -16,15 +16,17 @@ namespace Edgar.Legacy.Benchmarks
 		private readonly string inputName;
         private readonly int repeats;
         private readonly double earlyStopThreshold;
+        private readonly bool includeUnsuccessful;
 
         public event Action<BenchmarkJobResult> OnPreview;
 
-		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10, double earlyStopThreshold = 0)
+		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10, double earlyStopThreshold = 0, bool includeUnsuccessful = false)
 		{
 			this.generatorRunner = generatorRunner;
 			this.inputName = inputName;
             this.repeats = repeats;
             this.earlyStopThreshold = earlyStopThreshold;
+            this.includeUnsuccessful = includeUnsuccessful;
         }
 
 		public BenchmarkJobResult Execute()
@@ -59,7 +61,7 @@ namespace Edgar.Legacy.Benchmarks
 
         private BenchmarkJobResult GetResult(string name, List<IGeneratorRun> runs)
         {
-            var successfulRuns = runs.Where(x => x.IsSuccessful).ToList();
+            var successfulRuns = runs.Where(x => includeUnsuccessful || x.IsSuccessful).ToList();
 
             if (successfulRuns.Count == 0)
             {
@@ -73,7 +75,7 @@ namespace Edgar.Legacy.Benchmarks
             return new BenchmarkJobResult()
             {
                 InputName = name,
-                SuccessRate = successfulRuns.Count / (double)runs.Count * 100,
+                SuccessRate = runs.Count(x => x.IsSuccessful) / (double)runs.Count * 100,
                 TimeAverage = successfulRuns.Select(x => x.Time).Average(),
                 TimeMedian = successfulRuns.Select(x => x.Time).GetMedian(),
                 TimeMax = successfulRuns.Select(x => x.Time).Max(),

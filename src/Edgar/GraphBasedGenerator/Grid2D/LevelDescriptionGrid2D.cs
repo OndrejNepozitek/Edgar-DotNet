@@ -24,6 +24,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </remarks>
         public int MinimumRoomDistance { get; set; } = 0;
 
+        // TODO: remove
+        public List<List<TRoom>> Clusters { get; set; }
+
         // TODO: comment
         public List<IGeneratorConstraintGrid2D<TRoom>> Constraints { get; set; }
 

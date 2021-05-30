@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
+using Edgar.GraphBasedGenerator.RecursiveGrid2D;
 using Edgar.Graphs;
 using Edgar.Legacy.Utils;
+using Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators;
 using SandboxEvolutionRunner.Utils;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
@@ -70,6 +73,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             var clusters =
                 highLevelStructure.Vertices.ToDictionary(x => x,
                     x => GetRandomGraph(verticesPerCluster, maxDegree, random, nonTreeEdges));
+            // TODO:
+            //var clusters =
+            //    highLevelStructure.Vertices.ToDictionary(x => x,
+            //        x => GetPathGraph(verticesPerCluster));
 
             foreach (var pair in clusters)
             {
@@ -92,8 +99,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 var cluster1 = clusters[edge.From];
                 var cluster2 = clusters[edge.To];
 
-                var vertex1 = cluster1.Vertices.ToList().GetRandom(random);
-                var vertex2 = cluster2.Vertices.ToList().GetRandom(random);
+                //var vertex1 = cluster1.Vertices.ToList().GetRandom(random);
+                //var vertex2 = cluster2.Vertices.ToList().GetRandom(random);
+                // TODO:
+                var vertex1 = cluster1.Vertices.Last();
+                var vertex2 = cluster2.Vertices.First();
 
                 graph.AddEdge(GetVertexAlias(edge.From, vertex1), GetVertexAlias(edge.To, vertex2));
             }
@@ -118,19 +128,48 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             var levelDescriptionLoader = new LevelDescriptionLoader<string>(RoomTemplatesSet.Medium, new Vector2Int(1, 1), getCorridorNameFunc: x => $"c_{x}");
             var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
 
+            foreach (var levelDescription in levelDescriptions)
+            {
+                var graph = levelDescription.GetGraphWithoutCorridors();
+                var clusters = new Dictionary<string, List<string>>();
+
+                foreach (var vertex in graph.Vertices)
+                {
+                    var prefix = vertex.Split('_')[0];
+
+                    if (clusters.ContainsKey(prefix) == false)
+                    {
+                        clusters[prefix] = new List<string>();
+                    }
+
+                    clusters[prefix].Add(vertex);
+                }
+
+                levelDescription.Clusters = clusters.Select(x => x.Value).ToList();
+            }
+
             return new BenchmarkScenario<string>($"{numberOfClusters} {verticesPerCluster} {nonTreeEdges}", levelDescriptions);
+        }
+
+        protected RecursiveGeneratorFactory<TNode> GetRecursiveGenerator<TNode>(BenchmarkOptions options, bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
+        {
+            return new RecursiveGeneratorFactory<TNode>(new GraphBasedGeneratorConfiguration<TNode>()
+            {
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?),
+                OptimizeCorridorConstraints = optimizeCorridorConstraints,
+            }, withInit, name);
         }
 
         protected override void Run()
         {
             var options = new BenchmarkOptions()
             {
-                EarlyStopTime = 10000,
+                EarlyStopTime = 50000,
             };
 
             var scenarios = new List<BenchmarkScenario<string>>()
             {
-                GetScenario(5, 15, 0),
+                // GetScenario(5, 15, 0),
                 GetScenario(5, 15, 1),
             };
 
@@ -151,7 +190,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
             var generators = new List<ILevelGeneratorFactory<string>>()
             {
-                GetNewGenerator<string>(options, name: "Default generator"),
+                // GetNewGenerator<string>(options, name: "Default generator"),
+                GetRecursiveGenerator<string>(options, name: "Recursive generator"),
             };
 
             RunBenchmark(scenarios, generators);

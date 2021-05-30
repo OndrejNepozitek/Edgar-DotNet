@@ -139,7 +139,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
                 MultiThreaded = Options.MaxThreads > 1,
                 MaxDegreeOfParallelism = Options.MaxThreads,
                 WithFileOutput = false,
-            }); 
+            }, Options.IncludeUnsuccessful); 
 
             var resultSaver = new BenchmarkResultSaver();
             resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath, name: $"{Directory}_{scenario.Name}_{generator.Name}", withDatetime: false);

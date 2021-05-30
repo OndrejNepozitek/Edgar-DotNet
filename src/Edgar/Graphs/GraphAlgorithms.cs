@@ -177,5 +177,63 @@ namespace Edgar.Graphs
 
             return bestPath;
         }
+
+        public static List<IEdge<TNode>> FindBridges<TNode>(IGraph<TNode> graph)
+        {
+            var timer = 0;
+            var visited = new Dictionary<TNode, bool>();
+            var timeIn = new Dictionary<TNode, int>();
+            var low = new Dictionary<TNode, int>();
+
+            foreach (var vertex in graph.Vertices)
+            {
+                visited[vertex] = false;
+                timeIn[vertex] = -1;
+                low[vertex] = -1;
+            }
+
+            var bridges = new List<IEdge<TNode>>();
+
+            foreach (var vertex in graph.Vertices)
+            {
+                if (!visited[vertex])
+                {
+                    FindBridgesDfs(graph, vertex, default(TNode), true, visited, timeIn, low, ref timer, bridges);
+                }
+            }
+
+            return bridges;
+        }
+
+        private static void FindBridgesDfs<TNode>(IGraph<TNode> graph, TNode vertex, TNode parent, bool isRoot, Dictionary<TNode, bool> visited, Dictionary<TNode, int> timeIn, Dictionary<TNode, int> low, ref int timer, List<IEdge<TNode>> bridges)
+        {
+            visited[vertex] = true;
+            var time = timer++;
+            timeIn[vertex] = time;
+            low[vertex] = time;
+
+            foreach (var neighbor in graph.GetNeighbors(vertex))
+            {
+                if (!isRoot && neighbor.Equals(parent))
+                {
+                    continue;
+                }
+
+                if (visited[neighbor])
+                {
+                    low[vertex] = Math.Min(low[vertex], timeIn[neighbor]);
+                }
+                else
+                {
+                    FindBridgesDfs(graph, neighbor, vertex, false, visited, timeIn, low, ref timer, bridges);
+                    low[vertex] = Math.Min(low[vertex], low[neighbor]);
+
+                    if (low[neighbor] > timeIn[vertex])
+                    {
+                        bridges.Add(new Edge<TNode>(neighbor, vertex));
+                    }
+                }
+            }
+        }
     }
 }
