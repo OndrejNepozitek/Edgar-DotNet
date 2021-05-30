@@ -4,7 +4,7 @@ using System.Linq;
 using Edgar.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Graphs;
 
-namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
+namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
 {
     /// <inheritdoc />
 	/// <summary>

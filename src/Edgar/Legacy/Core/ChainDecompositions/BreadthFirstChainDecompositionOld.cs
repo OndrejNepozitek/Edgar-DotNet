@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy;
 using Edgar.Graphs;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 

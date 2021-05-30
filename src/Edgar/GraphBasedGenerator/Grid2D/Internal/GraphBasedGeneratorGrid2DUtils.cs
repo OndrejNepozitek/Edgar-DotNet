@@ -3,6 +3,7 @@ using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy;
 using Edgar.GraphBasedGenerator.Common.Configurations;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;
 using Edgar.GraphBasedGenerator.Common.Constraints;

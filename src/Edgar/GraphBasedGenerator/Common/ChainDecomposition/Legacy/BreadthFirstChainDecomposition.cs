@@ -6,7 +6,7 @@ using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.Utils.Logging;
 
-namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
+namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
 {
     /// <summary>
     /// Breadth-first search guided chain decomposition

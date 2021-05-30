@@ -1,4 +1,4 @@
-﻿namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
+﻿namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
 {
     /// <summary>
     /// Chain decomposition strategy.

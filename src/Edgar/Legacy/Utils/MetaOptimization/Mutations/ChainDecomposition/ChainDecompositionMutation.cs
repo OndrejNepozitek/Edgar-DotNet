@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Utils.Interfaces;

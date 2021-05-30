@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
+using Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.Configurations;
 using Edgar.Legacy.Core.Configurations.EnergyData;
