@@ -4,12 +4,12 @@ using Edgar.Graphs;
 
 namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
-    public class FixedRoomChainDecompositionPreprocessing<TNode> : IChainDecomposition<TNode>
+    public class FixedRoomsChainDecompositionPreprocessing<TNode> : IChainDecomposition<TNode>
     {
         private readonly List<TNode> fixedRooms;
         private readonly IChainDecomposition<TNode> chainDecomposition;
 
-        public FixedRoomChainDecompositionPreprocessing(List<TNode> fixedRooms, IChainDecomposition<TNode> chainDecomposition)
+        public FixedRoomsChainDecompositionPreprocessing(List<TNode> fixedRooms, IChainDecomposition<TNode> chainDecomposition)
         {
             this.fixedRooms = fixedRooms;
             this.chainDecomposition = chainDecomposition;
@@ -36,9 +36,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             }
 
             // Make fixed nodes that border with non-fixed nodes walkable
-            isWalkable = ChainDecompositionUtils.MakeBorderNodesWalkable(graph, isWalkable);
+            isWalkable = ChainDecompositionGraphUtils.MakeBorderNodesWalkable(graph, isWalkable);
 
-            var components = ChainDecompositionUtils.GetWalkableComponents(graph, isWalkable);
+            var components = ChainDecompositionGraphUtils.GetWalkableComponents(graph, isWalkable);
             var listsOfChains = new List<List<Chain<TNode>>>();
 
             foreach (var component in components)

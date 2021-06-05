@@ -38,12 +38,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             // Prepare chain decomposition algorithm
             chainDecompositionConfiguration = chainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
-            var chainDecomposition = new BreadthFirstChainDecomposition<TRoom>(chainDecompositionConfiguration, fixedRooms: fixedPositionRooms);
+            var chainDecomposition = new FixedRoomsChainDecomposition<TRoom>(chainDecompositionConfiguration, fixedRooms: fixedPositionRooms);
             var twoStageChainDecomposition = new Common.ChainDecomposition.TwoStageChainDecomposition<TRoom>(
                 levelDescription,
                 chainDecomposition
             );
-            var fixedRoomsChainDecomposition = new FixedRoomChainDecompositionPreprocessing<TRoom>(fixedRooms, twoStageChainDecomposition);
+            var fixedRoomsChainDecomposition = new FixedRoomsChainDecompositionPreprocessing<TRoom>(fixedRooms, twoStageChainDecomposition);
 
             return fixedRoomsChainDecomposition;
         }

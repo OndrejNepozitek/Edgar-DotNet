@@ -1,82 +1,166 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Edgar.Graphs;
+using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 
 namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     public static class ChainDecompositionUtils
     {
-        public static Dictionary<TNode, bool> MakeBorderNodesWalkable<TNode>(IGraph<TNode> graph, Dictionary<TNode, bool> isWalkable)
+        public static List<TNode> GetInitialFixedComponent<TNode>(IGraph<TNode> graph, List<TNode> fixedRooms)
         {
-            var isWalkableNew = new Dictionary<TNode, bool>(isWalkable);
-
-            foreach (var node in graph.Vertices)
+            if (fixedRooms == null)
             {
-                if (isWalkable[node] == false && graph.GetNeighbors(node).Any(x => isWalkable[x]))
-                {
-                    isWalkableNew[node] = true;
-                }
+                return null;
             }
 
-            return isWalkableNew;
+            // TODO: this is inefficient
+            var relevantFixedRooms = graph.Vertices.Where(x => fixedRooms.Contains(x)).ToList();
+
+            if (relevantFixedRooms.Count == 0)
+            {
+                return null;
+            }
+
+            var chain = GraphAlgorithms.GetShortestMultiPath(graph, relevantFixedRooms);
+            chain = GraphAlgorithms.OrderNodesByDFSDistance(graph, chain);
+
+            return chain;
         }
 
-        public static List<List<TNode>> GetWalkableComponents<TNode>(IGraph<TNode> graph, Dictionary<TNode, bool> isWalkable)
+        public static ChainCandidate<TNode> GetBfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> startingNodes, int maxTreeSize)
         {
-            var visited = new HashSet<TNode>();
-            var components = new List<List<TNode>>();
-
-            foreach (var node in graph.Vertices)
-            {
-                if (visited.Contains(node) == false)
-                {
-                    var component = GetReachableNodes(graph, node, isWalkable);
-
-                    if (component.Count != 0)
-                    {
-                        components.Add(component);
-                        component.ForEach(x => visited.Add(x));
-                    }
-                }
-            }
-
-            return components;
-        }
-
-        public static List<TNode> GetReachableNodes<TNode>(IGraph<TNode> graph, TNode startNode, Dictionary<TNode, bool> isWalkable)
-        {
-            if (!isWalkable[startNode])
-            {
-                return new List<TNode>();
-            }
-
-            var visited = new HashSet<TNode>();
+            var nodes = new List<TNode>();
             var queue = new Queue<TNode>();
-            queue.Enqueue(startNode);
-            visited.Add(startNode);
 
-            while (queue.Count != 0)
+            nodes.AddRange(startingNodes);
+            foreach (var startingNode in startingNodes)
+            {
+                queue.Enqueue(startingNode);
+            }
+
+            while (queue.Count != 0 && nodes.Count < maxTreeSize)
             {
                 var node = queue.Dequeue();
 
-                foreach (var neighbor in graph.GetNeighbors(node))
+                if (decomposition.GetRemainingFaces().Any(x => x.Contains(node)))
                 {
-                    if (visited.Contains(neighbor))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    if (!isWalkable[neighbor])
-                    {
-                        continue;
-                    }
+                var neighbors = decomposition.Graph.GetNeighbors(node);
 
-                    visited.Add(neighbor);
-                    queue.Enqueue(neighbor);
+                foreach (var neighbor in neighbors)
+                {
+                    if (!nodes.Contains(neighbor) && !decomposition.IsCovered(neighbor))
+                    {
+                        nodes.Add(neighbor);
+                        queue.Enqueue(neighbor);
+
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
 
-            return visited.ToList();
+            return new ChainCandidate<TNode>()
+            {
+                Nodes = nodes,
+                IsFromFace = false,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
+
+        public static ChainCandidate<TNode> GetDfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> startingNodes, int maxTreeSize)
+        {
+            var nodes = new List<TNode>();
+            var stack = new Stack<TNode>();
+
+            nodes.AddRange(startingNodes);
+            foreach (var startingNode in startingNodes)
+            {
+                stack.Push(startingNode);
+            }
+
+            while (stack.Count != 0 && nodes.Count < maxTreeSize)
+            {
+                var node = stack.Pop();
+
+                if (decomposition.GetRemainingFaces().Any(x => x.Contains(node)))
+                {
+                    continue;
+                }
+
+                var neighbors = decomposition.Graph.GetNeighbors(node);
+
+                foreach (var neighbor in neighbors)
+                {
+                    if (!nodes.Contains(neighbor) && !decomposition.IsCovered(neighbor))
+                    {
+                        nodes.Add(neighbor);
+                        stack.Push(neighbor);
+
+                        if (nodes.Count >= maxTreeSize)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return new ChainCandidate<TNode>()
+            {
+                Nodes = nodes,
+                IsFromFace = false,
+                MinimumNeighborChainNumber = GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
+        }
+
+        public static int GetMinimumNeighborChainNumber<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> nodes)
+        {
+            var coveredNeighbors = nodes
+                .SelectMany(decomposition.Graph.GetNeighbors)
+                .Where(decomposition.IsCovered)
+                .ToList();
+
+            if (coveredNeighbors.Count != 0)
+            {
+                return coveredNeighbors.Min(decomposition.GetChainNumber);
+            }
+
+            return -1;
+        }
+
+        public static ChainCandidate<TNode> GetCycleComponent<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> face)
+        {
+            var nodes = new List<TNode>();
+            var notCoveredNodes = face.Where(x => !decomposition.IsCovered(x)).ToList();
+            var nodeOrder = new Dictionary<TNode, int>();
+
+            while (notCoveredNodes.Count != 0)
+            {
+                var nodeIndex = notCoveredNodes
+                    .MinBy(
+                        x => decomposition.Graph
+                            .GetNeighbors(x)
+                            .Min(y =>
+                                decomposition.IsCovered(y)
+                                    ? -1
+                                    : nodeOrder.ContainsKey(y) ? nodeOrder[y] : int.MaxValue));
+
+                nodeOrder[notCoveredNodes[nodeIndex]] = nodeOrder.Count;
+                nodes.Add(notCoveredNodes[nodeIndex]);
+                notCoveredNodes.RemoveAt(nodeIndex);
+            }
+
+            return new ChainCandidate<TNode>()
+            {
+                Nodes = nodes,
+                IsFromFace = true,
+                MinimumNeighborChainNumber = ChainDecompositionUtils.GetMinimumNeighborChainNumber(decomposition, nodes),
+            };
         }
     }
 }

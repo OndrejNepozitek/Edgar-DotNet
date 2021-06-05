@@ -54,9 +54,9 @@ namespace SandboxEvolutionRunner
 
         public static void Run(Options options)
         {
-            // new IndependentClustersBenchmark().Run(options);
-            new BasicComparisonBenchmark().Run(options);
-            // new DeformedRoomTemplates().Run(options);
+            new IndependentClustersBenchmark().Run(options);
+            //new BasicComparisonBenchmark().Run(options);
+            //new DeformedRoomTemplates().Run(options);
             return;
 
             var scenarios = new Dictionary<string, Scenario>()

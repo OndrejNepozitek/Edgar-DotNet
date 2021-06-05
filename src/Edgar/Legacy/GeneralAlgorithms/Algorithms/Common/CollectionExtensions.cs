@@ -112,6 +112,26 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 			return minIndex;
 		}
 
+        /// <summary>
+        /// Computes the first minimum element with respect to a given function.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        public static TElement MinElement<TElement, TResult>(this IList<TElement> collection, Func<TElement, TResult> func)
+            where TResult : IComparable<TResult>
+        {
+            if (collection.Count == 0)
+            {
+                throw new ArgumentException($"{nameof(collection)} must not be null!");
+            }
+
+            var minIndex = collection.MinBy(func);
+            return collection[minIndex];
+        }
+
 		/// <summary>
 		/// Returns a random number based on a given weight function.
 		/// </summary>

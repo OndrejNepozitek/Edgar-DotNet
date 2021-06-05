@@ -17,17 +17,21 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
         private readonly LevelDescriptionGrid2D<TRoom> levelDescription;
         private readonly ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped;
         private readonly LevelGeometryData<RoomNode<TRoom>> geometryData;
+        private readonly List<Cluster<RoomNode<TRoom>>> clusters;
+        private readonly RoomTemplateInstanceGrid2D dummyRoomTemplateInstance;
         public event EventHandler<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnPerturbed;
         public event EventHandler<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnValid;
 
         private Random random;
         private CancellationToken? cancellationToken;
 
-        public RecursiveLayoutEvolver(LevelDescriptionGrid2D<TRoom> levelDescription, ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped, LevelGeometryData<RoomNode<TRoom>> geometryData)
+        public RecursiveLayoutEvolver(LevelDescriptionGrid2D<TRoom> levelDescription, ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped, LevelGeometryData<RoomNode<TRoom>> geometryData, List<Cluster<RoomNode<TRoom>>> clusters, RoomTemplateInstanceGrid2D dummyRoomTemplateInstance)
         {
             this.levelDescription = levelDescription;
             this.levelDescriptionMapped = levelDescriptionMapped;
             this.geometryData = geometryData;
+            this.clusters = clusters;
+            this.dummyRoomTemplateInstance = dummyRoomTemplateInstance;
         }
 
         public IEnumerable<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> Evolve(
@@ -36,26 +40,27 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
             int count)
         {
             // TODO: add timeouts
-            initialLayout = initialLayout.SmartClone();
+            var initialLayoutCopy = initialLayout.SmartClone();
             var dummyLevelDescription = new LevelDescriptionGrid2D<RoomNode<TRoom>>();
             dummyLevelDescription.MinimumRoomDistance = levelDescription.MinimumRoomDistance;
             dummyLevelDescription.RoomTemplateRepeatModeDefault = levelDescription.RoomTemplateRepeatModeDefault;
             dummyLevelDescription.RoomTemplateRepeatModeOverride = levelDescription.RoomTemplateRepeatModeOverride;
 
-            var generator = new InnerGenerator<TRoom>(levelDescriptionMapped, dummyLevelDescription, chain.Nodes, initialLayout, geometryData, new GraphBasedGeneratorConfiguration<RoomNode<TRoom>>()
+            var generator = new InnerGenerator<TRoom>(levelDescriptionMapped, dummyLevelDescription, chain.Nodes, initialLayoutCopy, geometryData, clusters[chain.Number], dummyRoomTemplateInstance, new GraphBasedGeneratorConfiguration<RoomNode<TRoom>>()
             {
                 // EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
                 // EarlyStopIfIterationsExceeded = 3000,
-                EarlyStopIfIterationsExceeded = 3000,
+                EarlyStopIfIterationsExceeded = 500,
+                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(0.15),
             });
             generator.InjectRandomGenerator(random);
             // generator.SetCancellationToken(cancellationToken);
 
-            OnPerturbed?.Invoke(this, initialLayout);
+            OnPerturbed?.Invoke(this, initialLayoutCopy);
 
             var reportedFail = false;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var layout = generator.GenerateLayout();
 
@@ -84,7 +89,7 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
                 }
 
                 // TODO: remove
-                OnPerturbed?.Invoke(this, initialLayout);
+                OnPerturbed?.Invoke(this, initialLayoutCopy);
             }
         }
 

@@ -31,7 +31,7 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Common.ChainDecomposition
             isWalkable[6] = true;
 
             var expectedResult = new List<int>() {4, 5, 6, 7};
-            var result = ChainDecompositionUtils.MakeBorderNodesWalkable(graph, isWalkable);
+            var result = ChainDecompositionGraphUtils.MakeBorderNodesWalkable(graph, isWalkable);
             var resultWalkable = result.Where(x => x.Value).Select(x => x.Key).ToList();
 
             Assert.That(resultWalkable.SequenceEqualWithoutOrder(expectedResult));
@@ -70,7 +70,7 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Common.ChainDecomposition
             }
 
 
-            var result = ChainDecompositionUtils.GetWalkableComponents(graph, isWalkable);
+            var result = ChainDecompositionGraphUtils.GetWalkableComponents(graph, isWalkable);
 
             Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result[0], Is.EquivalentTo(component1));
@@ -106,7 +106,7 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Common.ChainDecomposition
 
             isWalkable[9] = true;
 
-            var reachableNodes = ChainDecompositionUtils.GetReachableNodes(graph, 4, isWalkable);
+            var reachableNodes = ChainDecompositionGraphUtils.GetReachableNodes(graph, 4, isWalkable);
 
             Assert.That(reachableNodes.SequenceEqualWithoutOrder(expectedReachableNodes));
         }
@@ -130,7 +130,7 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Common.ChainDecomposition
 
             isWalkable[5] = false;
 
-            var reachableNodes = ChainDecompositionUtils.GetReachableNodes(graph, 5, isWalkable);
+            var reachableNodes = ChainDecompositionGraphUtils.GetReachableNodes(graph, 5, isWalkable);
 
             Assert.That(reachableNodes, Is.Empty);
         }

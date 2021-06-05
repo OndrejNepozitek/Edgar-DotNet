@@ -39,7 +39,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
 
-            var layoutDrawer = new SVGLayoutDrawer<TNode>();
+            var layoutDrawer = new Edgar.GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TNode>();
 
             var layoutGenerator = new RecursiveGraphBasedGeneratorGrid2D<TNode>(levelDescription, configuration);
             layoutGenerator.InjectRandomGenerator(new Random(0));
@@ -52,26 +52,31 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 {
                     simulatedAnnealingArgsContainer.Add(eventArgs);
                 }
-
+                
                 var dungeonDrawer = new DungeonDrawer<TNode>();
-                layoutGenerator.OnPartialValid += l =>
+
+                void OnInvalidHandler(LayoutGrid2D<TNode> l)
                 {
                     dungeonDrawer.DrawLayoutAndSave(l, $"invalid_{levelDescription.Name}_{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}.png", new DungeonDrawerOptions()
                     {
                         Width = 1000,
                         Height = 1000,
                     });
-                };
+                }
 
+                layoutGenerator.OnPartialValid += OnInvalidHandler;
                 layoutGenerator.OnSimulatedAnnealingEvent += SimulatedAnnealingEventHandler;
+
                 var layout = layoutGenerator.GenerateLayout();
+
                 layoutGenerator.OnSimulatedAnnealingEvent -= SimulatedAnnealingEventHandler;
+                layoutGenerator.OnPartialValid -= OnInvalidHandler;
 
                 var additionalData = new AdditionalRunData<TNode>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    //GeneratedLayoutSvg =
-                    //    layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    GeneratedLayoutSvg =
+                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
                     // GeneratedLayout = layout,
                 };
 
@@ -87,7 +92,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var configuration = this.configuration.SmartClone();
             configuration.RoomsCanTouch = levelDescription.MinimumRoomDistance == 0;
 
-            var layoutDrawer = new SVGLayoutDrawer<TNode>();
+            var layoutDrawer = new Edgar.GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TNode>();
             var seedGenerator = new Random();
 
             return new LambdaGeneratorRunner(() =>

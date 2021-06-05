@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.GraphBasedGenerator.Common.Configurations;
@@ -54,17 +56,29 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D
 
         private void SetupGenerator()
         {
+
+            // TODO: fix
+            // Dummy room template
+            var dummyRoomTemplate =
+                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(100), new SimpleDoorModeGrid2D(2, 10));
+
             // Create configuration spaces generator
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
                 new PolygonOverlap(),
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
+
             // Preprocess information about room templates
             var geometryData = LevelGeometryData<RoomNode<TRoom>>.CreateBackwardsCompatible(
                 levelDescriptionMapped,
-                configurationSpacesGenerator.GetRoomTemplateInstances
+                configurationSpacesGenerator.GetRoomTemplateInstances,
+                new List<RoomTemplateGrid2D>() { dummyRoomTemplate }
             );
+
+            // Get dummy room template instance
+            var dummyRoomTemplateInstance = geometryData.RoomTemplateInstances[dummyRoomTemplate].Single();
+
             // Create generator planner
             var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);
             var isGraphDirected = geometryData.RoomTemplateInstances
@@ -79,14 +93,29 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D
                     geometryData.RoomTemplateInstanceToPolygonMapping);
 
 
-            var clusters = levelDescription.Clusters;
             var mapping = levelDescriptionMapped.GetMapping();
-            var clustersMapped = clusters.Select(x => x.Select(y => mapping[y]).ToList()).ToList();
+            var clusters = levelDescription
+                .Clusters
+                .Select(x => new Cluster<RoomNode<TRoom>>(x.Select(y => mapping[y]).ToList()))
+                .ToList();
+            var graph = levelDescriptionMapped.GetGraph();
+            foreach (var edge in graph.Edges)
+            {
+                var cluster1 = clusters.First(x => x.Nodes.Contains(edge.From));
+                var cluster2 = clusters.First(x => x.Nodes.Contains(edge.To));
+
+                if (cluster1 != cluster2)
+                {
+                    cluster1.Edges.Add(new ClusterEdge<RoomNode<TRoom>>(edge.From, edge.To, cluster2));
+                    cluster2.Edges.Add(new ClusterEdge<RoomNode<TRoom>>(edge.To, edge.From, cluster1));
+                }
+            }
+
             var i = 0;
-            var chains = clustersMapped.Select(x => new Chain<RoomNode<TRoom>>(x, i++, false)).ToList();
+            var chains = clusters.Select(x => new Chain<RoomNode<TRoom>>(x.Nodes, i++, false)).ToList();
 
             var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
-            var layoutEvolver = new RecursiveLayoutEvolver<TRoom>(levelDescription, levelDescriptionMapped, geometryData);
+            var layoutEvolver = new RecursiveLayoutEvolver<TRoom>(levelDescription, levelDescriptionMapped, geometryData, clusters, dummyRoomTemplateInstance);
 
 
             // Create the generator itself

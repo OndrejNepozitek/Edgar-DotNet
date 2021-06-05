@@ -35,6 +35,8 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
         private readonly List<RoomNode<TRoom>> relevantRooms;
         private readonly Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>> initialLayout;
         private readonly LevelGeometryData<RoomNode<TRoom>> geometryData;
+        private readonly Cluster<RoomNode<TRoom>> cluster;
+        private readonly RoomTemplateInstanceGrid2D dummyRoomTemplateInstance;
         private readonly GraphBasedGeneratorConfiguration<RoomNode<TRoom>> configuration;
         private ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>> generator;
 
@@ -46,13 +48,15 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
         /// </summary>
         /// <param name="levelDescription">Level description of the level that should be generated.</param>
         /// <param name="configuration">Configuration of the generator. Can be omitted for reasonable defaults.</param>
-        public InnerGenerator(ILevelDescription<RoomNode<TRoom>> levelDescription, LevelDescriptionGrid2D<RoomNode<TRoom>> levelDescriptionConfig, List<RoomNode<TRoom>> relevantRooms, Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>> initialLayout, LevelGeometryData<RoomNode<TRoom>>  geometryData, GraphBasedGeneratorConfiguration<RoomNode<TRoom>> configuration = null)
+        public InnerGenerator(ILevelDescription<RoomNode<TRoom>> levelDescription, LevelDescriptionGrid2D<RoomNode<TRoom>> levelDescriptionConfig, List<RoomNode<TRoom>> relevantRooms, Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>> initialLayout, LevelGeometryData<RoomNode<TRoom>>  geometryData, Cluster<RoomNode<TRoom>> cluster, RoomTemplateInstanceGrid2D dummyRoomTemplateInstance, GraphBasedGeneratorConfiguration<RoomNode<TRoom>> configuration = null)
         {
             this.levelDescription = levelDescription;
             this.levelDescriptionConfig = levelDescriptionConfig;
             this.relevantRooms = relevantRooms;
             this.initialLayout = initialLayout;
             this.geometryData = geometryData;
+            this.cluster = cluster;
+            this.dummyRoomTemplateInstance = dummyRoomTemplateInstance;
             this.configuration = configuration ?? new GraphBasedGeneratorConfiguration<RoomNode<TRoom>>();
             SetupGenerator();
         }
@@ -102,7 +106,9 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
                 .Where(x => this.initialLayout.GetConfiguration(x, out var _)).ToList();
 
             // Compute chains
-            var graph = GraphAlgorithms.GetInducedSubgraph(this.initialLayout.Graph, relevantRooms.Concat(alreadyLaidOutRooms).ToHashSet(),
+            var relevantRooms = this.relevantRooms.Concat(alreadyLaidOutRooms)
+                .Concat(cluster.Edges.Select(x => x.ToNode)).Distinct().ToList();
+            var graph = GraphAlgorithms.GetInducedSubgraph(this.initialLayout.Graph, relevantRooms.ToHashSet(),
                 new UndirectedAdjacencyListGraph<RoomNode<TRoom>>());
             var chains = GraphBasedGeneratorUtils.GetChains(
                 chainDecomposition,
@@ -213,57 +219,30 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
 
             foreach (var configuration in initialLayout.GetAllConfigurations())
             {
-                fixedPositions[configuration.Room] = configuration.Position;
-                fixedShapes[configuration.Room] = configuration.RoomShape;
+                // If the configuration is from the currents cluster, it must be the dummy room
+                if (cluster.Nodes.Contains(configuration.Room))
+                {
+                    initialLayout.RemoveConfiguration(configuration.Room);
+                }
+                else
+                {
+
+                    fixedPositions[configuration.Room] = configuration.Position;
+                    fixedShapes[configuration.Room] = configuration.RoomShape;
+                }
             }
 
             // TODO: check for duplicate room constraints
             if (constraints != null)
             {
                 throw new InvalidOperationException();
+            }
 
-                foreach (var constraintData in constraints)
+            foreach (var edge in cluster.Edges)
+            {
+                if (fixedPositions.ContainsKey(edge.ToNode) == false)
                 {
-                    if (constraintData is FixedConfigurationConstraint<RoomNode<TRoom>> fixedConfigurationConstraint)
-                    {
-                        var roomNode = fixedConfigurationConstraint.Room;
-                        //if (!mapping.TryGetValue(fixedConfigurationConstraint.Room, out var roomNode))
-                        //{
-                        //    throw new InvalidOperationException(
-                        //        $"FixedConfigurationConstraint contained a room that is not present in the level description. The room was: {fixedConfigurationConstraint.Room}");
-                        //}
-
-                        // TODO: should it be possible to lock the position without locking the shape?
-                        //if (fixedConfigurationConstraint.Position.HasValue)
-                        //{
-                        //    fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value;
-                        //}
-
-                        // TODO: check for not existing room template instance
-                        if (fixedConfigurationConstraint.RoomTemplate != null)
-                        {
-                            // TODO: handle transformations
-                            // TODO: handle transformation not exists
-                            var roomTemplateInstance =
-                                roomTemplateInstancesMapping[fixedConfigurationConstraint.RoomTemplate].Single(x =>
-                                    x.Transformations.Contains(fixedConfigurationConstraint.Transformation));
-
-                            fixedShapes[roomNode] = roomTemplateInstance;
-
-                            if (fixedConfigurationConstraint.Position.HasValue)
-                            {
-                                var transformedShape = roomTemplateInstance.RoomTemplate.Outline.Transform(fixedConfigurationConstraint.Transformation);
-                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A - transformedShape.BoundingRectangle.A;
-                                fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value - offset;
-                            }
-                        }
-                        else
-                        {
-                            // TODO: improve
-                            throw new InvalidOperationException(
-                                $"RoomTemplate must not be null");
-                        }
-                    }
+                    fixedShapes[edge.ToNode] = dummyRoomTemplateInstance;
                 }
             }
 

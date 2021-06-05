@@ -20,7 +20,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public static LevelGeometryData<TRoom> CreateBackwardsCompatible(
             ILevelDescription<TRoom> levelDescription,
-            Func<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> roomTemplateInstanceFactory)
+            Func<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> roomTemplateInstanceFactory,
+            List<RoomTemplateGrid2D> additionalRoomTemplates = null)
         {
             var roomDescriptions = levelDescription
                 .GetGraph()
@@ -31,6 +32,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 .SelectMany(x => x.RoomTemplates)
                 .Distinct()
                 .ToList();
+
+            if (additionalRoomTemplates != null)
+            {
+                roomTemplates = roomTemplates.Concat(additionalRoomTemplates).Distinct().ToList();
+            }
+
             var roomTemplateInstances = roomTemplates.ToDictionary(x => x, roomTemplateInstanceFactory);
             var roomTemplateInstancesMapping = roomTemplateInstances
                 .SelectMany(x => x.Value)

@@ -13,7 +13,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstra
 
         public FixedConfigurationConstraint(int totalRooms, Dictionary<RoomNode<TRoom>, TRoomShape> fixedShapes, Dictionary<RoomNode<TRoom>, TPosition> fixedPositions)
         {
-            if (fixedShapes != null && fixedPositions.Count != 0)
+            if (fixedShapes != null && fixedShapes.Count != 0)
             {
                 hasFixedShapes = true;
                 this.fixedShapes = new ValueWrapper<TRoomShape>?[totalRooms];
