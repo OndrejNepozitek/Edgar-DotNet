@@ -50,8 +50,8 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
             {
                 // EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
                 // EarlyStopIfIterationsExceeded = 3000,
-                EarlyStopIfIterationsExceeded = 500,
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(0.15),
+                // EarlyStopIfIterationsExceeded = 2000,
+                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(3.5d),
             });
             generator.InjectRandomGenerator(random);
             // generator.SetCancellationToken(cancellationToken);
@@ -71,7 +71,7 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
 
                 if (layout != null)
                 {
-                    // OnValid?.Invoke(this, layout);
+                    //OnValid?.Invoke(this, layout);
                     yield return layout;
                 }
                 else

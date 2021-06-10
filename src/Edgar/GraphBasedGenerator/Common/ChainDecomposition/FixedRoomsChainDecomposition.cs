@@ -28,11 +28,11 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             var faces = decomposition.GetRemainingFaces();
             
             // If there are no cycles and only a single fixed room, start a tree chain from that room
-            if (faces.Count == 0 && relevantFixedRooms.Count == 0)
+            if (faces.Count == 0 && relevantFixedRooms.Count == 1)
             {
                 return ChainDecompositionUtils.GetBfsTreeCandidate(
                     decomposition,
-                    new List<TNode>() { fixedRooms[0] },
+                    new List<TNode>() { relevantFixedRooms[0] },
                     MaxTreeSize
                 );
             }

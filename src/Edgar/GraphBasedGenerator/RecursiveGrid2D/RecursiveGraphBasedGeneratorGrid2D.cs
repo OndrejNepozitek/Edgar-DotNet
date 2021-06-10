@@ -60,7 +60,16 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D
             // TODO: fix
             // Dummy room template
             var dummyRoomTemplate =
-                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(100), new SimpleDoorModeGrid2D(2, 10));
+                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(140), new SimpleDoorModeGrid2D(1, 20));
+
+            //dummyRoomTemplate =
+            //    new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(16), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
+            //    {
+            //        new DoorGrid2D(new Vector2Int(0,7), new Vector2Int(0, 8)),
+            //        new DoorGrid2D(new Vector2Int(16,7), new Vector2Int(16, 8)),
+            //        new DoorGrid2D(new Vector2Int(7, 0), new Vector2Int(8, 0)),
+            //        new DoorGrid2D(new Vector2Int(7, 16), new Vector2Int(8, 16)),
+            //    }));
 
             // Create configuration spaces generator
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
@@ -109,6 +118,11 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D
                     cluster1.Edges.Add(new ClusterEdge<RoomNode<TRoom>>(edge.From, edge.To, cluster2));
                     cluster2.Edges.Add(new ClusterEdge<RoomNode<TRoom>>(edge.To, edge.From, cluster1));
                 }
+            }
+
+            if (clusters.Count > 1 && clusters.Any(x => x.Edges.Count == 0))
+            {
+                throw new InvalidOperationException();
             }
 
             var i = 0;

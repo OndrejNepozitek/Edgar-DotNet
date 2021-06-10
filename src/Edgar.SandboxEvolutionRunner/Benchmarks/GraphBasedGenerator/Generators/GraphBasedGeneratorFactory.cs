@@ -4,11 +4,11 @@ using System.Diagnostics;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
+using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Benchmarks.GeneratorRunners;
 using Edgar.Legacy.Benchmarks.Interfaces;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
-using Edgar.Legacy.Utils.MapDrawing;
 using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
@@ -58,8 +58,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var additionalData = new AdditionalRunData<TNode>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    //GeneratedLayoutSvg =
-                    //    layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    GeneratedLayoutSvg =
+                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
                     // GeneratedLayout = layout,
                 };
 
@@ -102,8 +102,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 var additionalData = new AdditionalRunData<TNode>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    //GeneratedLayoutSvg =
-                    //    layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    GeneratedLayoutSvg =
+                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
                     // GeneratedLayout = layout,
                 };
 
