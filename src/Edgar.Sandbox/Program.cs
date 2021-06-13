@@ -1,14 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GUI.New;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;
@@ -45,7 +46,7 @@ namespace Sandbox
 			Application.SetCompatibleTextRenderingDefault(false);
 
             // new RandomGraphs().Run();
-            // CompareWithReference();
+            //CompareWithReference();
 
             // new CorridorConfigurationSpaces().Run();
             // new SimulatedAnnealingParameters().Run();
@@ -57,8 +58,8 @@ namespace Sandbox
             // var task = RunBenchmark();
             // task.Wait();
             // CompareOldAndNew();
-            // RunExample();
-            RunExampleNew();
+            RunExample();
+            // RunExampleNew();
             // ConvertToXml();
 
             // new Profiler().Run();
@@ -84,7 +85,7 @@ namespace Sandbox
 
             var layoutDrawer = new SVGLayoutDrawer<int>();
 
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
@@ -130,7 +131,7 @@ namespace Sandbox
             Directory.CreateDirectory(directory);
 
             var dataVisualization = new ChainStatsVisualization<GeneratorData>();
-            foreach (var inputResult in scenarioResult.BenchmarkResults)
+            foreach (var inputResult in scenarioResult.Results)
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {

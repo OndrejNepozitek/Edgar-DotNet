@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.AdditionalData;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Geometry;
 using Edgar.Graphs;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.AdditionalData;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
@@ -51,7 +52,7 @@ namespace Sandbox.Features
                 }
             }
 
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("RandomGraphs", input =>
             {
                 var layoutDrawer = new SVGLayoutDrawer<int>();

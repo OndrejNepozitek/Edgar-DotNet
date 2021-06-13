@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Edgar.Benchmarks;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition;
 using Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy;
-using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Core.ChainDecompositions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters;
@@ -40,7 +40,7 @@ namespace SandboxEvolutionRunner.Scenarios
             for (var i = 0; i < graphs.Count; i++)
             {
                 var namedGraph = graphs[i];
-                var result = benchmarkResult.BenchmarkResults[2 * i];
+                var result = benchmarkResult.Results[2 * i];
 
                 var maxCyclesInClusterThreshold = 4;
                 var nodesInsideThreshold = 40;

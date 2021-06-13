@@ -5,12 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.AdditionalData;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Graphs;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.AdditionalData;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;
@@ -54,9 +55,9 @@ namespace SandboxEvolutionRunner
 
         public static void Run(Options options)
         {
-            new MattimusClustersBenchmark().Run(options);
+            // new MattimusClustersBenchmark().Run(options);
             //new IndependentClustersBenchmark().Run(options);
-            //new BasicComparisonBenchmark().Run(options);
+            new BasicComparisonBenchmark().Run(options);
             //new DeformedRoomTemplates().Run(options);
             return;
 
@@ -258,7 +259,7 @@ namespace SandboxEvolutionRunner
             var inputsOldConfigurations = results.Select(x =>
                 new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration));
 
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
 
             var benchmarkScenarioNew = new BenchmarkScenario<IMapDescription<int>>("NewConfigurations", GetGeneratorRunnerFactory);
             var benchmarkScenarioOld = new BenchmarkScenario<IMapDescription<int>>("OldConfigurations", GetGeneratorRunnerFactory);

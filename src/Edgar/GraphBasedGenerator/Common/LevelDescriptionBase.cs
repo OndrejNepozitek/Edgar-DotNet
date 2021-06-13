@@ -11,6 +11,11 @@ namespace Edgar.GraphBasedGenerator.Common
     public abstract class LevelDescriptionBase<TRoom, TRoomDescription> : ILevelDescription<TRoom>
         where TRoomDescription : IRoomDescription
     {
+        /// <summary>
+        /// Name of the level description. Optional. Used mainly for debugging purposes.
+        /// </summary>
+        public string Name { get; set; }
+
         private Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
 
         [JsonProperty]

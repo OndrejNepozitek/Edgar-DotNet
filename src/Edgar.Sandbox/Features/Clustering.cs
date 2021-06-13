@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.AdditionalData;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.AdditionalData;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
@@ -64,7 +65,7 @@ namespace Sandbox.Features
 
             var layoutDrawer = new SVGLayoutDrawer<int>();
 
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
@@ -99,9 +100,9 @@ namespace Sandbox.Features
             var scenarioResult = benchmarkRunner.Run(benchmarkScenario, inputs, 100);
 
             // Clusters
-            for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
+            for (var i = 0; i < scenarioResult.Results.Count; i++)
             {
-                var benchmarkResult = scenarioResult.BenchmarkResults[i];
+                var benchmarkResult = scenarioResult.Results[i];
                 var layoutsClustering = new LayoutsClustering<int>();
                 var input = inputs[i];
                 var mapDescription = input.MapDescription;
@@ -140,9 +141,9 @@ namespace Sandbox.Features
                 new GridPolygonUtils());
 
             // Entropy
-            for (var i = 0; i < scenarioResult.BenchmarkResults.Count; i++)
+            for (var i = 0; i < scenarioResult.Results.Count; i++)
             {
-                var benchmarkResult = scenarioResult.BenchmarkResults[i];
+                var benchmarkResult = scenarioResult.Results[i];
                 var input = inputs[i];
                 var mapDescription = input.MapDescription;
 

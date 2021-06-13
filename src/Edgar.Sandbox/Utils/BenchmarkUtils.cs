@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Newtonsoft.Json;
 
 namespace Sandbox.Utils
@@ -61,9 +61,9 @@ namespace Sandbox.Utils
 
             var allEqual = true;
 
-            foreach (var benchmarkResult in scenarioResult.BenchmarkResults)
+            foreach (var benchmarkResult in scenarioResult.Results)
             {
-                var referenceBenchmarkResult = referenceResult.BenchmarkResults.SingleOrDefault(x => x.InputName == benchmarkResult.InputName);
+                var referenceBenchmarkResult = referenceResult.Results.SingleOrDefault(x => x.InputName == benchmarkResult.InputName);
 
                 if (referenceBenchmarkResult == null)
                 {

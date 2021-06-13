@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
@@ -40,7 +41,7 @@ namespace SandboxEvolutionRunner.Utils
 
         protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
         {
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>(name, GetGeneratorRunnerFactory);
 
             var resultSaver = new BenchmarkResultSaver();

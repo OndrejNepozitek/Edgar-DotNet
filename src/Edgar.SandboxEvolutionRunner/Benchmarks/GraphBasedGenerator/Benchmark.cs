@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Common;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Utils;
 using Edgar.Legacy.Utils.Logging;
@@ -117,11 +117,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
         protected void PlotResults<TNode>(string name, List<BenchmarkScenarioResult> results)
         {
             var plt = new Plot(600, 400);
-            var xValues = DataGen.Consecutive(results[0].BenchmarkResults.Count);
+            var xValues = DataGen.Consecutive(results[0].Results.Count);
 
             foreach (var result in results)
             {
-                var times = result.BenchmarkResults.Select(x => x.Runs.Average(y => y.Time / 1000d)).ToList().OrderBy(x => x);
+                var times = result.Results.Select(x => x.Runs.Average(y => y.Time / 1000d)).ToList().OrderBy(x => x);
                 plt.PlotScatter(xValues, times.ToArray(), label: result.Name);
             }
 
@@ -133,7 +133,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 
         protected virtual BenchmarkScenarioResult RunBenchmark<TNode>(BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> generator, int iterations)
         {
-            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations, new Legacy.Benchmarks.BenchmarkOptions()
+            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations, new Edgar.Benchmarks.BenchmarkOptions()
             {
                 WithConsolePreview = Options.WithConsolePreview,
                 MultiThreaded = Options.MaxThreads > 1,

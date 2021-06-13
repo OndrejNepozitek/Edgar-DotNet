@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edgar.Benchmarks;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.Graphs;
-using Edgar.Legacy.Benchmarks;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;

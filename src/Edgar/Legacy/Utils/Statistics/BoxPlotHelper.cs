@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 
 namespace Edgar.Legacy.Utils.Statistics
 {
@@ -9,13 +9,13 @@ namespace Edgar.Legacy.Utils.Statistics
     {
         public static List<double> GetTimeDifferences(BenchmarkScenarioResult result, BenchmarkScenarioResult referenceResult, double successRateThreshold = 0d)
         {
-            var times = result.BenchmarkResults.Select(x => x.Runs.Average(y => y.Time)).ToList();
-            var timesReference = referenceResult.BenchmarkResults.Select(x => x.Runs.Average(y => y.Time)).ToList();
+            var times = result.Results.Select(x => x.Runs.Average(y => y.Time)).ToList();
+            var timesReference = referenceResult.Results.Select(x => x.Runs.Average(y => y.Time)).ToList();
 
-            for (var i = 0; i < result.BenchmarkResults.Count; i++)
+            for (var i = 0; i < result.Results.Count; i++)
             {
-                var benchmarkResult = result.BenchmarkResults[i];
-                var benchmarkResultReference = referenceResult.BenchmarkResults[i];
+                var benchmarkResult = result.Results[i];
+                var benchmarkResultReference = referenceResult.Results[i];
 
                 var successRate = benchmarkResult.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResult.Runs.Count;
                 var successRateReference = benchmarkResultReference.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResultReference.Runs.Count;

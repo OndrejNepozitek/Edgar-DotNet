@@ -47,7 +47,7 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D
         /// <summary>
         /// Total time to generate a level.
         /// </summary>
-        public double TimeTotal => generator.TimeTotal;
+        public long TimeTotal => generator.TimeTotal;
 
         /// <summary>
         /// Number of iterations needed to generate the last level.

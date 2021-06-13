@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 
 namespace Edgar.Legacy.Utils.MetaOptimization.Stats
 {

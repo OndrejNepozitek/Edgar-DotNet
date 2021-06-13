@@ -1,5 +1,5 @@
 ﻿using System;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks.Legacy;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
 

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.AdditionalData;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Geometry;
 using Edgar.GUI.Legacy;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.AdditionalData;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
@@ -75,7 +76,7 @@ namespace Sandbox.Features
 
             var layoutDrawer = new SVGLayoutDrawer<int>();
 
-            var benchmarkRunner = new BenchmarkRunner<IMapDescription<int>>();
+            var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
@@ -121,7 +122,7 @@ namespace Sandbox.Features
             Directory.CreateDirectory(directory);
 
             var dataVisualization = new ChainStatsVisualization<GeneratorData>();
-            foreach (var inputResult in scenarioResult.BenchmarkResults)
+            foreach (var inputResult in scenarioResult.Results)
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {

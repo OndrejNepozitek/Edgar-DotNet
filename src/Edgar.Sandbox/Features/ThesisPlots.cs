@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 using Edgar.Legacy.Utils.Statistics;
 
 namespace Sandbox.Features
@@ -57,8 +57,8 @@ namespace Sandbox.Features
 
             for (int i = 0; i < differences.Count; i++)
             {
-                var oldResult = resultOld.BenchmarkResults[i];
-                var newResult = resultNew.BenchmarkResults[i];
+                var oldResult = resultOld.Results[i];
+                var newResult = resultNew.Results[i];
                 var name = oldResult.InputName;
                 name = name.Replace("_", " ");
 

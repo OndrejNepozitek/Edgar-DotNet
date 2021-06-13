@@ -11,11 +11,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     public class LevelDescriptionGrid2D<TRoom> : LevelDescriptionBase<TRoom, RoomDescriptionGrid2D>
     {
         /// <summary>
-        /// Name of the level description. Optional. Used mainly for debugging purposes.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Minimum distance of individual rooms. Must be a non-negative number. Defaults to 0.
         /// </summary>
         /// <remarks>

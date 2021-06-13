@@ -11,6 +11,8 @@ namespace Edgar.GraphBasedGenerator.Common
     /// <typeparam name="TNode"></typeparam>
     public class LevelDescriptionMapping<TNode> : ILevelDescription<RoomNode<TNode>>
     {
+        public string Name => levelDescription.Name;
+
         private readonly ILevelDescription<TNode> levelDescription;
         private readonly TwoWayDictionary<TNode, RoomNode<TNode>> nodeToIntMapping = new TwoWayDictionary<TNode, RoomNode<TNode>>();
         private readonly IRoomDescription[] roomDescriptions;

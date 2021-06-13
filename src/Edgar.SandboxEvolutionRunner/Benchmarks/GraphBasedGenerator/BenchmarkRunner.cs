@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 
 namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 {
     public class BenchmarkRunner
     {
         public static BenchmarkScenarioResult Run<TNode>(
-            BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> levelGeneratorFactory, int repeats, Legacy.Benchmarks.BenchmarkOptions options = null, bool includeUnsuccessful = false)
+            BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> levelGeneratorFactory, int repeats, Edgar.Benchmarks.BenchmarkOptions options = null, bool includeUnsuccessful = false)
         {
             if (options == null)
             {
-                options = new Legacy.Benchmarks.BenchmarkOptions();
+                options = new Edgar.Benchmarks.BenchmarkOptions();
             }
 
             var benchmarkJobs = new List<BenchmarkJob>();

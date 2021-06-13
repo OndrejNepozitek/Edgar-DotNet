@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
 using Edgar.GraphBasedGenerator;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.GraphBasedGenerator.Grid2D.Drawing;
 using Edgar.GraphBasedGenerator.RecursiveGrid2D;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Utils.MapDrawing;
 using Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolution;

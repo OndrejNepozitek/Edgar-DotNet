@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Interfaces;
 
 namespace Edgar.Legacy.Utils.PerformanceAnalysis
 {

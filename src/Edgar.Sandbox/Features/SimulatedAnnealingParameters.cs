@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks.Legacy;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions;
 using Edgar.Legacy.Utils;

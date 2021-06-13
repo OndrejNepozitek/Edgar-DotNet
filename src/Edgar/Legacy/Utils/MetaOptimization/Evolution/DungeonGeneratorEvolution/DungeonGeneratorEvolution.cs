@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
-using Edgar.Legacy.Benchmarks.GeneratorRunners;
-using Edgar.Legacy.Benchmarks.Interfaces;
-using Edgar.Legacy.Benchmarks.ResultSaving;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.GeneratorRunners;
+using Edgar.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Legacy;
+using Edgar.Benchmarks.Legacy.ResultSaving;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator;
 using Edgar.Legacy.Core.MapDescriptions.Interfaces;
@@ -21,7 +22,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
     {
         private readonly IMapDescription<TNode> mapDescription;
 
-        private readonly BenchmarkRunner<IMapDescription<TNode>> benchmarkRunner = new BenchmarkRunner<IMapDescription<TNode>>();
+        private readonly BenchmarkRunnerLegacy<IMapDescription<TNode>> benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<TNode>>();
         private readonly SVGLayoutDrawer<TNode> layoutDrawer = new SVGLayoutDrawer<TNode>();
         private readonly EntropyCalculator entropyCalculator = new EntropyCalculator();
         private readonly LayoutsClustering<MapLayout<TNode>> layoutsClustering = new LayoutsClustering<MapLayout<TNode>>();
@@ -99,7 +100,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
                 WithFileOutput = false,
             });
             var generatorRuns = scenarioResult
-                .BenchmarkResults
+                .Results
                 .First()
                 .Runs
                 .Cast<IGeneratorRun<AdditionalRunData<TNode>>>()

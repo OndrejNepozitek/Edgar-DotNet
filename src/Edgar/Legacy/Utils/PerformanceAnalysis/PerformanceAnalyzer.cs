@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Newtonsoft.Json.Linq;
 

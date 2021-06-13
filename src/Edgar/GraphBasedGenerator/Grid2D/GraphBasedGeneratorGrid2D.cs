@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Edgar.Benchmarks;
+using Edgar.Benchmarks.Interfaces;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
@@ -25,7 +27,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     /// <summary>
     /// Implements a graph-based layout generator that works on the 2D (integer) grid.
     /// </summary>
-    public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable, IObservableGenerator<LayoutGrid2D<TRoom>>
+    public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable, IObservableGenerator<LayoutGrid2D<TRoom>>, IBenchmarkableLayoutGenerator<LayoutGrid2D<TRoom>>
     {
         private readonly LevelDescriptionMapping<TRoom> levelDescriptionMapped;
         private readonly LevelDescriptionGrid2D<TRoom> levelDescription;
@@ -49,9 +51,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         }
 
         /// <summary>
-        /// Total time to generate a level.
+        /// Number of milliseconds needed to generate the last level.
         /// </summary>
-        public double TimeTotal => generator.TimeTotal;
+        public long TimeTotal => generator.TimeTotal;
 
         /// <summary>
         /// Number of iterations needed to generate the last level.
@@ -267,11 +269,18 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <returns></returns>
         public LayoutGrid2D<TRoom> GenerateLayout()
         {
+            return GenerateLayout(out _);
+        }
+
+        public LayoutGrid2D<TRoom> GenerateLayout(out IGeneratorRun runData)
+        {
             var earlyStoppingHandler = GetEarlyStoppingHandler(DateTime.Now);
 
             OnPerturbedInternal += earlyStoppingHandler;
             var layout = generator.GenerateLayout();
             OnPerturbedInternal -= earlyStoppingHandler;
+
+            runData = new GeneratorRun(layout != null, TimeTotal, IterationsCount);
 
             return layout;
         }

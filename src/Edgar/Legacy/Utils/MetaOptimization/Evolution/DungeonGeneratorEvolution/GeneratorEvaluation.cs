@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.Benchmarks.Interfaces;
+using Edgar.Benchmarks.Interfaces;
 using Edgar.Legacy.Core.LayoutEvolvers.Interfaces;
 using Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing;
 using Edgar.Legacy.Utils.MetaOptimization.Stats;

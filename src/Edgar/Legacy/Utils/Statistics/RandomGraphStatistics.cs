@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edgar.Legacy.Benchmarks;
+using Edgar.Benchmarks;
 
 namespace Edgar.Legacy.Utils.Statistics
 {
@@ -17,7 +17,7 @@ namespace Edgar.Legacy.Utils.Statistics
             Console.WriteLine("Average time");
             PrintStats(results, result =>
             {
-                var successfulResults = result.BenchmarkResults.Where(x => !onlySuccessful || IsSuccessful(x)).ToList();
+                var successfulResults = result.Results.Where(x => !onlySuccessful || IsSuccessful(x)).ToList();
 
                 if (successfulResults.Count < MinimumNumberOfResults)
                 {
@@ -34,13 +34,13 @@ namespace Edgar.Legacy.Utils.Statistics
             Console.WriteLine("Success rate");
             PrintStats(results, result =>
             {
-                if (result.BenchmarkResults.Count < MinimumNumberOfResults)
+                if (result.Results.Count < MinimumNumberOfResults)
                 {
                     return double.NaN;
                 }
 
-                var successfulCount = result.BenchmarkResults.Count(IsSuccessful);
-                return successfulCount / (double) result.BenchmarkResults.Count;
+                var successfulCount = result.Results.Count(IsSuccessful);
+                return successfulCount / (double) result.Results.Count;
             }, showLatexCode);
         }
 

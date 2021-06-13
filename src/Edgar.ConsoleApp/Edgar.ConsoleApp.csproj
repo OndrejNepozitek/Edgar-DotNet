@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Programs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edgar.Extras\Edgar.Extras.csproj" />
+    <ProjectReference Include="..\Edgar\Edgar.csproj" />
+  </ItemGroup>
+
+</Project>
