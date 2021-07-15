@@ -57,7 +57,7 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
         }
 
         // TODO: remove
-        public double TimeTotal => generator.TimeTotal;
+        public long TimeTotal => generator.TimeTotal;
 
         public int IterationsCount => generator.IterationsCount;
 
