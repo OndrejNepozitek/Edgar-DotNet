@@ -138,7 +138,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
 			var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
-			var reverseDoor = new List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>>();
+			var reverseDoor = new List<ConfigurationSpaceSourceGrid2D>();
 
 			doorLines = DoorUtils.MergeDoorLines(doorLines);
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
@@ -165,7 +165,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
+				var correspondingLines = lines[(int)oppositeDirection]
+                    .Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket)
+                    .Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
 
 				foreach (var cDoorLine in correspondingLines)
 				{
@@ -179,7 +181,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 					if (offsets == null)
 					{
 						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
+                        var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
+                            resultLine,
+                            new DoorLineGrid2D(
+                                cDoorLine.Line.Rotate(-rotation),
+                                cDoorLine.Length,
+                                cDoorLine.DoorSocket,
+                                cDoorLine.Type),
+                            doorLine
+                        );
+
+						reverseDoor.Add(configurationSpaceSource);
 						configurationSpaceLines.Add(resultLine);
 					}
 					else
@@ -188,7 +200,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 						{
 							var offsetVector = new Vector2Int(0, offset);
 							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-							reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
+                            var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
+                                resultLine,
+                                new DoorLineGrid2D(
+                                    cDoorLine.Line.Rotate(-rotation),
+                                    cDoorLine.Length,
+                                    cDoorLine.DoorSocket,
+                                    cDoorLine.Type),
+                                doorLine
+                            );
+
+                            reverseDoor.Add(configurationSpaceSource);
 							configurationSpaceLines.Add(resultLine);
 						}
 					}

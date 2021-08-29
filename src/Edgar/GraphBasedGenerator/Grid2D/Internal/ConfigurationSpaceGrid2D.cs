@@ -15,19 +15,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public ImmutableArray<OrthogonalLineGrid2D> Lines { get; }
 
-        private readonly List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> reverseDoors;
+        public IReadOnlyList<ConfigurationSpaceSourceGrid2D> ReverseDoors { get; }
 
-        public IReadOnlyList<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> ReverseDoors { get; }
-
-        public ConfigurationSpaceGrid2D(List<OrthogonalLineGrid2D> lines, List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>> reverseDoors = null)
+        public ConfigurationSpaceGrid2D(List<OrthogonalLineGrid2D> lines, List<ConfigurationSpaceSourceGrid2D> reverseDoors = null)
         {
             this.lines = lines;
-            this.reverseDoors = reverseDoors;
             Lines = ImmutableArray.CreateRange(lines);
 
             if (reverseDoors != null)
             {
-                this.reverseDoors = reverseDoors;
                 ReverseDoors = reverseDoors.AsReadOnly();
             }
         }

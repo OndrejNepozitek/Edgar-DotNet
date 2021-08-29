@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.GraphBasedGenerator.Grid2D;
 using Edgar.Legacy.Core.Configurations.Interfaces;
 using Edgar.Legacy.Core.ConfigurationSpaces;
@@ -100,8 +101,8 @@ namespace Edgar.Legacy.Core.LayoutConverters
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 								var randomChoice = doorChoices.GetRandom(Random);
 
-								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, randomChoice));
-								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, randomChoice));
+								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, randomChoice, null, DoorType.Undirected));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, randomChoice, null, DoorType.Undirected));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}

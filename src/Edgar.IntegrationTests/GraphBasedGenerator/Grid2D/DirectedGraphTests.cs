@@ -39,6 +39,16 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 var door = room.Doors.Single();
 
                 Assert.That(door.DoorLine, Is.EqualTo(new OrthogonalLineGrid2D(new Vector2Int(5, 3), new Vector2Int(5, 2))));
+                Assert.That(door.Type, Is.EqualTo(DoorType.Exit));
+            }
+
+            {
+                // Room 1
+
+                var room = layout.Rooms.Single(x => x.Room == 1);
+                var door = room.Doors.Single();
+
+                Assert.That(door.Type, Is.EqualTo(DoorType.Entrance));
             }
         }
 
@@ -69,6 +79,16 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 var door = room.Doors.Single();
 
                 Assert.That(door.DoorLine, Is.EqualTo(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3))));
+                Assert.That(door.Type, Is.EqualTo(DoorType.Entrance));
+            }
+
+            {
+                // Room 1
+
+                var room = layout.Rooms.Single(x => x.Room == 1);
+                var door = room.Doors.Single();
+
+                Assert.That(door.Type, Is.EqualTo(DoorType.Exit));
             }
         }
 
@@ -108,6 +128,7 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 var door = room.Doors.Single();
 
                 Assert.That(door.DoorLine, Is.EqualTo(new OrthogonalLineGrid2D(new Vector2Int(5, 3), new Vector2Int(5, 2))));
+                Assert.That(door.Type, Is.EqualTo(DoorType.Exit));
             }
         }
 

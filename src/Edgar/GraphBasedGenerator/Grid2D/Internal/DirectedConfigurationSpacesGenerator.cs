@@ -109,7 +109,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
 			var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
-			var reverseDoor = new List<Tuple<OrthogonalLineGrid2D, DoorLineGrid2D>>();
+			var reverseDoor = new List<ConfigurationSpaceSourceGrid2D>();
 
 			doorLines = DoorUtils.MergeDoorLines(doorLines);
 			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
@@ -158,23 +158,43 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
 					if (from.X < to.X) continue;
 
-					if (offsets == null)
-					{
-						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-						reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
-						configurationSpaceLines.Add(resultLine);
-					}
-					else
-					{
-						foreach (var offset in offsets)
-						{
-							var offsetVector = new Vector2Int(0, offset);
-							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
-							reverseDoor.Add(Tuple.Create(resultLine, new DoorLineGrid2D(cDoorLine.Line.Rotate(-rotation), cDoorLine.Length, cDoorLine.DoorSocket, cDoorLine.Type)));
-							configurationSpaceLines.Add(resultLine);
-						}
-					}
-				}
+                    if (offsets == null)
+                    {
+                        var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
+                        var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
+                            resultLine,
+                            new DoorLineGrid2D(
+                                cDoorLine.Line.Rotate(-rotation),
+                                cDoorLine.Length,
+                                cDoorLine.DoorSocket,
+                                cDoorLine.Type),
+                            doorLine
+                        );
+
+                        reverseDoor.Add(configurationSpaceSource);
+                        configurationSpaceLines.Add(resultLine);
+                    }
+                    else
+                    {
+                        foreach (var offset in offsets)
+                        {
+                            var offsetVector = new Vector2Int(0, offset);
+                            var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
+                            var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
+                                resultLine,
+                                new DoorLineGrid2D(
+                                    cDoorLine.Line.Rotate(-rotation),
+                                    cDoorLine.Length,
+                                    cDoorLine.DoorSocket,
+                                    cDoorLine.Type),
+                                doorLine
+                            );
+
+                            reverseDoor.Add(configurationSpaceSource);
+                            configurationSpaceLines.Add(resultLine);
+                        }
+                    }
+                }
 			}
 
 			// Remove all positions when the two polygons overlap

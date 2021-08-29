@@ -4,6 +4,7 @@ using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Common.Configurations;
+using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.LayoutConverters.Interfaces;
 using Edgar.Legacy.Core.Layouts.Interfaces;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
@@ -100,11 +101,36 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 							{
 								var doorChoices = GetDoors(configuration, neighbourConfiguration);
 
-								var door = doorChoices.GetRandom(Random);
-                                var doorFlipped = door.SwitchOrientation();
+								var doorPair = doorChoices.GetRandom(Random);
+                                var doorLine = doorPair.Door;
+                                var door = new OrthogonalLineGrid2D(
+                                    doorLine.Line.From,
+                                    doorLine.Line.From + doorLine.Length * doorLine.Line.GetDirectionVector(),
+                                    doorLine.Line.GetDirection()
+                                );
 
-                                roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(vertex, neighbour, door + -1 * roomsDict[vertex].Position));
-								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(neighbour, vertex, doorFlipped + -1 * roomsDict[neighbour].Position));
+                                var otherDoorLine = doorPair.OtherDoor;
+                                var otherDoor = new OrthogonalLineGrid2D(
+                                    otherDoorLine.Line.From,
+                                    otherDoorLine.Line.From + otherDoorLine.Length * otherDoorLine.Line.GetDirectionVector(),
+                                    otherDoorLine.Line.GetDirection()
+                                );
+
+
+								roomsDict[vertex].Doors.Add(new LayoutDoorGrid2D<TNode>(
+                                    vertex,
+                                    neighbour,
+                                    door + -1 * roomsDict[vertex].Position,
+                                    doorLine.DoorSocket,
+                                    doorLine.Type
+                                ));
+								roomsDict[neighbour].Doors.Add(new LayoutDoorGrid2D<TNode>(
+                                    neighbour,
+                                    vertex,
+                                    otherDoor + -1 * roomsDict[neighbour].Position,
+                                    otherDoorLine.DoorSocket,
+                                    otherDoorLine.Type
+                                ));
 								generatedDoors.Add(Tuple.Create(vertex, neighbour));
 							}
 						}
@@ -115,21 +141,25 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 			return new LayoutGrid2D<TNode>(rooms);
 		}
 
-		private List<OrthogonalLineGrid2D> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
+		private List<DoorLinePair> GetDoors(TConfiguration configuration1, TConfiguration configuration2)
 		{
-			return GetDoors(configuration2.Position - configuration1.Position,
-				ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1))
-				.Select(x => x + configuration1.Position).ToList();
+			return GetDoors(
+                    configuration2.Position - configuration1.Position,
+				    ConfigurationSpaces.GetConfigurationSpace(configuration2, configuration1)
+                )
+				.Select(x => x + configuration1.Position)
+                .ToList();
 		}
 
-		private List<OrthogonalLineGrid2D> GetDoors(Vector2Int position, ConfigurationSpaceGrid2D configurationSpace)
+		private List<DoorLinePair> GetDoors(Vector2Int position, ConfigurationSpaceGrid2D configurationSpace)
 		{
-			var doors = new List<OrthogonalLineGrid2D>();
+			var doors = new List<DoorLinePair>();
 
-			foreach (var doorInfo in configurationSpace.ReverseDoors)
+			foreach (var reverseDoorsInfo in configurationSpace.ReverseDoors)
 			{
-				var line = doorInfo.Item1;
-				var doorLine = doorInfo.Item2;
+				var line = reverseDoorsInfo.ConfigurationSpaceLine;
+				var doorLine = reverseDoorsInfo.DoorLine;
+                var otherDoorLine = reverseDoorsInfo.OtherDoorLine;
 
 				var index = line.Contains(position);
 
@@ -145,9 +175,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				for (var i = 0; i < numberOfPositions; i++)
 				{
 					var doorStart = doorLine.Line.GetNthPoint(Math.Max(0, index - offset) + i);
-					var doorEnd = doorStart + doorLine.Length * doorLine.Line.GetDirectionVector();
+                    var singleDoorLine = new OrthogonalLineGrid2D(doorStart, doorStart, doorLine.Line.GetDirection());
+                    var singleDoor = new DoorLineGrid2D(singleDoorLine, doorLine.Length, doorLine.DoorSocket, doorLine.Type);
 
-					doors.Add(new OrthogonalLineGrid2D(doorStart, doorEnd, doorLine.Line.GetDirection()));
+                    var otherSingleDoorLine = singleDoorLine.SwitchOrientation();
+                    var otherSingleDoor = new DoorLineGrid2D(otherSingleDoorLine, otherDoorLine.Length,
+                        otherDoorLine.DoorSocket, otherDoorLine.Type);
+
+					doors.Add(new DoorLinePair(singleDoor, otherSingleDoor));
 				}
 			}
 
@@ -160,6 +195,33 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 		public void InjectRandomGenerator(Random random)
 		{
 			Random = random;
+		}
+
+        private class DoorLinePair
+        {
+            public DoorLineGrid2D Door { get; }
+
+			public DoorLineGrid2D OtherDoor { get; }
+
+            public DoorLinePair(DoorLineGrid2D door, DoorLineGrid2D otherDoor)
+            {
+                Door = door;
+                OtherDoor = otherDoor;
+            }
+
+            public static DoorLinePair operator +(DoorLinePair pair, Vector2Int offset)
+            {
+                return new DoorLinePair(MoveDoorLine(pair.Door, offset), MoveDoorLine(pair.OtherDoor, offset));
+            }
+
+			private static DoorLineGrid2D MoveDoorLine(DoorLineGrid2D doorLine, Vector2Int offset)
+            {
+                return new DoorLineGrid2D(
+                    doorLine.Line + offset,
+                    doorLine.Length,
+                    doorLine.DoorSocket,
+                    doorLine.Type);
+            }
 		}
 	}
 }
