@@ -111,5 +111,17 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
 
             Assert.Throws<DuplicateDoorPositionException>(() => manualMode.GetDoors(roomShape));
         }
+
+        [Test]
+        public void FromDoorLines_UndirectedZeroLength_Throws()
+        {
+            var roomShape = PolygonGrid2D.GetSquare(10);
+            var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
+            {
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 1, null, DoorType.Undirected),
+            });
+
+            Assert.Throws<UndirectedDoorLine>(() => manualMode.GetDoors(roomShape));
+        }
     }
 }

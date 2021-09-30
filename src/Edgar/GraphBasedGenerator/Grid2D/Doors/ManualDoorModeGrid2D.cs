@@ -93,7 +93,23 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 if (side.Contains(originalLine.From) == -1 || side.Contains(originalLine.To) == -1)
                     continue;
 
-                var isGoodDirection = originalLine.From + originalLine.Length * side.GetDirectionVector() == originalLine.To;
+                bool isGoodDirection;
+
+                // Door lines with both lengths equal to 0 are an exception where the direction is always good
+                if (originalDoorLine.Length == 0 && originalLine.Length == 0)
+                {
+                    isGoodDirection = true;
+                }
+                // Otherwise the direction must be explicitly provided because of originalLine.Length == 0 cases
+                else
+                {
+                    if (originalLine.GetDirection() == OrthogonalLineGrid2D.Direction.Undefined)
+                    {
+                        throw new UndirectedDoorLine($"The door line {originalDoorLine.Line.ToStringShort()} ({originalDoorLine.Length}) is not directed. Please provide a direction to doors with line length 0.");
+                    }
+
+                    isGoodDirection = originalLine.GetDirection() == side.GetDirection();
+                }
 
                 var fullLineFrom = originalLine.From;
                 var fullLineTo = originalLine.To;
