@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
+using Edgar.GraphBasedGenerator.Common.Doors;
 using Edgar.Legacy.Core.ConfigurationSpaces;
 using Edgar.Legacy.Core.Doors;
 using Edgar.Legacy.Core.Doors.Interfaces;
@@ -21,13 +22,25 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         private readonly IDoorHandler doorHandler;
         private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
         private readonly IPolygonUtils<PolygonGrid2D> polygonUtils;
+        private readonly IDoorSocketResolver doorSocketResolver;
 
-        public ConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, IDoorHandler doorHandler, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, IPolygonUtils<PolygonGrid2D> polygonUtils)
+        public ConfigurationSpacesGenerator(
+            IPolygonOverlap<PolygonGrid2D> polygonOverlap,
+            IDoorHandler doorHandler,
+            ILineIntersection<OrthogonalLineGrid2D> lineIntersection,
+            IPolygonUtils<PolygonGrid2D> polygonUtils,
+            IDoorSocketResolver doorSocketResolver = null)
         {
             this.polygonOverlap = polygonOverlap;
             this.doorHandler = doorHandler;
             this.lineIntersection = lineIntersection;
             this.polygonUtils = polygonUtils;
+            this.doorSocketResolver = doorSocketResolver ?? new DefaultDoorSocketResolver();
+        }
+
+        private bool AreSocketsCompatible(IDoorSocket socket1, IDoorSocket socket2)
+        {
+            return doorSocketResolver.AreCompatible(socket1, socket2);
         }
         
         // TODO: remove when possible
@@ -166,7 +179,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
 				var correspondingLines = lines[(int)oppositeDirection]
-                    .Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket)
+                    .Where(x => x.Length == doorLine.Length && AreSocketsCompatible(x.DoorSocket, doorLine.DoorSocket))
                     .Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
 
 				foreach (var cDoorLine in correspondingLines)

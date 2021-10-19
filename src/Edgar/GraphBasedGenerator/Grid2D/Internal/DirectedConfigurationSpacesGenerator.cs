@@ -15,11 +15,18 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
     {
         private readonly IPolygonOverlap<PolygonGrid2D> polygonOverlap;
         private readonly ILineIntersection<OrthogonalLineGrid2D> lineIntersection;
+        private readonly IDoorSocketResolver doorSocketResolver;
 
-        public DirectedConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, ILineIntersection<OrthogonalLineGrid2D> lineIntersection)
+        public DirectedConfigurationSpacesGenerator(IPolygonOverlap<PolygonGrid2D> polygonOverlap, ILineIntersection<OrthogonalLineGrid2D> lineIntersection, IDoorSocketResolver doorSocketResolver = null)
         {
             this.polygonOverlap = polygonOverlap;
             this.lineIntersection = lineIntersection;
+            this.doorSocketResolver = doorSocketResolver ?? new DefaultDoorSocketResolver(); ;
+        }
+
+        private bool AreSocketsCompatible(IDoorSocket socket1, IDoorSocket socket2)
+        {
+            return doorSocketResolver.AreCompatible(socket1, socket2);
         }
 
         public ConfigurationSpace GetConfigurationSpaceOverCorridors(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<RoomTemplateInstanceGrid2D> corridors, ConfigurationSpaceDirection direction)
@@ -147,7 +154,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
 				var rotation = line.ComputeRotation();
 				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && x.DoorSocket == doorLine.DoorSocket).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
+				var correspondingLines = lines[(int)oppositeDirection].Where(x => x.Length == doorLine.Length && AreSocketsCompatible(x.DoorSocket, doorLine.DoorSocket)).Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
 
 				foreach (var cDoorLine in correspondingLines)
 				{
