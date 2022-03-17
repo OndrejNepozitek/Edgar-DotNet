@@ -179,10 +179,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                     var singleDoor = new DoorLineGrid2D(singleDoorLine, doorLine.Length, doorLine.DoorSocket, doorLine.Type);
 
                     var otherSingleDoorLine = singleDoorLine.SwitchOrientation();
+
+                    if (doorLine.Length != 0)
+                    {
+                        var moveOffset = doorLine.Length * singleDoorLine.GetDirectionVector();
+                        otherSingleDoorLine = new OrthogonalLineGrid2D(singleDoorLine.To + moveOffset, singleDoorLine.From + moveOffset, otherSingleDoorLine.GetDirection());
+					}
+
                     var otherSingleDoor = new DoorLineGrid2D(otherSingleDoorLine, otherDoorLine.Length,
                         otherDoorLine.DoorSocket, otherDoorLine.Type);
 
-					doors.Add(new DoorLinePair(singleDoor, otherSingleDoor));
+                    doors.Add(new DoorLinePair(singleDoor, otherSingleDoor));
 				}
 			}
 

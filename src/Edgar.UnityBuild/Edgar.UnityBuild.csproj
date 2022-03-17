@@ -26,7 +26,7 @@
     </PropertyGroup>
 
     <ILRepack 
-      OutputType="$(OutputType)" 
+      OutputType="Dll" 
       MainAssembly="$(WorkingDirectory)\Edgar\Edgar.dll" 
       OutputAssembly="$(WorkingDirectory)\EdgarSingleFile\EdgarSingleFile.dll" 
       InputAssemblies="$(WorkingDirectory)\Edgar\*.dll" 
