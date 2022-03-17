@@ -18,6 +18,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainOrder
             Priority = priority;
             FirstChainNumber = firstChainNumber;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var counter = 0;

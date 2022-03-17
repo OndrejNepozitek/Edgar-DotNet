@@ -10,12 +10,16 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.SimpleDungeonGeneratorEv
     {
         private int generationNumber = 0;
 
-        public SimpleDungeonGeneratorEvolution(IMapDescription<TNode> mapDescription, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<TNode>, Individual<TNode>>> analyzers, EvolutionOptions options, string resultsDirectory) : base(mapDescription, analyzers, options, resultsDirectory)
+        public SimpleDungeonGeneratorEvolution(IMapDescription<TNode> mapDescription,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<TNode>, Individual<TNode>>> analyzers,
+            EvolutionOptions options, string resultsDirectory) : base(mapDescription, analyzers, options,
+            resultsDirectory)
         {
             OnEvolutionStarted += () => generationNumber = 0;
         }
 
-        protected override List<IMutation<DungeonGeneratorConfiguration<TNode>>> GetMutations(Individual<TNode> individual)
+        protected override List<IMutation<DungeonGeneratorConfiguration<TNode>>> GetMutations(
+            Individual<TNode> individual)
         {
             if (generationNumber >= Analyzers.Count)
             {

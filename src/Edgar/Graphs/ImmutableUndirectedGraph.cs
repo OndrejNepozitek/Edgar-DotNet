@@ -18,10 +18,10 @@ namespace Edgar.Graphs
         IEnumerable<IEdge<T>> IGraph<T>.Edges => Edges;
 
         /// <inheritdoc />
-		public ImmutableArray<T> Vertices { get; }
+        public ImmutableArray<T> Vertices { get; }
 
         /// <inheritdoc />
-		public ImmutableArray<IEdge<T>> Edges { get; }
+        public ImmutableArray<IEdge<T>> Edges { get; }
 
         /// <inheritdoc />
         public int VerticesCount => Vertices.Length;
@@ -74,15 +74,15 @@ namespace Edgar.Graphs
         }
 
         /// <inheritdoc />
-		public IEnumerable<T> GetNeighbors(T vertex)
+        public IEnumerable<T> GetNeighbors(T vertex)
         {
-            return ((IImmutableGraph<T>)this).GetNeighbors(vertex);
+            return ((IImmutableGraph<T>) this).GetNeighbors(vertex);
         }
 
         /// <inheritdoc />
         public bool HasEdge(T from, T to)
         {
-            foreach (var neighbor in ((IImmutableGraph<T>)this).GetNeighbors(from))
+            foreach (var neighbor in ((IImmutableGraph<T>) this).GetNeighbors(from))
             {
                 if (neighbor.Equals(to))
                     return true;

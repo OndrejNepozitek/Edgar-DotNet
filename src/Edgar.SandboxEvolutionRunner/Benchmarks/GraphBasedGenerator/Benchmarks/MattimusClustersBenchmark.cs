@@ -118,8 +118,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 namedGraphs.Add(namedGraph);
             }
 
-            var levelDescriptionLoader = new MattimusLevelDescriptionLoader<Room>(RoomTemplatesSet.Medium, new Vector2Int(1, 1), getCorridorNameFunc: x => null);
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
+            var levelDescriptionLoader = new MattimusLevelDescriptionLoader<Room>(RoomTemplatesSet.Medium,
+                new Vector2Int(1, 1), getCorridorNameFunc: x => null);
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() {0});
 
             return new BenchmarkScenario<Room>($"Individual zones", levelDescriptions);
         }
@@ -152,8 +153,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 namedGraphs.Add(namedGraph);
             }
 
-            var levelDescriptionLoader = new MattimusLevelDescriptionLoader<Room>(RoomTemplatesSet.Medium, new Vector2Int(1, 1), getCorridorNameFunc: x => null);
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
+            var levelDescriptionLoader = new MattimusLevelDescriptionLoader<Room>(RoomTemplatesSet.Medium,
+                new Vector2Int(1, 1), getCorridorNameFunc: x => null);
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() {0});
 
             for (var i = 0; i < levelDescriptions.Count; i++)
             {
@@ -185,11 +187,14 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             return new BenchmarkScenario<Room>($"Full graph", levelDescriptions);
         }
 
-        protected RecursiveGeneratorFactory<TNode> GetRecursiveGenerator<TNode>(BenchmarkOptions options, bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
+        protected RecursiveGeneratorFactory<TNode> GetRecursiveGenerator<TNode>(BenchmarkOptions options,
+            bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
         {
             return new RecursiveGeneratorFactory<TNode>(new GraphBasedGeneratorConfiguration<TNode>()
             {
-                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?),
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value)
+                    : default(TimeSpan?),
                 OptimizeCorridorConstraints = optimizeCorridorConstraints,
             }, withInit, name);
         }
@@ -217,7 +222,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         }
 
         public class Room
-        { 
+        {
             public string Id { get; }
 
             public int Zone { get; }
@@ -245,7 +250,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 if (obj.GetType() != this.GetType()) return false;
-                return Equals((Room)obj);
+                return Equals((Room) obj);
             }
 
             public override int GetHashCode()

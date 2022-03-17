@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstraint
 {
-    public class FixedConfigurationConstraint<TRoomShape, TPosition, TRoom> : IFixedConfigurationConstraint<TRoomShape, TPosition, RoomNode<TRoom>>
+    public class
+        FixedConfigurationConstraint<TRoomShape, TPosition, TRoom> : IFixedConfigurationConstraint<TRoomShape, TPosition
+            , RoomNode<TRoom>>
     {
         private readonly bool hasFixedShapes = false;
         private readonly bool hasFixedPositions = false;
@@ -11,7 +13,8 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints.FixedConfigurationConstra
         private readonly ValueWrapper<TRoomShape>?[] fixedShapes;
         private readonly ValueWrapper<TPosition>?[] fixedPositions;
 
-        public FixedConfigurationConstraint(int totalRooms, Dictionary<RoomNode<TRoom>, TRoomShape> fixedShapes, Dictionary<RoomNode<TRoom>, TPosition> fixedPositions)
+        public FixedConfigurationConstraint(int totalRooms, Dictionary<RoomNode<TRoom>, TRoomShape> fixedShapes,
+            Dictionary<RoomNode<TRoom>, TPosition> fixedPositions)
         {
             if (fixedShapes != null && fixedShapes.Count != 0)
             {

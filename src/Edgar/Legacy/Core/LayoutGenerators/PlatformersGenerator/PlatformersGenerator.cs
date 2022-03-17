@@ -48,7 +48,8 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<Configuration<CorridorsData>>> OnPerturbedInternal;
 
-        public PlatformersGenerator(IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration = null)
+        public PlatformersGenerator(IMapDescription<TNode> mapDescription,
+            DungeonGeneratorConfiguration<TNode> configuration = null)
         {
             this.mapDescription = new MapDescriptionMapping<TNode>(mapDescription);
             this.configuration = configuration ?? new DungeonGeneratorConfiguration<TNode>();
@@ -68,7 +69,10 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
 
             if (chainsGeneric == null)
             {
-                var chainDecomposition = new ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescriptionOriginal, new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ?? new ChainDecompositionConfiguration()));
+                var chainDecomposition = new ChainDecompositions.TwoStageChainDecomposition<TNode>(
+                    mapDescriptionOriginal,
+                    new BreadthFirstChainDecomposition<TNode>(configuration.ChainDecompositionConfiguration ??
+                                                              new ChainDecompositionConfiguration()));
                 chainsGeneric = chainDecomposition.GetChains(mapDescriptionOriginal.GetGraph());
             }
 
@@ -76,14 +80,17 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
                 .Select(x => new Chain<int>(x.Nodes.Select(y => mapping[y]).ToList(), x.Number))
                 .ToList();
 
-            var generatorPlanner = new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration.SimulatedAnnealingMaxBranching);
+            var generatorPlanner =
+                new GeneratorPlanner<Layout<Configuration<CorridorsData>>, int>(configuration
+                    .SimulatedAnnealingMaxBranching);
 
             var configurationSpacesGenerator = new ConfigurationSpacesGenerator(
                 new PolygonOverlap(),
                 DoorHandler.DefaultHandler,
                 new OrthogonalLineIntersection(),
                 new GridPolygonUtils());
-            var configurationSpaces = configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsData>>(mapDescription);
+            var configurationSpaces =
+                configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsData>>(mapDescription);
 
             //var corridorConfigurationSpaces = mapDescription.IsWithCorridors ? configurationSpacesGenerator.Generate<TNode, Configuration<CorridorsData>>(mapDescription, mapDescription.CorridorsOffsets) : configurationSpaces;
             var corridorConfigurationSpaces = configurationSpaces;
@@ -101,22 +108,27 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
                         averageSize,
                         configurationSpaces
                     ),
-                    new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<PolygonGrid2D>>(
-                            mapDescription,
-                            averageSize,
-                            corridorConfigurationSpaces
-                        ),
+                    new CorridorConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                        CorridorsData, IntAlias<PolygonGrid2D>>(
+                        mapDescription,
+                        averageSize,
+                        corridorConfigurationSpaces
+                    ),
                 };
 
             if (!configuration.RoomsCanTouch)
             {
-                stageOneConstraints.Add(new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, CorridorsData, IntAlias<PolygonGrid2D>>(
-                    mapDescription,
-                    polygonOverlap
-                ));
+                stageOneConstraints.Add(
+                    new TouchingConstraints<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                        CorridorsData, IntAlias<PolygonGrid2D>>(
+                        mapDescription,
+                        polygonOverlap
+                    ));
             }
 
-            var stageOneConstraintsEvaluator = new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<PolygonGrid2D>, CorridorsData>(stageOneConstraints);
+            var stageOneConstraintsEvaluator =
+                new ConstraintsEvaluator<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    IntAlias<PolygonGrid2D>, CorridorsData>(stageOneConstraints);
 
             //if (mapDescription.IsWithCorridors)
             //{
@@ -144,7 +156,11 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
                 configuration.RepeatModeOverride
             );
 
-            var layoutOperations = new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>, IntAlias<PolygonGrid2D>, CorridorsData>(corridorConfigurationSpaces, configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator, stageOneConstraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied);
+            var layoutOperations =
+                new LayoutOperations<Layout<Configuration<CorridorsData>>, int, Configuration<CorridorsData>,
+                    IntAlias<PolygonGrid2D>, CorridorsData>(corridorConfigurationSpaces,
+                    configurationSpaces.GetAverageSize(), mapDescription, stageOneConstraintsEvaluator,
+                    stageOneConstraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied);
 
             var initialLayout = new Layout<Configuration<CorridorsData>>(mapDescription.GetGraph());
             var layoutConverter =
@@ -153,27 +169,29 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
                     configurationSpaces.GetIntAliasMapping());
 
             var layoutEvolver =
-                    new PlatformersEvolver<Layout<Configuration<CorridorsData>>, int,
-                        Configuration<CorridorsData>>(layoutOperations);
+                new PlatformersEvolver<Layout<Configuration<CorridorsData>>, int,
+                    Configuration<CorridorsData>>(layoutOperations);
 
-            generator = new ChainBasedGenerator<Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator = new ChainBasedGenerator<Layout<Configuration<CorridorsData>>, MapLayout<TNode>, int>(
+                initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             generator.OnRandomInjected += (random) =>
             {
-                ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
+                ((IRandomInjectable) configurationSpaces).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutOperations).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutEvolver).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutConverter).InjectRandomGenerator(random);
             };
 
             generator.OnCancellationTokenInjected += (token) =>
             {
-                ((ICancellable)generatorPlanner).SetCancellationToken(token);
-                ((ICancellable)layoutEvolver).SetCancellationToken(token);
+                ((ICancellable) generatorPlanner).SetCancellationToken(token);
+                ((ICancellable) layoutEvolver).SetCancellationToken(token);
             };
-            
+
             // layoutEvolver.OnEvent += (sender, args) => OnSimulatedAnnealingEvent?.Invoke(sender, args);
-            layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
+            layoutEvolver.OnPerturbed +=
+                (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
             layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbedInternal?.Invoke(layout);
             layoutEvolver.OnValid += (sender, layout) => OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
             generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
@@ -204,12 +222,14 @@ namespace Edgar.Legacy.Core.LayoutGenerators.PlatformersGenerator
             {
                 iterations++;
 
-                if (configuration.EarlyStopIfIterationsExceeded.HasValue && iterations > configuration.EarlyStopIfIterationsExceeded)
+                if (configuration.EarlyStopIfIterationsExceeded.HasValue &&
+                    iterations > configuration.EarlyStopIfIterationsExceeded)
                 {
                     cts.Cancel();
                 }
 
-                if (configuration.EarlyStopIfTimeExceeded.HasValue && iterations % 100 == 0 && DateTime.Now - generatorStarted > configuration.EarlyStopIfTimeExceeded)
+                if (configuration.EarlyStopIfTimeExceeded.HasValue && iterations % 100 == 0 &&
+                    DateTime.Now - generatorStarted > configuration.EarlyStopIfTimeExceeded)
                 {
                     cts.Cancel();
                 }

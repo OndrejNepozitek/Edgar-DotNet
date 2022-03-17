@@ -91,9 +91,10 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
         public DungeonGeneratorConfiguration()
         {
             ChainDecompositionConfiguration = new ChainDecompositionConfiguration();
-            SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
+            SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                LayoutEvolvers.SimulatedAnnealing.SimulatedAnnealingConfiguration.GetDefaultConfiguration());
         }
-        
+
         public DungeonGeneratorConfiguration<TNode> SmartClone()
         {
             return new DungeonGeneratorConfiguration<TNode>()
@@ -125,7 +126,8 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
                     result +=
                         $"\n  Chain {i} [{string.Join(",", chain.Nodes)}] c {configuration.Cycles} tpc {configuration.TrialsPerCycle} miws {configuration.MaxIterationsWithoutSuccess} ms2f {configuration.MaxStageTwoFailures}";
                 }
-            } else if (SimulatedAnnealingConfiguration != null)
+            }
+            else if (SimulatedAnnealingConfiguration != null)
             {
                 var list = SimulatedAnnealingConfiguration.GetAllConfigurations();
 
@@ -145,12 +147,12 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
 
         protected bool Equals(DungeonGeneratorConfiguration<TNode> other)
         {
-            return RoomsCanTouch == other.RoomsCanTouch 
+            return RoomsCanTouch == other.RoomsCanTouch
                    && EarlyStopIfIterationsExceeded == other.EarlyStopIfIterationsExceeded
                    && Nullable.Equals(EarlyStopIfTimeExceeded, other.EarlyStopIfTimeExceeded)
-                   && RepeatModeOverride == other.RepeatModeOverride 
+                   && RepeatModeOverride == other.RepeatModeOverride
                    && ThrowIfRepeatModeNotSatisfied == other.ThrowIfRepeatModeNotSatisfied
-                   && Equals(ChainDecompositionConfiguration, other.ChainDecompositionConfiguration) 
+                   && Equals(ChainDecompositionConfiguration, other.ChainDecompositionConfiguration)
                    && Chains.SequenceEqual(other.Chains)
                    && Equals(SimulatedAnnealingConfiguration, other.SimulatedAnnealingConfiguration)
                    && SimulatedAnnealingMaxBranching == other.SimulatedAnnealingMaxBranching;
@@ -173,19 +175,25 @@ namespace Edgar.Legacy.Core.LayoutGenerators.DungeonGenerator
                 hashCode = (hashCode * 397) ^ EarlyStopIfTimeExceeded.GetHashCode();
                 hashCode = (hashCode * 397) ^ RepeatModeOverride.GetHashCode();
                 hashCode = (hashCode * 397) ^ ThrowIfRepeatModeNotSatisfied.GetHashCode();
-                hashCode = (hashCode * 397) ^ (ChainDecompositionConfiguration != null ? ChainDecompositionConfiguration.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (SimulatedAnnealingConfiguration != null ? SimulatedAnnealingConfiguration.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ChainDecompositionConfiguration != null
+                    ? ChainDecompositionConfiguration.GetHashCode()
+                    : 0);
+                hashCode = (hashCode * 397) ^ (SimulatedAnnealingConfiguration != null
+                    ? SimulatedAnnealingConfiguration.GetHashCode()
+                    : 0);
                 hashCode = (hashCode * 397) ^ SimulatedAnnealingMaxBranching;
                 return hashCode;
             }
         }
 
-        public static bool operator ==(DungeonGeneratorConfiguration<TNode> left, DungeonGeneratorConfiguration<TNode> right)
+        public static bool operator ==(DungeonGeneratorConfiguration<TNode> left,
+            DungeonGeneratorConfiguration<TNode> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DungeonGeneratorConfiguration<TNode> left, DungeonGeneratorConfiguration<TNode> right)
+        public static bool operator !=(DungeonGeneratorConfiguration<TNode> left,
+            DungeonGeneratorConfiguration<TNode> right)
         {
             return !Equals(left, right);
         }

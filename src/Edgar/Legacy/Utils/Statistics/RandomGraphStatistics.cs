@@ -11,7 +11,8 @@ namespace Edgar.Legacy.Utils.Statistics
         private const double successThreshold = 0.95;
         private const int MinimumNumberOfResults = 10;
 
-        public static void PrintAverageTime(List<List<BenchmarkScenarioResult>> results, bool onlySuccessful, bool showLatexCode, bool onlySuccessfulRuns)
+        public static void PrintAverageTime(List<List<BenchmarkScenarioResult>> results, bool onlySuccessful,
+            bool showLatexCode, bool onlySuccessfulRuns)
         {
             Console.WriteLine();
             Console.WriteLine("Average time");
@@ -24,7 +25,9 @@ namespace Edgar.Legacy.Utils.Statistics
                     return double.NaN;
                 }
 
-                return successfulResults.Where(x => x.Runs.Any(run => !onlySuccessfulRuns || run.IsSuccessful)).Average(x => x.Runs.Where(run => !onlySuccessfulRuns || run.IsSuccessful).Average(run => run.Time) / 1000);
+                return successfulResults.Where(x => x.Runs.Any(run => !onlySuccessfulRuns || run.IsSuccessful))
+                    .Average(x =>
+                        x.Runs.Where(run => !onlySuccessfulRuns || run.IsSuccessful).Average(run => run.Time) / 1000);
             }, showLatexCode);
         }
 
@@ -51,7 +54,8 @@ namespace Edgar.Legacy.Utils.Statistics
             return ratio > successThreshold;
         }
 
-        public static void PrintStats(List<List<BenchmarkScenarioResult>> results, Func<BenchmarkScenarioResult, double> metric, bool showLatexCode)
+        public static void PrintStats(List<List<BenchmarkScenarioResult>> results,
+            Func<BenchmarkScenarioResult, double> metric, bool showLatexCode)
         {
             {
                 var edgesResults = results[0];

@@ -13,7 +13,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
     /// </summary>
     public abstract class DungeonDrawerBase
     {
-        protected readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
+        protected readonly CachedPolygonPartitioning polygonPartitioning =
+            new CachedPolygonPartitioning(new GridPolygonPartitioning());
+
         protected readonly Random random = new Random(0);
 
         protected Bitmap bitmap;
@@ -86,22 +88,24 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             }
         }
 
-        private int Mod(int x, int m) {
-            return (x%m + m)%m;
+        private int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
         }
 
-        protected void DrawHatching(PolygonGrid2D outline, List<Tuple<RectangleGrid2D, List<Vector2>>> usedPoints, Range<float> hatchingClusterOffset, Range<float> hatchingLength)
+        protected void DrawHatching(PolygonGrid2D outline, List<Tuple<RectangleGrid2D, List<Vector2>>> usedPoints,
+            Range<float> hatchingClusterOffset, Range<float> hatchingLength)
         {
             var pen = new Pen(Color.FromArgb(50, 50, 50), 0.05f);
-            
+
             var usedPointsAdd = new List<Vector2>();
 
             foreach (var line in outline.GetLines())
             {
                 var points = line.GetPoints().Select(x => (Vector2) x).ToList();
-				points.AddRange(points.Select(x => x + 0.5f * (Vector2) line.GetDirectionVector()).ToList());
+                points.AddRange(points.Select(x => x + 0.5f * (Vector2) line.GetDirectionVector()).ToList());
 
-               
+
                 for (var i = 0; i < points.Count; i++)
                 {
                     var point = points[i];
@@ -109,7 +113,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     if (true)
                     {
                         var direction = (Vector2) line.GetDirectionVector();
-                        var directionPerpendicular = new Vector2(Math.Max(-1, Math.Min(1, direction.Y)), Math.Max(-1, Math.Min(1, direction.X)));
+                        var directionPerpendicular = new Vector2(Math.Max(-1, Math.Min(1, direction.Y)),
+                            Math.Max(-1, Math.Min(1, direction.X)));
 
                         if (direction.Y != 0)
                         {
@@ -131,7 +136,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                             var c = point + offsetLength * directionPerpendicular;
 
                             // TODO: very ugly
-                            if (usedPoints.Any(x => Vector2.MaxDistance(x.Item1.Center, c) < Math.Max(x.Item1.Width, x.Item1.Height) + 5 && x.Item2.Any(y => Vector2.EuclideanDistance(y, c) < 0.5f)))
+                            if (usedPoints.Any(x =>
+                                    Vector2.MaxDistance(x.Item1.Center, c) <
+                                    Math.Max(x.Item1.Width, x.Item1.Height) + 5 &&
+                                    x.Item2.Any(y => Vector2.EuclideanDistance(y, c) < 0.5f)))
                             {
                                 continue;
                             }
@@ -139,11 +147,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                             {
                                 usedPointsAdd.Add(c);
                             }
-                            
+
                             for (int k = -1; k <= 1; k++)
                             {
                                 var length = GetRandomFromRange(hatchingLength);
-                                var center = point + offsetLength * directionPerpendicular + k * clusterOffset * directionPerpendicular;
+                                var center = point + offsetLength * directionPerpendicular +
+                                             k * clusterOffset * directionPerpendicular;
                                 center = RotatePoint(center, point + offsetLength * directionPerpendicular, rotation);
 
                                 var from = center + length / 2 * direction;
@@ -194,18 +203,19 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return new Vector2
             (
                 (float)
-                    (cosTheta * (pointToRotate.X - centerPoint.X) -
-                        sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X),
-                    (float)
-                    (sinTheta * (pointToRotate.X - centerPoint.X) +
-                     cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y)
+                (cosTheta * (pointToRotate.X - centerPoint.X) -
+                    sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X),
+                (float)
+                (sinTheta * (pointToRotate.X - centerPoint.X) +
+                 cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y)
             );
         }
 
-		protected void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
-		{
-			var partitions = polygonPartitioning.GetPartitions(polygon);
-			var orderedRectangles = partitions.OrderBy(x => Vector2Int.ManhattanDistance(x.Center, polygon.BoundingRectangle.Center)).ToList();
+        protected void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
+        {
+            var partitions = polygonPartitioning.GetPartitions(polygon);
+            var orderedRectangles = partitions
+                .OrderBy(x => Vector2Int.ManhattanDistance(x.Center, polygon.BoundingRectangle.Center)).ToList();
             var targetRectangle = orderedRectangles.First();
 
             if (orderedRectangles.Any(x => x.Width > 6 && x.Height > 3))
@@ -213,26 +223,27 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 targetRectangle = orderedRectangles.First(x => x.Width > 6 && x.Height > 3);
             }
 
-			using (var font = new Font("Baskerville Old Face", penWidth, FontStyle.Bold, GraphicsUnit.Pixel))
-			{
-				var rect = new RectangleF(
+            using (var font = new Font("Baskerville Old Face", penWidth, FontStyle.Bold, GraphicsUnit.Pixel))
+            {
+                var rect = new RectangleF(
                     targetRectangle.A.X,
                     targetRectangle.A.Y,
                     targetRectangle.Width,
                     targetRectangle.Height + 0.2f * penWidth
-				);
+                );
 
-				var sf = new StringFormat
-				{
-					LineAlignment = StringAlignment.Center,
-					Alignment = StringAlignment.Center
-				};
+                var sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center,
+                    Alignment = StringAlignment.Center
+                };
 
-				graphics.DrawString(text, font, Brushes.Black, rect, sf);
-			}
-		}
-        
-        protected List<OutlineSegment> GetOutline(PolygonGrid2D polygon, List<OrthogonalLineGrid2D> doorLines, Vector2Int offset = default)
+                graphics.DrawString(text, font, Brushes.Black, rect, sf);
+            }
+        }
+
+        protected List<OutlineSegment> GetOutline(PolygonGrid2D polygon, List<OrthogonalLineGrid2D> doorLines,
+            Vector2Int offset = default)
         {
             var old = GetOutlineOld(polygon, doorLines);
             var outline = new List<OutlineSegment>();
@@ -241,7 +252,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 var current = old[i];
                 var previous = old[Mod(i - 1, old.Count)];
-                outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
+                outline.Add(new OutlineSegment(
+                    new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
             }
 
             return outline;
@@ -260,7 +272,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     continue;
 
                 var doorDistances = doorLines.Select(x =>
-                    new Tuple<OrthogonalLineGrid2D, int>(x, Math.Min(line.Contains(x.From), line.Contains(x.To)))).ToList();
+                        new Tuple<OrthogonalLineGrid2D, int>(x, Math.Min(line.Contains(x.From), line.Contains(x.To))))
+                    .ToList();
                 doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
                 foreach (var pair in doorDistances)
@@ -291,7 +304,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     outline.Add(point);
                     return;
                 }
-					
+
                 var lastPoint = outline[outline.Count - 1];
 
                 if (!lastPoint.Item2 && point.Item2 && lastPoint.Item1 == point.Item1)

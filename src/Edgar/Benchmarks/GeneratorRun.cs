@@ -41,7 +41,8 @@ namespace Edgar.Benchmarks
     /// </summary>
     public class GeneratorRun : GeneratorRun<object>
     {
-        public GeneratorRun(bool isSuccessful, long time, int iterations, object additionalData = null) : base(isSuccessful, time, iterations, additionalData)
+        public GeneratorRun(bool isSuccessful, long time, int iterations, object additionalData = null) : base(
+            isSuccessful, time, iterations, additionalData)
         {
         }
     }

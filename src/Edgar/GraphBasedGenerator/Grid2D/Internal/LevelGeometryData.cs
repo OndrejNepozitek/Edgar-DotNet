@@ -16,7 +16,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public Dictionary<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> RoomTemplateInstances { get; set; }
 
-        public TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> RoomTemplateInstanceToPolygonMapping { get; set; }
+        public TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>>
+            RoomTemplateInstanceToPolygonMapping { get; set; }
 
         public static LevelGeometryData<TRoom> CreateBackwardsCompatible(
             ILevelDescription<TRoom> levelDescription,
@@ -26,7 +27,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             var roomDescriptions = levelDescription
                 .GetGraph()
                 .Vertices
-                .ToDictionary(x => x, x => (RoomDescriptionGrid2D)levelDescription.GetRoomDescription(x));
+                .ToDictionary(x => x, x => (RoomDescriptionGrid2D) levelDescription.GetRoomDescription(x));
             var roomTemplates = roomDescriptions
                 .Values
                 .SelectMany(x => x.RoomTemplates)
@@ -54,6 +55,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                         intAliasMapping.Add(shape1, newAlias);
                         shape1.RoomShapeAlias = newAlias;
                     }
+
                     if (!intAliasMapping.ContainsKey(shape2))
                     {
                         var newAlias = new IntAlias<PolygonGrid2D>(intAliasMapping.Count, shape2.RoomShape);

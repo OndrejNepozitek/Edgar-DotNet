@@ -15,7 +15,8 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class FixedMaxIterationsEvolutionScenario : EvolutionScenario
     {
-        protected override List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> GetAnalyzers(Input input)
+        protected override List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>
+            GetAnalyzers(Input input)
         {
             return new List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>()
             {
@@ -23,11 +24,14 @@ namespace SandboxEvolutionRunner.Scenarios
             };
         }
 
-        private class TestAnalyzer<TConfiguration, TGeneratorStats> : MaxIterationsAnalyzer<TConfiguration, TGeneratorStats>, IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+        private class TestAnalyzer<TConfiguration, TGeneratorStats> :
+            MaxIterationsAnalyzer<TConfiguration, TGeneratorStats>,
+            IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
             where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
             where TGeneratorStats : IChainsStats
         {
-            public new List<IMutation<TConfiguration>> ProposeMutations(Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
+            public new List<IMutation<TConfiguration>> ProposeMutations(
+                Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
             {
                 var mutations = new List<IMutation<TConfiguration>>();
                 var configuration = individual.Configuration;

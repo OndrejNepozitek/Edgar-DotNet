@@ -10,35 +10,36 @@ namespace Edgar.Benchmarks
     /// <summary>
     /// Benchmark job.
     /// </summary>
-	public class BenchmarkJob : IPreviewableBenchmarkJob<BenchmarkJobResult>
-	{
-		private readonly IGeneratorRunner generatorRunner;
-		private readonly string inputName;
+    public class BenchmarkJob : IPreviewableBenchmarkJob<BenchmarkJobResult>
+    {
+        private readonly IGeneratorRunner generatorRunner;
+        private readonly string inputName;
         private readonly int repeats;
         private readonly double earlyStopThreshold;
         private readonly bool includeUnsuccessful;
 
         public event Action<BenchmarkJobResult> OnPreview;
 
-		public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10, double earlyStopThreshold = 0, bool includeUnsuccessful = false)
-		{
-			this.generatorRunner = generatorRunner;
-			this.inputName = inputName;
+        public BenchmarkJob(IGeneratorRunner generatorRunner, string inputName, int repeats = 10,
+            double earlyStopThreshold = 0, bool includeUnsuccessful = false)
+        {
+            this.generatorRunner = generatorRunner;
+            this.inputName = inputName;
             this.repeats = repeats;
             this.earlyStopThreshold = earlyStopThreshold;
             this.includeUnsuccessful = includeUnsuccessful;
         }
 
-		public BenchmarkJobResult Execute()
-		{
+        public BenchmarkJobResult Execute()
+        {
             // TODO:
-			// generatorRunner.EnableBenchmark(true);
+            // generatorRunner.EnableBenchmark(true);
 
             var runs = new List<IGeneratorRun>();
 
             for (int i = 0; i < repeats; i++)
-			{
-				var generatorRun = generatorRunner.Run();
+            {
+                var generatorRun = generatorRunner.Run();
                 runs.Add(generatorRun);
 
                 OnPreview?.Invoke(GetResult($"Run {i + 1}/{repeats}", runs));
@@ -49,8 +50,8 @@ namespace Edgar.Benchmarks
                 }
             }
 
-			return GetResult(inputName, runs);
-		}
+            return GetResult(inputName, runs);
+        }
 
         private bool ShouldEarlyStop(List<IGeneratorRun> runs)
         {
@@ -75,7 +76,7 @@ namespace Edgar.Benchmarks
             return new BenchmarkJobResult()
             {
                 InputName = name,
-                SuccessRate = runs.Count(x => x.IsSuccessful) / (double)runs.Count * 100,
+                SuccessRate = runs.Count(x => x.IsSuccessful) / (double) runs.Count * 100,
                 TimeAverage = successfulRuns.Select(x => x.Time).Average(),
                 TimeMedian = successfulRuns.Select(x => x.Time).GetMedian(),
                 TimeMax = successfulRuns.Select(x => x.Time).Max(),

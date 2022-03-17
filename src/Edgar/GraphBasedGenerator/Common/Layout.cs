@@ -5,8 +5,9 @@ using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Common
 {
-    public class Layout<TRoom, TConfiguration> : ILayout<RoomNode<TRoom>, TConfiguration>, ISmartCloneable<Layout<TRoom, TConfiguration>>
-        where TConfiguration: ISmartCloneable<TConfiguration>
+    public class Layout<TRoom, TConfiguration> : ILayout<RoomNode<TRoom>, TConfiguration>,
+        ISmartCloneable<Layout<TRoom, TConfiguration>>
+        where TConfiguration : ISmartCloneable<TConfiguration>
     {
         private readonly TConfiguration[] vertices;
         private readonly bool[] hasValue;

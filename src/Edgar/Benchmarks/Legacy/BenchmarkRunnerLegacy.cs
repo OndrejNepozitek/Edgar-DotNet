@@ -30,7 +30,8 @@ namespace Edgar.Benchmarks.Legacy
 
             var benchmarkJobs = new List<BenchmarkJob>();
             var benchmark = options.MultiThreaded
-                ? new BenchmarkUtils.MultiThreadedBenchmark<BenchmarkJob, BenchmarkJobResult>(options.MaxDegreeOfParallelism)
+                ? new BenchmarkUtils.MultiThreadedBenchmark<BenchmarkJob, BenchmarkJobResult>(
+                    options.MaxDegreeOfParallelism)
                 : new BenchmarkUtils.Benchmark<BenchmarkJob, BenchmarkJobResult>();
             benchmark.SetConsoleOutput(options.WithConsoleOutput, options.WithConsolePreview);
 

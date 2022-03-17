@@ -54,7 +54,7 @@ namespace Edgar.Legacy.Utils.GraphAnalysis.Analyzers.NodesInsideCycle
         {
             var startingNodes = new List<TNode>();
             var nonCycleNodes = new List<TNode>();
-            
+
             foreach (var node in nodes)
             {
                 var neighbors = graph.GetNeighbors(node).ToList();

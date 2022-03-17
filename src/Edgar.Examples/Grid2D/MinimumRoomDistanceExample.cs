@@ -76,7 +76,7 @@ namespace Edgar.Examples.Grid2D
             //md Levels with the minimum room distance set to 4:
 
             yield return GetLevelDescription(4);
-            
+
             //md We can see that performance difference between values 2 and 4 is quite significant.
 
             //md It is not possible to set the minimum room distance to more than 4 because we would have to use longer corridors in order to be able to generate such levels.

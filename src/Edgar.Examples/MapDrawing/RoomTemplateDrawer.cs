@@ -11,11 +11,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
     {
         public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, DungeonDrawerOptions options)
         {
-            var configurations = GetRoomTemplateConfigurations(roomTemplates, options.Width.Value / (double) options.Height.Value, options);
+            var configurations = GetRoomTemplateConfigurations(roomTemplates,
+                options.Width.Value / (double) options.Height.Value, options);
 
             var outlines = configurations.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
             var boundingBox = DrawingUtils.GetBoundingBox(outlines);
-            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale,
+                options.PaddingAbsolute, options.PaddingPercentage);
             var offset = DrawingUtils.GetOffset(boundingBox, width, height, scale);
 
             bitmap = new Bitmap(width, height);
@@ -26,7 +28,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 graphics.FillRectangle(brush, 0, 0, width, height);
             }
-            
+
             var outlinePen = new Pen(Color.FromArgb(50, 50, 50), 0.2f)
             {
                 EndCap = LineCap.Round,
@@ -55,15 +57,18 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 var hatchingUsedPoints = new List<Tuple<RectangleGrid2D, List<Vector2>>>();
                 foreach (var roomTemplate in configurations)
                 {
-                    DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                    DrawHatching(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, hatchingUsedPoints,
+                        options.HatchingClusterOffset, options.HatchingLength);
                 }
             }
 
             foreach (var roomTemplate in configurations)
             {
-                DrawRoomBackground(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, options.RoomBackgroundColor);
+                DrawRoomBackground(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                    options.RoomBackgroundColor);
                 DrawGrid(roomTemplate.RoomTemplate.Outline + roomTemplate.Position);
-                DrawOutline(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, GetOutline(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position), outlinePen);
+                DrawOutline(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                    GetOutline(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position), outlinePen);
                 DrawDoors(roomTemplate);
             }
 
@@ -71,7 +76,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 if (options.ShowRoomNames)
                 {
-                    DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name, options.FontSize);
+                    DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                        roomTemplate.RoomTemplate.Name, options.FontSize);
                 }
             }
 
@@ -107,9 +113,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
                 //    graphics.DrawLine(pen, from.X, from.Y, to.X, to.Y);
                 //}
-            } else if (roomTemplate.Doors is ManualDoorModeGrid2D manualDoorMode)
+            }
+            else if (roomTemplate.Doors is ManualDoorModeGrid2D manualDoorMode)
             {
-                doors = manualDoorMode.GetDoors(roomTemplate.Outline).Select(x => new DoorLineGrid2D(x.Line + position, x.Length, x.DoorSocket, x.Type)).ToList();
+                doors = manualDoorMode.GetDoors(roomTemplate.Outline)
+                    .Select(x => new DoorLineGrid2D(x.Line + position, x.Length, x.DoorSocket, x.Type)).ToList();
             }
 
             if (doors != null)
@@ -120,7 +128,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     {
                         var from = (Vector2) fromOriginal;
                         var to = @from + doorLine.Length * doorLine.Line.GetDirectionVector();
-                        
+
                         var directionVector = (Vector2) doorLine.Line.GetDirectionVector();
                         var perpendicular = new Vector2(directionVector.Y, directionVector.X);
 
@@ -141,7 +149,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             }
         }
 
-        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates, double expectedRatio, DungeonDrawerOptions options)
+        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates,
+            double expectedRatio, DungeonDrawerOptions options)
         {
             var orderedRoomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Width).ToList();
             var minDistance = 3;
@@ -171,7 +180,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
                 var outlines = configurations.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
                 var boundingBox = DrawingUtils.GetBoundingBox(outlines);
-                var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+                var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height,
+                    options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
 
                 if (scale > bestScale)
                 {
@@ -248,7 +258,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return minWidth;
         }
 
-        private List<RoomTemplateConfiguration> GetConfigurations(List<List<RoomTemplateGrid2D>> rows, int rowWidth, int minDistance)
+        private List<RoomTemplateConfiguration> GetConfigurations(List<List<RoomTemplateGrid2D>> rows, int rowWidth,
+            int minDistance)
         {
             var configurations = new List<RoomTemplateConfiguration>();
             var maxHeight = int.MinValue;
@@ -301,7 +312,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         private List<List<RoomTemplateGrid2D>> GetRows(List<RoomTemplateGrid2D> roomTemplates, int rowWidth)
         {
             roomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Height).ToList();
-            
+
 
             var maxHeight = int.MinValue;
             var rows = new List<List<RoomTemplateGrid2D>>();
@@ -311,7 +322,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 var outline = roomTemplate.Outline;
 
-                if (rows.Last().Sum(x => x.Outline.BoundingRectangle.Width) + outline.BoundingRectangle.Width > rowWidth)
+                if (rows.Last().Sum(x => x.Outline.BoundingRectangle.Width) + outline.BoundingRectangle.Width >
+                    rowWidth)
                 {
                     maxHeight = int.MinValue;
                     rows.Add(new List<RoomTemplateGrid2D>());
@@ -319,7 +331,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
                 // configurations.Add(new RoomTemplateConfiguration(roomTemplate, -1 * roomTemplate.Outline.BoundingRectangle.A + offset));
                 rows.Last().Add(roomTemplate);
-                
+
                 maxHeight = Math.Max(maxHeight, outline.BoundingRectangle.Height);
             }
 

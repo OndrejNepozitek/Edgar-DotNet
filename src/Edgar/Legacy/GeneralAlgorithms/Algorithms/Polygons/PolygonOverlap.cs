@@ -5,30 +5,32 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons
 {
     /// <summary>
-	/// Computes polygon overlap by caching polygon partitions of polygons.
-	/// See <see cref="FastPolygonOverlap"/> for a faster implementation.
-	/// </summary>
-	public class PolygonOverlap : PolygonOverlapBase<PolygonGrid2D>
-	{
-		private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();
-		private readonly Dictionary<PolygonGrid2D, List<RectangleGrid2D>> partitions = new Dictionary<PolygonGrid2D, List<RectangleGrid2D>>();
+    /// Computes polygon overlap by caching polygon partitions of polygons.
+    /// See <see cref="FastPolygonOverlap"/> for a faster implementation.
+    /// </summary>
+    public class PolygonOverlap : PolygonOverlapBase<PolygonGrid2D>
+    {
+        private readonly GridPolygonPartitioning polygonPartitioning = new GridPolygonPartitioning();
 
-		protected override List<RectangleGrid2D> GetDecomposition(PolygonGrid2D polygon)
-		{
-			if (partitions.TryGetValue(polygon, out var p))
-			{
-				return p;
-			}
+        private readonly Dictionary<PolygonGrid2D, List<RectangleGrid2D>> partitions =
+            new Dictionary<PolygonGrid2D, List<RectangleGrid2D>>();
 
-			var ps = polygonPartitioning.GetPartitions(polygon);
-			partitions.Add(polygon, ps);
+        protected override List<RectangleGrid2D> GetDecomposition(PolygonGrid2D polygon)
+        {
+            if (partitions.TryGetValue(polygon, out var p))
+            {
+                return p;
+            }
 
-			return ps;
-		}
+            var ps = polygonPartitioning.GetPartitions(polygon);
+            partitions.Add(polygon, ps);
 
-		protected override RectangleGrid2D GetBoundingRectangle(PolygonGrid2D polygon)
-		{
-			return polygon.BoundingRectangle;
-		}
-	}
+            return ps;
+        }
+
+        protected override RectangleGrid2D GetBoundingRectangle(PolygonGrid2D polygon)
+        {
+            return polygon.BoundingRectangle;
+        }
+    }
 }

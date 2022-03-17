@@ -5,6 +5,7 @@
     /// </summary>
     public enum TreeComponentStrategy
     {
-        BreadthFirst, DepthFirst
+        BreadthFirst,
+        DepthFirst
     }
 }

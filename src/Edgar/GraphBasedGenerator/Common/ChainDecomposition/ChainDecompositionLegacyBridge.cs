@@ -18,7 +18,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
         private readonly TreeComponentStrategy treeComponentStrategy;
         private readonly Logger logger;
 
-        public ChainDecompositionLegacyBridge(ChainDecompositionConfiguration configuration, Logger logger = null, List<TNode> fixedRooms = null)
+        public ChainDecompositionLegacyBridge(ChainDecompositionConfiguration configuration, Logger logger = null,
+            List<TNode> fixedRooms = null)
         {
             this.fixedRooms = fixedRooms;
             this.maxTreeSize = configuration.MaxTreeSize;
@@ -85,7 +86,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             var startingNode = graph
                 .Vertices.First(x => graph
                     .GetNeighbors(x).Count() == 1);
-            var treeComponent = GetTreeComponent(decomposition, new List<TNode>() { startingNode });
+            var treeComponent = GetTreeComponent(decomposition, new List<TNode>() {startingNode});
 
             return decomposition.AddChain(treeComponent.Nodes, false);
         }
@@ -194,11 +195,10 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             return decomposition.AddChain(biggestTree.Nodes, false);
         }
 
-        private ChainCandidate<TNode> GetTreeComponent(PartialDecomposition<TNode> decomposition, List<TNode> startingNodes)
+        private ChainCandidate<TNode> GetTreeComponent(PartialDecomposition<TNode> decomposition,
+            List<TNode> startingNodes)
         {
             return ChainDecompositionUtils.GetBfsTreeCandidate(decomposition, startingNodes, maxTreeSize);
         }
-
-
     }
 }

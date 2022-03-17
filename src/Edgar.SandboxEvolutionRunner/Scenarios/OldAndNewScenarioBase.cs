@@ -5,9 +5,11 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public abstract class OldAndNewScenarioBase : Scenario
     {
-        protected abstract DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription);
+        protected abstract DungeonGeneratorConfiguration<int> GetNewConfiguration(
+            NamedMapDescription namedMapDescription);
 
-        protected abstract DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription);
+        protected abstract DungeonGeneratorConfiguration<int> GetOldConfiguration(
+            NamedMapDescription namedMapDescription);
 
         protected override void Run()
         {

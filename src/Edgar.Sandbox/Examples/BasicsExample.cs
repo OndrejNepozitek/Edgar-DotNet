@@ -29,11 +29,11 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
+                new List<TransformationGrid2D>() {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
             // Create room description
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() {squareRoom, rectangleRoom});
 
             // Create map description
             var mapDescription = new MapDescription<int>();

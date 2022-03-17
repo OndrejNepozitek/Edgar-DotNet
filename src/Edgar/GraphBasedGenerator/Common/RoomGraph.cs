@@ -21,7 +21,6 @@ namespace Edgar.GraphBasedGenerator.Common
 
         private void Initialize(IGraph<RoomNode<TRoom>> originalGraph)
         {
-
         }
 
         public void AddVertex(RoomNode<TRoom> vertex)

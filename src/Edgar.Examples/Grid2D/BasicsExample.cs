@@ -37,7 +37,7 @@ namespace Edgar.Examples.Grid2D
 
             //md ### Outline
             //md In the *Grid2D* setting, the outline of a room template is an orthogonal polygon where each point has integer coordinates. In other words, it is a polygon that we can draw on an integer grid using 1x1 square tiles.
-            
+
             //md The first outline that we create is a 6x10 rectangle:
 
             var squareRoomOutline = new PolygonGrid2DBuilder()
@@ -57,7 +57,7 @@ namespace Edgar.Examples.Grid2D
 
             //md ### Doors
             //md In order to tell the generator how it can connect individual room templates, we need to specify all the available door positions. The main idea is that the more door positions we provide, the easier it is for the generator to find a valid layout. To define door positions, we use the `IDoorModeGrid2D` interface. The most simple *door mode* is the `SimpleDoorModeGrid2D` - it lets us specify the length of doors and how far from corners of the outline they must be. In this tutorial, we will use doors with length of 1 tile and at least 1 tile away from corners.
-            
+
             var doors = new SimpleDoorModeGrid2D(doorLength: 1, cornerDistance: 1);
 
             //md > **Note:** There is also an additional door mode available - `ManualDoorModeGrid2D`. This mode lets you specify exactly which door positions are available. It is useful for example when we want to have doors only on the two opposite sides of a corridor.
@@ -99,16 +99,16 @@ namespace Edgar.Examples.Grid2D
             var roomDescription = new RoomDescriptionGrid2D
             (
                 isCorridor: false,
-                roomTemplates: new List<RoomTemplateGrid2D>() { rectangleRoomTemplate, squareRoomTemplate }
+                roomTemplates: new List<RoomTemplateGrid2D>() {rectangleRoomTemplate, squareRoomTemplate}
             );
 
             //md ## Level description
             //md The final step is to describe the structure of the level. We will use a very simple graph of rooms that we can see below:
 
             //md ![](./basics/graph.png)
-            
+
             //md First, we have to create an instance of the `LevelDescriptionGrid2D<TRoom>` class. For simplicity, We will use `integers` to identify individual rooms. But it is also possible to use a custom room type by using a different generic type parameter.
-            
+
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
             //md Next, we add individual rooms to the level description.
@@ -185,11 +185,11 @@ namespace Edgar.Examples.Grid2D
             var graphDrawer = new GraphDrawer<int>();
             var graphBitmap = graphDrawer.DrawGraph(levelDescription, new Dictionary<int, Vector2Int>()
             {
-                { 0, new Vector2Int(0, 0) },
-                { 1, new Vector2Int(0, -1) },
-                { 2, new Vector2Int(1, -1) },
-                { 3, new Vector2Int(1, 0) },
-                { 4, new Vector2Int(-1, 0) },
+                {0, new Vector2Int(0, 0)},
+                {1, new Vector2Int(0, -1)},
+                {2, new Vector2Int(1, -1)},
+                {3, new Vector2Int(1, 0)},
+                {4, new Vector2Int(-1, 0)},
             }, new DungeonDrawerOptions()
             {
                 Width = 2500,

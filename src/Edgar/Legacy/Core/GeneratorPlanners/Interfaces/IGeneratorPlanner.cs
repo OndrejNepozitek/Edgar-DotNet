@@ -10,6 +10,7 @@ namespace Edgar.Legacy.Core.GeneratorPlanners.Interfaces
     /// </summary>
     public interface IGeneratorPlanner<TLayout, TNode>
     {
-        TLayout Generate(TLayout initialLayout, List<Chain<TNode>> chains, ILayoutEvolver<TLayout, TNode> layoutEvolver);
+        TLayout Generate(TLayout initialLayout, List<Chain<TNode>> chains,
+            ILayoutEvolver<TLayout, TNode> layoutEvolver);
     }
 }

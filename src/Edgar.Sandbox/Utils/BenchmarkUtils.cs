@@ -12,7 +12,8 @@ namespace Sandbox.Utils
 {
     public static class BenchmarkUtils
     {
-        public static async Task SaveAndUpload(this BenchmarkResultSaver resultSaver, BenchmarkScenarioResult scenarioResult, string name, string group)
+        public static async Task SaveAndUpload(this BenchmarkResultSaver resultSaver,
+            BenchmarkScenarioResult scenarioResult, string name, string group)
         {
             if (resultSaver == null) throw new ArgumentNullException(nameof(resultSaver));
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -43,7 +44,8 @@ namespace Sandbox.Utils
             return result;
         }
 
-        public static bool IsEqualToReference(BenchmarkScenarioResult scenarioResult, string referencePath, bool withConsole = true)
+        public static bool IsEqualToReference(BenchmarkScenarioResult scenarioResult, string referencePath,
+            bool withConsole = true)
         {
             var referenceResultText = File.ReadAllText(referencePath);
             var referenceResult = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(referenceResultText);
@@ -51,7 +53,8 @@ namespace Sandbox.Utils
             return IsEqualToReference(scenarioResult, referenceResult, withConsole);
         }
 
-        private static bool IsEqualToReference(BenchmarkScenarioResult scenarioResult, BenchmarkScenarioResult referenceResult, bool withConsole = true)
+        private static bool IsEqualToReference(BenchmarkScenarioResult scenarioResult,
+            BenchmarkScenarioResult referenceResult, bool withConsole = true)
         {
             if (withConsole)
             {
@@ -63,7 +66,8 @@ namespace Sandbox.Utils
 
             foreach (var benchmarkResult in scenarioResult.Results)
             {
-                var referenceBenchmarkResult = referenceResult.Results.SingleOrDefault(x => x.InputName == benchmarkResult.InputName);
+                var referenceBenchmarkResult =
+                    referenceResult.Results.SingleOrDefault(x => x.InputName == benchmarkResult.InputName);
 
                 if (referenceBenchmarkResult == null)
                 {
@@ -71,7 +75,8 @@ namespace Sandbox.Utils
                     continue;
                 }
 
-                var runsEqual = RunsEqual(benchmarkResult.Runs.Cast<IGeneratorRun>().ToList(), referenceBenchmarkResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
+                var runsEqual = RunsEqual(benchmarkResult.Runs.Cast<IGeneratorRun>().ToList(),
+                    referenceBenchmarkResult.Runs.Cast<IGeneratorRun>().ToList()); // TODO: ugly
 
                 var averageTime = benchmarkResult.Runs.Average(x => x.Time);
                 var referenceAverageTime = referenceBenchmarkResult.Runs.Average(x => x.Time);
@@ -81,9 +86,10 @@ namespace Sandbox.Utils
 
                 if (withConsole)
                 {
-                    Console.WriteLine($"{benchmarkResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s, iterations average {referenceAverageIterations:F}k -> {averageIterations:F}k");
+                    Console.WriteLine(
+                        $"{benchmarkResult.InputName} - equal: {runsEqual}, time average {referenceAverageTime / 1000:##.00}s -> {averageTime / 1000:##.00}s, iterations average {referenceAverageIterations:F}k -> {averageIterations:F}k");
                 }
-                
+
                 if (!runsEqual)
                 {
                     allEqual = false;

@@ -8,7 +8,8 @@ namespace Edgar.GraphBasedGenerator.Common.Exceptions
 
         public List<object> NeighboringShapes { get; }
 
-        public NoSuitableShapeForRoomException(string message, object room, List<object> neighboringShapes = null) : base(message)
+        public NoSuitableShapeForRoomException(string message, object room, List<object> neighboringShapes = null) :
+            base(message)
         {
             Room = room;
             NeighboringShapes = neighboringShapes;

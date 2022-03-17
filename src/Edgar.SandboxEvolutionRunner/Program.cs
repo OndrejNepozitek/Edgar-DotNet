@@ -63,25 +63,25 @@ namespace SandboxEvolutionRunner
 
             var scenarios = new Dictionary<string, Scenario>()
             {
-                { "Evolution", new EvolutionScenario() },
-                { "BasicRoomsInsteadOfCorridors", new BasicRoomsInsteadOfCorridorsScenario() },
-                { "FixedMaxIterations", new FixedMaxIterations() },
-                { "FixedMaxIterations50vs100", new FixedMaxIterations50vs100() },
-                { "FixedMaxIterationsEvolution", new FixedMaxIterationsEvolutionScenario() },
-                { "ChainDecomposition", new ChainDecompositionScenario() },
-                { "MaxBranching", new MaxBranchingScenario() },
-                { "OldAndNew", new OldAndNewScenario() },
-                { "CycleClustersTest", new CycleClustersTest() },
-                { "ChainDecompositionNew", new ChainDecompositionNew() },
-                { "SimpleEvolution", new SimpleEvolutionScenario() },
-                { "HandleTreesGreedily", new HandleTreesGreedily() },
-                { "ClusterTest", new ClusterTest() },
-                { "OneImprovementEnabled", new OneImprovementEnabled() },
-                { "OneImprovementDisabled", new OneImprovementDisabled() },
-                { "DifferentRoomTemplates", new DifferentRoomTemplates() },
-                { "NumberOfEdges", new NumberOfEdges() },
-                { "NumberOfEdges_1", new NumberOfEdges(1) },
-                { "NumberOfEdges_3", new NumberOfEdges(3) },
+                {"Evolution", new EvolutionScenario()},
+                {"BasicRoomsInsteadOfCorridors", new BasicRoomsInsteadOfCorridorsScenario()},
+                {"FixedMaxIterations", new FixedMaxIterations()},
+                {"FixedMaxIterations50vs100", new FixedMaxIterations50vs100()},
+                {"FixedMaxIterationsEvolution", new FixedMaxIterationsEvolutionScenario()},
+                {"ChainDecomposition", new ChainDecompositionScenario()},
+                {"MaxBranching", new MaxBranchingScenario()},
+                {"OldAndNew", new OldAndNewScenario()},
+                {"CycleClustersTest", new CycleClustersTest()},
+                {"ChainDecompositionNew", new ChainDecompositionNew()},
+                {"SimpleEvolution", new SimpleEvolutionScenario()},
+                {"HandleTreesGreedily", new HandleTreesGreedily()},
+                {"ClusterTest", new ClusterTest()},
+                {"OneImprovementEnabled", new OneImprovementEnabled()},
+                {"OneImprovementDisabled", new OneImprovementDisabled()},
+                {"DifferentRoomTemplates", new DifferentRoomTemplates()},
+                {"NumberOfEdges", new NumberOfEdges()},
+                {"NumberOfEdges_1", new NumberOfEdges(1)},
+                {"NumberOfEdges_3", new NumberOfEdges(3)},
             };
 
             if (options.Name == null)
@@ -93,9 +93,15 @@ namespace SandboxEvolutionRunner
                     options.Name += $"_{options.FitnessType}";
                 }
 
-                options.Name += options.GraphSets.Count() != 0 ? $"_{string.Join("_", options.GraphSets)}" : string.Empty;
-                options.Name += options.Graphs.Count() != 0 ? $"_graphs_{string.Join("_", options.Graphs)}" : string.Empty;
-                options.Name += options.MapDescriptions.Count() != 0 ? $"_{string.Join("_", options.MapDescriptions)}" : string.Empty;
+                options.Name += options.GraphSets.Count() != 0
+                    ? $"_{string.Join("_", options.GraphSets)}"
+                    : string.Empty;
+                options.Name += options.Graphs.Count() != 0
+                    ? $"_graphs_{string.Join("_", options.Graphs)}"
+                    : string.Empty;
+                options.Name += options.MapDescriptions.Count() != 0
+                    ? $"_{string.Join("_", options.MapDescriptions)}"
+                    : string.Empty;
                 options.Name += options.AsyncBenchmark ? "_async" : string.Empty;
             }
 
@@ -113,7 +119,8 @@ namespace SandboxEvolutionRunner
 
             var input = new GeneratorInput<MapDescription<int>>(
                 "EnterTheGungeon",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings)
+                JsonConvert.DeserializeObject<MapDescription<int>>(
+                    File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings)
             );
 
             return input.MapDescription;
@@ -128,35 +135,57 @@ namespace SandboxEvolutionRunner
 
             var allGraphs = new Dictionary<string, Tuple<string, IGraph<int>>>()
             {
-                { "1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1()) },
-                { "2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2()) },
-                { "3", Tuple.Create("Example 3 (fig. 7 bottom)", GraphsDatabase.GetExample3()) },
-                { "4", Tuple.Create("Example 4 (fig. 8)", GraphsDatabase.GetExample4()) },
-                { "5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5()) },
+                {"1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1())},
+                {"2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2())},
+                {"3", Tuple.Create("Example 3 (fig. 7 bottom)", GraphsDatabase.GetExample3())},
+                {"4", Tuple.Create("Example 4 (fig. 8)", GraphsDatabase.GetExample4())},
+                {"5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5())},
             };
 
             var mapDescriptions = new Dictionary<string, Tuple<string, MapDescription<int>>>()
             {
-                { "gungeon_1_1", Tuple.Create("Gungeon 1_1", LoadMapDescription("gungeon_1_1")) },
-                { "gungeon_1_2", Tuple.Create("Gungeon 1_2", LoadMapDescription("gungeon_1_2")) },
-                { "gungeon_2_1", Tuple.Create("Gungeon 2_1", LoadMapDescription("gungeon_2_1")) },
-                { "gungeon_2_2", Tuple.Create("Gungeon 2_2", LoadMapDescription("gungeon_2_2")) },
+                {"gungeon_1_1", Tuple.Create("Gungeon 1_1", LoadMapDescription("gungeon_1_1"))},
+                {"gungeon_1_2", Tuple.Create("Gungeon 1_2", LoadMapDescription("gungeon_1_2"))},
+                {"gungeon_2_1", Tuple.Create("Gungeon 2_1", LoadMapDescription("gungeon_2_1"))},
+                {"gungeon_2_2", Tuple.Create("Gungeon 2_2", LoadMapDescription("gungeon_2_2"))},
                 // { "gungeon_2_4", Tuple.Create("Gungeon 2_4", LoadMapDescription("gungeon_2_4")) },
             };
 
-            var allAnalyzers = new Dictionary<string, Func<IMapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
-            {
-                { "MaxStageTwoFailures", (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "MaxIterations", (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "ChainMerge", (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
-                { "ChainOrder", (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
-                { "MaxBranching", (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "ChainDecomposition", (mapDescription) => new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>(mapDescription) } ,
-            };
+            var allAnalyzers =
+                new Dictionary<string, Func<IMapDescription<int>,
+                    IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
+                {
+                    {
+                        "MaxStageTwoFailures",
+                        (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "MaxIterations",
+                        (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "ChainMerge",
+                        (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>()
+                    },
+                    {
+                        "ChainOrder",
+                        (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>()
+                    },
+                    {
+                        "MaxBranching",
+                        (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "ChainDecomposition",
+                        (mapDescription) =>
+                            new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>(
+                                mapDescription)
+                    },
+                };
 
             // Select graphs
             var graphs =
-                options.Graphs.Count() != 0 
+                options.Graphs.Count() != 0
                     ? options
                         .Graphs
                         .Select(x => allGraphs[x])
@@ -193,8 +222,10 @@ namespace SandboxEvolutionRunner
                     var basicRoomTemplates = MapDescriptionUtils.GetBasicRoomTemplates(options.Scale);
                     var basicRoomDescription = new BasicRoomDescription(basicRoomTemplates);
 
-                    var corridorRoomTemplates = withCorridors ? MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets) : null;
-                    var corridorRoomDescription = withCorridors ? new CorridorRoomDescription(corridorRoomTemplates) : null;
+                    var corridorRoomTemplates =
+                        withCorridors ? MapDescriptionUtils.GetCorridorRoomTemplates(corridorOffsets) : null;
+                    var corridorRoomDescription =
+                        withCorridors ? new CorridorRoomDescription(corridorRoomTemplates) : null;
 
                     var mapDescription = MapDescriptionUtils.GetBasicMapDescription(graph, basicRoomDescription,
                         corridorRoomDescription, withCorridors);
@@ -228,20 +259,20 @@ namespace SandboxEvolutionRunner
 
             var resultsDict = new Dictionary<Input, Result>();
             var partitioner = Partitioner.Create(inputs, EnumerablePartitionerOptions.NoBuffering);
-            Parallel.ForEach(partitioner, new ParallelOptions { MaxDegreeOfParallelism = options.MaxThreads }, input =>
+            Parallel.ForEach(partitioner, new ParallelOptions {MaxDegreeOfParallelism = options.MaxThreads}, input =>
             {
                 lock (Logger)
                 {
                     Logger.WriteLine($"Started {input.Name}");
                 }
 
-                var result =  RunEvolution(input, options, analyzers.Select(x => x(input.MapDescription)).ToList());
+                var result = RunEvolution(input, options, analyzers.Select(x => x(input.MapDescription)).ToList());
 
                 lock (Logger)
                 {
                     Logger.WriteLine($"Ended {input.Name}");
                 }
-                
+
 
                 lock (resultsDict)
                 {
@@ -261,21 +292,25 @@ namespace SandboxEvolutionRunner
 
             var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
 
-            var benchmarkScenarioNew = new BenchmarkScenario<IMapDescription<int>>("NewConfigurations", GetGeneratorRunnerFactory);
-            var benchmarkScenarioOld = new BenchmarkScenario<IMapDescription<int>>("OldConfigurations", GetGeneratorRunnerFactory);
+            var benchmarkScenarioNew =
+                new BenchmarkScenario<IMapDescription<int>>("NewConfigurations", GetGeneratorRunnerFactory);
+            var benchmarkScenarioOld =
+                new BenchmarkScenario<IMapDescription<int>>("OldConfigurations", GetGeneratorRunnerFactory);
 
             var resultSaver = new BenchmarkResultSaver();
 
-            var scenarioResultNew = benchmarkRunner.Run(benchmarkScenarioNew, inputsNewConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
-            {
-                WithConsolePreview = false,
-            });
+            var scenarioResultNew = benchmarkRunner.Run(benchmarkScenarioNew, inputsNewConfigurations,
+                options.FinalEvaluationIterations, new BenchmarkOptions()
+                {
+                    WithConsolePreview = false,
+                });
             resultSaver.SaveResultDefaultLocation(scenarioResultNew, directory: Directory);
 
-            var scenarioResultOld = benchmarkRunner.Run(benchmarkScenarioOld, inputsOldConfigurations, options.FinalEvaluationIterations, new BenchmarkOptions()
-            {
-                WithConsolePreview = false,
-            });
+            var scenarioResultOld = benchmarkRunner.Run(benchmarkScenarioOld, inputsOldConfigurations,
+                options.FinalEvaluationIterations, new BenchmarkOptions()
+                {
+                    WithConsolePreview = false,
+                });
             resultSaver.SaveResultDefaultLocation(scenarioResultOld, directory: Directory);
         }
 
@@ -295,8 +330,9 @@ namespace SandboxEvolutionRunner
 
                     foreach (var individual in group)
                     {
-                        var mutation =  individual.Mutations.Last();
-                        var difference = StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
+                        var mutation = individual.Mutations.Last();
+                        var difference =
+                            StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
 
                         if (!stats.ContainsKey(mutation))
                         {
@@ -322,7 +358,8 @@ namespace SandboxEvolutionRunner
 
                 foreach (var mutationStat in mutationStats)
                 {
-                    Logger.WriteLine($"{mutationStat.Input}, diff {mutationStat.Difference:F}%, order {mutationStat.Order}");
+                    Logger.WriteLine(
+                        $"{mutationStat.Input}, diff {mutationStat.Difference:F}%, order {mutationStat.Order}");
                 }
 
                 Logger.WriteLine($"Average difference {mutationStats.Average(x => x.Difference):F}");
@@ -353,6 +390,7 @@ namespace SandboxEvolutionRunner
             return new LambdaGeneratorRunner(() =>
             {
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                 void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                 {
                     simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -369,13 +407,15 @@ namespace SandboxEvolutionRunner
                     // GeneratedLayout = layout,
                 };
 
-                var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                    layoutGenerator.IterationsCount, additionalData);
 
                 return generatorRun;
             });
         }
 
-        public static Result RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
+        public static Result RunEvolution(Input input, Options options,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
         {
             var evolution = new DungeonGeneratorEvolution<int>(input.MapDescription, analyzers, new EvolutionOptions()
             {
@@ -383,7 +423,7 @@ namespace SandboxEvolutionRunner
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = options.EvolutionIterations,
                 WithConsoleOutput = false,
-                AllowWorseThanInitial =  !options.Eval,
+                AllowWorseThanInitial = !options.Eval,
                 AllowRepeatingConfigurations = !options.Eval,
             }, Path.Combine(Directory, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
@@ -396,7 +436,5 @@ namespace SandboxEvolutionRunner
                 Individuals = result.AllIndividuals,
             };
         }
-        
-
     }
 }

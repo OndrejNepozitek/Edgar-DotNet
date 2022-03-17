@@ -13,7 +13,8 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class OneImprovementDisabled : Scenario
     {
-        private DungeonGeneratorConfiguration<int> GetWithoutGreedyTreesConfiguration(NamedMapDescription namedMapDescription)
+        private DungeonGeneratorConfiguration<int> GetWithoutGreedyTreesConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = GetNewConfiguration(namedMapDescription);
             configuration.SimulatedAnnealingConfiguration.GetConfiguration(0).HandleTreesGreedily = false;
@@ -21,21 +22,26 @@ namespace SandboxEvolutionRunner.Scenarios
             return configuration;
         }
 
-        private DungeonGeneratorConfiguration<int> GetWithoutMaxIterationsConfiguration(NamedMapDescription namedMapDescription)
+        private DungeonGeneratorConfiguration<int> GetWithoutMaxIterationsConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = GetNewConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             return configuration;
         }
 
-        private DungeonGeneratorConfiguration<int> GetWithoutChainDecompositionConfiguration(NamedMapDescription namedMapDescription)
+        private DungeonGeneratorConfiguration<int> GetWithoutChainDecompositionConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            var chainDecomposition = new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition =
+                new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(
+                    namedMapDescription.MapDescription, chainDecompositionOld);
 
             var configuration = GetNewConfiguration(namedMapDescription);
             configuration.Chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());
@@ -46,11 +52,12 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-                HandleTreesGreedily = true,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                    HandleTreesGreedily = true,
+                });
 
             return configuration;
         }
@@ -58,14 +65,17 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription)
         {
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            var chainDecomposition = new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition =
+                new Edgar.Legacy.Core.ChainDecompositions.TwoStageChainDecomposition<int>(
+                    namedMapDescription.MapDescription, chainDecompositionOld);
 
             var configuration = GetBasicConfiguration(namedMapDescription);
             configuration.Chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             return configuration;
         }
@@ -81,7 +91,8 @@ namespace SandboxEvolutionRunner.Scenarios
             //RunBenchmark(mapDescriptions, GetWithoutChainDecompositionConfiguration, Options.FinalEvaluationIterations, "WithoutChainDecomposition");
         }
 
-        protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
+        protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = base.GetBasicConfiguration(namedMapDescription);
             configuration.RepeatModeOverride = RoomTemplateRepeatMode.NoRepeat;

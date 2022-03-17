@@ -4,6 +4,7 @@ namespace Edgar.GraphBasedGenerator.Common.Constraints
 {
     public interface IEnergyUpdater<TNode, TConfiguration, TEnergyData>
     {
-        void UpdateEnergy(ILayout<TNode, TConfiguration> layout, TConfiguration configuration, ref TEnergyData energyData);
+        void UpdateEnergy(ILayout<TNode, TConfiguration> layout, TConfiguration configuration,
+            ref TEnergyData energyData);
     }
 }

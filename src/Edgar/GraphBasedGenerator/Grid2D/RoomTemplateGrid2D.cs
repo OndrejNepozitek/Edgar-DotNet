@@ -55,13 +55,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <param name="name">See the <see cref="Name"/> property.</param>
         /// <param name="repeatMode">See the <see cref="RepeatMode"/> property.</param>
         /// <param name="allowedTransformations">See the <see cref="AllowedTransformations"/> property.</param>
-        public RoomTemplateGrid2D(PolygonGrid2D outline, IDoorModeGrid2D doors, string name = null, RoomTemplateRepeatMode? repeatMode = null, List<TransformationGrid2D> allowedTransformations = null)
+        public RoomTemplateGrid2D(PolygonGrid2D outline, IDoorModeGrid2D doors, string name = null,
+            RoomTemplateRepeatMode? repeatMode = null, List<TransformationGrid2D> allowedTransformations = null)
         {
             Outline = outline;
             Doors = doors;
             Name = name ?? "Room template";
             RepeatMode = repeatMode;
-            AllowedTransformations = allowedTransformations ?? new List<TransformationGrid2D>() { TransformationGrid2D.Identity };;
+            AllowedTransformations = allowedTransformations ?? new List<TransformationGrid2D>()
+                {TransformationGrid2D.Identity};
+            ;
         }
     }
 }

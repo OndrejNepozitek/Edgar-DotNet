@@ -8,12 +8,14 @@ namespace Edgar.Legacy.Utils.Statistics
 
     public class LayoutsClustering<TLayout>
     {
-        public List<List<TLayout>> GetClusters(List<TLayout> layouts, GetDistanceDelegate<TLayout> getDistance, double stopDistance)
+        public List<List<TLayout>> GetClusters(List<TLayout> layouts, GetDistanceDelegate<TLayout> getDistance,
+            double stopDistance)
         {
             var layoutToIntMapping = layouts.CreateIntMapping();
             var layoutDistanceMatrix = GetLayoutDistanceMatrix(layoutToIntMapping, getDistance);
             var clusters = GetInitialClusters(layoutToIntMapping);
-            var clusterDistanceMatrix = layoutDistanceMatrix.Select(x => x.ToArray()).ToArray(); // Copy layoutDistanceMatrix array
+            var clusterDistanceMatrix =
+                layoutDistanceMatrix.Select(x => x.ToArray()).ToArray(); // Copy layoutDistanceMatrix array
 
             // Compute clusters
             while (clusters.Count > 10)
@@ -58,7 +60,8 @@ namespace Edgar.Legacy.Utils.Statistics
             return output;
         }
 
-        private void MergeClusters(int cluster1, int cluster2, Dictionary<int, List<int>> clusters, double[][] clusterDistanceMatrix, double[][] layoutDistanceMatrix)
+        private void MergeClusters(int cluster1, int cluster2, Dictionary<int, List<int>> clusters,
+            double[][] clusterDistanceMatrix, double[][] layoutDistanceMatrix)
         {
             // Merge cluster
             clusters[cluster1].AddRange(clusters[cluster2]);
@@ -71,7 +74,8 @@ namespace Edgar.Legacy.Utils.Statistics
             {
                 if (cluster1 != otherCluster)
                 {
-                    var distance = GetClustersDistance(clusters[cluster1], clusters[otherCluster], layoutDistanceMatrix);
+                    var distance =
+                        GetClustersDistance(clusters[cluster1], clusters[otherCluster], layoutDistanceMatrix);
                     clusterDistanceMatrix[cluster1][otherCluster] = distance;
                     clusterDistanceMatrix[otherCluster][cluster1] = distance;
                 }
@@ -100,13 +104,14 @@ namespace Edgar.Legacy.Utils.Statistics
 
             foreach (var pair in layouts)
             {
-                clusters.Add(clusters.Count, new List<int>() { pair.Value });
+                clusters.Add(clusters.Count, new List<int>() {pair.Value});
             }
 
             return clusters;
         }
 
-        private double[][] GetLayoutDistanceMatrix(TwoWayDictionary<TLayout, int> layouts, GetDistanceDelegate<TLayout> getDistance)
+        private double[][] GetLayoutDistanceMatrix(TwoWayDictionary<TLayout, int> layouts,
+            GetDistanceDelegate<TLayout> getDistance)
         {
             var distanceMatrix = new double[layouts.Count][];
 

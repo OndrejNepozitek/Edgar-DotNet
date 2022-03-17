@@ -24,7 +24,7 @@ namespace Edgar.Examples.Grid2D
         /// <summary>
         /// Prepare level description.
         /// </summary>
-        public LevelDescriptionGrid2D<Room> GetLevelDescription() 
+        public LevelDescriptionGrid2D<Room> GetLevelDescription()
         {
             //md In this example, we will create a level description that should be close to what we could use in a game. We will cover the following:
             //md - create a `RoomType` enum for individual types of rooms - spawn, boss, shop, reward, etc.
@@ -154,15 +154,16 @@ namespace Edgar.Examples.Grid2D
             });
             roomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/room_templates.png");
 
-            var corridorRoomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(corridorRoomTemplates, new DungeonDrawerOptions()
-            {
-                Width = 1200,
-                Height = 350,
-                FontSize = 0.7f,
-                PaddingAbsolute = 100,
-                ShowRoomNames = false,
-                EnableHatching = false,
-            });
+            var corridorRoomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(corridorRoomTemplates,
+                new DungeonDrawerOptions()
+                {
+                    Width = 1200,
+                    Height = 350,
+                    FontSize = 0.7f,
+                    PaddingAbsolute = 100,
+                    ShowRoomNames = false,
+                    EnableHatching = false,
+                });
             corridorRoomTemplatesBitmap.Save(ExamplesGenerator.AssetsFolder + "/corridor_room_templates.png");
 
             #endregion
@@ -171,7 +172,8 @@ namespace Edgar.Examples.Grid2D
         /// <summary>
         /// Gets room templates for a given room based on its type.
         /// </summary>
-        private List<RoomTemplateGrid2D> GetRoomTemplatesForRoom(Room room, Dictionary<string, RoomTemplateGrid2D> roomTemplates)
+        private List<RoomTemplateGrid2D> GetRoomTemplatesForRoom(Room room,
+            Dictionary<string, RoomTemplateGrid2D> roomTemplates)
         {
             switch (room.Type)
             {
@@ -265,7 +267,9 @@ namespace Edgar.Examples.Grid2D
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Normal 3"
                 ),
+
                 #region hidden:Other room templates
+
                 new RoomTemplateGrid2D(
                     new PolygonGrid2DBuilder()
                         .AddPoint(-39, 1).AddPoint(-37, 1).AddPoint(-37, 10).AddPoint(-39, 10)
@@ -287,12 +291,12 @@ namespace Edgar.Examples.Grid2D
                     name: "Normal 5"
                 ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetSquare(13), 
+                    PolygonGrid2D.GetSquare(13),
                     new SimpleDoorModeGrid2D(1, 2),
                     name: "Normal 6"
                 ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetSquare(11), 
+                    PolygonGrid2D.GetSquare(11),
                     new SimpleDoorModeGrid2D(1, 2),
                     name: "Spawn"
                 ),
@@ -302,7 +306,7 @@ namespace Edgar.Examples.Grid2D
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Boss"
                 ),
-                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(20, 26), 
+                new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(20, 26),
                     new SimpleDoorModeGrid2D(1, 4),
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Hub 1"
@@ -317,7 +321,7 @@ namespace Edgar.Examples.Grid2D
                     name: "Reward"
                 ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetRectangle(12, 17), 
+                    PolygonGrid2D.GetRectangle(12, 17),
                     new SimpleDoorModeGrid2D(1, 3),
                     allowedTransformations: TransformationGrid2DHelper.GetRotations(),
                     name: "Normal 7"
@@ -328,10 +332,10 @@ namespace Edgar.Examples.Grid2D
                         .Build(),
                     new ManualDoorModeGrid2D(new List<DoorGrid2D>()
                         {
-                        new DoorGrid2D(new Vector2Int(4, 2), new Vector2Int(4, 1)),
-                        new DoorGrid2D(new Vector2Int(-3, 2), new Vector2Int(-3, 1)),
-                        new DoorGrid2D(new Vector2Int(0, 4), new Vector2Int(1, 4)),
-                        new DoorGrid2D(new Vector2Int(0, -1), new Vector2Int(1, -1)),
+                            new DoorGrid2D(new Vector2Int(4, 2), new Vector2Int(4, 1)),
+                            new DoorGrid2D(new Vector2Int(-3, 2), new Vector2Int(-3, 1)),
+                            new DoorGrid2D(new Vector2Int(0, 4), new Vector2Int(1, 4)),
+                            new DoorGrid2D(new Vector2Int(0, -1), new Vector2Int(1, -1)),
                         }
                     ),
                     name: "Exit"
@@ -346,10 +350,11 @@ namespace Edgar.Examples.Grid2D
                     name: "Shop"
                 ),
                 new RoomTemplateGrid2D(
-                    PolygonGrid2D.GetSquare(9), 
+                    PolygonGrid2D.GetSquare(9),
                     new SimpleDoorModeGrid2D(1, 2),
                     name: "Secret"
                 )
+
                 #endregion
             }.ToDictionary(x => x.Name, x => x);
         }
@@ -485,7 +490,14 @@ namespace Edgar.Examples.Grid2D
         /// </summary>
         public enum RoomType
         {
-            Normal, Hub, Spawn, Boss, Corridor, Exit, Reward, Shop, 
+            Normal,
+            Hub,
+            Spawn,
+            Boss,
+            Corridor,
+            Exit,
+            Reward,
+            Shop,
         }
 
         /// <summary>

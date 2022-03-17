@@ -8,7 +8,8 @@ namespace Edgar.Graphs
 {
     public static class GraphAlgorithms
     {
-        public static List<TNode> OrderNodesByDFSDistance<TNode>(IGraph<TNode> graph, List<TNode> startingNodes, List<TNode> nodes = null)
+        public static List<TNode> OrderNodesByDFSDistance<TNode>(IGraph<TNode> graph, List<TNode> startingNodes,
+            List<TNode> nodes = null)
         {
             nodes = nodes ?? graph.Vertices.ToList();
             var remainingNodes = nodes.ToHashSet();
@@ -40,7 +41,8 @@ namespace Edgar.Graphs
             return result;
         }
 
-        public static IGraph<TNode> GetInducedSubgraph<TNode>(IGraph<TNode> originalGraph, HashSet<TNode> nodes, IGraph<TNode> newGraph)
+        public static IGraph<TNode> GetInducedSubgraph<TNode>(IGraph<TNode> originalGraph, HashSet<TNode> nodes,
+            IGraph<TNode> newGraph)
         {
             var originalVertices = originalGraph.Vertices.ToHashSet();
 
@@ -205,7 +207,9 @@ namespace Edgar.Graphs
             return bridges;
         }
 
-        private static void FindBridgesDfs<TNode>(IGraph<TNode> graph, TNode vertex, TNode parent, bool isRoot, Dictionary<TNode, bool> visited, Dictionary<TNode, int> timeIn, Dictionary<TNode, int> low, ref int timer, List<IEdge<TNode>> bridges)
+        private static void FindBridgesDfs<TNode>(IGraph<TNode> graph, TNode vertex, TNode parent, bool isRoot,
+            Dictionary<TNode, bool> visited, Dictionary<TNode, int> timeIn, Dictionary<TNode, int> low, ref int timer,
+            List<IEdge<TNode>> bridges)
         {
             visited[vertex] = true;
             var time = timer++;

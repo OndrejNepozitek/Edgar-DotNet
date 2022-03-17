@@ -16,7 +16,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         private BenchmarkScenario<int> GetNonCorridorScenario(List<NamedGraph<int>> namedGraphs)
         {
             var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() {0});
 
             levelDescriptions.ForEach(x => x.RoomTemplateRepeatModeOverride = RoomTemplateRepeatMode.NoImmediate);
 
@@ -26,7 +26,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         private BenchmarkScenario<int> GetCorridorScenario(List<NamedGraph<int>> namedGraphs)
         {
             var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 2, 4 });
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() {2, 4});
 
             levelDescriptions.ForEach(x => x.RoomTemplateRepeatModeOverride = RoomTemplateRepeatMode.NoImmediate);
 
@@ -47,7 +47,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 GetCorridorScenario(graphs),
             };
 
-            var scenarioGroup = new MinimumDistanceScenario().GetScenario(graphs, new MinimumDistanceScenario.Options());
+            var scenarioGroup =
+                new MinimumDistanceScenario().GetScenario(graphs, new MinimumDistanceScenario.Options());
 
             var generators = new List<ILevelGeneratorFactory<int>>()
             {

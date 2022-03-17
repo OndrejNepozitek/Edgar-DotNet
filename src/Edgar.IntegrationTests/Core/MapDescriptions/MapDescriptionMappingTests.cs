@@ -16,8 +16,8 @@ namespace MapGeneration.IntegrationTests.Core.MapDescriptions
             var roomTemplate1 = new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0));
             var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0));
 
-            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
-            var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate1});
+            var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate2});
 
             var mapDescription = new MapDescription<string>();
             mapDescription.AddRoom("0", roomDescription1);
@@ -39,9 +39,9 @@ namespace MapGeneration.IntegrationTests.Core.MapDescriptions
             var roomTemplate1 = new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0));
             var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0));
 
-            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
-            var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate2 });
-            var corridorDescription = new CorridorRoomDescription(new List<RoomTemplate>() { roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate1});
+            var roomDescription2 = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate2});
+            var corridorDescription = new CorridorRoomDescription(new List<RoomTemplate>() {roomTemplate2});
 
             var mapDescription = new MapDescription<string>();
             mapDescription.AddRoom("0", roomDescription1);

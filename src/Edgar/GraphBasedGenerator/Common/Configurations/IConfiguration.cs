@@ -15,8 +15,8 @@
         TPosition Position { get; set; }
     }
 
-    public interface IConfiguration<TRoomShape, TPosition, TRoom> : IShapeConfiguration<TRoomShape>, IPositionConfiguration<TPosition>, IRoomConfiguration<TRoom>
+    public interface IConfiguration<TRoomShape, TPosition, TRoom> : IShapeConfiguration<TRoomShape>,
+        IPositionConfiguration<TPosition>, IRoomConfiguration<TRoom>
     {
-
     }
 }

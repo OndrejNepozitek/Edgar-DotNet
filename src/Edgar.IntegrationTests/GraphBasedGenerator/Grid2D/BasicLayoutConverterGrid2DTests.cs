@@ -13,28 +13,34 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
         [Test]
         public void DoorsHaveCorrectOrientation()
         {
-            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-            {
-                new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2))
-            }));
+            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new ManualDoorModeGrid2D(
+                new List<DoorGrid2D>()
+                {
+                    new DoorGrid2D(new Vector2Int(3, 1), new Vector2Int(3, 2))
+                }));
 
-            var roomTemplate2 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-            {
-                new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2))
-            }));
+            var roomTemplate2 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(3), new ManualDoorModeGrid2D(
+                new List<DoorGrid2D>()
+                {
+                    new DoorGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2))
+                }));
 
-            var roomTemplate3 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(3, 1), new ManualDoorModeGrid2D(new List<DoorGrid2D>()
-            {
-                new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
-                new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1))
-            }));
+            var roomTemplate3 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(3, 1), new ManualDoorModeGrid2D(
+                new List<DoorGrid2D>()
+                {
+                    new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1)),
+                    new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1))
+                }));
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() { roomTemplate3 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate2 }));
-            
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() {roomTemplate3}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate2}));
+
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
 

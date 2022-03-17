@@ -3,7 +3,7 @@
 namespace Sandbox.Examples
 {
     public interface IExample
-	{
-		MapDescription<int> GetMapDescription();
+    {
+        MapDescription<int> GetMapDescription();
     }
 }

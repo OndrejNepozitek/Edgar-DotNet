@@ -9,7 +9,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
     {
         private readonly List<TNode> fixedRooms;
 
-        public FixedRoomsChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null, List<TNode> fixedRooms = null) : base(configuration, logger, fixedRooms)
+        public FixedRoomsChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null,
+            List<TNode> fixedRooms = null) : base(configuration, logger, fixedRooms)
         {
             this.fixedRooms = fixedRooms ?? new List<TNode>();
         }
@@ -26,13 +27,13 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             }
 
             var faces = decomposition.GetRemainingFaces();
-            
+
             // If there are no cycles and only a single fixed room, start a tree chain from that room
             if (faces.Count == 0 && relevantFixedRooms.Count == 1)
             {
                 return ChainDecompositionUtils.GetBfsTreeCandidate(
                     decomposition,
-                    new List<TNode>() { relevantFixedRooms[0] },
+                    new List<TNode>() {relevantFixedRooms[0]},
                     MaxTreeSize
                 );
             }

@@ -11,6 +11,7 @@ namespace Edgar.Legacy.Utils.PerformanceAnalysis
     {
         private const int ColumnSize = -11;
         private const int FirstColumnSize = -25;
+
         private List<Split> splits = new List<Split>()
         {
             new Split("Best 50%", 0, 0.5),
@@ -101,7 +102,7 @@ namespace Edgar.Legacy.Utils.PerformanceAnalysis
 
             public IEnumerable<double> GetSplit(List<double> values)
             {
-                return values.Skip((int)(values.Count * Start)).Take((int)(values.Count * (End - Start)));
+                return values.Skip((int) (values.Count * Start)).Take((int) (values.Count * (End - Start)));
             }
         }
 

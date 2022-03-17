@@ -6,7 +6,6 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Exceptions
     {
         public DoorModeException(string message) : base(message)
         {
-
         }
     }
 }

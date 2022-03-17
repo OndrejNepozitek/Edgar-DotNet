@@ -90,7 +90,8 @@ namespace Edgar.Examples
 
             AddContent(sourceCode, stringBuilder);
 
-            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"), stringBuilder.ToString());
+            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"),
+                stringBuilder.ToString());
 
             if (example.Options.IncludeResults)
             {
@@ -101,9 +102,10 @@ namespace Edgar.Examples
             {
                 AddSourceCode(stringBuilder);
             }
-            
+
             Console.WriteLine(stringBuilder.ToString());
-            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"), stringBuilder.ToString());
+            File.WriteAllText(Path.Combine(outputFolder, $"{example.Options.DocsFileName}.md"),
+                stringBuilder.ToString());
 
             example.Run();
         }
@@ -147,7 +149,7 @@ namespace Edgar.Examples
                     var generator = new GraphBasedGeneratorGrid2D<TRoom>(levelDescription);
                     generator.InjectRandomGenerator(new Random(0));
                     initStopwatch.Stop();
-                
+
                     var layoutDrawer = new GraphBasedGenerator.Grid2D.Drawing.SVGLayoutDrawer<TRoom>();
                     var oldMapDrawer = new DungeonDrawer<TRoom>();
 
@@ -164,7 +166,8 @@ namespace Edgar.Examples
 
                         Console.WriteLine(generatorStopwatch.ElapsedMilliseconds + initStopwatch.ElapsedMilliseconds);
 
-                        var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true, fixedFontSize: 30);
+                        var svg = layoutDrawer.DrawLayout(level, 800, forceSquare: true, flipY: true,
+                            fixedFontSize: 30);
                         File.WriteAllText(Path.Combine(AssetsFolder, $"{resultsCounter}_{i}.svg"),
                             svg);
 
@@ -194,7 +197,8 @@ namespace Edgar.Examples
                     output.AppendLine();
                     output.AppendLine("<div style={{ textAlign: 'center', marginTop: '-15px' }}>");
                     output.AppendLine();
-                    output.AppendLine($"*Average time to generate the level: {((times.Average() + initStopwatch.ElapsedMilliseconds) / 1000).ToString("F", CultureInfo.InvariantCulture)}s ({((initStopwatch.ElapsedMilliseconds) / 1000d).ToString("F", CultureInfo.InvariantCulture)}s init, {((times.Average()) / 1000).ToString("F", CultureInfo.InvariantCulture)}s generation itself)*");
+                    output.AppendLine(
+                        $"*Average time to generate the level: {((times.Average() + initStopwatch.ElapsedMilliseconds) / 1000).ToString("F", CultureInfo.InvariantCulture)}s ({((initStopwatch.ElapsedMilliseconds) / 1000d).ToString("F", CultureInfo.InvariantCulture)}s init, {((times.Average()) / 1000).ToString("F", CultureInfo.InvariantCulture)}s generation itself)*");
                     output.AppendLine();
                     output.AppendLine("</div>");
                     output.AppendLine();
@@ -256,7 +260,7 @@ namespace Edgar.Examples
                 {
                     isInside = true;
                     nesting = 1;
-                } 
+                }
                 else if (isInside && trimmed.StartsWith("#region"))
                 {
                     nesting++;
@@ -415,7 +419,7 @@ namespace Edgar.Examples
                         if (nextLine.StartsWith("#region"))
                         {
                             nestLevel++;
-                        } 
+                        }
                         else if (nextLine.StartsWith("#endregion"))
                         {
                             nestLevel--;

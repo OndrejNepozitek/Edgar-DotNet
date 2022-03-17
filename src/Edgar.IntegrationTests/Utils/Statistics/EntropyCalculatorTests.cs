@@ -50,19 +50,21 @@ namespace MapGeneration.IntegrationTests.Utils.Statistics
             var distribution = entropyCalculator.GetProbabilityDistribution(data, availableRoomTemplates);
 
             Assert.That(distribution.Count, Is.EqualTo(3));
-            Assert.That(distribution[roomTemplate1], Is.EqualTo(3/4d));
+            Assert.That(distribution[roomTemplate1], Is.EqualTo(3 / 4d));
             Assert.That(distribution[roomTemplate2], Is.EqualTo(0));
-            Assert.That(distribution[roomTemplate3], Is.EqualTo(1/4d));
+            Assert.That(distribution[roomTemplate3], Is.EqualTo(1 / 4d));
         }
 
         [Test]
         public void ComputeAverageRoomTemplatesEntropy_BasicTest()
         {
             var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
-            var roomTemplate1 = new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0), transformations);
-            var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0), transformations);
+            var roomTemplate1 =
+                new RoomTemplate(PolygonGrid2D.GetSquare(10), new SimpleDoorMode(1, 0), transformations);
+            var roomTemplate2 = new RoomTemplate(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorMode(1, 0),
+                transformations);
 
-            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
+            var roomDescription1 = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate1, roomTemplate2});
 
             var mapDescription = new MapDescription<int>();
             mapDescription.AddRoom(0, roomDescription1);

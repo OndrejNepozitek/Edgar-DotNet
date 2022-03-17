@@ -62,8 +62,8 @@ namespace Sandbox.Features
 
             var inputs = new List<DungeonGeneratorInput<int>>();
             inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, false));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() {2}, true));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() {2}, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6, 8 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4, 6 }, false));
             //inputs.AddRange(GetMapDescriptionsSet(new IntVector2(1, 1), true, new List<int>() { 2, 4 }, false));
@@ -80,7 +80,8 @@ namespace Sandbox.Features
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
+                var layoutGenerator =
+                    new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 //return new LambdaGeneratorRunner(() =>
@@ -92,6 +93,7 @@ namespace Sandbox.Features
                 return new LambdaGeneratorRunner(() =>
                 {
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                     void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
                         simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -108,7 +110,8 @@ namespace Sandbox.Features
                         GeneratedLayout = layout,
                     };
 
-                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                        layoutGenerator.IterationsCount, additionalData);
 
                     return generatorRun;
                 });
@@ -126,12 +129,15 @@ namespace Sandbox.Features
             {
                 using (var file = new StreamWriter($"{directory}/{inputResult.InputName}.txt"))
                 {
-                    var generatorEvaluation = new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs.Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
+                    var generatorEvaluation =
+                        new GeneratorEvaluation<AdditionalRunData<int>>(inputResult.Runs
+                            .Cast<IGeneratorRun<AdditionalRunData<int>>>().ToList()); // TODO: ugly
                     dataVisualization.Visualize(generatorEvaluation, file);
                 }
             }
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1580072563_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult,
+                "BenchmarkResults/1580072563_CorridorConfigurationSpaces_Reference.json");
         }
     }
 }

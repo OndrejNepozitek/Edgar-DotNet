@@ -26,11 +26,12 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-                HandleTreesGreedily = true,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                    HandleTreesGreedily = true,
+                });
             // configuration.RepeatModeOverride = repeatMode;
 
             return configuration;
@@ -39,7 +40,7 @@ namespace SandboxEvolutionRunner.Scenarios
         protected override void Run()
         {
             var results = new List<List<BenchmarkScenarioResult>>();
-            
+
             for (int i = 0; i <= 5; i++)
             {
                 var edges = $"e_{i}_{i}";
@@ -62,10 +63,12 @@ namespace SandboxEvolutionRunner.Scenarios
 
         private BenchmarkScenarioResult Run(string graphSet)
         {
-            var loader = new CustomMapDescriptionLoader(Options, Options.RoomTemplatesSet, RoomTemplateRepeatMode.NoImmediate, graphSet, maxClusterSize);
+            var loader = new CustomMapDescriptionLoader(Options, Options.RoomTemplatesSet,
+                RoomTemplateRepeatMode.NoImmediate, graphSet, maxClusterSize);
             var mapDescriptions = loader.GetMapDescriptions();
 
-            return RunBenchmark(mapDescriptions, x => GetConfiguration(x), Options.FinalEvaluationIterations, $"{graphSet}");
+            return RunBenchmark(mapDescriptions, x => GetConfiguration(x), Options.FinalEvaluationIterations,
+                $"{graphSet}");
         }
 
         private class CustomMapDescriptionLoader : BetterMapDescriptionLoader
@@ -73,7 +76,9 @@ namespace SandboxEvolutionRunner.Scenarios
             private readonly string graphSet;
             private readonly int maxClusterSize;
 
-            public CustomMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode, string graphSet, int maxClusterSize) : base(options, roomTemplatesSet, repeatMode)
+            public CustomMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet,
+                RoomTemplateRepeatMode repeatMode, string graphSet, int maxClusterSize) : base(options,
+                roomTemplatesSet, repeatMode)
             {
                 this.graphSet = graphSet;
                 this.maxClusterSize = maxClusterSize;
@@ -94,7 +99,7 @@ namespace SandboxEvolutionRunner.Scenarios
 
                 var cycleClustersAnalyzer = new CycleClustersAnalyzer<int>();
                 var graphs = new List<NamedGraph>();
-                
+
                 var i = 0;
                 while (graphs.Count < count)
                 {
@@ -147,7 +152,7 @@ namespace SandboxEvolutionRunner.Scenarios
                 {
                     lines = File.ReadAllLines($"Resources/RandomGraphs/{name}_{maxClusterSize}.txt");
                 }
-                
+
                 var i = 0;
                 var lineCounter = 0;
                 while (graphs.Count < count)

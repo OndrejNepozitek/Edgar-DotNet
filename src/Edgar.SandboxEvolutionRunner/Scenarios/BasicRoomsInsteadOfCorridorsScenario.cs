@@ -14,11 +14,12 @@ namespace SandboxEvolutionRunner.Scenarios
     {
         private DungeonGeneratorInput<int> GetInput(NamedMapDescription namedMapDescription)
         {
-            return new DungeonGeneratorInput<int>(namedMapDescription.Name, namedMapDescription.MapDescription, new DungeonGeneratorConfiguration<int>()
-            {
-                RoomsCanTouch = Options.CanTouch,
-                EarlyStopIfIterationsExceeded = 20000,
-            });
+            return new DungeonGeneratorInput<int>(namedMapDescription.Name, namedMapDescription.MapDescription,
+                new DungeonGeneratorConfiguration<int>()
+                {
+                    RoomsCanTouch = Options.CanTouch,
+                    EarlyStopIfIterationsExceeded = 20000,
+                });
         }
 
         protected override void Run()
@@ -38,8 +39,10 @@ namespace SandboxEvolutionRunner.Scenarios
             var customLoader = new BasicRoomsInsteadOfCorridorsLoader(Options);
             var mapDescriptionsDifferent = customLoader.GetMapDescriptions();
 
-            RunBenchmark(mapDescriptionsNormal.Select(GetInput), Options.FinalEvaluationIterations, "NormalMapDescriptions");
-            RunBenchmark(mapDescriptionsDifferent.Select(GetInput), Options.FinalEvaluationIterations, "DifferentMapDescriptions");
+            RunBenchmark(mapDescriptionsNormal.Select(GetInput), Options.FinalEvaluationIterations,
+                "NormalMapDescriptions");
+            RunBenchmark(mapDescriptionsDifferent.Select(GetInput), Options.FinalEvaluationIterations,
+                "DifferentMapDescriptions");
         }
 
         public class BasicRoomsInsteadOfCorridorsLoader : MapDescriptionLoader

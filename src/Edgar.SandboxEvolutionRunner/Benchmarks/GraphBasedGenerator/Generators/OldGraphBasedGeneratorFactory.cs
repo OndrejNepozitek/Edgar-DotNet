@@ -20,7 +20,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
         public string Name { get; }
 
-        public OldGraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false)
+        public OldGraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration,
+            bool benchmarkInitialization = false)
         {
             this.configuration = configuration;
             this.benchmarkInitialization = benchmarkInitialization;
@@ -92,7 +93,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var seedGenerator = new Random();
 
             var mapDescription = levelDescription.GetMapDescription();
-            
+
             return new LambdaGeneratorRunner(() =>
             {
                 var stopwatch = new Stopwatch();
@@ -122,7 +123,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     GeneratedLayout = layout,
                 };
 
-                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, stopwatch.ElapsedMilliseconds,
+                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null,
+                    stopwatch.ElapsedMilliseconds,
                     layoutGenerator.IterationsCount, additionalData);
 
                 return generatorRun;

@@ -23,7 +23,8 @@ namespace Edgar.Legacy.Utils.Statistics
         /// <param name="referenceValueObject"></param>
         /// <param name="valueSelector"></param>
         /// <returns></returns>
-        public static double DifferenceToReference<T>(T valueObject, T referenceValueObject, Func<T, double> valueSelector)
+        public static double DifferenceToReference<T>(T valueObject, T referenceValueObject,
+            Func<T, double> valueSelector)
         {
             return DifferenceToReference(valueSelector(valueObject), valueSelector(referenceValueObject));
         }

@@ -25,46 +25,57 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
         protected string Directory;
         protected Logger Logger;
         protected Options Options;
-        
+
         public virtual void Run(Options options)
         {
             Options = options;
             Directory = FileNamesHelper.PrefixWithTimestamp(Options.Name);
             DirectoryFullPath = Path.Combine("DungeonGeneratorEvolutions", Directory);
             System.IO.Directory.CreateDirectory(DirectoryFullPath);
-            Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
+            Logger = new Logger(new ConsoleLoggerHandler(),
+                new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
 
             Run();
         }
 
         protected abstract void Run();
 
-        protected OldGraphBasedGeneratorFactory<TNode> GetOldGenerator<TNode>(BenchmarkOptions options, bool withInit = false)
+        protected OldGraphBasedGeneratorFactory<TNode> GetOldGenerator<TNode>(BenchmarkOptions options,
+            bool withInit = false)
         {
             return new OldGraphBasedGeneratorFactory<TNode>(new DungeonGeneratorConfiguration<TNode>()
             {
-                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?)
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value)
+                    : default(TimeSpan?)
             }, withInit);
         }
 
-        protected BeforeMasterThesisGraphBasedGeneratorFactory<TNode> GetBeforeMasterThesisGenerator<TNode>(BenchmarkOptions options, bool withInit = false)
+        protected BeforeMasterThesisGraphBasedGeneratorFactory<TNode> GetBeforeMasterThesisGenerator<TNode>(
+            BenchmarkOptions options, bool withInit = false)
         {
             return new BeforeMasterThesisGraphBasedGeneratorFactory<TNode>(new DungeonGeneratorConfiguration<TNode>()
             {
-                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?)
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value)
+                    : default(TimeSpan?)
             }, withInit);
         }
 
-        protected GraphBasedGeneratorFactory<TNode> GetNewGenerator<TNode>(BenchmarkOptions options, bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
+        protected GraphBasedGeneratorFactory<TNode> GetNewGenerator<TNode>(BenchmarkOptions options,
+            bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
         {
             return new GraphBasedGeneratorFactory<TNode>(new GraphBasedGeneratorConfiguration<TNode>()
             {
-                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?),
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value)
+                    : default(TimeSpan?),
                 OptimizeCorridorConstraints = optimizeCorridorConstraints,
             }, withInit, name);
         }
 
-        protected void RunBenchmark<TNode>(List<BenchmarkScenario<TNode>> scenarios, List<ILevelGeneratorFactory<TNode>> generators)
+        protected void RunBenchmark<TNode>(List<BenchmarkScenario<TNode>> scenarios,
+            List<ILevelGeneratorFactory<TNode>> generators)
         {
             var results = new List<BenchmarkScenarioResult>();
 
@@ -72,7 +83,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             {
                 foreach (var levelGeneratorFactory in generators)
                 {
-                    var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory, Options.FinalEvaluationIterations);
+                    var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory,
+                        Options.FinalEvaluationIterations);
                     results.Add(result);
                 }
 
@@ -82,7 +94,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             PlotResults<TNode>("All", results);
         }
 
-        protected void RunBenchmark<TNode>(BenchmarkScenarioGroup<TNode> scenarioGroup, List<ILevelGeneratorFactory<TNode>> generators)
+        protected void RunBenchmark<TNode>(BenchmarkScenarioGroup<TNode> scenarioGroup,
+            List<ILevelGeneratorFactory<TNode>> generators)
         {
             var results = new List<BenchmarkScenarioResult>();
 
@@ -90,7 +103,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             {
                 foreach (var levelGeneratorFactory in generators)
                 {
-                    var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory, Options.FinalEvaluationIterations);
+                    var result = RunBenchmark(benchmarkScenario, levelGeneratorFactory,
+                        Options.FinalEvaluationIterations);
                     results.Add(result);
                 }
 
@@ -104,7 +118,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
         {
             var results = new List<BenchmarkScenarioResult>();
 
-            foreach (var path in System.IO.Directory.GetFiles(@"C:\Users\ondra\OneDrive\Dokumenty\Unity\Benchmarks\DungeonGeneratorEvolutions\1596449602_"))
+            foreach (var path in System.IO.Directory.GetFiles(
+                         @"C:\Users\ondra\OneDrive\Dokumenty\Unity\Benchmarks\DungeonGeneratorEvolutions\1596449602_"))
             {
                 var resultText = File.ReadAllText(path);
                 var result = JsonConvert.DeserializeObject<BenchmarkScenarioResult>(resultText);
@@ -128,21 +143,23 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
             plt.Legend(fontSize: 10, location: legendLocation.upperLeft);
             plt.Title(name);
             plt.SaveFig(Path.Combine(DirectoryFullPath, $"{name}.png"));
-
         }
 
-        protected virtual BenchmarkScenarioResult RunBenchmark<TNode>(BenchmarkScenario<TNode> scenario, ILevelGeneratorFactory<TNode> generator, int iterations)
+        protected virtual BenchmarkScenarioResult RunBenchmark<TNode>(BenchmarkScenario<TNode> scenario,
+            ILevelGeneratorFactory<TNode> generator, int iterations)
         {
-            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations, new Edgar.Benchmarks.BenchmarkOptions()
-            {
-                WithConsolePreview = Options.WithConsolePreview,
-                MultiThreaded = Options.MaxThreads > 1,
-                MaxDegreeOfParallelism = Options.MaxThreads,
-                WithFileOutput = false,
-            }, Options.IncludeUnsuccessful); 
+            var scenarioResult = BenchmarkRunner.Run(scenario, generator, iterations,
+                new Edgar.Benchmarks.BenchmarkOptions()
+                {
+                    WithConsolePreview = Options.WithConsolePreview,
+                    MultiThreaded = Options.MaxThreads > 1,
+                    MaxDegreeOfParallelism = Options.MaxThreads,
+                    WithFileOutput = false,
+                }, Options.IncludeUnsuccessful);
 
             var resultSaver = new BenchmarkResultSaver();
-            resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath, name: $"{Directory}_{scenario.Name}_{generator.Name}", withDatetime: false);
+            resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath,
+                name: $"{Directory}_{scenario.Name}_{generator.Name}", withDatetime: false);
 
             return scenarioResult;
         }

@@ -130,7 +130,8 @@ namespace Edgar.Legacy.Utils.GraphAnalysis
                             if (edge.From.Equals(currentNode) && !Nodes.Contains(edge.To))
                             {
                                 currentNode = edge.To;
-                            } else if (edge.To.Equals(currentNode) && !Nodes.Contains(edge.From))
+                            }
+                            else if (edge.To.Equals(currentNode) && !Nodes.Contains(edge.From))
                             {
                                 currentNode = edge.From;
                             }
@@ -138,7 +139,6 @@ namespace Edgar.Legacy.Utils.GraphAnalysis
                     }
                 }
             }
-
         }
     }
 }

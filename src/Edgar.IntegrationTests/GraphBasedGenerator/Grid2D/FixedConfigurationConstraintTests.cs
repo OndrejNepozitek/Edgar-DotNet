@@ -12,7 +12,6 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
     [TestFixture]
     public class FixedConfigurationConstraintTests
     {
-
         [Test]
         public void FixedPosition_Path_OneRoom_StartOfChain()
         {
@@ -20,10 +19,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -38,10 +41,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -60,7 +64,8 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
         [Test]
         public void FixedPosition_Path_OneRoom_DifferentTransformation_FromTwoPossible()
         {
-            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorModeGrid2D(1, 0), allowedTransformations: new List<TransformationGrid2D>()
+            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(5, 10),
+                new SimpleDoorModeGrid2D(1, 0), allowedTransformations: new List<TransformationGrid2D>()
                 {
                     TransformationGrid2D.Identity,
                     TransformationGrid2D.Rotate90
@@ -68,10 +73,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -87,10 +96,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -110,14 +120,19 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
         [Test]
         public void FixedPosition_Path_OneRoom_DifferentTransformation_FromAllPossible()
         {
-            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(5, 10), new SimpleDoorModeGrid2D(1, 0), allowedTransformations: TransformationGrid2DHelper.GetAll());
+            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(5, 10),
+                new SimpleDoorModeGrid2D(1, 0), allowedTransformations: TransformationGrid2DHelper.GetAll());
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -133,10 +148,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -156,14 +172,19 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
         [Test]
         public void FixedShapeAndPosition_Path_OneRoom_StartOfChain_NotNormalizedRoomTemplate()
         {
-            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(5) + new Vector2Int(5, 10), new SimpleDoorModeGrid2D(1, 0));
+            var roomTemplate1 = new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(5) + new Vector2Int(5, 10),
+                new SimpleDoorModeGrid2D(1, 0));
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -178,10 +199,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -204,10 +226,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -222,10 +248,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -248,10 +275,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -272,10 +303,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 },
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -336,10 +368,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 },
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -372,10 +405,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -396,10 +433,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 },
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -430,16 +468,21 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
 
             // Extended path
-            levelDescription.AddRoom(4, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(4,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(3, 4);
 
             levelDescription.Constraints = new List<IGeneratorConstraintGrid2D<int>>()
@@ -464,10 +507,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 },
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -506,10 +550,14 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -525,10 +573,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 }
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();
@@ -551,11 +600,16 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(4, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(4,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -588,11 +642,16 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
 
             var levelDescription = new LevelDescriptionGrid2D<int>();
 
-            levelDescription.AddRoom(0, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(1, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(2, new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(3, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
-            levelDescription.AddRoom(4, new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { roomTemplate1 }));
+            levelDescription.AddRoom(0,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(1,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(2,
+                new RoomDescriptionGrid2D(true, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(3,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
+            levelDescription.AddRoom(4,
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
             levelDescription.AddConnection(0, 1);
             levelDescription.AddConnection(1, 2);
             levelDescription.AddConnection(2, 3);
@@ -620,10 +679,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                 },
             };
 
-            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-            {
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
-            });
+            var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                new GraphBasedGeneratorConfiguration<int>()
+                {
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(2),
+                });
             generator.InjectRandomGenerator(new Random(0));
 
             var layout = generator.GenerateLayout();

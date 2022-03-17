@@ -17,7 +17,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public IReadOnlyList<ConfigurationSpaceSourceGrid2D> ReverseDoors { get; }
 
-        public ConfigurationSpaceGrid2D(List<OrthogonalLineGrid2D> lines, List<ConfigurationSpaceSourceGrid2D> reverseDoors = null)
+        public ConfigurationSpaceGrid2D(List<OrthogonalLineGrid2D> lines,
+            List<ConfigurationSpaceSourceGrid2D> reverseDoors = null)
         {
             this.lines = lines;
             Lines = ImmutableArray.CreateRange(lines);
@@ -48,7 +49,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                     for (var i = 0; i < maxPointsPerLine; i++)
                     {
-                        var position = intersectionLine.GetNthPoint(i != maxPointsPerLine - 1 ? i * mod : intersectionLine.Length);
+                        var position =
+                            intersectionLine.GetNthPoint(i != maxPointsPerLine - 1 ? i * mod : intersectionLine.Length);
                         yield return position;
                     }
                 }

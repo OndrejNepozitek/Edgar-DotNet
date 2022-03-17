@@ -19,10 +19,10 @@ namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 
         public SimulatedAnnealingConfiguration()
         {
-
         }
 
-        public SimulatedAnnealingConfiguration(int cycles, int trialsPerCycle, int maxIterationsWithoutSuccess, int maxStageTwoFailures)
+        public SimulatedAnnealingConfiguration(int cycles, int trialsPerCycle, int maxIterationsWithoutSuccess,
+            int maxStageTwoFailures)
         {
             Cycles = cycles;
             TrialsPerCycle = trialsPerCycle;
@@ -40,14 +40,17 @@ namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
 
         public SimulatedAnnealingConfiguration SmartClone()
         {
-            return new SimulatedAnnealingConfiguration(Cycles, TrialsPerCycle, MaxIterationsWithoutSuccess, MaxStageTwoFailures);
+            return new SimulatedAnnealingConfiguration(Cycles, TrialsPerCycle, MaxIterationsWithoutSuccess,
+                MaxStageTwoFailures);
         }
 
         #region Equals
 
         protected bool Equals(SimulatedAnnealingConfiguration other)
         {
-            return Cycles == other.Cycles && TrialsPerCycle == other.TrialsPerCycle && MaxIterationsWithoutSuccess == other.MaxIterationsWithoutSuccess && MaxStageTwoFailures == other.MaxStageTwoFailures;
+            return Cycles == other.Cycles && TrialsPerCycle == other.TrialsPerCycle &&
+                   MaxIterationsWithoutSuccess == other.MaxIterationsWithoutSuccess &&
+                   MaxStageTwoFailures == other.MaxStageTwoFailures;
         }
 
         public override bool Equals(object obj)
@@ -55,7 +58,7 @@ namespace Edgar.Legacy.Core.LayoutEvolvers.SimulatedAnnealing
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((SimulatedAnnealingConfiguration)obj);
+            return Equals((SimulatedAnnealingConfiguration) obj);
         }
 
         public override int GetHashCode()

@@ -4,7 +4,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
 namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 {
-	public class RoomTemplateInstanceGrid2D
+    public class RoomTemplateInstanceGrid2D
     {
         /// <summary>
         /// Room description.
@@ -31,7 +31,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         /// </summary>
         public List<TransformationGrid2D> Transformations { get; }
 
-        public RoomTemplateInstanceGrid2D(RoomTemplateGrid2D roomTemplate, PolygonGrid2D roomShape, List<DoorLineGrid2D> doorLines, List<TransformationGrid2D> transformations)
+        public RoomTemplateInstanceGrid2D(RoomTemplateGrid2D roomTemplate, PolygonGrid2D roomShape,
+            List<DoorLineGrid2D> doorLines, List<TransformationGrid2D> transformations)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;

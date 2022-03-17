@@ -6,7 +6,8 @@ namespace Edgar.Benchmarks
 {
     public static class BenchmarkExtensions
     {
-        public static void Save(this BenchmarkScenarioResult result, string name = null, string directory = "BenchmarkResults/", bool withDatetime = true)
+        public static void Save(this BenchmarkScenarioResult result, string name = null,
+            string directory = "BenchmarkResults/", bool withDatetime = true)
         {
             var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
             var path = Path.Combine(directory, $"{datetime}{name ?? result.Name ?? string.Empty}.json");

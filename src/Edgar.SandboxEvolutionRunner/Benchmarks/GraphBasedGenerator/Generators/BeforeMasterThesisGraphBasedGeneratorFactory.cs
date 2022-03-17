@@ -21,7 +21,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
         public string Name { get; }
 
-        public BeforeMasterThesisGraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false)
+        public BeforeMasterThesisGraphBasedGeneratorFactory(DungeonGeneratorConfiguration<TNode> configuration,
+            bool benchmarkInitialization = false)
         {
             this.configuration = configuration;
             this.benchmarkInitialization = benchmarkInitialization;
@@ -43,10 +44,11 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
             var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
 
@@ -90,14 +92,15 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<TNode>();
             var chainDecomposition = new TwoStageChainDecomposition<TNode>(mapDescription, chainDecompositionOld);
             configuration.Chains = chainDecomposition.GetChains(levelDescription.GetGraph());
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             var layoutDrawer = new SVGLayoutDrawer<TNode>();
             var seedGenerator = new Random();
-            
+
             return new LambdaGeneratorRunner(() =>
             {
                 var stopwatch = new Stopwatch();
@@ -127,7 +130,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     GeneratedLayout = layout,
                 };
 
-                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, stopwatch.ElapsedMilliseconds,
+                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null,
+                    stopwatch.ElapsedMilliseconds,
                     layoutGenerator.IterationsCount, additionalData);
 
                 return generatorRun;

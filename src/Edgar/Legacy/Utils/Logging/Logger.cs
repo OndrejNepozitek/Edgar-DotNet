@@ -10,7 +10,6 @@ namespace Edgar.Legacy.Utils.Logging
 
         public Logger()
         {
-
         }
 
         public Logger(params ILoggerHandler[] loggerHandlers)
@@ -21,7 +20,7 @@ namespace Edgar.Legacy.Utils.Logging
         public void AddLoggerHandler(ILoggerHandler loggerHandler)
         {
             loggerHandlers.Add(loggerHandler);
-        } 
+        }
 
         public void WriteLine(string text = "")
         {

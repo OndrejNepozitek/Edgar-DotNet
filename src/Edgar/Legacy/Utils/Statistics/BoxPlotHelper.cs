@@ -7,7 +7,8 @@ namespace Edgar.Legacy.Utils.Statistics
 {
     public class BoxPlotHelper
     {
-        public static List<double> GetTimeDifferences(BenchmarkScenarioResult result, BenchmarkScenarioResult referenceResult, double successRateThreshold = 0d)
+        public static List<double> GetTimeDifferences(BenchmarkScenarioResult result,
+            BenchmarkScenarioResult referenceResult, double successRateThreshold = 0d)
         {
             var times = result.Results.Select(x => x.Runs.Average(y => y.Time)).ToList();
             var timesReference = referenceResult.Results.Select(x => x.Runs.Average(y => y.Time)).ToList();
@@ -18,7 +19,8 @@ namespace Edgar.Legacy.Utils.Statistics
                 var benchmarkResultReference = referenceResult.Results[i];
 
                 var successRate = benchmarkResult.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResult.Runs.Count;
-                var successRateReference = benchmarkResultReference.Runs.Count(x => x.IsSuccessful) / (double) benchmarkResultReference.Runs.Count;
+                var successRateReference = benchmarkResultReference.Runs.Count(x => x.IsSuccessful) /
+                                           (double) benchmarkResultReference.Runs.Count;
 
                 if (successRate < successRateThreshold && successRateReference < successRateThreshold)
                 {
@@ -32,7 +34,8 @@ namespace Edgar.Legacy.Utils.Statistics
             return differences;
         }
 
-        public static BoxPlotValues GetBoxPlotValues(BenchmarkScenarioResult result, BenchmarkScenarioResult referenceResult, bool excludeOutliers = true)
+        public static BoxPlotValues GetBoxPlotValues(BenchmarkScenarioResult result,
+            BenchmarkScenarioResult referenceResult, bool excludeOutliers = true)
         {
             var timeDifferences = GetTimeDifferences(result, referenceResult);
             return GetBoxPlotValues(timeDifferences, excludeOutliers);

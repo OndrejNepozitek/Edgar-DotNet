@@ -40,7 +40,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -68,8 +69,9 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         [Test]
         public void DifferentTransformationsProperlyHandled()
         {
-            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat, TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1 });
+            var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat,
+                TransformationGrid2DHelper.GetAllTransformationsOld().ToList());
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate1});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -96,7 +98,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -128,7 +131,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -149,7 +153,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 var shapes = roomShapesHandler
                     .GetPossibleShapesForNode(layout, node);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[node] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[node]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -160,7 +164,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.AllowRepeat);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -182,7 +187,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 var shapes = roomShapesHandler
                     .GetPossibleShapesForNode(layout, node);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[node] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[node]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -193,7 +198,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -213,21 +219,21 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0], roomShapes[2]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[1]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0], roomShapes[2]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
@@ -238,8 +244,10 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
             var roomTemplate3 = GetRoomTemplate(RoomTemplateRepeatMode.NoImmediate);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
-            var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2, roomTemplate3 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
+            var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>()
+                {roomTemplate1, roomTemplate2, roomTemplate3});
 
             var mapDescription = GetMapDescription(roomDescription, corridorRoomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -259,25 +267,26 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0], roomShapes[2]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[1]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0], roomShapes[2] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0], roomShapes[2]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
-            foreach (var corridorRoom in mapDescription.GetGraph().Vertices.Where(x => mapDescription.GetRoomDescription(x) is CorridorRoomDescription))
+            foreach (var corridorRoom in mapDescription.GetGraph().Vertices
+                         .Where(x => mapDescription.GetRoomDescription(x) is CorridorRoomDescription))
             {
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, corridorRoom);
                 var expectedShapes = configurationSpaces.GetShapesForNode(corridorRoom);
@@ -290,7 +299,7 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
         {
             var roomTemplate1 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
             var roomTemplate2 = GetRoomTemplate(RoomTemplateRepeatMode.NoRepeat);
-            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() { roomTemplate1, roomTemplate2 });
+            var roomDescription = new BasicRoomDescription(new List<RoomTemplate>() {roomTemplate1, roomTemplate2});
 
             var mapDescription = GetMapDescription(roomDescription);
             var configurationSpaces = GetConfigurationSpaces(mapDescription);
@@ -309,36 +318,40 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             {
                 // Node 0
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 0, true);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 1
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 1, true);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[1] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[1]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
 
             {
                 // Node 2
                 var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, 2, true);
-                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() { roomShapes[0] };
+                var expectedShapes = new List<IntAlias<PolygonGrid2D>>() {roomShapes[0]};
                 Assert.That(shapes, Is.EquivalentTo(expectedShapes));
             }
         }
 
-        private void SetConfiguration(Layout<Configuration<CorridorsData>> layout, int node, IntAlias<PolygonGrid2D> alias)
+        private void SetConfiguration(Layout<Configuration<CorridorsData>> layout, int node,
+            IntAlias<PolygonGrid2D> alias)
         {
-            layout.SetConfiguration(node, new Configuration<CorridorsData>(alias, new Vector2Int(0, 0), new CorridorsData(), node));
+            layout.SetConfiguration(node,
+                new Configuration<CorridorsData>(alias, new Vector2Int(0, 0), new CorridorsData(), node));
         }
 
-        private ConfigurationSpaces<Configuration<CorridorsData>> GetConfigurationSpaces(MapDescription<int> mapDescription)
+        private ConfigurationSpaces<Configuration<CorridorsData>> GetConfigurationSpaces(
+            MapDescription<int> mapDescription)
         {
             return configurationSpacesGenerator.GetConfigurationSpaces<Configuration<CorridorsData>>(mapDescription);
         }
 
-        private MapDescription<int> GetMapDescription(BasicRoomDescription roomDescription, CorridorRoomDescription corridorRoomDescription = null)
+        private MapDescription<int> GetMapDescription(BasicRoomDescription roomDescription,
+            CorridorRoomDescription corridorRoomDescription = null)
         {
             var mapDescription = new MapDescription<int>();
 
@@ -373,7 +386,8 @@ namespace MapGeneration.IntegrationTests.Core.LayoutOperations
             return mapDescription;
         }
 
-        private RoomTemplate GetRoomTemplate(RoomTemplateRepeatMode repeatMode, List<TransformationGrid2D> transformations = null)
+        private RoomTemplate GetRoomTemplate(RoomTemplateRepeatMode repeatMode,
+            List<TransformationGrid2D> transformations = null)
         {
             return new RoomTemplate(
                 PolygonGrid2D.GetRectangle(10, 20),

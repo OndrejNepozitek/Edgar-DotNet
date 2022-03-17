@@ -11,7 +11,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator
 
         public List<LevelDescriptionResult> LevelDescriptionResults { get; }
 
-        public BenchmarkScenarioResult(BenchmarkScenario<TNode> benchmarkScenario, List<LevelDescriptionResult> levelDescriptionResults)
+        public BenchmarkScenarioResult(BenchmarkScenario<TNode> benchmarkScenario,
+            List<LevelDescriptionResult> levelDescriptionResults)
         {
             BenchmarkScenario = benchmarkScenario;
             LevelDescriptionResults = levelDescriptionResults;

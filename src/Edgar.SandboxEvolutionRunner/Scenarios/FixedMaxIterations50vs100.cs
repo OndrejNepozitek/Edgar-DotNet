@@ -12,10 +12,11 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 50,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 50,
+                });
 
             return configuration;
         }
@@ -23,10 +24,11 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                });
 
             return configuration;
         }

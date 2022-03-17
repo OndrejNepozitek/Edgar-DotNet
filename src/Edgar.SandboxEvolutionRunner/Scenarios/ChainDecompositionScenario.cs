@@ -13,10 +13,11 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             return configuration;
         }
@@ -24,14 +25,16 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription)
         {
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            var chainDecomposition = new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition =
+                new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
 
             var configuration = GetBasicConfiguration(namedMapDescription);
             configuration.Chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             return configuration;
         }

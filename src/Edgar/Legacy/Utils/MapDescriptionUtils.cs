@@ -24,8 +24,10 @@ namespace Edgar.Legacy.Utils
             var doorMode = new SimpleDoorMode(1 * overlapScale, 0);
             var transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
-            var squareRoom = new RoomTemplate(PolygonGrid2D.GetSquare(6).Scale(scale), doorMode, transformations, name: "Square");
-            var rectangleRoom = new RoomTemplate(PolygonGrid2D.GetRectangle(6, 9).Scale(scale), doorMode, transformations, name: "Rectangle");
+            var squareRoom = new RoomTemplate(PolygonGrid2D.GetSquare(6).Scale(scale), doorMode, transformations,
+                name: "Square");
+            var rectangleRoom = new RoomTemplate(PolygonGrid2D.GetRectangle(6, 9).Scale(scale), doorMode,
+                transformations, name: "Rectangle");
 
             return new List<RoomTemplate>()
             {
@@ -171,7 +173,8 @@ namespace Edgar.Legacy.Utils
             return mapDescription;
         }
 
-        public static string GetInputName(string name, Vector2Int scale, bool withCorridors, List<int> offsets, bool canTouch, string suffix = null)
+        public static string GetInputName(string name, Vector2Int scale, bool withCorridors, List<int> offsets,
+            bool canTouch, string suffix = null)
         {
             var inputName = name;
 

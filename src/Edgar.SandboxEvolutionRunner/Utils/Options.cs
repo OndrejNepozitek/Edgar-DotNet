@@ -8,8 +8,7 @@ namespace SandboxEvolutionRunner.Utils
 {
     public class Options
     {
-        [Option("graphs", Required = false)]
-        public IEnumerable<string> Graphs { get; set; } = null;
+        [Option("graphs", Required = false)] public IEnumerable<string> Graphs { get; set; } = null;
 
         [Option("graphSets", Required = false)]
         public IEnumerable<string> GraphSets { get; set; } = null;
@@ -26,48 +25,34 @@ namespace SandboxEvolutionRunner.Utils
         [Option("mutations", Required = false)]
         public IEnumerable<string> Mutations { get; set; } = null;
 
-        [Option("canTouch")] 
-        public bool CanTouch { get; set; } = false;
+        [Option("canTouch")] public bool CanTouch { get; set; } = false;
 
-        [Option("eval")] 
-        public bool Eval { get; set; } = false;
+        [Option("eval")] public bool Eval { get; set; } = false;
 
-        [Option("evolutionIterations")] 
-        public int EvolutionIterations { get; set; } = 250;
+        [Option("evolutionIterations")] public int EvolutionIterations { get; set; } = 250;
 
-        [Option("finalEvaluationIterations")] 
-        public int FinalEvaluationIterations { get; set; } = 250;
+        [Option("finalEvaluationIterations")] public int FinalEvaluationIterations { get; set; } = 250;
 
-        [Option("maxThreads")] 
-        public int MaxThreads { get; set; } = 10;
+        [Option("maxThreads")] public int MaxThreads { get; set; } = 10;
 
-        [Option("name")] 
-        public string Name { get; set; }
+        [Option("name")] public string Name { get; set; }
 
-        [Option("scenario")] 
-        public string Scenario { get; set; } = "Evolution";
+        [Option("scenario")] public string Scenario { get; set; } = "Evolution";
 
-        [Option("withConsolePreview")] 
-        public bool WithConsolePreview { get; set; } = false;
+        [Option("withConsolePreview")] public bool WithConsolePreview { get; set; } = false;
 
-        [Option("earlyStopIterations")] 
-        public int? EarlyStopIterations { get; set; } = null;
+        [Option("earlyStopIterations")] public int? EarlyStopIterations { get; set; } = null;
 
-        [Option("earlyStopTime")] 
-        public int? EarlyStopTime { get; set; } = null;
+        [Option("earlyStopTime")] public int? EarlyStopTime { get; set; } = null;
 
-        [Option("fitnessType")] 
-        public FitnessType FitnessType { get; set; } = FitnessType.Iterations;
+        [Option("fitnessType")] public FitnessType FitnessType { get; set; } = FitnessType.Iterations;
 
-        [Option("asyncBenchmark")]
-        public bool AsyncBenchmark { get; set; } = false;
+        [Option("asyncBenchmark")] public bool AsyncBenchmark { get; set; } = false;
 
-        [Option("includeUnsuccessful")]
-        public bool IncludeUnsuccessful { get; set; } = false;
+        [Option("includeUnsuccessful")] public bool IncludeUnsuccessful { get; set; } = false;
 
         public Vector2Int Scale { get; set; } = new Vector2Int(1, 1);
 
-        [Option("roomTemplates")]
-        public RoomTemplatesSet RoomTemplatesSet { get; set; } = RoomTemplatesSet.Original;
+        [Option("roomTemplates")] public RoomTemplatesSet RoomTemplatesSet { get; set; } = RoomTemplatesSet.Original;
     }
 }

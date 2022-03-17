@@ -49,10 +49,11 @@ namespace Sandbox.Features
                 {
                     RepeatModeOverride = RoomTemplateRepeatMode.NoImmediate,
                     ThrowIfRepeatModeNotSatisfied = true,
-                    SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-                    {
-                        HandleTreesGreedily = true,
-                    })
+                    SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                        new SimulatedAnnealingConfiguration()
+                        {
+                            HandleTreesGreedily = true,
+                        })
                 };
                 // var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
                 var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
@@ -67,6 +68,7 @@ namespace Sandbox.Features
                 return new LambdaGeneratorRunner(() =>
                 {
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                     void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
                         simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -83,7 +85,8 @@ namespace Sandbox.Features
                         // GeneratedLayout = layout,
                     };
 
-                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                        layoutGenerator.IterationsCount, additionalData);
 
                     return generatorRun;
                 });

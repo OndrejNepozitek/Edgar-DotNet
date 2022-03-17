@@ -12,8 +12,10 @@ using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
 namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
 {
-    public class ChainDecompositionAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
-        where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>, ISimulatedAnnealingConfiguration
+    public class ChainDecompositionAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<
+        TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+        where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>,
+        ISimulatedAnnealingConfiguration
         where TGeneratorStats : IChainsStats
         where TNode : IEquatable<TNode>
     {
@@ -24,7 +26,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
             this.mapDescription = mapDescription;
         }
 
-        public List<IMutation<TConfiguration>> ProposeMutations(Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
+        public List<IMutation<TConfiguration>> ProposeMutations(
+            Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
         {
             var mutations = new List<IMutation<TConfiguration>>();
 
@@ -44,7 +47,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
             return mutations;
         }
 
-        private IMutation<TConfiguration> GetMutation(int priority, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
+        private IMutation<TConfiguration> GetMutation(int priority, int maxTreeSize, bool mergeSmallChains,
+            bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             var configuration = new ChainDecompositionConfiguration()
             {
@@ -55,10 +59,12 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
             };
 
             var chains =
-                new Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription, new BreadthFirstChainDecomposition<TNode>(configuration))
+                new Core.ChainDecompositions.TwoStageChainDecomposition<TNode>(mapDescription,
+                        new BreadthFirstChainDecomposition<TNode>(configuration))
                     .GetChains(mapDescription.GetGraph()).ToList();
 
-            return new ChainDecompositionMutation<TConfiguration, TNode>(priority, chains, maxTreeSize, mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy);
+            return new ChainDecompositionMutation<TConfiguration, TNode>(priority, chains, maxTreeSize,
+                mergeSmallChains, startTreeWithMultipleVertices, treeComponentStrategy);
         }
     }
 }

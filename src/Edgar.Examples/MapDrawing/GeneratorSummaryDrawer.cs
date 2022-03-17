@@ -12,7 +12,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         private LevelDescriptionGrid2D<TRoom> levelDescription;
         private int totalWidth;
 
-        public Bitmap Draw(LevelDescriptionGrid2D<TRoom> levelDescription, int width, GraphBasedGeneratorGrid2D<TRoom> generator)
+        public Bitmap Draw(LevelDescriptionGrid2D<TRoom> levelDescription, int width,
+            GraphBasedGeneratorGrid2D<TRoom> generator)
         {
             bitmap = new Bitmap(width, width);
             graphics = Graphics.FromImage(bitmap);
@@ -57,16 +58,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     Alignment = StringAlignment.Center
                 };
 
-                graphics.DrawString("Graph-based procedural level generator for .NET and Unity", font, new SolidBrush(color), rectSub, sf);
+                graphics.DrawString("Graph-based procedural level generator for .NET and Unity", font,
+                    new SolidBrush(color), rectSub, sf);
             }
         }
 
         private void DrawLayout1(RectangleF rect)
         {
             DrawRoomTemplates(GetSubRect(rect, 0f, 0f, 0.5f, 0.5f));
-            DrawOutput(GetSubRect(rect,0f, 0.5f, 1/3f, 0.5f));
-            DrawOutput(GetSubRect(rect,1/3f, 0.5f, 1/3f, 0.5f));
-            DrawOutput(GetSubRect(rect,2/3f, 0.5f, 1/3f, 0.5f));
+            DrawOutput(GetSubRect(rect, 0f, 0.5f, 1 / 3f, 0.5f));
+            DrawOutput(GetSubRect(rect, 1 / 3f, 0.5f, 1 / 3f, 0.5f));
+            DrawOutput(GetSubRect(rect, 2 / 3f, 0.5f, 1 / 3f, 0.5f));
         }
 
         private void DrawBackground()
@@ -84,7 +86,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 .Distinct()
                 .ToList();
             var roomTemplatesDrawer = new RoomTemplateDrawerOld<TRoom>();
-            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, (int) rect.Width, (int) rect.Height, true,1.5f, 0.2f);
+            var roomTemplatesBitmap = roomTemplatesDrawer.DrawRoomTemplates(roomTemplates, (int) rect.Width,
+                (int) rect.Height, true, 1.5f, 0.2f);
             graphics.DrawImage(roomTemplatesBitmap, rect);
         }
 
@@ -106,7 +109,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
         private RectangleF GetSubRect(RectangleF rect, float xFrom, float yFrom, float width, float height)
         {
-            return new RectangleF(rect.Left + xFrom * rect.Width, rect.Top + yFrom * rect.Height, rect.Width * width, rect.Height * height);
+            return new RectangleF(rect.Left + xFrom * rect.Width, rect.Top + yFrom * rect.Height, rect.Width * width,
+                rect.Height * height);
         }
     }
 }

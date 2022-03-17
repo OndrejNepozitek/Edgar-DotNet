@@ -10,8 +10,8 @@ namespace Edgar.Legacy.Core.MapLayouts
     /// Represents a layout room.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
-	public class Room<TNode>
-	{
+    public class Room<TNode>
+    {
         /// <summary>
         /// Corresponding input graph node.
         /// </summary>
@@ -26,7 +26,7 @@ namespace Edgar.Legacy.Core.MapLayouts
         /// Position of the room.
         /// </summary>
         public Vector2Int Position { get; }
-        
+
         /// <summary>
         /// Room template used for this room.
         /// </summary>
@@ -62,17 +62,19 @@ namespace Edgar.Legacy.Core.MapLayouts
         /// </summary>
         public IList<TransformationGrid2D> Transformations { get; }
 
-		public Room(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate, IRoomDescription roomDescription, TransformationGrid2D transformation, List<TransformationGrid2D> transformations, RoomTemplateInstance roomTemplateInstance)
-		{
-			Node = node;
-			Shape = shape;
-			Position = position;
-			IsCorridor = isCorridor;
-			RoomTemplate = roomTemplate;
-			Transformation = transformation;
-			Transformations = transformations;
+        public Room(TNode node, PolygonGrid2D shape, Vector2Int position, bool isCorridor, RoomTemplate roomTemplate,
+            IRoomDescription roomDescription, TransformationGrid2D transformation,
+            List<TransformationGrid2D> transformations, RoomTemplateInstance roomTemplateInstance)
+        {
+            Node = node;
+            Shape = shape;
+            Position = position;
+            IsCorridor = isCorridor;
+            RoomTemplate = roomTemplate;
+            Transformation = transformation;
+            Transformations = transformations;
             RoomTemplateInstance = roomTemplateInstance;
             RoomDescription = roomDescription;
         }
-	}
+    }
 }

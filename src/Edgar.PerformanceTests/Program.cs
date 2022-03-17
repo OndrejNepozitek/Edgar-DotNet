@@ -6,14 +6,12 @@ namespace PerformanceTests
     {
         public class Options
         {
-            [Option("commit", Required = true)]
-            public string Commit { get; set; }
+            [Option("commit", Required = true)] public string Commit { get; set; }
 
             [Option("commitMessage", Required = true)]
             public string CommitMessage { get; set; }
 
-            [Option("branch", Required = true)]
-            public string Branch { get; set; }
+            [Option("branch", Required = true)] public string Branch { get; set; }
 
             [Option("buildNumber", Required = true)]
             public string BuildNumber { get; set; }
@@ -21,8 +19,7 @@ namespace PerformanceTests
             [Option("pullRequest", Required = false)]
             public string PullRequest { get; set; }
 
-            [Option("url", Required = true)]
-            public string Url { get; set; }
+            [Option("url", Required = true)] public string Url { get; set; }
 
             [Option("repeats", Required = false, Default = 100)]
             public int Repeats { get; set; }

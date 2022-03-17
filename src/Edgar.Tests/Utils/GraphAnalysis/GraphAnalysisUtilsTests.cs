@@ -23,9 +23,10 @@ namespace MapGeneration.Tests.Utils.GraphAnalysis
 
                 if (i > 0)
                 {
-                    graph.AddEdge(i-1, i);
+                    graph.AddEdge(i - 1, i);
                 }
             }
+
             graph.AddEdge(0, verticesCount - 1);
 
             var cycles = graphCyclesGetter.GetCycles(graph);
@@ -126,7 +127,7 @@ namespace MapGeneration.Tests.Utils.GraphAnalysis
             graph.AddEdge(1, 2);
             graph.AddEdge(2, 3);
             graph.AddEdge(3, 4);
-            
+
             var cycles = graphCyclesGetter.GetCycles(graph);
 
             Assert.That(cycles.Count, Is.EqualTo(6));

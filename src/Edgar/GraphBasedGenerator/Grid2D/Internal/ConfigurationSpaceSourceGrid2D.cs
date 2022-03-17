@@ -22,7 +22,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         /// </summary>
         public DoorLineGrid2D OtherDoorLine { get; }
 
-        public ConfigurationSpaceSourceGrid2D(OrthogonalLineGrid2D configurationSpaceLine, DoorLineGrid2D doorLine, DoorLineGrid2D otherDoorLine)
+        public ConfigurationSpaceSourceGrid2D(OrthogonalLineGrid2D configurationSpaceLine, DoorLineGrid2D doorLine,
+            DoorLineGrid2D otherDoorLine)
         {
             ConfigurationSpaceLine = configurationSpaceLine;
             DoorLine = doorLine;

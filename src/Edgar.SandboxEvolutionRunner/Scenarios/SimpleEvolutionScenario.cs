@@ -14,20 +14,22 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class SimpleEvolutionScenario : EvolutionScenario
     {
-        protected override Result RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
+        protected override Result RunEvolution(Input input, Options options,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
         {
-            var evolution = new SimpleDungeonGeneratorEvolution<int>(input.MapDescription, analyzers, new EvolutionOptions()
-            {
-                MaxPopulationSize = 1,
-                MaxMutationsPerIndividual = 20,
-                EvaluationIterations = options.EvolutionIterations,
-                WithConsoleOutput = false,
-                AllowWorseThanInitial = true,
-                AllowRepeatingConfigurations = false,
-                AllowNotPerfectSuccessRate = true,
-                FitnessType = options.FitnessType,
-                AddPreviousGenerationWhenComputingNext = true,
-            }, Path.Combine(DirectoryFullPath, FileNamesHelper.PrefixWithTimestamp(input.Name)));
+            var evolution = new SimpleDungeonGeneratorEvolution<int>(input.MapDescription, analyzers,
+                new EvolutionOptions()
+                {
+                    MaxPopulationSize = 1,
+                    MaxMutationsPerIndividual = 20,
+                    EvaluationIterations = options.EvolutionIterations,
+                    WithConsoleOutput = false,
+                    AllowWorseThanInitial = true,
+                    AllowRepeatingConfigurations = false,
+                    AllowNotPerfectSuccessRate = true,
+                    FitnessType = options.FitnessType,
+                    AddPreviousGenerationWhenComputingNext = true,
+                }, Path.Combine(DirectoryFullPath, FileNamesHelper.PrefixWithTimestamp(input.Name)));
 
             var result = evolution.Evolve(input.Configuration);
 
@@ -39,11 +41,13 @@ namespace SandboxEvolutionRunner.Scenarios
             };
         }
 
-        protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
+        protected override DungeonGeneratorConfiguration<int> GetBasicConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = base.GetBasicConfiguration(namedMapDescription);
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            var chainDecomposition = new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
+            var chainDecomposition =
+                new TwoStageChainDecomposition<int>(namedMapDescription.MapDescription, chainDecompositionOld);
             var chains = chainDecomposition.GetChains(namedMapDescription.MapDescription.GetGraph());
             configuration.Chains = chains;
 

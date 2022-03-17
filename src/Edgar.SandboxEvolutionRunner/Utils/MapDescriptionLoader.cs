@@ -25,11 +25,11 @@ namespace SandboxEvolutionRunner.Utils
         {
             var allGraphs = new Dictionary<string, Tuple<string, IGraph<int>>>()
             {
-                { "1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1()) },
-                { "2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2()) },
-                { "3", Tuple.Create("Example 3 (fig. 7 bottom)", GraphsDatabase.GetExample3()) },
-                { "4", Tuple.Create("Example 4 (fig. 8)", GraphsDatabase.GetExample4()) },
-                { "5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5()) },
+                {"1", Tuple.Create("Example 1 (fig. 1)", GraphsDatabase.GetExample1())},
+                {"2", Tuple.Create("Example 2 (fig. 7 top)", GraphsDatabase.GetExample2())},
+                {"3", Tuple.Create("Example 3 (fig. 7 bottom)", GraphsDatabase.GetExample3())},
+                {"4", Tuple.Create("Example 4 (fig. 8)", GraphsDatabase.GetExample4())},
+                {"5", Tuple.Create("Example 5 (fig. 9)", GraphsDatabase.GetExample5())},
             };
 
             var graphs = Options
@@ -118,8 +118,10 @@ namespace SandboxEvolutionRunner.Utils
             var canTouch = Options.CanTouch || !withCorridors;
             var basicRoomDescription = GetBasicRoomDescription();
             var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets) : null;
-            var mapDescription = MapDescriptionUtils.GetBasicMapDescription(namedGraph.Graph, basicRoomDescription, corridorRoomDescription, withCorridors);
-            var name = MapDescriptionUtils.GetInputName(namedGraph.Name, Options.Scale, withCorridors, corridorOffsets, canTouch);
+            var mapDescription = MapDescriptionUtils.GetBasicMapDescription(namedGraph.Graph, basicRoomDescription,
+                corridorRoomDescription, withCorridors);
+            var name = MapDescriptionUtils.GetInputName(namedGraph.Name, Options.Scale, withCorridors, corridorOffsets,
+                canTouch);
 
             return new List<NamedMapDescription>()
             {
@@ -151,7 +153,8 @@ namespace SandboxEvolutionRunner.Utils
             }
 
 
-            return new NamedMapDescription(mapDescription, name, mapDescription.GetGraph().VerticesCount != mapDescription.GetStageOneGraph().VerticesCount);
+            return new NamedMapDescription(mapDescription, name,
+                mapDescription.GetGraph().VerticesCount != mapDescription.GetStageOneGraph().VerticesCount);
         }
 
         protected virtual IRoomDescription GetBasicRoomDescription()

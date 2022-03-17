@@ -37,7 +37,8 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
-            var expectedLines = new List<OrthogonalLineGrid2D>() {
+            var expectedLines = new List<OrthogonalLineGrid2D>()
+            {
                 new OrthogonalLineGrid2D(new Vector2Int(5, 0), new Vector2Int(5, 0)),
                 new OrthogonalLineGrid2D(new Vector2Int(0, 5), new Vector2Int(0, 5)),
             };
@@ -70,7 +71,8 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
                 new DoorGrid2D(new Vector2Int(2, 0), new Vector2Int(3, 0), type: DoorType.Entrance),
             });
 
-            var expectedLines = new List<OrthogonalLineGrid2D>() {
+            var expectedLines = new List<OrthogonalLineGrid2D>()
+            {
                 new OrthogonalLineGrid2D(new Vector2Int(-5, 0), new Vector2Int(-5, 0)),
                 new OrthogonalLineGrid2D(new Vector2Int(0, -5), new Vector2Int(0, -5)),
             };
@@ -110,7 +112,8 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
                 new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1), type: DoorType.Exit),
             });
 
-            var expectedLines = new List<OrthogonalLineGrid2D>() {
+            var expectedLines = new List<OrthogonalLineGrid2D>()
+            {
                 new OrthogonalLineGrid2D(new Vector2Int(8, 0), new Vector2Int(8, 0)),
             };
 
@@ -149,7 +152,7 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
                 new DoorGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 1), type: DoorType.Exit),
                 new DoorGrid2D(new Vector2Int(3, 0), new Vector2Int(3, 1), type: DoorType.Entrance),
             });
-            
+
             var configurationSpace = generator.GetConfigurationSpaceOverCorridor(roomShape, roomDoorsMode, roomShape,
                 roomDoorsMode, corridorShape, corridorDoorsMode, ConfigurationSpaceDirection.FromFixedToMoving);
 
@@ -178,7 +181,8 @@ namespace Edgar.Tests.Core.ConfigurationSpaces
                 new DoorGrid2D(new Vector2Int(0, 3), new Vector2Int(1, 3), type: DoorType.Undirected),
             });
 
-            var expectedLines = new List<OrthogonalLineGrid2D>() {
+            var expectedLines = new List<OrthogonalLineGrid2D>()
+            {
                 new OrthogonalLineGrid2D(new Vector2Int(0, 8), new Vector2Int(0, 8)),
                 new OrthogonalLineGrid2D(new Vector2Int(0, -8), new Vector2Int(0, -8)),
             };

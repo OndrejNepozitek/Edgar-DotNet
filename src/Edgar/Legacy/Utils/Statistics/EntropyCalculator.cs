@@ -24,7 +24,8 @@ namespace Edgar.Legacy.Utils.Statistics
                 new GridPolygonUtils());
         }
 
-        public double ComputeAverageRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, bool normalize = true)
+        public double ComputeAverageRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription,
+            List<MapLayout<TNode>> layouts, bool normalize = true)
         {
             return mapDescription
                 .GetGraph()
@@ -34,7 +35,8 @@ namespace Edgar.Legacy.Utils.Statistics
                 .Average();
         }
 
-        public double ComputeRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node, bool normalize = true)
+        public double ComputeRoomTemplatesEntropy<TNode>(IMapDescription<TNode> mapDescription,
+            List<MapLayout<TNode>> layouts, TNode node, bool normalize = true)
         {
             var distribution = GetRoomTemplatesDistribution(mapDescription, layouts, node);
             var entropy = ComputeEntropy(distribution, normalize);
@@ -42,10 +44,12 @@ namespace Edgar.Legacy.Utils.Statistics
             return entropy;
         }
 
-        public Dictionary<RoomTemplateInstance, double> GetRoomTemplatesDistribution<TNode>(IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node)
+        public Dictionary<RoomTemplateInstance, double> GetRoomTemplatesDistribution<TNode>(
+            IMapDescription<TNode> mapDescription, List<MapLayout<TNode>> layouts, TNode node)
         {
             var roomDescription = mapDescription.GetRoomDescription(node);
-            var availableRoomTemplateInstances = roomDescription.RoomTemplates.SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x)).ToList();
+            var availableRoomTemplateInstances = roomDescription.RoomTemplates
+                .SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x)).ToList();
             var data = layouts
                 .Select(x => x.Rooms.Single(y => y.Node.Equals(node)))
                 .Select(x => x.RoomTemplateInstance)
@@ -54,7 +58,8 @@ namespace Edgar.Legacy.Utils.Statistics
             return GetProbabilityDistribution(data, availableRoomTemplateInstances);
         }
 
-        public Dictionary<TElement, double> GetProbabilityDistribution<TElement>(List<TElement> data, List<TElement> allElements)
+        public Dictionary<TElement, double> GetProbabilityDistribution<TElement>(List<TElement> data,
+            List<TElement> allElements)
         {
             var counts = new Dictionary<TElement, int>();
 
@@ -82,11 +87,11 @@ namespace Edgar.Legacy.Utils.Statistics
                 throw new ArgumentException("Distribution must not be empty", nameof(distribution));
             }
 
-            var entropy = -1 * 
-                distribution
-                .Values
-                .Where(x => x != 0)
-                .Sum(x => x * Math.Log(x, 2));
+            var entropy = -1 *
+                          distribution
+                              .Values
+                              .Where(x => x != 0)
+                              .Sum(x => x * Math.Log(x, 2));
 
             if (normalize && distribution.Count != 1)
             {

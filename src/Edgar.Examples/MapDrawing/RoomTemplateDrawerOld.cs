@@ -9,48 +9,53 @@ using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
-	/// Draws a layout on an old paper texture.
-	/// </summary>
-	/// <typeparam name="TNode"></typeparam>
-	public class RoomTemplateDrawerOld<TNode>
-	{
-		private readonly CachedPolygonPartitioning polygonPartitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
-		private Bitmap bitmap;
-		private Graphics graphics;
+    /// Draws a layout on an old paper texture.
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
+    public class RoomTemplateDrawerOld<TNode>
+    {
+        private readonly CachedPolygonPartitioning polygonPartitioning =
+            new CachedPolygonPartitioning(new GridPolygonPartitioning());
 
-		private const string TextureInnerPath = @"Resources\Images\texture_inner.png";
-		private const string TextureOutterPath = @"Resources\Images\texture_outter.png";
-		private const string TexturePenPath = @"Resources\Images\texture_pen.png";
+        private Bitmap bitmap;
+        private Graphics graphics;
 
-		private TextureBrush innerBrush;
-		private Brush outlineBrush;
-		private Pen outlinePen;
-		private Pen shadePen;
+        private const string TextureInnerPath = @"Resources\Images\texture_inner.png";
+        private const string TextureOutterPath = @"Resources\Images\texture_outter.png";
+        private const string TexturePenPath = @"Resources\Images\texture_pen.png";
+
+        private TextureBrush innerBrush;
+        private Brush outlineBrush;
+        private Pen outlinePen;
+        private Pen shadePen;
 
         private List<Vector2> usedPoints;
         private readonly Random random = new Random(0);
         private readonly float scale = 0.1f;
-		private readonly CachedPolygonPartitioning partitioning = new CachedPolygonPartitioning(new GridPolygonPartitioning());
 
-		/// <summary>
-		/// Draws a given layout and returns a bitmap.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="width">Result will have this width and height will be computed to match the layout.</param>
-		/// <param name="height"></param>
-		/// <param name="withNames"></param>
-		/// <param name="fixedFontSize"></param>
-		/// <returns></returns>
-		public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, int width, int height, bool withNames = true, float? fixedFontSize = null, float borderSize = 0.2f)
-		{
-			bitmap = new Bitmap(width, height);
-			graphics = Graphics.FromImage(bitmap);
+        private readonly CachedPolygonPartitioning partitioning =
+            new CachedPolygonPartitioning(new GridPolygonPartitioning());
 
-			//var textureImgOuter = new Bitmap(TextureOutterPath);
-			//using (var brush = new TextureBrush(textureImgOuter, WrapMode.Tile))
-			//{
-			//	graphics.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
-			//}
+        /// <summary>
+        /// Draws a given layout and returns a bitmap.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="width">Result will have this width and height will be computed to match the layout.</param>
+        /// <param name="height"></param>
+        /// <param name="withNames"></param>
+        /// <param name="fixedFontSize"></param>
+        /// <returns></returns>
+        public Bitmap DrawRoomTemplates(List<RoomTemplateGrid2D> roomTemplates, int width, int height,
+            bool withNames = true, float? fixedFontSize = null, float borderSize = 0.2f)
+        {
+            bitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(bitmap);
+
+            //var textureImgOuter = new Bitmap(TextureOutterPath);
+            //using (var brush = new TextureBrush(textureImgOuter, WrapMode.Tile))
+            //{
+            //	graphics.FillRectangle(brush, 0, 0, bitmap.Width, bitmap.Height);
+            //}
 
             usedPoints = new List<Vector2>();
 
@@ -59,17 +64,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 graphics.FillRectangle(brush, 0, 0, width, height);
             }
 
-			var textureImgInner = new Bitmap(TextureInnerPath);
-			innerBrush = new TextureBrush(textureImgInner, WrapMode.Tile);
+            var textureImgInner = new Bitmap(TextureInnerPath);
+            innerBrush = new TextureBrush(textureImgInner, WrapMode.Tile);
 
             var textureImgOutline = new Bitmap(TexturePenPath);
-			outlineBrush = new SolidBrush(Color.FromArgb(50, 50, 50));
+            outlineBrush = new SolidBrush(Color.FromArgb(50, 50, 50));
 
-			outlinePen = new Pen(outlineBrush, 2 * scale)
-			{
-				EndCap = LineCap.Round,
-				StartCap = LineCap.Round
-			};
+            outlinePen = new Pen(outlineBrush, 2 * scale)
+            {
+                EndCap = LineCap.Round,
+                StartCap = LineCap.Round
+            };
 
             shadePen = new Pen(Color.FromArgb(204, 206, 206), 13 * scale)
             {
@@ -78,20 +83,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             };
 
 
+            DrawRoomTemplatesBase(GetRoomTemplateConfigurations(roomTemplates, width / (double) height), width, height,
+                withNames, fixedFontSize, borderSize);
 
-            DrawRoomTemplatesBase(GetRoomTemplateConfigurations(roomTemplates, width / (double) height), width, height, withNames, fixedFontSize, borderSize);
+            textureImgInner.Dispose();
+            innerBrush.Dispose();
 
-			textureImgInner.Dispose();
-			innerBrush.Dispose();
+            textureImgOutline.Dispose();
+            outlineBrush.Dispose();
+            outlinePen.Dispose();
 
-			textureImgOutline.Dispose();
-			outlineBrush.Dispose();
-			outlinePen.Dispose();
+            return bitmap;
+        }
 
-			return bitmap;
-		}
-
-        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates, double expectedRatio)
+        private List<RoomTemplateConfiguration> GetRoomTemplateConfigurations(List<RoomTemplateGrid2D> roomTemplates,
+            double expectedRatio)
         {
             var orderedRoomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Width).ToList();
             var minDistance = 3;
@@ -187,7 +193,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return minWidth;
         }
 
-        private List<RoomTemplateConfiguration> GetConfigurations(List<List<RoomTemplateGrid2D>> rows, int rowWidth, int minDistance)
+        private List<RoomTemplateConfiguration> GetConfigurations(List<List<RoomTemplateGrid2D>> rows, int rowWidth,
+            int minDistance)
         {
             var configurations = new List<RoomTemplateConfiguration>();
             var maxHeight = int.MinValue;
@@ -240,7 +247,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         private List<List<RoomTemplateGrid2D>> GetRows(List<RoomTemplateGrid2D> roomTemplates, int rowWidth)
         {
             roomTemplates = roomTemplates.OrderByDescending(x => x.Outline.BoundingRectangle.Height).ToList();
-            
+
 
             var maxHeight = int.MinValue;
             var rows = new List<List<RoomTemplateGrid2D>>();
@@ -250,7 +257,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 var outline = roomTemplate.Outline;
 
-                if (rows.Last().Sum(x => x.Outline.BoundingRectangle.Width) + outline.BoundingRectangle.Width > rowWidth)
+                if (rows.Last().Sum(x => x.Outline.BoundingRectangle.Width) + outline.BoundingRectangle.Width >
+                    rowWidth)
                 {
                     maxHeight = int.MinValue;
                     rows.Add(new List<RoomTemplateGrid2D>());
@@ -258,21 +266,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
                 // configurations.Add(new RoomTemplateConfiguration(roomTemplate, -1 * roomTemplate.Outline.BoundingRectangle.A + offset));
                 rows.Last().Add(roomTemplate);
-                
+
                 maxHeight = Math.Max(maxHeight, outline.BoundingRectangle.Height);
             }
 
             return rows;
         }
 
-		private void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments)
+        private void DrawOutline(PolygonGrid2D polygon, List<OutlineSegment> outlineSegments)
         {
-			var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
-			var offset = polygon.BoundingRectangle.A;
-            
-			innerBrush.TranslateTransform(offset.X, offset.Y);
+            var polyPoints = polygon.GetPoints().Select(point => new Point(point.X, point.Y)).ToList();
+            var offset = polygon.BoundingRectangle.A;
+
+            innerBrush.TranslateTransform(offset.X, offset.Y);
             graphics.FillPolygon(new SolidBrush(Color.FromArgb(248, 248, 244)), polyPoints.ToArray());
-			innerBrush.ResetTransform();
+            innerBrush.ResetTransform();
 
             var rectangles = partitioning.GetPartitions(polygon);
             var points = new HashSet<Vector2Int>();
@@ -328,8 +336,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             }
         }
 
-        private int Mod(int x, int m) {
-            return (x%m + m)%m;
+        private int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
         }
 
         private void DrawHatching(PolygonGrid2D outline)
@@ -342,9 +351,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             foreach (var line in outline.GetLines())
             {
                 var points = line.GetPoints().Select(x => (Vector2) x).ToList();
-				points.AddRange(points.Select(x => x + 0.5f * (Vector2) line.GetDirectionVector()).ToList());
+                points.AddRange(points.Select(x => x + 0.5f * (Vector2) line.GetDirectionVector()).ToList());
 
-               
+
                 for (var i = 0; i < points.Count; i++)
                 {
                     var point = points[i];
@@ -352,7 +361,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     if (true)
                     {
                         var direction = (Vector2) line.GetDirectionVector();
-                        var directionPerpendicular = new Vector2(Math.Max(-1, Math.Min(1, direction.Y)), Math.Max(-1, Math.Min(1, direction.X)));
+                        var directionPerpendicular = new Vector2(Math.Max(-1, Math.Min(1, direction.Y)),
+                            Math.Max(-1, Math.Min(1, direction.X)));
 
                         if (direction.Y != 0)
                         {
@@ -385,7 +395,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                             for (int k = -1; k <= 1; k++)
                             {
                                 var length = scale * 3;
-                                var center = point + offsetLength * directionPerpendicular + k * clusterOffset * directionPerpendicular;
+                                var center = point + offsetLength * directionPerpendicular +
+                                             k * clusterOffset * directionPerpendicular;
                                 center = RotatePoint(center, point + offsetLength * directionPerpendicular, rotation);
 
                                 var from = center + length * direction;
@@ -431,18 +442,19 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             return new Vector2
             (
                 (float)
-                    (cosTheta * (pointToRotate.X - centerPoint.X) -
-                        sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X),
-                    (float)
-                    (sinTheta * (pointToRotate.X - centerPoint.X) +
-                     cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y)
+                (cosTheta * (pointToRotate.X - centerPoint.X) -
+                    sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X),
+                (float)
+                (sinTheta * (pointToRotate.X - centerPoint.X) +
+                 cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y)
             );
         }
 
-		protected void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
-		{
-			var partitions = polygonPartitioning.GetPartitions(polygon);
-			var orderedRectangles = partitions.OrderBy(x => Vector2Int.ManhattanDistance(x.Center, polygon.BoundingRectangle.Center)).ToList();
+        protected void DrawTextOntoPolygon(PolygonGrid2D polygon, string text, float penWidth)
+        {
+            var partitions = polygonPartitioning.GetPartitions(polygon);
+            var orderedRectangles = partitions
+                .OrderBy(x => Vector2Int.ManhattanDistance(x.Center, polygon.BoundingRectangle.Center)).ToList();
             var targetRectangle = orderedRectangles.First();
 
             if (orderedRectangles.Any(x => x.Width > 6 && x.Height > 3))
@@ -450,49 +462,51 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 targetRectangle = orderedRectangles.First(x => x.Width > 6 && x.Height > 3);
             }
 
-			using (var font = new Font("Baskerville Old Face", penWidth, FontStyle.Bold, GraphicsUnit.Pixel))
-			{
-				var rect = new RectangleF(
+            using (var font = new Font("Baskerville Old Face", penWidth, FontStyle.Bold, GraphicsUnit.Pixel))
+            {
+                var rect = new RectangleF(
                     targetRectangle.A.X,
                     targetRectangle.A.Y,
                     targetRectangle.Width,
                     targetRectangle.Height
-				);
+                );
 
-				var sf = new StringFormat
-				{
-					LineAlignment = StringAlignment.Center,
-					Alignment = StringAlignment.Center
-				};
+                var sf = new StringFormat
+                {
+                    LineAlignment = StringAlignment.Center,
+                    Alignment = StringAlignment.Center
+                };
 
-				graphics.DrawString(text, font, Brushes.Black, rect, sf);
-			}
-		}
+                graphics.DrawString(text, font, Brushes.Black, rect, sf);
+            }
+        }
 
-		private void DrawRoomTemplatesBase(List<RoomTemplateConfiguration> roomTemplates, int width, int height, bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
-		{
+        private void DrawRoomTemplatesBase(List<RoomTemplateConfiguration> roomTemplates, int width, int height,
+            bool withNames, float? fixedFontSize = null, float borderSize = 0.2f)
+        {
             var polygons = roomTemplates.Select(x => x.RoomTemplate.Outline + x.Position).ToList();
             var (scale, offset) = GetScaleAndOffset(polygons, width, height, borderSize);
 
-			var minWidth = polygons.Min(x => x.BoundingRectangle.Width);
+            var minWidth = polygons.Min(x => x.BoundingRectangle.Width);
 
-			graphics.ScaleTransform(scale, scale);
+            graphics.ScaleTransform(scale, scale);
             graphics.TranslateTransform(offset.X, offset.Y);
 
-   //         foreach (var room in rooms)
-   //         {
-   //             DrawShading(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
-   //         }
+            //         foreach (var room in rooms)
+            //         {
+            //             DrawShading(room.Outline + room.Position, GetOutlineNew(room.Outline, room.Doors, room.Position));
+            //         }
 
-			//foreach (var room in rooms)
-   //         {
-   //             DrawHatching(room.Outline + room.Position);
-   //         }
+            //foreach (var room in rooms)
+            //         {
+            //             DrawHatching(room.Outline + room.Position);
+            //         }
 
 
             foreach (var roomTemplate in roomTemplates)
             {
-                DrawShading(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
+                DrawShading(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                    GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
             }
 
             foreach (var roomTemplate in roomTemplates)
@@ -502,19 +516,22 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             foreach (var roomTemplate in roomTemplates)
             {
-                DrawOutline(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
+                DrawOutline(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                    GetOutlineNew(roomTemplate.RoomTemplate.Outline, null, roomTemplate.Position));
             }
 
             foreach (var roomTemplate in roomTemplates)
             {
                 if (withNames)
                 {
-                    DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position, roomTemplate.RoomTemplate.Name.ToString(), fixedFontSize ?? 2.5f * minWidth);
+                    DrawTextOntoPolygon(roomTemplate.RoomTemplate.Outline + roomTemplate.Position,
+                        roomTemplate.RoomTemplate.Name.ToString(), fixedFontSize ?? 2.5f * minWidth);
                 }
             }
         }
 
-        private (float scale, Vector2 offset) GetScaleAndOffset(List<PolygonGrid2D> polygons, int width, int height, float borderSize = 0.2f)
+        private (float scale, Vector2 offset) GetScaleAndOffset(List<PolygonGrid2D> polygons, int width, int height,
+            float borderSize = 0.2f)
         {
             var points = polygons.SelectMany(x => x.GetPoints()).ToList();
 
@@ -531,29 +548,31 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         }
 
         private Vector2 GetOffset(int minx, int miny, int maxx, int maxy, int width, int height, float scale = 1)
-		{
-			var centerx = scale * (maxx + minx) / 2;
-			var centery = scale * (maxy + miny) / 2;
+        {
+            var centerx = scale * (maxx + minx) / 2;
+            var centery = scale * (maxy + miny) / 2;
 
-			return new Vector2((width / 2f - centerx), (height / 2f - centery));
-		}
+            return new Vector2((width / 2f - centerx), (height / 2f - centery));
+        }
 
-        private float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight, float borderSize = 0.2f)
-		{
-			var neededWidth = (1 + borderSize) * (maxx - minx);
-			var neededHeight = (1 + borderSize) * (maxy - miny);
+        private float GetScale(int minx, int miny, int maxx, int maxy, int expectedWidth, int expectedHeight,
+            float borderSize = 0.2f)
+        {
+            var neededWidth = (1 + borderSize) * (maxx - minx);
+            var neededHeight = (1 + borderSize) * (maxy - miny);
 
-			var scale = expectedWidth / neededWidth;
+            var scale = expectedWidth / neededWidth;
 
-			if (scale * neededHeight > expectedHeight)
-			{
-				scale = expectedHeight / neededHeight;
-			}
+            if (scale * neededHeight > expectedHeight)
+            {
+                scale = expectedHeight / neededHeight;
+            }
 
-			return scale;
-		}
+            return scale;
+        }
 
-        private List<OutlineSegment> GetOutlineNew(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines = null, Vector2Int offset = default)
+        private List<OutlineSegment> GetOutlineNew(PolygonGrid2D polygon,
+            List<LayoutDoorGrid2D<TNode>> doorLines = null, Vector2Int offset = default)
         {
             var old = GetOutline(polygon, doorLines);
             var outline = new List<OutlineSegment>();
@@ -571,7 +590,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 {
                     var current = old[i];
                     var previous = old[Mod(i - 1, old.Count)];
-                    outline.Add(new OutlineSegment(new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset), current.Item2 == false));
+                    outline.Add(new OutlineSegment(
+                        new OrthogonalLineGrid2D(previous.Item1 + offset, current.Item1 + offset),
+                        current.Item2 == false));
                 }
             }
 
@@ -584,7 +605,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         /// <param name="polygon"></param>
         /// <param name="doorLines"></param>
         /// <returns></returns>
-        protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon, List<LayoutDoorGrid2D<TNode>> doorLines)
+        protected List<Tuple<Vector2Int, bool>> GetOutline(PolygonGrid2D polygon,
+            List<LayoutDoorGrid2D<TNode>> doorLines)
         {
             var outline = new List<Tuple<Vector2Int, bool>>();
 
@@ -596,7 +618,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     continue;
 
                 var doorDistances = doorLines.Select(x =>
-                    new Tuple<LayoutDoorGrid2D<TNode>, int>(x, Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
+                    new Tuple<LayoutDoorGrid2D<TNode>, int>(x,
+                        Math.Min(line.Contains(x.DoorLine.From), line.Contains(x.DoorLine.To)))).ToList();
                 doorDistances.Sort((x1, x2) => x1.Item2.CompareTo(x2.Item2));
 
                 foreach (var pair in doorDistances)
@@ -627,7 +650,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     outline.Add(point);
                     return;
                 }
-					
+
                 var lastPoint = outline[outline.Count - 1];
 
                 if (!lastPoint.Item2 && point.Item2 && lastPoint.Item1 == point.Item1)
@@ -662,5 +685,5 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             public bool IsDoor { get; }
         }
-	}
+    }
 }

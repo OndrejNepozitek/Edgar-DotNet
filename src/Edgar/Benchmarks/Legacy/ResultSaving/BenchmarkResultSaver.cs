@@ -9,7 +9,8 @@ namespace Edgar.Benchmarks.Legacy.ResultSaving
 {
     public class BenchmarkResultSaver
     {
-        public void SaveResultDefaultLocation(BenchmarkScenarioResult scenarioResult, string name = null, string directory = "BenchmarkResults/", bool withDatetime = true)
+        public void SaveResultDefaultLocation(BenchmarkScenarioResult scenarioResult, string name = null,
+            string directory = "BenchmarkResults/", bool withDatetime = true)
         {
             // TODO: ugly?
             var datetime = withDatetime ? new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + "_" : "";
@@ -32,7 +33,8 @@ namespace Edgar.Benchmarks.Legacy.ResultSaving
             File.WriteAllText(path, json);
         }
 
-        public async Task UploadCommitResult(BenchmarkScenarioResult scenarioResult, UploadConfig config, CommitInfo commitInfo)
+        public async Task UploadCommitResult(BenchmarkScenarioResult scenarioResult, UploadConfig config,
+            CommitInfo commitInfo)
         {
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
             if (config == null) throw new ArgumentNullException(nameof(config));
@@ -41,7 +43,8 @@ namespace Edgar.Benchmarks.Legacy.ResultSaving
             await UploadResult(new CommitResult(scenarioResult, commitInfo), config);
         }
 
-        public async Task UploadManualResult(BenchmarkScenarioResult scenarioResult, UploadConfig config, ManualInfo manualInfo)
+        public async Task UploadManualResult(BenchmarkScenarioResult scenarioResult, UploadConfig config,
+            ManualInfo manualInfo)
         {
             if (scenarioResult == null) throw new ArgumentNullException(nameof(scenarioResult));
             if (config == null) throw new ArgumentNullException(nameof(config));

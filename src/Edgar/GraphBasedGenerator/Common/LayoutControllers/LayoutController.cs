@@ -17,12 +17,16 @@ using Edgar.Legacy.Utils.Interfaces;
 namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 {
     /// <summary>
-	/// Layout operations that compute energy based on given constraints.
-	/// </summary>
-	public class LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> : IChainBasedLayoutOperations<TLayout, TNode>, IRandomInjectable
+    /// Layout operations that compute energy based on given constraints.
+    /// </summary>
+    public class
+        LayoutController<TLayout, TNode, TConfiguration, TShapeContainer, TEnergyData> :
+            IChainBasedLayoutOperations<TLayout, TNode>, IRandomInjectable
         where TLayout : ILayout<TNode, TConfiguration>, ISmartCloneable<TLayout>
-		where TConfiguration : IConfiguration<TShapeContainer, Vector2Int, TNode>, /*IMutableConfiguration<TShapeContainer, TNode>,*/ ISmartCloneable<TConfiguration>, IEnergyConfiguration<TEnergyData>, new()
-		where TEnergyData : IEnergyData, new()
+        where TConfiguration : IConfiguration<TShapeContainer, Vector2Int, TNode>
+        , /*IMutableConfiguration<TShapeContainer, TNode>,*/
+        ISmartCloneable<TConfiguration>, IEnergyConfiguration<TEnergyData>, new()
+        where TEnergyData : IEnergyData, new()
     {
         private Random random;
         private readonly float differenceFromAverageScale = 0.4f;
@@ -46,7 +50,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             IConfigurationSpaces<TConfiguration, Vector2Int> simpleConfigurationSpaces,
             IRoomShapeGeometry<TConfiguration> roomShapeGeometry,
             IFixedConfigurationConstraint<TShapeContainer, Vector2Int, TNode> fixedConfigurationConstraint
-            )
+        )
         {
             this.constraintsEvaluator = constraintsEvaluator;
             this.throwIfRepeatModeNotSatisfied = throwIfRepeatModeNotSatisfied;
@@ -65,84 +69,84 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         }
 
         /// <summary>
-		/// Checks if a given layout is valid by first checking whether the layout itself is valid
-		/// and then checking whether all configurations of nodes are valid.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <returns></returns>
-		public bool IsLayoutValid(TLayout layout)
-		{
-			if (layout.GetAllConfigurations().Any(x => !x.EnergyData.IsValid))
-				return false;
+        /// Checks if a given layout is valid by first checking whether the layout itself is valid
+        /// and then checking whether all configurations of nodes are valid.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <returns></returns>
+        public bool IsLayoutValid(TLayout layout)
+        {
+            if (layout.GetAllConfigurations().Any(x => !x.EnergyData.IsValid))
+                return false;
 
-			return true;
-		}
-
-		/// <summary>
-		/// TODO: should it check if all nodes are laid out?
-		/// Checks if a given layout is valid by first checking whether the layout itself is valid
-		/// and then checking whether all configurations of nodes are valid.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="chain"></param>
-		/// <returns></returns>
-		public bool IsLayoutValid(TLayout layout, IList<TNode> chain)
-		{
-			return IsLayoutValid(layout);
-		}
-
-		/// <summary>
-		/// Gets an energy of a given layout by summing energies of individual nodes.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <returns></returns>
-		public float GetEnergy(TLayout layout)
-		{
-			return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy);
-		}
-
-		/// <summary>
-		/// Updates a given layout by computing energies of all nodes.
-		/// </summary>
-		/// <remarks>
-		/// Energies are computed from constraints.
-		/// </remarks>
-		/// <param name="layout"></param>
-		public void UpdateLayout(TLayout layout)
-		{
-			foreach (var node in layout.Graph.Vertices)
-			{
-				if (!layout.GetConfiguration(node, out var configuration))
-					continue;
-
-				var newEnergyData = constraintsEvaluator.ComputeNodeEnergy(layout, node, configuration);
-				configuration.EnergyData = newEnergyData;
-				layout.SetConfiguration(node, configuration);
-			}
+            return true;
         }
 
-		/// <summary>
-		/// Tries all shapes and positions from the maximum intersection to find a configuration
-		/// with the lowest energy.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="node"></param>
-		public void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount)
+        /// <summary>
+        /// TODO: should it check if all nodes are laid out?
+        /// Checks if a given layout is valid by first checking whether the layout itself is valid
+        /// and then checking whether all configurations of nodes are valid.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public bool IsLayoutValid(TLayout layout, IList<TNode> chain)
+        {
+            return IsLayoutValid(layout);
+        }
+
+        /// <summary>
+        /// Gets an energy of a given layout by summing energies of individual nodes.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <returns></returns>
+        public float GetEnergy(TLayout layout)
+        {
+            return layout.GetAllConfigurations().Sum(x => x.EnergyData.Energy);
+        }
+
+        /// <summary>
+        /// Updates a given layout by computing energies of all nodes.
+        /// </summary>
+        /// <remarks>
+        /// Energies are computed from constraints.
+        /// </remarks>
+        /// <param name="layout"></param>
+        public void UpdateLayout(TLayout layout)
+        {
+            foreach (var node in layout.Graph.Vertices)
+            {
+                if (!layout.GetConfiguration(node, out var configuration))
+                    continue;
+
+                var newEnergyData = constraintsEvaluator.ComputeNodeEnergy(layout, node, configuration);
+                configuration.EnergyData = newEnergyData;
+                layout.SetConfiguration(node, configuration);
+            }
+        }
+
+        /// <summary>
+        /// Tries all shapes and positions from the maximum intersection to find a configuration
+        /// with the lowest energy.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="node"></param>
+        public void AddNodeGreedily(TLayout layout, TNode node, out int iterationsCount)
         {
             iterationsCount = 0;
-			var neighborsConfigurations = new List<TConfiguration>();
-			var neighbors = levelDescription.GetGraphWithoutCorridors().GetNeighbors(node);
+            var neighborsConfigurations = new List<TConfiguration>();
+            var neighbors = levelDescription.GetGraphWithoutCorridors().GetNeighbors(node);
 
-			foreach (var neighbor in neighbors)
-			{
-				if (layout.GetConfiguration(neighbor, out var configuration))
-				{
-					neighborsConfigurations.Add(configuration);
-				}
-			}
+            foreach (var neighbor in neighbors)
+            {
+                if (layout.GetConfiguration(neighbor, out var configuration))
+                {
+                    neighborsConfigurations.Add(configuration);
+                }
+            }
 
-			// The first node is set to have a random shape and [0,0] position
-			if (neighborsConfigurations.Count == 0)
+            // The first node is set to have a random shape and [0,0] position
+            if (neighborsConfigurations.Count == 0)
             {
                 var initialPosition =
                     fixedConfigurationConstraint.TryGetFixedPosition(node, out var fixedInitialPosition)
@@ -155,33 +159,35 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
 
                 layout.SetConfiguration(node, CreateConfiguration(initialShape, initialPosition, node));
                 iterationsCount++;
-				return;
-			}
+                return;
+            }
 
-			var bestEnergy = float.MaxValue;
-			var bestShape = default(TShapeContainer);
-			var bestPosition = new Vector2Int();
+            var bestEnergy = float.MaxValue;
+            var bestShape = default(TShapeContainer);
+            var bestPosition = new Vector2Int();
 
             var shapes = fixedConfigurationConstraint.TryGetFixedShape(node, out var fixedShape)
-                ? new List<TShapeContainer>() { fixedShape } 
+                ? new List<TShapeContainer>() {fixedShape}
                 : roomShapesHandler.GetPossibleShapesForNode(layout, node, !throwIfRepeatModeNotSatisfied);
 
             if (shapes.Count == 0)
             {
                 if (throwIfRepeatModeNotSatisfied)
                 {
-					throw new InvalidOperationException($"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements. Moreover, the {nameof(throwIfRepeatModeNotSatisfied)} option is set to true which means that the algorithm did not attempt to find at least some room templates even though not all conditions were satisfied. Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
+                    throw new InvalidOperationException(
+                        $"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements. Moreover, the {nameof(throwIfRepeatModeNotSatisfied)} option is set to true which means that the algorithm did not attempt to find at least some room templates even though not all conditions were satisfied. Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
                 }
                 else
                 {
-                    throw new InvalidOperationException($"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements.  Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
+                    throw new InvalidOperationException(
+                        $"It was not possible to assign room shapes in a way that satisfies all the RepeatMode requirements.  Please make sure that there are enough room templates to choose from. Problematic room: {node}.");
                 }
             }
 
-			shapes.Shuffle(random);
+            shapes.Shuffle(random);
 
-			// Try all shapes
-			foreach (var shape in shapes)
+            // Try all shapes
+            foreach (var shape in shapes)
             {
                 IEnumerable<Vector2Int> positionsToTry;
                 if (fixedConfigurationConstraint.TryGetFixedPosition(node, out var fixedPosition))
@@ -190,7 +196,9 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                 }
                 else
                 {
-                    var intersection = simpleConfigurationSpaces.GetMaximumIntersection(CreateConfiguration(shape, new Vector2Int(), node), neighborsConfigurations, out var configurationsSatisfied);
+                    var intersection = simpleConfigurationSpaces.GetMaximumIntersection(
+                        CreateConfiguration(shape, new Vector2Int(), node), neighborsConfigurations,
+                        out var configurationsSatisfied);
 
                     if (configurationsSatisfied == 0)
                         continue;
@@ -222,16 +230,16 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                 }
             }
 
-			if (bestEnergy == float.MaxValue)
+            if (bestEnergy == float.MaxValue)
             {
                 //throw new NoSuitableShapeForRoomException($"No shape of the room {node} could be connected to its neighbors. This usually happens if there are pairs of shapes that cannot be connected together in any way (either directly or via corridors). (The mentioned room may not correspond to the actual room as custom types are often mapped to integers to make the computation faster.)", node, neighborsConfigurations.Select(x => x.RoomShape).Cast<object>().ToList());
 
                 bestShape = shapes[0];
             }
 
-			var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
-			layout.SetConfiguration(node, newConfiguration);
-		}
+            var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
+            layout.SetConfiguration(node, newConfiguration);
+        }
 
         protected void UpdateLayout(TLayout layout, TNode perturbedNode, TConfiguration configuration)
         {
@@ -249,7 +257,8 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                 if (!layout.GetConfiguration(vertex, out var nodeConfiguration))
                     continue;
 
-                var vertexEnergyData = constraintsEvaluator.UpdateNodeEnergy(layout, perturbedNode, oldConfiguration, configuration, vertex, nodeConfiguration);
+                var vertexEnergyData = constraintsEvaluator.UpdateNodeEnergy(layout, perturbedNode, oldConfiguration,
+                    configuration, vertex, nodeConfiguration);
 
                 nodeConfiguration.EnergyData = vertexEnergyData;
                 layout.SetConfiguration(vertex, nodeConfiguration);
@@ -262,13 +271,13 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         }
 
         /// <summary>
-		/// Creates a configuration with a given shape container and position.
-		/// </summary>
-		/// <param name="shapeContainer"></param>
-		/// <param name="position"></param>
-		/// <returns></returns>
-		protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, Vector2Int position, TNode node)
-		{
+        /// Creates a configuration with a given shape container and position.
+        /// </summary>
+        /// <param name="shapeContainer"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        protected TConfiguration CreateConfiguration(TShapeContainer shapeContainer, Vector2Int position, TNode node)
+        {
             var configuration = new TConfiguration()
             {
                 RoomShape = shapeContainer,
@@ -276,51 +285,51 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                 Room = node,
             };
 
-			return configuration;
-		}
+            return configuration;
+        }
 
         /// <summary>
-		/// Tries to add corridors.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="chain"></param>
-		/// <returns></returns>
-		public bool TryCompleteChain(TLayout layout, IList<TNode> chain)
-		{
-			if (AddCorridors(layout, chain))
-			{
-				UpdateLayout(layout);
-				return true;
-			}
+        /// Tries to add corridors.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public bool TryCompleteChain(TLayout layout, IList<TNode> chain)
+        {
+            if (AddCorridors(layout, chain))
+            {
+                UpdateLayout(layout);
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
-		/// Greedily adds corridors from a given chain to the layout.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="chain"></param>
-		/// <returns></returns>
-		private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
-		{
-			var clone = layout.SmartClone();
-			var corridors = chain.Where(x => levelDescription.GetRoomDescription(x).IsCorridor).ToList();
+        /// <summary>
+        /// Greedily adds corridors from a given chain to the layout.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        private bool AddCorridors(TLayout layout, IEnumerable<TNode> chain)
+        {
+            var clone = layout.SmartClone();
+            var corridors = chain.Where(x => levelDescription.GetRoomDescription(x).IsCorridor).ToList();
 
-			foreach (var corridor in corridors)
-			{
-				if (!AddCorridorGreedily(clone, corridor))
-					return false;
-			}
+            foreach (var corridor in corridors)
+            {
+                if (!AddCorridorGreedily(clone, corridor))
+                    return false;
+            }
 
-			foreach (var corridor in corridors)
-			{
-				clone.GetConfiguration(corridor, out var configuration);
-				layout.SetConfiguration(corridor, configuration);
-			}
+            foreach (var corridor in corridors)
+            {
+                clone.GetConfiguration(corridor, out var configuration);
+                layout.SetConfiguration(corridor, configuration);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
         /// <summary>
         /// Greedily adds only non corridor nodes to the layout.
@@ -346,35 +355,35 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
         }
 
         /// <summary>
-		/// Adds corridor node greedily.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="node"></param>
-		/// <returns></returns>
-		public bool AddCorridorGreedily(TLayout layout, TNode node)
-		{
-			var configurations = new List<TConfiguration>();
-			var neighbors = layout.Graph.GetNeighbors(node);
+        /// Adds corridor node greedily.
+        /// </summary>
+        /// <param name="layout"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public bool AddCorridorGreedily(TLayout layout, TNode node)
+        {
+            var configurations = new List<TConfiguration>();
+            var neighbors = layout.Graph.GetNeighbors(node);
 
-			foreach (var neighbor in neighbors)
-			{
-				if (layout.GetConfiguration(neighbor, out var configuration))
-				{
-					configurations.Add(configuration);
-				}
-			}
+            foreach (var neighbor in neighbors)
+            {
+                if (layout.GetConfiguration(neighbor, out var configuration))
+                {
+                    configurations.Add(configuration);
+                }
+            }
 
-			if (configurations.Count == 0)
-			{
-				throw new InvalidOperationException();
-			}
+            if (configurations.Count == 0)
+            {
+                throw new InvalidOperationException();
+            }
 
-			var foundValid = false;
-			var bestShape = default(TShapeContainer);
-			var bestPosition = new Vector2Int();
+            var foundValid = false;
+            var bestShape = default(TShapeContainer);
+            var bestPosition = new Vector2Int();
 
             var shapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, false);
-			shapes.Shuffle(random);
+            shapes.Shuffle(random);
 
             foreach (var shape in shapes)
             {
@@ -411,10 +420,10 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             }
 
             var newConfiguration = CreateConfiguration(bestShape, bestPosition, node);
-			layout.SetConfiguration(node, newConfiguration);
+            layout.SetConfiguration(node, newConfiguration);
 
-			return foundValid;
-		}
+            return foundValid;
+        }
 
         /// <summary>
         /// Perturbs non corridor rooms until a valid layout is found.
@@ -438,7 +447,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             }
         }
 
-		// NEW
+        // NEW
         public void PerturbPosition(TLayout layout, TNode node, bool updateLayout)
         {
             var configurations = new List<TConfiguration>();
@@ -455,7 +464,8 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                 throw new InvalidOperationException();
 
 
-            var configurationSpace = simpleConfigurationSpaces.GetMaximumIntersection(mainConfiguration, configurations, out var configurationsSatisfied);
+            var configurationSpace = simpleConfigurationSpaces.GetMaximumIntersection(mainConfiguration, configurations,
+                out var configurationsSatisfied);
 
             // var newPosition = ConfigurationSpaces.GetRandomIntersectionPoint(mainConfiguration, configurations, out var configurationsSatisfied);
 
@@ -516,7 +526,7 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
             {
                 return;
             }
-            
+
             var possibleShapes = roomShapesHandler.GetPossibleShapesForNode(layout, node, false);
 
             if (possibleShapes.Count == 0)
@@ -583,8 +593,9 @@ namespace Edgar.GraphBasedGenerator.Common.LayoutControllers
                     //	                5 * IntVector2.ManhattanDistance(c1.Shape.BoundingRectangle.Center + c1.Position,
                     //		                c2.Shape.BoundingRectangle.Center + c2.Position) / (float)AverageSize, 2) * (ReferenceEquals(c1.Shape, c2.Shape) ? 1 : 4));
 
-                    diff += (float)(Math.Pow(
-                        5 * roomShapeGeometry.GetCenterDistance(c1, c2) / (float)averageSize, 2) * (ReferenceEquals(c1.RoomShape, c2.RoomShape) ? 1 : 4));
+                    diff += (float) (Math.Pow(
+                                         5 * roomShapeGeometry.GetCenterDistance(c1, c2) / (float) averageSize, 2) *
+                                     (ReferenceEquals(c1.RoomShape, c2.RoomShape) ? 1 : 4));
                 }
             }
 

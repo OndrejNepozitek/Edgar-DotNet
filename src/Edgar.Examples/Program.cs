@@ -109,6 +109,7 @@ namespace Edgar.Examples
                         {
                             Console.WriteLine();
                         }
+
                         Console.Write("      ");
                     }
 
@@ -120,8 +121,9 @@ namespace Edgar.Examples
 
                 if (roomTemplate.DoorsMode is SimpleDoorMode simpleDoorMode)
                 {
-                    Console.WriteLine($"    new SimpleDoorModeGrid2D({simpleDoorMode.DoorLength}, {simpleDoorMode.CornerDistance})");
-                } 
+                    Console.WriteLine(
+                        $"    new SimpleDoorModeGrid2D({simpleDoorMode.DoorLength}, {simpleDoorMode.CornerDistance})");
+                }
                 else if (roomTemplate.DoorsMode is ManualDoorMode manualDoorMode)
                 {
                     Console.WriteLine("    new ManualDoorModeGrid2D(new List<DoorGrid2D>()");
@@ -129,7 +131,8 @@ namespace Edgar.Examples
 
                     foreach (var doorPosition in manualDoorMode.DoorPositions)
                     {
-                        Console.WriteLine($"      new DoorGrid2D(new Vector2Int({doorPosition.From.X}, {doorPosition.From.Y}), new Vector2Int({doorPosition.To.X}, {doorPosition.To.Y})),");
+                        Console.WriteLine(
+                            $"      new DoorGrid2D(new Vector2Int({doorPosition.From.X}, {doorPosition.From.Y}), new Vector2Int({doorPosition.To.X}, {doorPosition.To.Y})),");
                     }
 
                     Console.WriteLine("      }");
@@ -138,8 +141,6 @@ namespace Edgar.Examples
 
                 // Console.WriteLine("  )},");
                 Console.WriteLine("  ),");
-
-                
             }
 
             Console.WriteLine("};");

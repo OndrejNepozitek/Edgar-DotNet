@@ -73,12 +73,14 @@ namespace Sandbox.Features
                 {
                     diffText = @"\textcolor{red}{" + diffText + @"}";
                 }
+
                 if (differences[i] <= -5)
                 {
                     diffText = @"\textcolor{ForestGreen}{" + diffText + @"}";
                 }
 
-                Console.WriteLine($"{name} & {oldResult.Runs.Average(x=>x.Time) / 1000d:0.00}s & {newResult.Runs.Average(x=>x.Time) / 1000d:0.00}s & {diffText} \\\\");
+                Console.WriteLine(
+                    $"{name} & {oldResult.Runs.Average(x => x.Time) / 1000d:0.00}s & {newResult.Runs.Average(x => x.Time) / 1000d:0.00}s & {diffText} \\\\");
             }
         }
 

@@ -12,10 +12,10 @@ using Sandbox.Utils;
 namespace Sandbox.Examples
 {
     public class DifferentRoomDescriptionsExample : IExample
-	{
-		public MapDescription<int> GetMapDescription()
-		{
-			// Create boss room template and room description
+    {
+        public MapDescription<int> GetMapDescription()
+        {
+            // Create boss room template and room description
             var bossRoom = new RoomTemplate(
                 new PolygonGrid2DBuilder()
                     .AddPoint(2, 0).AddPoint(2, 1).AddPoint(1, 1).AddPoint(1, 2)
@@ -27,7 +27,7 @@ namespace Sandbox.Examples
                 new SimpleDoorMode(1, 1)
             );
 
-            var bossRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { bossRoom });
+            var bossRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() {bossRoom});
 
             // Create basic room templates and room description
             var doorMode = new SimpleDoorMode(1, 1);
@@ -40,12 +40,12 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
+                new List<TransformationGrid2D>() {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
+            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() {squareRoom, rectangleRoom});
 
-			// Create map description
+            // Create map description
             var mapDescription = new MapDescription<int>();
 
             // Get graph
@@ -66,7 +66,7 @@ namespace Sandbox.Examples
                 mapDescription.AddConnection(connection.From, connection.To);
             }
 
-			return mapDescription;
+            return mapDescription;
         }
-	}
+    }
 }

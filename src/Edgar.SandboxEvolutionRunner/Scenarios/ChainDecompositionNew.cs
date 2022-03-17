@@ -13,10 +13,11 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> GetOriginalConfiguration(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                });
 
             return configuration;
         }
@@ -24,10 +25,11 @@ namespace SandboxEvolutionRunner.Scenarios
         private DungeonGeneratorConfiguration<int> PreferLargeCycles(NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                });
             configuration.ChainDecompositionConfiguration = new ChainDecompositionConfiguration()
             {
                 PreferSmallCycles = false,

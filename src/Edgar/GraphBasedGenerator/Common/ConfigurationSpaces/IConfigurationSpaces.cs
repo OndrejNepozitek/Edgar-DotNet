@@ -9,10 +9,13 @@ namespace Edgar.GraphBasedGenerator.Common.ConfigurationSpaces
 
     public interface IConfigurationSpaces<in TConfiguration, TPosition> : IConfigurationSpaces<TConfiguration>
     {
-        IConfigurationSpace<TPosition> GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2);
+        IConfigurationSpace<TPosition> GetConfigurationSpace(TConfiguration configuration1,
+            TConfiguration configuration2);
 
-        IConfigurationSpace<TPosition> GetMaximumIntersection(TConfiguration mainConfiguration, IEnumerable<TConfiguration> configurations);
+        IConfigurationSpace<TPosition> GetMaximumIntersection(TConfiguration mainConfiguration,
+            IEnumerable<TConfiguration> configurations);
 
-        IConfigurationSpace<TPosition> GetMaximumIntersection(TConfiguration mainConfiguration, IEnumerable<TConfiguration> configurations, out int configurationsSatisfied);
+        IConfigurationSpace<TPosition> GetMaximumIntersection(TConfiguration mainConfiguration,
+            IEnumerable<TConfiguration> configurations, out int configurationsSatisfied);
     }
 }

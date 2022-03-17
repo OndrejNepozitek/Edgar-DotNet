@@ -15,7 +15,8 @@ namespace Edgar.Legacy.Utils.ConfigParsing
 
         protected bool Equals(RoomTemplateIdentifier other)
         {
-            return SetName == other.SetName && RoomDescriptionName == other.RoomDescriptionName && Scale.Equals(other.Scale);
+            return SetName == other.SetName && RoomDescriptionName == other.RoomDescriptionName &&
+                   Scale.Equals(other.Scale);
         }
 
         public override bool Equals(object obj)

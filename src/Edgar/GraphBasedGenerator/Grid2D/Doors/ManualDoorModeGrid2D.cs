@@ -54,7 +54,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             if (DoorLines.Count != distinctDoorLinesCount)
             {
-                throw new DuplicateDoorPositionException("There are duplicate door lines. All door positions must be unique.");
+                throw new DuplicateDoorPositionException(
+                    "There are duplicate door lines. All door positions must be unique.");
             }
 
             var doorLines = new List<DoorLineGrid2D>();
@@ -62,7 +63,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             foreach (var doorLine in DoorLines)
             {
                 var compatibleDoorLines = DoorLines
-                    .Where(x => x.DoorSocket == doorLine.DoorSocket && x.Length == doorLine.Length && !x.Equals(doorLine))
+                    .Where(x => x.DoorSocket == doorLine.DoorSocket && x.Length == doorLine.Length &&
+                                !x.Equals(doorLine))
                     .Select(x => x.Line)
                     .ToList();
 
@@ -71,7 +73,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
                 if (doIntersect)
                 {
-                    throw new DuplicateDoorPositionException("Some door lines with the same length and socket intersect each other. All door positions must be unique.");
+                    throw new DuplicateDoorPositionException(
+                        "Some door lines with the same length and socket intersect each other. All door positions must be unique.");
                 }
 
                 doorLines.AddRange(GetDoorLinesFromDoorLine(roomShape, doorLine));
@@ -80,7 +83,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             return doorLines;
         }
 
-        private IEnumerable<DoorLineGrid2D> GetDoorLinesFromDoorLine(PolygonGrid2D roomShape, DoorLineGrid2D originalDoorLine)
+        private IEnumerable<DoorLineGrid2D> GetDoorLinesFromDoorLine(PolygonGrid2D roomShape,
+            DoorLineGrid2D originalDoorLine)
         {
             // Keep track of whether we found a suitable side of the polygon for the door line
             // We cannot simply return from the for each because door lines on the corner of a polygon may produce two door lines
@@ -105,7 +109,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 {
                     if (originalLine.GetDirection() == OrthogonalLineGrid2D.Direction.Undefined)
                     {
-                        throw new UndirectedDoorLine($"The door line {originalDoorLine.Line.ToStringShort()} ({originalDoorLine.Length}) is not directed. Please provide a direction to doors with line length 0.");
+                        throw new UndirectedDoorLine(
+                            $"The door line {originalDoorLine.Line.ToStringShort()} ({originalDoorLine.Length}) is not directed. Please provide a direction to doors with line length 0.");
                     }
 
                     isGoodDirection = originalLine.GetDirection() == side.GetDirection();
@@ -131,12 +136,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 var to = from + originalLine.Length * side.GetDirectionVector();
 
                 found = true;
-                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, to, side.GetDirection()), originalDoorLine.Length, originalDoorLine.DoorSocket, originalDoorLine.Type);
+                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, to, side.GetDirection()),
+                    originalDoorLine.Length, originalDoorLine.DoorSocket, originalDoorLine.Type);
             }
 
             if (found == false)
             {
-                throw new DoorLineOutsideOfOutlineException($"The door line {originalDoorLine.Line.ToStringShort()} ({originalDoorLine.Length}) is not on the outline of the polygon {roomShape}. Make sure that all the door lines of a manual door mode are on the outline of the polygon.");
+                throw new DoorLineOutsideOfOutlineException(
+                    $"The door line {originalDoorLine.Line.ToStringShort()} ({originalDoorLine.Length}) is not on the outline of the polygon {roomShape}. Make sure that all the door lines of a manual door mode are on the outline of the polygon.");
             }
         }
 
@@ -146,7 +153,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             {
                 throw new DuplicateDoorPositionException("All door positions must be unique");
             }
-            
+
             var doorLines = new List<DoorLineGrid2D>();
 
             foreach (var doorPosition in Doors)
@@ -171,12 +178,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 var from = isGoodDirection ? doorLine.From : doorLine.To;
 
                 found = true;
-                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, from, side.GetDirection()), doorLine.Length, door.Socket, door.Type);
+                yield return new DoorLineGrid2D(new OrthogonalLineGrid2D(from, from, side.GetDirection()),
+                    doorLine.Length, door.Socket, door.Type);
             }
 
             if (found == false)
             {
-                throw new DoorLineOutsideOfOutlineException($"The door line {doorLine.ToStringShort()} is not on the outline of the polygon {roomShape}. Make sure that all the door lines of a manual door mode are on the outline of the polygon.");
+                throw new DoorLineOutsideOfOutlineException(
+                    $"The door line {doorLine.ToStringShort()} is not on the outline of the polygon {roomShape}. Make sure that all the door lines of a manual door mode are on the outline of the polygon.");
             }
         }
     }

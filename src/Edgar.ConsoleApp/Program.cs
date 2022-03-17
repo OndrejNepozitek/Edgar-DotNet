@@ -10,17 +10,14 @@ namespace Edgar.ConsoleApp
         [Verb("compareToReference")]
         private class CompareToReferenceOptions
         {
-
         }
 
         [Verb("runSample")]
         private class RunSampleOptions
         {
-            [Value(0, HelpText = "Sample class")]
-            public string SampleClass { get; set; }
+            [Value(0, HelpText = "Sample class")] public string SampleClass { get; set; }
 
-            [Value(1, HelpText = "Sample method")]
-            public string SampleMethod { get; set; }
+            [Value(1, HelpText = "Sample method")] public string SampleMethod { get; set; }
         }
 
         internal static int Main(string[] args)

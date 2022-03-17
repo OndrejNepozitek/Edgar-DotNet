@@ -17,7 +17,9 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
 
         public double Multiplier { get; }
 
-        public MaxIterationsMutation(int priority, SimulatedAnnealingConfigurationProvider simulatedAnnealingConfiguration, MaxIterationsStrategy strategy, double minValue, double multiplier)
+        public MaxIterationsMutation(int priority,
+            SimulatedAnnealingConfigurationProvider simulatedAnnealingConfiguration, MaxIterationsStrategy strategy,
+            double minValue, double multiplier)
         {
             Priority = priority;
             SimulatedAnnealingConfiguration = simulatedAnnealingConfiguration;
@@ -25,6 +27,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             MinValue = minValue;
             Multiplier = multiplier;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var copy = configuration.SmartClone();
@@ -64,12 +67,14 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             }
         }
 
-        public static bool operator ==(MaxIterationsMutation<TConfiguration> left, MaxIterationsMutation<TConfiguration> right)
+        public static bool operator ==(MaxIterationsMutation<TConfiguration> left,
+            MaxIterationsMutation<TConfiguration> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(MaxIterationsMutation<TConfiguration> left, MaxIterationsMutation<TConfiguration> right)
+        public static bool operator !=(MaxIterationsMutation<TConfiguration> left,
+            MaxIterationsMutation<TConfiguration> right)
         {
             return !Equals(left, right);
         }

@@ -13,7 +13,8 @@ namespace Sandbox.Utils
         // TODO: remove later
         public List<int> Offsets { get; set; }
 
-        public DungeonGeneratorInput(string name, IMapDescription<TNode> mapDescription, DungeonGeneratorConfiguration<TNode> configuration, List<int> offsets) : base(name, mapDescription)
+        public DungeonGeneratorInput(string name, IMapDescription<TNode> mapDescription,
+            DungeonGeneratorConfiguration<TNode> configuration, List<int> offsets) : base(name, mapDescription)
         {
             Configuration = configuration;
             Offsets = offsets;

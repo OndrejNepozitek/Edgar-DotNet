@@ -32,7 +32,7 @@ namespace Sandbox.Features
 
             var inputs = new List<DungeonGeneratorInput<int>>();
             var chainDecompositionOld = new BreadthFirstChainDecompositionOld<int>();
-            
+
             for (var i = 0; i < graphs.Count; i++)
             {
                 var graph = graphs[i];
@@ -43,12 +43,15 @@ namespace Sandbox.Features
                     var mapDescription = GetMapDescription(graph, withCorridors);
                     var chainDecomposition = new TwoStageChainDecomposition<int>(mapDescription, chainDecompositionOld);
 
-                    inputs.Add(new DungeonGeneratorInput<int>($"RandomGraph {i} {(withCorridors ? "wc" : "")}", mapDescription, new DungeonGeneratorConfiguration<int>()
-                    {
-                        EarlyStopIfIterationsExceeded = 20000,
-                        // Chains = chainDecomposition.GetChains(mapDescription.GetGraph()),
-                        SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration() { MaxIterationsWithoutSuccess = 150 })
-                    }, null));
+                    inputs.Add(new DungeonGeneratorInput<int>($"RandomGraph {i} {(withCorridors ? "wc" : "")}",
+                        mapDescription, new DungeonGeneratorConfiguration<int>()
+                        {
+                            EarlyStopIfIterationsExceeded = 20000,
+                            // Chains = chainDecomposition.GetChains(mapDescription.GetGraph()),
+                            SimulatedAnnealingConfiguration =
+                                new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
+                                    {MaxIterationsWithoutSuccess = 150})
+                        }, null));
                 }
             }
 
@@ -57,12 +60,14 @@ namespace Sandbox.Features
             {
                 var layoutDrawer = new SVGLayoutDrawer<int>();
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
+                var layoutGenerator =
+                    new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>
                 {
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                     void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
                         simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -75,11 +80,13 @@ namespace Sandbox.Features
                     var additionalData = new AdditionalRunData()
                     {
                         SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                        GeneratedLayoutSvg = layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                        GeneratedLayoutSvg =
+                            layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
                         GeneratedLayout = layout,
                     };
 
-                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                        layoutGenerator.IterationsCount, additionalData);
 
                     return generatorRun;
                 });
@@ -112,10 +119,11 @@ namespace Sandbox.Features
             var basicRoomDescription = new BasicRoomDescription(rectangularRoomTemplates);
             // var basicRoomDescription = new BasicRoomDescription(gungeonRoomTemplates);
 
-            var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(new List<int>() { 2, 4 });
+            var corridorRoomTemplates = MapDescriptionUtils.GetCorridorRoomTemplates(new List<int>() {2, 4});
             var corridorRoomDescription = new CorridorRoomDescription(corridorRoomTemplates);
 
-            var mapDescription = MapDescriptionUtils.GetBasicMapDescription(graph, basicRoomDescription, corridorRoomDescription, withCorridors);
+            var mapDescription = MapDescriptionUtils.GetBasicMapDescription(graph, basicRoomDescription,
+                corridorRoomDescription, withCorridors);
 
             return mapDescription;
         }

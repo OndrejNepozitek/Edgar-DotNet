@@ -29,7 +29,7 @@ namespace MapGeneration.Tests.Utils.Statistics
         {
             var distribution = new Dictionary<int, double>()
             {
-                { 0, 1d }
+                {0, 1d}
             };
 
             var entropy = entropyCalculator.ComputeEntropy(distribution);
@@ -44,17 +44,17 @@ namespace MapGeneration.Tests.Utils.Statistics
         {
             var distribution = new Dictionary<int, double>()
             {
-                { 0, 1/2d },
-                { 1, 1/2d },
-                { 2, 0 },
-                { 3, 0 }
+                {0, 1 / 2d},
+                {1, 1 / 2d},
+                {2, 0},
+                {3, 0}
             };
 
             var entropy = entropyCalculator.ComputeEntropy(distribution);
             var normalizedEntropy = entropyCalculator.ComputeEntropy(distribution, true);
 
             Assert.That(entropy, Is.EqualTo(1));
-            Assert.That(normalizedEntropy, Is.EqualTo(1/2d));
+            Assert.That(normalizedEntropy, Is.EqualTo(1 / 2d));
         }
 
         [Test]
@@ -62,10 +62,10 @@ namespace MapGeneration.Tests.Utils.Statistics
         {
             var distribution = new Dictionary<int, double>()
             {
-                { 0, 1/4d },
-                { 1, 1/4d },
-                { 2, 1/4d },
-                { 3, 1/4d }
+                {0, 1 / 4d},
+                {1, 1 / 4d},
+                {2, 1 / 4d},
+                {3, 1 / 4d}
             };
 
             var entropy = entropyCalculator.ComputeEntropy(distribution);

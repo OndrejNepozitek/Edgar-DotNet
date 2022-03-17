@@ -12,10 +12,10 @@ using Edgar.Legacy.Utils;
 
 namespace Sandbox.Examples
 {
-	using System.Collections.Generic;
+    using System.Collections.Generic;
 
     public class CorridorsExample : IExample
-	{
+    {
         public MapDescription<int> GetMapDescription()
         {
             const bool useLongCorridors = false;
@@ -33,23 +33,23 @@ namespace Sandbox.Examples
             var rectangleRoom = new RoomTemplate(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
+                new List<TransformationGrid2D>() {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
-            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() { squareRoom, rectangleRoom });
-            
-			// Basic corridor shape
-			var corridorRoom1x2 = new RoomTemplate(
-                PolygonGrid2D.GetRectangle(1, 2),
-				new ManualDoorMode(new List<OrthogonalLineGrid2D>()
-				{
-					new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
-					new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2))
-				}),
-                new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
-			);
+            var basicRoomDescription = new BasicRoomDescription(new List<RoomTemplate>() {squareRoom, rectangleRoom});
 
-            var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() { corridorRoom1x2 });
+            // Basic corridor shape
+            var corridorRoom1x2 = new RoomTemplate(
+                PolygonGrid2D.GetRectangle(1, 2),
+                new ManualDoorMode(new List<OrthogonalLineGrid2D>()
+                {
+                    new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
+                    new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(1, 2))
+                }),
+                new List<TransformationGrid2D>() {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
+            );
+
+            var corridorRoomDescription = new CorridorRoomDescription(new List<RoomTemplate>() {corridorRoom1x2});
 
             // Add longer corridor
             if (useLongCorridors)
@@ -61,7 +61,7 @@ namespace Sandbox.Examples
                         new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(1, 0)),
                         new OrthogonalLineGrid2D(new Vector2Int(0, 4), new Vector2Int(1, 4))
                     }),
-                    new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
+                    new List<TransformationGrid2D>() {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
                 );
 
                 corridorRoomDescription.RoomTemplates.Add(corridorRoom1x4);
@@ -78,7 +78,7 @@ namespace Sandbox.Examples
                         .AddPoint(3, 0)
                         .AddPoint(2, 0)
                         .AddPoint(2, 2)
-                        .Build(), 
+                        .Build(),
                     new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
                         new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 3)),
@@ -107,7 +107,7 @@ namespace Sandbox.Examples
                         .AddPoint(3, 1)
                         .AddPoint(2, 1)
                         .AddPoint(2, 0)
-                        .Build(), 
+                        .Build(),
                     new ManualDoorMode(new List<OrthogonalLineGrid2D>()
                     {
                         new OrthogonalLineGrid2D(new Vector2Int(1, 0), new Vector2Int(2, 0)),
@@ -156,11 +156,14 @@ namespace Sandbox.Examples
                     }
                     else
                     {
-                        var desc1 = new CorridorRoomDescription(new List<RoomTemplate>() { corridorRoomDescription.RoomTemplates[0]} );
-                        var desc2 = new CorridorRoomDescription(new List<RoomTemplate>() { corridorRoomDescription.RoomTemplates[1]} );
+                        var desc1 = new CorridorRoomDescription(new List<RoomTemplate>()
+                            {corridorRoomDescription.RoomTemplates[0]});
+                        var desc2 = new CorridorRoomDescription(new List<RoomTemplate>()
+                            {corridorRoomDescription.RoomTemplates[1]});
 
                         // We manually insert a new node between each neighboring nodes in the graph
-                        mapDescription.AddRoom(counter, connection.From % 2 == 0 && connection.To % 2 == 0 ? desc2 : desc1);
+                        mapDescription.AddRoom(counter,
+                            connection.From % 2 == 0 && connection.To % 2 == 0 ? desc2 : desc1);
 
                         // And instead of connecting the rooms directly, we connect them to the corridor room
                         mapDescription.AddConnection(connection.From, counter);
@@ -180,7 +183,7 @@ namespace Sandbox.Examples
                 }
             }
 
-			return mapDescription;
-		}
-	}
+            return mapDescription;
+        }
+    }
 }

@@ -9,11 +9,9 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
 {
     public class AdditionalRunData<TNode> : ISimulatedAnnealingData, IWebGuiRunData
     {
-        [JsonIgnore]
-        public MapLayout<TNode> GeneratedLayout { get; set; }
+        [JsonIgnore] public MapLayout<TNode> GeneratedLayout { get; set; }
 
-        [JsonIgnore]
-        public List<SimulatedAnnealingEventArgs> SimulatedAnnealingEventArgs { get; set; }
+        [JsonIgnore] public List<SimulatedAnnealingEventArgs> SimulatedAnnealingEventArgs { get; set; }
 
         public string GeneratedLayoutSvg { get; set; }
     }

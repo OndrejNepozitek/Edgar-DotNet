@@ -26,10 +26,15 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
         private readonly RoomTemplateRepeatMode repeatMode;
         private readonly Func<int, TRoom> getCorridorNameFunc;
         private readonly bool enhanceRoomTemplates = false;
-        private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
+
+        private readonly List<TransformationGrid2D> transformations =
+            TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
+
         private readonly Vector2Int scale;
 
-        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, Func<int, TRoom> getCorridorNameFunc = null)
+        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat,
+            Func<int, TRoom> getCorridorNameFunc = null)
         {
             this.roomTemplatesSet = roomTemplatesSet;
             this.scale = scale;
@@ -38,7 +43,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             // roomTemplatesOriginal = MapDescriptionUtils.GetBasicRoomTemplates(scale);
         }
 
-        public List<LevelDescriptionGrid2D<TRoom>> GetLevelDescriptions(List<NamedGraph<TRoom>> namedGraphs, List<int> corridorOffsets)
+        public List<LevelDescriptionGrid2D<TRoom>> GetLevelDescriptions(List<NamedGraph<TRoom>> namedGraphs,
+            List<int> corridorOffsets)
         {
             var levelDescriptions = new List<LevelDescriptionGrid2D<TRoom>>();
 
@@ -50,10 +56,13 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return levelDescriptions;
         }
 
-        protected virtual LevelDescriptionGrid2D<TRoom> GetLevelDescription(NamedGraph<TRoom> namedGraph, List<int> corridorOffsets)
+        protected virtual LevelDescriptionGrid2D<TRoom> GetLevelDescription(NamedGraph<TRoom> namedGraph,
+            List<int> corridorOffsets)
         {
             var withCorridors = corridorOffsets[0] != 0;
-            var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2) : null;
+            var corridorRoomDescription = withCorridors
+                ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2)
+                : null;
 
             var levelDescription = new LevelDescriptionGrid2D<TRoom>();
             levelDescription.MinimumRoomDistance = 0;
@@ -82,7 +91,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
                     levelDescription.AddConnection(connection.From, connection.To);
                 }
             }
-            
+
             // var name = MapDescriptionUtils.GetInputName(namedGraph.Name, scale, withCorridors, corridorOffsets, canTouch);
             levelDescription.Name = namedGraph.Name;
 
@@ -131,17 +140,20 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
             return GetRectangleRoomTemplate(width, width, doorMode);
         }
 
-        protected virtual RoomTemplateGrid2D GetRectangleRoomTemplate(int width, int height, SimpleDoorModeGrid2D doorMode)
+        protected virtual RoomTemplateGrid2D GetRectangleRoomTemplate(int width, int height,
+            SimpleDoorModeGrid2D doorMode)
         {
             return GetRoomTemplate(PolygonGrid2D.GetRectangle(width, height), doorMode, $"Rectangle {width}x{width}");
         }
 
-        protected virtual RoomTemplateGrid2D GetRoomTemplate(PolygonGrid2D polygon, SimpleDoorModeGrid2D doorMode, string name)
+        protected virtual RoomTemplateGrid2D GetRoomTemplate(PolygonGrid2D polygon, SimpleDoorModeGrid2D doorMode,
+            string name)
         {
             var minScale = Math.Min(scale.X, scale.Y);
             doorMode = new SimpleDoorModeGrid2D(doorMode.DoorLength * minScale, doorMode.CornerDistance * minScale);
 
-            return new RoomTemplateGrid2D(polygon.Scale(scale), doorMode, allowedTransformations: transformations, name: name, repeatMode: repeatMode);
+            return new RoomTemplateGrid2D(polygon.Scale(scale), doorMode, allowedTransformations: transformations,
+                name: name, repeatMode: repeatMode);
         }
 
         protected virtual RoomDescriptionGrid2D GetBasicRoomDescription(IGraph<TRoom> graph, TRoom vertex)
@@ -170,13 +182,13 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
                     {
                         roomTemplates.AddRange(roomTemplatesSmall);
                     }
+
                     roomTemplates.AddRange(roomTemplatesMedium);
                     break;
                 }
                 case RoomTemplatesSet.Original:
                     roomTemplates.AddRange(roomTemplatesOriginal);
                     break;
-
             }
 
             return new RoomDescriptionGrid2D
@@ -189,7 +201,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
     public class LevelDescriptionLoader : LevelDescriptionLoader<int>
     {
-        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode, x => x)
+        public LevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(roomTemplatesSet, scale,
+            repeatMode, x => x)
         {
         }
     }

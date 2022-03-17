@@ -14,10 +14,10 @@ namespace Edgar.Legacy.Core.MapDescriptions
     public class MapDescription<TRoom> : IMapDescription<TRoom>
     {
         [JsonProperty]
-        private readonly Dictionary<TRoom, IRoomDescription> roomDescriptions = new Dictionary<TRoom, IRoomDescription>();
+        private readonly Dictionary<TRoom, IRoomDescription> roomDescriptions =
+            new Dictionary<TRoom, IRoomDescription>();
 
-        [JsonProperty]
-        private readonly List<Passage> passages = new List<Passage>();
+        [JsonProperty] private readonly List<Passage> passages = new List<Passage>();
 
         /// <summary>
         /// Adds a given room to the level description.
@@ -146,7 +146,8 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
                     if (neighbors.Count != 2)
                     {
-                        throw new ArgumentException($"Each corridor must have exactly 2 neighbors but room {room} has {neighbors.Count} neighbors");
+                        throw new ArgumentException(
+                            $"Each corridor must have exactly 2 neighbors but room {room} has {neighbors.Count} neighbors");
                     }
 
                     foreach (var neighbor in neighbors)
@@ -155,7 +156,8 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
                         if (neighborRoomDescription.Stage == 2)
                         {
-                            throw new ArgumentException($"Each corridor must be connected only to basic rooms but room {room} is connected to room {neighbor} which is a corridors");
+                            throw new ArgumentException(
+                                $"Each corridor must be connected only to basic rooms but room {room} is connected to room {neighbor} which is a corridors");
                         }
                     }
                 }
@@ -178,7 +180,10 @@ namespace Edgar.Legacy.Core.MapDescriptions
 
             private bool Equals(Passage other)
             {
-                return (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room1) && EqualityComparer<TRoom>.Default.Equals(Room2, other.Room2)) || (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room2) && EqualityComparer<TRoom>.Default.Equals(Room2, other.Room1));
+                return (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room1) &&
+                        EqualityComparer<TRoom>.Default.Equals(Room2, other.Room2)) ||
+                       (EqualityComparer<TRoom>.Default.Equals(Room1, other.Room2) &&
+                        EqualityComparer<TRoom>.Default.Equals(Room2, other.Room1));
             }
 
             public override bool Equals(object obj)
@@ -186,14 +191,15 @@ namespace Edgar.Legacy.Core.MapDescriptions
                 if (ReferenceEquals(null, obj)) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 if (obj.GetType() != this.GetType()) return false;
-                return Equals((Passage)obj);
+                return Equals((Passage) obj);
             }
 
             public override int GetHashCode()
             {
                 unchecked
                 {
-                    return (EqualityComparer<TRoom>.Default.GetHashCode(Room1) * 397) ^ EqualityComparer<TRoom>.Default.GetHashCode(Room2);
+                    return (EqualityComparer<TRoom>.Default.GetHashCode(Room1) * 397) ^
+                           EqualityComparer<TRoom>.Default.GetHashCode(Room2);
                 }
             }
 

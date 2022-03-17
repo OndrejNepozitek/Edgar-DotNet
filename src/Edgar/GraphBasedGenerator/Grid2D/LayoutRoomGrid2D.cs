@@ -7,7 +7,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     /// Represents a single room in the final layout. It contains information about the shape of the room, its position, etc.
     /// </summary>
     public class LayoutRoomGrid2D<TRoom>
-	{
+    {
         /// <summary>
         /// Corresponding room from the level description.
         /// </summary>
@@ -35,12 +35,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// Position of the room.
         /// </summary>
         public Vector2Int Position { get; }
-        
+
         /// <summary>
         /// Room template used for this room.
         /// </summary>
         public RoomTemplateGrid2D RoomTemplate { get; }
-        
+
         /// <summary>
         /// Whether it is a corridor room or not.
         /// </summary>
@@ -68,15 +68,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <param name="roomTemplate">See the <see cref="RoomTemplate"/> property.</param>
         /// <param name="roomDescription">See the <see cref="RoomDescription"/> property.</param>
         /// <param name="transformation">See the <see cref="Transformation"/> property.</param>
-        public LayoutRoomGrid2D(TRoom room, PolygonGrid2D outline, Vector2Int position, bool isCorridor, RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, TransformationGrid2D transformation)
-		{
-			Room = room;
-			Outline = outline;
-			Position = position;
-			IsCorridor = isCorridor;
-			RoomTemplate = roomTemplate;
-			Transformation = transformation;
+        public LayoutRoomGrid2D(TRoom room, PolygonGrid2D outline, Vector2Int position, bool isCorridor,
+            RoomTemplateGrid2D roomTemplate, RoomDescriptionGrid2D roomDescription, TransformationGrid2D transformation)
+        {
+            Room = room;
+            Outline = outline;
+            Position = position;
+            IsCorridor = isCorridor;
+            RoomTemplate = roomTemplate;
+            Transformation = transformation;
             RoomDescription = roomDescription;
         }
-	}
+    }
 }

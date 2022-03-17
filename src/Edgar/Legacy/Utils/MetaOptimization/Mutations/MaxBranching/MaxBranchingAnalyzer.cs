@@ -7,11 +7,13 @@ using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
 namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxBranching
 {
-    public class MaxBranchingAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+    public class MaxBranchingAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration,
+        Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
         where TGeneratorStats : IChainsStats
     {
-        public List<IMutation<TConfiguration>> ProposeMutations(Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
+        public List<IMutation<TConfiguration>> ProposeMutations(
+            Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
         {
             var mutations = new List<IMutation<TConfiguration>>();
 

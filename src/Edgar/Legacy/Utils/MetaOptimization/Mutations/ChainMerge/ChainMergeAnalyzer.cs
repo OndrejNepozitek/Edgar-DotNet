@@ -6,11 +6,13 @@ using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
 namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainMerge
 {
-    public class ChainMergeAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+    public class ChainMergeAnalyzer<TConfiguration, TNode, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration,
+        Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : IChainDecompositionConfiguration<TNode>, ISmartCloneable<TConfiguration>
         where TGeneratorStats : IChainsStats
     {
-        public List<IMutation<TConfiguration>> ProposeMutations(Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
+        public List<IMutation<TConfiguration>> ProposeMutations(
+            Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
         {
             var mutations = new List<IMutation<TConfiguration>>();
             var configuration = individual.Configuration;

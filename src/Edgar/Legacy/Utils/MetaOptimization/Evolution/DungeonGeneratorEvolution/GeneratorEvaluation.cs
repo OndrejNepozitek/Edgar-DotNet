@@ -25,8 +25,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
         public GeneratorData GetAverageStatistics(DataSplit dataSplit)
         {
             var data = generatorData
-                .Skip(Math.Min(generatorData.Count - 1, (int)(generatorData.Count * dataSplit.Start)))
-                .Take(Math.Max(1, (int)(generatorData.Count * (dataSplit.End - dataSplit.Start))))
+                .Skip(Math.Min(generatorData.Count - 1, (int) (generatorData.Count * dataSplit.Start)))
+                .Take(Math.Max(1, (int) (generatorData.Count * (dataSplit.End - dataSplit.Start))))
                 .ToList();
             var averageData = new GeneratorData();
 
@@ -41,7 +41,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
                     Iterations = data.Average(x => x.ChainsStats[i].Iterations),
                     MaxIterationsOnSuccess = data.Max(x => x.ChainsStats[i].MaxIterationsOnSuccess),
                     AverageIterationsOnSuccess = data.Average(x => x.ChainsStats[i].AverageIterationsOnSuccess),
-                    AverageStageTwoFailuresOnSuccess = data.Average(x => x.ChainsStats[i].AverageStageTwoFailuresOnSuccess),
+                    AverageStageTwoFailuresOnSuccess =
+                        data.Average(x => x.ChainsStats[i].AverageStageTwoFailuresOnSuccess),
                     MaxStageTwoFailuresOnSuccess = data.Max(x => x.ChainsStats[i].MaxStageTwoFailuresOnSuccess),
                 });
             }
@@ -114,7 +115,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
             };
         }
 
-        private List<List<SimulatedAnnealingEventArgs>> GetStageTwoFailuresBeforeSuccess(int chainNumber, List<SimulatedAnnealingEventArgs> simulatedAnnealingEvents)
+        private List<List<SimulatedAnnealingEventArgs>> GetStageTwoFailuresBeforeSuccess(int chainNumber,
+            List<SimulatedAnnealingEventArgs> simulatedAnnealingEvents)
         {
             var result = new List<List<SimulatedAnnealingEventArgs>>();
 
@@ -125,7 +127,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution.DungeonGeneratorEvolutio
                 {
                     result.Add(stageTwoFailures);
                     stageTwoFailures = new List<SimulatedAnnealingEventArgs>();
-                } else if (simulatedAnnealingEvent.ChainNumber != chainNumber && stageTwoFailures.Count != 0)
+                }
+                else if (simulatedAnnealingEvent.ChainNumber != chainNumber && stageTwoFailures.Count != 0)
                 {
                     stageTwoFailures = new List<SimulatedAnnealingEventArgs>();
                 }

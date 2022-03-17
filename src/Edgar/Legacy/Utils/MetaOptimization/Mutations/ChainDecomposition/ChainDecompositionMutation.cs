@@ -9,7 +9,8 @@ using Edgar.Legacy.Utils.MetaOptimization.Configurations;
 namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
 {
     public class ChainDecompositionMutation<TConfiguration, TNode> : IMutation<TConfiguration>
-        where TConfiguration : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
+        where TConfiguration : IChainDecompositionConfiguration<TNode>, ISimulatedAnnealingConfiguration,
+        ISmartCloneable<TConfiguration>
     {
         public int Priority { get; }
 
@@ -22,8 +23,9 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
         public bool StartTreeWithMultipleVertices { get; }
 
         public List<Chain<TNode>> Chains { get; }
-        
-        public ChainDecompositionMutation(int priority, List<Chain<TNode>> chains, int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
+
+        public ChainDecompositionMutation(int priority, List<Chain<TNode>> chains, int maxTreeSize,
+            bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy)
         {
             Priority = priority;
             Chains = chains;
@@ -49,14 +51,17 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
 
         public override string ToString()
         {
-            return $"ChainDecomposition, priority {Priority}, TreeStrategy {TreeComponentStrategy} MaxTreeSize {MaxTreeSize}, MergeSmallChains {MergeSmallChains}, stwmv {StartTreeWithMultipleVertices}";
+            return
+                $"ChainDecomposition, priority {Priority}, TreeStrategy {TreeComponentStrategy} MaxTreeSize {MaxTreeSize}, MergeSmallChains {MergeSmallChains}, stwmv {StartTreeWithMultipleVertices}";
         }
 
         #region Equals
 
         protected bool Equals(ChainDecompositionMutation<TConfiguration, TNode> other)
         {
-            return TreeComponentStrategy == other.TreeComponentStrategy && MaxTreeSize == other.MaxTreeSize && MergeSmallChains == other.MergeSmallChains && StartTreeWithMultipleVertices == other.StartTreeWithMultipleVertices;
+            return TreeComponentStrategy == other.TreeComponentStrategy && MaxTreeSize == other.MaxTreeSize &&
+                   MergeSmallChains == other.MergeSmallChains &&
+                   StartTreeWithMultipleVertices == other.StartTreeWithMultipleVertices;
         }
 
         public override bool Equals(object obj)
@@ -79,12 +84,14 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainDecomposition
             }
         }
 
-        public static bool operator ==(ChainDecompositionMutation<TConfiguration, TNode> left, ChainDecompositionMutation<TConfiguration, TNode> right)
+        public static bool operator ==(ChainDecompositionMutation<TConfiguration, TNode> left,
+            ChainDecompositionMutation<TConfiguration, TNode> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(ChainDecompositionMutation<TConfiguration, TNode> left, ChainDecompositionMutation<TConfiguration, TNode> right)
+        public static bool operator !=(ChainDecompositionMutation<TConfiguration, TNode> left,
+            ChainDecompositionMutation<TConfiguration, TNode> right)
         {
             return !Equals(left, right);
         }

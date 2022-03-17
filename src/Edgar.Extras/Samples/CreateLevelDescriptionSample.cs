@@ -26,11 +26,13 @@ namespace Edgar.Extras.Samples
             var rectangleRoom = new RoomTemplateGrid2D(
                 PolygonGrid2D.GetRectangle(6, 10),
                 doorMode,
-                allowedTransformations: new List<TransformationGrid2D>() { TransformationGrid2D.Identity, TransformationGrid2D.Rotate90 }
+                allowedTransformations: new List<TransformationGrid2D>()
+                    {TransformationGrid2D.Identity, TransformationGrid2D.Rotate90}
             );
 
             // Create room description
-            var basicRoomDescription = new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() { squareRoom, rectangleRoom });
+            var basicRoomDescription =
+                new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {squareRoom, rectangleRoom});
 
             // Create map description
             var levelDescription = new LevelDescriptionGrid2D<int>();

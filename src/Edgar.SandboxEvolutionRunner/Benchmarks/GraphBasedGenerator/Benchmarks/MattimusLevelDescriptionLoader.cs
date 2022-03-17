@@ -9,7 +9,10 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 {
     public class MattimusLevelDescriptionLoader<TRoom> : LevelDescriptionLoader<TRoom>
     {
-        public MattimusLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, Func<int, TRoom> getCorridorNameFunc = null) : base(roomTemplatesSet, scale, repeatMode, getCorridorNameFunc)
+        public MattimusLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat,
+            Func<int, TRoom> getCorridorNameFunc = null) : base(roomTemplatesSet, scale, repeatMode,
+            getCorridorNameFunc)
         {
         }
 
@@ -17,7 +20,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
         {
             return new List<RoomTemplateGrid2D>()
             {
-                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(16), GetDoorMode(new List<Vector2Int>() { new Vector2Int(0, 0)}), allowedTransformations: TransformationGrid2DHelper.GetAll()),
+                new RoomTemplateGrid2D(PolygonGrid2D.GetSquare(16),
+                    GetDoorMode(new List<Vector2Int>() {new Vector2Int(0, 0)}),
+                    allowedTransformations: TransformationGrid2DHelper.GetAll()),
                 new RoomTemplateGrid2D(PolygonGrid2D.GetRectangle(32, 16), GetDoorMode(new List<Vector2Int>()
                 {
                     new Vector2Int(0, 0),

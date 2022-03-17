@@ -7,7 +7,6 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
     public class MaxStageTwoFailuresMutation<TConfiguration> : IMutation<TConfiguration>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
     {
-
         public int Priority { get; }
 
         public SimulatedAnnealingConfigurationProvider SimulatedAnnealingConfiguration { get; }
@@ -18,7 +17,9 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
 
         public double Multiplier { get; }
 
-        public MaxStageTwoFailuresMutation(int priority, SimulatedAnnealingConfigurationProvider simulatedAnnealingConfiguration, MaxStageTwoFailuresStrategy strategy, double minValue, double multiplier)
+        public MaxStageTwoFailuresMutation(int priority,
+            SimulatedAnnealingConfigurationProvider simulatedAnnealingConfiguration,
+            MaxStageTwoFailuresStrategy strategy, double minValue, double multiplier)
         {
             Priority = priority;
             SimulatedAnnealingConfiguration = simulatedAnnealingConfiguration;
@@ -26,6 +27,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
             MinValue = minValue;
             Multiplier = multiplier;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var copy = configuration.SmartClone();
@@ -36,7 +38,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
 
         public override string ToString()
         {
-            return $"SAMaxStageTwoFailures with {Strategy} strategy, priority {Priority}, min {MinValue}, mul {Multiplier}";
+            return
+                $"SAMaxStageTwoFailures with {Strategy} strategy, priority {Priority}, min {MinValue}, mul {Multiplier}";
         }
 
         #region Equals
@@ -65,12 +68,14 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxStageTwoFailures
             }
         }
 
-        public static bool operator ==(MaxStageTwoFailuresMutation<TConfiguration> left, MaxStageTwoFailuresMutation<TConfiguration> right)
+        public static bool operator ==(MaxStageTwoFailuresMutation<TConfiguration> left,
+            MaxStageTwoFailuresMutation<TConfiguration> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(MaxStageTwoFailuresMutation<TConfiguration> left, MaxStageTwoFailuresMutation<TConfiguration> right)
+        public static bool operator !=(MaxStageTwoFailuresMutation<TConfiguration> left,
+            MaxStageTwoFailuresMutation<TConfiguration> right)
         {
             return !Equals(left, right);
         }

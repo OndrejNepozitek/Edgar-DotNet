@@ -42,7 +42,7 @@ namespace Edgar.Examples.Grid2D
             // Create a room description which says that the room is not a corridor and that it can use the two room templates
             var roomDescription = new RoomDescriptionGrid2D(
                 isCorridor: false,
-                roomTemplates: new List<RoomTemplateGrid2D>() { squareRoomTemplate, rectangleRoomTemplate }
+                roomTemplates: new List<RoomTemplateGrid2D>() {squareRoomTemplate, rectangleRoomTemplate}
             );
 
             // Create an instance of the level description

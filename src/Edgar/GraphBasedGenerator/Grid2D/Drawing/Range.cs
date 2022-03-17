@@ -24,7 +24,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 
             if (!IsValid())
             {
-                throw new ArgumentException($"The range is not valid. {nameof(Minimum)} must be less then or equal to {nameof(Maximum)}.");
+                throw new ArgumentException(
+                    $"The range is not valid. {nameof(Minimum)} must be less then or equal to {nameof(Maximum)}.");
             }
         }
 

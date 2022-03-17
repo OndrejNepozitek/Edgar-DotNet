@@ -9,8 +9,7 @@ namespace Edgar.Benchmarks.AdditionalData
     {
         public List<SimulatedAnnealingEventArgs> SimulatedAnnealingEventArgs { get; set; }
 
-        [JsonIgnore]
-        public MapLayout<int> GeneratedLayout { get; set; }
+        [JsonIgnore] public MapLayout<int> GeneratedLayout { get; set; }
 
         public string GeneratedLayoutSvg { get; set; }
     }

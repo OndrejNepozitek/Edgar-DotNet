@@ -34,10 +34,11 @@ namespace Edgar.IntegrationTests.GraphBasedGenerator.Grid2D
                     new RoomDescriptionGrid2D(false, new List<RoomTemplateGrid2D>() {roomTemplate1}));
                 levelDescription.AddConnection(0, 1);
 
-                var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription, new GraphBasedGeneratorConfiguration<int>()
-                {
-                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
-                });
+                var generator = new GraphBasedGeneratorGrid2D<int>(levelDescription,
+                    new GraphBasedGeneratorConfiguration<int>()
+                    {
+                        EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
+                    });
                 generator.InjectRandomGenerator(new Random(0));
 
                 var layout = generator.GenerateLayout();

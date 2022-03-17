@@ -235,7 +235,8 @@ namespace Edgar.Examples.Grid2D
             return new RoomDescriptionGrid2D
             (
                 isCorridor: false,
-                roomTemplates: new List<RoomTemplateGrid2D>() {            
+                roomTemplates: new List<RoomTemplateGrid2D>()
+                {
                     squareRoom1,
                     squareRoom2,
                     rectangleRoom

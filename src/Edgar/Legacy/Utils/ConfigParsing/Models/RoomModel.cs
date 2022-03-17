@@ -3,7 +3,7 @@
 namespace Edgar.Legacy.Utils.ConfigParsing.Models
 {
     public class RoomModel
-	{
-		public List<RoomShapesModel> RoomShapes { get; set; }
-	}
+    {
+        public List<RoomShapesModel> RoomShapes { get; set; }
+    }
 }

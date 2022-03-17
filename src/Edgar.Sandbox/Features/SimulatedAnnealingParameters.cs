@@ -20,8 +20,6 @@ namespace Sandbox.Features
     {
         public void EvolveParameters()
         {
-
-
             //var mapDescription = new MapDescription<int>()
             //    .SetupWithGraph(GraphsDatabase.GetExample3())
             //    .AddClassicRoomShapes(new IntVector2(1, 1));
@@ -37,7 +35,8 @@ namespace Sandbox.Features
 
             var input = new GeneratorInput<MapDescription<int>>(
                 "DeadCells",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText("Resources/MapDescriptions/deadCells.json"), settings)
+                JsonConvert.DeserializeObject<MapDescription<int>>(
+                    File.ReadAllText("Resources/MapDescriptions/deadCells.json"), settings)
             );
             //var input = new GeneratorInput<MapDescription<int>>(
             //    "example1_corridors",

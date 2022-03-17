@@ -18,7 +18,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             );
         }
 
-        public bool DoHaveMinimumDistance(TConfiguration configuration1, TConfiguration configuration2, int minimumDistance)
+        public bool DoHaveMinimumDistance(TConfiguration configuration1, TConfiguration configuration2,
+            int minimumDistance)
         {
             return polygonOverlap.DoHaveMinimumDistance(
                 configuration1.RoomShape.RoomShapeAlias, configuration1.Position,
@@ -29,7 +30,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public int GetCenterDistance(TConfiguration configuration1, TConfiguration configuration2)
         {
-            return Vector2Int.ManhattanDistance(configuration1.RoomShape.RoomShape.BoundingRectangle.Center + configuration1.Position,
+            return Vector2Int.ManhattanDistance(
+                configuration1.RoomShape.RoomShape.BoundingRectangle.Center + configuration1.Position,
                 configuration2.RoomShape.RoomShape.BoundingRectangle.Center + configuration2.Position);
         }
     }

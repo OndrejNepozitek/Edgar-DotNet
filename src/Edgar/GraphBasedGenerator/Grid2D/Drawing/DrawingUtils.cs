@@ -62,7 +62,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         /// <summary>
         /// Computes the final width, height and scale of a given bounding box.
         /// </summary>
-        public static (int width, int height, float scale) GetSize(RectangleGrid2D boundingBox, int? targetWidth, int? targetHeight, float? targetScale, int? paddingAbsolute, float paddingPercentage)
+        public static (int width, int height, float scale) GetSize(RectangleGrid2D boundingBox, int? targetWidth,
+            int? targetHeight, float? targetScale, int? paddingAbsolute, float paddingPercentage)
         {
             var ratio = GetWidthHeightRatio(boundingBox);
 
@@ -73,7 +74,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             else if (targetWidth != null && targetHeight == null)
             {
                 targetHeight = (int) (targetWidth / ratio);
-            } 
+            }
             else if (targetWidth == null && targetHeight == null)
             {
                 var scale = targetScale ?? 1;

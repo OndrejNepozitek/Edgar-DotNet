@@ -39,7 +39,7 @@ namespace MapGeneration.Tests.Utils.GraphAnalysis
             Assert.That(report.Clusters.Count, Is.EqualTo(1));
             Assert.That(report.Clusters[0].Nodes.Count, Is.EqualTo(5));
             Assert.That(report.Clusters[0].Cycles.Count, Is.EqualTo(6));
-            Assert.That(report.MaxDensity, Is.EqualTo(6/5d));
+            Assert.That(report.MaxDensity, Is.EqualTo(6 / 5d));
         }
     }
 }

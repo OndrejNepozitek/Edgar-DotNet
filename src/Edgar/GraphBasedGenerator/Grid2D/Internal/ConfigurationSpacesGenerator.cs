@@ -42,9 +42,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         {
             return doorSocketResolver.AreCompatible(socket1, socket2);
         }
-        
+
         // TODO: remove when possible
-        public Dictionary<Tuple<TNode, TNode>, IRoomDescription> GetNodesToCorridorMapping<TNode>(ILevelDescription<TNode> mapDescription)
+        public Dictionary<Tuple<TNode, TNode>, IRoomDescription> GetNodesToCorridorMapping<TNode>(
+            ILevelDescription<TNode> mapDescription)
         {
             var mapping = new Dictionary<Tuple<TNode, TNode>, IRoomDescription>();
 
@@ -65,7 +66,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             return mapping;
         }
 
-        public ConfigurationSpace GetConfigurationSpaceOverCorridors(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<RoomTemplateInstanceGrid2D> corridors)
+        public ConfigurationSpace GetConfigurationSpaceOverCorridors(RoomTemplateInstanceGrid2D roomTemplateInstance,
+            RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<RoomTemplateInstanceGrid2D> corridors)
         {
             var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
 
@@ -99,12 +101,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 doorLinesCorridor);
         }
 
-        public ConfigurationSpace GetConfigurationSpaceOverCorridor(PolygonGrid2D polygon, List<DoorLineGrid2D> doorLines, PolygonGrid2D fixedPolygon, List<DoorLineGrid2D> fixedDoorLines, PolygonGrid2D corridor, List<DoorLineGrid2D> corridorDoorLines)
+        public ConfigurationSpace GetConfigurationSpaceOverCorridor(PolygonGrid2D polygon,
+            List<DoorLineGrid2D> doorLines, PolygonGrid2D fixedPolygon, List<DoorLineGrid2D> fixedDoorLines,
+            PolygonGrid2D corridor, List<DoorLineGrid2D> corridorDoorLines)
         {
-            var fixedAndCorridorConfigurationSpace = GetConfigurationSpace(corridor, corridorDoorLines, fixedPolygon, fixedDoorLines);
+            var fixedAndCorridorConfigurationSpace =
+                GetConfigurationSpace(corridor, corridorDoorLines, fixedPolygon, fixedDoorLines);
             var newCorridorDoorLines = new List<DoorLineGrid2D>();
             corridorDoorLines = DoorUtils.MergeDoorLines(corridorDoorLines);
-                
+
             foreach (var corridorPositionLine in fixedAndCorridorConfigurationSpace.Lines)
             {
                 foreach (var corridorDoorLine in corridorDoorLines)
@@ -116,12 +121,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                     if (rotatedCorridorLine.GetDirection() == OrthogonalLineGrid2D.Direction.Right)
                     {
                         var correctPositionLine = (rotatedCorridorLine + rotatedLine.From);
-                        var correctLengthLine = new OrthogonalLineGrid2D(correctPositionLine.From, correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector(), rotatedCorridorLine.GetDirection());
+                        var correctLengthLine = new OrthogonalLineGrid2D(correctPositionLine.From,
+                            correctPositionLine.To + rotatedLine.Length * rotatedLine.GetDirectionVector(),
+                            rotatedCorridorLine.GetDirection());
                         var correctRotationLine = correctLengthLine.Rotate(-rotation);
 
                         // TODO: problem with corridors overlapping
-                        newCorridorDoorLines.Add(new DoorLineGrid2D(correctRotationLine, corridorDoorLine.Length, corridorDoorLine.DoorSocket, corridorDoorLine.Type));
-                    } else if (rotatedCorridorLine.GetDirection() == OrthogonalLineGrid2D.Direction.Top)
+                        newCorridorDoorLines.Add(new DoorLineGrid2D(correctRotationLine, corridorDoorLine.Length,
+                            corridorDoorLine.DoorSocket, corridorDoorLine.Type));
+                    }
+                    else if (rotatedCorridorLine.GetDirection() == OrthogonalLineGrid2D.Direction.Top)
                     {
                         foreach (var corridorPosition in rotatedCorridorLine.GetPoints())
                         {
@@ -130,7 +139,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                             // TODO: problem with corridors overlapping
                             // TODO: problem with too many small lines instead of bigger lines
-                            newCorridorDoorLines.Add(new DoorLineGrid2D(newDoorLine, corridorDoorLine.Length, corridorDoorLine.DoorSocket, corridorDoorLine.Type));
+                            newCorridorDoorLines.Add(new DoorLineGrid2D(newDoorLine, corridorDoorLine.Length,
+                                corridorDoorLine.DoorSocket, corridorDoorLine.Type));
                         }
                     }
                 }
@@ -145,55 +155,59 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             };
         }
 
-        private ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, List<DoorLineGrid2D> doorLines, PolygonGrid2D fixedCenter, List<DoorLineGrid2D> doorLinesFixed, List<int> offsets = null)
-		{
-			if (offsets != null && offsets.Count == 0)
-				throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
+        private ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, List<DoorLineGrid2D> doorLines,
+            PolygonGrid2D fixedCenter, List<DoorLineGrid2D> doorLinesFixed, List<int> offsets = null)
+        {
+            if (offsets != null && offsets.Count == 0)
+                throw new ArgumentException("There must be at least one offset if they are set", nameof(offsets));
 
-			var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
-			var reverseDoor = new List<ConfigurationSpaceSourceGrid2D>();
+            var configurationSpaceLines = new List<OrthogonalLineGrid2D>();
+            var reverseDoor = new List<ConfigurationSpaceSourceGrid2D>();
 
-			doorLines = DoorUtils.MergeDoorLines(doorLines);
-			doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
+            doorLines = DoorUtils.MergeDoorLines(doorLines);
+            doorLinesFixed = DoorUtils.MergeDoorLines(doorLinesFixed);
 
-			// One list for every direction
+            // One list for every direction
             // TODO: maybe use dictionary instead of array?
-			var lines = new List<DoorLineGrid2D>[5];
+            var lines = new List<DoorLineGrid2D>[5];
 
-			// Init array
-			for (var i = 0; i < lines.Length; i++)
-			{
-				lines[i] = new List<DoorLineGrid2D>();
-			}
+            // Init array
+            for (var i = 0; i < lines.Length; i++)
+            {
+                lines[i] = new List<DoorLineGrid2D>();
+            }
 
-			// Populate lists with lines
-			foreach (var line in doorLinesFixed)
-			{
-				lines[(int) line.Line.GetDirection()].Add(line);
-			}
+            // Populate lists with lines
+            foreach (var line in doorLinesFixed)
+            {
+                lines[(int) line.Line.GetDirection()].Add(line);
+            }
 
-			foreach (var doorLine in doorLines)
-			{
-				var line = doorLine.Line;
-				var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
-				var rotation = line.ComputeRotation();
-				var rotatedLine = line.Rotate(rotation);
-				var correspondingLines = lines[(int)oppositeDirection]
+            foreach (var doorLine in doorLines)
+            {
+                var line = doorLine.Line;
+                var oppositeDirection = OrthogonalLineGrid2D.GetOppositeDirection(line.GetDirection());
+                var rotation = line.ComputeRotation();
+                var rotatedLine = line.Rotate(rotation);
+                var correspondingLines = lines[(int) oppositeDirection]
                     .Where(x => x.Length == doorLine.Length && AreSocketsCompatible(x.DoorSocket, doorLine.DoorSocket))
                     .Select(x => new DoorLineGrid2D(x.Line.Rotate(rotation), x.Length, x.DoorSocket, x.Type));
 
-				foreach (var cDoorLine in correspondingLines)
-				{
-					var cline = cDoorLine.Line;
-					var y = cline.From.Y - rotatedLine.From.Y;
-					var from = new Vector2Int(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length), y);
-					var to = new Vector2Int(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length), y);
+                foreach (var cDoorLine in correspondingLines)
+                {
+                    var cline = cDoorLine.Line;
+                    var y = cline.From.Y - rotatedLine.From.Y;
+                    var from = new Vector2Int(cline.From.X - rotatedLine.To.X + (rotatedLine.Length - doorLine.Length),
+                        y);
+                    var to = new Vector2Int(cline.To.X - rotatedLine.From.X - (rotatedLine.Length + doorLine.Length),
+                        y);
 
-					if (from.X < to.X) continue;
+                    if (from.X < to.X) continue;
 
-					if (offsets == null)
-					{
-						var resultLine = new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
+                    if (offsets == null)
+                    {
+                        var resultLine =
+                            new OrthogonalLineGrid2D(from, to, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
                         var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
                             resultLine,
                             new DoorLineGrid2D(
@@ -204,15 +218,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                             doorLine
                         );
 
-						reverseDoor.Add(configurationSpaceSource);
-						configurationSpaceLines.Add(resultLine);
-					}
-					else
-					{
-						foreach (var offset in offsets)
-						{
-							var offsetVector = new Vector2Int(0, offset);
-							var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector, OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
+                        reverseDoor.Add(configurationSpaceSource);
+                        configurationSpaceLines.Add(resultLine);
+                    }
+                    else
+                    {
+                        foreach (var offset in offsets)
+                        {
+                            var offsetVector = new Vector2Int(0, offset);
+                            var resultLine = new OrthogonalLineGrid2D(from - offsetVector, to - offsetVector,
+                                OrthogonalLineGrid2D.Direction.Left).Rotate(-rotation);
                             var configurationSpaceSource = new ConfigurationSpaceSourceGrid2D(
                                 resultLine,
                                 new DoorLineGrid2D(
@@ -224,40 +239,42 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                             );
 
                             reverseDoor.Add(configurationSpaceSource);
-							configurationSpaceLines.Add(resultLine);
-						}
-					}
-				}
-			}
+                            configurationSpaceLines.Add(resultLine);
+                        }
+                    }
+                }
+            }
 
-			// Remove all positions when the two polygons overlap
-			configurationSpaceLines = RemoveOverlapping(polygon, fixedCenter, configurationSpaceLines);
+            // Remove all positions when the two polygons overlap
+            configurationSpaceLines = RemoveOverlapping(polygon, fixedCenter, configurationSpaceLines);
 
-			// Remove all non-unique positions
-			configurationSpaceLines = lineIntersection.RemoveIntersections(configurationSpaceLines);
+            // Remove all non-unique positions
+            configurationSpaceLines = lineIntersection.RemoveIntersections(configurationSpaceLines);
 
-			return new ConfigurationSpaceGrid2D(configurationSpaceLines, reverseDoor);
-		}
+            return new ConfigurationSpaceGrid2D(configurationSpaceLines, reverseDoor);
+        }
 
-		/// <summary>
-		/// Computes configuration space of given two polygons.
-		/// </summary>
-		/// <param name="polygon"></param>
-		/// <param name="doorsMode"></param>
-		/// <param name="fixedCenter"></param>
-		/// <param name="fixedDoorsMode"></param>
-		/// <param name="offsets"></param>
-		/// <returns></returns>
-		public ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, IDoorModeGrid2D doorsMode, PolygonGrid2D fixedCenter,
-			IDoorModeGrid2D fixedDoorsMode, List<int> offsets = null)
-		{
-			var doorLinesFixed = fixedDoorsMode.GetDoors(fixedCenter);
-			var doorLines = doorsMode.GetDoors(polygon);
+        /// <summary>
+        /// Computes configuration space of given two polygons.
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <param name="doorsMode"></param>
+        /// <param name="fixedCenter"></param>
+        /// <param name="fixedDoorsMode"></param>
+        /// <param name="offsets"></param>
+        /// <returns></returns>
+        public ConfigurationSpaceGrid2D GetConfigurationSpace(PolygonGrid2D polygon, IDoorModeGrid2D doorsMode,
+            PolygonGrid2D fixedCenter,
+            IDoorModeGrid2D fixedDoorsMode, List<int> offsets = null)
+        {
+            var doorLinesFixed = fixedDoorsMode.GetDoors(fixedCenter);
+            var doorLines = doorsMode.GetDoors(polygon);
 
-			return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offsets);
-		}
+            return GetConfigurationSpace(polygon, doorLines, fixedCenter, doorLinesFixed, offsets);
+        }
 
-        public ConfigurationSpaceGrid2D GetConfigurationSpace(RoomTemplateInstanceGrid2D roomTemplateInstance, RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<int> offsets = null)
+        public ConfigurationSpaceGrid2D GetConfigurationSpace(RoomTemplateInstanceGrid2D roomTemplateInstance,
+            RoomTemplateInstanceGrid2D fixedRoomTemplateInstance, List<int> offsets = null)
         {
             return GetConfigurationSpace(roomTemplateInstance.RoomShape, roomTemplateInstance.DoorLines,
                 fixedRoomTemplateInstance.RoomShape, fixedRoomTemplateInstance.DoorLines, offsets);
@@ -270,7 +287,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         /// <param name="fixedCenter"></param>
         /// <param name="lines"></param>
         /// <returns></returns>
-        private List<OrthogonalLineGrid2D> RemoveOverlapping(PolygonGrid2D polygon, PolygonGrid2D fixedCenter, List<OrthogonalLineGrid2D> lines)
+        private List<OrthogonalLineGrid2D> RemoveOverlapping(PolygonGrid2D polygon, PolygonGrid2D fixedCenter,
+            List<OrthogonalLineGrid2D> lines)
         {
             var nonOverlapping = new List<OrthogonalLineGrid2D>();
 
@@ -349,7 +367,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 if (sameRoomShapeFound)
                     continue;
 
-                result.Add(new RoomTemplateInstanceGrid2D(roomTemplate, transformedShape, transformedDoorLines, new List<TransformationGrid2D>() { transformation }));
+                result.Add(new RoomTemplateInstanceGrid2D(roomTemplate, transformedShape, transformedDoorLines,
+                    new List<TransformationGrid2D>() {transformation}));
             }
 
             return result;

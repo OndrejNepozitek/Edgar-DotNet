@@ -38,7 +38,7 @@ namespace Edgar.Graphs
                 if (edge.From.Equals(vertex))
                 {
                     yield return edge.To;
-                } 
+                }
                 else if (edge.To.Equals(vertex))
                 {
                     yield return edge.From;

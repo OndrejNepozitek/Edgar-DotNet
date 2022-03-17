@@ -27,13 +27,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     /// <summary>
     /// Implements a graph-based layout generator that works on the 2D (integer) grid.
     /// </summary>
-    public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable, IObservableGenerator<LayoutGrid2D<TRoom>>, IBenchmarkableLayoutGenerator<LayoutGrid2D<TRoom>>
+    public class GraphBasedGeneratorGrid2D<TRoom> : IRandomInjectable, ICancellable,
+        IObservableGenerator<LayoutGrid2D<TRoom>>, IBenchmarkableLayoutGenerator<LayoutGrid2D<TRoom>>
     {
         private readonly LevelDescriptionMapping<TRoom> levelDescriptionMapped;
         private readonly LevelDescriptionGrid2D<TRoom> levelDescription;
         private readonly GraphBasedGeneratorConfiguration<TRoom> configuration;
-        private ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, LayoutGrid2D<TRoom>, RoomNode<TRoom>> generator;
-        
+
+        private ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, LayoutGrid2D<TRoom>,
+            RoomNode<TRoom>> generator;
+
         // Exists because OnPerturbed converts layouts which uses the Random instance and causes results to be different.
         private event Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> OnPerturbedInternal;
 
@@ -42,7 +45,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// </summary>
         /// <param name="levelDescription">Level description of the level that should be generated.</param>
         /// <param name="configuration">Configuration of the generator. Can be omitted for reasonable defaults.</param>
-        public GraphBasedGeneratorGrid2D(LevelDescriptionGrid2D<TRoom> levelDescription, GraphBasedGeneratorConfiguration<TRoom> configuration = null)
+        public GraphBasedGeneratorGrid2D(LevelDescriptionGrid2D<TRoom> levelDescription,
+            GraphBasedGeneratorConfiguration<TRoom> configuration = null)
         {
             this.levelDescription = levelDescription;
             this.levelDescriptionMapped = new LevelDescriptionMapping<TRoom>(levelDescription);
@@ -102,7 +106,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 .Vertices
                 .Where(x => !chainsSet.Contains(x))
                 .ToList();
-            var initialLayout = new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
+            var initialLayout =
+                new Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>(levelDescriptionMapped.GetGraph());
             foreach (var room in roomsWithoutChain)
             {
                 initialLayout.SetConfiguration(room, new ConfigurationGrid2D<TRoom, EnergyData>()
@@ -115,7 +120,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             }
 
             // Create generator planner
-            var generatorPlanner = new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(configuration.SimulatedAnnealingMaxBranching);
+            var generatorPlanner =
+                new GeneratorPlanner<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>(
+                    configuration.SimulatedAnnealingMaxBranching);
 
             // The graph is directed if any of the doors is not Undirected
             var isGraphDirected = geometryData.RoomTemplateInstances
@@ -132,26 +139,35 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                 GraphBasedGeneratorGrid2DUtils.GetLegacyAverageSize(levelDescriptionMapped, shapesForNodes);
 
 
-            var configurationSpaces = new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(levelDescriptionMapped, null, isGraphDirected);
+            var configurationSpaces =
+                new ConfigurationSpacesGrid2D<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>(
+                    levelDescriptionMapped, null, isGraphDirected);
 
-            var roomShapeGeometry = new FastGridPolygonGeometry<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>();
+            var roomShapeGeometry =
+                new FastGridPolygonGeometry<ConfigurationGrid2D<TRoom, EnergyData>, RoomNode<TRoom>>();
 
             var constraintsEvaluator = GraphBasedGeneratorGrid2DUtils.GetConstraintsEvaluator(levelDescriptionMapped,
                 roomShapeGeometry, configurationSpaces, averageRoomSize, levelDescription.MinimumRoomDistance,
                 configuration.OptimizeCorridorConstraints);
 
-            var roomShapesHandler = new RoomShapesHandlerGrid2D<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(
-                geometryData.RoomTemplateInstanceToPolygonMapping,
-                levelDescriptionMapped,
-                shapesForNodes,
-                levelDescription.RoomTemplateRepeatModeOverride,
-                levelDescription.RoomTemplateRepeatModeDefault
-            );
+            var roomShapesHandler =
+                new RoomShapesHandlerGrid2D<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(
+                    geometryData.RoomTemplateInstanceToPolygonMapping,
+                    levelDescriptionMapped,
+                    shapesForNodes,
+                    levelDescription.RoomTemplateRepeatModeOverride,
+                    levelDescription.RoomTemplateRepeatModeDefault
+                );
 
             // Create layout operations
-            var layoutOperations = new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageRoomSize, levelDescriptionMapped, constraintsEvaluator, roomShapesHandler, configuration.ThrowIfRepeatModeNotSatisfied, configurationSpaces, roomShapeGeometry, fixedConfigurationConstraint);
+            var layoutOperations =
+                new LayoutController<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>,
+                    ConfigurationGrid2D<TRoom, EnergyData>, RoomTemplateInstanceGrid2D, EnergyData>(averageRoomSize,
+                    levelDescriptionMapped, constraintsEvaluator, roomShapesHandler,
+                    configuration.ThrowIfRepeatModeNotSatisfied, configurationSpaces, roomShapeGeometry,
+                    fixedConfigurationConstraint);
 
-            
+
             var layoutConverter =
                 new BasicLayoutConverterGrid2D<TRoom,
                     ConfigurationGrid2D<TRoom, EnergyData>>(levelDescription, configurationSpaces,
@@ -159,37 +175,44 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             // Create simulated annealing evolver
             var layoutEvolver =
-                    new Common.SimulatedAnnealingEvolver<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>,
-                    ConfigurationGrid2D<TRoom, EnergyData>>(layoutOperations, configuration.SimulatedAnnealingConfiguration, true);
+                new Common.SimulatedAnnealingEvolver<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>,
+                    RoomNode<TRoom>,
+                    ConfigurationGrid2D<TRoom, EnergyData>>(layoutOperations,
+                    configuration.SimulatedAnnealingConfiguration, true);
 
             // Create the generator itself
-            generator = new ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, LayoutGrid2D<TRoom>, RoomNode<TRoom>>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
+            generator =
+                new ChainBasedGenerator<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, LayoutGrid2D<TRoom>,
+                    RoomNode<TRoom>>(initialLayout, generatorPlanner, chains, layoutEvolver, layoutConverter);
 
             // Register event handlers
             generator.OnRandomInjected += (random) =>
             {
                 // ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutOperations).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutEvolver).InjectRandomGenerator(random);
-                ((IRandomInjectable)layoutConverter).InjectRandomGenerator(random);
-                ((IRandomInjectable)configurationSpaces).InjectRandomGenerator(random);
-                ((IRandomInjectable)roomShapesHandler).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutOperations).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutEvolver).InjectRandomGenerator(random);
+                ((IRandomInjectable) layoutConverter).InjectRandomGenerator(random);
+                ((IRandomInjectable) configurationSpaces).InjectRandomGenerator(random);
+                ((IRandomInjectable) roomShapesHandler).InjectRandomGenerator(random);
             };
 
             generator.OnCancellationTokenInjected += (token) =>
             {
-                ((ICancellable)generatorPlanner).SetCancellationToken(token);
-                ((ICancellable)layoutEvolver).SetCancellationToken(token);
+                ((ICancellable) generatorPlanner).SetCancellationToken(token);
+                ((ICancellable) layoutEvolver).SetCancellationToken(token);
             };
-            
+
             layoutEvolver.OnEvent += (sender, args) => OnSimulatedAnnealingEvent?.Invoke(sender, args);
-            layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
+            layoutEvolver.OnPerturbed +=
+                (sender, layout) => OnPerturbed?.Invoke(layoutConverter.Convert(layout, false));
             layoutEvolver.OnPerturbed += (sender, layout) => OnPerturbedInternal?.Invoke(layout);
             layoutEvolver.OnValid += (sender, layout) => OnPartialValid?.Invoke(layoutConverter.Convert(layout, true));
             generatorPlanner.OnLayoutGenerated += layout => OnValid?.Invoke(layoutConverter.Convert(layout, true));
         }
 
-        private FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom> GetFixedConfigurationConstraint(List<IGeneratorConstraintGrid2D<TRoom>> constraints, Dictionary<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> roomTemplateInstancesMapping)
+        private FixedConfigurationConstraint<RoomTemplateInstanceGrid2D, Vector2Int, TRoom>
+            GetFixedConfigurationConstraint(List<IGeneratorConstraintGrid2D<TRoom>> constraints,
+                Dictionary<RoomTemplateGrid2D, List<RoomTemplateInstanceGrid2D>> roomTemplateInstancesMapping)
         {
             var fixedPositions = new Dictionary<RoomNode<TRoom>, Vector2Int>();
             var fixedShapes = new Dictionary<RoomNode<TRoom>, RoomTemplateInstanceGrid2D>();
@@ -227,8 +250,11 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
                             if (fixedConfigurationConstraint.Position.HasValue)
                             {
-                                var transformedShape = roomTemplateInstance.RoomTemplate.Outline.Transform(fixedConfigurationConstraint.Transformation);
-                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A - transformedShape.BoundingRectangle.A;
+                                var transformedShape =
+                                    roomTemplateInstance.RoomTemplate.Outline.Transform(fixedConfigurationConstraint
+                                        .Transformation);
+                                var offset = roomTemplateInstance.RoomShape.BoundingRectangle.A -
+                                             transformedShape.BoundingRectangle.A;
                                 fixedPositions[roomNode] = fixedConfigurationConstraint.Position.Value - offset;
                             }
                         }
@@ -248,7 +274,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var graph = levelDescriptionMapped.GetGraph();
             foreach (var room in graph.Vertices)
             {
-                if (levelDescriptionMapped.GetRoomDescription(room).IsCorridor && (constraint.IsFixedPosition(room) || constraint.IsFixedShape(room)))
+                if (levelDescriptionMapped.GetRoomDescription(room).IsCorridor &&
+                    (constraint.IsFixedPosition(room) || constraint.IsFixedShape(room)))
                 {
                     var neighbors = graph.GetNeighbors(room);
 
@@ -285,7 +312,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             return layout;
         }
 
-        private Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> GetEarlyStoppingHandler(DateTime generatorStarted)
+        private Action<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>> GetEarlyStoppingHandler(
+            DateTime generatorStarted)
         {
             var iterations = 0;
             var cts = new CancellationTokenSource();
@@ -299,12 +327,14 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             {
                 iterations++;
 
-                if (configuration.EarlyStopIfIterationsExceeded.HasValue && iterations > configuration.EarlyStopIfIterationsExceeded)
+                if (configuration.EarlyStopIfIterationsExceeded.HasValue &&
+                    iterations > configuration.EarlyStopIfIterationsExceeded)
                 {
                     cts.Cancel();
                 }
 
-                if (configuration.EarlyStopIfTimeExceeded.HasValue && iterations % 100 == 0 && DateTime.Now - generatorStarted > configuration.EarlyStopIfTimeExceeded)
+                if (configuration.EarlyStopIfTimeExceeded.HasValue && iterations % 100 == 0 &&
+                    DateTime.Now - generatorStarted > configuration.EarlyStopIfTimeExceeded)
                 {
                     cts.Cancel();
                 }

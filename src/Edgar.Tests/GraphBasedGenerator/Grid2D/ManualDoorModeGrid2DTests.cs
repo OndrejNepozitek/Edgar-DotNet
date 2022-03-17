@@ -19,10 +19,14 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var simpleMode = new SimpleDoorModeGrid2D(2, 2);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 6)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(10, 2), new Vector2Int(10, 6)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(6, 0)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 10), new Vector2Int(6, 10)), 2, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 6)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(10, 2), new Vector2Int(10, 6)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(6, 0)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 10), new Vector2Int(6, 10)), 2, null,
+                    DoorType.Undirected),
             });
 
             var expected = simpleMode.GetDoors(roomShape);
@@ -38,10 +42,14 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var simpleMode = new SimpleDoorModeGrid2D(2, 2);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 6)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(10, 2), new Vector2Int(10, 6)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(6, 0)), 2, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 10), new Vector2Int(6, 10)), 2, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 6)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(10, 2), new Vector2Int(10, 6)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 0), new Vector2Int(6, 0)), 2, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(2, 10), new Vector2Int(6, 10)), 2, null,
+                    DoorType.Undirected),
             });
 
             var expected = simpleMode.GetDoors(roomShape);
@@ -56,7 +64,8 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var roomShape = PolygonGrid2D.GetSquare(10);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 0, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 0, null,
+                    DoorType.Undirected),
             });
 
             var expected = new List<DoorLineGrid2D>()
@@ -79,8 +88,10 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var roomShape = PolygonGrid2D.GetSquare(10);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 2)), 1, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 2)), 1, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null,
+                    DoorType.Undirected),
             });
 
             Assert.Throws<DuplicateDoorPositionException>(() => manualMode.GetDoors(roomShape));
@@ -92,8 +103,10 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var roomShape = PolygonGrid2D.GetSquare(10);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 2)), 1, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)), 1, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 2)), 1, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 1), new Vector2Int(0, 2)), 1, null,
+                    DoorType.Undirected),
             });
 
             Assert.Throws<DuplicateDoorPositionException>(() => manualMode.GetDoors(roomShape));
@@ -105,8 +118,10 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var roomShape = PolygonGrid2D.GetSquare(10);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null, DoorType.Undirected),
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null,
+                    DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 2), new Vector2Int(0, 4)), 1, null,
+                    DoorType.Undirected),
             });
 
             Assert.Throws<DuplicateDoorPositionException>(() => manualMode.GetDoors(roomShape));
@@ -118,7 +133,8 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
             var roomShape = PolygonGrid2D.GetSquare(10);
             var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
             {
-                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 1, null, DoorType.Undirected),
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0)), 1, null,
+                    DoorType.Undirected),
             });
 
             Assert.Throws<UndirectedDoorLine>(() => manualMode.GetDoors(roomShape));

@@ -9,24 +9,28 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class FixedMaxIterations : OldAndNewScenarioBase
     {
-        protected override DungeonGeneratorConfiguration<int> GetNewConfiguration(NamedMapDescription namedMapDescription)
+        protected override DungeonGeneratorConfiguration<int> GetNewConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 50,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 50,
+                });
 
             return configuration;
         }
 
-        protected override DungeonGeneratorConfiguration<int> GetOldConfiguration(NamedMapDescription namedMapDescription)
+        protected override DungeonGeneratorConfiguration<int> GetOldConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 10000,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 10000,
+                });
 
             return configuration;
         }

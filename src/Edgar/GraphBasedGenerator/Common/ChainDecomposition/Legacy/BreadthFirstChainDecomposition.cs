@@ -10,9 +10,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
 {
     /// <summary>
     /// Breadth-first search guided chain decomposition
-	/// </summary>
-	/// <typeparam name="TNode"></typeparam>
-	public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
+    /// </summary>
+    /// <typeparam name="TNode"></typeparam>
+    public class BreadthFirstChainDecomposition<TNode> : ChainDecompositionBase<TNode>
     {
         private readonly List<TNode> fixedRooms;
         private readonly int maxTreeSize;
@@ -22,7 +22,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
         private readonly TreeComponentStrategy treeComponentStrategy;
         private readonly Logger logger;
 
-		public BreadthFirstChainDecomposition(int maxTreeSize, bool mergeSmallChains, bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy, Logger logger = null)
+        public BreadthFirstChainDecomposition(int maxTreeSize, bool mergeSmallChains,
+            bool startTreeWithMultipleVertices, TreeComponentStrategy treeComponentStrategy, Logger logger = null)
         {
             this.maxTreeSize = maxTreeSize;
             this.mergeSmallChains = mergeSmallChains;
@@ -31,7 +32,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
             this.logger = logger ?? new Logger();
         }
 
-        public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null, List<TNode> fixedRooms = null)
+        public BreadthFirstChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null,
+            List<TNode> fixedRooms = null)
         {
             this.fixedRooms = fixedRooms;
             this.maxTreeSize = configuration.MaxTreeSize;
@@ -42,18 +44,18 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
             this.logger = logger ?? new Logger();
         }
 
-		/// <inheritdoc />
-		public override List<Chain<TNode>> GetChains(IGraph<TNode> graph)
-		{
-			Initialize(graph);
+        /// <inheritdoc />
+        public override List<Chain<TNode>> GetChains(IGraph<TNode> graph)
+        {
+            Initialize(graph);
 
-			if (Faces.Count != 0)
-			{
-				// Get faces and remove the largest one
-				Faces.RemoveAt(Faces.MaxBy(x => x.Count));
-			}
+            if (Faces.Count != 0)
+            {
+                // Get faces and remove the largest one
+                Faces.RemoveAt(Faces.MaxBy(x => x.Count));
+            }
 
-			var decomposition = new PartialDecomposition(Faces);
+            var decomposition = new PartialDecomposition(Faces);
             decomposition = GetFirstComponent(decomposition);
 
             while (decomposition.GetAllCoveredVertices().Count != Graph.VerticesCount)
@@ -96,7 +98,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
                     firstFace = faces[largestFaceIndex];
                 }
 
-                var cycleComponent =  new GraphComponent()
+                var cycleComponent = new GraphComponent()
                 {
                     Nodes = firstFace,
                     IsFromFace = true,
@@ -216,7 +218,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
             var cycleComponents = components.Where(x => x.IsFromFace).ToList();
             if (cycleComponents.Count != 0)
             {
-                var nextCycleIndex = preferSmallCycles ? cycleComponents.MinBy(x => x.Nodes.Count) : cycleComponents.MaxBy(x => x.Nodes.Count);
+                var nextCycleIndex = preferSmallCycles
+                    ? cycleComponents.MinBy(x => x.Nodes.Count)
+                    : cycleComponents.MaxBy(x => x.Nodes.Count);
                 var nextCycle = cycleComponents[nextCycleIndex];
 
                 logger.WriteLine("Adding smallest cycle component");
@@ -272,7 +276,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
 
         private GraphComponent GetTreeComponent(PartialDecomposition decomposition, TNode startingNode)
         {
-            return GetTreeComponent(decomposition, new List<TNode>() { startingNode });
+            return GetTreeComponent(decomposition, new List<TNode>() {startingNode});
         }
 
         private GraphComponent GetBfsTreeComponent(PartialDecomposition decomposition, List<TNode> startingNodes)
@@ -393,9 +397,11 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
                         x => Graph
                             .GetNeighbors(x)
                             .Min(y =>
-                                decomposition.IsCovered(y) 
-                                    ? -1 
-                                    : nodeOrder.ContainsKey(y) ? nodeOrder[y] : int.MaxValue));
+                                decomposition.IsCovered(y)
+                                    ? -1
+                                    : nodeOrder.ContainsKey(y)
+                                        ? nodeOrder[y]
+                                        : int.MaxValue));
 
                 nodeOrder[notCoveredNodes[nodeIndex]] = nodeOrder.Count;
                 nodes.Add(notCoveredNodes[nodeIndex]);
@@ -443,29 +449,30 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
             {
                 coveredVertices = new Dictionary<TNode, int>(oldDecomposition.coveredVertices);
 
-				// Cover chain
+                // Cover chain
                 var numberOfChains = oldDecomposition.NumberOfChains;
                 foreach (var node in chain)
                 {
                     coveredVertices[node] = numberOfChains;
                 }
 
-				// Remove covered faces
+                // Remove covered faces
                 remainingFaces = oldDecomposition
                     .remainingFaces
                     .Where(face => face.Any(node => !coveredVertices.ContainsKey(node)))
                     .ToList();
 
-                chains = oldDecomposition.chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number, x.IsFromFace)).ToList();
+                chains = oldDecomposition.chains.Select(x => new Chain<TNode>(x.Nodes.ToList(), x.Number, x.IsFromFace))
+                    .ToList();
                 chains.Add(new Chain<TNode>(chain, chains.Count, isFromFace));
             }
 
             public PartialDecomposition AddChain(List<TNode> chain, bool isFromFace)
             {
-				return new PartialDecomposition(this, chain, isFromFace);
+                return new PartialDecomposition(this, chain, isFromFace);
             }
 
-			public List<TNode> GetAllCoveredVertices()
+            public List<TNode> GetAllCoveredVertices()
             {
                 return coveredVertices.Keys.ToList();
             }

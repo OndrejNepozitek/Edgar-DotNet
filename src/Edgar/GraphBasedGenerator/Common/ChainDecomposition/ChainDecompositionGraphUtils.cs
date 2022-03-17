@@ -6,7 +6,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 {
     public static class ChainDecompositionGraphUtils
     {
-        public static Dictionary<TNode, bool> MakeBorderNodesWalkable<TNode>(IGraph<TNode> graph, Dictionary<TNode, bool> isWalkable)
+        public static Dictionary<TNode, bool> MakeBorderNodesWalkable<TNode>(IGraph<TNode> graph,
+            Dictionary<TNode, bool> isWalkable)
         {
             var isWalkableNew = new Dictionary<TNode, bool>(isWalkable);
 
@@ -21,7 +22,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             return isWalkableNew;
         }
 
-        public static List<List<TNode>> GetWalkableComponents<TNode>(IGraph<TNode> graph, Dictionary<TNode, bool> isWalkable)
+        public static List<List<TNode>> GetWalkableComponents<TNode>(IGraph<TNode> graph,
+            Dictionary<TNode, bool> isWalkable)
         {
             var visited = new HashSet<TNode>();
             var components = new List<List<TNode>>();
@@ -43,7 +45,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             return components;
         }
 
-        public static List<TNode> GetReachableNodes<TNode>(IGraph<TNode> graph, TNode startNode, Dictionary<TNode, bool> isWalkable)
+        public static List<TNode> GetReachableNodes<TNode>(IGraph<TNode> graph, TNode startNode,
+            Dictionary<TNode, bool> isWalkable)
         {
             if (!isWalkable[startNode])
             {

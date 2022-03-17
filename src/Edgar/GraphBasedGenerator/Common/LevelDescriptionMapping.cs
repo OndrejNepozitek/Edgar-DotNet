@@ -14,11 +14,16 @@ namespace Edgar.GraphBasedGenerator.Common
         public string Name => levelDescription.Name;
 
         private readonly ILevelDescription<TNode> levelDescription;
-        private readonly TwoWayDictionary<TNode, RoomNode<TNode>> nodeToIntMapping = new TwoWayDictionary<TNode, RoomNode<TNode>>();
+
+        private readonly TwoWayDictionary<TNode, RoomNode<TNode>> nodeToIntMapping =
+            new TwoWayDictionary<TNode, RoomNode<TNode>>();
+
         private readonly IRoomDescription[] roomDescriptions;
 
         private readonly IGraph<RoomNode<TNode>> mappedGraph = new UndirectedAdjacencyListGraph<RoomNode<TNode>>();
-        private readonly IGraph<RoomNode<TNode>> mappedStageOneGraph = new UndirectedAdjacencyListGraph<RoomNode<TNode>>();
+
+        private readonly IGraph<RoomNode<TNode>> mappedStageOneGraph =
+            new UndirectedAdjacencyListGraph<RoomNode<TNode>>();
 
         private IGraph<RoomNode<TNode>> directedMappedGraph;
         private IGraph<RoomNode<TNode>> directedMappedStageOneGraph;
@@ -28,10 +33,13 @@ namespace Edgar.GraphBasedGenerator.Common
             this.levelDescription = levelDescription;
             roomDescriptions = new IRoomDescription[levelDescription.GetGraph().VerticesCount];
 
-            DoMapping(levelDescription.GetGraph(), levelDescription.GetGraphWithoutCorridors(), ref mappedGraph, ref mappedStageOneGraph);
+            DoMapping(levelDescription.GetGraph(), levelDescription.GetGraphWithoutCorridors(), ref mappedGraph,
+                ref mappedStageOneGraph);
         }
 
-        private void DoMapping(IGraph<TNode> graph, IGraph<TNode> stageOneGraph, ref IGraph<RoomNode<TNode>> mappedGraph, ref IGraph<RoomNode<TNode>> mappedStageOneGraph, bool isDirected = false)
+        private void DoMapping(IGraph<TNode> graph, IGraph<TNode> stageOneGraph,
+            ref IGraph<RoomNode<TNode>> mappedGraph, ref IGraph<RoomNode<TNode>> mappedStageOneGraph,
+            bool isDirected = false)
         {
             foreach (var vertex in graph.Vertices)
             {

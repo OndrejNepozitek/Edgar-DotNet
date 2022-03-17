@@ -15,7 +15,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 {
     public static class Helpers
     {
-        public static IMapDescription<TNode> GetMapDescription<TNode>(this LevelDescriptionGrid2D<TNode> levelDescription)
+        public static IMapDescription<TNode> GetMapDescription<TNode>(
+            this LevelDescriptionGrid2D<TNode> levelDescription)
         {
             var mapDescription = new MapDescription<TNode>();
             var graph = levelDescription.GetGraph();
@@ -35,14 +36,17 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     }
                     else
                     {
-                        var corridorRoomDescription = new CorridorRoomDescription(roomDescription.RoomTemplates.Select(x => GetOldRoomTemplate(x, roomTemplateMapping)).ToList());
+                        var corridorRoomDescription = new CorridorRoomDescription(roomDescription.RoomTemplates
+                            .Select(x => GetOldRoomTemplate(x, roomTemplateMapping)).ToList());
                         corridorRoomDescriptions[roomDescription] = corridorRoomDescription;
                         mapDescription.AddRoom(room, corridorRoomDescription);
                     }
                 }
                 else
                 {
-                    mapDescription.AddRoom(room, new BasicRoomDescription(roomDescription.RoomTemplates.Select(x => GetOldRoomTemplate(x, roomTemplateMapping)).ToList()));
+                    mapDescription.AddRoom(room,
+                        new BasicRoomDescription(roomDescription.RoomTemplates
+                            .Select(x => GetOldRoomTemplate(x, roomTemplateMapping)).ToList()));
                 }
             }
 
@@ -54,7 +58,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
             return mapDescription;
         }
 
-        private static RoomTemplate GetOldRoomTemplate(RoomTemplateGrid2D roomTemplate, Dictionary<RoomTemplateGrid2D, RoomTemplate> mapping)
+        private static RoomTemplate GetOldRoomTemplate(RoomTemplateGrid2D roomTemplate,
+            Dictionary<RoomTemplateGrid2D, RoomTemplate> mapping)
         {
             if (mapping.TryGetValue(roomTemplate, out var cached))
             {
@@ -85,7 +90,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 }
 
                 oldDoorMode = new SimpleDoorMode(simpleDoorMode.DoorLength, simpleDoorMode.CornerDistance);
-            } 
+            }
             else if (doorMode is ManualDoorModeGrid2D manualDoorMode)
             {
                 if (manualDoorMode.Doors.Any(x => x.Socket != null))
@@ -93,15 +98,17 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     throw new NotSupportedException("Old room templates support only null sockets");
                 }
 
-                oldDoorMode = new ManualDoorMode(manualDoorMode.Doors.Select(x => new OrthogonalLineGrid2D(x.From, x.To)).ToList());
+                oldDoorMode =
+                    new ManualDoorMode(
+                        manualDoorMode.Doors.Select(x => new OrthogonalLineGrid2D(x.From, x.To)).ToList());
             }
             else
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return new RoomTemplate(roomTemplate.Outline, oldDoorMode, roomTemplate.AllowedTransformations, roomTemplate.RepeatMode.Value, roomTemplate.Name);
-
+            return new RoomTemplate(roomTemplate.Outline, oldDoorMode, roomTemplate.AllowedTransformations,
+                roomTemplate.RepeatMode.Value, roomTemplate.Name);
         }
     }
 }

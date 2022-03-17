@@ -10,13 +10,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     public class GraphDrawer<TRoom> : DungeonDrawerBase
     {
-        public Bitmap DrawGraph(LevelDescriptionGrid2D<TRoom> levelDescription, Dictionary<TRoom, Vector2Int> positions, DungeonDrawerOptions options)
+        public Bitmap DrawGraph(LevelDescriptionGrid2D<TRoom> levelDescription, Dictionary<TRoom, Vector2Int> positions,
+            DungeonDrawerOptions options)
         {
             var configurations = GetConfigurations(positions);
 
             var outlines = configurations.Select(x => x.Outline + x.Position).ToList();
             var boundingBox = DrawingUtils.GetBoundingBox(outlines);
-            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale,
+                options.PaddingAbsolute, options.PaddingPercentage);
             var offset = DrawingUtils.GetOffset(boundingBox, width, height, scale);
 
             bitmap = new Bitmap(width, height);
@@ -27,7 +29,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 graphics.FillRectangle(brush, 0, 0, width, height);
             }
-            
+
             var outlinePen = new Pen(Color.FromArgb(50, 50, 50), 0.25f)
             {
                 EndCap = LineCap.Round,
@@ -61,14 +63,16 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 DrawRoomBackground(configuration.Outline + configuration.Position, options.RoomBackgroundColor);
                 DrawGrid(configuration.Outline + configuration.Position);
-                DrawOutline(configuration.Outline + configuration.Position, GetOutline(configuration.Outline, null, configuration.Position), outlinePen);
+                DrawOutline(configuration.Outline + configuration.Position,
+                    GetOutline(configuration.Outline, null, configuration.Position), outlinePen);
             }
 
             foreach (var configuration in configurations)
             {
                 if (options.ShowRoomNames)
                 {
-                    DrawTextOntoPolygon(configuration.Outline + configuration.Position, configuration.Room.ToString(), options.FontSize);
+                    DrawTextOntoPolygon(configuration.Outline + configuration.Position, configuration.Room.ToString(),
+                        options.FontSize);
                 }
             }
 
@@ -85,8 +89,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 var configuration1 = configurations.Single(x => x.Room.Equals(edge.From));
                 var configuration2 = configurations.Single(x => x.Room.Equals(edge.To));
 
-                var from = 0.5f * (Vector2)(configuration1.Outline.BoundingRectangle.A + configuration1.Outline.BoundingRectangle.B) + configuration1.Position;
-                var to = 0.5f * (Vector2)(configuration2.Outline.BoundingRectangle.A + configuration2.Outline.BoundingRectangle.B) + configuration2.Position;
+                var from = 0.5f * (Vector2) (configuration1.Outline.BoundingRectangle.A +
+                                             configuration1.Outline.BoundingRectangle.B) + configuration1.Position;
+                var to = 0.5f * (Vector2) (configuration2.Outline.BoundingRectangle.A +
+                                           configuration2.Outline.BoundingRectangle.B) + configuration2.Position;
 
                 graphics.DrawLine(pen, from.X, from.Y, to.X, to.Y);
             }
@@ -95,7 +101,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         private List<RoomConfiguration> GetConfigurations(Dictionary<TRoom, Vector2Int> positions)
         {
             var configurations = new List<RoomConfiguration>();
-            var outline = PolygonGrid2D.GetRectangle(7,7);
+            var outline = PolygonGrid2D.GetRectangle(7, 7);
             var scale = 9;
 
             foreach (var pair in positions)

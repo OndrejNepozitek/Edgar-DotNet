@@ -18,7 +18,7 @@ namespace Sandbox.Features
 {
     public class Profiler
     {
-                public void Run()
+        public void Run()
         {
             var inputs = new List<GeneratorInput<IMapDescription<int>>>();
 
@@ -43,10 +43,11 @@ namespace Sandbox.Features
                 {
                     RepeatModeOverride = RoomTemplateRepeatMode.NoImmediate,
                     ThrowIfRepeatModeNotSatisfied = true,
-                    SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-                    {
-                        HandleTreesGreedily = true,
-                    })
+                    SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                        new SimulatedAnnealingConfiguration()
+                        {
+                            HandleTreesGreedily = true,
+                        })
                 };
                 // var layoutGenerator = new PlatformersGenerator<int>(input.MapDescription, configuration);
 
@@ -63,6 +64,7 @@ namespace Sandbox.Features
                     layoutGenerator.InjectRandomGenerator(new Random(0));
 
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                     void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
                         simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -79,7 +81,8 @@ namespace Sandbox.Features
                         // GeneratedLayout = layout,
                     };
 
-                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                        layoutGenerator.IterationsCount, additionalData);
 
                     return generatorRun;
                 });

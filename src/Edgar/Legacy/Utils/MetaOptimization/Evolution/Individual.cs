@@ -24,7 +24,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
 
         public double SuccessRate { get; set; }
 
-        public Individual(int id, Individual<TConfiguration, TConfigurationEvaluation> parent, IMutation<TConfiguration> mutation)
+        public Individual(int id, Individual<TConfiguration, TConfigurationEvaluation> parent,
+            IMutation<TConfiguration> mutation)
         {
             Id = id;
             Configuration = mutation.Apply(parent.Configuration);

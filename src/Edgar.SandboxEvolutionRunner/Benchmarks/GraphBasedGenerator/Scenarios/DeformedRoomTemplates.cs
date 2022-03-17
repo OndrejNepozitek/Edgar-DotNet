@@ -15,7 +15,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
         private BenchmarkScenario<int> GetDeformedScenario(List<NamedGraph<int>> graphs)
         {
             var levelDescriptionLoader = new CustomLevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() { 0 });
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() {0});
 
             return new BenchmarkScenario<int>("Deformed", levelDescriptions);
         }
@@ -23,7 +23,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
         private BenchmarkScenario<int> GetNormalScenario(List<NamedGraph<int>> graphs)
         {
             var levelDescriptionLoader = new LevelDescriptionLoader(RoomTemplatesSet.Smart, new Vector2Int(1, 1));
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() { 0 });
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(graphs, new List<int>() {0});
 
             return new BenchmarkScenario<int>("Normal", levelDescriptions);
         }
@@ -53,11 +53,14 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
 
         public class CustomLevelDescriptionLoader : LevelDescriptionLoader
         {
-            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(roomTemplatesSet, scale, repeatMode)
+            public CustomLevelDescriptionLoader(RoomTemplatesSet roomTemplatesSet, Vector2Int scale,
+                RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(roomTemplatesSet, scale,
+                repeatMode)
             {
             }
 
-            protected override RoomTemplateGrid2D GetRectangleRoomTemplate(int width, int height, SimpleDoorModeGrid2D doorMode)
+            protected override RoomTemplateGrid2D GetRectangleRoomTemplate(int width, int height,
+                SimpleDoorModeGrid2D doorMode)
             {
                 if (doorMode.CornerDistance >= 2)
                 {
@@ -93,6 +96,6 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Scenarios
                     return base.GetRectangleRoomTemplate(width, height, doorMode);
                 }
             }
-        } 
+        }
     }
 }

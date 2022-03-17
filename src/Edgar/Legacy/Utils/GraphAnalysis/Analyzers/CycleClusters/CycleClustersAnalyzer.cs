@@ -47,7 +47,7 @@ namespace Edgar.Legacy.Utils.GraphAnalysis.Analyzers.CycleClusters
                 cycles.RemoveAt(cycles.Count - 1);
 
                 var clusterNodes = new List<TNode>(firstCycle);
-                var clusterCycles = new List<List<TNode>>() { firstCycle };
+                var clusterCycles = new List<List<TNode>>() {firstCycle};
                 bool changed;
                 do
                 {

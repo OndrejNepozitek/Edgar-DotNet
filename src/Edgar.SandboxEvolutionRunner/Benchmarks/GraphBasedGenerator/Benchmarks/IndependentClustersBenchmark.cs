@@ -25,7 +25,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
 
                 if (i > 0)
                 {
-                    graph.AddEdge(i -1, i);
+                    graph.AddEdge(i - 1, i);
                 }
             }
 
@@ -66,7 +66,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             return graph;
         }
 
-        private NamedGraph<string> GetGraph(int numberOfClusters, int verticesPerCluster, Random random, int maxDegree = 4, int nonTreeEdges = 0)
+        private NamedGraph<string> GetGraph(int numberOfClusters, int verticesPerCluster, Random random,
+            int maxDegree = 4, int nonTreeEdges = 0)
         {
             var graph = new UndirectedAdjacencyListGraph<string>();
             var highLevelStructure = GetPathGraph(numberOfClusters);
@@ -110,7 +111,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 graph.AddEdge(GetVertexAlias(edge.From, vertex1), GetVertexAlias(edge.To, vertex2));
             }
 
-            return new NamedGraph<string>(graph, $"{numberOfClusters} {verticesPerCluster} ({graph.VerticesCount} verts, {nonTreeEdges} nte)");
+            return new NamedGraph<string>(graph,
+                $"{numberOfClusters} {verticesPerCluster} ({graph.VerticesCount} verts, {nonTreeEdges} nte)");
         }
 
         private string GetVertexAlias(int clusterNumber, int vertex)
@@ -130,8 +132,9 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
             //namedGraphs.Add(GetGraph(3, verticesPerCluster, new Random(0), 4, nonTreeEdges));
             //namedGraphs.Add(GetGraph(10, verticesPerCluster, new Random(0), 4, nonTreeEdges));
 
-            var levelDescriptionLoader = new LevelDescriptionLoader<string>(RoomTemplatesSet.Medium, new Vector2Int(1, 1), getCorridorNameFunc: x => $"c_{x}");
-            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() { 0 });
+            var levelDescriptionLoader = new LevelDescriptionLoader<string>(RoomTemplatesSet.Medium,
+                new Vector2Int(1, 1), getCorridorNameFunc: x => $"c_{x}");
+            var levelDescriptions = levelDescriptionLoader.GetLevelDescriptions(namedGraphs, new List<int>() {0});
 
             foreach (var levelDescription in levelDescriptions)
             {
@@ -153,14 +156,18 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Benchmarks
                 levelDescription.Clusters = clusters.Select(x => x.Value).ToList();
             }
 
-            return new BenchmarkScenario<string>($"{numberOfClusters} {verticesPerCluster} {nonTreeEdges}", levelDescriptions);
+            return new BenchmarkScenario<string>($"{numberOfClusters} {verticesPerCluster} {nonTreeEdges}",
+                levelDescriptions);
         }
 
-        protected RecursiveGeneratorFactory<TNode> GetRecursiveGenerator<TNode>(BenchmarkOptions options, bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
+        protected RecursiveGeneratorFactory<TNode> GetRecursiveGenerator<TNode>(BenchmarkOptions options,
+            bool withInit = false, bool optimizeCorridorConstraints = false, string name = null)
         {
             return new RecursiveGeneratorFactory<TNode>(new GraphBasedGeneratorConfiguration<TNode>()
             {
-                EarlyStopIfTimeExceeded = options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value) : default(TimeSpan?),
+                EarlyStopIfTimeExceeded = options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(options.EarlyStopTime.Value)
+                    : default(TimeSpan?),
                 OptimizeCorridorConstraints = optimizeCorridorConstraints,
             }, withInit, name);
         }

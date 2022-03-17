@@ -13,7 +13,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
         protected readonly GraphUtils GraphUtils = new GraphUtils();
         protected readonly int MaxTreeSize;
 
-        public ChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null, List<TNode> fixedRooms = null)
+        public ChainDecomposition(ChainDecompositionConfiguration configuration, Logger logger = null,
+            List<TNode> fixedRooms = null)
         {
             this.MaxTreeSize = configuration.MaxTreeSize;
         }
@@ -71,7 +72,7 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                 .First(x => graph.GetNeighbors(x).Count() == 1);
             var treeComponent = ChainDecompositionUtils.GetBfsTreeCandidate(
                 decomposition,
-                new List<TNode>() { startingNode },
+                new List<TNode>() {startingNode},
                 MaxTreeSize);
 
             return treeComponent;
@@ -122,7 +123,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
 
                 if (treeStartingNodes.Count != 0)
                 {
-                    var treeComponent = ChainDecompositionUtils.GetBfsTreeCandidate(decomposition, treeStartingNodes, MaxTreeSize);
+                    var treeComponent =
+                        ChainDecompositionUtils.GetBfsTreeCandidate(decomposition, treeStartingNodes, MaxTreeSize);
                     components.Add(treeComponent);
                     blacklist.AddRange(treeComponent.Nodes);
                 }

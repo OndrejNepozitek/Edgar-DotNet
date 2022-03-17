@@ -15,7 +15,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
             for (int nonTreeEdges = 0; nonTreeEdges < 5; nonTreeEdges++)
             {
-                for (int vertices = 10; vertices <= 40; vertices+=10)
+                for (int vertices = 10; vertices <= 40; vertices += 10)
                 {
                     // We do not need that many graphs
                     randomGraphSets.Add(GetRandomGraphs(count, vertices, nonTreeEdges));
@@ -52,7 +52,7 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks
 
             for (int nonTreeEdges = 1; nonTreeEdges < 4; nonTreeEdges++)
             {
-                for (int vertices = 10; vertices <= 30; vertices+=10)
+                for (int vertices = 10; vertices <= 30; vertices += 10)
                 {
                     // We do not need that many graphs
                     randomGraphSets.Add(GetRandomGraphs(count, vertices, nonTreeEdges));

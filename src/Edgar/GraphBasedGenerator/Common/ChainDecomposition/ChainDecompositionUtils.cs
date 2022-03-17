@@ -28,7 +28,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             return chain;
         }
 
-        public static ChainCandidate<TNode> GetBfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> startingNodes, int maxTreeSize)
+        public static ChainCandidate<TNode> GetBfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition,
+            List<TNode> startingNodes, int maxTreeSize)
         {
             var nodes = new List<TNode>();
             var queue = new Queue<TNode>();
@@ -73,7 +74,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             };
         }
 
-        public static ChainCandidate<TNode> GetDfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> startingNodes, int maxTreeSize)
+        public static ChainCandidate<TNode> GetDfsTreeCandidate<TNode>(PartialDecomposition<TNode> decomposition,
+            List<TNode> startingNodes, int maxTreeSize)
         {
             var nodes = new List<TNode>();
             var stack = new Stack<TNode>();
@@ -118,7 +120,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             };
         }
 
-        public static int GetMinimumNeighborChainNumber<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> nodes)
+        public static int GetMinimumNeighborChainNumber<TNode>(PartialDecomposition<TNode> decomposition,
+            List<TNode> nodes)
         {
             var coveredNeighbors = nodes
                 .SelectMany(decomposition.Graph.GetNeighbors)
@@ -133,7 +136,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             return -1;
         }
 
-        public static ChainCandidate<TNode> GetCycleComponent<TNode>(PartialDecomposition<TNode> decomposition, List<TNode> face)
+        public static ChainCandidate<TNode> GetCycleComponent<TNode>(PartialDecomposition<TNode> decomposition,
+            List<TNode> face)
         {
             var nodes = new List<TNode>();
             var notCoveredNodes = face.Where(x => !decomposition.IsCovered(x)).ToList();
@@ -148,7 +152,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                             .Min(y =>
                                 decomposition.IsCovered(y)
                                     ? -1
-                                    : nodeOrder.ContainsKey(y) ? nodeOrder[y] : int.MaxValue));
+                                    : nodeOrder.ContainsKey(y)
+                                        ? nodeOrder[y]
+                                        : int.MaxValue));
 
                 nodeOrder[notCoveredNodes[nodeIndex]] = nodeOrder.Count;
                 nodes.Add(notCoveredNodes[nodeIndex]);
@@ -159,7 +165,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
             {
                 Nodes = nodes,
                 IsFromFace = true,
-                MinimumNeighborChainNumber = ChainDecompositionUtils.GetMinimumNeighborChainNumber(decomposition, nodes),
+                MinimumNeighborChainNumber =
+                    ChainDecompositionUtils.GetMinimumNeighborChainNumber(decomposition, nodes),
             };
         }
     }

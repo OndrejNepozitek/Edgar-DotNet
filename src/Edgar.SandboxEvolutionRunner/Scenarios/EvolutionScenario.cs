@@ -24,17 +24,40 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class EvolutionScenario : Scenario
     {
-        protected virtual List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> GetAnalyzers(Input input)
+        protected virtual List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>
+            GetAnalyzers(Input input)
         {
-            var allAnalyzers = new Dictionary<string, Func<IMapDescription<int>, IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
-            {
-                { "MaxStageTwoFailures", (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "MaxIterations", (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "ChainMerge", (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
-                { "ChainOrder", (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>() } ,
-                { "MaxBranching", (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>() } ,
-                { "ChainDecomposition", (mapDescription) => new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>(mapDescription) } ,
-            };
+            var allAnalyzers =
+                new Dictionary<string, Func<IMapDescription<int>,
+                    IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>>>()
+                {
+                    {
+                        "MaxStageTwoFailures",
+                        (_) => new MaxStageTwoFailuresAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "MaxIterations",
+                        (_) => new MaxIterationsAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "ChainMerge",
+                        (_) => new ChainMergeAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>()
+                    },
+                    {
+                        "ChainOrder",
+                        (_) => new ChainOrderAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>()
+                    },
+                    {
+                        "MaxBranching",
+                        (_) => new MaxBranchingAnalyzer<DungeonGeneratorConfiguration<int>, GeneratorData>()
+                    },
+                    {
+                        "ChainDecomposition",
+                        (mapDescription) =>
+                            new ChainDecompositionAnalyzer<DungeonGeneratorConfiguration<int>, int, GeneratorData>(
+                                mapDescription)
+                    },
+                };
 
             // Select analyzers
             var analyzers =
@@ -53,7 +76,7 @@ namespace SandboxEvolutionRunner.Scenarios
             var resultsDict = new Dictionary<Input, Result>();
             var partitioner = Partitioner.Create(inputs, EnumerablePartitionerOptions.NoBuffering);
 
-            Parallel.ForEach(partitioner, new ParallelOptions { MaxDegreeOfParallelism = Options.MaxThreads }, input =>
+            Parallel.ForEach(partitioner, new ParallelOptions {MaxDegreeOfParallelism = Options.MaxThreads}, input =>
             {
                 lock (Logger)
                 {
@@ -67,7 +90,7 @@ namespace SandboxEvolutionRunner.Scenarios
                 {
                     Logger.WriteLine($"Ended {input.Name}");
                 }
-                
+
 
                 lock (resultsDict)
                 {
@@ -80,7 +103,8 @@ namespace SandboxEvolutionRunner.Scenarios
             return results;
         }
 
-        protected virtual Result RunEvolution(Input input, Options options, List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
+        protected virtual Result RunEvolution(Input input, Options options,
+            List<IPerformanceAnalyzer<DungeonGeneratorConfiguration<int>, Individual<int>>> analyzers)
         {
             var evolution = new DungeonGeneratorEvolution<int>(input.MapDescription, analyzers, new EvolutionOptions()
             {
@@ -88,7 +112,7 @@ namespace SandboxEvolutionRunner.Scenarios
                 MaxMutationsPerIndividual = 20,
                 EvaluationIterations = options.EvolutionIterations,
                 WithConsoleOutput = false,
-                AllowWorseThanInitial =  !options.Eval,
+                AllowWorseThanInitial = !options.Eval,
                 AllowRepeatingConfigurations = !options.Eval,
                 FitnessType = options.FitnessType,
             }, Path.Combine(DirectoryFullPath, FileNamesHelper.PrefixWithTimestamp(input.Name)));
@@ -113,7 +137,8 @@ namespace SandboxEvolutionRunner.Scenarios
             }).ToList();
         }
 
-        protected virtual DungeonGeneratorConfiguration<int> GetInitialConfiguration(NamedMapDescription namedMapDescription)
+        protected virtual DungeonGeneratorConfiguration<int> GetInitialConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             return GetBasicConfiguration(namedMapDescription);
         }
@@ -134,8 +159,9 @@ namespace SandboxEvolutionRunner.Scenarios
 
                     foreach (var individual in group)
                     {
-                        var mutation =  individual.Mutations.Last();
-                        var difference = StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
+                        var mutation = individual.Mutations.Last();
+                        var difference =
+                            StatisticsUtils.DifferenceToReference(individual.Fitness, individual.Parent.Fitness);
 
                         if (!stats.ContainsKey(mutation))
                         {
@@ -161,7 +187,8 @@ namespace SandboxEvolutionRunner.Scenarios
 
                 foreach (var mutationStat in mutationStats)
                 {
-                    Logger.WriteLine($"{mutationStat.Input}, diff {mutationStat.Difference:F}%, order {mutationStat.Order}");
+                    Logger.WriteLine(
+                        $"{mutationStat.Input}, diff {mutationStat.Difference:F}%, order {mutationStat.Order}");
                 }
 
                 Logger.WriteLine($"Average difference {mutationStats.Average(x => x.Difference):F}");
@@ -179,12 +206,13 @@ namespace SandboxEvolutionRunner.Scenarios
 
             AnalyzeMutations(results);
 
-            
+
             var inputsNewConfigurations = results
                 .Select(x => new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.NewConfiguration))
                 .ToList();
             var inputsOldConfigurations = results
-                .Select(x => new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration))
+                .Select(x =>
+                    new DungeonGeneratorInput<int>(x.Input.Name, x.Input.MapDescription, x.Input.Configuration))
                 .ToList();
 
             RunBenchmark(inputsNewConfigurations, Options.FinalEvaluationIterations, "NewConfigurations");

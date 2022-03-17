@@ -21,10 +21,14 @@ namespace Edgar.Legacy.Core.LayoutOperations
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, IntAlias<PolygonGrid2D>>
+    public class
+        RoomShapesHandler<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode,
+            IntAlias<PolygonGrid2D>>
         where TConfiguration : IConfiguration<IntAlias<PolygonGrid2D>, TNode>, ISmartCloneable<TConfiguration>, new()
     {
-        private readonly IConfigurationSpaces<TNode, IntAlias<PolygonGrid2D>, TConfiguration, ConfigurationSpace> configurationSpaces;
+        private readonly IConfigurationSpaces<TNode, IntAlias<PolygonGrid2D>, TConfiguration, ConfigurationSpace>
+            configurationSpaces;
+
         private readonly TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> intAliasMapping;
         private readonly IMapDescription<TNode> mapDescription;
         private readonly IGraph<TNode> stageOneGraph;
@@ -32,7 +36,8 @@ namespace Edgar.Legacy.Core.LayoutOperations
         private RoomTemplateInfo[] roomTemplateInstanceInfo;
 
         public RoomShapesHandler(
-            IConfigurationSpaces<TNode, IntAlias<PolygonGrid2D>, TConfiguration, ConfigurationSpace> configurationSpaces,
+            IConfigurationSpaces<TNode, IntAlias<PolygonGrid2D>, TConfiguration, ConfigurationSpace>
+                configurationSpaces,
             TwoWayDictionary<RoomTemplateInstance, IntAlias<PolygonGrid2D>> intAliasMapping,
             IMapDescription<TNode> mapDescription,
             RoomTemplateRepeatMode? repeatModeOverride = null)
@@ -77,7 +82,8 @@ namespace Edgar.Legacy.Core.LayoutOperations
         /// If zero shapes are found and tryToFixEmpty is set to true, we try to lower the requirements and e.g. use
         /// only the NoImmediate mode instead of the NoRepeat mode.
         /// </summary>
-        public List<IntAlias<PolygonGrid2D>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
+        public List<IntAlias<PolygonGrid2D>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node,
+            bool tryToFixEmpty = false)
         {
             if (mapDescription.GetRoomDescription(node) is CorridorRoomDescription)
             {
@@ -114,7 +120,8 @@ namespace Edgar.Legacy.Core.LayoutOperations
             return configurationSpaces.CanPerturbShape(node);
         }
 
-        private List<IntAlias<PolygonGrid2D>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RoomTemplateRepeatMode? modeOverride)
+        private List<IntAlias<PolygonGrid2D>> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout,
+            TNode node, RoomTemplateRepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<PolygonGrid2D>>(configurationSpaces.GetShapesForNode(node));
 
@@ -128,7 +135,9 @@ namespace Edgar.Legacy.Core.LayoutOperations
                 var roomTemplateInfo = roomTemplateInstanceInfo[configuration.ShapeContainer.Alias];
                 var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RoomTemplateRepeatMode;
 
-                if (repeatMode == RoomTemplateRepeatMode.NoRepeat || (repeatMode == RoomTemplateRepeatMode.NoImmediate && stageOneGraph.HasEdge(node, configuration.Node)))
+                if (repeatMode == RoomTemplateRepeatMode.NoRepeat ||
+                    (repeatMode == RoomTemplateRepeatMode.NoImmediate &&
+                     stageOneGraph.HasEdge(node, configuration.Node)))
                 {
                     foreach (var alias in roomTemplateInfo.Aliases)
                     {

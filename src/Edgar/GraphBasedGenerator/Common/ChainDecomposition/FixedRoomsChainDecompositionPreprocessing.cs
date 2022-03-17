@@ -9,7 +9,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
         private readonly List<TNode> fixedRooms;
         private readonly IChainDecomposition<TNode> chainDecomposition;
 
-        public FixedRoomsChainDecompositionPreprocessing(List<TNode> fixedRooms, IChainDecomposition<TNode> chainDecomposition)
+        public FixedRoomsChainDecompositionPreprocessing(List<TNode> fixedRooms,
+            IChainDecomposition<TNode> chainDecomposition)
         {
             this.fixedRooms = fixedRooms;
             this.chainDecomposition = chainDecomposition;
@@ -46,7 +47,8 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition
                 var nodes = new HashSet<TNode>();
                 component.ForEach(x => nodes.Add(x));
 
-                var subgraph = GraphAlgorithms.GetInducedSubgraph(graph, nodes, new UndirectedAdjacencyListGraph<TNode>());
+                var subgraph =
+                    GraphAlgorithms.GetInducedSubgraph(graph, nodes, new UndirectedAdjacencyListGraph<TNode>());
                 var chains = chainDecomposition.GetChains(subgraph);
                 listsOfChains.Add(chains);
             }

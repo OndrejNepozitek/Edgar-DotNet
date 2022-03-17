@@ -21,9 +21,12 @@ namespace SandboxEvolutionRunner.Utils
         private readonly RoomTemplatesSet roomTemplatesSet;
         private readonly RoomTemplateRepeatMode repeatMode;
         private readonly bool enhanceRoomTemplates = false;
-        private readonly List<TransformationGrid2D> transformations = TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
 
-        public BetterMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(options)
+        private readonly List<TransformationGrid2D> transformations =
+            TransformationGrid2DHelper.GetAllTransformationsOld().ToList();
+
+        public BetterMapDescriptionLoader(Options options, RoomTemplatesSet roomTemplatesSet,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat) : base(options)
         {
             this.roomTemplatesSet = roomTemplatesSet;
             this.repeatMode = repeatMode;
@@ -37,14 +40,19 @@ namespace SandboxEvolutionRunner.Utils
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 1);
 
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(6), doorMode, transformations, name: "Square 6x6", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(8), doorMode, transformations, name: "Square 8x8", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(6, 8), doorMode, transformations, name: "Rectangle 6x8", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(6), doorMode, transformations,
+                name: "Square 6x6", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(8), doorMode, transformations,
+                name: "Square 8x8", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(6, 8), doorMode, transformations,
+                name: "Rectangle 6x8", repeatMode: repeatMode));
 
             if (enhanceRoomTemplates)
             {
-                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(7), doorMode, transformations, name: "Square 7x7", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(5, 7), doorMode, transformations, name: "Rectangle 5x7", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(7), doorMode, transformations,
+                    name: "Square 7x7", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(5, 7), doorMode, transformations,
+                    name: "Rectangle 5x7", repeatMode: repeatMode));
             }
 
             return roomTemplates;
@@ -55,10 +63,14 @@ namespace SandboxEvolutionRunner.Utils
             var roomTemplates = new List<RoomTemplate>();
             var doorMode = new SimpleDoorMode(2, 2);
 
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(12), doorMode, transformations, name: "Square 12x12", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(14), doorMode, transformations, name: "Square 14x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 14), doorMode, transformations, name: "Rectangle 10x14", repeatMode: repeatMode));
-            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(12, 15), doorMode, transformations, name: "Rectangle 12x15", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(12), doorMode, transformations,
+                name: "Square 12x12", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(14), doorMode, transformations,
+                name: "Square 14x14", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 14), doorMode, transformations,
+                name: "Rectangle 10x14", repeatMode: repeatMode));
+            roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(12, 15), doorMode, transformations,
+                name: "Rectangle 12x15", repeatMode: repeatMode));
 
             //roomTemplates.Add(new RoomTemplate(
             //    new GridPolygonBuilder()
@@ -73,18 +85,23 @@ namespace SandboxEvolutionRunner.Utils
 
             if (enhanceRoomTemplates)
             {
-                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(13), doorMode, transformations, name: "Square 13x13", repeatMode: repeatMode));
-                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 16), doorMode, transformations, name: "Rectangle 10x16", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetSquare(13), doorMode, transformations,
+                    name: "Square 13x13", repeatMode: repeatMode));
+                roomTemplates.Add(new RoomTemplate(PolygonGrid2D.GetRectangle(10, 16), doorMode, transformations,
+                    name: "Rectangle 10x16", repeatMode: repeatMode));
             }
 
             return roomTemplates;
         }
 
-        protected override List<NamedMapDescription> GetMapDescriptions(NamedGraph namedGraph, List<int> corridorOffsets)
+        protected override List<NamedMapDescription> GetMapDescriptions(NamedGraph namedGraph,
+            List<int> corridorOffsets)
         {
             var withCorridors = corridorOffsets[0] != 0;
             var canTouch = Options.CanTouch || !withCorridors;
-            var corridorRoomDescription = withCorridors ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2) : null;
+            var corridorRoomDescription = withCorridors
+                ? GetCorridorRoomDescription(corridorOffsets, roomTemplatesSet == RoomTemplatesSet.Original ? 1 : 2)
+                : null;
 
             var mapDescription = new MapDescription<int>();
             var graph = namedGraph.Graph;
@@ -111,8 +128,9 @@ namespace SandboxEvolutionRunner.Utils
                     mapDescription.AddConnection(connection.From, connection.To);
                 }
             }
-            
-            var name = MapDescriptionUtils.GetInputName(namedGraph.Name, Options.Scale, withCorridors, corridorOffsets, canTouch);
+
+            var name = MapDescriptionUtils.GetInputName(namedGraph.Name, Options.Scale, withCorridors, corridorOffsets,
+                canTouch);
 
             return new List<NamedMapDescription>()
             {
@@ -140,13 +158,13 @@ namespace SandboxEvolutionRunner.Utils
                     {
                         roomTemplates.AddRange(roomTemplatesSmall);
                     }
+
                     roomTemplates.AddRange(roomTemplatesMedium);
                     break;
                 }
                 case RoomTemplatesSet.Original:
                     roomTemplates.AddRange(roomTemplatesOriginal);
                     break;
-
             }
 
             return new BasicRoomDescription(roomTemplates);

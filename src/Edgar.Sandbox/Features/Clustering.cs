@@ -37,8 +37,9 @@ namespace Sandbox.Features
 
             var inputs = new List<DungeonGeneratorInput<int>>();
             inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true, basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
-            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() { 2 }, false));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), false, null, true,
+                basicRoomDescription: basicRoomDescription, suffix: "rect shapes"));
+            inputs.AddRange(Program.GetMapDescriptionsSet(new Vector2Int(1, 1), true, new List<int>() {2}, false));
 
             inputs.Add(LoadInput("gungeon_1_1"));
             inputs.Add(LoadInput("gungeon_1_1", true));
@@ -69,12 +70,14 @@ namespace Sandbox.Features
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>("CorridorConfigurationSpaces", input =>
             {
                 var dungeonGeneratorInput = (DungeonGeneratorInput<int>) input;
-                var layoutGenerator = new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
+                var layoutGenerator =
+                    new DungeonGenerator<int>(input.MapDescription, dungeonGeneratorInput.Configuration);
                 layoutGenerator.InjectRandomGenerator(new Random(0));
 
                 return new LambdaGeneratorRunner(() =>
                 {
                     var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                     void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                     {
                         simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -91,7 +94,8 @@ namespace Sandbox.Features
                         GeneratedLayout = layout,
                     };
 
-                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                    var generatorRun = new GeneratorRun<AdditionalRunData>(layout != null, layoutGenerator.TimeTotal,
+                        layoutGenerator.IterationsCount, additionalData);
 
                     return generatorRun;
                 });
@@ -119,9 +123,11 @@ namespace Sandbox.Features
 
                 var averageRoomTemplateSize = LayoutsDistance.GetAverageRoomTemplateSize(mapDescription);
                 var positionOnlyClusters = layoutsClustering.GetClusters(layoutsMapping.Values.ToList(),
-                    (x1, x2) => LayoutsDistance.PositionOnlyDistance(layoutsMapping.GetByValue(x1), layoutsMapping.GetByValue(x2)), averageRoomTemplateSize);
+                    (x1, x2) => LayoutsDistance.PositionOnlyDistance(layoutsMapping.GetByValue(x1),
+                        layoutsMapping.GetByValue(x2)), averageRoomTemplateSize);
                 var positionAndShapeClusters = layoutsClustering.GetClusters(layoutsMapping.Values.ToList(),
-                    (x1, x2) => LayoutsDistance.PositionAndShapeDistance(layoutsMapping.GetByValue(x1), layoutsMapping.GetByValue(x2), averageRoomTemplateSize),
+                    (x1, x2) => LayoutsDistance.PositionAndShapeDistance(layoutsMapping.GetByValue(x1),
+                        layoutsMapping.GetByValue(x2), averageRoomTemplateSize),
                     averageRoomTemplateSize);
 
                 Console.WriteLine($"{input.Name} {positionOnlyClusters.Count}/{positionAndShapeClusters.Count}");
@@ -159,7 +165,10 @@ namespace Sandbox.Features
                     .Distinct()
                     .SelectMany(x => configurationSpacesGenerator.GetRoomTemplateInstances(x))
                     .ToList();
-                var roomTemplatesMapping = roomTemplateInstances.ToDictionary(x => x, x => x.Transformations.Contains(TransformationGrid2D.Identity) ? x.RoomTemplate.Name : $"{x.RoomTemplate.Name} {x.Transformations[0]}");
+                var roomTemplatesMapping = roomTemplateInstances.ToDictionary(x => x,
+                    x => x.Transformations.Contains(TransformationGrid2D.Identity)
+                        ? x.RoomTemplate.Name
+                        : $"{x.RoomTemplate.Name} {x.Transformations[0]}");
                 var entropyCalculator = new EntropyCalculator();
 
 
@@ -177,7 +186,8 @@ namespace Sandbox.Features
                             Room = room.ToString(),
                             EntropyScore = entropyCalculator.ComputeEntropy(distribution, true),
                             Entropy = entropyCalculator.ComputeEntropy(distribution, false),
-                            RoomTemplatesDistribution = roomTemplatesMapping.Keys.Select(x => distribution.ContainsKey(x) ? (double?) distribution[x] : null),
+                            RoomTemplatesDistribution = roomTemplatesMapping.Keys.Select(x =>
+                                distribution.ContainsKey(x) ? (double?) distribution[x] : null),
                         };
                     })
                 };
@@ -199,7 +209,8 @@ namespace Sandbox.Features
             //    }
             //}
 
-            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult, "BenchmarkResults/1581884301_CorridorConfigurationSpaces_Reference.json");
+            Utils.BenchmarkUtils.IsEqualToReference(scenarioResult,
+                "BenchmarkResults/1581884301_CorridorConfigurationSpaces_Reference.json");
         }
 
         private DungeonGeneratorInput<int> LoadInput(string name, bool transform = false)
@@ -252,7 +263,8 @@ namespace Sandbox.Features
 
             var input = new GeneratorInput<MapDescription<int>>(
                 "EnterTheGungeon",
-                JsonConvert.DeserializeObject<MapDescription<int>>(File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings)
+                JsonConvert.DeserializeObject<MapDescription<int>>(
+                    File.ReadAllText($"Resources/MapDescriptions/{name}.json"), settings)
             );
 
             return input.MapDescription;
@@ -260,7 +272,7 @@ namespace Sandbox.Features
 
         private void RunOld()
         {
-            var input = Program.GetMapDescriptionsSet(1 * new Vector2Int(1, 1), false, new List<int>() { 2, 4 }, true)[1];
+            var input = Program.GetMapDescriptionsSet(1 * new Vector2Int(1, 1), false, new List<int>() {2, 4}, true)[1];
             var mapDescription = input.MapDescription;
             var averageSize = GetAverageRoomTemplateSize(mapDescription);
 
@@ -363,10 +375,10 @@ namespace Sandbox.Features
             output += "\n";
 
             allDistances.Sort();
-            var smallest25 = allDistances[(int)(allDistances.Count * 0.25)];
-            var smallest15 = allDistances[(int)(allDistances.Count * 0.15)];
-            var smallest10 = allDistances[(int)(allDistances.Count * 0.10)];
-            var smallest5 = allDistances[(int)(allDistances.Count * 0.05)];
+            var smallest25 = allDistances[(int) (allDistances.Count * 0.25)];
+            var smallest15 = allDistances[(int) (allDistances.Count * 0.15)];
+            var smallest10 = allDistances[(int) (allDistances.Count * 0.10)];
+            var smallest5 = allDistances[(int) (allDistances.Count * 0.05)];
 
             for (int i = 0; i < layouts.Count - 1; i++)
             {
@@ -376,7 +388,8 @@ namespace Sandbox.Features
 
                     if (distance < smallest5)
                     {
-                        output += $"  {i} -- {j} [len={distance:F},weight={100 * 1/distance:F},color=\"{(distance > averageDistance ? "black" : "black")}\"];\n";
+                        output +=
+                            $"  {i} -- {j} [len={distance:F},weight={100 * 1 / distance:F},color=\"{(distance > averageDistance ? "black" : "black")}\"];\n";
                     }
                 }
             }
@@ -402,7 +415,8 @@ namespace Sandbox.Features
                 var shape1Center = nodeToRoom1[node].BoundingRectangle.Center - new Vector2Int(minX1, minY1);
                 var shape2Center = nodeToRoom2[node].BoundingRectangle.Center - new Vector2Int(minX2, minY2);
 
-                distances.Add(Vector2Int.ManhattanDistance(shape1Center, shape2Center) + (nodeToRoom1[node].Equals(nodeToRoom2[node]) ? 0 : 15));
+                distances.Add(Vector2Int.ManhattanDistance(shape1Center, shape2Center) +
+                              (nodeToRoom1[node].Equals(nodeToRoom2[node]) ? 0 : 15));
             }
 
             return distances.Average();

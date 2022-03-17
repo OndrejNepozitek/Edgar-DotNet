@@ -21,6 +21,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.ChainMerge
             FirstChainNumber = firstChainNumber;
             SecondChainNumber = secondChainNumber;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var counter = 0;

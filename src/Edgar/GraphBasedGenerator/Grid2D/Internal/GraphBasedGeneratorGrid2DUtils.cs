@@ -39,12 +39,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             // Prepare chain decomposition algorithm
             chainDecompositionConfiguration = chainDecompositionConfiguration ?? new ChainDecompositionConfiguration();
             //var chainDecomposition = new FixedRoomsChainDecomposition<TRoom>(chainDecompositionConfiguration, fixedRooms: fixedPositionRooms);
-            var chainDecomposition = new BreadthFirstChainDecomposition<TRoom>(chainDecompositionConfiguration, fixedRooms: fixedPositionRooms);
+            var chainDecomposition =
+                new BreadthFirstChainDecomposition<TRoom>(chainDecompositionConfiguration,
+                    fixedRooms: fixedPositionRooms);
             var twoStageChainDecomposition = new Common.ChainDecomposition.TwoStageChainDecomposition<TRoom>(
                 levelDescription,
                 chainDecomposition
             );
-            var fixedRoomsChainDecomposition = new FixedRoomsChainDecompositionPreprocessing<TRoom>(fixedRooms, twoStageChainDecomposition);
+            var fixedRoomsChainDecomposition =
+                new FixedRoomsChainDecompositionPreprocessing<TRoom>(fixedRooms, twoStageChainDecomposition);
 
             return fixedRoomsChainDecomposition;
         }
@@ -52,7 +55,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         public static Dictionary<TRoom, List<WeightedShape>> GetLegacyShapesForNodes<TRoom>(
             ILevelDescription<TRoom> levelDescription,
             LevelGeometryData<TRoom> geometryData
-            )
+        )
         {
             var shapesForNodes = new Dictionary<TRoom, List<WeightedShape>>();
             foreach (var vertex in levelDescription.GetGraph().Vertices)
@@ -80,7 +83,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         public static int GetLegacyAverageSize<TRoom>(
             ILevelDescription<TRoom> levelDescription,
             Dictionary<TRoom, List<WeightedShape>> shapesForNodes
-            )
+        )
         {
             var usedShapes = new HashSet<int>();
             var allShapes = new List<IntAlias<PolygonGrid2D>>();
@@ -99,26 +102,29 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             }
 
             var averageSize = (int) allShapes
-                    .Select(x => x.Value.BoundingRectangle)
-                    .Average(x => (x.Width + x.Height) / 2);
+                .Select(x => x.Value.BoundingRectangle)
+                .Average(x => (x.Width + x.Height) / 2);
 
             return averageSize;
         }
 
-        public static ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData> GetConstraintsEvaluator<TRoom>(
-            ILevelDescription<RoomNode<TRoom>> levelDescription,
-            IRoomShapeGeometry<ConfigurationGrid2D<TRoom, EnergyData>> roomShapeGeometry,
-            IConfigurationSpaces<ConfigurationGrid2D<TRoom, EnergyData>> configurationSpaces,
-            int averageRoomSize,
-            int minimumRoomDistance,
-            bool optimizeCorridorConstraints
+        public static ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>
+            GetConstraintsEvaluator<TRoom>(
+                ILevelDescription<RoomNode<TRoom>> levelDescription,
+                IRoomShapeGeometry<ConfigurationGrid2D<TRoom, EnergyData>> roomShapeGeometry,
+                IConfigurationSpaces<ConfigurationGrid2D<TRoom, EnergyData>> configurationSpaces,
+                int averageRoomSize,
+                int minimumRoomDistance,
+                bool optimizeCorridorConstraints
             )
         {
-            var energyUpdater = new BasicEnergyUpdater<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(10 * averageRoomSize);
+            var energyUpdater =
+                new BasicEnergyUpdater<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>(10 * averageRoomSize);
 
             // Create generator constraints
             var stageOneConstraints =
-                new List<INodeConstraint<ILayout<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>,
+                new List<INodeConstraint<ILayout<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>>,
+                    RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>,
                     EnergyData>>
                 {
                     new BasicConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
@@ -136,14 +142,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             if (minimumRoomDistance > 0)
             {
-                stageOneConstraints.Add(new MinimumDistanceConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
-                    levelDescription,
-                    roomShapeGeometry,
-                    minimumRoomDistance
-                ));
+                stageOneConstraints.Add(
+                    new MinimumDistanceConstraint<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
+                        levelDescription,
+                        roomShapeGeometry,
+                        minimumRoomDistance
+                    ));
             }
 
-            var constraintsEvaluator = new ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(stageOneConstraints, energyUpdater);
+            var constraintsEvaluator =
+                new ConstraintsEvaluator<RoomNode<TRoom>, ConfigurationGrid2D<TRoom, EnergyData>, EnergyData>(
+                    stageOneConstraints, energyUpdater);
 
             return constraintsEvaluator;
         }

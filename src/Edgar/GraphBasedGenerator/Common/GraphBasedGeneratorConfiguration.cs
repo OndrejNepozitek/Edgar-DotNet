@@ -7,7 +7,8 @@ using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.Common
 {
-    public class GraphBasedGeneratorConfiguration<TNode> : DungeonGeneratorConfiguration<TNode>, ISmartCloneable<GraphBasedGeneratorConfiguration<TNode>>
+    public class GraphBasedGeneratorConfiguration<TNode> : DungeonGeneratorConfiguration<TNode>,
+        ISmartCloneable<GraphBasedGeneratorConfiguration<TNode>>
     {
         public bool OptimizeCorridorConstraints { get; set; }
 

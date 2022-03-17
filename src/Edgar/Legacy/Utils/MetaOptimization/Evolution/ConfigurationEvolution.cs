@@ -22,7 +22,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
 
         protected event Action OnEvolutionStarted;
 
-        protected ConfigurationEvolution(List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers, EvolutionOptions options, string resultsDirectory)
+        protected ConfigurationEvolution(List<IPerformanceAnalyzer<TConfiguration, TIndividual>> analyzers,
+            EvolutionOptions options, string resultsDirectory)
         {
             this.Analyzers = analyzers;
             this.Options = options;
@@ -89,7 +90,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
             Logger.WriteLine($"Individual {bestIndividual.Id}");
             Logger.WriteLine($"Configuration: {bestIndividual.Configuration}");
             Logger.WriteLine($"Fitness: {bestIndividual.Fitness:F}, {fitnessDifference:F}% difference");
-            
+
             return new EvolutionResult(bestIndividual.Configuration, allIndividuals);
         }
 
@@ -113,7 +114,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
                     Logger.WriteLine($"Mutation: {mutation}");
                     Logger.WriteLine($"Configuration: {individual.Configuration}");
 
-                    if (!Options.AllowRepeatingConfigurations && offspringPopulation.Individuals.Any(x => x.Configuration.Equals(individual.Configuration)))
+                    if (!Options.AllowRepeatingConfigurations &&
+                        offspringPopulation.Individuals.Any(x => x.Configuration.Equals(individual.Configuration)))
                     {
                         Logger.WriteLine($"Not used - configuration already encountered");
                     }
@@ -138,7 +140,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
             return offspringPopulation;
         }
 
-        protected virtual Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population, Population<TIndividual> previousPopulation)
+        protected virtual Population<TIndividual> SelectBestIndividuals(Population<TIndividual> population,
+            Population<TIndividual> previousPopulation)
         {
             var individuals = new List<TIndividual>(population.Individuals);
 
@@ -186,7 +189,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Evolution
         protected virtual Population<TIndividual> EvaluatePopulation(Population<TIndividual> population)
         {
             Logger.WriteLine("**** Evaluating the population ***");
-            var evaluatedPopulation = new Population<TIndividual>(population.Individuals.Select(EvaluateIndividual).ToList());
+            var evaluatedPopulation =
+                new Population<TIndividual>(population.Individuals.Select(EvaluateIndividual).ToList());
             Logger.WriteLine();
 
             return evaluatedPopulation;

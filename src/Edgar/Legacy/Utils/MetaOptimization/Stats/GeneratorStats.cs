@@ -18,7 +18,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Stats
         public GeneratorStats(List<ChainStats> chainsStats, GeneratorRun generatorRun)
         {
             ChainsStats = chainsStats;
-            GeneratorRuns = new List<GeneratorRun>() { generatorRun };
+            GeneratorRuns = new List<GeneratorRun>() {generatorRun};
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Edgar.Examples
             var content = withDeclaration ? method.ToFullString() : method.Body.ToFullString();
 
             var sourceCode = content.Split(
-                new[] { "\r\n", "\r", "\n" },
+                new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
             ).ToList();
 
@@ -46,7 +46,7 @@ namespace Edgar.Examples
             {
                 sourceCode = TrimBrackets(sourceCode);
             }
-            
+
             sourceCode = RemoveLeftPadding(sourceCode);
 
             if (!withDeclaration)
@@ -67,11 +67,11 @@ namespace Edgar.Examples
             var content = enumSyntax.ToFullString();
 
             var sourceCode = content.Split(
-                new[] { "\r\n", "\r", "\n" },
+                new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
             ).ToList();
 
-           
+
             sourceCode = RemoveLeftPadding(sourceCode);
 
             return sourceCode;
@@ -87,7 +87,7 @@ namespace Edgar.Examples
             var content = classSyntax.ToFullString();
 
             var sourceCode = content.Split(
-                new[] { "\r\n", "\r", "\n" },
+                new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
             ).ToList();
 
@@ -101,7 +101,7 @@ namespace Edgar.Examples
             var content = root.ToFullString();
 
             var sourceCode = content.Split(
-                new[] { "\r\n", "\r", "\n" },
+                new[] {"\r\n", "\r", "\n"},
                 StringSplitOptions.None
             ).ToList();
 

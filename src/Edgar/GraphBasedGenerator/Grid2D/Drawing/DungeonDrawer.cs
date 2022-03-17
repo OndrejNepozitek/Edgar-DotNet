@@ -8,10 +8,10 @@ using Edgar.Geometry;
 namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
 {
     /// <summary>
-	/// Class that can export a given layout to a PNG image.
-	/// </summary>
+    /// Class that can export a given layout to a PNG image.
+    /// </summary>
     public class DungeonDrawer<TRoom> : DungeonDrawerBase
-	{
+    {
         private Pen outlinePen;
         private Pen shadePen;
 
@@ -36,7 +36,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
         {
             var roomOutlines = layout.Rooms.Select(x => x.Outline + x.Position).ToList();
             var boundingBox = DrawingUtils.GetBoundingBox(roomOutlines);
-            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale, options.PaddingAbsolute, options.PaddingPercentage);
+            var (width, height, scale) = DrawingUtils.GetSize(boundingBox, options.Width, options.Height, options.Scale,
+                options.PaddingAbsolute, options.PaddingPercentage);
             var offset = DrawingUtils.GetOffset(boundingBox, width, height, scale);
 
             bitmap = new Bitmap(width, height);
@@ -69,7 +70,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
             {
                 foreach (var room in rooms)
                 {
-                    DrawShading(GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), shadePen);
+                    DrawShading(GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position),
+                        shadePen);
                 }
             }
 
@@ -78,7 +80,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                 var hatchingUsedPoints = new List<Tuple<RectangleGrid2D, List<Vector2>>>();
                 foreach (var room in rooms)
                 {
-                    DrawHatching(room.Outline + room.Position, hatchingUsedPoints, options.HatchingClusterOffset, options.HatchingLength);
+                    DrawHatching(room.Outline + room.Position, hatchingUsedPoints, options.HatchingClusterOffset,
+                        options.HatchingLength);
                 }
             }
 
@@ -91,7 +94,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Drawing
                     DrawGrid(room.Outline + room.Position);
                 }
 
-                DrawOutline(room.Outline + room.Position, GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
+                DrawOutline(room.Outline + room.Position,
+                    GetOutline(room.Outline, room.Doors.Select(x => x.DoorLine).ToList(), room.Position), outlinePen);
             }
 
             foreach (var room in rooms)

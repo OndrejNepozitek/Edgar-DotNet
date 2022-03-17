@@ -40,7 +40,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Visualizations
                 PrintRow("attempts on success", x => x.ChainsStats[chainNumber].AttemptsOnSuccess);
                 PrintRow("failed runs", x => x.ChainsStats[chainNumber].FailedRuns);
                 PrintRow("random restarts", x => x.ChainsStats[chainNumber].RandomRestarts);
-                PrintRow("avg s2 failures on success", x => x.ChainsStats[chainNumber].AverageStageTwoFailuresOnSuccess);
+                PrintRow("avg s2 failures on success",
+                    x => x.ChainsStats[chainNumber].AverageStageTwoFailuresOnSuccess);
                 PrintRow("max s2 failures on success", x => x.ChainsStats[chainNumber].MaxStageTwoFailuresOnSuccess);
                 PrintRow("out of iterations", x => x.ChainsStats[chainNumber].OutOfIterations);
                 PrintRow("max iterations on success", x => x.ChainsStats[chainNumber].MaxIterationsOnSuccess);

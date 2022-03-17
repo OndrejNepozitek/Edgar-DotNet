@@ -2,6 +2,7 @@
 {
     public enum FitnessType
     {
-        Iterations, Time
+        Iterations,
+        Time
     }
 }

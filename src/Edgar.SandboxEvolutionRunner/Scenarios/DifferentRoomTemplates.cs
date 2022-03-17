@@ -10,14 +10,16 @@ namespace SandboxEvolutionRunner.Scenarios
 {
     public class DifferentRoomTemplates : Scenario
     {
-        private DungeonGeneratorConfiguration<int> GetConfiguration(NamedMapDescription namedMapDescription, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat)
+        private DungeonGeneratorConfiguration<int> GetConfiguration(NamedMapDescription namedMapDescription,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat)
         {
             var configuration = GetBasicConfiguration(namedMapDescription);
-            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(new SimulatedAnnealingConfiguration()
-            {
-                MaxIterationsWithoutSuccess = 100,
-                HandleTreesGreedily = true,
-            });
+            configuration.SimulatedAnnealingConfiguration = new SimulatedAnnealingConfigurationProvider(
+                new SimulatedAnnealingConfiguration()
+                {
+                    MaxIterationsWithoutSuccess = 100,
+                    HandleTreesGreedily = true,
+                });
             configuration.RepeatModeOverride = repeatMode;
 
             return configuration;
@@ -35,14 +37,14 @@ namespace SandboxEvolutionRunner.Scenarios
             Run(RoomTemplatesSet.Original);
         }
 
-        private void Run(RoomTemplatesSet roomTemplatesSet, RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, bool enhanceRoomTemplates = false)
+        private void Run(RoomTemplatesSet roomTemplatesSet,
+            RoomTemplateRepeatMode repeatMode = RoomTemplateRepeatMode.AllowRepeat, bool enhanceRoomTemplates = false)
         {
             var loader = new BetterMapDescriptionLoader(Options, roomTemplatesSet, repeatMode);
             var mapDescriptions = loader.GetMapDescriptions();
 
-            RunBenchmark(mapDescriptions, x => GetConfiguration(x, repeatMode), Options.FinalEvaluationIterations, $"{roomTemplatesSet}_{repeatMode}_{(enhanceRoomTemplates ? "Enhance" : "NoEnhance")}");
+            RunBenchmark(mapDescriptions, x => GetConfiguration(x, repeatMode), Options.FinalEvaluationIterations,
+                $"{roomTemplatesSet}_{repeatMode}_{(enhanceRoomTemplates ? "Enhance" : "NoEnhance")}");
         }
-        
-        
     }
 }

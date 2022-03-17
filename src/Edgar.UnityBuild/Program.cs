@@ -17,7 +17,7 @@ namespace Edgar.UnityBuild
             {
                 Directory.Delete(targetDir, true);
             }
-            
+
             Directory.CreateDirectory(targetDir);
 
             CopyFilesRecursively(new DirectoryInfo(sourceDir), new DirectoryInfo(targetDir));
@@ -30,7 +30,8 @@ namespace Edgar.UnityBuild
             moduleDefinition.Write(stream);
         }
 
-        public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target) {
+        public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+        {
             foreach (DirectoryInfo dir in source.GetDirectories())
                 CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
             foreach (FileInfo file in source.GetFiles())

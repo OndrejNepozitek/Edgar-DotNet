@@ -20,7 +20,8 @@ namespace Edgar.Benchmarks.GeneratorRunners
         private const double ThresholdEnd = 2;
         private const int MaxRuns = 50;
 
-        public EarlyStoppingGeneratorRunner(IGeneratorRunner runner, double averageIterationsBaseline, GeneratorRunCreator generatorRunCreator)
+        public EarlyStoppingGeneratorRunner(IGeneratorRunner runner, double averageIterationsBaseline,
+            GeneratorRunCreator generatorRunCreator)
         {
             this.runner = runner;
             this.averageIterationsBaseline = averageIterationsBaseline;
@@ -31,7 +32,8 @@ namespace Edgar.Benchmarks.GeneratorRunners
         {
             if (skipRuns)
             {
-                return generatorRunCreator(false, (long) runs.Average(x => x.Time), (int) runs.Average(x => x.Iterations));
+                return generatorRunCreator(false, (long) runs.Average(x => x.Time),
+                    (int) runs.Average(x => x.Iterations));
             }
 
             var run = runner.Run();
@@ -48,8 +50,8 @@ namespace Edgar.Benchmarks.GeneratorRunners
             if (runs.Count >= MinimumRunsToStop)
             {
                 var currentThreshold = ThresholdStart + (ThresholdEnd - ThresholdStart) *
-                                       ((runs.Count - MinimumRunsToStop) /
-                                        (double)(MaxRuns - MinimumRunsToStop));
+                    ((runs.Count - MinimumRunsToStop) /
+                     (double) (MaxRuns - MinimumRunsToStop));
                 currentThreshold = Math.Max(ThresholdEnd, currentThreshold);
 
                 if (runs.Average(x => x.Iterations) > currentThreshold * averageIterationsBaseline)

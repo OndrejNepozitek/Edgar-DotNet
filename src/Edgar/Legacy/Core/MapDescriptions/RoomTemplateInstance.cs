@@ -7,7 +7,7 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
 
 namespace Edgar.Legacy.Core.MapDescriptions
 {
-	public class RoomTemplateInstance
+    public class RoomTemplateInstance
     {
         /// <summary>
         /// Room description.
@@ -34,7 +34,8 @@ namespace Edgar.Legacy.Core.MapDescriptions
         /// </summary>
         public List<TransformationGrid2D> Transformations { get; }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, List<TransformationGrid2D> transformations, List<DoorLine> doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape,
+            List<TransformationGrid2D> transformations, List<DoorLine> doorLines)
         {
             RoomTemplate = roomTemplate;
             RoomShape = roomShape;
@@ -42,17 +43,18 @@ namespace Edgar.Legacy.Core.MapDescriptions
             DoorLines = doorLines;
         }
 
-        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape, TransformationGrid2D transformation, List<DoorLine> doorLines)
-            : this(roomTemplate, roomShape, new List<TransformationGrid2D>() { transformation }, doorLines)
+        public RoomTemplateInstance(RoomTemplate roomTemplate, PolygonGrid2D roomShape,
+            TransformationGrid2D transformation, List<DoorLine> doorLines)
+            : this(roomTemplate, roomShape, new List<TransformationGrid2D>() {transformation}, doorLines)
         {
-
         }
 
         #region Equals
 
         protected bool Equals(RoomTemplateInstance other)
         {
-            return Equals(RoomTemplate, other.RoomTemplate) && Equals(RoomShape, other.RoomShape) && DoorLines.SequenceEqual(other.DoorLines) && Transformations.SequenceEqual(other.Transformations);
+            return Equals(RoomTemplate, other.RoomTemplate) && Equals(RoomShape, other.RoomShape) &&
+                   DoorLines.SequenceEqual(other.DoorLines) && Transformations.SequenceEqual(other.Transformations);
         }
 
         public override bool Equals(object obj)

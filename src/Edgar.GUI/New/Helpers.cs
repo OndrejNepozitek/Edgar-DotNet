@@ -13,7 +13,8 @@ namespace Edgar.GUI.New
 {
     public static class Helpers
     {
-        public static LevelDescriptionGrid2D<TNode> GetLevelDescription<TNode>(this IMapDescription<TNode> mapDescription)
+        public static LevelDescriptionGrid2D<TNode> GetLevelDescription<TNode>(
+            this IMapDescription<TNode> mapDescription)
         {
             var levelDescription = new LevelDescriptionGrid2D<TNode>();
             var graph = mapDescription.GetGraph();
@@ -33,14 +34,19 @@ namespace Edgar.GUI.New
                     }
                     else
                     {
-                        var corridorRoomDescription = new RoomDescriptionGrid2D(true, roomDescription.RoomTemplates.Select(x => GetNewRoomTemplate(x, roomTemplateMapping)).ToList());
+                        var corridorRoomDescription = new RoomDescriptionGrid2D(true,
+                            roomDescription.RoomTemplates.Select(x => GetNewRoomTemplate(x, roomTemplateMapping))
+                                .ToList());
                         corridorRoomDescriptions[roomDescription] = corridorRoomDescription;
                         levelDescription.AddRoom(room, corridorRoomDescription);
                     }
                 }
                 else
                 {
-                    levelDescription.AddRoom(room, new RoomDescriptionGrid2D(false, roomDescription.RoomTemplates.Select(x => GetNewRoomTemplate(x, roomTemplateMapping)).ToList()));
+                    levelDescription.AddRoom(room,
+                        new RoomDescriptionGrid2D(false,
+                            roomDescription.RoomTemplates.Select(x => GetNewRoomTemplate(x, roomTemplateMapping))
+                                .ToList()));
                 }
             }
 
@@ -52,7 +58,8 @@ namespace Edgar.GUI.New
             return levelDescription;
         }
 
-        private static RoomTemplateGrid2D GetNewRoomTemplate(RoomTemplate roomTemplate, Dictionary<RoomTemplate, RoomTemplateGrid2D> mapping)
+        private static RoomTemplateGrid2D GetNewRoomTemplate(RoomTemplate roomTemplate,
+            Dictionary<RoomTemplate, RoomTemplateGrid2D> mapping)
         {
             if (mapping.TryGetValue(roomTemplate, out var cached))
             {
@@ -78,18 +85,20 @@ namespace Edgar.GUI.New
             if (doorMode is SimpleDoorMode simpleDoorMode)
             {
                 oldDoorMode = new SimpleDoorModeGrid2D(simpleDoorMode.DoorLength, simpleDoorMode.CornerDistance);
-            } 
+            }
             else if (doorMode is ManualDoorMode manualDoorMode)
             {
-                oldDoorMode = new ManualDoorModeGrid2D(manualDoorMode.DoorPositions.Select(x => new DoorGrid2D(x.From, x.To)).ToList());
+                oldDoorMode = new ManualDoorModeGrid2D(manualDoorMode.DoorPositions
+                    .Select(x => new DoorGrid2D(x.From, x.To)).ToList());
             }
             else
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return new RoomTemplateGrid2D(roomTemplate.Shape, oldDoorMode, allowedTransformations: roomTemplate.AllowedTransformations, repeatMode: roomTemplate.RoomTemplateRepeatMode, name: roomTemplate.Name);
-
+            return new RoomTemplateGrid2D(roomTemplate.Shape, oldDoorMode,
+                allowedTransformations: roomTemplate.AllowedTransformations,
+                repeatMode: roomTemplate.RoomTemplateRepeatMode, name: roomTemplate.Name);
         }
     }
 }

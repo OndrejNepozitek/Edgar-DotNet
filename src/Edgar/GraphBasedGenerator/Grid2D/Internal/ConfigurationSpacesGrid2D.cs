@@ -24,7 +24,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         private readonly ConfigurationSpacesGenerator configurationSpacesGenerator;
         private readonly DirectedConfigurationSpacesGenerator directedConfigurationSpacesGenerator;
         private Random random;
-        private readonly Dictionary<CacheKey, ConfigurationSpaceGrid2D> cache = new Dictionary<CacheKey, ConfigurationSpaceGrid2D>();
+
+        private readonly Dictionary<CacheKey, ConfigurationSpaceGrid2D> cache =
+            new Dictionary<CacheKey, ConfigurationSpaceGrid2D>();
 
         private readonly bool isGraphDirected;
         private Dictionary<CorridorSelector, IRoomDescription> nodesToCorridorMapping;
@@ -38,8 +40,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             this.isGraphDirected = isGraphDirected;
             this.lineIntersection = lineIntersection ?? new OrthogonalLineIntersection();
             var polygonOverlap = new PolygonOverlap();
-            configurationSpacesGenerator = new ConfigurationSpacesGenerator(polygonOverlap, DoorHandler.DefaultHandler, this.lineIntersection, new GridPolygonUtils());
-            directedConfigurationSpacesGenerator = new DirectedConfigurationSpacesGenerator(polygonOverlap, this.lineIntersection);
+            configurationSpacesGenerator = new ConfigurationSpacesGenerator(polygonOverlap, DoorHandler.DefaultHandler,
+                this.lineIntersection, new GridPolygonUtils());
+            directedConfigurationSpacesGenerator =
+                new DirectedConfigurationSpacesGenerator(polygonOverlap, this.lineIntersection);
             Initialize();
         }
 
@@ -62,7 +66,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         public bool HaveValidPosition(TConfiguration configuration1, TConfiguration configuration2)
         {
             var space = GetConfigurationSpace(configuration1, configuration2);
-            var line = new OrthogonalLineGrid2D(configuration1.Position - configuration2.Position, configuration1.Position - configuration2.Position);
+            var line = new OrthogonalLineGrid2D(configuration1.Position - configuration2.Position,
+                configuration1.Position - configuration2.Position);
 
             return lineIntersection.DoIntersect(space.Lines, line);
         }
@@ -78,7 +83,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             return GetConfigurationSpace(configuration1, configuration2);
         }
 
-        public ConfigurationSpaceGrid2D GetConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
+        public ConfigurationSpaceGrid2D GetConfigurationSpace(TConfiguration configuration1,
+            TConfiguration configuration2)
         {
             // If is over corridor
             if (nodesToCorridorMapping.ContainsKey(new CorridorSelector(configuration1.Room, configuration2.Room)))
@@ -92,7 +98,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             }
         }
 
-        private ConfigurationSpaceGrid2D GetNormalConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
+        private ConfigurationSpaceGrid2D GetNormalConfigurationSpace(TConfiguration configuration1,
+            TConfiguration configuration2)
         {
             var direction = GetDirection(configuration1, configuration2, false);
             var cacheKey = new CacheKey(configuration1.RoomShape, configuration2.RoomShape, null, direction);
@@ -104,19 +111,24 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             if (isGraphDirected)
             {
-                configurationSpace = directedConfigurationSpacesGenerator.GetConfigurationSpace(configuration1.RoomShape, configuration2.RoomShape, direction);
+                configurationSpace =
+                    directedConfigurationSpacesGenerator.GetConfigurationSpace(configuration1.RoomShape,
+                        configuration2.RoomShape, direction);
             }
             else
             {
-                configurationSpace = configurationSpacesGenerator.GetConfigurationSpace(configuration1.RoomShape, configuration2.RoomShape);
+                configurationSpace =
+                    configurationSpacesGenerator.GetConfigurationSpace(configuration1.RoomShape,
+                        configuration2.RoomShape);
             }
-           
+
             cache[cacheKey] = configurationSpace;
 
             return configurationSpace;
         }
 
-        private ConfigurationSpaceDirection GetDirection(TConfiguration configuration1, TConfiguration configuration2, bool isOverCorridor)
+        private ConfigurationSpaceDirection GetDirection(TConfiguration configuration1, TConfiguration configuration2,
+            bool isOverCorridor)
         {
             if (isGraphDirected)
             {
@@ -137,11 +149,15 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             }
         }
 
-        private ConfigurationSpaceGrid2D GetCorridorConfigurationSpace(TConfiguration configuration1, TConfiguration configuration2)
+        private ConfigurationSpaceGrid2D GetCorridorConfigurationSpace(TConfiguration configuration1,
+            TConfiguration configuration2)
         {
             var direction = GetDirection(configuration1, configuration2, true);
-            var corridorRoomDescription = (RoomDescriptionGrid2D)nodesToCorridorMapping[new CorridorSelector(configuration1.Room, configuration2.Room)];
-            var cacheKey = new CacheKey(configuration1.RoomShape, configuration2.RoomShape, corridorRoomDescription, direction);
+            var corridorRoomDescription =
+                (RoomDescriptionGrid2D) nodesToCorridorMapping[
+                    new CorridorSelector(configuration1.Room, configuration2.Room)];
+            var cacheKey = new CacheKey(configuration1.RoomShape, configuration2.RoomShape, corridorRoomDescription,
+                direction);
 
             if (cache.TryGetValue(cacheKey, out var configurationSpace))
             {
@@ -258,7 +274,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             private readonly ConfigurationSpaceDirection direction;
 
-            public CacheKey(RoomTemplateInstanceGrid2D roomTemplate1, RoomTemplateInstanceGrid2D roomTemplate2, RoomDescriptionGrid2D corridorRoomDescription, ConfigurationSpaceDirection direction)
+            public CacheKey(RoomTemplateInstanceGrid2D roomTemplate1, RoomTemplateInstanceGrid2D roomTemplate2,
+                RoomDescriptionGrid2D corridorRoomDescription, ConfigurationSpaceDirection direction)
             {
                 this.roomTemplate1 = roomTemplate1;
                 this.roomTemplate2 = roomTemplate2;
@@ -270,7 +287,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             public bool Equals(CacheKey other)
             {
-                return Equals(roomTemplate1, other.roomTemplate1) && Equals(roomTemplate2, other.roomTemplate2) && Equals(corridorRoomDescription, other.corridorRoomDescription) && direction == other.direction;
+                return Equals(roomTemplate1, other.roomTemplate1) && Equals(roomTemplate2, other.roomTemplate2) &&
+                       Equals(corridorRoomDescription, other.corridorRoomDescription) && direction == other.direction;
             }
 
             public override bool Equals(object obj)
@@ -284,8 +302,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 {
                     var hashCode = (roomTemplate1 != null ? roomTemplate1.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ (roomTemplate2 != null ? roomTemplate2.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (corridorRoomDescription != null ? corridorRoomDescription.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (int)direction;
+                    hashCode = (hashCode * 397) ^
+                               (corridorRoomDescription != null ? corridorRoomDescription.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ (int) direction;
                     return hashCode;
                 }
             }
@@ -319,7 +338,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
             public bool Equals(CorridorSelector other)
             {
-                return EqualityComparer<TNode>.Default.Equals(room1, other.room1) && EqualityComparer<TNode>.Default.Equals(room2, other.room2);
+                return EqualityComparer<TNode>.Default.Equals(room1, other.room1) &&
+                       EqualityComparer<TNode>.Default.Equals(room2, other.room2);
             }
 
             public override bool Equals(object obj)
@@ -331,7 +351,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             {
                 unchecked
                 {
-                    return (EqualityComparer<TNode>.Default.GetHashCode(room1) * 397) ^ EqualityComparer<TNode>.Default.GetHashCode(room2);
+                    return (EqualityComparer<TNode>.Default.GetHashCode(room1) * 397) ^
+                           EqualityComparer<TNode>.Default.GetHashCode(room2);
                 }
             }
 

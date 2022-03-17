@@ -1,45 +1,45 @@
 ﻿namespace GUI
 {
-	using System;
-	using System.Threading;
-	using System.Windows.Forms;
+    using System;
+    using System.Threading;
+    using System.Windows.Forms;
 
-	public class GuiExceptionHandler
-	{
-		/// <summary>
-		/// Shows message box instead of unhandled exceptions.
-		/// </summary>
-		public static void SetupCatching()
-		{
-			if (!AppDomain.CurrentDomain.FriendlyName.EndsWith("vshost.exe"))
-			{
-				// Add the event handler for handling UI thread exceptions to the event.
-				Application.ThreadException += UIThreadException;
+    public class GuiExceptionHandler
+    {
+        /// <summary>
+        /// Shows message box instead of unhandled exceptions.
+        /// </summary>
+        public static void SetupCatching()
+        {
+            if (!AppDomain.CurrentDomain.FriendlyName.EndsWith("vshost.exe"))
+            {
+                // Add the event handler for handling UI thread exceptions to the event.
+                Application.ThreadException += UIThreadException;
 
-				// Set the unhandled exception mode to force all Windows Forms errors
-				// to go through our handler.
-				Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                // Set the unhandled exception mode to force all Windows Forms errors
+                // to go through our handler.
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-				// Add the event handler for handling non-UI thread exceptions to the event. 
-				AppDomain.CurrentDomain.UnhandledException += UnhandledException;
-			}
-		}
+                // Add the event handler for handling non-UI thread exceptions to the event. 
+                AppDomain.CurrentDomain.UnhandledException += UnhandledException;
+            }
+        }
 
-		private static void UIThreadException(object sender, ThreadExceptionEventArgs e)
-		{
-			MessageBox.Show(e.Exception.Message);
-		}
+        private static void UIThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message);
+        }
 
-		private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			if (e.ExceptionObject is Exception exception)
-			{
-				MessageBox.Show(exception.Message);
-			}
-			else
-			{
-				MessageBox.Show("Fatal error");
-			}
-		}
-	}
+        private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            else
+            {
+                MessageBox.Show("Fatal error");
+            }
+        }
+    }
 }

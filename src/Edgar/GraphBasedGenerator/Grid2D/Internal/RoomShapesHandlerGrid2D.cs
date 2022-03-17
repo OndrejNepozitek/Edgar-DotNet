@@ -19,8 +19,10 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <typeparam name="TConfiguration"></typeparam>
-    public class RoomShapesHandlerGrid2D<TNode, TConfiguration> : IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstanceGrid2D>, IRandomInjectable
-        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstanceGrid2D>, ISmartCloneable<TConfiguration>, new()
+    public class RoomShapesHandlerGrid2D<TNode, TConfiguration> :
+        IRoomShapesHandler<ILayout<TNode, TConfiguration>, TNode, RoomTemplateInstanceGrid2D>, IRandomInjectable
+        where TConfiguration : IRoomConfiguration<TNode>, IShapeConfiguration<RoomTemplateInstanceGrid2D>,
+        ISmartCloneable<TConfiguration>, new()
     {
         private readonly TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping;
         private readonly ILevelDescription<TNode> mapDescription;
@@ -33,7 +35,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
         public RoomShapesHandlerGrid2D(
             TwoWayDictionary<RoomTemplateInstanceGrid2D, IntAlias<PolygonGrid2D>> intAliasMapping,
-            ILevelDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes, RoomTemplateRepeatMode? repeatModeOverride = null, RoomTemplateRepeatMode? repeatModeDefault = null)
+            ILevelDescription<TNode> mapDescription, Dictionary<TNode, List<WeightedShape>> shapesForNodes,
+            RoomTemplateRepeatMode? repeatModeOverride = null, RoomTemplateRepeatMode? repeatModeDefault = null)
         {
             this.intAliasMapping = intAliasMapping;
             this.mapDescription = mapDescription;
@@ -76,7 +79,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
         /// If zero shapes are found and tryToFixEmpty is set to true, we try to lower the requirements and e.g. use
         /// only the NoImmediate mode instead of the NoRepeat mode.
         /// </summary>
-        public List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, bool tryToFixEmpty = false)
+        public List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout,
+            TNode node, bool tryToFixEmpty = false)
         {
             if (mapDescription.GetRoomDescription(node).IsCorridor)
             {
@@ -116,7 +120,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
             // return configurationSpaces.CanPerturbShape(node);
         }
 
-        private List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout, TNode node, RoomTemplateRepeatMode? modeOverride)
+        private List<RoomTemplateInstanceGrid2D> GetPossibleShapesForNode(ILayout<TNode, TConfiguration> layout,
+            TNode node, RoomTemplateRepeatMode? modeOverride)
         {
             var shapesForNode = new HashSet<IntAlias<PolygonGrid2D>>(shapesForNodes[node].Select(x => x.Shape));
 
@@ -131,7 +136,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 var roomTemplateInfo = roomTemplateInstanceInfo[polygon.Alias];
                 var repeatMode = modeOverride ?? roomTemplateInfo.RoomTemplate.RepeatMode ?? repeatModeDefault;
 
-                if (repeatMode == RoomTemplateRepeatMode.NoRepeat || (repeatMode == RoomTemplateRepeatMode.NoImmediate && graphWithoutCorridors.HasEdge(node, configuration.Room)))
+                if (repeatMode == RoomTemplateRepeatMode.NoRepeat ||
+                    (repeatMode == RoomTemplateRepeatMode.NoImmediate &&
+                     graphWithoutCorridors.HasEdge(node, configuration.Room)))
                 {
                     foreach (var alias in roomTemplateInfo.Aliases)
                     {

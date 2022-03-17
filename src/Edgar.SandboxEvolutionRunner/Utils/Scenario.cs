@@ -39,7 +39,8 @@ namespace SandboxEvolutionRunner.Utils
             return MapDescriptionLoader.GetMapDescriptions(namedGraphs);
         }
 
-        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
+        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<DungeonGeneratorInput<int>> inputs,
+            int iterations, string name)
         {
             var benchmarkRunner = new BenchmarkRunnerLegacy<IMapDescription<int>>();
             var benchmarkScenario = new BenchmarkScenario<IMapDescription<int>>(name, GetGeneratorRunnerFactory);
@@ -53,12 +54,14 @@ namespace SandboxEvolutionRunner.Utils
                 MaxDegreeOfParallelism = Options.MaxThreads,
                 WithFileOutput = false,
             });
-            resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath, name: $"{Directory}_{name}", withDatetime: false);
+            resultSaver.SaveResultDefaultLocation(scenarioResult, directory: DirectoryFullPath,
+                name: $"{Directory}_{name}", withDatetime: false);
 
             return scenarioResult;
         }
 
-        protected virtual Task RunBenchmarkAsync(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations, string name)
+        protected virtual Task RunBenchmarkAsync(IEnumerable<DungeonGeneratorInput<int>> inputs, int iterations,
+            string name)
         {
             var task = new Task(() => { RunBenchmark(inputs, iterations, name); }, TaskCreationOptions.LongRunning);
             task.Start();
@@ -67,29 +70,38 @@ namespace SandboxEvolutionRunner.Utils
             return Task.Run(() => { RunBenchmark(inputs, iterations, name); });
         }
 
-        protected virtual Task RunBenchmarkAsync(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
+        protected virtual Task RunBenchmarkAsync(IEnumerable<NamedMapDescription> mapDescriptions,
+            Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations,
+            string name)
         {
             return RunBenchmarkAsync(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
         }
 
-        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<NamedMapDescription> mapDescriptions, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations, string name)
+        protected virtual BenchmarkScenarioResult RunBenchmark(IEnumerable<NamedMapDescription> mapDescriptions,
+            Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory, int iterations,
+            string name)
         {
             return RunBenchmark(mapDescriptions.Select(x => GetInput(x, configurationFactory)), iterations, name);
         }
 
-        protected virtual DungeonGeneratorConfiguration<int> GetBasicConfiguration(NamedMapDescription namedMapDescription)
+        protected virtual DungeonGeneratorConfiguration<int> GetBasicConfiguration(
+            NamedMapDescription namedMapDescription)
         {
             return new DungeonGeneratorConfiguration<int>()
             {
                 RoomsCanTouch = Options.CanTouch || !namedMapDescription.IsWithCorridors,
                 EarlyStopIfIterationsExceeded = Options.EarlyStopIterations,
-                EarlyStopIfTimeExceeded = Options.EarlyStopTime != null ? TimeSpan.FromMilliseconds(Options.EarlyStopTime.Value) : default(TimeSpan?), 
+                EarlyStopIfTimeExceeded = Options.EarlyStopTime != null
+                    ? TimeSpan.FromMilliseconds(Options.EarlyStopTime.Value)
+                    : default(TimeSpan?),
             };
         }
 
-        protected virtual DungeonGeneratorInput<int> GetInput(NamedMapDescription namedMapDescription, Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory)
+        protected virtual DungeonGeneratorInput<int> GetInput(NamedMapDescription namedMapDescription,
+            Func<NamedMapDescription, DungeonGeneratorConfiguration<int>> configurationFactory)
         {
-            return new DungeonGeneratorInput<int>(namedMapDescription.Name, namedMapDescription.MapDescription, configurationFactory(namedMapDescription));
+            return new DungeonGeneratorInput<int>(namedMapDescription.Name, namedMapDescription.MapDescription,
+                configurationFactory(namedMapDescription));
         }
 
         protected virtual IGeneratorRunner GetGeneratorRunnerFactory(GeneratorInput<IMapDescription<int>> input)
@@ -103,6 +115,7 @@ namespace SandboxEvolutionRunner.Utils
             return new LambdaGeneratorRunner(() =>
             {
                 var simulatedAnnealingArgsContainer = new List<SimulatedAnnealingEventArgs>();
+
                 void SimulatedAnnealingEventHandler(object sender, SimulatedAnnealingEventArgs eventArgs)
                 {
                     simulatedAnnealingArgsContainer.Add(eventArgs);
@@ -115,11 +128,13 @@ namespace SandboxEvolutionRunner.Utils
                 var additionalData = new AdditionalRunData<int>()
                 {
                     SimulatedAnnealingEventArgs = simulatedAnnealingArgsContainer,
-                    GeneratedLayoutSvg = layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
+                    GeneratedLayoutSvg =
+                        layout != null ? layoutDrawer.DrawLayout(layout, 800, forceSquare: true) : null,
                     GeneratedLayout = layout,
                 };
 
-                var generatorRun = new GeneratorRun<AdditionalRunData<int>>(layout != null, layoutGenerator.TimeTotal, layoutGenerator.IterationsCount, additionalData);
+                var generatorRun = new GeneratorRun<AdditionalRunData<int>>(layout != null, layoutGenerator.TimeTotal,
+                    layoutGenerator.IterationsCount, additionalData);
 
                 return generatorRun;
             });
@@ -131,7 +146,8 @@ namespace SandboxEvolutionRunner.Utils
             Directory = FileNamesHelper.PrefixWithTimestamp(Options.Name);
             DirectoryFullPath = Path.Combine("DungeonGeneratorEvolutions", Directory);
             System.IO.Directory.CreateDirectory(DirectoryFullPath);
-            Logger = new Logger(new ConsoleLoggerHandler(), new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
+            Logger = new Logger(new ConsoleLoggerHandler(),
+                new FileLoggerHandler(Path.Combine(DirectoryFullPath, "log.txt")));
             MapDescriptionLoader = new BetterMapDescriptionLoader(options, Options.RoomTemplatesSet);
 
             Run();

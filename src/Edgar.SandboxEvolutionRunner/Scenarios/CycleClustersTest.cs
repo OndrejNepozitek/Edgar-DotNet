@@ -69,13 +69,15 @@ namespace SandboxEvolutionRunner.Scenarios
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                 }
+
                 Console.Write($"{nodesInsideCycleReport.ProblemsCount,3}");
                 Console.ResetColor();
 
                 Console.Write($"{result.Runs.Average(x => x.Time),12:F}");
 
                 var resultNok = result.Runs.Average(x => x.Time) > 5000;
-                var reportNok = (clustersReport.MaxCyclesInCluster >= maxCyclesInClusterThreshold) || nodesInsideCycleReport.ProblemsCount >= nodesInsideThreshold;
+                var reportNok = (clustersReport.MaxCyclesInCluster >= maxCyclesInClusterThreshold) ||
+                                nodesInsideCycleReport.ProblemsCount >= nodesInsideThreshold;
 
                 if (reportNok && resultNok)
                 {
@@ -107,6 +109,7 @@ namespace SandboxEvolutionRunner.Scenarios
                 {
                     var s = 0;
                 }
+
                 var chains = chainDecomposition.GetChains(namedGraph.Graph);
                 foreach (var chain in chains)
                 {

@@ -6,11 +6,11 @@ using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 namespace Edgar.Geometry
 {
     public static class TransformationGrid2DHelper
-	{
-		public static TransformationGrid2D[] GetAllTransformationsOld()
-		{
-			return (TransformationGrid2D[]) Enum.GetValues(typeof(TransformationGrid2D));
-		}
+    {
+        public static TransformationGrid2D[] GetAllTransformationsOld()
+        {
+            return (TransformationGrid2D[]) Enum.GetValues(typeof(TransformationGrid2D));
+        }
 
         public static List<TransformationGrid2D> GetAll()
         {
@@ -27,5 +27,5 @@ namespace Edgar.Geometry
                 TransformationGrid2D.Rotate270
             };
         }
-	}
+    }
 }

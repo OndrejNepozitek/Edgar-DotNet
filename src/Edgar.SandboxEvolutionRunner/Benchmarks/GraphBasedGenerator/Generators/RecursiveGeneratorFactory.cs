@@ -22,7 +22,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
 
         public string Name { get; }
 
-        public RecursiveGeneratorFactory(GraphBasedGeneratorConfiguration<TNode> configuration, bool benchmarkInitialization = false, string name = null)
+        public RecursiveGeneratorFactory(GraphBasedGeneratorConfiguration<TNode> configuration,
+            bool benchmarkInitialization = false, string name = null)
         {
             this.configuration = configuration;
             this.benchmarkInitialization = benchmarkInitialization;
@@ -52,17 +53,19 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                 {
                     simulatedAnnealingArgsContainer.Add(eventArgs);
                 }
-                
+
                 var dungeonDrawer = new DungeonDrawer<TNode>();
 
                 void OnInvalidHandler(LayoutGrid2D<TNode> l)
                 {
-                    dungeonDrawer.DrawLayoutAndSave(l, $"invalid_{levelDescription.Name}_{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}.png", new DungeonDrawerOptions()
-                    {
-                        Width = 1000,
-                        Height = 1000,
-                        FontSize = 10
-                    });
+                    dungeonDrawer.DrawLayoutAndSave(l,
+                        $"invalid_{levelDescription.Name}_{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}.png",
+                        new DungeonDrawerOptions()
+                        {
+                            Width = 1000,
+                            Height = 1000,
+                            FontSize = 10
+                        });
                 }
 
                 layoutGenerator.OnPartialValid += OnInvalidHandler;
@@ -125,7 +128,8 @@ namespace Edgar.SandboxEvolutionRunner.Benchmarks.GraphBasedGenerator.Generators
                     // GeneratedLayout = layout,
                 };
 
-                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null, stopwatch.ElapsedMilliseconds,
+                var generatorRun = new GeneratorRun<AdditionalRunData<TNode>>(layout != null,
+                    stopwatch.ElapsedMilliseconds,
                     layoutGenerator.IterationsCount, additionalData);
 
                 return generatorRun;

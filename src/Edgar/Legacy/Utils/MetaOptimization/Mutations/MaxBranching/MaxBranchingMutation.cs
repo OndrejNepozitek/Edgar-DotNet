@@ -15,6 +15,7 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxBranching
             Priority = priority;
             SimulatedAnnealingMaxBranching = simulatedAnnealingMaxBranching;
         }
+
         public TConfiguration Apply(TConfiguration configuration)
         {
             var copy = configuration.SmartClone();
@@ -48,12 +49,14 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxBranching
             return SimulatedAnnealingMaxBranching;
         }
 
-        public static bool operator ==(MaxBranchingMutation<TConfiguration> left, MaxBranchingMutation<TConfiguration> right)
+        public static bool operator ==(MaxBranchingMutation<TConfiguration> left,
+            MaxBranchingMutation<TConfiguration> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(MaxBranchingMutation<TConfiguration> left, MaxBranchingMutation<TConfiguration> right)
+        public static bool operator !=(MaxBranchingMutation<TConfiguration> left,
+            MaxBranchingMutation<TConfiguration> right)
         {
             return !Equals(left, right);
         }

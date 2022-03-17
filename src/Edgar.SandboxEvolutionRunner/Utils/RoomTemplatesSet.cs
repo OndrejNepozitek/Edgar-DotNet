@@ -2,6 +2,9 @@
 {
     public enum RoomTemplatesSet
     {
-        Original, SmallAndMedium, Medium, Smart
+        Original,
+        SmallAndMedium,
+        Medium,
+        Smart
     }
 }

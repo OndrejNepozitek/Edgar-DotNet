@@ -9,11 +9,13 @@ using Edgar.Legacy.Utils.MetaOptimization.Stats;
 
 namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
 {
-    public class MaxIterationsAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration, Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
+    public class MaxIterationsAnalyzer<TConfiguration, TGeneratorStats> : IPerformanceAnalyzer<TConfiguration,
+        Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>>>
         where TConfiguration : ISimulatedAnnealingConfiguration, ISmartCloneable<TConfiguration>
         where TGeneratorStats : IChainsStats
     {
-        public List<IMutation<TConfiguration>> ProposeMutations(Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
+        public List<IMutation<TConfiguration>> ProposeMutations(
+            Individual<TConfiguration, IGeneratorEvaluation<TGeneratorStats>> individual)
         {
             var mutations = new List<IMutation<TConfiguration>>();
             var configuration = individual.Configuration;
@@ -48,13 +50,15 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             return mutations;
         }
 
-        protected IMutation<TConfiguration> GetFixedStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, int numberOfIterations)
+        protected IMutation<TConfiguration> GetFixedStrategy(TConfiguration configuration,
+            IGeneratorEvaluation<TGeneratorStats> data, int numberOfIterations)
         {
             var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(0);
-            var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles, oldConfiguration.TrialsPerCycle, numberOfIterations, oldConfiguration.MaxStageTwoFailures);
+            var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
+                oldConfiguration.TrialsPerCycle, numberOfIterations, oldConfiguration.MaxStageTwoFailures);
 
             return new MaxIterationsMutation<TConfiguration>(
-                5, 
+                5,
                 new SimulatedAnnealingConfigurationProvider(newConfiguration),
                 MaxIterationsStrategy.Fixed,
                 numberOfIterations,
@@ -62,7 +66,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             );
         }
 
-        protected IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
+        protected IMutation<TConfiguration> GetConservativeStrategy(TConfiguration configuration,
+            IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var averageAll = data.GetAverageStatistics(new DataSplit(0, 1));
             var oldConfigurations = configuration.SimulatedAnnealingConfiguration.GetAllConfigurations();
@@ -71,15 +76,17 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             for (int i = 0; i < averageAll.ChainsStats.Count; i++)
             {
                 var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
-                var maxIterationsOnSuccess = Math.Max(minValue, multiplier * averageAll.ChainsStats[i].MaxIterationsOnSuccess);
+                var maxIterationsOnSuccess =
+                    Math.Max(minValue, multiplier * averageAll.ChainsStats[i].MaxIterationsOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
-                    oldConfiguration.TrialsPerCycle, (int) maxIterationsOnSuccess, oldConfiguration.MaxStageTwoFailures);
+                    oldConfiguration.TrialsPerCycle, (int) maxIterationsOnSuccess,
+                    oldConfiguration.MaxStageTwoFailures);
                 newConfigurations.Add(newConfiguration);
             }
 
             return new MaxIterationsMutation<TConfiguration>(
-                priority, 
+                priority,
                 new SimulatedAnnealingConfigurationProvider(newConfigurations),
                 MaxIterationsStrategy.Conservative,
                 minValue,
@@ -87,7 +94,8 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             );
         }
 
-        protected IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration, IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
+        protected IMutation<TConfiguration> GetAggressiveStrategy(TConfiguration configuration,
+            IGeneratorEvaluation<TGeneratorStats> data, double minValue, double multiplier, int priority)
         {
             var worst10Percent = data.GetAverageStatistics(new DataSplit(0.9, 1));
             var newConfigurations = new List<SimulatedAnnealingConfiguration>();
@@ -95,10 +103,12 @@ namespace Edgar.Legacy.Utils.MetaOptimization.Mutations.MaxIterations
             for (int i = 0; i < worst10Percent.ChainsStats.Count; i++)
             {
                 var oldConfiguration = configuration.SimulatedAnnealingConfiguration.GetConfiguration(i);
-                var averageIterationsOnSuccess = Math.Max(minValue, multiplier * worst10Percent.ChainsStats[i].AverageIterationsOnSuccess);
+                var averageIterationsOnSuccess = Math.Max(minValue,
+                    multiplier * worst10Percent.ChainsStats[i].AverageIterationsOnSuccess);
 
                 var newConfiguration = new SimulatedAnnealingConfiguration(oldConfiguration.Cycles,
-                    oldConfiguration.TrialsPerCycle, (int)averageIterationsOnSuccess, oldConfiguration.MaxStageTwoFailures);
+                    oldConfiguration.TrialsPerCycle, (int) averageIterationsOnSuccess,
+                    oldConfiguration.MaxStageTwoFailures);
                 newConfigurations.Add(newConfiguration);
             }
 

@@ -12,7 +12,9 @@ using Edgar.Legacy.Utils.Interfaces;
 
 namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
 {
-    public class RecursiveLayoutEvolver<TRoom> : ILayoutEvolver<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>, IRandomInjectable, ICancellable
+    public class RecursiveLayoutEvolver<TRoom> :
+        ILayoutEvolver<Layout<TRoom, ConfigurationGrid2D<TRoom, EnergyData>>, RoomNode<TRoom>>, IRandomInjectable,
+        ICancellable
     {
         private readonly LevelDescriptionGrid2D<TRoom> levelDescription;
         private readonly ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped;
@@ -25,7 +27,9 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
         private Random random;
         private CancellationToken? cancellationToken;
 
-        public RecursiveLayoutEvolver(LevelDescriptionGrid2D<TRoom> levelDescription, ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped, LevelGeometryData<RoomNode<TRoom>> geometryData, List<Cluster<RoomNode<TRoom>>> clusters, RoomTemplateInstanceGrid2D dummyRoomTemplateInstance)
+        public RecursiveLayoutEvolver(LevelDescriptionGrid2D<TRoom> levelDescription,
+            ILevelDescription<RoomNode<TRoom>> levelDescriptionMapped, LevelGeometryData<RoomNode<TRoom>> geometryData,
+            List<Cluster<RoomNode<TRoom>>> clusters, RoomTemplateInstanceGrid2D dummyRoomTemplateInstance)
         {
             this.levelDescription = levelDescription;
             this.levelDescriptionMapped = levelDescriptionMapped;
@@ -46,13 +50,15 @@ namespace Edgar.GraphBasedGenerator.RecursiveGrid2D.Internal
             dummyLevelDescription.RoomTemplateRepeatModeDefault = levelDescription.RoomTemplateRepeatModeDefault;
             dummyLevelDescription.RoomTemplateRepeatModeOverride = levelDescription.RoomTemplateRepeatModeOverride;
 
-            var generator = new InnerGenerator<TRoom>(levelDescriptionMapped, dummyLevelDescription, chain.Nodes, initialLayoutCopy, geometryData, clusters[chain.Number], dummyRoomTemplateInstance, new GraphBasedGeneratorConfiguration<RoomNode<TRoom>>()
-            {
-                // EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
-                // EarlyStopIfIterationsExceeded = 3000,
-                // EarlyStopIfIterationsExceeded = 2000,
-                EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(3.5d),
-            });
+            var generator = new InnerGenerator<TRoom>(levelDescriptionMapped, dummyLevelDescription, chain.Nodes,
+                initialLayoutCopy, geometryData, clusters[chain.Number], dummyRoomTemplateInstance,
+                new GraphBasedGeneratorConfiguration<RoomNode<TRoom>>()
+                {
+                    // EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(1),
+                    // EarlyStopIfIterationsExceeded = 3000,
+                    // EarlyStopIfIterationsExceeded = 2000,
+                    EarlyStopIfTimeExceeded = TimeSpan.FromSeconds(3.5d),
+                });
             generator.InjectRandomGenerator(random);
             // generator.SetCancellationToken(cancellationToken);
 

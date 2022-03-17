@@ -4,10 +4,10 @@ namespace Edgar.Examples
 {
     public class Options
     {
-        [Option("sourceFolder", Required = true)] 
+        [Option("sourceFolder", Required = true)]
         public string SourceFolder { get; set; }
 
-        [Option("outputFolder", Required = true)] 
+        [Option("outputFolder", Required = true)]
         public string OutputFolder { get; set; }
     }
 }

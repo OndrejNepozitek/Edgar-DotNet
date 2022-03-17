@@ -17,7 +17,8 @@ namespace Edgar.Benchmarks.Legacy
 
         public BenchmarkScenario(string name, GeneratorRunnerFactory<TLevelDescription> generatorRunnerFactory)
         {
-            this.generatorRunnerFactory = generatorRunnerFactory ?? throw new ArgumentNullException(nameof(generatorRunnerFactory));
+            this.generatorRunnerFactory = generatorRunnerFactory ??
+                                          throw new ArgumentNullException(nameof(generatorRunnerFactory));
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 

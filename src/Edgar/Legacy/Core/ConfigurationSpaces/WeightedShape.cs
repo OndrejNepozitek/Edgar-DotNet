@@ -7,7 +7,7 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
 {
     public class WeightedShape
     {
-		public IntAlias<PolygonGrid2D> Shape { get; }
+        public IntAlias<PolygonGrid2D> Shape { get; }
 
         public double Weight { get; }
 
@@ -19,5 +19,5 @@ namespace Edgar.Legacy.Core.ConfigurationSpaces
             Shape = shape;
             Weight = weight;
         }
-	}
+    }
 }
