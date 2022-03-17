@@ -111,7 +111,9 @@ namespace Edgar.GraphBasedGenerator.Common.ChainDecomposition.Legacy
                 return decomposition.AddChain(cycleComponent.Nodes, true);
             }
 
-            var startingNode = Graph.Vertices.First(x => Graph.GetNeighbors(x).Count() == 1);
+            var startingNode = Graph.VerticesCount == 1
+                ? Graph.Vertices.First()
+                : Graph.Vertices.First(x => Graph.GetNeighbors(x).Count() == 1);
             var treeComponent = GetTreeComponent(decomposition, startingNode);
 
             logger.WriteLine("Starting with tree");

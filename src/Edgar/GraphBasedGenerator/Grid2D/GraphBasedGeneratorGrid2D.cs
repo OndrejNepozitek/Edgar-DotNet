@@ -89,6 +89,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             var chainDecomposition = GraphBasedGeneratorGrid2DUtils.GetChainDecomposition(levelDescriptionMapped,
                 fixedConfigurationConstraint, configuration.ChainDecompositionConfiguration);
 
+            // Make sure that there is at least a single room in the level description
+            if (levelDescription.GetGraph().VerticesCount == 0)
+            {
+                throw new InvalidOperationException(
+                    "There must be at least a single room in a given level description.");
+            }
+
             // Compute chains
             var chains = GraphBasedGeneratorUtils.GetChains(
                 chainDecomposition,
