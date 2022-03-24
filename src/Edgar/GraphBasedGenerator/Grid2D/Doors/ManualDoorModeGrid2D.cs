@@ -132,6 +132,17 @@ namespace Edgar.GraphBasedGenerator.Grid2D
                     }
                 }
 
+                // If the door line has zero length and is directed, then the side must match its horizontal/vertical direction
+                // In practice, it means that the user should be able to choose to which side a zero-length corner door belongs
+                if (originalLine.Length == 0 && originalLine.GetDirection() != OrthogonalLineGrid2D.Direction.Undefined)
+                {
+                    var isDoorHorizontal = originalLine.GetDirectionVector().X != 0;
+                    var isSideHorizontal = side.GetDirectionVector().X != 0;
+
+                    if (isDoorHorizontal != isSideHorizontal)
+                        continue;
+                }
+
                 var from = isGoodDirection ? fullLineFrom : fullLineTo;
                 var to = from + originalLine.Length * side.GetDirectionVector();
 
@@ -173,6 +184,9 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             {
                 if (side.Contains(doorLine.From) == -1 || side.Contains(doorLine.To) == -1)
                     continue;
+
+                // It is not possible to have the same behaviour here as with door lines and zero-length directed corner doors
+                // Because doors do not have direction right now
 
                 var isGoodDirection = doorLine.From + doorLine.Length * side.GetDirectionVector() == doorLine.To;
                 var from = isGoodDirection ? doorLine.From : doorLine.To;

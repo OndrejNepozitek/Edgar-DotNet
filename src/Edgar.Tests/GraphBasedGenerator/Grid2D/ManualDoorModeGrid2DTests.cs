@@ -139,5 +139,26 @@ namespace Edgar.Tests.GraphBasedGenerator.Grid2D
 
             Assert.Throws<UndirectedDoorLine>(() => manualMode.GetDoors(roomShape));
         }
+
+        [Test]
+        public void FromDoorLines_DirectedZeroLength_Corner()
+        {
+            var roomShape = PolygonGrid2D.GetSquare(10);
+            var manualMode = new ManualDoorModeGrid2D(new List<DoorLineGrid2D>()
+            {
+                new DoorLineGrid2D(new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0), OrthogonalLineGrid2D.Direction.Top), 2, null,
+                    DoorType.Undirected),
+            });
+
+            var expected = new List<DoorLineGrid2D>()
+            {
+                new DoorLineGrid2D(
+                    new OrthogonalLineGrid2D(new Vector2Int(0, 0), new Vector2Int(0, 0),
+                        OrthogonalLineGrid2D.Direction.Top), 2, null, DoorType.Undirected),
+            };
+            var actual = manualMode.GetDoors(roomShape);
+
+            Assert.That(actual, Is.EquivalentTo(expected));
+        }
     }
 }
