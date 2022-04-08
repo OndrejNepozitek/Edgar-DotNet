@@ -59,7 +59,8 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         {
             return Line.Equals(other.Line) && Length == other.Length &&
                    Line.GetDirection().Equals(other.Line.GetDirection()) &&
-                   EqualityComparer<IDoorSocket>.Default.Equals(DoorSocket, other.DoorSocket);
+                   EqualityComparer<IDoorSocket>.Default.Equals(DoorSocket, other.DoorSocket) &&
+                   Type == other.Type;
         }
 
         /// <inheritdoc />
