@@ -310,7 +310,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
 
                         if (line.Contains(endPoint) != -1)
                         {
-                            nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, endPoint));
+                            nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, endPoint, line.GetDirection()));
                         }
                     }
 
@@ -324,7 +324,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D.Internal
                 }
                 else if (!lastOverlap && lastPoint != line.To)
                 {
-                    nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, line.To));
+                    nonOverlapping.Add(new OrthogonalLineGrid2D(lastPoint, line.To, line.GetDirection()));
                 }
             }
 
