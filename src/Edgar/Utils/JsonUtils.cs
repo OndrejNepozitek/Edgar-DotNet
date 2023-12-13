@@ -19,6 +19,7 @@ namespace Edgar.Utils
             var settings = new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.Auto,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
 
             if (preserveReferences)
