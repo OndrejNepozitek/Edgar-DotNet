@@ -190,11 +190,11 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
         }
 
         public List<OrthogonalLineGrid2D> PartitionByIntersection(OrthogonalLineGrid2D line,
-            IList<OrthogonalLineGrid2D> intersection)
+     IList<OrthogonalLineGrid2D> intersection)
         {
             var result = new List<OrthogonalLineGrid2D>();
             var rotation = line.ComputeRotation();
-            var rotatedLine = line.Rotate(rotation, true);
+            var rotatedLine = line.Rotate(rotation);
             var directionVector = rotatedLine.GetDirectionVector();
             var rotatedIntersection = intersection.Select(x => x.Rotate(rotation, false).GetNormalized()).ToList();
             rotatedIntersection.Sort((x1, x2) => x1.From.CompareTo(x2.From));
@@ -228,7 +228,7 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
                 if (intersectionLine.From != lastPoint && intersectionLine.From - directionVector != lastPoint)
                 {
                     result.Add(new OrthogonalLineGrid2D(lastPoint + directionVector,
-                        intersectionLine.From - directionVector));
+                        intersectionLine.From - directionVector, rotatedLine.GetDirection()));
                 }
 
                 lastPoint = intersectionLine.To;
@@ -236,10 +236,10 @@ namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common
 
             if (rotatedLine.To != lastPoint && rotatedLine.To - directionVector != lastPoint)
             {
-                result.Add(new OrthogonalLineGrid2D(lastPoint + directionVector, rotatedLine.To));
+                result.Add(new OrthogonalLineGrid2D(lastPoint + directionVector, rotatedLine.To, rotatedLine.GetDirection()));
             }
 
-            return result.Select(x => x.Rotate(-rotation, false)).ToList();
+            return result.Select(x => x.Rotate(-rotation)).ToList();
         }
     }
 }
