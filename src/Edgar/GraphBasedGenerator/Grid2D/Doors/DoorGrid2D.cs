@@ -1,5 +1,6 @@
 ﻿using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
+using Newtonsoft.Json;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -21,6 +22,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Door socket. Only doors with the same socket (test with .Equals()) can be connected.
         /// </summary>
+        [JsonIgnore]
         public IDoorSocket Socket { get; }
 
         public DoorType Type { get; }

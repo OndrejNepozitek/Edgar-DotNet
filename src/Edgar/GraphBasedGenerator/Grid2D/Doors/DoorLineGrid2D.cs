@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
+using Newtonsoft.Json;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
 {
@@ -27,6 +28,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Door socket.
         /// </summary>
+        [JsonIgnore]
         public IDoorSocket DoorSocket { get; }
 
         public DoorType Type { get; }
