@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Text.Json.Serialization;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Math;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 
@@ -15,6 +16,7 @@ namespace Edgar.Geometry
 
         public readonly int Y;
 
+        [JsonConstructor]
         public Vector2Int(int x, int y)
         {
             X = x;

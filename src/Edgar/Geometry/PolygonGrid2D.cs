@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Polygons;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Common;
 using Edgar.Legacy.GeneralAlgorithms.DataStructures.Polygons;
@@ -24,12 +25,16 @@ namespace Edgar.Geometry
         public static readonly int[] PossibleRotations = {0, 90, 180, 270};
 
         // TODO: handle better
-        [JsonProperty] private readonly List<Vector2Int> points;
+        // TODO: needs to be public for JSON serialization, also removed readonly for now
+        [JsonProperty] 
+        public List<Vector2Int> points;
 
         private readonly int hash;
 
         // TODO: maybe should be struct rather than a class
-        [JsonIgnore] public RectangleGrid2D BoundingRectangle { get; }
+        [Newtonsoft.Json.JsonIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public RectangleGrid2D BoundingRectangle { get; }
 
         /// <summary>
         /// Create a polygon with given points.
@@ -44,6 +49,12 @@ namespace Edgar.Geometry
 
             hash = ComputeHash();
             BoundingRectangle = GetBoundingRectabgle();
+        }
+
+        [System.Text.Json.Serialization.JsonConstructor]
+        public PolygonGrid2D()
+        {
+
         }
 
         private void CheckIntegrity()

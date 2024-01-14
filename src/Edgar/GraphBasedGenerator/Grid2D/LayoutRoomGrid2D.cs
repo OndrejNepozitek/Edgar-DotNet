@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Edgar.Geometry;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
@@ -16,6 +17,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Description of the corresponding room.
         /// </summary>
+        [JsonIgnore]
         public RoomDescriptionGrid2D RoomDescription { get; }
 
         /// <summary>

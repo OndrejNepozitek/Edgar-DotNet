@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.Doors;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
     /// </remarks>
     public struct DoorLineGrid2D : IEquatable<DoorLineGrid2D>
     {
+        [JsonProperty]
         /// <summary>
         /// Set of points where doors can start. 
         /// </summary>
@@ -28,7 +30,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Door socket.
         /// </summary>
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IDoorSocket DoorSocket { get; }
 
         public DoorType Type { get; }
@@ -36,6 +38,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <param name="line">See the <see cref="Line"/> property.</param>
         /// <param name="length">See the <see cref="Length"/> property.</param>
         /// <param name="doorSocket">See the <see cref="DoorSocket"/> property.</param>
+        [System.Text.Json.Serialization.JsonConstructor]
         public DoorLineGrid2D(OrthogonalLineGrid2D line, int length, IDoorSocket doorSocket, DoorType type)
         {
             Line = line;

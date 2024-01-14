@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace Edgar.Geometry
 {
@@ -44,6 +45,7 @@ namespace Edgar.Geometry
         /// </remarks>
         /// <param name="a"></param>
         /// <param name="b"></param>
+        [JsonConstructor]
         public RectangleGrid2D(Vector2Int a, Vector2Int b)
         {
             if (a.X == b.X || a.Y == b.Y)

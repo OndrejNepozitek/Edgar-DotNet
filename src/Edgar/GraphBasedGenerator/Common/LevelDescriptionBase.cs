@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Edgar.GraphBasedGenerator.Common.RoomTemplates;
 using Edgar.Graphs;
 using Newtonsoft.Json;
@@ -16,11 +17,16 @@ namespace Edgar.GraphBasedGenerator.Common
         /// </summary>
         public string Name { get; set; }
 
-        private Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
+        // TODO:
 
-        [JsonProperty] private List<KeyValuePair<TRoom, TRoomDescription>> roomDescriptionsList;
+        public Dictionary<TRoom, TRoomDescription> roomDescriptions = new Dictionary<TRoom, TRoomDescription>();
 
-        [JsonProperty] private readonly List<Passage> passages = new List<Passage>();
+        [JsonProperty] 
+        private List<KeyValuePair<TRoom, TRoomDescription>> roomDescriptionsList;
+
+        // TODO: private, readonly
+        [JsonProperty] 
+        public List<Passage> passages = new List<Passage>();
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
@@ -237,7 +243,8 @@ namespace Edgar.GraphBasedGenerator.Common
             }
         }
 
-        private class Passage
+        // TODO:
+        public class Passage
         {
             public TRoom Room1 { get; }
 

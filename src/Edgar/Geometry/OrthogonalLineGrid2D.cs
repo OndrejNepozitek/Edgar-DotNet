@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Text.Json.Serialization;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
 using Newtonsoft.Json;
 
@@ -15,7 +16,9 @@ namespace Edgar.Geometry
         public readonly Vector2Int To;
 
         // TODO: handle better
-        [JsonProperty] private readonly Direction degeneratedDirection;
+        // TODO: native AOT
+        [JsonProperty]
+        public readonly Direction degeneratedDirection;
 
         private static readonly List<Direction> OrderedDirections = new List<Direction>()
             {Direction.Right, Direction.Bottom, Direction.Left, Direction.Top};
@@ -56,7 +59,8 @@ namespace Edgar.Geometry
         /// <param name="degeneratedDirection"></param>
         /// <exception cref="ArgumentException">Thrown when given points do not form an orthogonal line.</exception>
         // TODO: remove
-        [JsonConstructor]
+        [Newtonsoft.Json.JsonConstructor]
+        [System.Text.Json.Serialization.JsonConstructor]
         public OrthogonalLineGrid2D(Vector2Int from, Vector2Int to, Direction degeneratedDirection)
         {
             if (from.X != to.X && from.Y != to.Y)

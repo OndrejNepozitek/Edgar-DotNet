@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Edgar.GraphBasedGenerator.Common.RoomTemplates;
 
 namespace Edgar.GraphBasedGenerator.Grid2D
@@ -12,12 +13,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// Whether the room is a corridor or not.
         /// </summary>
-        public bool IsCorridor { get; }
+        public bool IsCorridor { get; set; }
 
         /// <summary>
         /// Room templates available for the room.
         /// </summary>
-        public List<RoomTemplateGrid2D> RoomTemplates { get; }
+        public List<RoomTemplateGrid2D> RoomTemplates { get; set; }
 
         /// <param name="isCorridor">See the <see cref="IsCorridor"/> property.</param>
         /// <param name="roomTemplates">See the <see cref="RoomTemplates"/> property.</param>
@@ -31,6 +32,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
 
             IsCorridor = isCorridor;
             RoomTemplates = roomTemplates;
+        }
+
+        // TODO:
+        [JsonConstructor]
+        public RoomDescriptionGrid2D()
+        {
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D.Exceptions;
 using Edgar.Legacy.GeneralAlgorithms.Algorithms.Common;
@@ -15,12 +16,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <summary>
         /// List of available doors.
         /// </summary>
-        public List<DoorGrid2D> Doors { get; }
+        public List<DoorGrid2D> Doors { get; set; }
 
         /// <summary>
         /// List of available door lines.
         /// </summary>
-        public List<DoorLineGrid2D> DoorLines { get; }
+        public List<DoorLineGrid2D> DoorLines { get; set; }
 
         private static readonly OrthogonalLineIntersection LineIntersection = new OrthogonalLineIntersection();
 
@@ -34,6 +35,21 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         public ManualDoorModeGrid2D(List<DoorLineGrid2D> doorLines)
         {
             DoorLines = doorLines ?? throw new ArgumentNullException(nameof(doorLines));
+        }
+
+        // TODO:
+        //[JsonConstructor]
+        public ManualDoorModeGrid2D(List<DoorGrid2D> doors, List<DoorLineGrid2D> doorLines)
+        {
+            Doors = doors;
+            DoorLines = doorLines;
+        }
+
+        // TODO:
+        [JsonConstructor]
+        public ManualDoorModeGrid2D()
+        {
+
         }
 
         public List<DoorLineGrid2D> GetDoors(PolygonGrid2D roomShape)

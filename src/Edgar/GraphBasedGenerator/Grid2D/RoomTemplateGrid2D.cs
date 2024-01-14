@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common;
 
@@ -15,12 +16,12 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <remarks>
         /// Used mainly for debugging purposes.
         /// </remarks>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Outline of the room template.
         /// </summary>
-        public PolygonGrid2D Outline { get; }
+        public PolygonGrid2D Outline { get; set; }
 
         /// <summary>
         /// Available door positions of the room template.
@@ -28,7 +29,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <remarks>
         /// See <see cref="SimpleDoorModeGrid2D"/> or <see cref="ManualDoorModeGrid2D"/> for available door modes.
         /// </remarks>
-        public IDoorModeGrid2D Doors { get; }
+        public IDoorModeGrid2D Doors { get; set; }
 
         /// <summary>
         /// Settings regarding if the room template can be used multiple times in a level.
@@ -36,7 +37,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         /// <remarks>
         /// See <see cref="RoomTemplateRepeatMode"/>.
         /// </remarks>
-        public RoomTemplateRepeatMode? RepeatMode { get; }
+        public RoomTemplateRepeatMode? RepeatMode { get; set; }
 
         /// <summary>
         /// How can the room template be transformed. 
@@ -48,7 +49,7 @@ namespace Edgar.GraphBasedGenerator.Grid2D
         ///
         /// See <see cref="TransformationGrid2D"/>.
         /// </remarks>
-        public List<TransformationGrid2D> AllowedTransformations { get; }
+        public List<TransformationGrid2D> AllowedTransformations { get; set; }
 
         /// <param name="outline">See the <see cref="Outline"/> property.</param>
         /// <param name="doors">See the <see cref="Doors"/> property.</param>
@@ -65,6 +66,13 @@ namespace Edgar.GraphBasedGenerator.Grid2D
             AllowedTransformations = allowedTransformations ?? new List<TransformationGrid2D>()
                 {TransformationGrid2D.Identity};
             ;
+        }
+
+        // TODO: reference handling problem again
+        [JsonConstructor]
+        public RoomTemplateGrid2D()
+        {
+
         }
     }
 }
