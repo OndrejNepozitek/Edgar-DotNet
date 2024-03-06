@@ -41,8 +41,3 @@ jobs:
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Trigger api docs build
-      - name: Trigger api docs build
-        run: |
-          curl -XPOST -u "${{secrets.GH_PAT_USERNAME}}:${{secrets.GH_PAT}}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/OndrejNepozitek/Edgar-DotNet-ApiDocs/dispatches --data '{"event_type": "build_application"}'
