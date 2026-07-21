@@ -16,7 +16,7 @@
   <Target Name="CustomAfterBuild" AfterTargets="Build">
     <PropertyGroup>
       <RepositoryRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))</RepositoryRoot>
-      <EdgarOutputDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\Edgar\bin\$(Configuration)\netstandard2.1'))</EdgarOutputDirectory>
+      <EdgarOutputDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\Edgar\bin\$(Configuration)\netstandard2.0'))</EdgarOutputDirectory>
       <WorkingDirectory>$(TargetDir)</WorkingDirectory>
       <MergedDirectory>$(WorkingDirectory)EdgarSingleFile</MergedDirectory>
       <ModifiedDirectory>$(WorkingDirectory)EdgarSingleFileModified</ModifiedDirectory>
