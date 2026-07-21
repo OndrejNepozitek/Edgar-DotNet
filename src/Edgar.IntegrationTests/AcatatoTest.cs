@@ -12,6 +12,7 @@ namespace Edgar.IntegrationTests
     public class AcatatoTest
     {
         [Test]
+        [Explicit("Uses local export files from the developer Downloads folder.")]
         public void Run()
         {
             var files = Directory.GetFiles("C:\\Users\\nepozitek\\Downloads\\acatato_export\\edgar_export");

@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
-    <PackageReference Include="Mono.Cecil" Version="0.11.2" />
+    <PackageReference Include="Mono.Cecil" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,23 +14,32 @@
   </ItemGroup>
 
   <Target Name="CustomAfterBuild" AfterTargets="Build">
-    <ItemGroup>
-      <CopyItems Include="$(SolutionDir)src\Edgar\bin\$(Configuration)\netstandard2.0\*.*" />
-    </ItemGroup>
-    <RemoveDir Directories="$(TargetDir)\Edgar" />
-    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)\Edgar" />
-
     <PropertyGroup>
-      <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
+      <RepositoryRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))</RepositoryRoot>
+      <EdgarOutputDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\Edgar\bin\$(Configuration)\netstandard2.1'))</EdgarOutputDirectory>
+      <WorkingDirectory>$(TargetDir)</WorkingDirectory>
+      <MergedDirectory>$(WorkingDirectory)EdgarSingleFile</MergedDirectory>
+      <ModifiedDirectory>$(WorkingDirectory)EdgarSingleFileModified</ModifiedDirectory>
+      <MergedAssembly>$(MergedDirectory)\EdgarSingleFile.dll</MergedAssembly>
+      <ModifiedAssembly>$(ModifiedDirectory)\EdgarSingleFile.dll</ModifiedAssembly>
     </PropertyGroup>
 
-    <ILRepack 
-      OutputType="Dll" 
-      MainAssembly="$(WorkingDirectory)\Edgar\Edgar.dll" 
-      OutputAssembly="$(WorkingDirectory)\EdgarSingleFile\EdgarSingleFile.dll" 
-      InputAssemblies="$(WorkingDirectory)\Edgar\*.dll" 
-      WilcardInputAssemblies="true"
-      WorkingDirectory="$(WorkingDirectory)" />
+    <ItemGroup>
+      <CopyItems Include="$(EdgarOutputDirectory)\*.*" />
+    </ItemGroup>
+
+    <RemoveDir Directories="$(WorkingDirectory)Edgar;$(MergedDirectory);$(ModifiedDirectory)" />
+    <MakeDir Directories="$(WorkingDirectory)Edgar;$(MergedDirectory);$(ModifiedDirectory)" />
+    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(WorkingDirectory)Edgar" />
+
+    <ItemGroup>
+      <MergeAssemblies Include="$(WorkingDirectory)Edgar\*.dll"
+                       Exclude="$(WorkingDirectory)Edgar\Edgar.dll;$(WorkingDirectory)Edgar\System.*.dll;$(WorkingDirectory)Edgar\Microsoft.*.dll;$(WorkingDirectory)Edgar\netstandard.dll;$(WorkingDirectory)Edgar\mscorlib.dll" />
+    </ItemGroup>
+
+    <Exec Command="dotnet tool restore" WorkingDirectory="$(RepositoryRoot)" />
+    <Exec Command="dotnet tool run ilrepack -- /target:library /lib:&quot;$(WorkingDirectory)Edgar&quot; /out:&quot;$(MergedAssembly)&quot; &quot;$(WorkingDirectory)Edgar\Edgar.dll&quot; @(MergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" WorkingDirectory="$(RepositoryRoot)" />
+    <Exec Command="dotnet &quot;$(TargetPath)&quot; &quot;$(MergedAssembly)&quot; &quot;$(ModifiedAssembly)&quot;" />
   </Target>
 
 </Project>

@@ -9,9 +9,15 @@ namespace Edgar.UnityBuild
     {
         static void Main(string[] args)
         {
-            var assemblyName = "EdgarSingleFile.dll";
-            var sourceDir = "EdgarSingleFile";
-            var targetDir = "EdgarSingleFileModified";
+            if (args.Length != 2)
+            {
+                throw new ArgumentException("Expected source and target assembly paths.");
+            }
+
+            var sourceAssembly = Path.GetFullPath(args[0]);
+            var targetAssembly = Path.GetFullPath(args[1]);
+            var sourceDir = Path.GetDirectoryName(sourceAssembly) ?? throw new InvalidOperationException("Source assembly directory is missing.");
+            var targetDir = Path.GetDirectoryName(targetAssembly) ?? throw new InvalidOperationException("Target assembly directory is missing.");
 
             if (Directory.Exists(targetDir))
             {
@@ -22,11 +28,12 @@ namespace Edgar.UnityBuild
 
             CopyFilesRecursively(new DirectoryInfo(sourceDir), new DirectoryInfo(targetDir));
 
-            var moduleDefinition = ModuleDefinition.ReadModule(Path.Combine(sourceDir, assemblyName));
-            var vectorType = moduleDefinition.Types.Single(x => x.Name == "Vector2Int");
+            using var moduleDefinition = ModuleDefinition.ReadModule(sourceAssembly);
+            var vectorType = moduleDefinition.Types.SingleOrDefault(x => x.Name == "Vector2Int")
+                             ?? throw new InvalidOperationException("Could not find Vector2Int in the merged Edgar assembly.");
             vectorType.Name = "EdgarVector2Int";
 
-            var stream = new FileStream(Path.Combine(targetDir, assemblyName), FileMode.Create);
+            using var stream = new FileStream(targetAssembly, FileMode.Create, FileAccess.Write);
             moduleDefinition.Write(stream);
         }
 

@@ -1,48 +1,68 @@
 name: Build
 
-on: [push]
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      # Checkout this repository
       - name: Checkout this repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Prepare version
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
       - name: Prepare version
-        if: startsWith(github.ref, 'refs/tags/v')
+        id: version
+        shell: pwsh
         run: |
-          ref="${GITHUB_REF}"
-          ref="${ref/refs\/tags\/v/}"
-          echo "::set-output name=VERSION::${ref}"
-        env:
-          GITHUB_REF: ${{ github.ref }}
-        id: get_version
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $version = $env:GITHUB_REF -replace '^refs/tags/v', ''
+          } else {
+            $version = '0.0.0-ci'
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
 
-      # Publish nuget package
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      - name: Restore solution
+        run: dotnet restore EdgarDotNet.sln
+
+      - name: Build solution
+        run: dotnet build EdgarDotNet.sln --configuration Release --no-restore -p:PackageVersion=${{ steps.version.outputs.version }}
+
+      - name: Test Edgar
+        run: dotnet test src/Edgar.Tests/Edgar.Tests.csproj --configuration Release --no-build
+
+      - name: Test general algorithms
+        run: dotnet test src/Edgar.GeneralAlgorithmsTests/Edgar.GeneralAlgorithmsTests.csproj --configuration Release --no-build
+
+      - name: Test integration suite
+        run: dotnet test src/Edgar.IntegrationTests/Edgar.IntegrationTests.csproj --configuration Release --no-build
+
+      - name: Pack NuGet package
+        run: dotnet pack src/Edgar/Edgar.csproj --configuration Release --no-build --output artifacts/packages -p:PackageVersion=${{ steps.version.outputs.version }}
+
       - name: Publish nuget package
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: rohith/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: src/Edgar/Edgar.csproj
-          PACKAGE_NAME: Edgar-DotNet          
-          VERSION_STATIC: ${{ steps.get_version.outputs.VERSION }}
-          TAG_COMMIT: false
-          NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ secrets.NUGET_API_KEY }}" --skip-duplicate
 
-      # Release
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Trigger api docs build
       - name: Trigger api docs build
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          curl -XPOST -u "${{secrets.GH_PAT_USERNAME}}:${{secrets.GH_PAT}}" -H "Accept: application/vnd.github.everest-preview+json"  -H "Content-Type: application/json" https://api.github.com/repos/OndrejNepozitek/Edgar-DotNet-ApiDocs/dispatches --data '{"event_type": "build_application"}'
+          curl.exe -XPOST -u "${{ secrets.GH_PAT_USERNAME }}:${{ secrets.GH_PAT }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/OndrejNepozitek/Edgar-DotNet-ApiDocs/dispatches --data '{\"event_type\":\"build_application\"}'

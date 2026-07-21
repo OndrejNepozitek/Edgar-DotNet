@@ -46,7 +46,9 @@ namespace SandboxEvolutionRunner.Scenarios
                 var nodesInsideThreshold = 40;
 
                 var clustersReport = cycleClustersAnalyzer.GetReport(namedGraph.Graph);
-                var maxClusterIndex = clustersReport.Clusters.MaxBy(x => x.Nodes.Count);
+                var maxClusterIndex = Edgar.Legacy.GeneralAlgorithms.Algorithms.Common.CollectionExtensions.MaxBy(
+                    clustersReport.Clusters,
+                    x => x.Nodes.Count);
                 var maxClusterSize = clustersReport.Clusters[maxClusterIndex].Nodes.Count;
 
                 var nodesInsideCycleReport = nodesInsideCycleAnalyzer.GetReport(namedGraph.Graph);

@@ -18,6 +18,7 @@ namespace Edgar.IntegrationTests
         }
 
         [Test]
+        [Explicit("Uses a local level description file from the developer Downloads folder.")]
         public void Run()
         {
             var levelDescription = LevelDescriptionGrid2D<Room>.LoadFromJson(
