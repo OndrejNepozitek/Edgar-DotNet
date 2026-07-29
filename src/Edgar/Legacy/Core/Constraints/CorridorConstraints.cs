@@ -71,7 +71,8 @@ namespace Edgar.Legacy.Core.Constraints
             var energy = ComputeEnergy(0, distance);
 
             energyData.CorridorDistance = distance;
-            energyData.Energy += energy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + energy;
 
             return distance == 0;
         }
@@ -101,7 +102,8 @@ namespace Edgar.Legacy.Core.Constraints
             var newEnergy = ComputeEnergy(0, distanceTotal);
 
             energyData.CorridorDistance = distanceTotal;
-            energyData.Energy += newEnergy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + newEnergy;
 
             return distanceTotal == 0;
         }
@@ -131,7 +133,8 @@ namespace Edgar.Legacy.Core.Constraints
             var newEnergy = ComputeEnergy(0, newDistance);
 
             energyData.CorridorDistance = newDistance;
-            energyData.Energy += newEnergy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + newEnergy;
 
             return newDistance == 0;
         }

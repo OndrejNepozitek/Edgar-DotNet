@@ -60,7 +60,8 @@ namespace Edgar.Legacy.Core.Constraints
             }
 
             energyData.NumberOfTouching = numberOfTouching;
-            energyData.Energy += numberOfTouching;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + numberOfTouching;
 
             return numberOfTouching == 0;
         }
@@ -85,7 +86,8 @@ namespace Edgar.Legacy.Core.Constraints
             var numberOfTouchingTotal = configuration.EnergyData.NumberOfTouching + (isTouchingNew - isTouchingOld);
 
             energyData.NumberOfTouching = numberOfTouchingTotal;
-            energyData.Energy += numberOfTouchingTotal;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + numberOfTouchingTotal;
 
             return numberOfTouchingTotal == 0;
         }
@@ -114,7 +116,8 @@ namespace Edgar.Legacy.Core.Constraints
             }
 
             energyData.NumberOfTouching = newNumberOfTouching;
-            energyData.Energy += newNumberOfTouching;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + newNumberOfTouching;
 
             return newNumberOfTouching == 0;
         }

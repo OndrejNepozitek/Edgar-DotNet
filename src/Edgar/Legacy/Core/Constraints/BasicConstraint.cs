@@ -79,7 +79,8 @@ namespace Edgar.Legacy.Core.Constraints
 
             energyData.Overlap = overlap;
             energyData.MoveDistance = distance;
-            energyData.Energy += energy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + energy;
 
             return overlap == 0 && distance == 0;
         }
@@ -117,7 +118,8 @@ namespace Edgar.Legacy.Core.Constraints
 
             energyData.MoveDistance = distanceTotal;
             energyData.Overlap = overlapTotal;
-            energyData.Energy += newEnergy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + newEnergy;
 
             return overlapTotal == 0 && distanceTotal == 0;
         }
@@ -151,7 +153,8 @@ namespace Edgar.Legacy.Core.Constraints
 
             energyData.MoveDistance = newDistance;
             energyData.Overlap = newOverlap;
-            energyData.Energy += newEnergy;
+            var currentEnergy = energyData.Energy;
+            energyData.Energy = currentEnergy + newEnergy;
 
             return newOverlap == 0 && newDistance == 0;
         }

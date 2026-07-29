@@ -10,7 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Edgar\Edgar.csproj" />
+    <ProjectReference Include="..\Edgar\Edgar.csproj"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="CustomAfterBuild" AfterTargets="Build">
@@ -25,7 +27,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <CopyItems Include="$(EdgarOutputDirectory)\*.*" />
+      <MergeDependency Include="BenchmarkUtils;
+                                GraphPlanarityTesting;
+                                Newtonsoft.Json;
+                                RangeTree;
+                                System.Drawing.Common;
+                                YamlDotNet" />
+      <CopyItems Include="$(EdgarOutputDirectory)\Edgar.dll" />
+      <CopyItems Include="@(MergeDependency->'$(EdgarOutputDirectory)\%(Identity).dll')" />
     </ItemGroup>
 
     <RemoveDir Directories="$(WorkingDirectory)Edgar;$(MergedDirectory);$(ModifiedDirectory)" />
@@ -33,12 +42,11 @@
     <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(WorkingDirectory)Edgar" />
 
     <ItemGroup>
-      <MergeAssemblies Include="$(WorkingDirectory)Edgar\*.dll"
-                       Exclude="$(WorkingDirectory)Edgar\Edgar.dll;$(WorkingDirectory)Edgar\System.*.dll;$(WorkingDirectory)Edgar\Microsoft.*.dll;$(WorkingDirectory)Edgar\netstandard.dll;$(WorkingDirectory)Edgar\mscorlib.dll" />
+      <MergeAssemblies Include="@(MergeDependency->'$(WorkingDirectory)Edgar\%(Identity).dll')" />
     </ItemGroup>
 
     <Exec Command="dotnet tool restore" WorkingDirectory="$(RepositoryRoot)" />
-    <Exec Command="dotnet tool run ilrepack -- /target:library /lib:&quot;$(WorkingDirectory)Edgar&quot; /out:&quot;$(MergedAssembly)&quot; &quot;$(WorkingDirectory)Edgar\Edgar.dll&quot; @(MergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" WorkingDirectory="$(RepositoryRoot)" />
+    <Exec Command="dotnet tool run ilrepack -- /target:library /internalizeassembly:Newtonsoft.Json /lib:&quot;$(WorkingDirectory)Edgar&quot; /out:&quot;$(MergedAssembly)&quot; &quot;$(WorkingDirectory)Edgar\Edgar.dll&quot; @(MergeAssemblies->'&quot;%(FullPath)&quot;', ' ')" WorkingDirectory="$(RepositoryRoot)" />
     <Exec Command="dotnet &quot;$(TargetPath)&quot; &quot;$(MergedAssembly)&quot; &quot;$(ModifiedAssembly)&quot;" />
   </Target>
 
