@@ -36,7 +36,6 @@
     <PackageReference Include="GraphPlanarityTesting" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="RangeTree" />
-    <PackageReference Include="System.Collections.Immutable" />
     <PackageReference Include="System.Drawing.Common" />
     <PackageReference Include="YamlDotNet" />
   </ItemGroup>

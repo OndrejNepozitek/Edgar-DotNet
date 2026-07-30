@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+using Edgar.Collections;
 using Edgar.Geometry;
 
 namespace Edgar.Legacy.GeneralAlgorithms.Algorithms.Common

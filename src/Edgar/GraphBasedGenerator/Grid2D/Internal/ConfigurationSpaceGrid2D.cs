@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Edgar.Collections;
 using System.Linq;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Common.ConfigurationSpaces;

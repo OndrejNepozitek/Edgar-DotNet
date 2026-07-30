@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using Edgar.Collections;
 
 namespace Edgar.Graphs
 {
